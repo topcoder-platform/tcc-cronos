@@ -1,0 +1,16 @@
+<?xml version="1.0" ?> 
+<component id="1" name="test component name" 
+  description="test component description" version="1.0a" aName1="aValue1" aName2="aValue2">
+  <dependencies>
+    <dependent_component id="11" name="test dep1 name" description="test dep1 descr" version="1.1" aName11="aValue11"/>
+    <dependent_component id="12" name="test dep2 name" description="test dep2 descr" version="1.2" aName12="aValue12"/>
+  </dependencies>
+  <external_dependencies>
+    <external_dependency id="21" name="test extdep1" description="test extdep1 descr" version="3.1" filename="test extdep1 file"/>
+    <external_dependency id="22" name="test extdep2" description="test extdep2 descr" version="3.2" filename="test extdep2 file"/>
+  </external_dependencies>
+  <technology_types>
+    <technology_type id="31" name="tech1" description="tech1 descr" deprecated_status="false"/>
+    <technology_type id="32" name="tech2" description="tech2 descr" deprecated_status="true"/>    
+  </technology_types>
+</component>
