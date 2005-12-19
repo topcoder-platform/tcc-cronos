@@ -1,0 +1,16 @@
+<CMConfig>
+  <Config name="com.topcoder.buildutility.template.unittests">
+
+    <Property name="file_server">
+        <Value>test_files/</Value>
+    </Property>
+
+
+    <Property name="persistence">
+        <Property name="class">
+            <Value>com.topcoder.buildutility.template.MockPersistence</Value>
+        </Property>
+    </Property>
+
+  </Config>
+</CMConfig>

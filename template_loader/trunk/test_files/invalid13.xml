@@ -1,0 +1,34 @@
+<CMConfig>
+  <Config name="com.topcoder.buildutility.template.unittests">
+
+    <Property name="file_server">
+        <Value>C:\TopCoder</Value>
+    </Property>
+
+    <Property name="caching">
+        <Property name="timeout">
+            <Value>1000</Value>
+        </Property>
+        <Property name="size">
+            <Value>100</Value>
+        </Property>
+    </Property>
+
+    <Property name="persistence">
+        <Property name="class">
+            <Value>com.topcoder.buildutility.template.persistence.JDBCPersistence</Value>
+        </Property>
+        <Property name="config">
+            <Property name="db_factory_namespace">
+                <!-- bad namespace -->
+                <Value>bad.namespace</Value>
+            </Property>
+
+            <Property name="db_connection">
+                <Value>foo</Value>
+            </Property>
+        </Property>
+    </Property>
+
+  </Config>
+</CMConfig>

@@ -1,0 +1,26 @@
+<CMConfig>
+  <Config name="com.topcoder.buildutility.template.unittests">
+
+    <Property name="file_server">
+        <Value>test_files/</Value>
+    </Property>
+
+    <Property name="caching">
+        <Property name="timeout">
+            <Value>200</Value>
+        </Property>
+        <Property name="size">
+            <Value>1</Value>
+        </Property>
+    </Property>
+
+    <Property name="persistence">
+        <Property name="class">
+            <Value>com.topcoder.buildutility.template.MockPersistence</Value>
+        </Property>
+    </Property>
+
+
+
+  </Config>
+</CMConfig>
