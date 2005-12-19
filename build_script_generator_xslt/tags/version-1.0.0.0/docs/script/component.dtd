@@ -1,0 +1,30 @@
+ <!ELEMENT component (dependencies, external_dependencies, technology_types)>
+ <!ATTLIST component
+          id                  CDATA   #REQUIRED
+          name                CDATA   #REQUIRED
+          description         CDATA   #IMPLIED
+          version             CDATA   #REQUIRED
+          package             CDATA   #IMPLIED>
+ <!ELEMENT dependencies (dependent_component*)>
+ <!ELEMENT dependent_component EMPTY>
+ <!ATTLIST dependent_component
+          id                  CDATA   #REQUIRED
+          name                CDATA   #REQUIRED
+          description         CDATA   #IMPLIED
+          version             CDATA   #REQUIRED
+          package             CDATA   #IMPLIED>
+ <!ELEMENT external_dependencies (external_dependency*)>
+ <!ELEMENT external_dependency EMPTY>
+ <!ATTLIST external_dependency
+          id                  CDATA   #REQUIRED
+          name                CDATA   #REQUIRED
+          version             CDATA   #REQUIRED
+          description         CDATA   #IMPLIED
+          filename            CDATA   #REQUIRED>
+ <!ELEMENT technology_types (technology_type*)>
+ <!ELEMENT technology_type EMPTY>
+ <!ATTLIST technology_type
+          id                  CDATA   #REQUIRED
+          name                CDATA   #REQUIRED
+          description         CDATA   #IMPLIED
+          deprecated_status   (true|false) #REQUIRED>
