@@ -84,7 +84,7 @@
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
     
-    <property name="simple_cache.version" value="1.1"/>
+    <property name="simple_cache.version" value="2.0"/>
     <property name="simple_cache.jar.name" value="simple_cache.jar"/>
     <property name="simple_cache.path" value="simple_cache/${simple_cache.version}"/>
     <property name="simple_cache.jar" value="${tcs_libdir}/${simple_cache.path}/${simple_cache.jar.name}"/>
