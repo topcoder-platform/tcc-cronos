@@ -1,0 +1,843 @@
+{\rtf1\ansi\ansicpg936\uc2\deff0\stshfdbch13\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe2052{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f10\fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings;}
+{\f13\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}\'cb\'ce\'cc\'e5{\*\falt SimSun};}{\f71\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}@\'cb\'ce\'cc\'e5;}{\f257\froman\fcharset238\fprq2 Times New Roman CE;}
+{\f258\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f260\froman\fcharset161\fprq2 Times New Roman Greek;}{\f261\froman\fcharset162\fprq2 Times New Roman Tur;}{\f262\froman\fcharset177\fprq2 Times New Roman (Hebrew);}
+{\f263\froman\fcharset178\fprq2 Times New Roman (Arabic);}{\f264\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f265\froman\fcharset163\fprq2 Times New Roman (Vietnamese);}{\f267\fswiss\fcharset238\fprq2 Arial CE;}
+{\f268\fswiss\fcharset204\fprq2 Arial Cyr;}{\f270\fswiss\fcharset161\fprq2 Arial Greek;}{\f271\fswiss\fcharset162\fprq2 Arial Tur;}{\f272\fswiss\fcharset177\fprq2 Arial (Hebrew);}{\f273\fswiss\fcharset178\fprq2 Arial (Arabic);}
+{\f274\fswiss\fcharset186\fprq2 Arial Baltic;}{\f275\fswiss\fcharset163\fprq2 Arial (Vietnamese);}{\f277\fmodern\fcharset238\fprq1 Courier New CE;}{\f278\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f280\fmodern\fcharset161\fprq1 Courier New Greek;}
+{\f281\fmodern\fcharset162\fprq1 Courier New Tur;}{\f282\fmodern\fcharset177\fprq1 Courier New (Hebrew);}{\f283\fmodern\fcharset178\fprq1 Courier New (Arabic);}{\f284\fmodern\fcharset186\fprq1 Courier New Baltic;}
+{\f285\fmodern\fcharset163\fprq1 Courier New (Vietnamese);}{\f389\fnil\fcharset0\fprq2 SimSun Western{\*\falt SimSun};}{\f969\fnil\fcharset0\fprq2 @\'cb\'ce\'cc\'e5 Western;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;
+\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;
+\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\f0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{
+\s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 
+heading 1;}{\s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 
+\sbasedon1 \snext0 heading 2;}{\s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 
+\i\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 heading 3;}{\s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 heading 4;}{\s5\ql \li0\ri0\sb240\sa60\sl240\slmult0
+\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0 \fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 5;}{
+\s6\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl5\outlinelevel5\adjustright\rin0\lin0\itap0 \i\fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 
+heading 6;}{\s7\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl6\outlinelevel6\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 
+\sbasedon0 \snext0 heading 7;}{\s8\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl7\outlinelevel7\adjustright\rin0\lin0\itap0 
+\i\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 8;}{\s9\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl8\outlinelevel8\adjustright\rin0\lin0\itap0 \b\i\fs18\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 9;}{\*\cs10 \additive \ssemihidden 
+Default Paragraph Font;}{\*\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
+\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\loch\f0\hich\af0\dbch\af13\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{\*\cs15 \additive \ul\cf2 \sbasedon10 Hyperlink;}{
+\s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext16 Body Text;}{\s17\qj \li720\ri0\sa120\sl240\slmult0
+\nowidctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \b\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext16 \sautoupd \styrsid9788337 InfoBlue;}{
+\s18\ql \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1049\langfe1049\loch\f0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 \sbasedon0 \snext18 \styrsid6976623 Normal (Web);}{\*\cs19 
+\additive \fs20\loch\f2\hich\af2\dbch\af0 \sbasedon10 \styrsid6976623 HTML Code;}{\*\ts20\tsrowd\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1024\langfe1024\loch\f0\hich\af0\dbch\af13\cgrid\langnp1024\langfenp1024 \sbasedon11 \snext20 \styrsid12219369 Table Grid;}}{\*\latentstyles\lsdstimax156\lsdlockeddef0}{\*\listtable{\list\listtemplateid-985754512{\listlevel\levelnfc0\levelnfcn0
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\s1\jclisttab\tx360 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'03\'00.\'01;}{\levelnumbers\'01\'03;}\s2\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'05\'00.\'01.\'02;}{\levelnumbers\'01\'03\'05;}\s3\jclisttab\tx0 }{\listlevel
+\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'07\'00.\'01.\'02.\'03;}{\levelnumbers\'01\'03\'05\'07;}\s4\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace0\levelindent0{\leveltext\'09\'00.\'01.\'02.\'03.\'04;}{\levelnumbers\'01\'03\'05\'07\'09;}\s5\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0b\'00.\'01.\'02.\'03.\'04.\'05;}{\levelnumbers\'01\'03\'05\'07\'09\'0b;}\s6\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0d\'00.\'01.\'02.\'03.\'04.\'05.\'06;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d;}\s7\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0f\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f;}\s8\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'11\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07.\'08;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f\'11;}\s9\jclisttab\tx0 }{\listname ;}\listid-5}{\list\listtemplateid1148495118{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fs20\fbias0 \fi-360\li720\jclisttab\tx720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01o;}{\levelnumbers;}\f2\fs20\fbias0 \fi-360\li1440\jclisttab\tx1440\lin1440 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fs20\fbias0 
+\fi-360\li2160\jclisttab\tx2160\lin2160 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fs20\fbias0 \fi-360\li2880\jclisttab\tx2880\lin2880 }
+{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fs20\fbias0 \fi-360\li3600\jclisttab\tx3600\lin3600 }{\listlevel\levelnfc23\levelnfcn23\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fs20\fbias0 \fi-360\li4320\jclisttab\tx4320\lin4320 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fs20\fbias0 \fi-360\li5040\jclisttab\tx5040\lin5040 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fs20\fbias0 \fi-360\li5760\jclisttab\tx5760\lin5760 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3929 ?};}{\levelnumbers;}
+\f10\fs20\fbias0 \fi-360\li6480\jclisttab\tx6480\lin6480 }{\listname ;}\listid207760313}{\list\listtemplateid196362300\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid68747279\'02\'00.;}{\levelnumbers\'01;}\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747265
+\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291\'02\'02.;}{\levelnumbers
+\'01;}\fi-180\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'03.;}{\levelnumbers\'01;}\fi-360\li3960
+\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747289\'02\'04.;}{\levelnumbers\'01;}\fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel
+\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291\'02\'05.;}{\levelnumbers\'01;}\fi-180\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'06.;}{\levelnumbers\'01;}\fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\leveltemplateid68747289\'02\'07.;}{\levelnumbers\'01;}\fi-360\li6840\jclisttab\tx6840\lin6840 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid68747291\'02\'08.;}{\levelnumbers\'01;}\fi-180\li7560\jclisttab\tx7560\lin7560 }{\listname ;}\listid399446894}{\list\listtemplateid-160384884\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\leveltemplateid67698713\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715
+\'02\'02.;}{\levelnumbers\'01;}\fi-180\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'02\'03.;}{\levelnumbers\'01;}\fi-360\li3240
+\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'02\'04.;}{\levelnumbers\'01;}\fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel
+\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'02\'05.;}{\levelnumbers\'01;}\fi-180\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'02\'06.;}{\levelnumbers\'01;}\fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\leveltemplateid67698713\'02\'07.;}{\levelnumbers\'01;}\fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\leveltemplateid67698715\'02\'08.;}{\levelnumbers\'01;}\fi-180\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid806357716}{\list\listtemplateid932329388\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693
+\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689
+\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}
+\f2\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fbias0 \fi-360\li4680
+\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 
+}{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f10\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid876431865}
+{\list\listtemplateid1334972094{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\jclisttab\tx720\lin720 }{\listlevel\levelnfc0\levelnfcn0\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1440\jclisttab\tx1440\lin1440 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'02\'02.;}{\levelnumbers\'01;}\fi-360\li2160\jclisttab\tx2160\lin2160 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'03.;}{\levelnumbers\'01;}\fi-360\li2880
+\jclisttab\tx2880\lin2880 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'04.;}{\levelnumbers\'01;}\fi-360\li3600\jclisttab\tx3600\lin3600 }{\listlevel\levelnfc0\levelnfcn0\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'05.;}{\levelnumbers\'01;}\fi-360\li4320\jclisttab\tx4320\lin4320 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'02\'06.;}{\levelnumbers\'01;}\fi-360\li5040\jclisttab\tx5040\lin5040 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'07.;}{\levelnumbers\'01;}\fi-360\li5760
+\jclisttab\tx5760\lin5760 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'08.;}{\levelnumbers\'01;}\fi-360\li6480\jclisttab\tx6480\lin6480 }{\listname ;}\listid1500385618}
+{\list\listtemplateid-2135922962\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'00.;}{\levelnumbers\'01;}\fi-360\li1440\jclisttab\tx1440\lin1440 }
+{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747289\'02\'01.;}{\levelnumbers\'01;}\fi-360\li2160\jclisttab\tx2160\lin2160 }{\listlevel\levelnfc2\levelnfcn2\leveljc2
+\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291\'02\'02.;}{\levelnumbers\'01;}\fi-180\li2880\jclisttab\tx2880\lin2880 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'03.;}{\levelnumbers\'01;}\fi-360\li3600\jclisttab\tx3600\lin3600 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid68747289\'02\'04.;}{\levelnumbers\'01;}\fi-360\li4320\jclisttab\tx4320\lin4320 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291
+\'02\'05.;}{\levelnumbers\'01;}\fi-180\li5040\jclisttab\tx5040\lin5040 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'06.;}{\levelnumbers\'01;}
+\fi-360\li5760\jclisttab\tx5760\lin5760 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747289\'02\'07.;}{\levelnumbers\'01;}\fi-360\li6480\jclisttab\tx6480\lin6480 }
+{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291\'02\'08.;}{\levelnumbers\'01;}\fi-180\li7200\jclisttab\tx7200\lin7200 }{\listname ;}\listid1775904611}
+{\list\listtemplateid-1685427290\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'00.;}{\levelnumbers\'01;}\fi-360\li1080\jclisttab\tx1080\lin1080 }
+{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747289\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc2\levelnfcn2\leveljc2
+\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291\'02\'02.;}{\levelnumbers\'01;}\fi-180\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'03.;}{\levelnumbers\'01;}\fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid68747289\'02\'04.;}{\levelnumbers\'01;}\fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291
+\'02\'05.;}{\levelnumbers\'01;}\fi-180\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747279\'02\'06.;}{\levelnumbers\'01;}
+\fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747289\'02\'07.;}{\levelnumbers\'01;}\fi-360\li6120\jclisttab\tx6120\lin6120 }
+{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid68747291\'02\'08.;}{\levelnumbers\'01;}\fi-180\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid2090150696}}
+{\*\listoverridetable{\listoverride\listid-5\listoverridecount9{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel
+\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}\ls1}{\listoverride\listid806357716
+\listoverridecount9{\lfolevel}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}
+{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}\ls2}{\listoverride\listid876431865\listoverridecount9{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}
+{\lfolevel}{\lfolevel}{\lfolevel}\ls3}{\listoverride\listid207760313\listoverridecount0\ls4}{\listoverride\listid1500385618\listoverridecount0\ls5}{\listoverride\listid399446894\listoverridecount0\ls6}{\listoverride\listid1775904611\listoverridecount0\ls7
+}{\listoverride\listid2090150696\listoverridecount0\ls8}}{\*\pgptbl {\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0
+\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}
+{\pgp\ipgp0\itap0\li0\ri0\sb0\sa0}}{\*\rsidtbl \rsid27526\rsid76272\rsid76376\rsid140946\rsid263136\rsid286131\rsid402840\rsid463461\rsid525744\rsid542737\rsid549674\rsid664441\rsid748212\rsid795388\rsid807513\rsid853536\rsid853859\rsid867884\rsid870088
+\rsid934091\rsid1002066\rsid1062254\rsid1078766\rsid1120664\rsid1132647\rsid1186283\rsid1211766\rsid1274348\rsid1276090\rsid1332772\rsid1382878\rsid1392001\rsid1445896\rsid1471101\rsid1517706\rsid1527179\rsid1582613\rsid1838960\rsid1841323\rsid1860518
+\rsid1866363\rsid1909209\rsid1916081\rsid1916631\rsid1974070\rsid1986818\rsid1990537\rsid2038045\rsid2039327\rsid2053030\rsid2232963\rsid2248251\rsid2517806\rsid2521265\rsid2582764\rsid2695213\rsid2756248\rsid2758262\rsid2771255\rsid2896720\rsid2903792
+\rsid3041929\rsid3083796\rsid3212155\rsid3237548\rsid3297099\rsid3355460\rsid3413484\rsid3478275\rsid3700298\rsid3820270\rsid3825266\rsid3888137\rsid3892179\rsid3963848\rsid4069838\rsid4134340\rsid4149100\rsid4342353\rsid4349130\rsid4527379\rsid4596978
+\rsid4613094\rsid4682213\rsid4724091\rsid4733978\rsid4734740\rsid4802770\rsid4804629\rsid4815194\rsid4855473\rsid4857066\rsid4857542\rsid4931898\rsid5006157\rsid5114625\rsid5322010\rsid5336630\rsid5387049\rsid5402287\rsid5440687\rsid5456453\rsid5461797
+\rsid5505794\rsid5520122\rsid5536809\rsid5584748\rsid5599139\rsid5599378\rsid5600700\rsid5601297\rsid5662993\rsid5722581\rsid5772454\rsid5779698\rsid5788520\rsid5854411\rsid5926237\rsid5929814\rsid5976551\rsid5986757\rsid6032321\rsid6045210\rsid6192669
+\rsid6230846\rsid6251102\rsid6295900\rsid6300652\rsid6305278\rsid6307803\rsid6309928\rsid6388580\rsid6434696\rsid6568241\rsid6628752\rsid6631291\rsid6757173\rsid6760110\rsid6769633\rsid6772753\rsid6820317\rsid6976623\rsid7029761\rsid7089949\rsid7154080
+\rsid7221759\rsid7301126\rsid7348479\rsid7359781\rsid7362553\rsid7417932\rsid7424741\rsid7431945\rsid7562905\rsid7742127\rsid7761604\rsid7803703\rsid7807630\rsid7877217\rsid8193734\rsid8203095\rsid8271190\rsid8345070\rsid8350092\rsid8355291\rsid8408358
+\rsid8412002\rsid8413306\rsid8464933\rsid8529051\rsid8541339\rsid8550571\rsid8664724\rsid8738624\rsid8745876\rsid8782095\rsid8788200\rsid8856747\rsid8876437\rsid8923229\rsid8940805\rsid9009744\rsid9137264\rsid9192795\rsid9591098\rsid9710238\rsid9788337
+\rsid9833652\rsid9836076\rsid9838951\rsid9851682\rsid9922502\rsid9923608\rsid9924398\rsid10239260\rsid10300253\rsid10428981\rsid10562690\rsid10892499\rsid10956576\rsid10972131\rsid10975890\rsid11155826\rsid11231502\rsid11338553\rsid11422367\rsid11494178
+\rsid11610655\rsid11614002\rsid11691441\rsid11736038\rsid11736176\rsid11758959\rsid11759316\rsid11821865\rsid11866273\rsid11877384\rsid11881347\rsid11882500\rsid11936816\rsid11953055\rsid11956460\rsid11994868\rsid11995332\rsid11995910\rsid12024469
+\rsid12071254\rsid12083112\rsid12154090\rsid12219369\rsid12272437\rsid12332253\rsid12417724\rsid12456950\rsid12535556\rsid12536946\rsid12540219\rsid12731871\rsid12866898\rsid12939910\rsid12990813\rsid13139436\rsid13178445\rsid13188893\rsid13250570
+\rsid13257261\rsid13259973\rsid13386107\rsid13590791\rsid13593073\rsid13662962\rsid13785240\rsid13896322\rsid13922904\rsid13988579\rsid14029279\rsid14100873\rsid14101703\rsid14157515\rsid14297177\rsid14356513\rsid14367658\rsid14553507\rsid14621543
+\rsid14643143\rsid14682645\rsid14820624\rsid14885778\rsid14901298\rsid14953962\rsid14964827\rsid15090159\rsid15140364\rsid15156378\rsid15282425\rsid15346622\rsid15403743\rsid15425130\rsid15540992\rsid15603610\rsid15684278\rsid15687784\rsid15798948
+\rsid15803421\rsid15880670\rsid15887121\rsid15934460\rsid15998634\rsid16058709\rsid16070799\rsid16129695\rsid16187623\rsid16339642\rsid16339911\rsid16475255\rsid16524409\rsid16543606\rsid16607592\rsid16667467\rsid16717198\rsid16721152\rsid16722756}
+{\*\generator Microsoft Word 11.0.5604;}{\info{\title <<Component>> <<Version>> Component Specification}{\author gpaul}{\operator ZZ}{\creatim\yr2004\mo6\dy16\hr17\min44}{\revtim\yr2005\mo7\dy6\hr4\min3}{\version305}{\edmins468}{\nofpages11}
+{\nofwords3137}{\nofchars17882}{\*\company TopCoder}{\nofcharsws20978}{\vern24689}}\paperw12240\paperh15840\margl1701\margr850\margt1134\margb1134\gutter0 
+\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180\dghorigin1701\dgvorigin1134\dghshow1\dgvshow1
+\jexpand\viewkind1\viewscale100\pgbrdrhead\pgbrdrfoot\splytwnine\ftnlytwnine\htmautsp\nolnhtadjtbl\useltbaln\alntblind\lytcalctblwd\lyttblrtgr\lnbrkrule\rsidroot11936816 \fet0\sectd \linex0\endnhere\sectlinegrid360\sectdefaultcl\sftnbj {\*\pnseclvl1
+\pnucrm\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang 
+{\pntxta \dbch )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}
+{\pntxta \dbch )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}\pard\plain \s1\qj \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\tx720\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\fs28\ul\insrsid7877217 \hich\af1\dbch\af13\loch\f1 
+Template Loader 1.0}{\fs28\ul\insrsid664441 \hich\af1\dbch\af13\loch\f1  Component Specification
+\par }\pard\plain \s16\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 1.\tab}}\pard\plain \s1\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Design
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15684278 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid15684278\charrsid15684278 
+\par }\pard\plain \s16\ql \fi720\li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid6772753 \hich\af1\dbch\af13\loch\f1 
+The purpose of the }{\f2\insrsid6772753\charrsid9137264 \hich\af2\dbch\af13\loch\f2 Template Loader 1.0}{\insrsid6772753 \hich\af1\dbch\af13\loch\f1  }{\insrsid6032321 \hich\af1\dbch\af13\loch\f1 
+component is to load the details for the top-level template hierarchies}{\insrsid1062254 \hich\af1\dbch\af13\loch\f1  from the persistent data store }{\insrsid4733978 \hich\af1\dbch\af13\loch\f1 into a runtime memory}{\insrsid8856747 
+\hich\af1\dbch\af13\loch\f1  on demand. The }{\insrsid1186283 \hich\af1\dbch\af13\loch\f1 component}{\insrsid8856747 \hich\af1\dbch\af13\loch\f1  provides an option to cache the template hierarchies}{\insrsid6309928 \hich\af1\dbch\af13\loch\f1 
+ which have been recently }{\insrsid12083112 \hich\af1\dbch\af13\loch\f1 loaded }{\insrsid853859 \hich\af1\dbch\af13\loch\f1 f\hich\af1\dbch\af13\loch\f1 rom the persistent data store.}{\insrsid7154080 
+\par }{\insrsid1186283 \hich\af1\dbch\af13\loch\f1 The clients must n}{\insrsid1062254 \hich\af1\dbch\af13\loch\f1 ote that adding, deleting and updating the templates and template hierarchies in persistent data store is out of scope of this component.
+\par }{\insrsid6434696 \hich\af1\dbch\af13\loch\f1 This component}{\insrsid2903792 \hich\af1\dbch\af13\loch\f1  declares the }{\f2\insrsid2903792\charrsid15887121 \hich\af2\dbch\af13\loch\f2 TemplateHierarchy}{\insrsid2903792 \hich\af1\dbch\af13\loch\f1  and }
+{\f2\insrsid2903792\charrsid15887121 \hich\af2\dbch\af13\loch\f2 Template}{\insrsid2903792 \hich\af1\dbch\af13\loch\f1  classes wh\hich\af1\dbch\af13\loch\f1 ich are }{\insrsid13988579 \hich\af1\dbch\af13\loch\f1 
+an object oriented representations of template hierarchy and template entities existing within the persistent data store.}{\insrsid6434696 
+\par }{\insrsid15887121 \hich\af1\dbch\af13\loch\f1 The component utilizes the }{\f2\insrsid15887121\charrsid2771255 \hich\af2\dbch\af13\loch\f2 Strategy}{\insrsid15887121 \hich\af1\dbch\af13\loch\f1 
+ design pattern to provide the clients with facility to change the underlying persistence}{\insrsid11758959 \hich\af1\dbch\af13\loch\f1  w\hich\af1\dbch\af13\loch\f1 ithout affecting the behavior of the component.}{\insrsid14356513 
+\hich\af1\dbch\af13\loch\f1  The current implementation }{\insrsid9009744 \hich\af1\dbch\af13\loch\f1 of this strategy implements loading of template hierarchies from the }{\f2\insrsid9009744\charrsid5976551 \hich\af2\dbch\af13\loch\f2 JDBC}{
+\insrsid9009744 \hich\af1\dbch\af13\loch\f1  compliant databases whose schema is initialized as provided by this component.}{\insrsid15887121 
+\par }\pard \s16\qj \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 {\insrsid9591098\charrsid7154080 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 1.1\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Design Patterns 
+
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid7154080\charrsid7154080 
+\par }\pard\plain \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid7803703\charrsid13593073 
+\hich\af2\dbch\af13\loch\f2 Strategy}{\f2\insrsid7154080\charrsid13593073 
+\par }{\insrsid1860518 \tab \hich\af1\dbch\af13\loch\f1 The }{\f2\insrsid1860518\charrsid13593073 \hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\insrsid1860518 \hich\af1\dbch\af13\loch\f1  interface and }{\f2\insrsid1860518\charrsid13593073 
+\hich\af2\dbch\af13\loch\f2 JDBCPersistence}{\insrsid1860518 \hich\af1\dbch\af13\loch\f1  class implement this pattern.}{\insrsid7803703 
+\par }{\insrsid7807630 
+\par }{\f2\insrsid7803703\charrsid13593073 \hich\af2\dbch\af13\loch\f2 Null}{\f2\insrsid4069838 \hich\af2\dbch\af13\loch\f2  Object}{\f2\insrsid7803703\charrsid13593073 
+\par }{\insrsid7807630 \tab \hich\af1\dbch\af13\loch\f1 The }{\f2\insrsid7807630\charrsid1527179 \hich\af2\dbch\af13\loch\f2 NullCache}{\insrsid7807630 \hich\af1\dbch\af13\loch\f1  class implements this pattern.
+\par }{\insrsid6192669 
+\par }{\f2\insrsid6192669\charrsid542737 \hich\af2\dbch\af13\loch\f2 Composite
+\par }{\insrsid542737 \tab \hich\af1\dbch\af13\loch\f1 The }{\f2\insrsid542737\charrsid1382878 \hich\af2\dbch\af13\loch\f2 TemplateHierarchy}{\insrsid542737 \hich\af1\dbch\af13\loch\f1  }{\insrsid9836076 \hich\af1\dbch\af13\loch\f1 class}{\insrsid542737 
+\hich\af1\dbch\af13\loch\f1  implement}{\insrsid9836076 \hich\af1\dbch\af13\loch\f1 s}{\insrsid542737 \hich\af1\dbch\af13\loch\f1  this pattern.
+\par }{\insrsid7803703\charrsid7154080 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 1.2\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Industry Standards 
+
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid7154080\charrsid7154080 
+\par }\pard\plain \s16\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid7154080\charrsid7154080 
+\hich\af2\dbch\af13\loch\f2 JDBC 2.0
+\par }\pard \s16\qj \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 {\insrsid7154080\charrsid7154080 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 1.3\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Required Algorithms
+
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\insrsid11736038\charrsid10972131 
+\par }\pard\plain \s17\ql \li720\ri0\sa120\sl240\slmult0\nowidctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid10972131\charrsid9788337 
+\hich\af1\dbch\af13\loch\f1 Initializing TemplateLoader }{\insrsid10239260 \hich\af1\dbch\af13\loch\f1 with }{\insrsid10972131\charrsid9788337 \hich\af1\dbch\af13\loch\f1 configuration properties}{\insrsid10239260 \hich\af1\dbch\af13\loch\f1 
+ provided by namespace}{\insrsid664441\charrsid9788337 
+\par {\listtext\pard\plain\f3\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard\plain \ql \fi-360\li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx720\aspalpha\aspnum\faauto\ls4\adjustright\rin0\lin1440\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 If the }{
+\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 "caching" }{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 configuration property is provided then: 
+\par {\listtext\pard\plain\f2\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 o\tab}}\pard \ql \fi-360\li2160\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx1440\aspalpha\aspnum\faauto\ls4\ilvl1\adjustright\rin0\lin2160\itap0\pararsid1445896 {\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 If the }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 
+"timeout" }{\f1\fs20\insrsid1186283\charrsid10972131 \hich\af1\dbch\af13\loch\f1 sub}{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1 -}{\f1\fs20\insrsid1186283\charrsid10972131 \hich\af1\dbch\af13\loch\f1 property}{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  is provided then use the value of that property as cache timeout. Otherwise use the }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 SimpleCache.NO_TIMEOUT }{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 as cache timeout. 
+\par {\listtext\pard\plain\f2\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 o\tab}\hich\af1\dbch\af13\loch\f1 If the }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 "size" }{
+\f1\fs20\insrsid1186283\charrsid10972131 \hich\af1\dbch\af13\loch\f1 sub}{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1 -}{\f1\fs20\insrsid1186283\charrsid10972131 \hich\af1\dbch\af13\loch\f1 property}{\f1\fs20\insrsid10972131\charrsid10972131 
+\hich\af1\dbch\af13\loch\f1  is provided then use the value of that property as cache maximum size. Otherwise use the }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 SimpleCache\hich\af2\dbch\af13\loch\f2 .NO_MAX_SIZE }{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 as cache timeout. 
+\par {\listtext\pard\plain\f2\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 o\tab}\hich\af1\dbch\af13\loch\f1 Initialize the }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 'cache'}{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  instance field with instance of }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 SimpleCache }{\f1\fs20\insrsid10972131\charrsid10972131 
+\hich\af1\dbch\af13\loch\f1 class constructed with selected timeout, max cache size and }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 LRUCacheEvictionStrategy}{\f1\fs20\insrsid10972131\charrsid10972131 
+\hich\af1\dbch\af13\loch\f1 . 
+\par {\listtext\pard\plain\f3\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-360\li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx720\aspalpha\aspnum\faauto\ls4\adjustright\rin0\lin1440\itap0\pararsid1445896 {\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 Otherwise initialize the }{\f2\fs20\insrsid10972131\charrsid10972131 
+\hich\af2\dbch\af13\loch\f2 'cache' }{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 instance field with instance of }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 NullCache }{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 class. 
+\par {\listtext\pard\plain\f3\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 If the }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 "persistence" }
+{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 property is not provided then throw }{\f2\fs20\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 ConfigurationException }{\f1\fs20\insrsid10972131\charrsid10972131 
+\par {\listtext\pard\plain\f3\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 Otherwise: 
+\par {\listtext\pard\plain\f2\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 o\tab}}\pard \ql \fi-360\li2160\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx1440\aspalpha\aspnum\faauto\ls4\ilvl1\adjustright\rin0\lin2160\itap0\pararsid1445896 {\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 Get the value of }{\f2\fs20\insrsid10972131\charrsid10972131 
+\hich\af2\dbch\af13\loch\f2 "class" }{\f1\fs20\insrsid1186283\charrsid10972131 \hich\af1\dbch\af13\loch\f1 sub}{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1 -}{\f1\fs20\insrsid1186283\charrsid10972131 \hich\af1\dbch\af13\loch\f1 property}{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  
+\par {\listtext\pard\plain\f2\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 o\tab}\hich\af1\dbch\af13\loch\f1 If the }{\f2\fs20\insrsid10972131\charrsid11736176 \hich\af2\dbch\af13\loch\f2 "config"}{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  }{\f1\fs20\insrsid1186283\charrsid10972131 \hich\af1\dbch\af13\loch\f1 sub-property}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 
+ is provided then instantiate the instance of }{\f2\fs20\insrsid10972131\charrsid11736176 \hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersist\hich\af2\dbch\af13\loch\f2 ence}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  via }{
+\f2\fs20\insrsid10972131\charrsid11736176 \hich\af2\dbch\af13\loch\f2 Java Reflection API}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  using the constructor accepting a single }{\f2\fs20\insrsid10972131\charrsid11736176 
+\hich\af2\dbch\af13\loch\f2 Property}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  parameter. 
+\par {\listtext\pard\plain\f2\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \hich\af2\dbch\af13\loch\f2 o\tab}\hich\af1\dbch\af13\loch\f1 Otherwise instantiate the instance of }{\f2\fs20\insrsid10972131\charrsid11736176 
+\hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  via }{\f2\fs20\insrsid10972131\charrsid11736176 \hich\af2\dbch\af13\loch\f2 Java}{\f1\fs20\insrsid10972131\charrsid10972131 
+\hich\af1\dbch\af13\loch\f1  }{\f2\fs20\insrsid10972131\charrsid11736176 \hich\af2\dbch\af13\loch\f2 Reflection}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  }{\f2\fs20\insrsid10972131\charrsid11736176 
+\hich\af2\dbch\af13\loch\f2 API}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  using the constructor taking no parameters. 
+\par {\listtext\pard\plain\f3\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-360\li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx720\aspalpha\aspnum\faauto\ls4\adjustright\rin0\lin1440\itap0\pararsid1445896 {\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1 If the }{\f2\fs20\insrsid10972131\charrsid7761604 \hich\af2\dbch\af13\loch\f2 "file_server"}{
+\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  property is not provided then throw }{\f2\fs20\insrsid10972131\charrsid7761604 \hich\af2\dbch\af13\loch\f2 ConfigurationException}{\f1\fs20\insrsid10972131\charrsid10972131 
+\hich\af1\dbch\af13\loch\f1  
+\par {\listtext\pard\plain\f3\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 Otherwise initialize the }{\f2\fs20\insrsid10972131\charrsid7761604 
+\hich\af2\dbch\af13\loch\f2 'fileServerUri'}{\f1\fs20\insrsid10972131\charrsid10972131 \hich\af1\dbch\af13\loch\f1  instance field with the value of this property. 
+\par {\listtext\pard\plain\f3\fs20\lang1033\langfe1033\langfenp1033\insrsid10972131\charrsid10972131 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 
+Any exception which may be thrown when performing the steps above must be caught, wrapped with }{\f2\fs20\insrsid10972131\charrsid7761604 \hich\af2\dbch\af13\loch\f2 ConfigurationException}{\f1\fs20\insrsid10972131\charrsid10972131 
+\hich\af1\dbch\af13\loch\f1  and re-thrown. 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid10972131\charrsid10972131 
+\par }\pard \s16\ql \li1080\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1080\itap0\pararsid1445896 {\b\insrsid13139436\charrsid4596978 \hich\af1\dbch\af13\loch\f1 Loading requested top-level template hierarchy by }{
+\b\f2\insrsid13139436\charrsid3083796 \hich\af2\dbch\af13\loch\f2 JDBCPersistence}{\b\insrsid11736038\charrsid4596978 
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 1.\tab}}\pard\plain \ql \fi-360\li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx720\aspalpha\aspnum\faauto\ls5\adjustright\rin0\lin1440\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 
+Obtain a connection to database from }{\f2\fs20\insrsid13139436\charrsid13139436 \hich\af2\dbch\af13\loch\f2 DB Connection Factory}{\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 . 
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 2.\tab}\hich\af1\dbch\af13\loch\f1 Prepare }{\f2\fs20\insrsid13139436\charrsid5926237 \hich\af2\dbch\af13\loch\f2 SQL}{
+\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1  statement which is used to load the details for requested top-level tem\hich\af1\dbch\af13\loch\f1 plate hierarchy. }{\f1\fs20\insrsid463461 \hich\af1\dbch\af13\loch\f1  The following 
+}{\f2\fs20\insrsid463461\charrsid11338553 \hich\af2\dbch\af13\loch\f2 SQL}{\f1\fs20\insrsid463461 \hich\af1\dbch\af13\loch\f1  statement}{\f1\fs20\insrsid16717198 \hich\af1\dbch\af13\loch\f1  template}{\f1\fs20\insrsid463461 \hich\af1\dbch\af13\loch\f1 
+ may be used for these purposes:}{\f1\fs20\insrsid13139436 
+\par }\pard \ql \li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid463461 {\f2\fs20\insrsid16717198\charrsid4134340 \hich\af2\dbch\af13\loch\f2 SELECT }{\f2\fs20\insrsid76376 
+\hich\af2\dbch\af13\loch\f2 temp_hier_id, temp_hier_name}{\f2\fs20\insrsid4134340\charrsid4134340 
+\par }{\f2\fs20\insrsid16717198\charrsid4134340 \hich\af2\dbch\af13\loch\f2 FROM }{\f2\fs20\insrsid4134340\charrsid4134340 \hich\af2\dbch\af13\loch\f2 temp_hier 
+\par \hich\af2\dbch\af13\loch\f2 WHERE temp_hier_name = ? }{\f2\fs20\insrsid463461\charrsid4134340 
+\par }{\f2\fs20\insrsid4134340\charrsid4134340 \hich\af2\dbch\af13\loch\f2 AND}{\f2\fs20\insrsid4134340 \hich\af2\dbch\af13\loch\f2    temp_hier_id = parent_temp_hier_id}{\f2\fs20\insrsid4134340\charrsid4134340 
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 3.\tab}}\pard \ql \fi-360\li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx720\aspalpha\aspnum\faauto\ls5\adjustright\rin0\lin1440\itap0\pararsid1445896 {\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 Execute the }{\f2\fs20\insrsid13139436\charrsid5926237 \hich\af2\dbch\af13\loch\f2 SQL}{
+\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1  statement and construct a }{\f2\fs20\insrsid13139436\charrsid13139436 \hich\af2\dbch\af13\loch\f2 TemplateHierarchy}{\f1\fs20\insrsid13139436\charrsid13139436 
+\hich\af1\dbch\af13\loch\f1  instance with obtained data. 
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 4.\tab}\hich\af1\dbch\af13\loch\f1 Prepare }{\f2\fs20\insrsid13139436\charrsid5926237 \hich\af2\dbch\af13\loch\f2 SQL}{
+\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1  statement which is used to load the details for templates directly nested within specified template hierarchy. }{\f1\fs20\insrsid11338553 \hich\af1\dbch\af13\loch\f1 The following }{
+\f2\fs20\insrsid11338553\charrsid11338553 \hich\af2\dbch\af13\loch\f2 SQL}{\f1\fs20\insrsid11338553 \hich\af1\dbch\af13\loch\f1  statement template may be used for these purposes:}{\f1\fs20\insrsid13139436 
+\par }\pard \ql \li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid11338553 {\f2\fs20\insrsid11338553\charrsid11338553 \hich\af2\dbch\af13\loch\f2 
+SELECT t.template_id, t.template_name, t.description, }{\f2\fs20\insrsid11338553 \hich\af2\dbch\af13\loch\f2  t.uri,
+\par \hich\af2\dbch\af13\loch\f2        }{\f2\fs20\insrsid11338553\charrsid11338553 \hich\af2\dbch\af13\loch\f2 t.dest_filename
+\par \hich\af2\dbch\af13\loch\f2 FROM templates t, temp_hier_mapping m
+\par \hich\af2\dbch\af13\loch\f2 WHERE t.template_id = m.template_id
+\par \hich\af2\dbch\af13\loch\f2 AND   m.temp_hier_id = ?
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 5.\tab}}\pard \ql \fi-360\li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx720\aspalpha\aspnum\faauto\ls5\adjustright\rin0\lin1440\itap0\pararsid1445896 {\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 Execute the }{\f2\fs20\insrsid13139436\charrsid5926237 \hich\af2\dbch\af13\loch\f2 SQL}{
+\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1  statement and construct a }{\f2\fs20\insrsid13139436\charrsid13139436 \hich\af2\dbch\af13\loch\f2 Template}{\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 
+ instance for each \hich\af1\dbch\af13\loch\f1 record from the returned result set and add each template to template hierarchy. }{\f1\fs20\insrsid13139436 
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid2896720 \hich\af1\dbch\af13\loch\f1 6.\tab}}{\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1 Create a }{\f2\fs20\insrsid2896720\charrsid2896720 \hich\af2\dbch\af13\loch\f2 Map}{
+\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1  mapping the }{\f2\fs20\insrsid2896720\charrsid2896720 \hich\af2\dbch\af13\loch\f2 Long}{\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1  objects representing the }{
+\f2\fs20\insrsid2896720\charrsid2896720 \hich\af2\dbch\af13\loch\f2 IDs}{\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1  of template hierarchies to }{\f2\fs20\insrsid2896720\charrsid2896720 \hich\af2\dbch\af13\loch\f2 TemplateHierarchy}{
+\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1  objects. And put the loaded top-level template hierarchy to that ma\hich\af1\dbch\af13\loch\f1 p.
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid11953055 \hich\af1\dbch\af13\loch\f1 7.\tab}}{\f1\fs20\insrsid11953055 \hich\af1\dbch\af13\loch\f1 Create a list holding the }{\f2\fs20\insrsid11953055\charrsid13386107 
+\hich\af2\dbch\af13\loch\f2 ID}{\f1\fs20\insrsid11953055 \hich\af1\dbch\af13\loch\f1 
+ of a top-level template hierarchy. This list will contain the IDs of template hierarchies which have been loaded from the database and for which the nested template hierarchies are to be loaded from the database.
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid11953055 \hich\af1\dbch\af13\loch\f1 8.\tab}\hich\af1\dbch\af13\loch\f1 Start the loop which must finish when the list created at step }{\f2\fs20\insrsid13386107\charrsid11610655 
+\hich\af2\dbch\af13\loch\f2 7}{\f1\fs20\insrsid11953055 \hich\af1\dbch\af13\loch\f1  becomes empty. Within the loop perform the following steps:
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 1.\tab}}\pard \ql \fi-360\li2160\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx2160\aspalpha\aspnum\faauto\ls5\ilvl2\adjustright\rin0\lin2160\itap0\pararsid5986757 {\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 Prepare }{\f2\fs20\insrsid13139436\charrsid5926237 \hich\af2\dbch\af13\loch\f2 SQL}{
+\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1  statement which is used to locate the list of template hierarchies directly nested within }{\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1 the }{
+\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 template hierarch}{\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1 ies r\hich\af1\dbch\af13\loch\f1 eferenced by }{\f2\fs20\insrsid2896720\charrsid11610655 
+\hich\af2\dbch\af13\loch\f2 IDs}{\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1  contained within the list}{\f1\fs20\insrsid9838951 \hich\af1\dbch\af13\loch\f1  created at step }{\f2\fs20\insrsid9838951\charrsid11610655 \hich\af2\dbch\af13\loch\f2 7}
+{\f1\fs20\insrsid2896720 \hich\af1\dbch\af13\loch\f1  }{\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 .}{\f1\fs20\insrsid8923229\charrsid13139436 \hich\af1\dbch\af13\loch\f1  }{\f1\fs20\insrsid8923229 \hich\af1\dbch\af13\loch\f1 
+ The following }{\f2\fs20\insrsid8923229\charrsid11338553 \hich\af2\dbch\af13\loch\f2 SQL}{\f1\fs20\insrsid8923229 \hich\af1\dbch\af13\loch\f1  statement template may be used for these purposes:
+\par }\pard \ql \fi720\li1440\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid5986757 {\f2\fs20\insrsid8923229\charrsid4134340 \hich\af2\dbch\af13\loch\f2 SELECT }{\f2\fs20\insrsid5601297 
+\hich\af2\dbch\af13\loch\f2 parent_temp_hier}{\f2\fs20\insrsid7221759 \hich\af2\dbch\af13\loch\f2 _id, }{\f2\fs20\insrsid8923229 \hich\af2\dbch\af13\loch\f2 temp_hier_id, temp_hier_name}{\f2\fs20\insrsid8923229\charrsid4134340 
+\par \hich\af2\dbch\af13\loch\f2 FROM temp_hier 
+\par \hich\af2\dbch\af13\loch\f2 WHERE }{\f2\fs20\insrsid8923229 \hich\af2\dbch\af13\loch\f2 parent_temp_hier_id }{\f2\fs20\insrsid4857066 \hich\af2\dbch\af13\loch\f2 IN (?, ?, ...)}{\f2\fs20\insrsid8923229 
+\par }{\f2\fs20\insrsid7221759 \hich\af2\dbch\af13\loch\f2 ORDER BY parent_temp_hier_id}{\f2\fs20\insrsid7221759\charrsid4134340 
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 2.\tab}}\pard \ql \fi-360\li2160\ri0\sb100\sa100\sbauto1\saauto1\widctlpar
+\jclisttab\tx2160\aspalpha\aspnum\faauto\ls5\ilvl2\adjustright\rin0\lin2160\itap0\pararsid5986757 {\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 Execute the }{\f2\fs20\insrsid13139436\charrsid5926237 \hich\af2\dbch\af13\loch\f2 SQL
+}{\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1  statement and }{\f1\fs20\insrsid8940805 \hich\af1\dbch\af13\loch\f1 c}{\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 onstruct a }{
+\f2\fs20\insrsid13139436\charrsid13139436 \hich\af2\dbch\af13\loch\f2 TemplateHierarchy}{\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 
+ instance for each record from the returned result set, load the templates for each hierarchy and add each template hierarchy to  template hierarchy}{\f1\fs20\insrsid8350092 \hich\af1\dbch\af13\loch\f1  corresponding to a parent }{
+\f2\fs20\insrsid8350092\charrsid11610655 \hich\af2\dbch\af13\loch\f2 ID}{\f1\fs20\insrsid8940805 \hich\af1\dbch\af13\loch\f1  (located by }{\f2\fs20\insrsid8940805\charrsid11610655 \hich\af2\dbch\af13\loch\f2 ID}{\f1\fs20\insrsid8940805 
+\hich\af1\dbch\af13\loch\f1  in map created at step }{\f2\fs20\insrsid8940805\charrsid11610655 \hich\af2\dbch\af13\loch\f2 6}{\f1\fs20\insrsid8940805 \hich\af1\dbch\af13\loch\f1 )}{\f1\fs20\insrsid13139436\charrsid13139436 \hich\af1\dbch\af13\loch\f1 . }{
+\f1\fs20\insrsid13139436 
+\par {\listtext\pard\plain\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid6820317 \hich\af1\dbch\af13\loch\f1 3.\tab}}{\f1\fs20\insrsid6820317 \hich\af1\dbch\af13\loch\f1 Initialize the list created at step }{\f2\fs20\insrsid6820317\charrsid11610655 
+\hich\af2\dbch\af13\loch\f2 7}{\f1\fs20\insrsid6820317 \hich\af1\dbch\af13\loch\f1  with }{\f2\fs20\insrsid6820317\charrsid11610655 \hich\af2\dbch\af13\loch\f2 IDs}{\f1\fs20\insrsid14643143 \hich\af1\dbch\af13\loch\f1  of template hierar}{
+\f1\fs20\insrsid6820317 \hich\af1\dbch\af13\loch\f1 chies just loaded from the database.}{\f1\fs20\insrsid1078766 
+\par }\pard\plain \s16\ql \li1080\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1080\itap0\pararsid1445896 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {
+\lang1033\langfe2052\langfenp2052\insrsid13139436\charrsid13139436 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 1.4\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Component Class Overview
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\fs20\insrsid15540992\charrsid15540992 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid15540992 \hich\af1\dbch\af13\loch\f1 Package }{\f2\fs20\insrsid15540992\charrsid15540992 \hich\af2\dbch\af13\loch\f2 
+com.topcoder.buildutility.template}{\f2\fs20\insrsid15540992 
+\par }{\f2\fs20\insrsid11422367 
+\par }{\b\f2\fs20\insrsid11422367\charrsid11956460 \hich\af2\dbch\af13\loch\f2 TemplateLoader
+\par }\pard\plain \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283 \hich\af1\dbch\af13\loch\f1 This is a}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1  main \hich\af1\dbch\af13\loch\f1 
+class of the component which must be used for locating and loading the top-level template hierarchies. }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1211766\charrsid15282425 \hich\af1\dbch\af13\loch\f1 
+The clients must use this class to obtain the template hierarchies loaded from the persistent data store. }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1 The }{
+\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid1186283\charrsid6300652 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1  class provide}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283 \hich\af1\dbch\af13\loch\f1 s}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1 
+ an ability to specify whether the template hierarchies loaded from the persistent data store on demand must be cached or not.}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1211766\charrsid15282425 
+\par \hich\af1\dbch\af13\loch\f1 The instances of this class may be initialize\hich\af1\dbch\af13\loch\f1 d with parameters passed at run-time or using the configuration properties provided by the specified configuration namespace.
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\b\f2\fs20\insrsid11422367\charrsid11956460 
+\hich\af2\dbch\af13\loch\f2 TemplateHierarchy
+\par }{\f2\fs20\insrsid11422367 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1 This class }{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1 
+is an object representation of the}{\f1\fs20\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1  template hierarchies which are used as groups of the template hie\hich\af1\dbch\af13\loch\f1 
+rarchies and templates. This class does not implement any complex logic other than storing the values of the}{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1  }{\f1\fs20\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1 
+attributes of the template hierarchy, returning them via simple accessor methods and maintaining the lists of template hierarchies and templates di\hich\af1\dbch\af13\loch\f1 rectly nested within template hierarchy.}{
+\f1\fs20\insrsid1392001\charrsid15282425 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid6251102\charrsid15282425 
+\par }{\b\f2\fs20\insrsid11422367\charrsid11956460 \hich\af2\dbch\af13\loch\f2 Template
+\par }{\f2\fs20\insrsid11422367 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1 This class i}{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1 
+s an object representation of the }{\f1\fs20\insrsid1186283\charrsid15282425 \hich\af1\dbch\af13\loch\f1 templates which are grouped into the template hierarchies. }{\f1\fs20\insrsid3355460\charrsid15282425 \hich\af1\dbch\af13\loch\f1 
+This class does not implement any complex logic other than storing the values of the attributes of \hich\af1\dbch\af13\loch\f1 the template and returning them via simple accessor methods.
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f2\fs20\insrsid6251102 
+\par }{\b\f2\fs20\insrsid11422367\charrsid11956460 \hich\af2\dbch\af13\loch\f2 NullCache
+\par }{\f2\fs20\insrsid11422367 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid5600700\charrsid15282425 \hich\af1\dbch\af13\loch\f1 This class is a "dummy" implementation of }{
+\f2\fs20\insrsid5600700\charrsid4613094 \hich\af2\dbch\af13\loch\f2 Cache}{\f1\fs20\insrsid5600700\charrsid15282425 \hich\af1\dbch\af13\loch\f1  interface which is used by the }{\f2\fs20\insrsid5600700\charrsid4613094 \hich\af2\dbch\af13\loch\f2 
+TemplateLoader}{\f1\fs20\insrsid5600700\charrsid15282425 \hich\af1\dbch\af13\loch\f1 
+ if it is instructed not to use any caching of template hierarchies loaded from persistent data store into a runtime memory. This implementation does nothing and always behaves like an empty cache thus causing the TemplateLoader always to load the templat
+\hich\af1\dbch\af13\loch\f1 e\hich\af1\dbch\af13\loch\f1  hierarchies from the persistent data store. The introduction of this class results in a simpler implementation of }{\f2\fs20\insrsid5600700\charrsid4613094 \hich\af2\dbch\af13\loch\f2 
+TemplateLoader}{\f1\fs20\insrsid5600700\charrsid15282425 \hich\af1\dbch\af13\loch\f1  class which is not required to check whether the caching is used or not when loading the template hierarchies.}{\f1\fs20\insrsid6251102\charrsid15282425 
+\par }{\f2\fs20\insrsid13257261\charrsid5600700 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1866363 {\b\f2\fs20\insrsid1866363\charrsid11956460 \hich\af2\dbch\af13\loch\f2 TemplateHierar\hich\af2\dbch\af13\loch\f2 chyPersistence
+\par }\pard\plain \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1866363 \fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363 \hich\af1\dbch\af13\loch\f1 This is a}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid12990813 \hich\af1\dbch\af13\loch\f1 
+n interface specifying the contract for the pluggable persistent data store which is used by the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid1986818 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid12990813 \hich\af1\dbch\af13\loch\f1  to load the requested template hierarchies into }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363 \hich\af1\dbch\af13\loch\f1 runtime }{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid12990813 \hich\af1\dbch\af13\loch\f1 memory.
+\par \hich\af1\dbch\af13\loch\f1 The implementation classes are required to provide a pub\hich\af1\dbch\af13\loch\f1 lic constructor accepting a single }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid16667467 \hich\af2\dbch\af13\loch\f2 
+Property}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid12990813 \hich\af1\dbch\af13\loch\f1  argument if the implementation class is specified by the }{\f2\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid16667467 
+\hich\af2\dbch\af13\loch\f2 "persistence.class"}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid12990813 \hich\af1\dbch\af13\loch\f1  configuration property and the }{\f2\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid16667467 
+\hich\af2\dbch\af13\loch\f2 "persistence.config"}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid12990813 \hich\af1\dbch\af13\loch\f1  configuration property is a\hich\af1\dbch\af13\loch\f1 
+lso provided. The implementation classes are required to provide a public constructor taking no arguments if the implementation class is specified by the "persistence.class" configuration property and the }{
+\f2\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid16667467 \hich\af2\dbch\af13\loch\f2 "persistence.config"}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1866363\charrsid12990813 \hich\af1\dbch\af13\loch\f1  configuration property is not 
+\hich\af1\dbch\af13\loch\f1 provided.
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\fs20\insrsid15540992 
+\par }{\f1\fs20\insrsid1990537 
+\par }{\f1\fs20\insrsid15540992 \hich\af1\dbch\af13\loch\f1 Package }{\f2\fs20\insrsid15540992\charrsid15540992 \hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template}{\f2\fs20\insrsid15540992 \hich\af2\dbch\af13\loch\f2 .persistence
+\par }{\f2\fs20\insrsid15425130 
+\par }{\f2\fs20\insrsid5322010 
+\par }{\b\f2\fs20\insrsid12535556\charrsid11956460 \hich\af2\dbch\af13\loch\f2 JDBCPersistence
+\par }\pard\plain \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid12990813 \hich\af1\dbch\af13\loch\f1 An implementation of }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid16667467 \hich\af2\dbch\af13\loch\f2 
+TemplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid12990813 \hich\af1\dbch\af13\loch\f1  interface which may be used to load the top-level template hierarchies from the JDBC-compliant database with schema initi
+\hich\af1\dbch\af13\loch\f1 alized as specified by the Component Specification.
+\par \hich\af1\dbch\af13\loch\f1 This class utilizes the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid16667467 \hich\af2\dbch\af13\loch\f2 DB Connection Factory}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid12990813 
+\hich\af1\dbch\af13\loch\f1  component to obtain the connections to the target database. Therefore a name of such a pre-configured connection must be provided. If such a name is omitted then a default pre-configured connections is used.
+\par \hich\af1\dbch\af13\loch\f1 This class provides a set of constructors which\hich\af1\dbch\af13\loch\f1  could be used to instantiate the instances of this class via }{\f2\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid16667467 
+\hich\af2\dbch\af13\loch\f2 Java Reflection API}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid12990813 \hich\af1\dbch\af13\loch\f1  as specified by the contract for }{
+\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid16667467 \hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5779698\charrsid12990813 \hich\af1\dbch\af13\loch\f1 
+ interface. Also a name of an optional configuration property which must provide the name of pre-configured DB connection is provided by this class.
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\fs20\insrsid12535556\charrsid12535556 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 1.5\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Component Exception Definitions
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\fs20\insrsid11866273\charrsid5505794 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid11866273\charrsid5505794 \hich\af1\dbch\af13\loch\f1 This component defines the following custom exceptions:
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 {\f1\fs20\insrsid2517806\charrsid5505794 
+\par }{\f2\fs20\insrsid2517806\charrsid6305278 
+\par \tab }{\b\f2\fs20\insrsid5505794\charrsid402840 \hich\af2\dbch\af13\loch\f2 com.topcod\hich\af2\dbch\af13\loch\f2 er.buildutility.template}{\b\f2\fs20\insrsid1274348\charrsid402840 \hich\af2\dbch\af13\loch\f2 .ConfigurationException}{
+\b\f2\fs20\insrsid2517806\charrsid402840 
+\par }{\f2\fs20\insrsid13922904 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid13922904\charrsid3963848 \hich\af1\dbch\af13\loch\f1 This is a}{\f1\fs20\insrsid11995910 \hich\af1\dbch\af13\loch\f1  checked}{
+\f1\fs20\insrsid13922904\charrsid3963848 \hich\af1\dbch\af13\loch\f1  exception to be thrown by }{\cs19\f2\fs20\insrsid13922904\charrsid7362553 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\insrsid13922904\charrsid3963848 
+\hich\af1\dbch\af13\loch\f1  to indicate that the unexpected error occurs while reading the configuration properties from the specified configuration namespace and using them for initializing the state of the }{
+\cs19\f2\fs20\insrsid13922904\charrsid7362553 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\insrsid13922904\charrsid3963848 \hich\af1\dbch\af13\loch\f1 . This exception may be (but not limited to) caused by absenc\hich\af1\dbch\af13\loch\f1 
+e of any of required properties, inability to locate the specified class implementing the }{\cs19\f2\fs20\insrsid13922904\charrsid7362553 \hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\cs19\f1\fs20\insrsid13922904\charrsid3963848 
+\hich\af1\dbch\af13\loch\f1  }{\f1\fs20\insrsid13922904\charrsid3963848 \hich\af1\dbch\af13\loch\f1 interface, negative values of cache timeout and maximum size, etc.
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid11821865\charrsid3963848 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 {\f2\fs20\insrsid1274348\charrsid6305278 \tab }{\b\f2\fs20\insrsid1274348\charrsid402840 \hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template.}{
+\b\f2\fs20\insrsid5114625\charrsid402840 \hich\af2\dbch\af13\loch\f2 DuplicateObjectException}{\b\f2\fs20\insrsid1274348\charrsid402840 
+\par }\pard\plain \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11995910 \hich\af1\dbch\af13\loch\f1 This is \hich\af1\dbch\af13\loch\f1 an unchecked}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid16475255\charrsid3963848 \hich\af1\dbch\af13\loch\f1 
+ exception to be thrown by the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid16475255\charrsid7362553 \hich\af2\dbch\af13\loch\f2 TemplateHierarchy}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid16475255\charrsid3963848 
+\hich\af1\dbch\af13\loch\f1  to indicate that an attempt to add an object (template/template hierarchy) with existing ID is made. This }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283\charrsid3963848 \hich\af1\dbch\af13\loch\f1 exce}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283 \hich\af1\dbch\af13\loch\f1 p}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1186283\charrsid3963848 \hich\af1\dbch\af13\loch\f1 tion}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid16475255\charrsid3963848 \hich\af1\dbch\af13\loch\f1  will provide an ID of duplicate object.
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\b\f2\fs20\insrsid1274348\charrsid402840 \tab 
+\hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template.UnknownTemplateHierarchyException
+\par }\pard\plain \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11995910 \hich\af1\dbch\af13\loch\f1 This is a}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid402840\charrsid3963848 \hich\af1\dbch\af13\loch\f1 n }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11995910 
+\hich\af1\dbch\af13\loch\f1 unchecked }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid402840\charrsid3963848 \hich\af1\dbch\af13\loch\f1 
+exception to be thrown to indicate that the requested top-level template hierarchy could not be located (does not exist). Actually, this exception is thrown by the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid402840\charrsid7362553 
+\hich\af2\dbch\af13\loch\f2 Te\hich\af2\dbch\af13\loch\f2 mplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid402840\charrsid3963848 \hich\af1\dbch\af13\loch\f1  and is propagated to the clients by the }{
+\cs19\f1\fs20\lang1033\langfe1049\langnp1033\insrsid402840\charrsid3963848 \hich\af1\dbch\af13\loch\f1 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid402840\charrsid3963848 \hich\af1\dbch\af13\loch\f1 .
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\b\f2\fs20\insrsid3478275\charrsid402840 \tab 
+\hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template.PersistenceException
+\par }\pard\plain \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid4682213\charrsid3963848 \hich\af1\dbch\af13\loch\f1 This is a checked exception to be thrown by the implementations of }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid4682213\charrsid7362553 
+\hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid4682213\charrsid3963848 \hich\af1\dbch\af13\loch\f1  implementations to i\hich\af1\dbch\af13\loch\f1 
+ndicate that an unrecoverable error preventing the loading of the details for the requested template hierarchy has occurred. Actually, this exception is thrown by the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid4682213\charrsid7362553 
+\hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid4682213\charrsid3963848 \hich\af1\dbch\af13\loch\f1  and is propagated to the clients by the }{
+\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid4682213\charrsid7362553 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid4682213\charrsid3963848 \hich\af1\dbch\af13\loch\f1 .}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid4682213 
+\par }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5929814 \hich\af1\dbch\af13\loch\f1 The following system exceptions are declared to be thrown by the classes provided with this component:}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid9922502 
+\par }\pard \s18\ql \fi720\li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 {\b\f2\fs20\lang1033\langfe1049\langnp1033\insrsid2232963\charrsid3237548 \hich\af2\dbch\af13\loch\f2 
+java.lang.NullPointerException}{\b\f2\fs20\lang1033\langfe1049\langnp1033\insrsid2232963 
+\par }\pard \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid12540219\charrsid12540219 \hich\af1\dbch\af13\loch\f1 
+This exception is thrown when almost any of the specified parameters is }{\f2\fs20\lang1033\langfe1049\langnp1033\insrsid12540219\charrsid12540219 \hich\af2\dbch\af13\loch\f2 null}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid12540219\charrsid12540219 
+\hich\af1\dbch\af13\loch\f1 .
+\par }\pard \s18\ql \fi720\li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 {\b\f2\fs20\lang1033\langfe1049\langnp1033\insrsid2232963\charrsid3237548 \hich\af2\dbch\af13\loch\f2 
+java.lang.IllegalArgumentException}{\b\f2\fs20\lang1033\langfe1049\langnp1033\insrsid2232963 
+\par }\pard \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid3700298\charrsid12540219 \hich\af1\dbch\af13\loch\f1 
+This exception is thrown when almost any of the specified }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid3700298 \hich\af1\dbch\af13\loch\f1 String }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid3700298\charrsid12540219 \hich\af1\dbch\af13\loch\f1 
+parameters is }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid3700298 \hich\af1\dbch\af13\loch\f1 an empty String or the specified caching parameters are invalid.}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070 
+\hich\af1\dbch\af13\loch\f1  }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1974070\charrsid12540219 \hich\af1\dbch\af13\loch\f1 This exception}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070 \hich\af1\dbch\af13\loch\f1  
+\hich\af1\dbch\af13\loch\f1 is\hich\af1\dbch\af13\loch\f1  \hich\af1\dbch\af13\loch\f1 also thrown by }{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 TemplateHierarchy}{
+\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070 \hich\af1\dbch\af13\loch\f1 .}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 addNestedHie}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 rarchy}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1974070 \hich\af1\dbch\af13\loch\f1 () when }{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 if the added template hierarchy is a top-level hierarchy \hich\af1\dbch\af13\loch\f1 or this hierarchy \hich\af1\dbch\af13\loch\f1 is }{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1974070 \hich\af1\dbch\af13\loch\f1 not a parent of added hierarchy}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070 \hich\af1\dbch\af13\loch\f1 , or the added }{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 hierarchy}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070 \hich\af1\dbch\af13\loch\f1  causes a loop.}{
+\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid3700298\charrsid1974070 
+\par }\pard \s18\ql \fi720\li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 {\b\f2\fs20\lang1033\langfe1049\langnp1033\insrsid2232963\charrsid3237548 \hich\af2\dbch\af13\loch\f2 
+java.io.FileNotFoundException
+\par }\pard \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5599378\charrsid7359781 \hich\af1\dbch\af13\loch\f1 
+This exception is thrown from }{\f2\fs20\lang1033\langfe1049\langnp1033\insrsid5599378\charrsid13178445 \hich\af2\dbch\af13\loch\f2 Template.getData()}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5599378\charrsid7359781 \hich\af1\dbch\af13\loch\f1 
+ method if the file providing the content of template could not be located.}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid2232963 
+\par }\pard \s18\ql \fi720\li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14297177 {\b\f2\fs20\lang1033\langfe1049\langnp1033\insrsid14297177\charrsid3237548 \hich\af2\dbch\af13\loch\f2 java.io.}{
+\insrsid14297177\charrsid14297177 \hich\af0\dbch\af13\loch\f0  }{\b\f2\fs20\lang1033\langfe1049\langnp1033\insrsid14297177\charrsid14297177 \hich\af2\dbch\af13\loch\f2 IllegalStateException}{
+\b\f2\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid14297177 
+\par }\pard \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1974070 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid1974070\charrsid7359781 \hich\af1\dbch\af13\loch\f1 
+This exception is thrown}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1  }{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 by
+}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1  }{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 Template.getData()}{
+\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070 \hich\af1\dbch\af13\loch\f1  }{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 \hich\af1\dbch\af13\loch\f1 
+method if the method is called before 'fileServerUri' is initialized.}{\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid1974070\charrsid1974070 
+\par }\pard \s18\ql \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14297177 {\f1\fs20\lang1033\langfe2052\langnp1033\langfenp2052\insrsid14297177\charrsid14297177 
+\par }\pard \s18\ql \fi720\li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid2232963\charrsid3963848 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 1.6\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Thread Safety
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid5520122\charrsid5520122 
+\par }\pard\plain \s16\ql \li1440\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid1445896 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid10300253 \hich\af1\dbch\af13\loch\f1 
+The component is thread safe.}{\insrsid13896322 \hich\af1\dbch\af13\loch\f1  }{\insrsid5520122 
+\par }\pard \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1445896 {\insrsid5520122 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f1\fs20\insrsid13896322 \hich\af1\dbch\af13\loch\f1 Package }{
+\f2\fs20\insrsid13896322\charrsid15540992 \hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template}{\f2\fs20\insrsid13896322 
+\par 
+\par }{\b\f2\fs20\insrsid13896322\charrsid11956460 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\b\f2\fs20\insrsid13896322 
+\par }{\b\f2\fs20\insrsid4149100\charrsid11956460 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid12456950\charrsid12456950 \hich\af1\dbch\af13\loch\f1 This class is thread safe. The private state of }{
+\cs19\f2\fs20\insrsid12456950\charrsid12456950 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\insrsid12456950\charrsid12456950 \hich\af1\dbch\af13\loch\f1 
+ is never changed after instantiation and the only method affecting the state of the internal cache is synchronized.}{\f1\fs20\insrsid7348479 
+\par }{\f1\fs20\insrsid1517706\charrsid12456950 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\b\f1\fs20\insrsid12456950\charrsid12456950 
+\par }{\b\f2\fs20\insrsid13896322\charrsid11956460 \hich\af2\dbch\af13\loch\f2 TemplateHierarchy}{\b\f2\fs20\insrsid13896322 
+\par }{\b\f2\fs20\insrsid4342353 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid4342353 \hich\af1\dbch\af13\loch\f1 T}{\f1\fs20\insrsid4342353\charrsid4342353 \hich\af1\dbch\af13\loch\f1 
+his class is thread safe. The mutator methods affecting the state of lists of templates and template hierarchies are \hich\af1\dbch\af13\loch\f1 synchronized.}{\f1\fs20\insrsid16058709 \hich\af1\dbch\af13\loch\f1  The accessor methods accessing the }{
+\f2\fs20\insrsid16058709\charrsid8529051 \loch\af2\dbch\af13\hich\f2 \lquote \loch\f2 templates\hich\f2 \rquote }{\f1\fs20\insrsid16058709 \hich\af1\dbch\af13\loch\f1  and }{\f2\fs20\insrsid16058709\charrsid8529051 \loch\af2\dbch\af13\hich\f2 \lquote 
+\loch\f2 childHierarchies\hich\f2 \rquote }{\f1\fs20\insrsid16058709 \hich\af1\dbch\af13\loch\f1  instance variables are synchronized. No need to synchronize accessor methods for }{\f2\fs20\insrsid16058709\charrsid8529051 \loch\af2\dbch\af13\hich\f2 
+\lquote }{\f2\fs20\insrsid7431945\charrsid8529051 \hich\af2\dbch\af13\loch\f2 id\hich\f2 \rquote }{\f2\fs20\insrsid7431945 \hich\af2\dbch\af13\loch\f2  }{\f1\fs20\insrsid7431945 \hich\af1\dbch\af13\loch\f1 and}{\f1\fs20\insrsid12417724 
+\hich\af1\dbch\af13\loch\f1  }{\f1\fs20\insrsid16058709 \hich\af1\dbch\af13\loch\f1  }{\f2\fs20\insrsid16058709\charrsid8529051 \loch\af2\dbch\af13\hich\f2 \lquote \loch\f2 name\hich\f2 \rquote }{\f2\fs20\insrsid12417724 \hich\af2\dbch\af13\loch\f2  }{
+\f1\fs20\insrsid16058709 \hich\af1\dbch\af13\loch\f1 instance variables since these variables are not changed after instantiation.}{\f1\fs20\insrsid4342353\charrsid4342353 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid13896322\charrsid15282425 
+\par }{\b\f2\fs20\insrsid7348479 
+\par }{\b\f2\fs20\insrsid13896322\charrsid11956460 \hich\af2\dbch\af13\loch\f2 Template
+\par }{\f2\fs20\insrsid13896322 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid13250570\charrsid13250570 \hich\af1\dbch\af13\loch\f1 
+This class is thread safe. The private state of the instances of this class is never changed after instantiation.
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\b\f1\fs20\insrsid7348479\charrsid13250570 
+\par }{\b\f2\fs20\insrsid13896322\charrsid11956460 \hich\af2\dbch\af13\loch\f2 NullCache}{\b\f2\fs20\insrsid13896322 
+\par }{\b\f2\fs20\insrsid1916081 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f1\fs20\insrsid1916081 \hich\af1\dbch\af13\loch\f1 T}{\f1\fs20\insrsid1916081\charrsid1916081 \hich\af1\dbch\af13\loch\f1 
+his class is thread safe. It does not maintain any private state.
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 {\f2\fs20\insrsid13896322 
+\par }{\f1\fs20\insrsid13896322 
+\par \hich\af1\dbch\af13\loch\f1 Package }{\f2\fs20\insrsid13896322\charrsid15540992 \hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template}{\f2\fs20\insrsid13896322 \hich\af2\dbch\af13\loch\f2 .persistence
+\par 
+\par }{\b\f2\fs20\insrsid13896322\charrsid11956460 \hich\af2\dbch\af13\loch\f2 JDBCPersistence}{\b\f2\fs20\insrsid13896322 
+\par }{\b\f2\fs20\insrsid4149100\charrsid11956460 
+\par }\pard\plain \s16\ql \fi720\li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1445896 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid4149100 \hich\af1\dbch\af13\loch\f1 
+This class is thread safe. The private state is never changed after the instantiation.}{\insrsid13896322 
+\par }{\insrsid4149100\charrsid5520122 
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 2.\tab}}\pard\plain \s1\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Environment Requirements
+\tab \tab 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 2.1\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Environment
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033\insrsid664441 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard\plain \qj \fi-360\li1080\ri0\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls2\adjustright\rin0\lin1080\itap0\pararsid664441 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af0\dbch\af13\loch\f0 At minimum, Java1.4 is required for compilation and executing test cases.}{\f1\fs20\insrsid664441 
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033\insrsid664441 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}{\insrsid664441 \hich\af0\dbch\af13\loch\f0 Java 1.2 or higher can be used for Basic and Log4j logging implementations.}{\f1\fs20\insrsid664441 
+
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033\insrsid664441 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}{\insrsid664441 \hich\af0\dbch\af13\loch\f0 Java 1.4 or higher must be used for Java 1.4 built in logging.}{\f1\fs20\insrsid664441 
+\par }\pard \qj \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 {\f1\fs20\insrsid664441 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 2.2\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+TopCoder Software Components
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid27526 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid8876437\charrsid8876437 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid8876437\charrsid10956576 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard\plain \s16\ql \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0\pararsid27526 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid8876437\charrsid10956576 \hich\af2\dbch\af13\loch\f2 
+Base Exception 1.0}{\f2\insrsid664441\charrsid10956576 
+\par }\pard \s16\ql \fi720\li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid27526 {\insrsid6388580 \hich\af1\dbch\af13\loch\f1 The custom exceptions defined by }{\f2\insrsid6388580\charrsid10956576 
+\hich\af2\dbch\af13\loch\f2 Template Loader}{\insrsid6388580 \hich\af1\dbch\af13\loch\f1  component derive from the base exception classes declared by this component.
+\par }\pard \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid27526 {\insrsid16721152 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid8876437\charrsid6769633 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \s16\ql \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0\pararsid27526 {\f2\insrsid8876437\charrsid6769633 \hich\af2\dbch\af13\loch\f2 Config Manager 2.1.3
+\par }\pard \s16\ql \fi720\li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid27526 {\insrsid1186283 \hich\af1\dbch\af13\loch\f1 The }{\f2\insrsid1186283\charrsid6769633 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{
+\insrsid1186283 \hich\af1\dbch\af13\loch\f1  class uses this component to read the configuration properties and initialize its state.}{\insrsid16721152 
+\par }\pard \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid27526 {\insrsid16721152 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid8876437\charrsid14029279 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \s16\ql \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0\pararsid27526 {\f2\insrsid8876437\charrsid14029279 \hich\af2\dbch\af13\loch\f2 DB Connection Factory 1.0}{\f2\insrsid8876437 
+\par }\pard \s16\ql \fi360\li1080\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1080\itap0\pararsid27526 {\insrsid12731871 \hich\af1\dbch\af13\loch\f1 The }{\f2\insrsid12731871\charrsid14029279 \hich\af2\dbch\af13\loch\f2 JDBCPersistence}{
+\insrsid12731871 \hich\af1\dbch\af13\loch\f1  uses this component to obtain the connections to target database.
+\par 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid1909209 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \s16\ql \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0\pararsid27526 {\f2\insrsid1909209 \hich\af2\dbch\af13\loch\f2 Simple Cache 1.1}{\f2\insrsid12731871\charrsid14029279 
+\par }\pard \s16\ql \fi360\li1080\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1080\itap0\pararsid27526 {\insrsid12731871 \hich\af1\dbch\af13\loch\f1 The }{\f2\insrsid12731871\charrsid14682645 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{
+\insrsid11155826 \hich\af1\dbch\af13\loch\f1  class uses this component to cache the template hierarchies loaded on demand from the persistent data store.}{\insrsid12731871 
+\par }\pard \s16\qj \fi360\li1080\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1080\itap0\pararsid664441 {\insrsid11877384 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid27526 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\i\insrsid664441 \hich\af0\dbch\af13\loch\f0 
+NOTE: The default location for TopCoder Software component jars is../lib/tcs/COMPONENT_NAME/COMPONENT_VERSION relative to the component installat\hich\af0\dbch\af13\loch\f0 ion.}{\i\cf1\insrsid664441 \hich\af0\dbch\af13\loch\f0 
+  Setting the tcs_libdir property in topcoder_global.properties will overwrite this default location.}{\f1\fs20\insrsid664441 
+\par }\pard\plain \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid27526 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 2.3\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Third Party Components
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid5722581\charrsid5722581 
+\par }\pard\plain \s16\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid5722581 \hich\af1\dbch\af13\loch\f1 None}{
+\insrsid664441 
+\par }\pard \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6628752 {\insrsid5722581 
+\par }\pard\plain \s3\ql \li720\ri0\sb120\sa60\sl240\slmult0\nowidctlpar\tx720\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin720\itap0\pararsid6628752 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {
+\cf1\insrsid664441 \hich\af1\dbch\af13\loch\f1 NOTE: The default location for 3}{\cf1\super\insrsid664441 \hich\af1\dbch\af13\loch\f1 rd}{\cf1\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+ party packages is ../lib relative to this component installation.  Setting the ext_libdir property in topcoder_global.properties will overwrite this default location.
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6628752 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid8738624\charrsid8738624 
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 3.\tab}}\pard\plain \s1\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Installation and Configuration
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid8738624\charrsid8738624 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 3.1\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Package Name
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8738624 
+\par }\pard \qj \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 {\f2\fs20\insrsid8738624 \hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template
+\par }{\f2\fs20\insrsid1002066\charrsid8738624 
+\par }{\f2\fs20\insrsid8738624 \hich\af2\dbch\af13\loch\f2 com.topcoder.buildutility.template.persistence}{\f2\fs20\insrsid8738624\charrsid8738624 
+\par }\pard \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 {\f2\fs20\insrsid8738624\charrsid8738624 
+\par 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 3.2\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Configuration Parameters
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid867884\charrsid867884 
+\par }\trowd \irow0\irowband0\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\pard 
+\qc \li0\ri0\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13785240 {\b\insrsid664441 \hich\af0\dbch\af13\loch\f0 Parameter}{\b\f1\fs20\insrsid664441 \cell }{
+\b\insrsid664441 \hich\af0\dbch\af13\loch\f0 Description}{\b\f1\fs20\insrsid664441 \cell }{\b\insrsid664441 \hich\af0\dbch\af13\loch\f0 Values}{\b\f1\fs20\insrsid664441 \cell }\pard 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\insrsid664441 \trowd \irow0\irowband0\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\trowd \irow1\irowband1\ts11\trrh1328\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb
+\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl
+\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid7029761\charrsid7029761 \hich\af2\dbch\af13\loch\f2 file_server}{\f2\insrsid664441\charrsid7029761 \cell }\pard 
+\s16\qj \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13785240 {\insrsid7029761\charrsid7029761 \hich\af1\dbch\af13\loch\f1 A }{\insrsid5456453 
+\hich\af1\dbch\af13\loch\f1 required }{\insrsid7029761\charrsid7029761 \hich\af1\dbch\af13\loch\f1 property providing the URI referencing the root of a file server which the template URIs are resolved relatively to.}{\insrsid664441 \cell }\pard 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 {\f2\insrsid7029761\charrsid7029761 \hich\af2\dbch\af13\loch\f2 C:\\
+\hich\af2\dbch\af13\loch\f2 TopCoder}{\f2\insrsid664441\charrsid7029761 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {
+\insrsid664441 \trowd \irow1\irowband1\ts11\trrh1328\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\trowd \irow2\irowband2\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 
+\trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446
+\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid9710238 \hich\af2\dbch\af13\loch\f2 caching}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s18\qj \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid10975890 
+\fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid2248251 \hich\af1\dbch\af13\loch\f1 A}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid5456453 \hich\af1\dbch\af13\loch\f1 
+n optional}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid2248251 \hich\af1\dbch\af13\loch\f1  container property pr}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid16129695\charrsid16129695 \hich\af1\dbch\af13\loch\f1 
+oviding the parameters to be used to configure the cache to be used by a }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid16129695\charrsid16129695 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid16129695\charrsid16129695 \hich\af1\dbch\af13\loch\f1  instance. If such a property is provided by the configuration namespace then the }{
+\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid16129695\charrsid16129695 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid16129695\charrsid16129695 \hich\af1\dbch\af13\loch\f1 
+ instance will cache the template hierarchies loaded on demand. If such a property is missing then the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid16129695\charrsid16129695 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid16129695\charrsid16129695 \hich\af1\dbch\af13\loch\f1  will not use any caching. 
+\par }\pard \s18\qj \li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin720\absnoovrlp1\pararsid13785240 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid16129695 \hich\af2\dbch\af13\loch\f2 N/A}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid14553507 \trowd \irow2\irowband2\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl
+\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid13590791 \hich\af2\dbch\af13\loch\f2 caching.timeout}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s18\qj \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid10975890 
+\fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid13590791\charrsid13590791 \hich\af1\dbch\af13\loch\f1 A}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid12939910 
+\hich\af1\dbch\af13\loch\f1 n optional}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid13590791\charrsid13590791 \hich\af1\dbch\af13\loch\f1 
+ property which must be nested within "caching" property. This property (if present) must provide a positive timeout value to be used for configuring the cache used by the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid13590791\charrsid13590791 
+\hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid13590791\charrsid13590791 \hich\af1\dbch\af13\loch\f1  instance.
+\par }\pard \s18\qj \li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin720\absnoovrlp1\pararsid13785240 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid13590791 \hich\af2\dbch\af13\loch\f2 10000}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid14553507 \trowd \irow3\irowband3\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl
+\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid15090159 \hich\af2\dbch\af13\loch\f2 caching.size}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s18\qj \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid10975890 
+\fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid15090159\charrsid15090159 \hich\af1\dbch\af13\loch\f1 A}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid15090159 
+\hich\af1\dbch\af13\loch\f1 n optional property}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid15090159\charrsid15090159 \hich\af1\dbch\af13\loch\f1 
+ which must be nested within "caching" property. This property (if present) must provide a positive value specifying the maximum size of the cache to be used for configuring the cache used by the }{
+\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid15090159\charrsid4349130 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid15090159\charrsid15090159 \hich\af1\dbch\af13\loch\f1  instance}{
+\lang1033\langfe1049\langnp1033\insrsid15090159\charrsid15090159 \hich\af0\dbch\af13\loch\f0 .}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid14553507\charrsid15090159 \cell }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid15090159 \hich\af2\dbch\af13\loch\f2 100}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid14553507 \trowd \irow4\irowband4\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl
+\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid12154090 \hich\af2\dbch\af13\loch\f2 persistence}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s18\qj \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid10975890 
+\fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid12154090\charrsid12154090 \hich\af1\dbch\af13\loch\f1 A}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11494178 
+\hich\af1\dbch\af13\loch\f1  required contain\hich\af1\dbch\af13\loch\f1 er}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid12154090\charrsid12154090 \hich\af1\dbch\af13\loch\f1  property providing the parameters necessary to configure the }{
+\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid12154090\charrsid2758262 \hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid12154090\charrsid12154090 \hich\af1\dbch\af13\loch\f1  to be used by the 
+}{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid12154090\charrsid2758262 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid12154090\charrsid12154090 \hich\af1\dbch\af13\loch\f1 
+ instance to load the requested template hierarchies from the persistent data store.}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid14553507\charrsid12154090 \cell }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid12154090 \hich\af2\dbch\af13\loch\f2 N/A}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid14553507 \trowd \irow5\irowband5\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl
+\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid8345070 \hich\af2\dbch\af13\loch\f2 persistence.class}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s18\qj \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid10975890 
+\fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11759316\charrsid15798948 \hich\af1\dbch\af13\loch\f1 A}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid140946 
+\hich\af1\dbch\af13\loch\f1  required }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11759316\charrsid15798948 \hich\af1\dbch\af13\loch\f1 
+property which must be nested within the "persistence" property. This property must provide the fully-qualified name of class implementing the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid11759316\charrsid15798948 \hich\af2\dbch\af13\loch\f2 
+TemplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11759316\charrsid15798948 \hich\af1\dbch\af13\loch\f1  interface which must be used by the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid11759316\charrsid15798948 
+\hich\af2\dbch\af13\loch\f2 TemplateLoader}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid11759316\charrsid15798948 \hich\af1\dbch\af13\loch\f1 .
+\par }\pard \s18\qj \li720\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin720\absnoovrlp1\pararsid13785240 {
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid11759316 \hich\af2\dbch\af13\loch\f2 com.topcoder.}{\f2\insrsid14553507 
+\par }{\f2\insrsid11759316 \hich\af2\dbch\af13\loch\f2 buildutility.
+\par \hich\af2\dbch\af13\loch\f2 template.
+\par \hich\af2\dbch\af13\loch\f2 persistence.
+\par \hich\af2\dbch\af13\loch\f2 JDBCPersistence}{\f2\insrsid11759316\charrsid7029761 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid14553507 \trowd \irow6\irowband6\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr
+\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid10975890\charrsid4734740 \hich\af2\dbch\af13\loch\f2 persistence.config}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s18\qj \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid10975890 
+\fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid10975890 \hich\af1\dbch\af13\loch\f1 An optional container}{
+\f1\fs20\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid748212 \hich\af1\dbch\af13\loch\f1  property which must be \hich\af1\dbch\af13\loch\f1 
+nested within the "persistence" property. This property (if present) must provide the configuration parameters necessary to configure the instance of class implementing the }{\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid14367658 
+\hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid10975890 \hich\af1\dbch\af13\loch\f1 N/A}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid14553507 \trowd \irow7\irowband7\ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl
+\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid12866898 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid10975890\charrsid4734740 \hich\af2\dbch\af13\loch\f2 persistence.config.db_connection}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s18\qj \li0\ri0\sb100\sa100\sbauto1\saauto1\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid10975890 
+\fs24\lang1049\langfe1049\loch\af0\hich\af0\dbch\af13\cgrid\langnp1049\langfenp1049 {\f1\fs20\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid8412002 \hich\af1\dbch\af13\loch\f1 A}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid10975890 
+\hich\af1\dbch\af13\loch\f1 n optional }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid8412002 \hich\af1\dbch\af13\loch\f1 property which (if present) must provide a name of pre-configured DB connection to be used by new instance of }{
+\cs19\f2\fs20\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid1916631 \hich\af2\dbch\af13\loch\f2 JDBCPersistence}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid8412002 \hich\af1\dbch\af13\loch\f1 
+. If such a property is missing then a default DB connection will}{\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid8412002 \hich\af0\dbch\af13\loch\f0  }{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid10975890\charrsid8412002 
+\hich\af1\dbch\af13\loch\f1 be used}{\f1\fs20\lang1033\langfe1049\langnp1033\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\s16\qc \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-325\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1\pararsid13259973 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid10975890\charrsid14367658 \hich\af2\dbch\af13\loch\f2 InformixDB}{\f2\insrsid14553507\charrsid7029761 \cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid14553507 \trowd \irow8\irowband8\lastrow \ts11\trleft-5\trbrdrt\brdrs\brdrw10 \trbrdrl
+\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-325\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth1\trftsWidthB3\trftsWidthA3\trautofit1\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalc\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3649\clshdrawnil \cellx3846\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3600\clshdrawnil \cellx7446\clvertalc\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2148\clshdrawnil \cellx9594\row {\listtext\pard\plain\s2 
+\b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 3.3\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Dependencies Configuration
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid6568241 
+\par }\pard \qj \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 {\f1\fs20\insrsid6568241\charrsid870088 \hich\af1\dbch\af13\loch\f1 No special settings are required to configure the }{
+\f2\fs20\insrsid6568241\charrsid870088 \hich\af2\dbch\af13\loch\f2 Base Exception}{\f1\fs20\insrsid6568241\charrsid870088 \hich\af1\dbch\af13\loch\f1  and }{\f2\fs20\insrsid6568241\charrsid870088 \hich\af2\dbch\af13\loch\f2 Simple Cache}{
+\f1\fs20\insrsid6568241\charrsid870088 \hich\af1\dbch\af13\loch\f1  components. Consult the documentation for }{\f2\fs20\insrsid6568241\charrsid870088 \hich\af2\dbch\af13\loch\f2 Config Manager}{\f1\fs20\insrsid3041929\charrsid3041929 
+\hich\af1\dbch\af13\loch\f1  and }{\f2\fs20\insrsid3041929 \hich\af2\dbch\af13\loch\f2 DB Connection Factory }{\f1\fs20\insrsid6568241\charrsid870088 \hich\af1\dbch\af13\loch\f1 component}{\f1\fs20\insrsid3041929 \hich\af1\dbch\af13\loch\f1 s}{
+\f1\fs20\insrsid6568241\charrsid870088 \hich\af1\dbch\af13\loch\f1  to learn the steps necessary to configure }{\f1\fs20\insrsid1186283\charrsid870088 \hich\af1\dbch\af13\loch\f1 th}{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1 e}{
+\f1\fs20\insrsid1186283\charrsid870088 \hich\af1\dbch\af13\loch\f1 s}{\f1\fs20\insrsid1186283 \hich\af1\dbch\af13\loch\f1 e}{\f1\fs20\insrsid6568241\charrsid870088 \hich\af1\dbch\af13\loch\f1  component}{\f1\fs20\insrsid3041929 
+\hich\af1\dbch\af13\loch\f1 s}{\f1\fs20\insrsid6568241\charrsid870088 \hich\af1\dbch\af13\loch\f1 .
+\par }\pard\plain \s16\qj \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid4855473\charrsid870088 
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 4.\tab}}\pard\plain \s1\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Usage Notes
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid4855473\charrsid4855473 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 4.1\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Required steps to test the component
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16607592 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid16607592\charrsid16607592 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard\plain \s16\qj \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Extract the component distribution.
+
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 Follow }{\field\fldedit{\*\fldinst {\insrsid664441 \hich\af1\dbch\af13\loch\f1  HYPERLINK "C:\\filez\\work\\
+tc\\tcs_corp\\templates\\component\\" \\l "_Dependencies_Configuration" }{\insrsid8664724 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b02000000010000000303000000000000c00000000000004600002900000066696c657a776f726b74637463735f636f727074656d706c61746573636f6d706f6e656e7422206c00ffffadde000000000000000000000000000000000000000000000000000055006e00690000}}
+}{\fldrslt {\cs15\ul\cf2\insrsid664441 \hich\af1\dbch\af13\loch\f1 Dependencies Configuration}}}{\insrsid664441 \hich\af1\dbch\af13\loch\f1 .
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 Execute \hich\f1 \lquote \loch\f1 ant test\hich\f1 \rquote \loch\f1  within the directory that
+\hich\af1\dbch\af13\loch\f1  the distribution was extracted to.
+\par }\pard \s16\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 {\insrsid5006157 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 4.2\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 
+Required steps to use the component
+\par }\pard\plain \s16\qj \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid11691441 
+\par {\listtext\pard\plain\s16 \f1\fs20\lang1033\langfe1033\langfenp1033\insrsid3413484 \hich\af1\dbch\af13\loch\f1 1.\tab}}\pard \s16\qj \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls8\adjustright\rin0\lin1080\itap0\pararsid14101703 {\insrsid3413484 \hich\af1\dbch\af13\loch\f1 Create}{\insrsid14101703 \hich\af1\dbch\af13\loch\f1  the }{\f2\insrsid14101703\charrsid5536809 
+\hich\af2\dbch\af13\loch\f2 TemplateLoader}{\insrsid3413484 \hich\af1\dbch\af13\loch\f1  instance}{\insrsid8788200 \hich\af1\dbch\af13\loch\f1 .}{\insrsid5854411 
+\par }\pard \s16\qj \fi360\li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8788200 {\insrsid1186283 \hich\af1\dbch\af13\loch\f1 There are two possible usage scenarios for initializing this component:}{\insrsid8788200 
+
+\par {\listtext\pard\plain\s16 \f1\fs20\lang1033\langfe1033\langfenp1033\insrsid8788200 \hich\af1\dbch\af13\loch\f1 1.\tab}}\pard \s16\qj \fi-360\li1800\ri0\sa120\widctlpar
+\jclisttab\tx1800\aspalpha\aspnum\faauto\ls6\adjustright\rin0\lin1800\itap0\pararsid8788200 {\insrsid8788200 \hich\af1\dbch\af13\loch\f1 Using the configuration properties provided by the specified configuration namespace.
+\par }\pard \s16\qj \fi360\li1440\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid8788200 {\insrsid8788200 \hich\af1\dbch\af13\loch\f1 In this case the }{\insrsid1186283 \hich\af1\dbch\af13\loch\f1 following}{\insrsid8788200 
+\hich\af1\dbch\af13\loch\f1  steps should be performed:
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid8788200 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \s16\qj \fi-360\li2520\ri0\sa120\widctlpar
+\jclisttab\tx2520\aspalpha\aspnum\faauto\ls6\ilvl1\adjustright\rin0\lin2520\itap0\pararsid8788200 {\insrsid8788200 \hich\af1\dbch\af13\loch\f1 The configuration file must be created.
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid8788200 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 The configuration file must be loaded under specified namespace to }{\f2\insrsid8788200\charrsid5536809 
+\hich\af2\dbch\af13\loch\f2 ConfigManager}{\insrsid8788200 \hich\af1\dbch\af13\loch\f1 .
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid8788200 \loch\af3\dbch\af13\hich\f3 \'b7\tab}\hich\af1\dbch\af13\loch\f1 The }{\f2\insrsid8788200\charrsid5536809 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\insrsid8788200 
+\hich\af1\dbch\af13\loch\f1  must be instantiated}{\insrsid16339911 \hich\af1\dbch\af13\loch\f1  using the constructor }{\insrsid12071254 \hich\af1\dbch\af13\loch\f1 accepting a single }{\f2\insrsid12071254\charrsid5536809 \hich\af2\dbch\af13\loch\f2 
+String}{\insrsid12071254 \hich\af1\dbch\af13\loch\f1  argument.}{\insrsid8788200 
+\par {\listtext\pard\plain\s16 \f1\fs20\lang1033\langfe1033\langfenp1033\insrsid3888137 \hich\af1\dbch\af13\loch\f1 2.\tab}}\pard \s16\qj \fi-360\li1800\ri0\sa120\widctlpar
+\jclisttab\tx1800\aspalpha\aspnum\faauto\ls6\adjustright\rin0\lin1800\itap0\pararsid8788200 {\insrsid3888137 \hich\af1\dbch\af13\loch\f1 Instantiate the }{\f2\insrsid3888137\charrsid13188893 \hich\af2\dbch\af13\loch\f2 TemplateLoader}{\insrsid3888137 
+\hich\af1\dbch\af13\loch\f1  using the runtime parameters. In this case the following steps should be performed:}{\insrsid8788200 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid8413306 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \s16\qj \fi-360\li2520\ri0\sa120\widctlpar
+\jclisttab\tx2520\aspalpha\aspnum\faauto\ls6\ilvl1\adjustright\rin0\lin2520\itap0\pararsid8413306 {\insrsid8413306 \hich\af1\dbch\af13\loch\f1 Create the instance o\hich\af1\dbch\af13\loch\f1 f }{\f2\insrsid8413306\charrsid13188893 
+\hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{\insrsid8193734 \hich\af1\dbch\af13\loch\f1 .}{\insrsid3888137 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid5461797 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}{\insrsid5461797 \hich\af1\dbch\af13\loch\f1 
+Determine whether the caching must be used and which parameters must be used to configure the caching strategy.}{\insrsid8193734 
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033\insrsid5461797 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}{\insrsid5461797 \hich\af1\dbch\af13\loch\f1 Instantiate the }{\f2\insrsid5461797\charrsid13188893 \hich\af2\dbch\af13\loch\f2 
+TemplateLoader}{\insrsid5461797 \hich\af1\dbch\af13\loch\f1  class}{\insrsid15346622 \hich\af1\dbch\af13\loch\f1  using any of the constructors accepting the }{\f2\insrsid15346622\charrsid13188893 \hich\af2\dbch\af13\loch\f2 TemplateHierarchyPersistence}{
+\insrsid15346622 \hich\af1\dbch\af13\loch\f1  argument.}{\insrsid5461797 
+\par {\listtext\pard\plain\s16 \f1\fs20\lang1033\langfe1033\langfenp1033\insrsid14621543 \hich\af1\dbch\af13\loch\f1 2.\tab}}\pard \s16\qj \fi-360\li1080\ri0\sa120\widctlpar
+\jclisttab\tx1080\aspalpha\aspnum\faauto\ls8\adjustright\rin0\lin1080\itap0\pararsid14101703 {\insrsid14621543 \hich\af1\dbch\af13\loch\f1 Load the details for target template hierarchy.}{\insrsid8788200 
+\par {\listtext\pard\plain\s16 \f1\fs20\lang1033\langfe1033\langfenp1033\insrsid14621543 \hich\af1\dbch\af13\loch\f1 3.\tab}}{\insrsid14621543 \hich\af1\dbch\af13\loch\f1 Query the details for loaded target template hierarchy.}{\insrsid8788200 
+\par }\pard \s16\qj \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5440687 {\insrsid8788200 
+\par }\pard \s16\qj \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid7424741 {\insrsid7424741 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 4.3\tab}}\pard\plain \s2\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Demo
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16524409 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {
+\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid14157515 \hich\af1\dbch\af13\loch\f1 4.3.1}{\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid14157515 \hich\af1\dbch\af13\loch\f1  }{
+\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid14157515 \hich\af1\dbch\af13\loch\f1 T}{\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid14157515 \hich\af1\dbch\af13\loch\f1 he general usage of this component.
+
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid16524409 
+\par \hich\af1\dbch\af13\loch\f1 // we could create TemplateLoader instance with a namespace
+\par \hich\af1\dbch\af13\loch\f1 TemplateLoader loader = new Templat\hich\af1\dbch\af13\loch\f1 eLoader(UNITTEST_NAMESPACE);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // we can also create TemplateLoader instance using the specified
+\par \hich\af1\dbch\af13\loch\f1 // TemplateHierarchyPersistence and the file server uri, no caching
+\par \hich\af1\dbch\af13\loch\f1 loader = new TemplateLoader(new MockPersistence(), "test_files/");
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // we can also create Te\hich\af1\dbch\af13\loch\f1 mplateLoader instance using the specified cache
+\par \hich\af1\dbch\af13\loch\f1 loader = new TemplateLoader(new MockPersistence(), "test_files/", 1000, 10);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // new we can load the desired TemplateHierarchy
+\par \hich\af1\dbch\af13\loch\f1 TemplateHierarchy root = loader.loadTemplateHierarchy("foo");
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("the n\hich\af1\dbch\af13\loch\f1 ame is incorrect", "foo", root.getName());}{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid9924398 
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid5662993 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid5662993 {\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid5662993\charrsid5662993 \hich\af1\dbch\af13\loch\f1 
+// get a Template of root node                                      
+\par \hich\af1\dbch\af13\loch\f1 Template template = root.getTemplates()[0];                         
+\par \hich\af1\dbch\af13\loch\f1                                                                     
+\par \hich\af1\dbch\af13\loch\f1 // get an InputStream containg the data of the template             
+\par \hich\af1\dbch\af13\loch\f1 InputStream input = template.getData();                             
+\par \hich\af1\dbch\af13\loch\f1 input.close();                                                      }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid5662993 
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid5662993\charrsid5662993 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16524409 {\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409 
+\par }{\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid14157515 \hich\af1\dbch\af13\loch\f1 4.3.2}{\b\i\insrsid16524409\charrsid14157515 \hich\af0\dbch\af13\loch\f0  }{
+\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid14157515 \hich\af1\dbch\af13\loch\f1 T}{\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid14157515 \hich\af1\dbch\af13\loch\f1 
+he general usage of Template and TemplateHierarchy.
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid16524409 
+\par \hich\af1\dbch\af13\loch\f1 // create a top-level TemplateHierarchy
+\par \hich\af1\dbch\af13\loch\f1 TemplateHierarchy root = new TemplateHierarchy(1, "root", 1);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // create another TemplateHierarchy
+\par \hich\af1\dbch\af13\loch\f1 TemplateHierarch\hich\af1\dbch\af13\loch\f1 y child = new TemplateHierarchy(2, "child", 1);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // get the id and parent id
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("id is incorrect", 1, root.getId());
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("parent id is incorrect", root.getId(), child.getParentId());
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // add the child node to root node
+\par \hich\af1\dbch\af13\loch\f1 root.addNestedHier\hich\af1\dbch\af13\loch\f1 archy(child);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // see whether the root has children
+\par \hich\af1\dbch\af13\loch\f1 assertTrue("true should be returned", root.hasChildren());
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // get all children of root
+\par \hich\af1\dbch\af13\loch\f1 TemplateHierarchy[] children = root.getChildren();
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("the length is incorrect", 1, children.length);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // create a Template
+\par \hich\af1\dbch\af13\loch\f1 Template template = new Template(1, "name", "des", "file", "uri");
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // get the attributes
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("id is incorrect", 1, template.getId());
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("name is incorrect", "name", template.getName());
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("description is\hich\af1\dbch\af13\loch\f1  incorrect", "des", template.getDescription());
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("file name is incorrect", "file", template.getFileName());
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("uri is incorrect", "uri", template.getUri());
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // add the template to child node
+\par \hich\af1\dbch\af13\loch\f1 child.addTemplate(template);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // see whet\hich\af1\dbch\af13\loch\f1 her the root has templates
+\par \hich\af1\dbch\af13\loch\f1 assertTrue("true should be returned", child.hasTemplates());
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // get all templates of child
+\par \hich\af1\dbch\af13\loch\f1 Template[] templates = child.getTemplates();
+\par \hich\af1\dbch\af13\loch\f1 assertEquals("the length is incorrect", 1, templates.length);}{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid16524409 
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409 
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid5662993 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid11882500 {\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid11882500\charrsid14157515 \hich\af1\dbch\af13\loch\f1 4.\hich\af1\dbch\af13\loch\f1 3.3
+\hich\af1\dbch\af13\loch\f1  \hich\af1\dbch\af13\loch\f1 T}{\b\i\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid11882500\charrsid14157515 \hich\af1\dbch\af13\loch\f1 he general usage of JDBCPersistence
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid5336630 
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid11882500\charrsid11882500 \hich\af1\dbch\af13\loch\f1 Property property = configManager.getPropertyObject(
+\par \hich\af1\dbch\af13\loch\f1     UNITTEST_NAMESPACE, "persistence.config");
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // create a JDBCPersistence using the given configuration property
+\par \hich\af1\dbch\af13\loch\f1 TemplateHierarchyPersistence persistence = new JDBCPersistence(property);
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // create a JDBCPersistence using the given DB factory and connection name
+\par \hich\af1\dbch\af13\loch\f1 persistence = new JDBCPersistence(
+\par \hich\af1\dbch\af13\loch\f1     "InformixConnection", new DBConnectionFactoryImpl(UNITTEST_NAMESPACE));
+\par 
+\par \hich\af1\dbch\af13\loch\f1 // we can also create a JDBCPersistence instance which use the defualte DB
+\par \hich\af1\dbch\af13\loch\f1 // factory namespace and connection name
+\par \hich\af1\dbch\af13\loch\f1 persistence = new JDBCPersistence();}{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409 
+\par }{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid11882500\charrsid11882500 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16524409 {\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid16524409\charrsid16524409 
+\par }\pard\plain \s16\qj \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\f2\insrsid8203095 
+\par }{\f2\insrsid8541339\charrsid853536 
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033\insrsid664441 \hich\af1\dbch\af13\loch\f1 5.\tab}}\pard\plain \s1\qj \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid664441 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 \hich\af1\dbch\af13\loch\f1 Future Enhancements
+
+\par }\pard\plain \s16\qj \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid1120664 
+\par }\pard \s16\qj \fi720\li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid664441 {\insrsid8203095 \hich\af1\dbch\af13\loch\f1 The API provided by the component could be extended to provide a functionality }{
+\insrsid1120664 \hich\af1\dbch\af13\loch\f1 supporting the full life\hich\af1\dbch\af13\loch\f1 time cycle of template hierarchies (creation, deletion, modification).}{\insrsid664441 
+\par }\pard\plain \qj \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid664441 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\insrsid664441 
+\par }}

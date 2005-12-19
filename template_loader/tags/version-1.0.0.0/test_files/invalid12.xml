@@ -1,0 +1,59 @@
+<CMConfig>
+  <Config name="com.topcoder.buildutility.template.unittests">
+
+    <Property name="file_server">
+        <Value>C:\TopCoder</Value>
+    </Property>
+
+    <Property name="caching">
+        <Property name="timeout">
+            <Value>1000</Value>
+        </Property>
+        <Property name="size">
+            <Value>100</Value>
+        </Property>
+    </Property>
+
+    <Property name="persistence">
+        <Property name="class">
+            <Value>com.topcoder.buildutility.template.persistence.JDBCPersistence</Value>
+        </Property>
+        <Property name="config">
+            <Property name="db_factory_namespace">
+                <Value>com.topcoder.buildutility.template.unittests</Value>
+            </Property>
+            <!-- empty db_connection -->
+            <Property name="db_connection">
+                <Value>  </Value>
+            </Property>
+        </Property>
+    </Property>
+
+
+    <Property name="connections">
+        <Property name="TestConnection">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jdbc_driver">
+                    <Value>com.informix.jdbc.IfxDriver</Value>
+                </Property>
+                <Property name="jdbc_url">
+                    <!-- MODIFY HERE  -->
+                    <Value>jdbc:informix-sqli://10.214.2.93:1526/tcs:INFORMIXSERVER=tcsserver;</Value>
+                </Property>
+                <Property name="user">
+                    <!-- MODIFY HERE  -->
+                    <Value>informix</Value>
+                </Property>
+                <Property name="password">
+                    <!-- MODIFY HERE  -->
+                    <Value>informix</Value>
+                </Property>
+            </Property>
+        </Property>
+
+    </Property>
+  </Config>
+</CMConfig>
