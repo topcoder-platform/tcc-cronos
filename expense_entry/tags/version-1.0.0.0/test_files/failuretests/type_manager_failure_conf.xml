@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests">
+		<!-- the class name of the entry_status_persistence_class -->
+		<Property name="entry_type_persistence_class">
+			<Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence</Value>
+		</Property>
+		
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		
+		<Property name="connection_producer_name">
+			<Value>Connection</Value>
+		</Property>
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.1">
+		<!-- missing entry_type_persistence_class property-->
+		
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.2">
+		<!-- property entry_type_persistence_class has empty value-->
+		<Property name="entry_type_persistence_class">
+			<Value></Value>
+		</Property>
+		
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.3">
+		
+		<!-- entry_type_persistence_class value in not ExpenseEntryTypeDbPersistence class -->
+		<Property name="entry_type_persistence_class">
+			<Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryStatusDbPersistence</Value>
+		</Property>
+		
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.4">
+		<!--entry_type_persistence_class missing (String, String) ctor -->
+		<Property name="entry_type_persistence_class">
+			<Value>com.topcoder.timetracker.entry.expense.persistence.failuretests.DummyPersistence</Value>
+		</Property>
+		
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.5">
+		<Property name="entry_type_persistence_class">
+			<Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence</Value>
+		</Property>
+		
+		<!-- missing connection_factory_namespace property -->
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.6">
+		<Property name="entry_type_persistence_class">
+			<Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence</Value>
+		</Property>
+		
+		<!-- invalid DBConnectionFactory namespace  -->
+		<Property name="connection_factory_namespace">
+			<Value>x</Value>
+		</Property>
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.7">
+		<Property name="entry_type_persistence_class">
+			<Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence</Value>
+		</Property>
+		
+		<!-- connection_factory_namespace empty value -->
+		<Property name="connection_factory_namespace">
+			<Value></Value>
+		</Property>
+		
+	</Config>
+	
+	<Config
+		name="com.topcoder.timetracker.entry.expense.failuretests.ExpenseEntryTypeManagerFailureTests.8">
+		<Property name="entry_type_persistence_class">
+			<Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence</Value>
+		</Property>
+		
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		
+		<!-- connection_producer_name: non existing producer -->
+		<Property name="connection_producer_name">
+			<Value>x</Value>
+		</Property>
+	</Config>
+	
+</CMConfig>

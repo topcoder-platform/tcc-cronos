@@ -1,0 +1,19 @@
+<CMConfig>
+  <Config name="com.topcoder.timetracker.entry.expense">
+    <Property name="entry_status_persistence_class">
+      <Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryStatusDbPersistence</Value>
+    </Property>
+    <Property name="entry_type_persistence_class">
+      <Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence</Value>
+    </Property>
+    <Property name="entry_persistence_class">
+      <Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryDbPersistence</Value>
+    </Property>
+    <Property name="connection_producer_name">
+      <Value>Connection</Value>
+    </Property>
+    <Property name="connection_factory_namespace">
+      <Value>unknown</Value>
+    </Property>
+  </Config>
+</CMConfig>
