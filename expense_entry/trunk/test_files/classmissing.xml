@@ -1,0 +1,10 @@
+<CMConfig>
+  <Config name="com.topcoder.timetracker.entry.expense">
+    <Property name="connection_producer_name">
+      <Value>Connection</Value>
+    </Property>
+    <Property name="connection_factory_namespace">
+      <Value>com.topcoder.timetracker.entry.expense.connection</Value>
+    </Property>
+  </Config>
+</CMConfig>
