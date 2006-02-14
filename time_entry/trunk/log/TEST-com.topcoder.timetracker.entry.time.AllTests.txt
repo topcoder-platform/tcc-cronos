@@ -1,0 +1,432 @@
+Testsuite: com.topcoder.timetracker.entry.time.AllTests
+Tests run: 346, Failures: 1, Errors: 0, Time elapsed: 12,323.159 sec
+------------- Standard Output ---------------
+Component Spellification
+ivern
+TangentZ
+Ready
+ivern
+TangentZ
+Coding class zec
+ivern
+ivern
+Coding class zec
+3.5
+true
+ivern
+TCSDEVELOPER
+TCSDEVELOPER
+down
+-----stress test for TimeStatusDAO.create-----
+Threads: 10
+Operations/Thread: 20
+totaltime:522967ms
+-----stress test for TimeStatusDAO.update-----
+Threads: 10
+Operations/Thread: 20
+totaltime:548305ms
+-----stress test for TimeStatusDAO.Delete-----
+Threads: 10
+Operations/Thread: 20
+totaltime:540559ms
+-----stress test for TimeStatusDAO.get-----
+Threads: 10
+Operations/Thread: 20
+totaltime:549096ms
+-----stress test for TimeStatusDAO.getList-----
+Threads: 10
+Operations/Thread: 20
+totaltime:533024ms
+-----stress test for TimeEntryDAO.create-----
+Threads: 10
+Operations/Thread: 20
+totaltime:529076ms
+-----stress test for TimeEntryDAO.update-----
+Threads: 10
+Operations/Thread: 20
+totaltime:550362ms
+-----stress test for TimeEntryDAO.Delete-----
+Threads: 10
+Operations/Thread: 20
+totaltime:535613ms
+-----stress test for TimeEntryDAO.get-----
+Threads: 10
+Operations/Thread: 20
+totaltime:550362ms
+-----stress test for TimeEntryDAO.getList-----
+Threads: 10
+Operations/Thread: 20
+totaltime:523861ms
+-----stress test for TaskTypeDAO.create-----
+Threads: 10
+Operations/Thread: 20
+totaltime:524300ms
+-----stress test for TaskTypeDAO.update-----
+Threads: 10
+Operations/Thread: 20
+totaltime:551332ms
+-----stress test for TaskTypeDAO.Delete-----
+Threads: 10
+Operations/Thread: 20
+totaltime:539612ms
+-----stress test for TaskTypeDAO.get-----
+Threads: 10
+Operations/Thread: 20
+totaltime:549613ms
+-----stress test for TaskTypeDAO.getList-----
+Threads: 10
+Operations/Thread: 20
+totaltime:521832ms
+------------- ---------------- ---------------
+
+Testcase: testBaseDAO1 took 0.047 sec
+Testcase: testBaseDAO2 took 0.031 sec
+Testcase: testBaseDAO3 took 0.016 sec
+Testcase: testBaseDAO4 took 0.016 sec
+Testcase: testBaseDAO5 took 0.015 sec
+Testcase: testGetConnection took 0.047 sec
+Testcase: testSetConnection1 took 0.438 sec
+Testcase: testSetConnection2 took 0.031 sec
+Testcase: testRemoveConnection took 5.078 sec
+Testcase: testSetDataObjectPrimaryId1 took 5.406 sec
+Testcase: testSetDataObjectPrimaryId2 took 0.016 sec
+Testcase: testCreate1 took 0.015 sec
+Testcase: testCreate2 took 0 sec
+Testcase: testUpdate1 took 0.063 sec
+Testcase: testUpdate2 took 0.016 sec
+Testcase: testGetList1 took 0.031 sec
+Testcase: testGetList2 took 0.015 sec
+Testcase: testBaseDataObject took 0 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testSetDescription took 0 sec
+Testcase: testGetCreationUser took 0 sec
+Testcase: testSetCreationUser took 0 sec
+Testcase: testGetCreationDate1 took 0 sec
+Testcase: testGetCreationDate2 took 0 sec
+Testcase: testSetCreationDate1 took 0 sec
+Testcase: testSetCreationDate2 took 0 sec
+Testcase: testGetModificationUser took 0 sec
+Testcase: testSetModificationUser took 0 sec
+Testcase: testGetModificationDate1 took 0 sec
+Testcase: testGetModificationDate2 took 0 sec
+Testcase: testSetModificationDate1 took 0 sec
+Testcase: testSetModificationDate2 took 0 sec
+Testcase: testDataObject took 0 sec
+Testcase: testGetPrimaryId took 0 sec
+Testcase: testSetPrimaryId took 0 sec
+Testcase: testDAOActionException1 took 0 sec
+Testcase: testDAOActionException2 took 0 sec
+Testcase: testDAOActionExceptionInheritance took 0 sec
+Testcase: testDAOActionExceptionInheritance2 took 0 sec
+Testcase: testDAOFactoryException1 took 0 sec
+Testcase: testDAOFactoryException2 took 0 sec
+Testcase: testDAOFactoryExceptionInheritance took 0 sec
+Testcase: testDAOFactoryExceptionInheritance2 took 0 sec
+Testcase: testGetDAO1 took 0 sec
+Testcase: testGetDAO2 took 0.016 sec
+Testcase: testGetDAO3 took 0 sec
+Testcase: testGetDAO4 took 0 sec
+Testcase: testGetDAO5 took 0 sec
+Testcase: testGetDAO6 took 0.031 sec
+Testcase: testGetDAO7 took 0.016 sec
+Testcase: testGetDAO8 took 0.047 sec
+Testcase: testGetDAO9 took 0.015 sec
+Testcase: testGetDAO10 took 0 sec
+Testcase: testGetDAO11 took 0.016 sec
+Testcase: testGetDAO12 took 0 sec
+Testcase: testTaskType took 0 sec
+Testcase: testTimeStatus took 0 sec
+Testcase: testTimeEntry took 0 sec
+Testcase: testGetDate1 took 0 sec
+Testcase: testGetDate2 took 0 sec
+Testcase: testSetDate1 took 0 sec
+Testcase: testSetDate2 took 0 sec
+Testcase: testGetHours took 0 sec
+Testcase: testSetHours took 0 sec
+Testcase: testGetTaskTypeId took 0 sec
+Testcase: testSetTaskTypeId took 0 sec
+Testcase: testGetTimeStatusId took 0 sec
+Testcase: testSetTimeStatusId took 0 sec
+Testcase: testGetBillable took 0 sec
+Testcase: testSetBillable took 0 sec
+Testcase: testUpdate1 took 5.594 sec
+	FAILED
+record was not properly updated in the database expected:<1> but was:<171>
+junit.framework.AssertionFailedError: record was not properly updated in the database expected:<1> but was:<171>
+	at com.topcoder.timetracker.entry.time.TaskTypeDAOUnitTest.testUpdate1(TaskTypeDAOUnitTest.java:788)
+
+Testcase: testUpdate2 took 10.72 sec
+Testcase: testGetList1 took 5.782 sec
+Testcase: testGetList2 took 10.721 sec
+Testcase: testTaskTypeDAO1 took 0.281 sec
+Testcase: testTaskTypeDAO2 took 5.22 sec
+Testcase: testTaskTypeDAO3 took 0.25 sec
+Testcase: testTaskTypeDAO4 took 5.251 sec
+Testcase: testTaskTypeDAO5 took 0.281 sec
+Testcase: testVerifyCreateDataObject1 took 5.251 sec
+Testcase: testVerifyCreateDataObject2 took 0.281 sec
+Testcase: testVerifyCreateDataObject3 took 5.204 sec
+Testcase: testVerifyCreateDataObject4 took 0.266 sec
+Testcase: testGetCreateSqlString took 5.173 sec
+Testcase: testFillCreatePreparedStatement took 5.313 sec
+Testcase: testSetCreationParametersInDataObject took 0.266 sec
+Testcase: testVerifyUpdateDataObject1 took 5.157 sec
+Testcase: testVerifyUpdateDataObject2 took 0.328 sec
+Testcase: testVerifyUpdateDataObject3 took 5.251 sec
+Testcase: testVerifyUpdateDataObject4 took 0.297 sec
+Testcase: testGetUpdateSqlString took 5.204 sec
+Testcase: testFillUpdatePreparedStatement took 5.501 sec
+Testcase: testSetModificationParametersInDataObject took 0.282 sec
+Testcase: testGetDeleteSqlString took 5.219 sec
+Testcase: testGetReadSqlString took 0.266 sec
+Testcase: testProcessReadResultSet1 took 5.532 sec
+Testcase: testProcessReadResultSet2 took 5.189 sec
+Testcase: testProcessReadResultSet3 took 5.501 sec
+Testcase: testGetReadListSqlString took 0.296 sec
+Testcase: testProcessReadListResultSet1 took 5.58 sec
+Testcase: testProcessReadListResultSet2 took 5.126 sec
+Testcase: testProcessReadListResultSet3 took 5.501 sec
+Testcase: testCreate took 11.283 sec
+Testcase: testDelete1 took 10.736 sec
+Testcase: testDelete2 took 5.767 sec
+Testcase: testGet1 took 10.736 sec
+Testcase: testGet2 took 5.798 sec
+Testcase: testGetList3 took 11.002 sec
+Testcase: testGetList4 took 5.548 sec
+Testcase: testUpdate1 took 10.674 sec
+Testcase: testUpdate2 took 5.767 sec
+Testcase: testGetList1 took 15.237 sec
+Testcase: testGetList2 took 5.798 sec
+Testcase: testVerifyCreateDataObject1 took 5.204 sec
+Testcase: testVerifyCreateDataObject2 took 0.266 sec
+Testcase: testVerifyCreateDataObject3 took 5.235 sec
+Testcase: testVerifyCreateDataObject4 took 0.281 sec
+Testcase: testGetCreateSqlString took 5.22 sec
+Testcase: testFillCreatePreparedStatement took 5.329 sec
+Testcase: testSetCreationParametersInDataObject took 5.064 sec
+Testcase: testVerifyUpdateDataObject1 took 0.281 sec
+Testcase: testVerifyUpdateDataObject2 took 5.126 sec
+Testcase: testVerifyUpdateDataObject3 took 0.078 sec
+Testcase: testVerifyUpdateDataObject4 took 5.157 sec
+Testcase: testGetUpdateSqlString took 0.266 sec
+Testcase: testFillUpdatePreparedStatement took 5.47 sec
+Testcase: testSetModificationParametersInDataObject took 5.063 sec
+Testcase: testGetDeleteSqlString took 5.173 sec
+Testcase: testGetReadSqlString took 0.281 sec
+Testcase: testProcessReadResultSet1 took 5.501 sec
+Testcase: testProcessReadResultSet2 took 5.22 sec
+Testcase: testProcessReadResultSet3 took 5.517 sec
+Testcase: testGetReadListSqlString took 0.265 sec
+Testcase: testProcessReadListResultSet1 took 5.298 sec
+Testcase: testProcessReadListResultSet2 took 5.189 sec
+Testcase: testProcessReadListResultSet3 took 5.501 sec
+Testcase: testCreate took 10.502 sec
+Testcase: testDelete1 took 5.705 sec
+Testcase: testDelete2 took 10.549 sec
+Testcase: testGet1 took 5.767 sec
+Testcase: testGet2 took 15.129 sec
+Testcase: testGetList3 took 10.894 sec
+Testcase: testGetList4 took 5.298 sec
+Testcase: testTimeStatusDAO1 took 5.079 sec
+Testcase: testTimeStatusDAO2 took 0.313 sec
+Testcase: testTimeStatusDAO3 took 5.189 sec
+Testcase: testTimeStatusDAO4 took 0.265 sec
+Testcase: testTimeStatusDAO5 took 5.283 sec
+Testcase: testUpdate2 took 5.595 sec
+Testcase: testGetList1 took 10.722 sec
+Testcase: testGetList2 took 5.736 sec
+Testcase: testVerifyCreateDataObject1 took 5.267 sec
+Testcase: testVerifyCreateDataObject2 took 0.281 sec
+Testcase: testVerifyCreateDataObject3 took 5.22 sec
+Testcase: testVerifyCreateDataObject4 took 0.281 sec
+Testcase: testGetCreateSqlString took 5.216 sec
+Testcase: testFillCreatePreparedStatement took 5.45 sec
+Testcase: testSetCreationParametersInDataObject took 0.281 sec
+Testcase: testVerifyUpdateDataObject1 took 5.091 sec
+Testcase: testVerifyUpdateDataObject2 took 5.091 sec
+Testcase: testVerifyUpdateDataObject3 took 0.125 sec
+Testcase: testVerifyUpdateDataObject4 took 5.2 sec
+Testcase: testGetUpdateSqlString took 0.297 sec
+Testcase: testFillUpdatePreparedStatement took 5.403 sec
+Testcase: testSetModificationParametersInDataObject took 5.044 sec
+Testcase: testGetDeleteSqlString took 0.313 sec
+Testcase: testGetReadSqlString took 5.184 sec
+Testcase: testProcessReadResultSet1 took 5.497 sec
+Testcase: testProcessReadResultSet2 took 0.281 sec
+Testcase: testProcessReadResultSet3 took 5.482 sec
+Testcase: testGetReadListSqlString took 5.231 sec
+Testcase: testProcessReadListResultSet1 took 5.497 sec
+Testcase: testProcessReadListResultSet2 took 0.281 sec
+Testcase: testProcessReadListResultSet3 took 5.482 sec
+Testcase: testCreate took 16.147 sec
+Testcase: testDelete1 took 5.59 sec
+Testcase: testDelete2 took 10.744 sec
+Testcase: testGet1 took 5.763 sec
+Testcase: testGet2 took 10.728 sec
+Testcase: testGetList3 took 10.994 sec
+Testcase: testGetList4 took 5.497 sec
+Testcase: testTimeEntryDAO1 took 0.281 sec
+Testcase: testTimeEntryDAO2 took 5.029 sec
+Testcase: testTimeEntryDAO3 took 0.078 sec
+Testcase: testTimeEntryDAO4 took 5.106 sec
+Testcase: testTimeEntryDAO5 took 0.281 sec
+Testcase: testUpdate took 10.479 sec
+Testcase: testTaskTypeDAODemo took 16.756 sec
+Testcase: testTimeStatusDAODemo took 21.223 sec
+Testcase: testTimeEntryDAODemo took 21.738 sec
+Testcase: testLocalTransactionControlDemo took 5.372 sec
+Testcase: testDAOActionExceptionString took 0 sec
+Testcase: testDAOActionExceptionStringThrowable took 0 sec
+Testcase: testDAOFactoryExceptionString took 0 sec
+Testcase: testDAOFactoryExceptionStringThrowable took 0 sec
+Testcase: testGetDAO1 took 0.015 sec
+Testcase: testGetDAO2 took 0 sec
+Testcase: testGetDAO3 took 0.031 sec
+Testcase: testSetPrimaryId took 0 sec
+Testcase: testGetPrimaryId1 took 0 sec
+Testcase: testTaskType took 0 sec
+Testcase: testGetConnection took 0.297 sec
+Testcase: testRemoveConnection took 5.263 sec
+Testcase: testCreate took 5.278 sec
+Testcase: testUpdate took 5.841 sec
+Testcase: testTaskTypeDAO took 5.137 sec
+Testcase: testDelete took 5.56 sec
+Testcase: testGet took 10.697 sec
+Testcase: testGetList took 16.506 sec
+Testcase: testSetConnection took 5.232 sec
+Testcase: testSetCreationDate1 took 0 sec
+Testcase: testSetCreationDate2 took 0 sec
+Testcase: testGetModificationUser took 0 sec
+Testcase: testSetModificationDate1 took 0 sec
+Testcase: testSetModificationDate2 took 0 sec
+Testcase: testGetCreationDate took 0 sec
+Testcase: testSetModificationUser1 took 0 sec
+Testcase: testSetModificationUser2 took 0 sec
+Testcase: testGetModificationDate took 0 sec
+Testcase: testGetConnection took 0.312 sec
+Testcase: testRemoveConnection took 5.2 sec
+Testcase: testCreate took 5.451 sec
+Testcase: testUpdate took 5.84 sec
+Testcase: testTaskTypeDAO took 5.202 sec
+Testcase: testDelete took 5.766 sec
+Testcase: testGet took 10.733 sec
+Testcase: testGetList took 20.748 sec
+Testcase: testSetConnection took 0.281 sec
+Testcase: testTimeStatus took 0 sec
+Testcase: testGetConnection took 5.218 sec
+Testcase: testRemoveConnection took 0.25 sec
+Testcase: testCreate took 5.515 sec
+Testcase: testUpdate took 10.483 sec
+Testcase: testTaskTypeDAO took 0.282 sec
+Testcase: testDelete took 10.639 sec
+Testcase: testGet took 5.172 sec
+Testcase: testGetList took 21.279 sec
+Testcase: testSetConnection took 5.124 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testGetCreationUser took 0 sec
+Testcase: testSetCreationDate1 took 0 sec
+Testcase: testSetCreationDate2 took 0 sec
+Testcase: testGetModificationUser took 0 sec
+Testcase: testSetModificationDate1 took 0 sec
+Testcase: testSetModificationDate2 took 0 sec
+Testcase: testGetCreationDate took 0 sec
+Testcase: testSetModificationUser1 took 0 sec
+Testcase: testSetModificationUser2 took 0 sec
+Testcase: testGetModificationDate took 0 sec
+Testcase: testBasebaseDataObject took 0 sec
+Testcase: testSetDescription1 took 0 sec
+Testcase: testSetDescription2 took 0 sec
+Testcase: testSetCreationUser1 took 0 sec
+Testcase: testSetCreationUser2 took 0 sec
+Testcase: testCreate took 0.031 sec
+Testcase: testVerifyCreateDataObjectNull took 0 sec
+Testcase: testVerifyCreateDataObjectNotTimeEntry took 0 sec
+Testcase: testVerifyCreateDataObjectNullDescription took 0 sec
+Testcase: testVerifyUpdateDataObjectNull took 0.016 sec
+Testcase: testVerifyUpdateDataObjectNotTimeEntry took 0 sec
+Testcase: testVerifyUpdateDataObjectNullDescription took 0 sec
+Testcase: testCreateNullUser took 0 sec
+Testcase: testCreateEmptyUser took 0 sec
+Testcase: testCreateEmptyDB took 0.031 sec
+Testcase: testUpdateNullObject took 0.016 sec
+Testcase: testUpdateNullUser took 0.031 sec
+Testcase: testUpdateEmptyUser took 0 sec
+Testcase: testUpdateEmptyDB took 5.015 sec
+Testcase: testDeleteEmptyDB took 0.219 sec
+Testcase: testGetEmptyDb took 5.249 sec
+Testcase: testGetListWhereIncluded took 0 sec
+Testcase: testGetListEmptyDb took 0.141 sec
+Testcase: testGetListInvalidWhereClause took 5.265 sec
+Testcase: testSetConnection took 0 sec
+Testcase: testVerifyCreateDataObjectNull took 0.016 sec
+Testcase: testVerifyCreateDataObjectNotTimeEntry took 0 sec
+Testcase: testVerifyCreateDataObjectNullDescription took 0 sec
+Testcase: testVerifyUpdateDataObjectNull took 0 sec
+Testcase: testVerifyUpdateDataObjectNotTimeEntry took 0 sec
+Testcase: testVerifyUpdateDataObjectNullDescription took 0 sec
+Testcase: testCreateNullUser took 0.015 sec
+Testcase: testCreateEmptyUser took 0 sec
+Testcase: testCreateEmptyDB took 0.016 sec
+Testcase: testUpdateNullObject took 0 sec
+Testcase: testUpdateNullUser took 0 sec
+Testcase: testUpdateEmptyUser took 0 sec
+Testcase: testUpdateEmptyDB took 5.015 sec
+Testcase: testDeleteEmptyDB took 0.094 sec
+Testcase: testGetEmptyDb took 5.015 sec
+Testcase: testGetListWhereIncluded took 0 sec
+Testcase: testGetListEmptyDb took 0.109 sec
+Testcase: testGetListInvalidWhereClause took 5.468 sec
+Testcase: testTimeEntryDAONullConnName took 0 sec
+Testcase: testTimeEntryDAONullNamespace took 0 sec
+Testcase: testTimeEntryDAOEmptyNamespace took 0 sec
+Testcase: testTimeEntryDAOEmptyConnName took 0 sec
+Testcase: testVerifyCreateDataObjectNullDate took 0.016 sec
+Testcase: testVerifyCreateDataObjectNegativeHours took 0 sec
+Testcase: testVerifyUpdateDataObjectNullDate took 0 sec
+Testcase: testVerifyUpdateDataObjectNegativeHours took 0 sec
+Testcase: testCreateNullObject took 0 sec
+Testcase: testSetDataObjectPrimaryId took 0 sec
+Testcase: testCreate took 0.016 sec
+Testcase: testVerifyCreateDataObjectNull took 0 sec
+Testcase: testVerifyCreateDataObjectNullDescription took 0 sec
+Testcase: testVerifyUpdateDataObjectNull took 0 sec
+Testcase: testVerifyUpdateDataObjectNullDescription took 0 sec
+Testcase: testCreateNullUser took 0 sec
+Testcase: testCreateEmptyUser took 0.015 sec
+Testcase: testCreateEmptyDB took 0 sec
+Testcase: testUpdateNullObject took 0.016 sec
+Testcase: testUpdateNullUser took 0 sec
+Testcase: testUpdateEmptyUser took 0 sec
+Testcase: testUpdateEmptyDB took 5.234 sec
+Testcase: testDeleteEmptyDB took 0.219 sec
+Testcase: testGetEmptyDb took 5.218 sec
+Testcase: testGetListWhereIncluded took 0.015 sec
+Testcase: testGetListEmptyDb took 0.11 sec
+Testcase: testGetListInvalidWhereClause took 5.39 sec
+Testcase: testVerifyCreateDataObjectNotTimeStatus took 0 sec
+Testcase: testVerifyUpdateDataObjectNotTimeStatus took 0 sec
+Testcase: testGetDAONullClass took 0.062 sec
+Testcase: testGetDAONullNamespace took 0.016 sec
+Testcase: testGetDAOEmptyNamespace took 0.047 sec
+Testcase: testGetDAOClassNotDAO took 0.031 sec
+Testcase: testGetDAOInvalidNamespace took 0.047 sec
+Testcase: testGetDAOConfigFailure1 took 0.016 sec
+Testcase: testGetDAOConfigFailure2 took 0.046 sec
+Testcase: testGetDAOConfigFailure3 took 0.032 sec
+Testcase: testGetDAOConfigFailure4 took 0.015 sec
+Testcase: testGetDAOConfigFailure5 took 0.047 sec
+Testcase: testCreate took 523.264 sec
+Testcase: testUpdate took 548.305 sec
+Testcase: testDelete took 1,088.182 sec
+Testcase: testGet took 549.096 sec
+Testcase: testGetList took 1,085.946 sec
+Testcase: testCreate took 534.577 sec
+Testcase: testUpdate took 555.846 sec
+Testcase: testDelete took 1,086.963 sec
+Testcase: testGet took 555.862 sec
+Testcase: testGetList took 1,076.752 sec
+Testcase: testCreate took 524.315 sec
+Testcase: testUpdate took 551.363 sec
+Testcase: testDelete took 1,088.46 sec
+Testcase: testGet took 549.613 sec
+Testcase: testGetList took 1,115.668 sec
