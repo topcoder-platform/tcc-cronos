@@ -257,6 +257,8 @@
                 <include name="${component}_Component_Specification*"/>
                 <include name="${component}.zargo"/>
                 <include name="${component}.zuml"/>
+                <include name="*.xml"/>
+                <include name="*.sql"/>
             </fileset>
         </copy>
 
@@ -267,12 +269,11 @@
 
         <jar jarfile="${javadoc.jar}" basedir="${build_tcsdistdir}\docs\javadocs"/>
 
-<!-- uncomment if test files exist.
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
--->
+
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
