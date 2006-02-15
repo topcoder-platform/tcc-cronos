@@ -51,7 +51,7 @@
 	                    <Value>informix</Value>
 	                </Property>
 	                <Property name="password">
-	                    <Value>lansing</Value>
+	                    <Value>informix</Value>
 	                </Property>
 	            </Property>
 	        </Property>
@@ -85,7 +85,7 @@
 		            <Value>informix</Value>
 		          </Property>
 		          <Property name="password">
-		            <Value>lansing</Value>
+		            <Value>informix</Value>
 		          </Property>
 		        </Property>
 	        </Property>
