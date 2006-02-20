@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CMConfig>
+   <Config name="com.topcoder.timetracker.report.DefaultConfiguration">
+      <Property name="DBConnectionFactoryNamespace">
+         <Value>com.topcoder.timetracker.report.Informix</Value>
+      </Property>
+      <Property name="Connection">
+         <Value>InformixConnection</Value>
+      </Property>
+    <Property name="DBHandler">
+        <Value>InformixDBHandler</Value>
+    </Property>
+   </Config>
+
+   <Config name="com.topcoder.timetracker.report.StressTest.CustomConfiruation">
+      <Property name="DBConnectionFactoryNamespace">
+         <Value>com.topcoder.timetracker.report.Informix</Value>
+      </Property>
+      <Property name="Connection">
+         <Value>InformixConnection</Value>
+      </Property>
+      <Property name="DBHandler">
+         <Value>InformixDBHandler</Value>
+      </Property>
+      <Property name="COLUMN_EMPLOYEE">
+         <Value>Employee Name</Value>
+      </Property>
+      <Property name="COLUMN_AMOUNT">
+         <Value>Amount Spent</Value>
+      </Property>
+      <Property name="PREFIX_COLUMN_AMOUNT">
+         <Value>$</Value>
+      </Property>
+      <Property name="TABLE_STYLE">
+         <Value>background: blue\; color: white\;</Value>
+      </Property>
+
+      <!-- The CSS Style to be used in the TH (Table Header) HTML tag -->
+      <Property name="TH_STYLE">
+         <Value>background: grey\; color: white\;</Value>
+      </Property>
+
+      <!-- The CSS Style to be used in the TR (Table Row) HTML tag -->
+      <Property name="TR_STYLE">
+         <Value>color: white\;</Value>
+      </Property>
+
+      <Property name="CUSTOM_PROJECT_TIME_COLUMNS">
+         <Value>DATE</Value>
+         <Value>EMPLOYEE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+      </Property>
+
+   </Config>
+   <Config name="com.topcoder.timetracker.report.QueriesConfiguration">
+      <!-- Query Configuration and FilterExtensions for the "Employee Time Report" -->
+      <Property name="BASE_QUERY_EMPLOYEE_TIME">
+         <Value>
+            SELECT TE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   TT.DESCRIPTION TASK,
+                   TE.HOURS HOURS,
+                   PW.PAYRATE PAY_RATE,
+                   TE.BILLABLE BILLABLE
+
+              FROM TIMEENTRIES TE,
+                   TASKTYPES TT,
+                   CLIENTS CL,
+                   PROJECTTIMES PT,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP,
+                   PROJECTWORKERS PW,
+                   USERS US
+
+             WHERE TE.TASKTYPESID = TT.TASKTYPESID
+               AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+               AND PT.PROJECTSID = PR.PROJECTSID
+               AND PW.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+               AND US.USERSID = PW.USERSID
+               AND US.NAME = TE.CREATIONUSER
+
+         </Value>
+      </Property>
+
+      <Property name="FILTER_EMPLOYEE_EMPLOYEE_TIME">
+         <Value>TE.CREATIONUSER = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_EMPLOYEE_TIME">
+         <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_CLIENT_EMPLOYEE_TIME">
+         <Value>CL.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_PROJECT_EMPLOYEE_TIME">
+         <Value>PR.NAME = ?</Value>
+      </Property>
+      <Property name="FILTER_BILLABLE_EMPLOYEE_TIME">
+         <Value>TE.BILLABLE = ?</Value>
+      </Property>
+
+      <!-- Query Configuration and FilterExtensions for the "Project Time Report" -->
+      <Property name="BASE_QUERY_PROJECT_TIME">
+         <Value>
+            SELECT TE.ENTRYDATE DATE,
+                   TE.CREATIONUSER EMPLOYEE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   TT.DESCRIPTION TASK,
+                   TE.HOURS HOURS,
+                   TE.BILLABLE BILLABLE
+
+              FROM TIMEENTRIES TE,
+                   TASKTYPES TT,
+                   CLIENTS CL,
+                   PROJECTTIMES PT,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE TE.TASKTYPESID = TT.TASKTYPESID
+               AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+               AND PT.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+         </Value>
+      </Property>
+      <Property name="FILTER_PROJECT_PROJECT_TIME">
+         <Value>PR.NAME = ?</Value>
+      </Property>
+      <Property name="FILTER_EMPLOYEE_PROJECT_TIME">
+         <Value>TE.CREATIONUSER = ?</Value>
+      </Property>
+      <Property name="FILTER_DATE_PROJECT_TIME">
+         <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+      <Property name="FILTER_BILLABLE_PROJECT_TIME">
+         <Value>TE.BILLABLE = ?</Value>
+      </Property>
+
+      <!-- Query Configuration and FilterExtensions for the "Client Time Report" -->
+
+      <Property name="BASE_QUERY_CLIENT_TIME">
+         <Value>
+            SELECT TE.ENTRYDATE DATE,
+                   TE.CREATIONUSER EMPLOYEE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   TT.DESCRIPTION TASK,
+                   TE.HOURS HOURS,
+                   TE.BILLABLE BILLABLE
+
+              FROM TIMEENTRIES TE,
+                   TASKTYPES TT,
+                   CLIENTS CL,
+                   PROJECTTIMES PT,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE TE.TASKTYPESID = TT.TASKTYPESID
+               AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+               AND PT.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+         </Value>
+      </Property>
+
+      <Property name="FILTER_CLIENT_CLIENT_TIME">
+         <Value>CL.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_CLIENT_TIME">
+         <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_BILLABLE_CLIENT_TIME">
+         <Value>TE.BILLABLE = ?</Value>
+      </Property>
+
+
+      <!-- Query Configuration and FilterExtensions for the "Employee Expense Report" -->
+
+      <Property name="BASE_QUERY_EMPLOYEE_EXPENSE">
+         <Value>
+            SELECT EE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   ET.DESCRIPTION TYPE,
+                   ET.DESCRIPTION DESCRIPTION,
+                   EE.AMOUNT AMOUNT,
+                   EE.BILLABLE BILLABLE
+
+              FROM EXPENSEENTRIES EE,
+                   EXPENSETYPES ET,
+                   CLIENTS CL,
+                   PROJECTEXPENSES PE,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+               AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+               AND PE.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+
+         </Value>
+      </Property>
+
+      <Property name="FILTER_EMPLOYEE_EMPLOYEE_EXPENSE">
+         <Value>EE.CREATIONUSER = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_EMPLOYEE_EXPENSE">
+         <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_CLIENT_EMPLOYEE_EXPENSE">
+         <Value>CL.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_PROJECT_EMPLOYEE_EXPENSE">
+         <Value>PR.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_BILLABLE_EMPLOYEE_EXPENSE">
+         <Value>EE.BILLABLE = ?</Value>
+      </Property>
+
+
+
+      <!-- Query Configuration and FilterExtensions for the "Project Expense Report" -->
+
+      <Property name="BASE_QUERY_PROJECT_EXPENSE">
+         <Value>
+            SELECT EE.ENTRYDATE DATE,
+                   EE.CREATIONUSER EMPLOYEE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   ET.DESCRIPTION TYPE,
+                   ET.DESCRIPTION DESCRIPTION,
+                   EE.AMOUNT AMOUNT,
+                   EE.BILLABLE BILLABLE
+
+              FROM EXPENSEENTRIES EE,
+                   EXPENSETYPES ET,
+                   CLIENTS CL,
+                   PROJECTEXPENSES PE,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+               AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+               AND PE.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+         </Value>
+      </Property>
+
+      <Property name="FILTER_PROJECT_PROJECT_EXPENSE">
+         <Value>PR.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_PROJECT_EXPENSE">
+         <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_BILLABLE_PROJECT_EXPENSE">
+         <Value>EE.BILLABLE = ?</Value>
+      </Property>
+
+
+      <!-- Query Configuration and FilterExtensions for the "Client Expense Report" -->
+
+      <Property name="BASE_QUERY_CLIENT_EXPENSE">
+         <Value>
+            SELECT EE.ENTRYDATE DATE,
+                   EE.CREATIONUSER EMPLOYEE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   ET.DESCRIPTION TYPE,
+                   ET.DESCRIPTION DESCRIPTION,
+                   EE.AMOUNT AMOUNT,
+                   EE.BILLABLE BILLABLE
+
+              FROM EXPENSEENTRIES EE,
+                   EXPENSETYPES ET,
+                   CLIENTS CL,
+                   PROJECTEXPENSES PE,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+               AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+               AND PE.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+         </Value>
+      </Property>
+
+      <Property name="FILTER_CLIENT_CLIENT_EXPENSE">
+         <Value>CL.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_CLIENT_EXPENSE">
+         <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_BILLABLE_CLIENT_EXPENSE">
+         <Value>EE.BILLABLE = ?</Value>
+      </Property>
+
+
+      <!-- Query Configuration and FilterExtensions for the "Employee Time and Expense Report" -->
+
+      <Property name="BASE_QUERY_EMPLOYEE_TIMEEXPENSE">
+         <Value>
+            SELECT TE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   TE.HOURS HOURS,
+                   -1 AMOUNT,
+                   TE.BILLABLE BILLABLE
+
+              FROM TIMEENTRIES TE,
+                   CLIENTS CL,
+                   PROJECTTIMES PT,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+               AND PT.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+
+            UNION
+
+            SELECT EE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   -1 HOURS,
+                   EE.AMOUNT AMOUNT,
+                   EE.BILLABLE BILLABLE
+
+              FROM EXPENSEENTRIES EE,
+                   CLIENTS CL,
+                   PROJECTEXPENSES PE,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+               AND PE.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+         </Value>
+      </Property>
+
+      <Property name="FILTER_EMPLOYEE_EMPLOYEE_TIMEEXPENSE">
+         <Value>TE.CREATIONUSER = ? UNION EE.CREATIONUSER = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_EMPLOYEE_TIMEEXPENSE">
+         <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_CLIENT_EMPLOYEE_TIMEEXPENSE">
+         <Value>CL.NAME = ? UNION CL.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_PROJECT_EMPLOYEE_TIMEEXPENSE">
+         <Value>PR.NAME = ? UNION PR.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_BILLABLE_EMPLOYEE_TIMEEXPENSE">
+         <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+      </Property>
+
+
+      <!-- Query Configuration and FilterExtensions for the "Project Time and Expense Report" -->
+
+      <Property name="BASE_QUERY_PROJECT_TIMEEXPENSE">
+         <Value>
+            SELECT TE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   TE.HOURS HOURS,
+                   -1 AMOUNT,
+                   TE.BILLABLE BILLABLE
+
+              FROM TIMEENTRIES TE,
+                   CLIENTS CL,
+                   PROJECTTIMES PT,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+               AND PT.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+
+            UNION
+
+            SELECT EE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   -1 HOURS,
+                   EE.AMOUNT AMOUNT,
+                   EE.BILLABLE BILLABLE
+
+              FROM EXPENSEENTRIES EE,
+                   CLIENTS CL,
+                   PROJECTEXPENSES PE,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+               AND PE.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+         </Value>
+      </Property>
+
+      <Property name="FILTER_PROJECT_PROJECT_TIMEEXPENSE">
+         <Value>PR.NAME = ? UNION PR.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_PROJECT_TIMEEXPENSE">
+         <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_BILLABLE_PROJECT_TIMEEXPENSE">
+         <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+      </Property>
+
+
+
+      <!-- Query Configuration and FilterExtensions for the "Client Time and Expense Report" -->
+
+      <Property name="BASE_QUERY_CLIENT_TIMEEXPENSE">
+         <Value>
+            SELECT TE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   TE.HOURS HOURS,
+                   -1 AMOUNT,
+                   TE.BILLABLE BILLABLE
+
+              FROM TIMEENTRIES TE,
+                   CLIENTS CL,
+                   PROJECTTIMES PT,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+               AND PT.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+
+            UNION
+
+            SELECT EE.ENTRYDATE DATE,
+                   CL.NAME CLIENT,
+                   PR.NAME PROJECT,
+                   -1 HOURS,
+                   EE.AMOUNT AMOUNT,
+                   EE.BILLABLE BILLABLE
+
+              FROM EXPENSEENTRIES EE,
+                   CLIENTS CL,
+                   PROJECTEXPENSES PE,
+                   PROJECTS PR,
+                   CLIENTPROJECTS CP
+
+             WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+               AND PE.PROJECTSID = PR.PROJECTSID
+               AND CL.CLIENTSID = CP.CLIENTSID
+               AND CP.PROJECTSID = PR.PROJECTSID
+         </Value>
+      </Property>
+
+      <Property name="FILTER_CLIENT_CLIENT_TIMEEXPENSE">
+         <Value>CL.NAME = ? UNION CL.NAME = ?</Value>
+      </Property>
+
+      <Property name="FILTER_DATE_CLIENT_TIMEEXPENSE">
+         <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+      </Property>
+
+      <Property name="FILTER_BILLABLE_CLIENT_TIMEEXPENSE">
+         <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+      </Property>
+
+
+   </Config>
+   <Config name="com.topcoder.timetracker.report.FiltersConfiguration">
+
+      <!-- Filter Configuration for the "Employee Time Report" -->
+
+      <Property name="EMPLOYEE_TIME_MANDATORY_FILTER">
+         <Value>FILTER_EMPLOYEE</Value>
+      </Property>
+
+      <Property name="EMPLOYEE_TIME_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_CLIENT</Value>
+         <Value>FILTER_PROJECT</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Project Time Report" -->
+
+      <Property name="PROJECT_TIME_MANDATORY_FILTER">
+         <Value>FILTER_PROJECT</Value>
+      </Property>
+
+      <Property name="PROJECT_TIME_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Client Time Report" -->
+
+      <Property name="CLIENT_TIME_MANDATORY_FILTER">
+         <Value>FILTER_CLIENT</Value>
+      </Property>
+
+      <Property name="CLIENT_TIME_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Employee Expense Report" -->
+
+      <Property name="EMPLOYEE_EXPENSE_MANDATORY_FILTER">
+         <Value>FILTER_EMPLOYEE</Value>
+      </Property>
+
+      <Property name="EMPLOYEE_EXPENSE_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_CLIENT</Value>
+         <Value>FILTER_PROJECT</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Project Expense Report" -->
+
+      <Property name="PROJECT_EXPENSE_MANDATORY_FILTER">
+         <Value>FILTER_PROJECT</Value>
+      </Property>
+
+      <Property name="PROJECT_EXPENSE_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Client Expense Report" -->
+
+      <Property name="CLIENT_EXPENSE_MANDATORY_FILTER">
+         <Value>FILTER_CLIENT</Value>
+      </Property>
+
+      <Property name="CLIENT_EXPENSE_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Employee Time and Expense Report" -->
+
+      <Property name="EMPLOYEE_TIMEEXPENSE_MANDATORY_FILTER">
+         <Value>FILTER_EMPLOYEE</Value>
+      </Property>
+
+      <Property name="EMPLOYEE_TIMEEXPENSE_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_CLIENT</Value>
+         <Value>FILTER_PROJECT</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Project Time and Expense Report" -->
+
+      <Property name="PROJECT_TIMEEXPENSE_MANDATORY_FILTER">
+         <Value>FILTER_PROJECT</Value>
+      </Property>
+
+      <Property name="PROJECT_TIMEEXPENSE_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+
+      <!-- Filter Configuration for the "Client Time and Expense Report" -->
+
+      <Property name="CLIENT_TIMEEXPENSE_MANDATORY_FILTER">
+         <Value>FILTER_CLIENT</Value>
+      </Property>
+
+      <Property name="CLIENT_TIMEEXPENSE_OPTIONAL_FILTER">
+         <Value>FILTER_DATE</Value>
+         <Value>FILTER_BILLABLE</Value>
+      </Property>
+
+   </Config>
+   <Config name="com.topcoder.timetracker.report.ColumnsConfiguration">
+
+      <!-- Default Columns Configuration for the "Employee Time Report" -->
+
+      <Property name="EMPLOYEE_TIME_COLUMNS">
+         <Value>DATE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>TASK</Value>
+         <Value>HOURS</Value>
+         <Value>PAY_RATE</Value>
+         <Value>BILLABLE</Value>
+       </Property>
+
+
+      <!-- Default Columns Configuration for the "Project Time Report" -->
+
+      <Property name="PROJECT_TIME_COLUMNS">
+         <Value>DATE</Value>
+         <Value>EMPLOYEE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>TASK</Value>
+         <Value>HOURS</Value>
+         <Value>BILLABLE</Value>
+      </Property>
+
+
+      <!-- Default Columns Configuration for the "Client Time Report" -->
+
+      <Property name="CLIENT_TIME_COLUMNS">
+         <Value>DATE</Value>
+         <Value>EMPLOYEE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>TASK</Value>
+         <Value>HOURS</Value>
+         <Value>BILLABLE</Value>
+      </Property>
+
+
+      <!-- Default Columns Configuration for the "Employee Expense Report" -->
+
+      <Property name="EMPLOYEE_EXPENSE_COLUMNS">
+         <Value>DATE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>TYPE</Value>
+         <Value>DESCRIPTION</Value>
+         <Value>AMOUNT</Value>
+         <Value>BILLABLE</Value>
+      </Property>
+
+
+      <!-- Default Columns Configuration for the "Project Expense Report" -->
+
+      <Property name="PROJECT_EXPENSE_COLUMNS">
+         <Value>DATE</Value>
+         <Value>EMPLOYEE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>TYPE</Value>
+         <Value>DESCRIPTION</Value>
+         <Value>AMOUNT</Value>
+         <Value>BILLABLE</Value>
+       </Property>
+
+
+      <!-- Default Columns Configuration for the "Client Expense Report" -->
+
+      <Property name="CLIENT_EXPENSE_COLUMNS">
+         <Value>DATE</Value>
+         <Value>EMPLOYEE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>TYPE</Value>
+         <Value>DESCRIPTION</Value>
+         <Value>AMOUNT</Value>
+         <Value>BILLABLE</Value>
+      </Property>
+
+
+      <!-- Default Columns Configuration for the "Employee Time and Expense Report" -->
+
+      <Property name="EMPLOYEE_TIMEEXPENSE_COLUMNS">
+         <Value>DATE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>HOURS</Value>
+         <Value>AMOUNT</Value>
+         <Value>BILLABLE</Value>
+       </Property>
+
+
+      <!-- Default Columns Configuration for the "Project Time and Expense Report" -->
+
+      <Property name="PROJECT_TIMEEXPENSE_COLUMNS">
+         <Value>DATE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>HOURS</Value>
+         <Value>AMOUNT</Value>
+         <Value>BILLABLE</Value>
+      </Property>
+
+
+      <!-- Default Columns Configuration for the "Client Time and Expense Report" -->
+
+      <Property name="CLIENT_TIMEEXPENSE_COLUMNS">
+         <Value>DATE</Value>
+         <Value>CLIENT</Value>
+         <Value>PROJECT</Value>
+         <Value>HOURS</Value>
+         <Value>AMOUNT</Value>
+         <Value>BILLABLE</Value>
+      </Property>
+
+   </Config>
+   <Config name="com.topcoder.timetracker.report.ColumnTypes">
+
+      <Property name="DATE_TYPE">
+         <Value>DATE</Value>
+       </Property>
+
+      <Property name="CLIENT_TYPE">
+         <Value>VARCHAR</Value>
+       </Property>
+
+      <Property name="PROJECT_TYPE">
+         <Value>VARCHAR</Value>
+       </Property>
+
+      <Property name="TASK_TYPE">
+         <Value>VARCHAR</Value>
+       </Property>
+
+      <Property name="HOURS_TYPE">
+         <Value>FLOAT</Value>
+       </Property>
+
+      <Property name="PAY_RATE_TYPE">
+         <Value>MONEY</Value>
+       </Property>
+
+      <Property name="BILLABLE_TYPE">
+         <Value>SMALLINT</Value>
+       </Property>
+      <Property name="EMPLOYEE_TYPE">
+         <Value>VARCHAR</Value>
+       </Property>
+      <Property name="TYPE_TYPE">
+         <Value></Value>
+       </Property>
+      <Property name="DESCRIPTION_TYPE">
+         <Value>VARCHAR</Value>
+       </Property>
+      <Property name="AMOUNT_TYPE">
+         <Value>MONEY</Value>
+       </Property>
+   </Config>
+   <Config name="com.topcoder.timetracker.report.Reports">
+      <Property name="ReportClasses">
+         <Value>com.topcoder.timetracker.report.htmlreport.TimeReport</Value>
+         <Value>com.topcoder.timetracker.report.htmlreport.ExpenseReport</Value>
+         <Value>com.topcoder.timetracker.report.htmlreport.TimeExpenseReport</Value>
+       </Property>
+   </Config>
+   <Config name="com.topcoder.timetracker.report.DBHandlers">
+        <Property name="DBHandlers">
+            <Value>InformixDBHandler</Value>
+        </Property>
+        <Property name="InformixDBHandler">
+            <Value>com.topcoder.timetracker.report.dbhandler.InformixDBHandler</Value>
+        </Property>
+        <Property name="InformixDBHandler_class">
+         <Value>com.topcoder.timetracker.report.dbhandler.InformixDBHandler</Value>
+        </Property>
+   </Config>
+  <Config name="com.topcoder.timetracker.report.Informix">
+    <Property name="connections">
+        <Property name="default">
+            <Value>InformixConnection</Value>
+        </Property>
+        <Property name="InformixConnection">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jdbc_driver">
+                    <Value>com.informix.jdbc.IfxDriver</Value>
+                </Property>
+                <Property name="jdbc_url">
+                    <Value>jdbc:informix-sqli://tcsdesigner:1526/test4:informixserver=tcs</Value>
+                </Property>
+                <Property name="user">
+                    <Value>informix</Value>
+                </Property>
+                <Property name="password">
+                    <Value>topcoder</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Property>
+  </Config>
+  <Config name="com.topcoder.timetracker.stresstests.data">
+    <Property name="project">
+        <Value>time_tracker</Value>
+    </Property>
+    <Property name="client">
+        <Value>company one</Value>
+    </Property>
+    <Property name="employee">
+        <Value>topcoder stuff 1</Value>
+    </Property>
+    <Property name="cleardata">
+        <Value>DELETE FROM projectworkers</Value>
+        <Value>DELETE FROM projecttimes</Value>
+        <Value>DELETE FROM timeentries</Value>
+        <Value>DELETE FROM projectexpenses</Value>
+        <Value>DELETE FROM expenseentries</Value>
+        <Value>DELETE FROM clientprojects</Value>
+        <Value>DELETE FROM users</Value>
+        <Value>DELETE FROM timestatuses</Value>
+        <Value>DELETE FROM tasktypes</Value>
+        <Value>DELETE FROM projects</Value>
+        <Value>DELETE FROM expensetypes</Value>
+        <Value>DELETE FROM expensestatuses</Value>
+        <Value>DELETE FROM clients</Value>
+    </Property>
+    <Property name="loaddata">
+        <Value>INSERT INTO clients VALUES (1,'company one','2006-01-01 00:00:00','topcoder stuff','2006-01-01 00:00:00','topcoder stuff')</Value>
+        <Value>INSERT INTO expensestatuses VALUES (1,'Expense Status 1','2006-01-01 00:00:00','topcoder stuff','2006-01-01 00:00:00','topcoder stuff')</Value>
+        <Value>INSERT INTO expensetypes VALUES (1,'Expense Type 1','2006-01-01 00:00:00','topcoder stuff','2006-01-01 00:00:00','topcoder stuff')</Value>
+        <Value>INSERT INTO projects VALUES (1,'time_tracker','time_tracker','2006-01-01 00:00:00','2006-01-10 00:00:00','2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO projects VALUES (2,'project 2','project 2','2006-01-01 00:00:00','2006-01-10 00:00:00','2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+        <Value>INSERT INTO tasktypes VALUES (1,'Task Type 1','2006-01-01 00:00:00','topcoder stuff','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO timestatuses VALUES (1,'Time Status 1','2006-01-01 00:00:00','topcoder stuff','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+        <Value>INSERT INTO users VALUES (1,'topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1','User Store 1')</Value>
+        <Value>INSERT INTO users VALUES (2,'topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2','User Store 1')</Value>
+        <Value>INSERT INTO clientprojects VALUES (1,1,'2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO clientprojects VALUES (1,2,'2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+        <Value>INSERT INTO expenseentries VALUES (1,1,1,'Expense Entry 1','2006-01-01 00:00:00','333',1,'2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO expenseentries VALUES (2,1,1,'Expense Entry 2','2006-01-01 00:00:00','444',1,'2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+        <Value>INSERT INTO projectexpenses VALUES (1,1,'2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO projectexpenses VALUES (2,2,'2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+        <Value>INSERT INTO timeentries VALUES (1,1,1,'Time Entry 1','2006-01-01 00:00:00',10,1,'2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO timeentries VALUES (2,1,1,'Time Entry 2','2006-01-01 00:00:00',20,1,'2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+        <Value>INSERT INTO projecttimes VALUES (1,1,'2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO projecttimes VALUES (2,2,'2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+        <Value>INSERT INTO projectworkers VALUES (1,1,'2006-01-01 00:00:00','2006-01-10 00:00:00','1000','2006-01-01 00:00:00','topcoder stuff 1','2006-01-01 00:00:00','topcoder stuff 1')</Value>
+        <Value>INSERT INTO projectworkers VALUES (2,2,'2006-01-01 00:00:00','2006-01-10 00:00:00','1000','2006-01-01 00:00:00','topcoder stuff 2','2006-01-01 00:00:00','topcoder stuff 2')</Value>
+    </Property>
+  </Config>
+</CMConfig>

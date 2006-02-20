@@ -1,0 +1,46 @@
+<BODY>
+    <TABLE STYLE=" border-width:1px; border-style:solid; border-color:blue; ">
+        <TR STYLE="background: #8080FF; color: black;text-align:right; margin-right:5px;">
+            <TH STYLE="background: #808080; color: black;text-align:center;">Date of occurence</TH>
+            <TH STYLE="background: #808080; color: black;text-align:center;">Project</TH>
+            <TH STYLE="background: #808080; color: black;text-align:center;">Time taken</TH>
+            <TH STYLE="background: #808080; color: black;text-align:center;">Amount Spent</TH>
+        </TR>
+        <TR STYLE="background: #8080FF; color: black;text-align:right; margin-right:5px;">
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">at 2006-01-01 00:00:00.0</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">project1</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">* Hours</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">$5.00</TD>
+        </TR>
+        <TR STYLE="background: #8080FF; color: black;text-align:right; margin-right:5px;">
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">at 2006-01-01 00:00:00.0</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">project1</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">* Hours</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">$15.03</TD>
+        </TR>
+        <TR STYLE="background: #8080FF; color: black;text-align:right; margin-right:5px;">
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">at 2006-01-01 00:00:00.0</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">project1</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">1 Hours</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">$*</TD>
+        </TR>
+        <TR STYLE="background: #8080FF; color: black;text-align:right; margin-right:5px;">
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">at 2006-01-01 00:00:00.0</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">project1</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">4 Hours</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">$*</TD>
+        </TR>
+        <TR STYLE="background: #8080FF; color: black;text-align:right; margin-right:5px;">
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">at 2006-01-03 00:00:00.0</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">project1</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">6 Hours</TD>
+            <TD STYLE=" border-width:1px; border-style:solid; border-color:black; ">$*</TD>
+        </TR>
+    </TABLE>
+    <BR/>
+    <BR/>
+    <CENTER>Total Hours: 11</CENTER>
+    <BR/>
+    <BR/>
+    <CENTER>Total Amount: 20.03</CENTER>
+</BODY>

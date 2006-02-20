@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <RESULT date="2005-03-03 00:00:00.0" employee="ivern" client="client1" project="project1" task="tasktype2"
+            hours="3.0" billable="1"/>
+    <RESULT date="2005-10-10 00:00:00.0" employee="ivern" client="client1" project="project1" task="tasktype1"
+            hours="5.0" billable="1"/>
+    <RESULT date="2006-01-01 00:00:00.0" employee="dok" client="client1" project="project1" task="tasktype3" hours="1.0"
+            billable="1"/>
+    <RESULT date="2006-01-01 00:00:00.0" employee="dok" client="client2" project="project2" task="tasktype2" hours="4.0"
+            billable="1"/>
+    <RESULT date="2006-01-01 00:00:00.0" employee="jhuges" client="client1" project="project3" task="tasktype2"
+            hours="6.0" billable="1"/>
+    <RESULT date="2006-01-03 00:00:00.0" employee="ivern" client="client1" project="project1" task="tasktype2"
+            hours="6.0" billable="1"/>
+    <RESULT date="2006-02-01 00:00:00.0" employee="jhuges" client="client3" project="project4" task="tasktype3"
+            hours="5.0" billable="1"/>
+</dataset>

@@ -1,0 +1,54 @@
+<BODY>
+    <TABLE>
+        <TR>
+            <TH>CLIENT</TH>
+            <TH>DATE</TH>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2005-03-03 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2005-03-03 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2005-10-10 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2005-11-11 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2006-01-01 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2006-01-01 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2006-01-01 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2006-01-01 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2006-01-01 00:00:00.0</TD>
+        </TR>
+        <TR>
+            <TD>client1</TD>
+            <TD>2006-01-03 00:00:00.0</TD>
+        </TR>
+    </TABLE>
+    <BR/>
+    <BR/>
+    <CENTER>Total Hours: 25</CENTER>
+    <BR/>
+    <BR/>
+    <CENTER>Total Amount: 36.03</CENTER>
+</BODY>

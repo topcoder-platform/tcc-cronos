@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<CMConfig>
+    <Config name="com.topcoder.timetracker.report.DefaultConfiguration">
+        <Property name="DBConnectionFactoryNamespace">
+            <Value>com.topcoder.timetracker.report.Informix</Value>
+        </Property>
+        <Property name="Connection">
+            <Value>InformixConnection</Value>
+        </Property>
+        <Property name="DBHandler">
+            <Value></Value>
+        </Property>
+    </Config>
+</CMConfig>

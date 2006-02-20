@@ -1,0 +1,43 @@
+<BODY>
+    <TABLE>
+        <TR>
+            <TH>DATE</TH>
+            <TH>CLIENT</TH>
+            <TH>PROJECT</TH>
+            <TH>TYPE</TH>
+            <TH>DESCRIPTION</TH>
+            <TH>AMOUNT</TH>
+            <TH>BILLABLE</TH>
+        </TR>
+        <TR>
+            <TD>2005-03-03 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project1</TD>
+            <TD>expensetype1</TD>
+            <TD>expense 1 desc</TD>
+            <TD>15.00</TD>
+            <TD>1</TD>
+        </TR>
+        <TR>
+            <TD>2005-11-11 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project1</TD>
+            <TD>expensetype2</TD>
+            <TD>expense 2 desc</TD>
+            <TD>1.00</TD>
+            <TD>1</TD>
+        </TR>
+        <TR>
+            <TD>2006-01-01 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project1</TD>
+            <TD>expensetype1</TD>
+            <TD>expense 4 desc</TD>
+            <TD>15.03</TD>
+            <TD>0</TD>
+        </TR>
+    </TABLE>
+    <BR/>
+    <BR/>
+    <CENTER>Total Amount: 31.03</CENTER>
+</BODY>

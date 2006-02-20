@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Note (Important): The Column here are not the actual Database column but the column as identified by the application.
+         It is possible that the name of the application column is same as the Database column, but not necessary. For
+         simplicity of understanding it has been kept same. It will be different if 2 or more tables have the column with
+         the same name but different column types. If 2 or more tables have column with the same name and also the same
+         data type, then the application level column name can be the same for them, but if the data type differs, then
+         the application level column name has to be different.
+         For the Time Tracker Report application, the application level column-names are enumerated by the Enumeration
+         class com.topcoder.timetracker.report.Column.
+
+-->
+
+
+<CMConfig>
+
+    <!-- Default Configuration for the reports.
+        All reports irrespective of the type or the category they belong to, can use this Configuration.
+        This configuration just specifies the value for the Connection and the DBHandler property 
+        (for pluggable persistence), which are the required parameter for the Configuration. All other 
+        properties are optional for the configuration.
+        The namespace attribute in the "reportdisplay" JSP tag can specify this Configuration
+        name as its value.
+    -->
+
+    <Config name="com.topcoder.timetracker.report.DefaultConfiguration">
+        <Property name="DBConnectionFactoryNamespace">
+            <Value>com.topcoder.timetracker.report.Informix</Value>
+        </Property>
+        <Property name="Connection">
+            <Value>InformixConnection</Value>
+        </Property>
+        <Property name="DBHandler">
+            <Value>InformixDBHandler</Value>
+        </Property>
+    </Config>
+
+
+    <!--
+         Customized Configurations for the report.
+         This Configuration shows us an example as to what parameters could be provided in a Configuration and
+         whats the intended use of the value of the parameter in Report generation.
+         The namespace attribute in the "reportdisplay" JSP tag can specify this Configuration
+         name as its value.
+
+    -->
+
+    <Config name="com.topcoder.timetracker.report.CustomConfiguration">
+
+        <!-- Required Property For the Configuration. -->
+        <Property name="DBConnectionFactoryNamespace">
+            <Value>com.topcoder.timetracker.report.Informix</Value>
+        </Property>
+
+        <Property name="Connection">
+            <Value>InformixConnection</Value>
+        </Property>
+        <Property name="DBHandler">
+            <Value>InformixDBHandler</Value>
+        </Property>
+
+        <!-- Optional Properties for the Configuration -->
+
+        <!-- Column Properties.
+            These set of properties specify the Column Labels to be used for display during
+            the rendering of the report. If no column property is specified then the default Columns Labels will
+            be used.
+             The names of the Column properties for the reports under consideration are:
+
+            COLUMN_DATE, COLUMN_CLIENT, COLUMN_PROJECT, COLUMN_TASK, COLUMN_HOURS, COLUMN_PAY_RATE, COLUMN_BILLABLE,
+            COLUMN_EMPLOYEE, COLUMN_TYPE, COLUMN_DESCRIPTION and COLUMN_AMOUNT.
+            ( Basically the format is COLUMN_<COLUMNAME>. Here <COLUMNNAME> is the application level columnname.
+
+        -->
+
+        <Property name="COLUMN_EMPLOYEE">
+            <Value>Employee Name</Value>
+        </Property>
+        <Property name="COLUMN_AMOUNT">
+            <Value>Amount Spent</Value>
+        </Property>
+        <Property name="COLUMN_CLIENT">
+            <Value>Client</Value>
+        </Property>
+        <Property name="COLUMN_DATE">
+            <Value>Date of occurence</Value>
+        </Property>
+        <Property name="COLUMN_PROJECT">
+            <Value>Project</Value>
+        </Property>
+        <Property name="COLUMN_TASK">
+            <Value>Task</Value>
+        </Property>
+        <Property name="COLUMN_HOURS">
+            <Value>Time taken</Value>
+        </Property>
+        <Property name="COLUMN_PAY_RATE">
+            <Value>Pay Rate</Value>
+        </Property>
+        <Property name="COLUMN_BILLABLE">
+            <Value>Billable?</Value>
+        </Property>
+        <Property name="COLUMN_TYPE">
+            <Value>Type</Value>
+        </Property>
+        <Property name="COLUMN_DESCRIPTION">
+            <Value>Description</Value>
+        </Property>
+
+
+        <!-- Prefix and Suffix Properties.
+            These set of properties specify the prefix and the suffix for a particular Column. This is useful for
+            supporting when certain prefix or suffix needs to be added to the Column data during display, an example
+            being the display of "$" symbol as prefix for AMOUNT Column.
+            Note that only the prefixes and the suffixes for the columns being display will be considered, others
+            will be ignored.
+            The names of the prefix and the suffix properties are obtained by concatenating the "PREFIX_" and the
+            "SUFFIX_" literals respectively to the COLUMN properties.
+            Examples of prefix and suffix property names are:
+                PREFIX_COLUMN_DATE, PREFIX_COLUMN_CLIENT, SUFFIX_COLUMN_TASK, SUFFIX_COLUMN_CLIENT etc.
+        -->
+
+        <Property name="PREFIX_COLUMN_AMOUNT">
+            <Value>$</Value>
+        </Property>
+        <Property name="PREFIX_COLUMN_DATE">
+            <Value>at </Value>
+        </Property>
+        <Property name="SUFFIX_COLUMN_HOURS">
+            <Value> Hours</Value>
+        </Property>
+
+        <!-- Properties for CSS support. Note that not all properties required to be specified.  -->
+
+        <!-- The CSS Style to be used in the Table HTML tag -->
+        <Property name="TABLE_STYLE">
+            <Value>border-width:1px; border-style:solid; border-color:blue;</Value>
+        </Property>
+
+        <!-- The CSS Style to be used in the TH (Table Header) HTML tag -->
+        <Property name="TH_STYLE">
+            <Value>background: #808080; color: black;text-align:center;</Value>
+        </Property>
+
+        <!-- The CSS Style to be used in the TR (Table Row) HTML tag -->
+        <Property name="TR_STYLE">
+            <Value>background: #8080FF; color: black;text-align:right; margin-right:5px;</Value>
+        </Property>
+
+        <!-- The CSS Style to be used in the TRD HTML tag -->
+        <Property name="TD_STYLE">
+            <Value>border-width:1px; border-style:solid; border-color:black;</Value>
+        </Property>
+
+        <!-- Custom Column Properties.
+                   These set of properties specify the which set of Columns need to be displayed for a particular
+                   Type and Category of the Report. The name of the property is in the format
+                   CUSTOM_<ReportType>_<ReportCategory>_COLUMNS. eg: CUSTOM_EMPLOYEE_TIME_COLUMNS.
+                   These properties are multivalued and each of the value is a valid application level
+                   Column name (DATE, CLIENT, PROJECT, TASK etc.) These properties are optional and the may not be
+                   present for a particular Type and the Category of the Report. If this property is not
+                   present for a particular Type and Catgeory of the Report, then the default set of columns for
+                   the Report will be displayed, else the set of Columns specified by this property are only
+                   displayed.
+                   -->
+
+        <!-- Custom Columns Configuration for the "Employee Time Report" -->
+
+        <Property name="CUSTOM_EMPLOYEE_TIME_COLUMNS">
+            <Value>DATE</Value>
+            <Value>PROJECT</Value>
+            <Value>TASK</Value>
+            <Value>HOURS</Value>
+            <Value>PAY_RATE</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Project Time Report" -->
+
+        <Property name="CUSTOM_PROJECT_TIME_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>PROJECT</Value>
+            <Value>TASK</Value>
+            <Value>HOURS</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Client Time Report" -->
+
+        <Property name="CUSTOM_CLIENT_TIME_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>PROJECT</Value>
+            <Value>TASK</Value>
+            <Value>HOURS</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Employee Expense Report" -->
+
+        <Property name="CUSTOM_EMPLOYEE_EXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>PROJECT</Value>
+            <Value>TYPE</Value>
+            <Value>DESCRIPTION</Value>
+            <Value>AMOUNT</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Project Expense Report" -->
+
+        <Property name="CUSTOM_PROJECT_EXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>PROJECT</Value>
+            <Value>TYPE</Value>
+            <Value>DESCRIPTION</Value>
+            <Value>AMOUNT</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Client Expense Report" -->
+
+        <Property name="CUSTOM_CLIENT_EXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>PROJECT</Value>
+            <Value>TYPE</Value>
+            <Value>DESCRIPTION</Value>
+            <Value>AMOUNT</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Employee Time and Expense Report" -->
+
+        <Property name="CUSTOM_EMPLOYEE_TIMEEXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>PROJECT</Value>
+            <Value>HOURS</Value>
+            <Value>AMOUNT</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Project Time and Expense Report" -->
+
+        <Property name="CUSTOM_PROJECT_TIMEEXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>PROJECT</Value>
+            <Value>HOURS</Value>
+            <Value>AMOUNT</Value>
+        </Property>
+
+
+        <!-- Custom Columns Configuration for the "Client Time and Expense Report" -->
+
+        <Property name="CUSTOM_CLIENT_TIMEEXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>PROJECT</Value>
+            <Value>HOURS</Value>
+            <Value>AMOUNT</Value>
+        </Property>
+    </Config>
+
+
+    <!--
+         The following set of configurations define basically the Queries, Valid Filters , Default Set of Columns for each
+         of the nine different reports.
+         Note that these configurations are not used as the value for the namespace attribute in the "reportdisplay" JSP Tag.
+         Note that these configurations will be used for the dynamic query formation for the report and are more a sort of
+         static configuration and will change only when the queries for the report changes.
+    -->
+
+    <!--
+         This is a required configuration and specifies the "Base Query" and the FilterExtension of Query for each of the Report.
+         This configuration is kept external in a configuration file, rather than embedding it in code as it would
+         allow for easy modification, tuning of the query without actually requiring to change the source.
+         The property name for the "Base Query" for the report is in the format BASE_QUERY_<REPORT_TYPE>_<REPORT_CATEGORY>. eg. BASE_QUERY_EMPLOYEE_TIME
+         The property name for the "FilterExtension for query" for a report is in the format <FILTER_NAME>_<REPORT_TYPE>_<REPORT_CATEGORY>. eg. FILTER_DATE_EMPLOYEE_TIME
+         Note that the <REPORT_TYPE>, <REPORT_CATEGORY> and <FILTER_NAME> corresponds to the values defined by the enumeration classes
+         ReportyType, ReportCategory and FilterCategory class.
+         The following configuration consists of a ready to use Configuration for all the nine Reports that will be required by the Time Tracker application.
+    -->
+
+    <Config name="com.topcoder.timetracker.report.QueriesConfiguration">
+
+
+        <!-- Query Configuration and FilterExtensions for the "Employee Time Report" -->
+
+        <Property name="BASE_QUERY_EMPLOYEE_TIME">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TT.DESCRIPTION TASK,
+                TE.HOURS HOURS,
+                PW.PAYRATE PAY_RATE,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                TASKTYPES TT,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP,
+                PROJECTWORKERS PW,
+                USERS US
+
+                WHERE TE.TASKTYPESID = TT.TASKTYPESID
+                AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND PW.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+                AND US.USERSID = PW.USERSID
+                AND US.NAME = TE.CREATIONUSER
+
+            </Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_EMPLOYEE_TIME">
+            <Value>TE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_EMPLOYEE_TIME">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_EMPLOYEE_TIME">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_EMPLOYEE_TIME">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_EMPLOYEE_TIME">
+            <Value>TE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Project Time Report" -->
+
+        <Property name="BASE_QUERY_PROJECT_TIME">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                TE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TT.DESCRIPTION TASK,
+                TE.HOURS HOURS,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                TASKTYPES TT,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE TE.TASKTYPESID = TT.TASKTYPESID
+                AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_PROJECT_TIME">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_PROJECT_TIME">
+            <Value>TE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_PROJECT_TIME">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_PROJECT_TIME">
+            <Value>TE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Client Time Report" -->
+
+        <Property name="BASE_QUERY_CLIENT_TIME">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                TE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TT.DESCRIPTION TASK,
+                TE.HOURS HOURS,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                TASKTYPES TT,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE TE.TASKTYPESID = TT.TASKTYPESID
+                AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_CLIENT_TIME">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_CLIENT_TIME">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_CLIENT_TIME">
+            <Value>TE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Employee Expense Report" -->
+
+        <Property name="BASE_QUERY_EMPLOYEE_EXPENSE">
+            <Value>
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                ET.DESCRIPTION TYPE,
+                EE.DESCRIPTION DESCRIPTION,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                EXPENSETYPES ET,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+                AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+            </Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_EMPLOYEE_EXPENSE">
+            <Value>EE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_EMPLOYEE_EXPENSE">
+            <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_EMPLOYEE_EXPENSE">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_EMPLOYEE_EXPENSE">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_EMPLOYEE_EXPENSE">
+            <Value>EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Project Expense Report" -->
+
+        <Property name="BASE_QUERY_PROJECT_EXPENSE">
+            <Value>
+                SELECT EE.ENTRYDATE DATE,
+                EE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                ET.DESCRIPTION TYPE,
+                EE.DESCRIPTION DESCRIPTION,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                EXPENSETYPES ET,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+                AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_PROJECT_EXPENSE">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_PROJECT_EXPENSE">
+            <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_PROJECT_EXPENSE">
+            <Value>EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Client Expense Report" -->
+
+        <Property name="BASE_QUERY_CLIENT_EXPENSE">
+            <Value>
+                SELECT EE.ENTRYDATE DATE,
+                EE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                ET.DESCRIPTION TYPE,
+                EE.DESCRIPTION DESCRIPTION,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                EXPENSETYPES ET,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+                AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_CLIENT_EXPENSE">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_CLIENT_EXPENSE">
+            <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_CLIENT_EXPENSE">
+            <Value>EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Employee Time and Expense Report" -->
+
+        <Property name="BASE_QUERY_EMPLOYEE_TIMEEXPENSE">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TE.HOURS HOURS,
+                -1 AMOUNT,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+                UNION
+
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                -1 HOURS,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_EMPLOYEE_TIMEEXPENSE">
+            <Value>TE.CREATIONUSER = ? UNION EE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_EMPLOYEE_TIMEEXPENSE">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_EMPLOYEE_TIMEEXPENSE">
+            <Value>CL.NAME = ? UNION CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_EMPLOYEE_TIMEEXPENSE">
+            <Value>PR.NAME = ? UNION PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_EMPLOYEE_TIMEEXPENSE">
+            <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Project Time and Expense Report" -->
+
+        <Property name="BASE_QUERY_PROJECT_TIMEEXPENSE">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TE.HOURS HOURS,
+                -1 AMOUNT,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+                UNION
+
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                -1 HOURS,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_PROJECT_TIMEEXPENSE">
+            <Value>PR.NAME = ? UNION PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_PROJECT_TIMEEXPENSE">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_PROJECT_TIMEEXPENSE">
+            <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Client Time and Expense Report" -->
+
+        <Property name="BASE_QUERY_CLIENT_TIMEEXPENSE">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TE.HOURS HOURS,
+                -1 AMOUNT,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+                UNION
+
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                -1 HOURS,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_CLIENT_TIMEEXPENSE">
+            <Value>CL.NAME = ? UNION CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_CLIENT_TIMEEXPENSE">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_CLIENT_TIMEEXPENSE">
+            <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+        </Property>
+
+
+    </Config>
+
+    <!--
+       This is a required configuration and specifies the Filters valid for a particular Report and also the one mandatory
+       filter for the report.
+       The property name for the mandatory filter for a report is in the format <REPORT_TYPE>_<REPORT_CATEGORY>_MANDATORY_FILTER.
+       The property name for the optional filters for a report is in the format <REPORT_TYPE>_<REPORT_CATEGORY>_OPTIONAL_FILTER.
+       Note that a filter which is mandatory cannot be a part of the optional filter.
+       The following section defines the Filter (Mandatory and Optional) valid for the nine different reports required for
+       the Time Tracker application.
+       Note that the value for the property is from the Filter constants defined by the enumeration constants in the enumeration
+       com.topcoder.timetracker.report.FilterCategory.
+    -->
+
+    <Config name="com.topcoder.timetracker.report.FiltersConfiguration">
+
+        <!-- Filter Configuration for the "Employee Time Report" -->
+
+        <Property name="EMPLOYEE_TIME_MANDATORY_FILTER">
+            <Value>FILTER_EMPLOYEE</Value>
+        </Property>
+
+        <Property name="EMPLOYEE_TIME_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_CLIENT</Value>
+            <Value>FILTER_PROJECT</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Project Time Report" -->
+
+        <Property name="PROJECT_TIME_MANDATORY_FILTER">
+            <Value>FILTER_PROJECT</Value>
+        </Property>
+
+        <Property name="PROJECT_TIME_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Client Time Report" -->
+
+        <Property name="CLIENT_TIME_MANDATORY_FILTER">
+            <Value>FILTER_CLIENT</Value>
+        </Property>
+
+        <Property name="CLIENT_TIME_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Employee Expense Report" -->
+
+        <Property name="EMPLOYEE_EXPENSE_MANDATORY_FILTER">
+            <Value>FILTER_EMPLOYEE</Value>
+        </Property>
+
+        <Property name="EMPLOYEE_EXPENSE_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_CLIENT</Value>
+            <Value>FILTER_PROJECT</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Project Expense Report" -->
+
+        <Property name="PROJECT_EXPENSE_MANDATORY_FILTER">
+            <Value>FILTER_PROJECT</Value>
+        </Property>
+
+        <Property name="PROJECT_EXPENSE_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Client Expense Report" -->
+
+        <Property name="CLIENT_EXPENSE_MANDATORY_FILTER">
+            <Value>FILTER_CLIENT</Value>
+        </Property>
+
+        <Property name="CLIENT_EXPENSE_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Employee Time and Expense Report" -->
+
+        <Property name="EMPLOYEE_TIMEEXPENSE_MANDATORY_FILTER">
+            <Value>FILTER_EMPLOYEE</Value>
+        </Property>
+
+        <Property name="EMPLOYEE_TIMEEXPENSE_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_CLIENT</Value>
+            <Value>FILTER_PROJECT</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Project Time and Expense Report" -->
+
+        <Property name="PROJECT_TIMEEXPENSE_MANDATORY_FILTER">
+            <Value>FILTER_PROJECT</Value>
+        </Property>
+
+        <Property name="PROJECT_TIMEEXPENSE_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+
+        <!-- Filter Configuration for the "Client Time and Expense Report" -->
+
+        <Property name="CLIENT_TIMEEXPENSE_MANDATORY_FILTER">
+            <Value>FILTER_CLIENT</Value>
+        </Property>
+
+        <Property name="CLIENT_TIMEEXPENSE_OPTIONAL_FILTER">
+            <Value>FILTER_DATE</Value>
+            <Value>FILTER_BILLABLE</Value>
+        </Property>
+
+    </Config>
+
+
+    <!--
+       This is a required configuration and specifies the default and also the valid set of columns for a report, since by default all the
+       columns valid for a report are available.
+       The property name for the default columns for a report is in the format <REPORT_TYPE>_<REPORT_CATEGORY>_COLUMNS. eg. EMPLOYEE_TIME_COLUMNS
+       Note that the values for these properties will have a value from the enumeration constants defined in the enumeration
+       com.topcoder.timetracker.report.Column class.
+       Note that these properties are multivalued.
+    -->
+
+
+    <Config name="com.topcoder.timetracker.report.ColumnsConfiguration">
+
+        <!-- Default Columns Configuration for the "Employee Time Report" -->
+
+        <Property name="EMPLOYEE_TIME_COLUMNS">
+            <Value>DATE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>TASK</Value>
+            <Value>HOURS</Value>
+            <Value>PAY_RATE</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Project Time Report" -->
+
+        <Property name="PROJECT_TIME_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>TASK</Value>
+            <Value>HOURS</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Client Time Report" -->
+
+        <Property name="CLIENT_TIME_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>TASK</Value>
+            <Value>HOURS</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Employee Expense Report" -->
+
+        <Property name="EMPLOYEE_EXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>TYPE</Value>
+            <Value>DESCRIPTION</Value>
+            <Value>AMOUNT</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Project Expense Report" -->
+
+        <Property name="PROJECT_EXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>TYPE</Value>
+            <Value>DESCRIPTION</Value>
+            <Value>AMOUNT</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Client Expense Report" -->
+
+        <Property name="CLIENT_EXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>EMPLOYEE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>TYPE</Value>
+            <Value>DESCRIPTION</Value>
+            <Value>AMOUNT</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Employee Time and Expense Report" -->
+
+        <Property name="EMPLOYEE_TIMEEXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>HOURS</Value>
+            <Value>AMOUNT</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Project Time and Expense Report" -->
+
+        <Property name="PROJECT_TIMEEXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>HOURS</Value>
+            <Value>AMOUNT</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+
+        <!-- Default Columns Configuration for the "Client Time and Expense Report" -->
+
+        <Property name="CLIENT_TIMEEXPENSE_COLUMNS">
+            <Value>DATE</Value>
+            <Value>CLIENT</Value>
+            <Value>PROJECT</Value>
+            <Value>HOURS</Value>
+            <Value>AMOUNT</Value>
+            <Value>BILLABLE</Value>
+        </Property>
+
+    </Config>
+
+    <!--
+       This is a required configuration and specifies the type of the column for each of the columns required in this component.
+       The name of each of these property is in the format <COLUMMNAME>_TYPE. eg: EMPLOYEE_TYPE. The value for this property can
+    be one among the values SMALLINT, INTEGER, FLOAT, VARCHAR, DATE and MONEY. The respective DBHandler implementation for the Database
+       would be required to handle the conversion from the type specified here to the corresponding compatible type supported by the database.
+    -->
+
+    <Config name="com.topcoder.timetracker.report.ColumnTypes">
+
+        <Property name="DATE_TYPE">
+            <Value>DATE</Value>
+        </Property>
+
+        <Property name="CLIENT_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="PROJECT_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="TASK_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="HOURS_TYPE">
+            <Value>FLOAT</Value>
+        </Property>
+
+        <Property name="PAY_RATE_TYPE">
+            <Value>MONEY</Value>
+        </Property>
+
+        <Property name="BILLABLE_TYPE">
+            <Value>SMALLINT</Value>
+        </Property>
+
+        <Property name="EMPLOYEE_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="TYPE_TYPE">
+            <Value></Value>
+        </Property>
+
+        <Property name="DESCRIPTION_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="AMOUNT_TYPE">
+            <Value>MONEY</Value>
+        </Property>
+
+    </Config>
+
+    <!--
+       This is a required configuration and specifies the Report implementation that need to be loaded
+       automatically the ReportFactory class during its initialization. The name of the property is
+       "ReportClasses".
+    -->
+
+    <Config name="com.topcoder.timetracker.report.Reports">
+
+        <Property name="ReportClasses">
+            <Value>com.topcoder.timetracker.report.htmlreport.TimeReport</Value>
+            <Value>com.topcoder.timetracker.report.htmlreport.ExpenseReport</Value>
+            <Value>com.topcoder.timetracker.report.htmlreport.TimeExpenseReport</Value>
+        </Property>
+
+    </Config>
+
+
+    <!--
+       This is a required configuration and specifies the configuration information for the DBHandlers.
+       This configuration specifies the DBHandler implementations to be loaded automatically during the
+       initialization of DBHandlerFactory. It also specifies the name with which, the DBHandler implementation
+       should be registered. The property "DBHandlers" specifies the names of the handlers to be loaded. This is
+       a multivalued attribute. For each of the values of this property, a property with the name
+       <DBHandlerPropertyValue>_class will be defined which specifies the implementation class of the DBHandler
+       that needs to be loaded.
+    -->
+
+    <Config name="com.topcoder.timetracker.report.DBHandlers">
+
+        <Property name="DBHandlers">
+            <Value>InformixDBHandler</Value>
+        </Property>
+
+        <Property name="InformixDBHandler">
+            <Value>com.topcoder.timetracker.report.dbhandler.InformixDBHandler</Value>
+        </Property>
+
+    </Config>
+
+    <!--This is the database connection configuration for DBConnectionFactory component-->
+    <Config name="com.topcoder.timetracker.report.Informix">
+        <Property name="connections">
+
+            <Property name="default">
+                <Value>InformixConnection</Value>
+            </Property>
+
+            <Property name="InformixConnection">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://tcsdesigner:1526/test4:informixserver=tcs</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>topcoder</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+
+</CMConfig>
