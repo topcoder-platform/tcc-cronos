@@ -7,7 +7,6 @@ package com.topcoder.timetracker.report.stresstests;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Stress test cases.</p>
@@ -17,9 +16,14 @@ import junit.framework.TestResult;
  */
 public class StressTests extends TestCase {
 
+    /**
+     * Aggregate all stress tests cases.
+     * 
+     * @return all stress tests cases
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(TimeTrackerReportStressTests.class);
         return suite;
     }
 }
