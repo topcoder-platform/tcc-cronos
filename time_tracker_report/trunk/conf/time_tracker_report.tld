@@ -1,65 +1,92 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE taglib
-PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
-"http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+    PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+    "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
 <taglib>
-   <tlib-version>1.0</tlib-version>
-   <jsp-version>1.2</jsp-version>
-   <short-name>cr</short-name>
-   <uri>com.topcoder.timetracker.report</uri>
-   <description>Tag Library for Displaying Custom Reports</description>
-   
-   <tag>
-      <name>reportdisplay</name>
-      <tag-class>com.topcoder.timetracker.report.ReportDisplayTag</tag-class>
-      <body-content>empty</body-content>
-      <description>Display Custom Report with CSS support</description>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>cr</short-name>
+    <uri>com.topcoder.timetracker.report</uri>
+    <description>Tag Library for Displaying Time Tracker Reports</description>
 
-      <attribute>
-         <name>namespace</name><required>true</required><rtexprvalue>true</rtexprvalue>
-         <description>The namespace to load report configuration.</description>
-      </attribute>
+    <tag>
+        <name>reportdisplay</name>
+        <tag-class>com.topcoder.timetracker.report.ReportDisplayTag</tag-class>
+        <body-content>empty</body-content>
+        <description>Display Time Tracker Report with CSS support</description>
 
-      <attribute>
-         <name>type</name><required>true</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies the type of the report(Employee,Project or Client Report).</description>
-      </attribute>
+        <attribute>
+            <name>namespace</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The namespace to load report configuration.</description>
+        </attribute>
 
-      <attribute>
-         <name>category</name><required>true</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies the category of the report(Time,Expense or TimeExpense Report).</description>
-      </attribute>
+        <attribute>
+            <name>type</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the type of the report(Employee,Project or Client Report).</description>
+        </attribute>
 
-      <attribute>
-         <name>clientFilter</name><required>false</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies the Client Name to be used as a filter for the Report.</description>
-      </attribute>
+        <attribute>
+            <name>category</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the category of the report(Time,Expense or TimeExpense Report).</description>
+        </attribute>
 
-      <attribute>
-         <name>employeeFilter</name><required>false</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies the Employee Name to be used as a filter for the Report.</description>
-      </attribute>
+        <attribute>
+            <name>clientFilter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the Client Name to be used as a filter for the Report.</description>
+        </attribute>
 
-      <attribute>
-         <name>projectFilter</name><required>false</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies the Project Name to be used as a filter for the Report.</description>
-      </attribute>
+        <attribute>
+            <name>employeeFilter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the Employee Name to be used as a filter for the Report.</description>
+        </attribute>
 
-      <attribute>
-         <name>billableFilter</name><required>false</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies if only Billable entries needs to be considered for the Report.</description>
-      </attribute>
+        <attribute>
+            <name>projectFilter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the Project Name to be used as a filter for the Report.</description>
+        </attribute>
 
-      <attribute>
-         <name>startDateFilter</name><required>false</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies the Start range for the Date Entries that need be considered for the Report.</description>
-      </attribute>
+        <attribute>
+            <name>billableFilter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies if only Billable entries needs to be considered for the Report.</description>
+        </attribute>
 
-      <attribute>
-         <name>endDateFilter</name><required>false</required><rtexprvalue>true</rtexprvalue>
-         <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose value specifies the End range for the Date Entries that need be considered for the Report.</description>
-      </attribute>
+        <attribute>
+            <name>startDateFilter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the Start range for the Date Entries that need be considered for the
+                Report.</description>
+        </attribute>
 
-   </tag>
-      
+        <attribute>
+            <name>endDateFilter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the End range for the Date Entries that need be considered for the Report.</description>
+        </attribute>
+
+    </tag>
+
 </taglib>
