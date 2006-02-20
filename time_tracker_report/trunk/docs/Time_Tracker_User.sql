@@ -22,7 +22,7 @@ CREATE TABLE Users (
        CreationUser         varchar(64),	  	-- NOT NULL flag is removed, because this field is out of scope for this component
        ModificationDate     datetime year to second,	  	-- NOT NULL flag is removed, because this field is out of scope for this component
        ModificationUser     varchar(64),	  	-- NOT NULL flag is removed, because this field is out of scope for this component
-       UserStore            varchar(255) NOT NULL -- field added by designer to store link to original user store
+       UserStore            varchar(255) NOT NULL, -- field added by designer to store link to original user store
        PRIMARY KEY (UsersID)
 );
 
