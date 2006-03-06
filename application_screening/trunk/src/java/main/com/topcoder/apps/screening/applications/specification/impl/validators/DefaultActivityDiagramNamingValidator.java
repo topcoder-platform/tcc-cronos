@@ -103,7 +103,7 @@ public class DefaultActivityDiagramNamingValidator extends ActivityDiagramValida
         }
 
         ValidationOutput output = new ValidationOutput(ValidationOutputType.ERROR, activityDiagram,
-                "the activity diagram doesn’t have any corresponding use cases");
+                "the activity diagram doesn't have any corresponding use cases");
 
         return new ValidationOutput[]{output};
     }

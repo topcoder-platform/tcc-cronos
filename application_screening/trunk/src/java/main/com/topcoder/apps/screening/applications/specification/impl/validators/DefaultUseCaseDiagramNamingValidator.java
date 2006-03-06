@@ -135,7 +135,7 @@ public class DefaultUseCaseDiagramNamingValidator extends UseCaseDiagramValidato
 
             if (cntDiagrams == 0) {
                 retList.add(new ValidationOutput(ValidationOutputType.ERROR, useCaseDiagram, useCase,
-                        "the use case doesn’t have any corresponding activity diagrams"));
+                        "the use case doesn't have any corresponding activity diagrams"));
             }
 
             if (!hasExactMatch && cntDiagrams == 1) {
