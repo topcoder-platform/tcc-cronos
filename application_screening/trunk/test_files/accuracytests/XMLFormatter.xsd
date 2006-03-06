@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:complexType name="error" mixed="true">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="report" mixed="true">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="element_with_errors">
+        <xs:sequence>
+            <xs:element name="error" type="error" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="id"/>
+        <xs:attribute ref="type"/>
+        <xs:attribute ref="name"/>
+    </xs:complexType>
+    <xs:complexType name="element_with_reports">
+        <xs:sequence>
+            <xs:element name="report" type="report" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="id"/>
+        <xs:attribute ref="type"/>
+        <xs:attribute ref="name"/>
+    </xs:complexType>
+    <xs:complexType name="diagram_with_errors">
+        <xs:sequence>
+            <xs:element name="error" type="error" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="element" type="element_with_errors" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="id"/>
+        <xs:attribute ref="type"/>
+        <xs:attribute ref="name"/>
+    </xs:complexType>
+    <xs:complexType name="diagram_with_reports">
+        <xs:sequence>
+            <xs:element name="report" type="report" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="element" type="element_with_reports" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="id"/>
+        <xs:attribute ref="type"/>
+        <xs:attribute ref="name"/>
+    </xs:complexType>
+    <xs:element name="validation">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="errors">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="error" type="error" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element name="diagram" type="diagram_with_errors" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="reports">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="report" type="report" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element name="diagram" type="diagram_with_reports" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

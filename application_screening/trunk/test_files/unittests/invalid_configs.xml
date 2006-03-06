@@ -1,0 +1,205 @@
+<CMConfig>
+    <!--  Invalid configurations for ValidationManager class.             -->
+    <!-- In this config factory class name is not specified.-->
+    <Config name="com.topcoder.apps.screening.application.specification.invalid1">
+        <Property name="factory_namespace">
+            <Value>com.topcoder.apps.screening.application.specification.impl.DefaultSubmissionValidatorFactory</Value>
+        </Property>
+    </Config>
+    <!-- In this config factory class name is invalid.-->
+    <Config name="com.topcoder.apps.screening.application.specification.invalid2">
+        <Property name="factory_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.DefaultSubmissionValidatorFactoryInvalid</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.apps.screening.application.specification.ValidationManager1">
+        <Property name="factory_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.DefaultSubmissionValidatorFactory</Value>
+        </Property>
+    </Config>
+
+
+    <!--Invalid configurations for DefaultSubmissionValidatorFactory class.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.DefaultSubmissionValidatorFactory1">
+        <!--
+        Required.
+        -->
+        <Property name="formatter_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+        </Property>
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+            <Value>ucd_validator</Value>
+            <Value>ucd_naming_validator</Value>
+        </Property>
+        <Property name="ucd_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+
+    <!-- In this config there is no validators names.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.invalid1">
+        <!--
+        Required.
+        -->
+        <Property name="formatter_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+        </Property>
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+        </Property>
+        <Property name="ucd_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+
+    <!-- In this config for one validator there is no class name.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.invalid2">
+        <!--
+        Required.
+        -->
+        <Property name="formatter_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+        </Property>
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+            <Value>ucd_validator</Value>
+            <Value>ucd_naming_validator</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+
+    <!-- In this config for one validator has invalid class name.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.invalid3">
+        <!--
+        Required.
+        -->
+        <Property name="formatter_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+        </Property>
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+            <Value>ucd_validator</Value>
+            <Value>ucd_naming_validator</Value>
+        </Property>
+        <Property name="ucd_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.InvalidClassName</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+
+    <!-- In this config for one validator namespace is specified, but there is no constructors that accepts string.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.invalid4">
+        <!--
+        Required.
+        -->
+        <Property name="formatter_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+        </Property>
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+            <Value>ucd_validator</Value>
+            <Value>ucd_naming_validator</Value>
+        </Property>
+        <Property name="ucd_validator_namespace">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+        </Property>
+        <Property name="ucd_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+
+    <!--In this config there is no formatter class name.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.invalid5">
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+            <Value>ucd_validator</Value>
+            <Value>ucd_naming_validator</Value>
+        </Property>
+        <Property name="ucd_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+
+    <!--In this config there is no formatter class name is invalid.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.invalid6">
+        <!--
+        Required.
+        -->
+        <Property name="formatter_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.formatters.XMLValidationOutputFormatterInvalid</Value>
+        </Property>
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+            <Value>ucd_validator</Value>
+            <Value>ucd_naming_validator</Value>
+        </Property>
+        <Property name="ucd_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+
+    <!--In this config there is no formatter's namespace is specified, but there is no constructor that accpets string.-->
+    <Config name="com.topcoder.apps.screening.application.specification.impl.invalid7">
+        <!--
+        Required.
+        -->
+        <Property name="formatter_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+        </Property>
+        <!--
+        Optional.
+        -->
+        <Property name="formatter_namespace">
+            <Value>formatter.namespace</Value>
+        </Property>
+
+        <!--
+        Required at least one.
+        -->
+        <Property name="validators">
+            <Value>ucd_validator</Value>
+            <Value>ucd_naming_validator</Value>
+        </Property>
+        <Property name="ucd_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+        </Property>
+        <Property name="ucd_naming_validator_class">
+            <Value>com.topcoder.apps.screening.application.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+        </Property>
+    </Config>
+</CMConfig>

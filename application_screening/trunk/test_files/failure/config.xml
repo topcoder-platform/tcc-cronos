@@ -1,0 +1,35 @@
+<CMConfig>
+	<Config name="com.topcoder.apps.screening.applications.specification.ValidationManager">
+		<Property name="factory_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory">
+		<Property name="formatter_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+		</Property>
+		<Property name="validators">
+			<Value>ucd_validator</Value>
+			<Value>ucd_naming_validator</Value>
+			<Value>ad_validator</Value>
+			<Value>ad_naming_validator</Value>
+			<Value>ad_report_generator</Value>
+		</Property>
+		<Property name="ucd_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+		</Property>
+		<Property name="ucd_naming_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultUseCaseDiagramNamingValidator</Value>
+		</Property>
+		<Property name="ad_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultActivityDiagramValidator</Value>
+		</Property>
+		<Property name="ad_naming_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultActivityDiagramNamingValidator</Value>
+		</Property>
+		<Property name="ad_report_generator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.ActivityDiagramPathReportGenerator</Value>
+		</Property>
+	</Config>
+</CMConfig>

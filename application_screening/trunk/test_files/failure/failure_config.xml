@@ -1,0 +1,104 @@
+<CMConfig>
+	<Config name="com.topcoder.apps.screening.applications.specification.ValidationManager_no_factory_class">
+		<Property name="no_factory_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.ValidationManager_empty_factory_class">
+		<Property name="factory_class">
+			<Value></Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.ValidationManager_invalid_factory_class">
+		<Property name="factory_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.InvalidSubmissionValidatorFactory</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.ValidationManager_empty_factory_namespace">
+		<Property name="factory_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory</Value>
+		</Property>
+		<Property name="factory_namespace">
+			<Value></Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.ValidationManager_invalid_factory_namespace">
+		<Property name="factory_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.InvalidSubmissionValidatorFactory</Value>
+		</Property>
+		<Property name="factory_namespace">
+			<Value></Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.IllegalSubmissionValidatorFactory">		
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory_missing_formatter_class">
+		<Property name="validators">
+			<Value>ucd_validator</Value>
+		</Property>
+		<Property name="ucd_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory_missing_validators">
+		<Property name="formatter_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+		</Property>
+		<Property name="ucd_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory_misssing_validator_class">
+		<Property name="formatter_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+		</Property>
+		<Property name="validators">
+			<Value>ucd_validator</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory_null_formatter_class">
+		<Property name="formatter_class">
+			<Value></Value>
+		</Property>
+		<Property name="validators">
+			<Value>ucd_validator</Value>
+		</Property>
+		<Property name="ucd_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory_null_validators">
+		<Property name="formatter_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+		</Property>
+		<Property name="validators">
+			<Value></Value>
+		</Property>
+		<Property name="ucd_validator_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.validators.DefaultUseCaseDiagramValidator</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.apps.screening.applications.specification.impl.DefaultSubmissionValidatorFactory_null_validator_class">
+		<Property name="formatter_class">
+			<Value>com.topcoder.apps.screening.applications.specification.impl.formatters.XMLValidationOutputFormatter</Value>
+		</Property>
+		<Property name="validators">
+			<Value>ucd_validator</Value>
+		</Property>
+		<Property name="ucd_validator_class">
+			<Value></Value>
+		</Property>
+	</Config>
+
+</CMConfig>
