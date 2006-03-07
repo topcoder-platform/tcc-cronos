@@ -1,0 +1,6 @@
+1. since the updated xmi parser are not available, everyone use his own mock stub for it,
+so,
+ the unittests, failuretests, stresstests can pass under test_files/stub/xmiparsermock.jar;
+ the accuracytests can pass under test_files/stub/xmiparsermock_accuracy.jar;
+ and xerces 2.6.2 dependency: that is xml-apis.jar and xercesImpl.jar.
+(note that xerces1.4.4 cannot do.)
