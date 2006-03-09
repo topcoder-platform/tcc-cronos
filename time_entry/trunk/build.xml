@@ -319,6 +319,8 @@
         <copy file="${db_connection_factory.jar}" todir="${jar_tcs_libdir}/${db_connection_factory.path}" />
         <mkdir dir="${jar_tcs_libdir}/${base_exception.path}"/>
         <copy file="${base_exception.jar}" todir="${jar_tcs_libdir}/${base_exception.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${typesafe_enum.path}"/>
+        <copy file="${typesafe_enum.jar}" todir="${jar_tcs_libdir}/${typesafe_enum.path}" />
 
         <jar jarfile="${dev_dist.jar}"
              basedir="."
