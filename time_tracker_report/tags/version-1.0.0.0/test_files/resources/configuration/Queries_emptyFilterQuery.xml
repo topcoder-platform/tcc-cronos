@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+    <Config name="com.topcoder.timetracker.report.QueriesConfiguration">
+
+        <!-- Query Configuration and FilterExtensions for the "Client Expense Report" -->
+
+        <Property name="BASE_QUERY_CLIENT_EXPENSE">
+            <Value>
+                SELEeeCT EE.ENTRYDATE DATE,
+                EE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                ET.DESCRIPTION TYPE,
+                ET.DESCRIPTION DESCRIPTION,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                EXPENSETYPES ET,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+                AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_CLIENT_EXPENSE">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_CLIENT_EXPENSE">
+            <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_CLIENT_EXPENSE">
+            <Value></Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Employee Time Report" -->
+
+        <Property name="BASE_QUERY_EMPLOYEE_TIME">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TT.DESCRIPTION TASK,
+                TE.HOURS HOURS,
+                PW.PAYRATE PAY_RATE,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                TASKTYPES TT,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP,
+                PROJECTWORKERS PW,
+                USERS US
+
+                WHERE TE.TASKTYPESID = TT.TASKTYPESID
+                AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND PW.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+                AND US.USEDRSID = PW.USERSID
+                AND US.NAME = TE.CREATIONUSER
+
+            </Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_EMPLOYEE_TIME">
+            <Value>TE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_EMPLOYEE_TIME">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_EMPLOYEE_TIME">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_EMPLOYEE_TIME">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_EMPLOYEE_TIME">
+            <Value>TE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Project Time Report" -->
+
+        <Property name="BASE_QUERY_PROJECT_TIME">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                TE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TT.DESCRIPTION TASK,
+                TE.HOURS HOURS,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                TASKTYPES TT,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE TE.TASKTYPESID = TT.TASKTYPESID
+                AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_PROJECT_TIME">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_PROJECT_TIME">
+            <Value>TE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_PROJECT_TIME">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_PROJECT_TIME">
+            <Value>TE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Client Time Report" -->
+
+        <Property name="BASE_QUERY_CLIENT_TIME">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                TE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TT.DESCRIPTION TASK,
+                TE.HOURS HOURS,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                TASKTYPES TT,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE TE.TASKTYPESID = TT.TASKTYPESID
+                AND PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_CLIENT_TIME">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_CLIENT_TIME">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_CLIENT_TIME">
+            <Value>TE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Employee Expense Report" -->
+
+        <Property name="BASE_QUERY_EMPLOYEE_EXPENSE">
+            <Value>
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                ET.DESCRIPTION TYPE,
+                ET.DESCRIPTION DESCRIPTION,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                EXPENSETYPES ET,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+                AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+            </Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_EMPLOYEE_EXPENSE">
+            <Value>EE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_EMPLOYEE_EXPENSE">
+            <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_EMPLOYEE_EXPENSE">
+            <Value>CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_EMPLOYEE_EXPENSE">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_EMPLOYEE_EXPENSE">
+            <Value>EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Project Expense Report" -->
+
+        <Property name="BASE_QUERY_PROJECT_EXPENSE">
+            <Value>
+                SELECT EE.ENTRYDATE DATE,
+                EE.CREATIONUSER EMPLOYEE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                ET.DESCRIPTION TYPE,
+                ET.DESCRIPTION DESCRIPTION,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                EXPENSETYPES ET,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE EE.EXPENSETYPESID = ET.EXPENSETYPESID
+                AND PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_PROJECT_EXPENSE">
+            <Value>PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_PROJECT_EXPENSE">
+            <Value>EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_PROJECT_EXPENSE">
+            <Value>EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Employee Time and Expense Report" -->
+
+        <Property name="BASE_QUERY_EMPLOYEE_TIMEEXPENSE">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TE.HOURS HOURS,
+                NULL AMOUNT,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+                UNION
+
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                NULL HOURS,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_EMPLOYEE_EMPLOYEE_TIMEEXPENSE">
+            <Value>TE.CREATIONUSER = ? UNION EE.CREATIONUSER = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_EMPLOYEE_TIMEEXPENSE">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_EMPLOYEE_TIMEEXPENSE">
+            <Value>CL.NAME = ? UNION CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_EMPLOYEE_TIMEEXPENSE">
+            <Value>PR.NAME = ? UNION PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_EMPLOYEE_TIMEEXPENSE">
+            <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Project Time and Expense Report" -->
+
+        <Property name="BASE_QUERY_PROJECT_TIMEEXPENSE">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TE.HOURS HOURS,
+                NULL AMOUNT,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+                UNION
+
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                NULL HOURS,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_PROJECT_PROJECT_TIMEEXPENSE">
+            <Value>PR.NAME = ? UNION PR.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_PROJECT_TIMEEXPENSE">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_PROJECT_TIMEEXPENSE">
+            <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+        </Property>
+
+
+        <!-- Query Configuration and FilterExtensions for the "Client Time and Expense Report" -->
+
+        <Property name="BASE_QUERY_CLIENT_TIMEEXPENSE">
+            <Value>
+                SELECT TE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                TE.HOURS HOURS,
+                NULL AMOUNT,
+                TE.BILLABLE BILLABLE
+
+                FROM TIMEENTRIES TE,
+                CLIENTS CL,
+                PROJECTTIMES PT,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PT.TIMEENTRIESID = TE.TIMEENTRIESID
+                AND PT.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+
+                UNION
+
+                SELECT EE.ENTRYDATE DATE,
+                CL.NAME CLIENT,
+                PR.NAME PROJECT,
+                NULL HOURS,
+                EE.AMOUNT AMOUNT,
+                EE.BILLABLE BILLABLE
+
+                FROM EXPENSEENTRIES EE,
+                CLIENTS CL,
+                PROJECTEXPENSES PE,
+                PROJECTS PR,
+                CLIENTPROJECTS CP
+
+                WHERE PE.EXPENSEENTRIESID = EE.EXPENSEENTRIESID
+                AND PE.PROJECTSID = PR.PROJECTSID
+                AND CL.CLIENTSID = CP.CLIENTSID
+                AND CP.PROJECTSID = PR.PROJECTSID
+            </Value>
+        </Property>
+
+        <Property name="FILTER_CLIENT_CLIENT_TIMEEXPENSE">
+            <Value>CL.NAME = ? UNION CL.NAME = ?</Value>
+        </Property>
+
+        <Property name="FILTER_DATE_CLIENT_TIMEEXPENSE">
+            <Value>TE.ENTRYDATE BETWEEN ? AND ? UNION EE.ENTRYDATE BETWEEN ? AND ?</Value>
+        </Property>
+
+        <Property name="FILTER_BILLABLE_CLIENT_TIMEEXPENSE">
+            <Value>TE.BILLABLE = ? UNION EE.BILLABLE = ?</Value>
+        </Property>
+    </Config>
+</CMConfig>
