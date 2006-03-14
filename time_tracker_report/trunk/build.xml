@@ -94,13 +94,13 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
     <!--Change this property to a valid Tomcat 5.x home dir to run tests in server environment-->
-    <property name="cactus.home.tomcat5x" value="d:/Tomcat 5.0.27"/>
+    <property name="cactus.home.tomcat5x" value="C:\TopCoder\Software\jakarta-tomcat-5.0.28"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="servlet-api.jar" value="${ext_libdir}/servlet-api/2.3/servlet-api.jar"/>
     <property name="jsp-api.jar" value="${ext_libdir}/jsp-api/2.0/jsp-api.jar"/>
-    <property name="jdbc.jar" value="${ext_libdir}/informix/jdbc.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
     <property name="dbunit.jar" value="${ext_libdir}/dbunit/2.1/dbunit.jar"/>
     <property name="xmlunit.jar" value="${ext_libdir}/xmlunit/1.0/xmlunit.jar"/>
 
@@ -257,7 +257,7 @@
                 <pathelement location="${tidy.jar}"/>
                 <pathelement location="${httpunit.jar}"/>
                 <pathelement location="${xerces.jar}"/>
-                <pathelement location="${jdbc.jar}"/>
+                <pathelement location="${ifxjdbc.jar}"/>
                 <pathelement location="${build_testclassdir}"/>
                 <!--for client-side setup to also find standard configuration -->
                 <pathelement location="test_files/demoWebapp/res"/>
@@ -360,7 +360,7 @@
             <classes dir="${build_examples}"/>
             <classes dir="${basedir}/test_files/demoWebapp/res"/>
             <lib file="${builddir}/lib/${component}.jar"/>
-            <lib file="${jdbc.jar}"/>
+            <lib file="${ifxjdbc.jar}"/>
             <lib file="${base_exception.jar}"/>
             <lib file="${typesafe_enum.jar}"/>
             <lib file="${db_connection_factory.jar}"/>
@@ -376,7 +376,7 @@
                   <path refid="buildlibs"/>
                               <pathelement location="${dbunit.jar}"/>
                               <pathelement location="${xerces.jar}"/>
-                              <pathelement location="${jdbc.jar}"/>
+                              <pathelement location="${ifxjdbc.jar}"/>
                               <pathelement location="test_files/"/>
                               <pathelement location="build/convenience"/>
                               <pathelement location="test_files/demoWebapp/res"/>
