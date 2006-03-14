@@ -23,7 +23,7 @@ public class AllTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-//        unit tests
+        //unit tests
         suite.addTest(UnitTests.suite());
 
         //accuracy tests
