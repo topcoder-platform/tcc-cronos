@@ -1,0 +1,48 @@
+<!-- Used in exception tests -->
+<CMConfig>
+	<!-- This section used by the UserStoreManager -->
+    <Property name="UserStoreNames">
+        <Value>defaultStore</Value>
+    </Property>
+    <Property name="ClassName.defaultStore">
+        <Value>com.topcoder.timetracker.user.DbUserStore</Value>
+    </Property>
+	<!-- Used by DbUserStore -->
+    <Property name="ConnectionString.defaultStore">
+        <Value>InformixConnection</Value>
+    </Property>
+
+    <!-- This is used by UserPersistenceImpl to get a connection to the Informix database, via DBConnectionFactory -->
+    <Property name="connection_name">
+        <Value>InformixConnection</Value>
+    </Property>
+
+    <!-- Used by the DBConnectionFactory -->
+    <Property name="connections">
+		<Property name="default">
+			<Value>InformixConnection</Value>
+		</Property>
+        <Property name="InformixConnection">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jdbc_driver">
+                    <Value>com.informix.jdbc.IfxDriver</Value>
+                </Property>
+                <!-- CHANGE THIS to reference a database (in this case, bad_topcoder) that DOES NOT have the right tables
+                    for the Time Tracker User, the SQLAuthenticationPersistence, OR the IDGenerator components. -->
+                <Property name="jdbc_url">
+                    <Value>jdbc:informix-sqli://127.0.0.1:1526/time_tracker_user:informixserver=informix</Value>
+                </Property>
+                <!-- CHANGE THIS TO MATCH YOUR CONFIGURATION; should be correct username & pasword -->
+                <Property name="user">
+                    <Value>informix</Value>
+                </Property>
+                <Property name="password">
+                    <Value>informix</Value>
+                </Property>
+            </Property>            
+        </Property>
+    </Property>
+</CMConfig>

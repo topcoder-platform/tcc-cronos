@@ -1,0 +1,34 @@
+<CMConfig>
+  <Config name="com.topcoder.security.authorization.persistence">
+    <Property name="db_connection_factory">
+      <Property name="class">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="namespace">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="connection_name">
+        <Value>conn</Value>
+      </Property>
+    </Property>
+    <Property name="cache_factory">
+      <Property name="class"> 
+        <Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
+      </Property>
+      <Property name="namespace">
+        <Value>com.topcoder.security.authorization.persistence</Value>
+      </Property>
+    </Property>
+    <Property name="timeout">
+      <Value>1000</Value>
+    </Property>
+    <Property name="max_cache_size">
+      <Value>10000</Value>
+    </Property>
+    <Property name="eviction_strategy">
+      <Property name="class">
+        <Value>com.topcoder.util.cache.LRUCacheEvictionStrategy</Value>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>
