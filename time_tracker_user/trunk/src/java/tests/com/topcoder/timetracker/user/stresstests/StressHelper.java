@@ -58,6 +58,13 @@ final class StressHelper {
 
     /**
      * <p>
+     * Represents the config file for db connection factory, used by stress test.
+     * </p>
+     */
+    public static final String CONFIG_DB_FACTORY = "stress/DBFactory.xml";
+
+    /**
+     * <p>
      * Represents the property name in the config file.
      * </p>
      */
@@ -110,6 +117,7 @@ final class StressHelper {
         removeConfigFile();
 
         ConfigManager.getInstance().add(CONFIG_CACHE);
+        ConfigManager.getInstance().add(CONFIG_DB_FACTORY);
         ConfigManager.getInstance().add(CONFIG_LOGGING);
         ConfigManager.getInstance().add(NAMESPACE, CONFIG_FILE,
                 ConfigManager.CONFIG_XML_FORMAT);
@@ -145,7 +153,6 @@ final class StressHelper {
         StressHelper.clearTable("Users");
         StressHelper.clearTable("principal_role");
         StressHelper.clearTable("principal");
-        StressHelper.clearTable("role");
     }
 
     /**
@@ -282,12 +289,6 @@ final class StressHelper {
     public static void addRoles() throws Exception {
         AuthorizationPersistence authPersistence = new SQLAuthorizationPersistence(
                 NAMESPACE);
-        authPersistence.addRole(UserManager.ACCOUNT_MANAGER);
-        authPersistence.addRole(UserManager.CONTRACTOR);
-        authPersistence.addRole(UserManager.EMPLOYEE);
-        authPersistence.addRole(UserManager.HUMAN_RESOURCE);
-        authPersistence.addRole(UserManager.PROJECT_MANAGER);
-        authPersistence.addRole(UserManager.SUPER_ADMIN);
 
         addPrincipal(UserManager.ACCOUNT_MANAGER.getId(),
                 UserManager.ACCOUNT_MANAGER.getName());

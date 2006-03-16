@@ -146,7 +146,7 @@ public class UserPersistenceImplAccuracyTest extends TestCase {
         // create a DBConnectionFactory used for arg
         DBConnectionFactory factory = new DBConnectionFactoryImpl(
                 "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
-        String connectionName = "test";
+        String connectionName = "IDGeneratorImpl";
         UserPersistence persistence = new UserPersistenceImpl(connectionName, factory);
         // assert the instance can be created.
         assertNotNull("fail to create DbUserStore instance.", persistence);
