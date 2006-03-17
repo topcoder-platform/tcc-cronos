@@ -1,0 +1,12 @@
+<CMConfig>
+    <Property name="UserStoreNames">
+        <Value>dummyStore</Value>
+    </Property>
+    <Property name="ClassName.dummyStore">
+        <Value>com.topcoder.timetracker.user.DummyUserStore</Value>
+    </Property>
+    <!-- this is now required -->
+    <Property name="ConnectionString.dummyStore">
+        <Value/>
+    </Property>
+</CMConfig>
