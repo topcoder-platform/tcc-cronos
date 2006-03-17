@@ -41,6 +41,13 @@ public class UserPersistenceImplStressTest extends TestCase {
      * </p> 
      */
     private static final int GET = 3;
+    
+    /**
+     * <p>
+     * Const defined the number of threads to execute.
+     * </p>
+     */
+    private static final int THREAD_COUNT = 1;
 
     /**
      * <p>
@@ -116,7 +123,7 @@ public class UserPersistenceImplStressTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testAddUser() throws Exception {
-        thread_count = 10;
+        thread_count = THREAD_COUNT;
         operations = 50;
         testUserPersistenceImpl(ADD, "UserPersistenceImpl.addUser");
     }
@@ -131,7 +138,7 @@ public class UserPersistenceImplStressTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testRemoveUser() throws Exception {
-        thread_count = 10;
+        thread_count = THREAD_COUNT;
         operations = 30;
 
         // add some data to test
@@ -150,7 +157,7 @@ public class UserPersistenceImplStressTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testGetUsers() throws Exception {
-        thread_count = 10;
+        thread_count = THREAD_COUNT;
         operations = 50;
 
         // add some data to test

@@ -40,6 +40,13 @@ public class DbUserStoreStressTest extends TestCase {
      * </p>
      */
     private static final int CONTAIN = 3;
+    
+    /**
+     * <p>
+     * Const defined the number of threads to execute.
+     * </p>
+     */
+    private static final int THREAD_COUNT = 1;
 
     /**
      * <p>
@@ -123,7 +130,7 @@ public class DbUserStoreStressTest extends TestCase {
      *             Exception to JUnit.
      */
     public void testGetNames() throws Exception {
-        thread_count = 10;
+        thread_count = THREAD_COUNT;
         operations = 50;
         users = new User[operations];
         StressHelper.addTestUser(generator, operations, users);
@@ -140,7 +147,7 @@ public class DbUserStoreStressTest extends TestCase {
      *             Exception to JUnit.
      */
     public void testSearch() throws Exception {
-        thread_count = 10;
+        thread_count = THREAD_COUNT;
         operations = 50;
 
         users = new User[operations];
@@ -159,7 +166,7 @@ public class DbUserStoreStressTest extends TestCase {
      */
     public void testContains() throws Exception {
 
-        thread_count = 10;
+        thread_count = THREAD_COUNT;
         operations = 50;
 
         users = new User[operations];

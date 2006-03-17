@@ -49,6 +49,12 @@ public class UserManagerStressTest extends TestCase {
      */
     private static final int AUTHENTICATE = 4;
     
+    /**
+     * <p>
+     * Const defined the number of threads to execute.
+     * </p>
+     */
+    private static final int THREAD_COUNT = 1;
     
     /**
      * <p>
@@ -119,7 +125,7 @@ public class UserManagerStressTest extends TestCase {
      * </p>
      */
     public void testImportUser() throws Exception {
-        thread_count = 20;
+        thread_count = THREAD_COUNT;
         operations = 20;
         
         // add test users 
@@ -137,7 +143,7 @@ public class UserManagerStressTest extends TestCase {
      * </p>
      */
     public void testRemoveUser() throws Exception {
-        thread_count = 20;
+        thread_count = THREAD_COUNT;
         operations = 20;
         
         // add test users 
@@ -156,7 +162,7 @@ public class UserManagerStressTest extends TestCase {
      * </p>
      */
     public void testSetUserRole() throws Exception {
-        thread_count = 20;
+        thread_count = THREAD_COUNT;
         operations = 20;
         
         users = new User[operations];
@@ -173,7 +179,7 @@ public class UserManagerStressTest extends TestCase {
      * </p>
      */
     public void testAuthenticate() throws Exception {
-        thread_count = 20;
+        thread_count = THREAD_COUNT;
         operations = 20;
         
         users = new User[operations];
