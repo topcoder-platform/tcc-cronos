@@ -1,0 +1,47 @@
+<CMConfig>
+  <Config name="com.cronos.timetracker.entry.expense.connection">                
+    <Property name="connections">
+      <Property name="default">
+        <Value>Connection</Value>
+      </Property>
+      <Property name="Connection">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+          <Property name="jdbc_driver">
+            <Value>com.informix.jdbc.IfxDriver</Value>
+          </Property>
+          <Property name="jdbc_url">
+            <Value>jdbc:informix-sqli://xlc:1528/sysutils:informixserver=informix3</Value>
+          </Property>
+          <Property name="user">
+            <Value>informix</Value>
+          </Property>
+          <Property name="password">
+            <Value>myinformix</Value>
+          </Property>
+        </Property>
+      </Property>
+      <Property name="empty">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+          <Property name="jdbc_driver">
+            <Value>com.informix.jdbc.IfxDriver</Value>
+          </Property>
+          <Property name="jdbc_url">
+            <Value>jdbc:informix-sqli://xlc:1528/sysutils:informixserver=informix3</Value>
+          </Property>
+          <Property name="user">
+            <Value>informix</Value>
+          </Property>
+          <Property name="password">
+            <Value>myinformix</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

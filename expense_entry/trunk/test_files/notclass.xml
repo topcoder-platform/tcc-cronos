@@ -1,13 +1,13 @@
 <CMConfig>
   <Config name="com.topcoder.timetracker.entry.expense">
     <Property name="entry_status_persistence_class">
-      <Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryStatusPersistence</Value>
+      <Value>com.cronos.timetracker.entry.expense.persistence.ExpenseEntryStatusPersistence</Value>
     </Property>
     <Property name="entry_type_persistence_class">
-      <Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryTypePersistence</Value>
+      <Value>com.cronos.timetracker.entry.expense.persistence.ExpenseEntryTypePersistence</Value>
     </Property>
     <Property name="entry_persistence_class">
-      <Value>com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryPersistence</Value>
+      <Value>com.cronos.timetracker.entry.expense.persistence.ExpenseEntryPersistence</Value>
     </Property>
     <Property name="connection_producer_name">
       <Value>Connection</Value>
