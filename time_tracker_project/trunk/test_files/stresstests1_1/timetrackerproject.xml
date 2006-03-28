@@ -9,12 +9,12 @@
 
     <!-- the namespace of the DB Connection Factory configuration file (required) -->
     <Property name="connection_factory_namespace">
-      <Value>com.topcoder.db.connectionfactory</Value>
+      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
     </Property>
 
     <!-- the name identifying a ConnectionProducer instance (optional) -->
     <Property name="connection_producer_name">
-      <Value>Informix_Connection_Producer</Value>
+      <Value>Time_Tracker_Project_Informix_Connection_Producer</Value>
     </Property>
 
     <!-- the ConfigManager namespace of DatabaseSearchUtility used to search projects (optional) -->
@@ -83,41 +83,5 @@
       </Property>
     </Property>
 
-  </Config>
-
-  <Config name="com.cronos.timetracker.project.simple">
-    <Property name="persistence_class">
-      <Value>com.cronos.timetracker.project.persistence.SimplePersistence</Value>
-    </Property>
-    <Property name="connection_factory_namespace">
-      <Value>com.topcoder.db.connectionfactory</Value>
-    </Property>
-  </Config>
-
-  <Config name="com.topcoder.db.connectionfactory">
-    <Property name="connections">
-        <Property name="default">
-            <Value>Informix_Connection_Producer</Value>
-        </Property>
-        <Property name="Informix_Connection_Producer">
-            <Property name="producer">
-                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
-            </Property>
-            <Property name="parameters">
-                <Property name="jdbc_driver">
-                    <Value>com.informix.jdbc.IfxDriver</Value>
-                </Property>
-                <Property name="jdbc_url">
-                    <Value>jdbc:informix-sqli://tygrys:1526/time_tracker:informixserver=ol_tygrys</Value>
-                </Property>
-                <Property name="user">
-                    <Value>informix</Value>
-                </Property>
-                <Property name="password">
-                    <Value>michal</Value>
-                </Property>
-            </Property>
-        </Property>
-    </Property>
   </Config>
 </CMConfig>

@@ -1,18 +1,10 @@
-<?xml version="1.0" ?>
 <CMConfig>
-  <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
     <Property name="connections">
-        <!--
-            The "default" property refers to a configured connection.
-        -->
         <Property name="default">
-            <Value>Informix_Connection_Producer</Value>
+            <Value>Time_Tracker_Project_Informix_Connection_Producer</Value>
         </Property>
-        <!--
-            The following property configures the ConnectionProducer obtaining the Connections
-            from a JDBC URL
-        -->
-        <Property name="Informix_Connection_Producer">
+        <Property name="Time_Tracker_Project_Informix_Connection_Producer">
             <Property name="producer">
                 <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
             </Property>
@@ -21,7 +13,7 @@
                     <Value>com.informix.jdbc.IfxDriver</Value>
                 </Property>
                 <Property name="jdbc_url">
-                    <Value>jdbc:informix-sqli://tygrys:1526/time_tracker:informixserver=ol_tygrys</Value>
+                    <Value>jdbc:informix-sqli://tygrys:1526/time_entry:informixserver=ol_tygrys</Value>
                 </Property>
                 <Property name="user">
                     <Value>informix</Value>

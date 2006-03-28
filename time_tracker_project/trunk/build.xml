@@ -2,12 +2,12 @@
 
 <project name="Time Tracker Project" default="dist" basedir=".">
 
-    <property file="../topcoder_global.properties"/>
+    <property file="f:\topcoder\topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Time_Tracker_Project" />
-    <property name="package" value="com.topcoder.timetracker.project" />
-    <property name="packagedir" value="com/topcoder/timetracker/project" />
+    <property name="package" value="com.cronos.timetracker.project" />
+    <property name="packagedir" value="com/cronos/timetracker/project" />
     <property name="distfilename" value="time_tracker_project" />
     <property name="component_version" value="1.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
@@ -109,6 +109,10 @@
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
+<pathelement location="F:/java/IBM/Informix_JDBC_Driver_2.21.JC6/lib/ifxjdbc.jar"/>
+<pathelement location="f:/topcoder/lib/tcs/typesafe_enum/1.0/typesafe_enum.jar"/>
+<pathelement location="f:/topcoder/lib/xercesImpl.jar"/>
+<pathelement location="f:/topcoder/lib/xml-apis.jar"/>
     </path>
 
     <path id="test.build.classpath">
@@ -358,6 +362,25 @@
     <!-- ************************************************************************** -->
     <!-- ************************ END REMOVE EVERYTHING ***************************** -->
     <!-- ************************************************************************** -->
+
+<taskdef resource="checkstyletask.properties"/>
+
+    <target name="checkstyle" depends="compile">
+        <mkdir dir="${testlogdir}"/>
+        <checkstyle config="f:\topcoder\tc_checks.xml" classpath="${build_classdir}">
+            <fileset dir="src/java/main" includes="**/*.java" />
+            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
+        </checkstyle>
+    </target>
+
+    <target name="checkstyle_tests" depends="compile_tests">
+        <mkdir dir="${testlogdir}"/>
+        <checkstyle config="f:\topcoder\tc_test_checks.xml" classpath="${test.build.classpath}">
+            <fileset dir="${javatests}/${packagedir}/" includes="**/*.java" 
+                     excludes="UnitTests.java, AllTests.java, stresstests/*, failuretests/*, accuracytests/*" />
+            <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
+        </checkstyle>
+    </target>
 
 
 </project>

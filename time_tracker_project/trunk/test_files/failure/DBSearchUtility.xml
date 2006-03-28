@@ -1,28 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <CMConfig>
-	<Config name="com.topcoder.timetracker.project">
-
-		<!-- the class name of the persistence (required) -->
-		<Property name="persistence_class">
-			<Value>com.cronos.timetracker.project.persistence.InformixTimeTrackerProjectPersistence</Value>
-		</Property>
-
-		<!-- the namespace of the DB Connection Factory configuration file (required) -->
-		<Property name="connection_factory_namespace">
-			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-		</Property>
-
-		<!-- the name identifying a ConnectionProducer instance (optional) -->
-		<Property name="connection_producer_name">
-			<Value>Informix_Connection_Producer</Value>
-		</Property>
-
-	</Config>
-
-
 	<!-- Configuration of the DatabseSearchUtility used to search projects -->
-	<Config
-		name="com.cronos.timetracker.project.persistence.DatabaseSearchUtility.projects">
+	<Config name="com.cronos.timetracker.project.failuretests.DatabaseSearchUtilityFailureTest">
 		<!--The SQL query template, required-->
 		<Property name="query_template">
 			<Value>
@@ -36,26 +15,26 @@
 		</Property>
 		<!-- The aliases of the DB column names, required-->
 		<Property name="column_aliases">
-		<!-- Name of a particular Property is a name of the alias -->
+			<!-- Name of a particular Property is a name of the alias -->
 			<Property name="Name">
-			<!-- Value of a particular Property is a Value of the alias -->
+				<!-- Value of a particular Property is a Value of the alias -->
 				<Value>Projects.Name</Value>
 				<Property name="Description"></Property>
 				<Value>Projects.Description</Value>
 			</Property>
-			<Property name="Project Manager ">
+			<Property name="Project Manager">
 				<Value>ProjectManagers.UsersID</Value>
 			</Property>
-			<Property name="Project Worker ">
+			<Property name="Project Worker">
 				<Value>ProjectWorkers.UsersID</Value>
 			</Property>
-			<Property name="Project Client ">
+			<Property name="Project Client">
 				<Value>ClientProjects.ClientsID</Value>
 			</Property>
-			<Property name="Creation User ">
+			<Property name="Creation User">
 				<Value>Projects.CreationUser</Value>
 			</Property>
-			<Property name="Modification User ">
+			<Property name="Modification User">
 				<Value>Projects.ModificationUser</Value>
 			</Property>
 			<Property name="Start Date ">
@@ -72,24 +51,47 @@
 			</Property>
 		</Property>
 	</Config>
-
 	<!-- Configuration of the DatabseSearchUtility used to search clients-->
 	<Config
-		name="com.cronos.timetracker.project.persistence.DatabaseSearchUtility.clients">
-		<!--The SQL query template, required-->
-		<Property name="query_template">
-			<Value>
-				select distinct Clients.ClientsID from Clients where
-			</Value>
-		</Property>
-		<!-- The aliases of the DB column names, required-->
+		name="com.cronos.timetracker.project.failuretests.DatabaseSearchUtilityFailureTest.1">
+		<!-- Missing query template-->
+
 		<Property name="column_aliases">
-		<!-- Name of a particular Property is a name of the alias -->
+			<!-- Name of a particular Property is a name of the alias -->
 			<Property name="Name">
-			<!-- Value of a particular Property is a Value of the alias -->
+				<!-- Value of a particular Property is a Value of the alias -->
 				<Value>Clients.Name</Value>
 			</Property>
 			<Property name="Creation User">
+				<Value>Clients.CreationUser</Value>
+			</Property>
+			<Property name="Modification User">
+				<Value>Clients.ModificationUser</Value>
+			</Property>
+			<Property name="Creation Date">
+				<Value>Clients.CreationDate</Value>
+			</Property>
+			<Property name="Modification Date">
+				<Value>Clients.ModificationDate</Value>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config
+		name="com.cronos.timetracker.project.failuretests.DatabaseSearchUtilityFailureTest.2">
+
+<Property name="query_template">
+			<Value>
+				select FROM
+			</Value>
+		</Property>
+		<Property name="column_aliases">
+			<!-- Name of a particular Property is a name of the alias -->
+			<Property name="Name">
+				<!-- Value of a particular Property is a Value of the alias -->
+				<Value>Clients.Name</Value>
+			</Property>
+			<Property name="any">
 				<Value>Clients.CreationUser</Value>
 			</Property>
 			<Property name="Modification User">

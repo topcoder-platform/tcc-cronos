@@ -1,17 +1,10 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <CMConfig>
-  <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+  <Config name="com.cronos.timetracker.project.accuracytests.db">
     <Property name="connections">
-        <!--
-            The "default" property refers to a configured connection.
-        -->
         <Property name="default">
             <Value>Informix_Connection_Producer</Value>
         </Property>
-        <!--
-            The following property configures the ConnectionProducer obtaining the Connections
-            from a JDBC URL
-        -->
         <Property name="Informix_Connection_Producer">
             <Property name="producer">
                 <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
