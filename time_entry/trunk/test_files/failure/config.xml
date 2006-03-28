@@ -1,0 +1,92 @@
+<CMConfig>
+	<Config name="com.cronos.timetracker.entry.time.failuretests">
+		<Property name="com.cronos.timetracker.entry.time.TimeEntry">
+			<Property name="class">
+				<Value>com.cronos.timetracker.entry.time.TimeEntryDAO</Value>
+			</Property>
+			<Property name="connectionName">
+				<Value>mysql</Value>
+			</Property>
+		</Property>
+		<Property name="com.cronos.timetracker.entry.time.TaskType">
+			<Property name="class">
+				<Value>com.cronos.timetracker.entry.time.TaskTypeDAO</Value>
+			</Property>
+			<Property name="connectionName">
+				<Value>mysql</Value>
+			</Property>
+		</Property>
+		<Property name="com.cronos.timetracker.entry.time.TimeStatus">
+			<Property name="class">
+				<Value>com.cronos.timetracker.entry.time.TimeStatusDAO</Value>
+			</Property>
+			<Property name="connectionName">
+				<Value>mysql</Value>
+			</Property>
+		</Property>
+		<Property name="connections">
+			<!--
+	            The "default" property refers to a configured connection.
+	        -->
+			<Property name="default">
+				<Value>mysql</Value>
+			</Property>
+			<!--
+	            The following property configures the ConnectionProducer obtaining the Connections
+	            from a JDBC URL
+	        -->
+			<Property name="mysql">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://127.0.0.1:1526/test:INFORMIXSERVER=informix</Value>
+					</Property>
+					<Property name="user">
+						<Value>topcoder</Value>
+					</Property>
+					<Property name="password">
+						<Value>informix</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<!--
+	            The "default" property refers to a configured connection.
+	        -->
+			<Property name="default">
+				<Value>mysql</Value>
+			</Property>
+			<!--
+	            The following property configures the ConnectionProducer obtaining the Connections
+	            from a JDBC URL
+	        -->
+			<Property name="mysql">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://127.0.0.1:1526/test:INFORMIXSERVER=informix</Value>
+					</Property>
+					<Property name="user">
+						<Value>topcoder</Value>
+					</Property>
+					<Property name="password">
+						<Value>informix</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>
