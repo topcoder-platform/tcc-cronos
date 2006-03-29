@@ -236,12 +236,11 @@
 
     <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
-<!-- uncomment if configuration files exist.
         <mkdir dir="${dist_conf}"/>
         <copy todir="${dist_conf}">
             <fileset dir="${configdir}" />
         </copy>
--->
+
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
@@ -267,12 +266,11 @@
 
         <jar jarfile="${javadoc.jar}" basedir="${build_tcsdistdir}\docs\javadocs"/>
 
-<!-- uncomment if test files exist.
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
--->
+
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
