@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.cronos.timetracker.project">
+
+    <!-- the class name of the persistence (required) -->
+    <Property name="persistence_class">
+      <Value>com.cronos.timetracker.project.persistence.InformixTimeTrackerProjectPersistence</Value>
+    </Property>
+
+    <!-- the namespace of the DB Connection Factory configuration file (required) -->
+    <Property name="connection_factory_namespace">
+      <Value>com.topcoder.db.connectionfactory</Value>
+    </Property>
+
+    <!-- the name identifying a ConnectionProducer instance (optional) -->
+    <Property name="connection_producer_name">
+      <Value>Informix_Connection_Producer</Value>
+    </Property>
+
+    <!-- the ConfigManager namespace of DatabaseSearchUtility used to search projects (optional) -->
+    <Property name="project_search_utility_namespace">
+      <Value>com.cronos.timetracker.project.persistence.DatabaseSearchUtility.projects</Value>
+    </Property>
+
+    <!-- the ConfigManager namespace of DatabaseSearchUtility used to search clients (optional) -->
+    <Property name="client_search_utility_namespace">
+      <Value>com.cronos.timetracker.project.persistence.DatabaseSearchUtility.clients</Value>
+    </Property>
+
+  </Config>
+
+  <Config name="com.cronos.timetracker.project.persistence.DatabaseSearchUtility.clients">
+
+    <!-- The SQL query template, required -->
+    <Property name="query_template">
+      <Value>select distinct Clients.ClientsID from Clients where </Value>
+    </Property>
+
+    <!-- The aliases of the DB column names, required -->
+    <Property name="column_aliases">
+      <Property name="Name">
+        <Value>Clients.Name</Value>
+      </Property>
+      <Property name="Creation User">
+        <Value>Clients.CreationUser</Value>
+      </Property>
+      <Property name="Modification User">
+        <Value>Clients.ModificationUser</Value>
+      </Property>
+      <Property name="Creation Date">
+        <Value>Clients.CreationDate</Value>
+      </Property>
+      <Property name="Modification Date">
+        <Value>Clients.ModificationDate</Value>
+      </Property>
+    </Property>
+
+  </Config>
+
+  <Config name="com.cronos.timetracker.project.persistence.DatabaseSearchUtility.projects">
+
+    <!-- The SQL query template, required -->
+    <Property name="query_template">
+      <Value>select distinct Projects.ProjectsID from Projects where </Value>
+    </Property>
+
+    <!-- The aliases of the DB column names, required -->
+    <Property name="column_aliases">
+      <Property name="Name">
+        <Value>Projects.Name</Value>
+      </Property>
+      <Property name="Creation User">
+        <Value>Projects.CreationUser</Value>
+      </Property>
+      <Property name="Modification User">
+        <Value>Projects.ModificationUser</Value>
+      </Property>
+      <Property name="Creation Date">
+        <Value>Projects.CreationDate</Value>
+      </Property>
+      <Property name="Modification Date">
+        <Value>Projects.ModificationDate</Value>
+      </Property>
+    </Property>
+
+  </Config>
+
+  <Config name="com.cronos.timetracker.project.simple">
+    <Property name="persistence_class">
+      <Value>com.cronos.timetracker.project.persistence.SimplePersistence</Value>
+    </Property>
+    <Property name="connection_factory_namespace">
+      <Value>com.topcoder.db.connectionfactory</Value>
+    </Property>
+  </Config>
+
+  <Config name="com.topcoder.db.connectionfactory">
+    <Property name="connections">
+        <Property name="default">
+            <Value>Informix_Connection_Producer</Value>
+        </Property>
+        <Property name="Informix_Connection_Producer">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jdbc_driver">
+                    <Value>com.informix.jdbc.IfxDriver</Value>
+                </Property>
+                <Property name="jdbc_url">
+                    <Value>jdbc:informix-sqli://127.0.0.1:1526/time_tracker_project:informixserver=devinformix10_shm</Value>
+                </Property>
+                <Property name="user">
+                    <Value>informix</Value>
+                </Property>
+                <Property name="password">
+                    <Value>informix</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Property>
+  </Config>
+</CMConfig>

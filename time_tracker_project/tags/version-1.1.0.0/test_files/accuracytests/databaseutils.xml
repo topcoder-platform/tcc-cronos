@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.cronos.timetracker.project.accuraytests.DatabaseSearchUtility.clients">
+
+    <!-- The SQL query template, required -->
+    <Property name="query_template">
+      <Value>select distinct Clients.ClientsID from Clients where </Value>
+    </Property>
+
+    <!-- The aliases of the DB column names, required -->
+    <Property name="column_aliases">
+      <Property name="Name">
+        <Value>Clients.Name</Value>
+      </Property>
+      <Property name="Creation User">
+        <Value>Clients.CreationUser</Value>
+      </Property>
+      <Property name="Modification User">
+        <Value>Clients.ModificationUser</Value>
+      </Property>
+      <Property name="Creation Date">
+        <Value>Clients.CreationDate</Value>
+      </Property>
+      <Property name="Modification Date">
+        <Value>Clients.ModificationDate</Value>
+      </Property>
+    </Property>
+
+  </Config>
+  
+    <Config name="com.cronos.timetracker.project.accuraytests.DatabaseSearchUtility.projects">
+
+    <!-- The SQL query template, required -->
+    <Property name="query_template">
+      <Value>select distinct Projects.ProjectsID from Projects where </Value>
+    </Property>
+
+    <!-- The aliases of the DB column names, required -->
+    <Property name="column_aliases">
+      <Property name="Name">
+        <Value>Projects.Name</Value>
+      </Property>
+      <Property name="Creation User">
+        <Value>Projects.CreationUser</Value>
+      </Property>
+      <Property name="Modification User">
+        <Value>Projects.ModificationUser</Value>
+      </Property>
+      <Property name="Creation Date">
+        <Value>Projects.CreationDate</Value>
+      </Property>
+      <Property name="Modification Date">
+        <Value>Projects.ModificationDate</Value>
+      </Property>
+    </Property>
+
+  </Config>
+  
+</CMConfig>
