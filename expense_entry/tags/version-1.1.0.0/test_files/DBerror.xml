@@ -1,0 +1,45 @@
+<CMConfig>
+  <Config name="com.topcoder.timetracker.entry.expense">
+    <Property name="entry_status_persistence_class">
+      <Value>com.cronos.timetracker.entry.expense.persistence.ExpenseEntryStatusDbPersistence</Value>
+    </Property>
+    <Property name="entry_type_persistence_class">
+      <Value>com.cronos.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence</Value>
+    </Property>
+    <Property name="entry_persistence_class">
+      <Value>com.cronos.timetracker.entry.expense.persistence.ExpenseEntryDbPersistence</Value>
+    </Property>
+    <Property name="connection_producer_name">
+      <Value>Connection</Value>
+    </Property>
+    <Property name="connection_factory_namespace">
+      <Value>com.topcoder.timetracker.entry.expense.connectionA</Value>
+    </Property>
+  </Config>
+  <Config name="com.topcoder.timetracker.entry.expense.connectionA">
+    <Property name="connections">
+      <Property name="default">
+        <Value>ConnectionABC</Value>
+      </Property>
+      <Property name="Connection">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+          <Property name="jdbc_driver">
+            <Value>com.informix.jdbc.IfxDriver</Value>
+          </Property>
+          <Property name="jdbc_url">
+            <Value>jdbc:informix-sqli://database:informixserver=database</Value>
+          </Property>
+          <Property name="user">
+            <Value>user</Value>
+          </Property>
+          <Property name="password">
+            <Value>password</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>
