@@ -37,6 +37,11 @@ public class InformixTimeTrackerProjectPersistence1_1StressTest extends
 	 */
 	private TimeTrackerProjectPersistence persistence = null;
 
+    /**
+     * The number of iterations to run each stress test.
+     */
+    private static final int ITERATION = 3000;
+
 	/**
 	 * Setup the test environment, it will remove the namespace first of
 	 * <code>DBConnectionFactory</code>, and load it. Next, the
@@ -71,12 +76,12 @@ public class InformixTimeTrackerProjectPersistence1_1StressTest extends
 	 *             Exception thrown from unit tests.
 	 */
 	public void testAddProjects() throws Exception {
-		Project[] projects = new Project[3000];
-		for (int i = 0; i < 3000; ++i) {
+		Project[] projects = new Project[ITERATION];
+		for (int i = 0; i < ITERATION; ++i) {
 			projects[i] = StressHelper1_1.createProject(i + 1);
 		}
 		this.persistence.addProjects(projects, true);
-		for (int i = 0; i < 3000; ++i) {
+		for (int i = 0; i < ITERATION; ++i) {
 			assertEquals(persistence.getProject(i + 1).getName().trim(), "name"
 					+ (i + 1));
 		}
@@ -91,12 +96,12 @@ public class InformixTimeTrackerProjectPersistence1_1StressTest extends
 	 *             Exception thrown from unit tests.
 	 */
 	public void testAddClients() throws Exception {
-		Client[] clients = new Client[3000];
-		for (int i = 0; i < 3000; ++i) {
+		Client[] clients = new Client[ITERATION];
+		for (int i = 0; i < ITERATION; ++i) {
 			clients[i] = StressHelper1_1.createClient(i + 1);
 		}
 		this.persistence.addClients(clients, true);
-		for (int i = 0; i < 3000; ++i) {
+		for (int i = 0; i < ITERATION; ++i) {
 			assertEquals(persistence.getClient(i + 1).getName().trim(), "name"
 					+ (i + 1));
 		}
@@ -111,8 +116,8 @@ public class InformixTimeTrackerProjectPersistence1_1StressTest extends
 	 *             Exception thrown from unit tests.
 	 */
 	public void testSearchForProjects() throws Exception {
-		Project[] projects = new Project[3000];
-		for (int i = 0; i < 3000; ++i) {
+		Project[] projects = new Project[ITERATION];
+		for (int i = 0; i < ITERATION; ++i) {
 			projects[i] = StressHelper1_1.createProject(i + 1);
 		}
 		this.persistence.addProjects(projects, true);
@@ -130,8 +135,8 @@ public class InformixTimeTrackerProjectPersistence1_1StressTest extends
 	 *             Exception thrown from unit tests.
 	 */
 	public void testSearchForClients() throws Exception {
-		Client[] clients = new Client[3000];
-		for (int i = 0; i < 3000; ++i) {
+		Client[] clients = new Client[ITERATION];
+		for (int i = 0; i < ITERATION; ++i) {
 			clients[i] = StressHelper1_1.createClient(i + 1);
 		}
 		this.persistence.addClients(clients, true);
