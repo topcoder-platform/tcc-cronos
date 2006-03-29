@@ -236,12 +236,10 @@
 
     <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
-<!-- uncomment if configuration files exist.
         <mkdir dir="${dist_conf}"/>
         <copy todir="${dist_conf}">
             <fileset dir="${configdir}" />
         </copy>
--->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
