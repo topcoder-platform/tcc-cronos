@@ -559,10 +559,13 @@ public class V1Dot1DemoTest extends TestCase {
                 myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             }
 
-            ResultListener myListener = new MockResultListener();
+            MockResultListener myListener = new MockResultListener();
 
             // do a batch update
             myAsynchDAO.batchCreate(myTimeEntrys, "Ivern", true, myListener);
+            while (!myListener.isFinished()) {
+                Thread.sleep(10);
+            }
         } finally {
             V1Dot1TestHelper.closeResources(null, null, conn);
         }
