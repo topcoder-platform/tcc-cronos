@@ -435,19 +435,17 @@
 
     <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
-        <!-- uncomment if configuration files exist.
-                <mkdir dir="${dist_conf}"/>
-                <copy todir="${dist_conf}">
-                    <fileset dir="${configdir}" />
-                </copy>
-        -->
+        <mkdir dir="${dist_conf}"/>
+        <copy todir="${dist_conf}">
+            <fileset dir="${configdir}" />
+        </copy>
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
-            <fileset dir="${srcdir}"/>
+            <fileset dir="${srcdir}" />
         </copy>
 
-        <copy todir="${dist_docs}">
+        <copy todir="${dist_docs}" >
             <fileset dir="${docsdir}">
                 <include name="${component}_Class_Diagram*"/>
                 <include name="${component}_Use_Case_Diagram*"/>
@@ -461,49 +459,32 @@
 
         <mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
-            <fileset dir="${javadocsdir}"/>
+            <fileset dir="${javadocsdir}" />
         </copy>
 
-        <antcall target="package_docs"/>
+        <jar jarfile="${javadoc.jar}" basedir="${build_tcsdistdir}\docs\javadocs"/>
 
-        <!-- uncomment if test files exist.
-                <mkdir dir="${dist_testfiles}"/>
-                <copy todir="${dist_testfiles}">
-                    <fileset dir="${testfiles}" />
-                </copy>
-        -->
-        <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
-        <copy file="README" tofile="${build_tcsdistdir}/README"/>
+        <mkdir dir="${dist_testfiles}"/>
+        <copy todir="${dist_testfiles}">
+            <fileset dir="${testfiles}" />
+        </copy>
+
+        <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
+        <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
+        <antcall target="moveToTCS"/>
 
-        <antcall target="move_to_tcs"/>
     </target>
 
-    <target name="package_docs" depends="javadoc">
-        <mkdir dir="${dist_docpackage}"/>
-
-        <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${javadocsdir}"/>
-
-        <copy todir="${dist_docpackage}">
-            <fileset dir="${docsdir}">
-                <include name="${component}_Class_Diagram*"/>
-                <include name="${component}_Use_Case_Diagram*"/>
-                <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification.pdf"/>
-                <include name="${component}_Component_Specification.pdf"/>
-            </fileset>
-        </copy>
-
-        <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}"/>
-    </target>
-
-    <target name="move_to_tcs">
+    <target name="moveToTCS">
         <mkdir dir="${tcs_libdir}/${component_path}"/>
         <mkdir dir="${tcs_libdir}/${component_path}/dist"/>
 
         <copy file="${component.jar}" todir="${tcs_libdir}/${component_path}"/>
+
         <copy file="${component.dist.jar}" todir="${tcs_libdir}/${component_path}/dist"/>
     </target>
+
 
     <target name="dev_submission" depends="test">
         <jar jarfile="${dev_submission.jar}"
