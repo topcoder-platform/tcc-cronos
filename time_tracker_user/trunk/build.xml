@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.timetracker.user" />
     <property name="packagedir" value="com/topcoder/timetracker/user" />
     <property name="distfilename" value="time_tracker_user" />
-    <property name="component_version" value="1.0" />
+    <property name="component_version" value="2.0" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
