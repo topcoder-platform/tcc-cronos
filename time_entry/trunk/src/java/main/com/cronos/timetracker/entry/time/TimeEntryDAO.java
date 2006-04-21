@@ -101,7 +101,7 @@ public class TimeEntryDAO extends BaseDAO {
      *
      * @since 1.1
      */
-    private static final String RETRIEVE_REJECT_REASON_SQL = "SELECT R.reject_reason_id, "
+    private static final String RETRIEVE_REJECT_REASON_SQL = "SELECT R.reject_reason_id, R.description, "
         + "R.creation_date, R.creation_user, R.modification_date, R.modification_user FROM time_reject_reason AS E "
         + "LEFT OUTER JOIN reject_reason AS R ON E.reject_reason_id = R.reject_reason_id " + "WHERE E.TimeEntriesID=?";
 
@@ -111,6 +111,13 @@ public class TimeEntryDAO extends BaseDAO {
      * @since 1.1
      */
     private static final String REASON_ID_COLUMN = "reject_reason_id";
+    
+    /**
+     * Represents the column name for the reject reason description of the expense entry.
+     *
+     * @since 1.1
+     */
+    private static final String REASON_DESCRIPTION = "description";
 
     /**
      * Represents the column name for reject reason creation date.
@@ -1225,6 +1232,7 @@ public class TimeEntryDAO extends BaseDAO {
             while (resultSet.next()) {
                 RejectReason reason = new RejectReason();
                 reason.setPrimaryId(resultSet.getInt(REASON_ID_COLUMN));
+                reason.setDescription(resultSet.getString(REASON_DESCRIPTION));
                 reason.setCreationDate(resultSet.getDate(REASON_CREATION_DATE_COLUMN));
                 reason.setCreationUser(resultSet.getString(REASON_CREATION_USER_COLUMN));
                 reason.setModificationDate(resultSet.getDate(REASON_MODIFICATION_DATE_COLUMN));
