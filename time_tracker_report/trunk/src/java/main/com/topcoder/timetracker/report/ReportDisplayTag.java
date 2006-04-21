@@ -39,6 +39,11 @@ import java.util.List;
  *
  * @author fastprogrammer, traugust
  * @version 1.0
+ * 
+ * @author Xuchen
+ * 2006-4-21
+ * Bug fix for TT-1980: safeCreateEqualityFilter(), safeCreateRangeFilter(), and safeLookupContextValueArray() to allow
+ * null input parameters.
  */
 public class ReportDisplayTag extends TagSupport {
 
@@ -422,7 +427,7 @@ public class ReportDisplayTag extends TagSupport {
     private EqualityFilter safeCreateEqualityFilter(final String filterValueAttribute, final Column column,
                                                     final FilterCategory filterCategory)
         throws ReportConfigurationException {
-        if (filterValueAttribute == null || filterValueAttribute.trim().length() == 0) {
+        if (filterValueAttribute != null && filterValueAttribute.trim().length() == 0) {
             return null;
         }
 
@@ -464,8 +469,8 @@ public class ReportDisplayTag extends TagSupport {
                                               final Column column,
                                               final FilterCategory filterCategory)
         throws ReportConfigurationException {
-        if (lowerBoundAttribute == null || lowerBoundAttribute.trim().length() == 0
-            || upperBoundAttribute == null || upperBoundAttribute.trim().length() == 0) {
+        if ((lowerBoundAttribute != null && lowerBoundAttribute.trim().length() == 0)
+            || (upperBoundAttribute != null && upperBoundAttribute.trim().length() == 0)) {
             return null;
         }
         final String[] lowerBoundValues = safeLookupContextValueArray(lowerBoundAttribute);
@@ -620,7 +625,7 @@ public class ReportDisplayTag extends TagSupport {
      *                                      <tt>null</tt>-values or empty (trim'd) Strings
      */
     private String[] safeLookupContextValueArray(final String attrValue) throws ReportConfigurationException {
-        if (attrValue == null || attrValue.trim().length() == 0) {
+        if (attrValue != null && attrValue.trim().length() == 0) {
             return null;
         }
 
