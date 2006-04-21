@@ -204,7 +204,7 @@ final class HTMLRenderUtil {
 
                             // if the value returned was a null value, render it as '*'
                             if (string == null || rs.wasNull() || intValue == -1) {
-                                string = "*";
+                                string = "0";
                             }
 
                             // let the decorator render the value
