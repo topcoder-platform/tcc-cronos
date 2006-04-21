@@ -44,6 +44,11 @@ import java.util.List;
  * 2006-4-21
  * Bug fix for TT-1980: safeCreateEqualityFilter(), safeCreateRangeFilter(), and safeLookupContextValueArray() to allow
  * null input parameters.
+ * Solution: safeLookupContextValueArray method does not check the returned array for whether containing null element.
+ * 
+ * Buf fix for TT-1979: Originally, both Start Date and End Date must be specified. Should be open-ended.
+ * Solution: in safeCreateRangeFilter() method, set lower bound to '01-01-0001' if lower bound input parameter is null 
+ * and set upper bound to '12-31-9999' if the upper bound input parameter is null.
  */
 public class ReportDisplayTag extends TagSupport {
 
@@ -52,6 +57,16 @@ public class ReportDisplayTag extends TagSupport {
      * during the fetch of a Report instance from the Report factory, along with the category of the Report.
      */
     private static final String FORMAT = "HTML";
+    
+    /**
+     * The maximun possible date in database.
+     */
+    private static final String MAX_DATE = "12-31-9999";
+    
+    /**
+     * The minimun possible date in database.
+     */
+    private static final String MIN_DATE = "01-01-0001";
 
     /**
      * Represents the reportFactory instance used in this tag. This is a static field, as the instance is to be shared
@@ -499,8 +514,8 @@ public class ReportDisplayTag extends TagSupport {
 
         final RangeFilter filter = new RangeFilter(column, filterCategory);
         for (int i = 0; i < lowerBoundValues.length; i++) {
-            final String lowerBoundValue = lowerBoundValues[i];
-            final String upperBoundValue = upperBoundValues[i];
+            final String lowerBoundValue = lowerBoundValues[i] != null ? lowerBoundValues[i] : MIN_DATE;
+            final String upperBoundValue = upperBoundValues[i] != null ? upperBoundValues[i] : MAX_DATE;
             filter.addFilterRange(lowerBoundValue, upperBoundValue);
         }
 
@@ -622,7 +637,7 @@ public class ReportDisplayTag extends TagSupport {
      *
      * @throws ReportConfigurationException in case the value looked up from context is not of type {@link String} or
      *                                      <tt>String[]</tt> or the <tt>String[]</tt> found contained
-     *                                      <tt>null</tt>-values or empty (trim'd) Strings
+     *                                      empty (trim'd) Strings
      */
     private String[] safeLookupContextValueArray(final String attrValue) throws ReportConfigurationException {
         if (attrValue == null || attrValue.trim().length() == 0) {
