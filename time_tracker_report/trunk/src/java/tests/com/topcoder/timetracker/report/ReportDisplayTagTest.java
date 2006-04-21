@@ -14,6 +14,10 @@ import java.lang.reflect.Field;
  *
  * @author TCSDEVELOPER
  * @version 1.0
+ *
+ * @author Xuchen
+ * 2006-4-21
+ * Bug fix for TT-1980, allow null parameter.
  */
 public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     /**
@@ -521,22 +525,6 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     /**
      * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
      * <p/>
-     * <b>Failure reason</b>: client filter context value is a String[] containing <tt>null</tt>
-     */
-    public void testDoStartTagFailClientFilterContextValueNullInStringArray() {
-        try {
-            pageContext.setAttribute(CLIENT_FILTER_STRING, new String []{null});
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
-
-        }
-    }
-
-    /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
      * <b>Failure reason</b>: client filter context value is a String[] containing an empty String
      */
     public void testDoStartTagFailClientFilterContextValueEmptyStringInStringArray() {
@@ -574,22 +562,6 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     public void testDoStartTagFailBillableFilterContextValueEmptyString() {
         try {
             pageContext.setAttribute(BILLABLE_FILTER_STRING, "   ");
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
-
-        }
-    }
-
-    /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
-     * <b>Failure reason</b>: billable filter context value is a String[] containing <tt>null</tt>
-     */
-    public void testDoStartTagFailBillableFilterContextValueNullInStringArray() {
-        try {
-            pageContext.setAttribute(BILLABLE_FILTER_STRING, new String []{null});
             reportDisplayTag.doStartTag();
             fail("should throw");
         } catch (JspException expected) {
@@ -649,22 +621,6 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     /**
      * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
      * <p/>
-     * <b>Failure reason</b>: employee filter context value is a String[] containing <tt>null</tt>
-     */
-    public void testDoStartTagFailEmployeeFilterContextValueNullInStringArray() {
-        try {
-            pageContext.setAttribute(EMPLOYEE_FILTER_STRING, new String []{null});
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
-
-        }
-    }
-
-    /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
      * <b>Failure reason</b>: employee filter context value is a String[] containing an empty String
      */
     public void testDoStartTagFailEmployeeFilterContextValueEmptyStringInStringArray() {
@@ -702,22 +658,6 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     public void testDoStartTagFailProjectFilterContextValueEmptyString() {
         try {
             pageContext.setAttribute(PROJECT_FILTER_STRING, "   ");
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
-
-        }
-    }
-
-    /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
-     * <b>Failure reason</b>: project filter context value is a String[] containing <tt>null</tt>
-     */
-    public void testDoStartTagFailProjectFilterContextValueNullInStringArray() {
-        try {
-            pageContext.setAttribute(PROJECT_FILTER_STRING, new String []{null});
             reportDisplayTag.doStartTag();
             fail("should throw");
         } catch (JspException expected) {
@@ -777,22 +717,6 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     /**
      * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
      * <p/>
-     * <b>Failure reason</b>: end date filter context value is a String[] containing <tt>null</tt>
-     */
-    public void testDoStartTagFailStartDateFilterContextValueNullInStringArray() {
-        try {
-            pageContext.setAttribute(END_DATE_FILTER_STRING, new String []{null});
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
-
-        }
-    }
-
-    /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
      * <b>Failure reason</b>: end date filter context value is a String[] containing an empty String
      */
     public void testDoStartTagFailStartDateFilterContextValueEmptyStringInStringArray() {
@@ -830,22 +754,6 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     public void testDoStartTagFailEndDateFilterContextValueEmptyString() {
         try {
             pageContext.setAttribute(END_DATE_FILTER_STRING, "   ");
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
-
-        }
-    }
-
-    /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
-     * <b>Failure reason</b>: end date filter context value is a String[] containing <tt>null</tt>
-     */
-    public void testDoStartTagFailEndDateFilterContextValueNullInStringArray() {
-        try {
-            pageContext.setAttribute(END_DATE_FILTER_STRING, new String []{null});
             reportDisplayTag.doStartTag();
             fail("should throw");
         } catch (JspException expected) {

@@ -12,7 +12,7 @@
             <TD>2005-03-03 00:00:00.0</TD>
             <TD>client1</TD>
             <TD>project1</TD>
-            <TD>*</TD>
+            <TD>0</TD>
             <TD>15.00</TD>
             <TD>1</TD>
         </TR>
@@ -21,7 +21,7 @@
             <TD>client1</TD>
             <TD>project1</TD>
             <TD>3</TD>
-            <TD>*</TD>
+            <TD>0</TD>
             <TD>1</TD>
         </TR>
         <TR>
@@ -29,14 +29,14 @@
             <TD>client1</TD>
             <TD>project1</TD>
             <TD>5</TD>
-            <TD>*</TD>
+            <TD>0</TD>
             <TD>1</TD>
         </TR>
         <TR>
             <TD>2005-11-11 00:00:00.0</TD>
             <TD>client1</TD>
             <TD>project1</TD>
-            <TD>*</TD>
+            <TD>0</TD>
             <TD>1.00</TD>
             <TD>1</TD>
         </TR>
@@ -44,7 +44,7 @@
             <TD>2006-01-01 00:00:00.0</TD>
             <TD>client2</TD>
             <TD>project2</TD>
-            <TD>*</TD>
+            <TD>0</TD>
             <TD>15.30</TD>
             <TD>1</TD>
         </TR>
@@ -53,7 +53,7 @@
             <TD>client1</TD>
             <TD>project1</TD>
             <TD>6</TD>
-            <TD>*</TD>
+            <TD>0</TD>
             <TD>1</TD>
         </TR>
     </TABLE>

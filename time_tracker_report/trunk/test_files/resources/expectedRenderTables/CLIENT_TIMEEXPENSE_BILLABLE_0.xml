@@ -11,7 +11,7 @@
         <TD>2006-01-01 00:00:00.0</TD>
         <TD>client1</TD>
         <TD>project1</TD>
-        <TD>*</TD>
+        <TD>0</TD>
         <TD>15.03</TD>
         <TD>0</TD>
     </TR>
@@ -20,7 +20,7 @@
         <TD>client1</TD>
         <TD>project1</TD>
         <TD>4</TD>
-        <TD>*</TD>
+        <TD>0</TD>
         <TD>0</TD>
     </TR>
     <TR>
@@ -28,14 +28,14 @@
         <TD>client2</TD>
         <TD>project2</TD>
         <TD>3</TD>
-        <TD>*</TD>
+        <TD>0</TD>
         <TD>0</TD>
     </TR>
     <TR>
         <TD>2006-01-02 00:00:00.0</TD>
         <TD>client2</TD>
         <TD>project2</TD>
-        <TD>*</TD>
+        <TD>0</TD>
         <TD>1.06</TD>
         <TD>0</TD>
     </TR>
