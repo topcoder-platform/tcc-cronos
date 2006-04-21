@@ -44,9 +44,10 @@ import java.util.List;
  * 2006-4-21
  * Bug fix for TT-1980: safeCreateEqualityFilter(), safeCreateRangeFilter(), and safeLookupContextValueArray() to allow
  * null input parameters.
- * Solution: safeLookupContextValueArray method does not check the returned array for whether containing null element.
+ * Solution: safeLookupContextValueArray method does not check the returned array for whether containing null element
+ * and safeCreateEqualityFilter method does not add null element in returned array as filter value.
  * 
- * Buf fix for TT-1979: Originally, both Start Date and End Date must be specified. Should be open-ended.
+ * Buf fix for TT-1979: Both Start Date and End Date must be specified. Should be open-ended.
  * Solution: in safeCreateRangeFilter() method, set lower bound to '01-01-0001' if lower bound input parameter is null 
  * and set upper bound to '12-31-9999' if the upper bound input parameter is null.
  */
@@ -453,9 +454,11 @@ public class ReportDisplayTag extends TagSupport {
 
         final EqualityFilter filter = new EqualityFilter(column, filterCategory);
         for (int i = 0; i < filterValues.length; i++) {
-            filter.addFilterValue(filterValues[i]);
+            if (filterValues[i] != null) {
+                filter.addFilterValue(filterValues[i]);
+            }
         }
-        return filter;
+        return filter.getFilterValues().size() == 0 ? null : filter;
 
     }
 
@@ -668,7 +671,7 @@ public class ReportDisplayTag extends TagSupport {
             }
             for (int i = 0; i < asArray.length; i++) {
                 final String s = asArray[i];
-                if (s.trim().length() == 0) {
+                if (s != null && s.trim().length() == 0) {
                     throw new ReportConfigurationException("The value of the attribute named [" + attrValue
                         + "] was a String[] that contained an empty String.");
                 }
