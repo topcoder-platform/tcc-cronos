@@ -13,16 +13,25 @@ import java.util.Date;
  * Defines the common information of <code>ExpenseEntry</code>, <code>ExpenseEntryType</code>,
  * <code>ExpenseEntryStatus</code> and <code>ExpenseEntryRejectReason</code>. Though it has no abstract method, it is
  * marked as abstract to avoid direct instantiation. It is also serializable via object streams. The common
- * information includes the creation date and user, the last modification date and user.
+ * information includes the creation date and user, the last modification date and user, and a description of the
+ * information.
  * </p>
- *
+ * 
  * <p>
  * Changes in 1.1: id and description have been moved to BasicInfo. That's because
  * <code>ExpenseEntryRejectReason</code> doesn't have them.
  * </p>
+ * 
+ * <p>
+ * Bug fixed on 2006-4-22, modified by Xuchen. Bug Fix for TT-1976: "It is not possible to directly retrieve the
+ * textual description of rejected reason from the  ExpenseEntryRejectReason object. This object is derived from the
+ * CommonInfo class, instead of BasicInfo one, so it  has no getDescription/setDescription method."  Solution: Move
+ * 'description' and its setter/getter methods from BasicInfo class to CommonInfo class.
+ * </p>
  *
  * @author adic, TCSDEVELOPER
  * @author DanLazar, visualage
+ * @author Xuchen
  * @version 1.1
  *
  * @since 1.0
@@ -46,6 +55,9 @@ public abstract class CommonInfo implements Serializable {
      */
     private String modificationUser = null;
 
+    /** Represents the description of this information. */
+    private String description = null;
+
     /**
      * <p>
      * Creates a new instance of <code>CommonInfo</code> class.
@@ -62,8 +74,6 @@ public abstract class CommonInfo implements Serializable {
      * </p>
      *
      * @param creationDate the creation date of this instance.
-     *
-     * @throws NullPointerException if <code>creationDate</code> is <code>null</code>.
      */
     public void setCreationDate(Date creationDate) {
         ExpenseEntryHelper.validateNotNull(creationDate, "creationDate");
@@ -77,9 +87,6 @@ public abstract class CommonInfo implements Serializable {
      * </p>
      *
      * @param creationUser the creation user of this instance.
-     *
-     * @throws NullPointerException if <code>creationUser</code> is <code>null</code>.
-     * @throws IllegalArgumentException if <code>creationUser</code> is empty string.
      */
     public void setCreationUser(String creationUser) {
         ExpenseEntryHelper.validateNotNullOrEmpty(creationUser, "creationUser");
@@ -94,8 +101,6 @@ public abstract class CommonInfo implements Serializable {
      * </p>
      *
      * @param modificationDate the last modification date of this instance.
-     *
-     * @throws NullPointerException if <code>modificationDate</code> is <code>null</code>.
      */
     public void setModificationDate(Date modificationDate) {
         ExpenseEntryHelper.validateNotNull(modificationDate, "modificationDate");
@@ -109,14 +114,24 @@ public abstract class CommonInfo implements Serializable {
      * </p>
      *
      * @param modificationUser the last modification user of this instance.
-     *
-     * @throws NullPointerException if <code>modificationUser</code> is <code>null</code>.
-     * @throws IllegalArgumentException if <code>modificationUser</code> is empty string.
      */
     public void setModificationUser(String modificationUser) {
         ExpenseEntryHelper.validateNotNullOrEmpty(modificationUser, "modificationUser");
 
         this.modificationUser = modificationUser;
+    }
+
+    /**
+     * <p>
+     * Sets the description of this instance.
+     * </p>
+     *
+     * @param description the description of this instance.
+     */
+    public void setDescription(String description) {
+        ExpenseEntryHelper.validateNotNullOrEmpty(description, "description");
+
+        this.description = description;
     }
 
     /**
@@ -161,5 +176,16 @@ public abstract class CommonInfo implements Serializable {
      */
     public String getModificationUser() {
         return modificationUser;
+    }
+
+    /**
+     * <p>
+     * Gets the description of this instance.
+     * </p>
+     *
+     * @return the description of this instance.
+     */
+    public String getDescription() {
+        return description;
     }
 }

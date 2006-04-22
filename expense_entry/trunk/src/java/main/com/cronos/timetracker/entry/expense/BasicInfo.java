@@ -7,12 +7,19 @@ package com.cronos.timetracker.entry.expense;
  * <p>
  * Defines the common information of <code>ExpenseEntry</code>, <code>ExpenseEntryType</code> and
  * <code>ExpenseEntryStatus</code>. Though it has no abstract method, it is marked as abstract to avoid direct
- * instantiation. It is also serializable via object streams. The common information includes a unique ID, a
- * description of the information.
+ * instantiation. It is also serializable via object streams. The common information includes a unique ID.
+ * </p>
+ * 
+ * <p>
+ * Bug fixed on 2006-4-22, modified by Xuchen. Bug Fix for TT-1976: "It is not possible to directly retrieve the
+ * textual description of rejected reason from the  ExpenseEntryRejectReason object. This object is derived from the
+ * CommonInfo class, instead of BasicInfo one, so it  has no getDescription/setDescription method."  Solution: Move
+ * 'description' and its setter/getter methods from BasicInfo class to CommonInfo class.
  * </p>
  *
  * @author adic, TCSDEVELOPER
  * @author DanLazar, visualage
+ * @author Xuchen
  * @version 1.1
  *
  * @since 1.1
@@ -23,9 +30,6 @@ public abstract class BasicInfo extends CommonInfo {
      * persisted.
      */
     private int id = -1;
-
-    /** Represents the description of this information. */
-    private String description = null;
 
     /**
      * <p>
@@ -41,8 +45,6 @@ public abstract class BasicInfo extends CommonInfo {
      * </p>
      *
      * @param id the unique ID of this instance.
-     *
-     * @throws IllegalArgumentException if <code>id</code> is -1.
      */
     protected BasicInfo(int id) {
         ExpenseEntryHelper.validateId(id);
@@ -56,29 +58,11 @@ public abstract class BasicInfo extends CommonInfo {
      * </p>
      *
      * @param id the unique ID of this instance.
-     *
-     * @throws IllegalArgumentException if <code>id</code> is -1.
      */
     public void setId(int id) {
         ExpenseEntryHelper.validateId(id);
 
         this.id = id;
-    }
-
-    /**
-     * <p>
-     * Sets the description of this instance.
-     * </p>
-     *
-     * @param description the description of this instance.
-     *
-     * @throws NullPointerException if <code>description</code> is <code>null</code>.
-     * @throws IllegalArgumentException if <code>description</code> is empty string.
-     */
-    public void setDescription(String description) {
-        ExpenseEntryHelper.validateNotNullOrEmpty(description, "description");
-
-        this.description = description;
     }
 
     /**
@@ -90,16 +74,5 @@ public abstract class BasicInfo extends CommonInfo {
      */
     public int getId() {
         return id;
-    }
-
-    /**
-     * <p>
-     * Gets the description of this instance.
-     * </p>
-     *
-     * @return the description of this instance.
-     */
-    public String getDescription() {
-        return description;
     }
 }
