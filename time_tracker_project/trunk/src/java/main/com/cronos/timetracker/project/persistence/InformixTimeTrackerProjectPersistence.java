@@ -761,8 +761,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
             DBUtil.startTransaction(connection);
 
             // check if the client is assigned to the project
-            return exist(SQL_SEL_CLIENT_PROJECT_BY_BOTH, clientId, projectId) ? getProjectImpl(projectId) : null;
+            Project project = exist(SQL_SEL_CLIENT_PROJECT_BY_BOTH, clientId, projectId) ?
+                    getProjectImpl(projectId) : null;
+            DBUtil.commit(connection);
+            return project;
         } catch (SQLException e) {
+            DBUtil.rollback(connection);
             throw new PersistenceException("Fails to get client project", e);
         } finally {
             DBUtil.endTransaction(connection);
@@ -792,7 +796,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
             DBUtil.startTransaction(connection);
 
             // call the actual implementation
-            return getAllClientProjectsImpl(clientId);
+            List clientProjects = getAllClientProjectsImpl(clientId);
+            DBUtil.commit(connection);
+            return clientProjects;
+        } catch (PersistenceException e) {
+            DBUtil.rollback(connection);
+            throw e;
         } finally {
             DBUtil.endTransaction(connection);
         }
@@ -820,7 +829,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
             DBUtil.startTransaction(connection);
 
             // call the actual implementation
-            return getClientImpl(clientId);
+            Client client = getClientImpl(clientId);
+            DBUtil.commit(connection);
+            return client;
+        } catch (PersistenceException e) {
+            DBUtil.rollback(connection);
+            throw e;
         } finally {
             DBUtil.endTransaction(connection);
         }
@@ -858,11 +872,13 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // populate the fields of each client
                 clients.add(getClientImpl(rs));
             }
+            DBUtil.commit(connection);
             return clients;
         } catch (SQLException e) {
             throw new PersistenceException("Fails to get all clients", e);
         } finally {
             DBUtil.close(rs);
+            DBUtil.rollback(connection);
             DBUtil.endTransaction(connection);
         }
     }
@@ -1111,8 +1127,11 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
             pstmt.setInt(1, projectId);
             rs = pstmt.executeQuery();
 
-            return rs.next() ? getClientImpl(rs.getInt(1)) : null;
+            Client client = rs.next() ? getClientImpl(rs.getInt(1)) : null;
+            DBUtil.commit(connection);
+            return client;
         } catch (SQLException e) {
+            DBUtil.rollback(connection);
             throw new PersistenceException("Fails to get project client", e);
         } finally {
             DBUtil.close(rs);
@@ -1232,11 +1251,13 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
             manager.setModificationDate(DBUtil.toUtilDate(rs.getTimestamp(5)));
             manager.setModificationUser(rs.getString(6));
 
+            DBUtil.commit(connection);
             return manager;
         } catch (SQLException e) {
             throw new PersistenceException("Fails to get project manager", e);
         } finally {
             DBUtil.close(rs);
+            DBUtil.rollback(connection);
             DBUtil.endTransaction(connection);
         }
     }
@@ -1335,6 +1356,7 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         }
 
         try {
+
             // use current date for modificationDate
             Date date = new Date();
 
@@ -1434,7 +1456,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
             DBUtil.startTransaction(connection);
 
             // call the actual implementation
-            return getWorkerImpl(workerId, projectId);
+            ProjectWorker projectWorker = getWorkerImpl(workerId, projectId);
+            DBUtil.commit(connection);
+            return projectWorker;
+        } catch (PersistenceException e) {
+            DBUtil.rollback(connection);
+            throw e;
         } finally {
             DBUtil.endTransaction(connection);
         }
@@ -1476,8 +1503,10 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // populate the fields of each project worker
                 workers.add(getWorkerImpl(rs));
             }
+            DBUtil.commit(connection);
             return workers;
         } catch (SQLException e) {
+            DBUtil.rollback(connection);
             throw new PersistenceException("Fails to get project workers", e);
         } finally {
             DBUtil.close(rs);
@@ -1687,7 +1716,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
             DBUtil.startTransaction(connection);
 
             // call the actual implementation
-            return getProjectImpl(projectId);
+            Project project = getProjectImpl(projectId);
+            DBUtil.commit(connection);
+            return project;
+        } catch (PersistenceException e) {
+            DBUtil.rollback(connection);
+            throw e;
         } finally {
             DBUtil.endTransaction(connection);
         }
@@ -1725,8 +1759,10 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // populate the fields of each project
                 projects.add(getProjectImpl(rs));
             }
+            DBUtil.commit(connection);
             return projects;
         } catch (SQLException e) {
+            DBUtil.rollback(connection);
             throw new PersistenceException("Fails to get all projects", e);
         } finally {
             DBUtil.close(rs);
@@ -1825,8 +1861,10 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // populate the fields of each project
                 projects.add(getProjectImpl(rs.getInt(1)));
             }
+            DBUtil.commit(connection);
             return (Project[]) projects.toArray(new Project[0]);
         } catch (SQLException e) {
+            DBUtil.rollback(connection);
             throw new PersistenceException("Fails to search projects", e);
         } finally {
             DBUtil.close(rs);
@@ -1878,12 +1916,14 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // populate the fields of each client
                 clients.add(getClientImpl(rs.getInt(1)));
             }
+            DBUtil.commit(connection);
             return (Client[]) clients.toArray(new Client[0]);
         } catch (SQLException e) {
             throw new PersistenceException("Fails to search clients", e);
         } finally {
             DBUtil.close(rs);
             DBUtil.close(pstmt);
+            DBUtil.rollback(connection);
             DBUtil.endTransaction(connection);
         }
     }
@@ -1908,6 +1948,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[clients.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < clients.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -1923,7 +1966,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (clients.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -1931,12 +1973,13 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
         }
-
+        if (atomic) {
+            DBUtil.endTransaction(connection);
+        }
         // throw exception if there is any failure
         DBUtil.checkAnyCauses(causes, "Fails to add the clients");
     }
@@ -1961,7 +2004,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         DBUtil.checkArray(clientIds, "clientIds");
 
         Throwable[] causes = new Throwable[clientIds.length];
-
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < clientIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -1977,7 +2022,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (clientIds.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -1985,10 +2029,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2015,7 +2061,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         DBUtil.checkArray(clients, "clients");
 
         Throwable[] causes = new Throwable[clients.length];
-
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < clients.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2031,7 +2079,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (clients.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2039,10 +2086,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2080,6 +2129,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         Client[] clients = new Client[clientIds.length];
         Throwable[] causes = new Throwable[clientIds.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < clientIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2096,17 +2148,20 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
                 // end the transaction in atomic mode
                 if ((i == (clientIds.length - 1)) && atomic) {
-                    DBUtil.endTransaction(connection);
+                    DBUtil.commit(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
 
                 // if any error occurs, end the transaction in atomic mode
                 if (atomic) {
-                    DBUtil.endTransaction(connection);
+                    DBUtil.rollback(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2136,6 +2191,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[projects.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < projects.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2151,7 +2209,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (projects.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2159,10 +2216,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2189,7 +2248,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         DBUtil.checkArray(projectIds, "projectIds");
 
         Throwable[] causes = new Throwable[projectIds.length];
-
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < projectIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2205,7 +2266,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (projectIds.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2213,10 +2273,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2243,7 +2305,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         DBUtil.checkArray(projects, "projects");
 
         Throwable[] causes = new Throwable[projects.length];
-
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < projects.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2259,7 +2323,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (projects.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2267,10 +2330,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2307,6 +2372,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         Project[] projects = new Project[projectIds.length];
         Throwable[] causes = new Throwable[projectIds.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < projectIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2323,17 +2391,20 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
                 // end the transaction in atomic mode
                 if ((i == (projectIds.length - 1)) && atomic) {
-                    DBUtil.endTransaction(connection);
+                    DBUtil.commit(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
 
                 // if any error occurs, end the transaction in atomic mode
                 if (atomic) {
-                    DBUtil.endTransaction(connection);
+                    DBUtil.rollback(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2363,6 +2434,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[workers.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < workers.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2378,7 +2452,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (workers.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2386,10 +2459,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2418,6 +2493,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[workerIds.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < workerIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2433,7 +2511,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (workerIds.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2441,10 +2518,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2472,6 +2551,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[workers.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < workers.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2487,7 +2569,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (workers.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2495,10 +2576,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2536,7 +2619,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         ProjectWorker[] workers = new ProjectWorker[workerIds.length];
         Throwable[] causes = new Throwable[workerIds.length];
-
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < workerIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2553,17 +2638,20 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
                 // end the transaction in atomic mode
                 if ((i == (workerIds.length - 1)) && atomic) {
-                    DBUtil.endTransaction(connection);
+                    DBUtil.commit(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
 
                 // if any error occurs, end the transaction in atomic mode
                 if (atomic) {
-                    DBUtil.endTransaction(connection);
+                    DBUtil.rollback(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2596,6 +2684,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[entryIds.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < entryIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2611,7 +2702,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (entryIds.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2619,10 +2709,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2650,7 +2742,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
         DBUtil.checkArray(entryIds, "entryIds");
 
         Throwable[] causes = new Throwable[entryIds.length];
-
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < entryIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2666,7 +2760,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (entryIds.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2674,10 +2767,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2708,6 +2803,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[entryIds.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < entryIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2723,7 +2821,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (entryIds.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2731,10 +2828,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
@@ -2763,6 +2862,9 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
 
         Throwable[] causes = new Throwable[entryIds.length];
 
+        if (!atomic) {
+            DBUtil.endTransaction(connection);
+        }
         for (int i = 0; i < entryIds.length; i++) {
             try {
                 // start the transaction in atomic mode
@@ -2778,7 +2880,6 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // commit the transaction in atomic mode
                 if ((i == (entryIds.length - 1)) && atomic) {
                     DBUtil.commit(connection);
-                    DBUtil.endTransaction(connection);
                 }
             } catch (PersistenceException e) {
                 causes[i] = e;
@@ -2786,10 +2887,12 @@ public class InformixTimeTrackerProjectPersistence implements TimeTrackerProject
                 // if any error occurs, rollback the transaction in atomic mode
                 if (atomic) {
                     DBUtil.rollback(connection);
-                    DBUtil.endTransaction(connection);
                     break; // stop further processing
                 }
             }
+        }
+        if (atomic) {
+            DBUtil.endTransaction(connection);
         }
 
         // throw exception if there is any failure
