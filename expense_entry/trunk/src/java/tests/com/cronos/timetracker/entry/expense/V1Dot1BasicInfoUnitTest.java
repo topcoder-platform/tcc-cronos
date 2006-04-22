@@ -91,20 +91,6 @@ public class V1Dot1BasicInfoUnitTest extends TestCase {
 
     /**
      * <p>
-     * Tests <code>setDescription</code> when the given description is empty string. Expect IllegalArgumentException.
-     * </p>
-     */
-    public void testSetDescriptionEmpty() {
-        try {
-            info.setDescription("  ");
-            fail("The description is empty string, should throw IllegalArgumentException.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
      * Tests <code>setCreationDate</code> when the given date is <code>null</code>. Expect NullPointerException.
      * </p>
      */
@@ -232,6 +218,10 @@ public class V1Dot1BasicInfoUnitTest extends TestCase {
         info.setDescription("Description");
 
         assertEquals("The description should be correct.", "Description", info.getDescription());
+
+        info.setDescription("   ");
+
+        assertEquals("The description should be correct.", "   ", info.getDescription());
     }
 
     /**

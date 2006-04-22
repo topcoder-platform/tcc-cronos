@@ -16,12 +16,12 @@ import java.util.Date;
  * information includes the creation date and user, the last modification date and user, and a description of the
  * information.
  * </p>
- * 
+ *
  * <p>
  * Changes in 1.1: id and description have been moved to BasicInfo. That's because
  * <code>ExpenseEntryRejectReason</code> doesn't have them.
  * </p>
- * 
+ *
  * <p>
  * Bug fixed on 2006-4-22, modified by Xuchen. Bug Fix for TT-1976: "It is not possible to directly retrieve the
  * textual description of rejected reason from the  ExpenseEntryRejectReason object. This object is derived from the
@@ -123,13 +123,14 @@ public abstract class CommonInfo implements Serializable {
 
     /**
      * <p>
-     * Sets the description of this instance.
+     * Sets the description of this instance. It can be an empty string.
      * </p>
      *
      * @param description the description of this instance.
+     * @throws NullPointerException if the description is null.
      */
     public void setDescription(String description) {
-        ExpenseEntryHelper.validateNotNullOrEmpty(description, "description");
+        ExpenseEntryHelper.validateNotNull(description, "description");
 
         this.description = description;
     }
