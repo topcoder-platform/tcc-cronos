@@ -23,21 +23,29 @@ import java.util.List;
  * persisted automatically according to the current time. The manager uses <code>ExpenseEntryPersistence</code>
  * implementation to do actual operations on persistence. It can only be created from configuration.
  * </p>
- *
+ * 
  * <p>
  * Usage note: if a expense entry has new expense entry type and/or expense entry status, the type and status should be
  * added first to the persistence. After adding the type and/or status, the new expense entry can be added correctly.
  * </p>
- *
+ * 
  * <p>
  * Changes in 1.1: Four new methods for doing bulk operations on sets of expense entries have been added. These method
  * can work in atomic mode (a failure on one entry causes the entire operation to fail) or non-atomic (a failure in
  * one entry doesn't affect the other and the user has a way to know which ones failed). There is also a search method
  * that provides the capability to search expense entries at the database level and return the ones that match.
  * </p>
+ * 
+ * <p>
+ * Bug fix for TT-1974. Bug description is "The ExpenseEntryManager generates the ID for the single entry  if it is
+ * added by the addEntry() method. But it doesn't generate the IDs for the multiple entries added by the  batch
+ * operation, i.e. by the addEntries() method.". Solution is: generates the IDs for the entries whose original  id is
+ * -1 in adding batch operation (in addEntries() method).
+ * </p>
  *
  * @author adic, TCSDEVELOPER
  * @author DanLazar, visualage
+ * @author Xuchen
  * @version 1.1
  *
  * @since 1.0
@@ -68,8 +76,6 @@ public class ExpenseEntryManager {
      *
      * @param namespace the namespace to load the persistence class name and other configuration.
      *
-     * @throws NullPointerException if <code>namespace</code> is <code>null</code>.
-     * @throws IllegalArgumentException if <code>namespace</code> is empty string.
      * @throws ConfigurationException if error occurs when loading configuration; or mandatory property is missing; or
      *         property is invalid.
      */
@@ -105,11 +111,8 @@ public class ExpenseEntryManager {
      * @return <code>true</code> if the ID does not exist in persistence and the expense entry is added;
      *         <code>false</code> otherwise.
      *
-     * @throws NullPointerException if <code>entry</code> is <code>null</code>.
-     * @throws IllegalArgumentException if the creation date or modification date is not <code>null</code>; or the
-     *         status or type of the expense entry has -1 as the ID.
-     * @throws InsufficientDataException If fields other than creation date and modification date are not set.
      * @throws PersistenceException if error occurs when adding the expense entry.
+     * @throws InsufficientDataException If fields other than creation date and modification date are not set.
      */
     public boolean addEntry(ExpenseEntry entry) throws PersistenceException, InsufficientDataException {
         ExpenseEntryHelper.validateNotNull(entry, "entry");
@@ -161,10 +164,8 @@ public class ExpenseEntryManager {
      * @return <code>true</code> if the expense entry exists in persistence and is updated; <code>false</code>
      *         otherwise.
      *
-     * @throws NullPointerException if <code>entry</code> is <code>null</code>.
-     * @throws IllegalArgumentException if the status or type of the expense entry has -1 as the ID.
-     * @throws InsufficientDataException If fields other than creation date and modification date are not set.
      * @throws PersistenceException if error occurs when updating the expense entry.
+     * @throws InsufficientDataException If fields other than creation date and modification date are not set.
      */
     public boolean updateEntry(ExpenseEntry entry) throws PersistenceException, InsufficientDataException {
         ExpenseEntryHelper.validateNotNull(entry, "entry");
@@ -223,12 +224,12 @@ public class ExpenseEntryManager {
      * generated. Otherwise, the user-specified ID is used. All fields in the instance must be set except creation
      * date and modification date, which must be <code>null</code> and be set as the current time.
      * </p>
-     *
+     * 
      * <p>
      * If the addition is atomic then it means that entire retrieval will fail if a single expense entry addition
      * fails.
      * </p>
-     *
+     * 
      * <p>
      * If the addition is non-atomic then it means each expense entry is added individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs). If the
@@ -241,12 +242,12 @@ public class ExpenseEntryManager {
      *
      * @return the entries that failed to be added in non atomic mode.
      *
+     * @throws PersistenceException wraps a persistence implementation specific exception. (such as SQL exception)
+     * @throws InsufficientDataException If fields other than creation date and modification date are not set(in atomic
+     *         mode only).
      * @throws IllegalArgumentException if the creation date or modification date is not <code>null</code> or the
      *         status or type of the expense entry has -1 as the ID(in atomic mode only); or if the array is
      *         <code>null</code>, empty or has <code>null</code> element.
-     * @throws InsufficientDataException If fields other than creation date and modification date are not set(in atomic
-     *         mode only).
-     * @throws PersistenceException wraps a persistence implementation specific exception. (such as SQL exception)
      *
      * @since 1.1
      */
@@ -300,12 +301,20 @@ public class ExpenseEntryManager {
         ExpenseEntry[] ret = new ExpenseEntry[0];
 
         if (!correct.isEmpty()) {
-            ret = this.entryPersistence.addEntries((ExpenseEntry[]) correct.toArray(new ExpenseEntry[correct.size()]),
-                    isAtomic);
+            // Set the id value for all valid entries if their original id is -1.
+            ExpenseEntry[] correctEntriesArray = (ExpenseEntry[]) correct.toArray(new ExpenseEntry[correct.size()]);
+
+            for (int i = 0; i < correctEntriesArray.length; i++) {
+                if (correctEntriesArray[i].getId() == -1) {
+                    correctEntriesArray[i].setId(ExpenseEntryHelper.generateId());
+                }
+            }
+
+            ret = this.entryPersistence.addEntries(correctEntriesArray, isAtomic);
         }
 
         if (isAtomic) {
-            return ret == null ? null : ret;
+            return (ret == null) ? null : ret;
         }
 
         errors.addAll(Arrays.asList(ret));
@@ -317,12 +326,12 @@ public class ExpenseEntryManager {
      * <p>
      * Deletes a set of entries from the database with the given IDs from the persistence.
      * </p>
-     *
+     * 
      * <p>
      * If the deletion is atomic then it means that entire retrieval will fail if a single expense entry deletion
      * fails.
      * </p>
-     *
+     * 
      * <p>
      * If the deletion is non-atomic then it means each expense entry is deleted individually. If it fails, that won't
      * affect the others. A list with the failed ids is returned to the user (empty if no error occurs).
@@ -333,10 +342,11 @@ public class ExpenseEntryManager {
      *
      * @return the entries that failed to be deleted in non atomic mode.
      *
-     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      */
-    public int[] deleteEntries(int[] entryIds, boolean isAtomic) throws PersistenceException {
+    public int[] deleteEntries(int[] entryIds, boolean isAtomic)
+        throws PersistenceException {
         // argument validation
         if (entryIds == null) {
             throw new IllegalArgumentException("entryIds should not be null.");
@@ -354,11 +364,11 @@ public class ExpenseEntryManager {
      * <p>
      * Updates a set of entries in the database.
      * </p>
-     *
+     * 
      * <p>
      * If the update is atomic then it means that entire retrieval will fail if a single expense entry update fails.
      * </p>
-     *
+     * 
      * <p>
      * If the update is non-atomic then it means each expense entry is updated individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs).
@@ -369,10 +379,10 @@ public class ExpenseEntryManager {
      *
      * @return the entries that failed to be updated in non atomic mode.
      *
-     * @throws IllegalArgumentException if the array is <code>null</code>, empty or has <code>null</code> element.
+     * @throws PersistenceException wraps a persistence implementation specific exception. (such as SQL exception)
      * @throws InsufficientDataException If fields other than creation date and modification date are not set(in atomic
      *         mode only).
-     * @throws PersistenceException wraps a persistence implementation specific exception. (such as SQL exception)
+     * @throws IllegalArgumentException if the array is <code>null</code>, empty or has <code>null</code> element.
      */
     public ExpenseEntry[] updateEntries(ExpenseEntry[] entries, boolean isAtomic)
         throws PersistenceException, InsufficientDataException {
@@ -423,12 +433,12 @@ public class ExpenseEntryManager {
         ExpenseEntry[] ret = new ExpenseEntry[0];
 
         if (!correct.isEmpty()) {
-            ret = this.entryPersistence.updateEntries((ExpenseEntry[]) correct.toArray(
-                    new ExpenseEntry[correct.size()]), isAtomic);
+            ret = this.entryPersistence.updateEntries((ExpenseEntry[]) correct.toArray(new ExpenseEntry[correct.size()]),
+                    isAtomic);
         }
 
         if (isAtomic) {
-            return ret == null ? null : ret;
+            return (ret == null) ? null : ret;
         }
 
         errors.addAll(Arrays.asList(ret));
@@ -440,12 +450,12 @@ public class ExpenseEntryManager {
      * <p>
      * Retrieves a set of entries with given ids from the database.
      * </p>
-     *
+     * 
      * <p>
      * If the retrieval is atomic then it means that entire retrieval will fail if a single expense entry retrieval
      * fails.
      * </p>
-     *
+     * 
      * <p>
      * If the retrieval is non-atomic then it means each expense entry is retrieved individually. If it fails that
      * won't affect the others. The potentially partial list of results will be returned. If any error occurs or if
@@ -458,8 +468,8 @@ public class ExpenseEntryManager {
      *
      * @return the entries that were retrieved in both modes.
      *
-     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      */
     public ExpenseEntry[] retrieveEntries(int[] entryIds, boolean isAtomic)
         throws PersistenceException {
@@ -488,10 +498,11 @@ public class ExpenseEntryManager {
      *
      * @return the results of the search (can be empty if no matches found).
      *
-     * @throws IllegalArgumentException if the argument is <code>null</code>
      * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the argument is <code>null</code>
      */
-    public ExpenseEntry[] searchEntries(Criteria criteria) throws PersistenceException {
+    public ExpenseEntry[] searchEntries(Criteria criteria)
+        throws PersistenceException {
         // argument validation
         if (criteria == null) {
             throw new IllegalArgumentException("criteria should not be null.");
