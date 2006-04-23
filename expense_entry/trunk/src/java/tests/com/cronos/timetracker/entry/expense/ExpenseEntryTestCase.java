@@ -252,6 +252,16 @@ public class ExpenseEntryTestCase extends TestCase {
     public void testIsBillableDefaultAccuracy() {
         assertFalse("By default, the billable flag should be false.", entry.isBillable());
     }
+    
+    /**
+     * <p>
+     * Tests accuracy of <code>getBillable</code> for default value. By default, the billable flag is
+     * <code>false</code>.
+     * </p>
+     */
+    public void testGetBillableDefaultAccuracy() {
+        assertFalse("By default, the billable flag should be false.", entry.getBillable());
+    }
 
     /**
      * <p>

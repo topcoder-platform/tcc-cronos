@@ -209,6 +209,17 @@ public class ExpenseEntry extends BasicInfo {
     public boolean isBillable() {
         return billable;
     }
+    
+    /**
+     * <p>
+     * Gets a flag indicating whether the client should be billed for this expense.
+     * </p>
+     *
+     * @return <code>true</code> if the client should be billed for this expense; <code>false</code> otherwise.
+     */
+    public boolean getBillable() {
+        return isBillable();
+    }
 
     /**
      * <p>
