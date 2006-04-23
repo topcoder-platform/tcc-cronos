@@ -390,7 +390,7 @@ public class UserManager {
         }
 
         // Generate a new User object.
-        // cast the ID to int so it is compatable with the rest of the Time Tracker project
+        // cast the ID to int so it is compatible with the rest of the Time Tracker project
         User user = new User((int) id, name, userStore);
 
         // add user to the User store (this is probably the database table "Users")
@@ -650,6 +650,18 @@ public class UserManager {
         // find user
         User user = (User) users.get(name);
         if (user == null) {
+            // iterate thru all the stores and try to get one containing the specified user
+            for (Iterator iter = storeManager.getUserStoreNames().iterator(); iter.hasNext();) {
+                UserStore store = storeManager.getUserStore((String) iter.next());
+                try {
+                    if (store.contains(name)) {
+                        return store.authenticate(name, password);
+                    }
+                } catch (PersistenceException e) {
+                    throw new AuthenticateException("Fail to access the persistence", e);
+                }
+            }
+
             throw new AuthenticateException("User " + name + " was never imported.");
         }
 

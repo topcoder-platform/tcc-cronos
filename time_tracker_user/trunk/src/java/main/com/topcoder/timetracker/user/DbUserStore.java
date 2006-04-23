@@ -183,7 +183,7 @@ public class DbUserStore implements UserStore {
      * @throws IllegalArgumentException if name is the empty String
      * @throws IllegalStateException if setConnectionString has not been called yet
      * @throws PersistenceException if any error occurs during the search, which may wrap an
-     *        underlying exceptoin (e.g., SQLException)
+     *        underlying exception (e.g., SQLException)
      */
     public boolean contains(String name) throws PersistenceException {
         if (name == null) {

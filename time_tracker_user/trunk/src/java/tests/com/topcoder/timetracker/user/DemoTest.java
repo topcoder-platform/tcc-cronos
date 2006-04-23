@@ -97,7 +97,7 @@ public class DemoTest extends DbTestCase {
         // represent the users that are already in the database.
         UserPersistence userPersistence = new UserPersistenceImpl(UserManager.CONFIG_NAMESPACE);
         Collection users = userPersistence.getUsers();
-        // there should be 3 initially, which were inserted inthe set Up method.
+        // there should be 3 initially, which were inserted in the set Up method.
         System.out.println("users = " + users);
         assertEquals("wrong # of users", 3, users.size());
 

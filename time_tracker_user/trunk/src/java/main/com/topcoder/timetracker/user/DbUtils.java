@@ -60,7 +60,7 @@ final class DbUtils {
      *
      * @param dbFactory the pre-configured connection factory from which to request connections.
      * @param connectionName the connection name to request from the factory.
-     * @return a connection from the connecton factory with the given name.
+     * @return a connection from the connection factory with the given name.
      * @throws PersistenceException if the connection factory doesn't recognize the conneciton name,
      *  or if the connection could not be made (e.g., bad server name, etc.)
      * @throws NullPointerException if dbFactory is null
@@ -75,9 +75,8 @@ final class DbUtils {
             if (connectionName == null) {
                 // illegal
                 throw new IllegalStateException("connectionName is not set.");
-            } else {
-                return dbFactory.createConnection(connectionName);
             }
+            return dbFactory.createConnection(connectionName);
         } catch (DBConnectionException e) {
             throw new PersistenceException("Could not create connection.", e);
         }

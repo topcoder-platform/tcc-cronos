@@ -65,6 +65,9 @@ public class UserManager3ArgCtorTest extends UserManagerTestCase {
         // so we can call the add method, which is not in the UserStore interface.
         DummyUserStore userStore = new DummyUserStore();
         userStore.add(IMPORT_USERNAME);
+        for (int i = 1; i <= 3; i++) {
+            userStore.add(IMPORT_USERNAME + i);
+        }
         storeManager.add(STORE_NAME, userStore);
 
         authPersistence = new DummyAuthorizationPersistence();

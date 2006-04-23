@@ -8,6 +8,7 @@ import com.topcoder.security.authenticationfactory.Response;
 import com.topcoder.security.authorization.SecurityRole;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * <p>
@@ -87,7 +88,7 @@ public abstract class UserManagerTestCase extends DbTestCase {
 
         assertTrue("Import of new user didn't return true", manager.importUser(IMPORT_USERNAME, STORE_NAME));
 
-        // Should authenticate succesfully.
+        // Should authenticate successfully.
         Response response = manager.authenticate(IMPORT_USERNAME, IMPORT_PASSWORD);
         assertEquals("authenticate() with correct password sets wrong status",
                 true, response.isSuccessful());
@@ -100,6 +101,10 @@ public abstract class UserManagerTestCase extends DbTestCase {
      * @throws Exception Never under normal conditions.
      */
     public void testAuthenticateEmpty() throws Exception {
+        UserStoreManager storeManager = manager.getUserStores();
+        for (Iterator iter = storeManager.getUserStoreNames().iterator(); iter.hasNext();) {
+            storeManager.remove((String) iter.next());
+        }
 
         try {
             manager.authenticate(IMPORT_USERNAME, IMPORT_PASSWORD);
@@ -179,7 +184,7 @@ public abstract class UserManagerTestCase extends DbTestCase {
 
         assertTrue("Import of new user didn't return true", manager.importUser(IMPORT_USERNAME, STORE_NAME));
 
-        // getNames shoudl return the imported user now
+        // getNames should return the imported user now
         Collection names = manager.getNames();
         assertEquals("getNames returns wrong # of names", 1, names.size());
         assertEquals("getName didn't return imported name",
@@ -368,5 +373,22 @@ public abstract class UserManagerTestCase extends DbTestCase {
 
         // all we know about it is that it should be not null
         assertNotNull("UserStores is null", manager.getUserStores());
+    }
+
+    /**
+     * Test the bug of <code>authenticate</code> method. The method should authenticate
+     * the user even if the user was not added to the cache.
+     *
+     * @throws Exception Never under normal conditions.
+     */
+    public void testAuthenticateUserCaching() throws Exception {
+        insertUsers();
+
+        assertNull("The user should not be in the cache", manager.getUser("username1"));
+
+        Response response = manager.authenticate("username1", "password1");
+        assertTrue("The user should be authenticated successfully.", response.isSuccessful());
+
+        cleanupDatabase();
     }
 }
