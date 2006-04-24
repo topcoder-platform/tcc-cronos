@@ -150,6 +150,17 @@ public class TimeEntry extends BaseDataObject {
     public boolean isBillable() {
         return this.billable;
     }
+    
+    /**
+     * <p>
+     * Checks if the hours are billable or not.
+     * </p>
+     *
+     * @return <code>True</code> if the hours are billable. <code>False</code> if not.
+     */
+    public boolean getBillable() {
+        return isBillable();
+    }
 
     /**
      * <p>

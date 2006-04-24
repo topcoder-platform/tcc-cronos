@@ -29,6 +29,16 @@ public class V1Dot1TimeEntryUnitTest extends TestCase {
     protected void setUp() {
         entry = new TimeEntry();
     }
+    
+    /**
+     * <p>
+     * Tests accuracy of <code>getBillable</code> for default value. By default, the billable flag is
+     * <code>false</code>.
+     * </p>
+     */
+    public void testGetBillableDefaultAccuracy() {
+        assertFalse("By default, the billable flag should be false.", entry.getBillable());
+    }
 
     /**
      * <p>
