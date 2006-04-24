@@ -20,12 +20,23 @@ import java.sql.Statement;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
  * <p>
  * Tests functionality and error cases of <code>ExpenseEntryManager</code> class.
+ * </p>
+ * 
+ * <p>
+ * 2006-4-24: Add/Modify Test Cases by Xuchen for TT-1974 which is about generating unique id for entries whose
+ * original id is -1 in adding entries batch. <br>
+ * 1. Add two test cases testAddEntries_AtomicModeAccuracy6() and testAddEntries_NonAtomicModeAccuracy6(), in which we
+ * try to add entries whose original id is -1, and verify ExpenseEntryManager has assigned them with unique id. <br>
+ * 2. Modify two test cases testAddEntries_AtomicModeAccuracy1() and testAddEntries_NonAtomicModeAccuracy1(), in which
+ * we add the asserting at the bottom that the original id (which is not -1) does not change after adding entries.
  * </p>
  *
  * @author TCSDEVELOPER
@@ -83,8 +94,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         V1Dot1TestHelper.clearDatabase(connection);
 
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO ExpenseTypes(ExpenseTypesID, Description, "
-                + "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO ExpenseTypes(ExpenseTypesID, Description, " +
+                "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
 
         try {
             ps.setInt(1, 1);
@@ -99,8 +110,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         // Insert an expense status
-        ps = connection.prepareStatement("INSERT INTO ExpenseStatuses(ExpenseStatusesID, Description, CreationUser, "
-                + "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+        ps = connection.prepareStatement("INSERT INTO ExpenseStatuses(ExpenseStatusesID, Description, CreationUser, " +
+                "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
 
         try {
             ps.setInt(1, 2);
@@ -115,8 +126,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         // Insert an reject reason
-        ps = connection.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, creation_date, "
-                + "creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?)");
+        ps = connection.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, creation_date, " +
+                "creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?)");
 
         try {
             ps.setInt(1, 1);
@@ -250,9 +261,10 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_EntriesContainsNullElement() throws Exception {
+    public void testAddEntries_EntriesContainsNullElement()
+        throws Exception {
         try {
-            manager.addEntries(new ExpenseEntry[] {null}, true);
+            manager.addEntries(new ExpenseEntry[] { null }, true);
             fail("Should throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // good
@@ -336,7 +348,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
     /**
      * <p>
      * Tests accuracy of <code>addEntries(ExpenseEntry[], boolean)</code> when it is in Atomic mode. All the entries
-     * should be added.
+     * should be added. These entries have their own id already (NOT -1).
      * </p>
      *
      * @throws Exception pass any unexpected exception to JUnit.
@@ -370,6 +382,9 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Verify instances
         for (int i = 0; i < expected.length; ++i) {
             V1Dot1TestHelper.assertEquals(expected[i], (ExpenseEntry) actual.get(i));
+
+            // also verify its id.
+            assertEquals("The id should be original.", expected[i].getId(), ((ExpenseEntry) actual.get(i)).getId());
         }
     }
 
@@ -539,13 +554,74 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
     /**
      * <p>
-     * Tests accuracy of <code>addEntries(ExpenseEntry[], boolean)</code> when it is in non Atomic mode. All the
-     * entries should be added.
+     * Tests accuracy of <code>addEntries(ExpenseEntry[], boolean)</code> when it is in Atomic mode. All the entries
+     * should be added. These entries does not have their id specified (originally is -1). So ExpenseEntryManager
+     * should assign their unique id.
      * </p>
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testAddEntries_AtomicModeAccuracy6() throws Exception {
+        ExpenseEntry[] expected = new ExpenseEntry[5];
+
+        // Add 5 instances
+        for (int i = 0; i < 5; ++i) {
+            expected[i] = new ExpenseEntry();
+
+            // check the default original id is -1.
+            assertEquals("The default original id should be -1.", -1, expected[i].getId());
+            expected[i].setCreationUser("Create" + i);
+            expected[i].setModificationUser("Modify" + i);
+            expected[i].setDescription("Description" + i);
+            expected[i].setAmount(new BigDecimal(i));
+            expected[i].setBillable(true);
+            expected[i].setDate(V1Dot1TestHelper.createDate(2005, 2, i));
+            expected[i].setExpenseType(type);
+            expected[i].setStatus(status);
+        }
+
+        ExpenseEntry[] ret = manager.addEntries(expected, true);
+        assertNull("addEntries should return null.", ret);
+
+        List actual = manager.retrieveAllEntries();
+
+        // Verify number
+        assertEquals("The number of items in list should be correct.", expected.length, actual.size());
+
+        V1Dot1TestHelper.sortDataObjects(actual);
+
+        List expectedList = Arrays.asList(expected);
+        V1Dot1TestHelper.sortDataObjects(expectedList);
+        expected = (ExpenseEntry[]) expectedList.toArray(new ExpenseEntry[expected.length]);
+
+        // Verify instances
+        Set uniqueIds = new HashSet();
+
+        for (int i = 0; i < expected.length; ++i) {
+            ExpenseEntry actualEntry = (ExpenseEntry) actual.get(i);
+
+            V1Dot1TestHelper.assertEquals(expected[i], actualEntry);
+
+            // also verify its id has been assigned, NOT -1.
+            assertTrue("The id should be assigned, NOT -1.", -1 != actualEntry.getId());
+
+            // verify the generated id is unique.
+            Integer id = new Integer(actualEntry.getId());
+            assertFalse("The id generated should be unique.", uniqueIds.contains(id));
+            uniqueIds.add(id);
+        }
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>addEntries(ExpenseEntry[], boolean)</code> when it is in non Atomic mode. All the
+     * entries should be added. These entries already have their own id (NOT -1).
+     * </p>
+     *
+     * @throws Exception pass any unexpected exception to JUnit.
+     */
+    public void testAddEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -574,6 +650,9 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Verify instances
         for (int i = 0; i < expected.length; ++i) {
             V1Dot1TestHelper.assertEquals(expected[i], (ExpenseEntry) actual.get(i));
+
+            // also verify its id.
+            assertEquals("The id should be original.", expected[i].getId(), ((ExpenseEntry) actual.get(i)).getId());
         }
     }
 
@@ -585,7 +664,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -631,7 +711,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy3() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy3()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -667,7 +748,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy4() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy4()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -703,7 +785,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy5() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy5()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -730,6 +813,67 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         // Verify number
         assertEquals("The number of items in list should be correct.", 4, actual.size());
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>addEntries(ExpenseEntry[], boolean)</code> when it is in non Atomic mode. All the
+     * entries should be added. These entries does not have their id specified (originally is -1). So
+     * ExpenseEntryManager should assign their unique id.
+     * </p>
+     *
+     * @throws Exception pass any unexpected exception to JUnit.
+     */
+    public void testAddEntries_NonAtomicModeAccuracy6()
+        throws Exception {
+        ExpenseEntry[] expected = new ExpenseEntry[5];
+
+        // Add 5 instances
+        for (int i = 0; i < 5; ++i) {
+            expected[i] = new ExpenseEntry();
+
+            // check the default original id is -1.
+            assertEquals("The default original id should be -1.", -1, expected[i].getId());
+            expected[i].setCreationUser("Create" + i);
+            expected[i].setModificationUser("Modify" + i);
+            expected[i].setDescription("Description" + i);
+            expected[i].setAmount(new BigDecimal(i));
+            expected[i].setBillable(true);
+            expected[i].setDate(V1Dot1TestHelper.createDate(2005, 2, i));
+            expected[i].setExpenseType(type);
+            expected[i].setStatus(status);
+        }
+
+        ExpenseEntry[] ret = manager.addEntries(expected, false);
+        assertEquals("The return value of addEntries should be correct.", 0, ret.length);
+
+        List actual = manager.retrieveAllEntries();
+
+        // Verify number
+        assertEquals("The number of items in list should be correct.", expected.length, actual.size());
+
+        V1Dot1TestHelper.sortDataObjects(actual);
+
+        List expectedList = Arrays.asList(expected);
+        V1Dot1TestHelper.sortDataObjects(expectedList);
+        expected = (ExpenseEntry[]) expectedList.toArray(new ExpenseEntry[expected.length]);
+
+        // Verify instances
+        Set uniqueIds = new HashSet();
+
+        for (int i = 0; i < expected.length; ++i) {
+            ExpenseEntry actualEntry = (ExpenseEntry) actual.get(i);
+
+            V1Dot1TestHelper.assertEquals(expected[i], actualEntry);
+
+            // also verify its id has been assigned, NOT -1.
+            assertTrue("The id should be assigned, NOT -1.", -1 != actualEntry.getId());
+
+            // verify the generated id is unique.
+            Integer id = new Integer(actualEntry.getId());
+            assertFalse("The id generated should be unique.", uniqueIds.contains(id));
+            uniqueIds.add(id);
+        }
     }
 
     /**
@@ -793,7 +937,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.getEntryPersistence().setConnection(conn);
 
         try {
-            manager.deleteEntries(new int[] {0, 1, 2, 3, 4}, true);
+            manager.deleteEntries(new int[] { 0, 1, 2, 3, 4 }, true);
             fail("The manager error occurs, should throw PersistenceException.");
         } catch (PersistenceException e) {
             // good
@@ -828,7 +972,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.getEntryPersistence().setConnection(conn);
 
         try {
-            manager.deleteEntries(new int[] {0, 1, 2, 3, 4}, false);
+            manager.deleteEntries(new int[] { 0, 1, 2, 3, 4 }, false);
             fail("The manager error occurs, should throw PersistenceException.");
         } catch (PersistenceException e) {
             // good
@@ -843,7 +987,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_AtomicModeAccuracy1() throws Exception {
+    public void testDeleteEntries_AtomicModeAccuracy1()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -858,7 +1003,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             manager.addEntry(entry);
         }
 
-        int[] ret = manager.deleteEntries(new int[] {0, 1, 2, 3, 4}, true);
+        int[] ret = manager.deleteEntries(new int[] { 0, 1, 2, 3, 4 }, true);
         assertNull("deleteEntries should return null.", ret);
 
         List actual = manager.retrieveAllEntries();
@@ -875,7 +1020,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_AtomicModeAccuracy2() throws Exception {
+    public void testDeleteEntries_AtomicModeAccuracy2()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -892,7 +1038,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         manager.deleteEntry(entry.getId());
 
-        int[] ret = manager.deleteEntries(new int[] {0, 1, 2, 3, 4}, true);
+        int[] ret = manager.deleteEntries(new int[] { 0, 1, 2, 3, 4 }, true);
         assertEquals("The return value of deleteEntries should be correct.", 1, ret.length);
         assertEquals("The return value of deleteEntries should be correct.", 4, ret[0]);
 
@@ -910,7 +1056,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testDeleteEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -925,7 +1072,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             manager.addEntry(entry);
         }
 
-        int[] ret = manager.deleteEntries(new int[] {0, 1, 2, 3, 4}, false);
+        int[] ret = manager.deleteEntries(new int[] { 0, 1, 2, 3, 4 }, false);
         assertEquals("The return value of deleteEntries should be correct.", 0, ret.length);
 
         List actual = manager.retrieveAllEntries();
@@ -942,7 +1089,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testDeleteEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -959,7 +1107,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         manager.deleteEntry(entry.getId());
 
-        int[] ret = manager.deleteEntries(new int[] {0, 1, 2, 3, 4}, false);
+        int[] ret = manager.deleteEntries(new int[] { 0, 1, 2, 3, 4 }, false);
         assertEquals("The return value of deleteEntries should be correct.", 1, ret.length);
         assertEquals("The return value of deleteEntries should be correct.", entry.getId(), ret[0]);
 
@@ -1011,9 +1159,10 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_EntriesContainsNullElement() throws Exception {
+    public void testUpdateEntries_EntriesContainsNullElement()
+        throws Exception {
         try {
-            manager.updateEntries(new ExpenseEntry[] {null}, true);
+            manager.updateEntries(new ExpenseEntry[] { null }, true);
             fail("Should throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // good
@@ -1134,7 +1283,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_AtomicModeAccuracy1() throws Exception {
+    public void testUpdateEntries_AtomicModeAccuracy1()
+        throws Exception {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -1149,7 +1299,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setExpenseType(type);
         update.setStatus(status);
 
-        assertNull("The record should be updated.", manager.updateEntries(new ExpenseEntry[] {update}, true));
+        assertNull("The record should be updated.", manager.updateEntries(new ExpenseEntry[] { update }, true));
 
         // Verify record in database
         this.verifyUpdatedEntry(update);
@@ -1163,7 +1313,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_AtomicModeAccuracy2() throws Exception {
+    public void testUpdateEntries_AtomicModeAccuracy2()
+        throws Exception {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(4);
@@ -1178,7 +1329,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setExpenseType(type);
         update.setStatus(status);
 
-        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] {update}, true);
+        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] { update }, true);
         assertEquals("The return value of updateEntries should be correct.", 1, ret.length);
         assertEquals("The return value of updateEntries should be correct.", update, ret[0]);
 
@@ -1194,7 +1345,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_AtomicModeAccuracy3() throws Exception {
+    public void testUpdateEntries_AtomicModeAccuracy3()
+        throws Exception {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -1210,7 +1362,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setStatus(new ExpenseEntryStatus(10));
 
         try {
-            manager.updateEntries(new ExpenseEntry[] {update}, true);
+            manager.updateEntries(new ExpenseEntry[] { update }, true);
             fail("PersistenceException should be thrown.");
         } catch (PersistenceException e) {
             // good
@@ -1228,7 +1380,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_AtomicModeAccuracy4() throws Exception {
+    public void testUpdateEntries_AtomicModeAccuracy4()
+        throws Exception {
         manager.addEntry(entry);
 
         // no description
@@ -1244,7 +1397,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setStatus(status);
 
         try {
-            manager.updateEntries(new ExpenseEntry[] {update}, true);
+            manager.updateEntries(new ExpenseEntry[] { update }, true);
             fail("InsufficientDataException should be thrown.");
         } catch (InsufficientDataException e) {
             // good
@@ -1262,7 +1415,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testUpdateEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -1278,7 +1432,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setStatus(status);
 
         assertEquals("The return value of updateEntries should be correct.", 0,
-            manager.updateEntries(new ExpenseEntry[] {update}, false).length);
+            manager.updateEntries(new ExpenseEntry[] { update }, false).length);
 
         // Verify record in database
         this.verifyUpdatedEntry(update);
@@ -1292,7 +1446,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testUpdateEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(4);
@@ -1307,7 +1462,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setExpenseType(type);
         update.setStatus(status);
 
-        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] {update}, false);
+        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] { update }, false);
         assertEquals("The return value of updateEntries should be correct.", 1, ret.length);
         assertEquals("The return value of updateEntries should be correct.", update, ret[0]);
 
@@ -1323,7 +1478,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_NonAtomicModeAccuracy3() throws Exception {
+    public void testUpdateEntries_NonAtomicModeAccuracy3()
+        throws Exception {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -1338,7 +1494,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setExpenseType(type);
         update.setStatus(new ExpenseEntryStatus(10));
 
-        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] {update}, false);
+        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] { update }, false);
         assertEquals("The return value of updateEntries should be correct.", 1, ret.length);
         assertEquals("The return value of updateEntries should be correct.", update, ret[0]);
 
@@ -1354,7 +1510,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_NonAtomicModeAccuracy4() throws Exception {
+    public void testUpdateEntries_NonAtomicModeAccuracy4()
+        throws Exception {
         manager.addEntry(entry);
 
         // no description
@@ -1369,7 +1526,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         update.setExpenseType(type);
         update.setStatus(status);
 
-        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] {update}, false);
+        ExpenseEntry[] ret = manager.updateEntries(new ExpenseEntry[] { update }, false);
         assertEquals("The return value of updateEntries should be correct.", 1, ret.length);
         assertEquals("The return value of updateEntries should be correct.", update, ret[0]);
 
@@ -1426,20 +1583,16 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             assertTrue("First record should exist.", resultSet.next());
 
             assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("ExpenseEntriesID"));
-            assertEquals("The ID should be correct.", reason1.getRejectReasonId(),
-                    resultSet.getInt("reject_reason_id"));
+            assertEquals("The ID should be correct.", reason1.getRejectReasonId(), resultSet.getInt("reject_reason_id"));
             assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
-            assertEquals("The modification user should be correct.",
-                    "Modify", resultSet.getString("modification_user"));
+            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("modification_user"));
 
             assertTrue("Second record should exist.", resultSet.next());
 
             assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("ExpenseEntriesID"));
-            assertEquals("The ID should be correct.", reason2.getRejectReasonId(),
-                    resultSet.getInt("reject_reason_id"));
+            assertEquals("The ID should be correct.", reason2.getRejectReasonId(), resultSet.getInt("reject_reason_id"));
             assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
-            assertEquals("The modification user should be correct.", "Modify",
-                    resultSet.getString("modification_user"));
+            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("modification_user"));
 
             assertFalse("Only two records should exist.", resultSet.next());
         } finally {
@@ -1460,7 +1613,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    private void verifyUpdatedEntry(ExpenseEntry update) throws Exception {
+    private void verifyUpdatedEntry(ExpenseEntry update)
+        throws Exception {
         Statement statement = null;
         ResultSet resultSet = null;
 
@@ -1477,8 +1631,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             V1Dot1TestHelper.assertEquals("The modification date should be correct.", update.getModificationDate(),
                 resultSet.getDate("ModificationDate"));
             assertEquals("The creation user should not be modified.", "Create", resultSet.getString("CreationUser"));
-            assertEquals("The modification user should be correct.", "Modify2",
-                    resultSet.getString("ModificationUser"));
+            assertEquals("The modification user should be correct.", "Modify2", resultSet.getString("ModificationUser"));
             assertEquals("The amount of money should be correct.", 200.12, resultSet.getDouble("Amount"), 1E-9);
             assertEquals("The billable flag should be correct.", 0, resultSet.getShort("Billable"));
             assertEquals("The expense type ID should be correct.", 1, resultSet.getInt("ExpenseTypesID"));
@@ -1541,7 +1694,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntriesPersistenceError1() throws Exception {
+    public void testRetrieveEntriesPersistenceError1()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -1562,7 +1716,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.getEntryPersistence().setConnection(conn);
 
         try {
-            manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, true);
+            manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, true);
             fail("The manager error occurs, should throw PersistenceException.");
         } catch (PersistenceException e) {
             // good
@@ -1576,7 +1730,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntriesPersistenceError2() throws Exception {
+    public void testRetrieveEntriesPersistenceError2()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -1597,7 +1752,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.getEntryPersistence().setConnection(conn);
 
         try {
-            manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, false);
+            manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, false);
             fail("The manager error occurs, should throw PersistenceException.");
         } catch (PersistenceException e) {
             // good
@@ -1612,7 +1767,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_AtomicModeAccuracy1() throws Exception {
+    public void testRetrieveEntries_AtomicModeAccuracy1()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -1629,7 +1785,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             manager.addEntry(expected[i]);
         }
 
-        ExpenseEntry[] actual = manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, true);
+        ExpenseEntry[] actual = manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, true);
 
         // Verify number
         assertEquals("The number of items in list should be correct.", expected.length, actual.length);
@@ -1650,7 +1806,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_AtomicModeAccuracy2() throws Exception {
+    public void testRetrieveEntries_AtomicModeAccuracy2()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 3 instances
@@ -1668,7 +1825,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         try {
-            manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, true);
+            manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, true);
             fail("PersistenceException should be thrown.");
         } catch (PersistenceException e) {
             // good
@@ -1683,7 +1840,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_AtomicModeAccuracy3() throws Exception {
+    public void testRetrieveEntries_AtomicModeAccuracy3()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 5 instances
@@ -1701,8 +1859,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("Update ExpenseEntries set Billable = 4 where "
-                + "ExpenseEntriesID = 2");
+        PreparedStatement ps = connection.prepareStatement("Update ExpenseEntries set Billable = 4 where " +
+                "ExpenseEntriesID = 2");
 
         try {
             ps.executeUpdate();
@@ -1711,7 +1869,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         try {
-            manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, true);
+            manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, true);
             fail("PersistenceException should be thrown.");
         } catch (PersistenceException e) {
             // good
@@ -1726,7 +1884,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testRetrieveEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -1743,7 +1902,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             manager.addEntry(expected[i]);
         }
 
-        ExpenseEntry[] actual = manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, false);
+        ExpenseEntry[] actual = manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, false);
 
         // Verify number
         assertEquals("The number of items in list should be correct.", expected.length, actual.length);
@@ -1764,7 +1923,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testRetrieveEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 3 instances
@@ -1781,7 +1941,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             manager.addEntry(expected[i]);
         }
 
-        ExpenseEntry[] actual = manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, false);
+        ExpenseEntry[] actual = manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, false);
 
         // Verify number
         assertEquals("The number of items in list should be correct.", expected.length, actual.length);
@@ -1802,7 +1962,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_NonAtomicModeAccuracy3() throws Exception {
+    public void testRetrieveEntries_NonAtomicModeAccuracy3()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 5 instances
@@ -1820,8 +1981,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("Update ExpenseEntries set Billable = 4 where "
-                + "ExpenseEntriesID = 2");
+        PreparedStatement ps = connection.prepareStatement("Update ExpenseEntries set Billable = 4 where " +
+                "ExpenseEntriesID = 2");
 
         try {
             ps.executeUpdate();
@@ -1829,7 +1990,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             ps.close();
         }
 
-        ExpenseEntry[] actual = manager.retrieveEntries(new int[] {0, 1, 2, 3, 4}, false);
+        ExpenseEntry[] actual = manager.retrieveEntries(new int[] { 0, 1, 2, 3, 4 }, false);
 
         // Verify number
         assertEquals("The number of items in list should be correct.", expected.length - 1, actual.length);
