@@ -12,6 +12,11 @@ import java.util.Date;
  * <p>
  * Tests functionality and error cases of <code>BasicInfo</code> class. A mock sub-class is used for testing.
  * </p>
+ * 
+ * <p>
+ * 2006-4-24: Moving test cases for getter and setter methods of description from V1Dot1BasicInfoUnitTest class to
+ * V1Dot1CommonInfoUnitTest class for bug fix for TT-1976 by Xuchen.
+ * </p>
  *
  * @author TCSDEVELOPER
  * @version 1.1
@@ -71,20 +76,6 @@ public class V1Dot1BasicInfoUnitTest extends TestCase {
             info.setId(-1);
             fail("The ID is -1, should throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests <code>setDescription</code> when the given description is <code>null</code>. Expect NullPointerException.
-     * </p>
-     */
-    public void testSetDescriptionNull() {
-        try {
-            info.setDescription(null);
-            fail("The description is null, should throw NullPointerException.");
-        } catch (NullPointerException e) {
             // good
         }
     }
@@ -197,31 +188,6 @@ public class V1Dot1BasicInfoUnitTest extends TestCase {
 
             assertEquals("The ID should be correct.", i, info.getId());
         }
-    }
-
-    /**
-     * <p>
-     * Tests accuracy of <code>getDescription</code> for default value. By default, the description is
-     * <code>null</code>.
-     * </p>
-     */
-    public void testGetDescriptionDefaultAccuracy() {
-        assertNull("By default, the description is null.", info.getDescription());
-    }
-
-    /**
-     * <p>
-     * Tests accuracy of <code>setDescription</code>. The description should be correct.
-     * </p>
-     */
-    public void testSetDescriptionAccuracy() {
-        info.setDescription("Description");
-
-        assertEquals("The description should be correct.", "Description", info.getDescription());
-
-        info.setDescription("   ");
-
-        assertEquals("The description should be correct.", "   ", info.getDescription());
     }
 
     /**
