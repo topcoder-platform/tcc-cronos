@@ -3,10 +3,11 @@
  */
 package com.topcoder.timetracker.report;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.TagSupport;
 
 
 /**
@@ -39,16 +40,16 @@ import java.util.List;
  *
  * @author fastprogrammer, traugust
  * @version 1.0
- * 
+ *
  * @author Xuchen
  * 2006-4-21
  * Bug fix for TT-1980: safeCreateEqualityFilter(), safeCreateRangeFilter(), and safeLookupContextValueArray() to allow
  * null input parameters.
  * Solution: safeLookupContextValueArray method does not check the returned array for whether containing null element
  * and safeCreateEqualityFilter method does not add null element in returned array as filter value.
- * 
+ *
  * Buf fix for TT-1979: Both Start Date and End Date must be specified. Should be open-ended.
- * Solution: in safeCreateRangeFilter() method, set lower bound to '01-01-0001' if lower bound input parameter is null 
+ * Solution: in safeCreateRangeFilter() method, set lower bound to '01-01-0001' if lower bound input parameter is null
  * and set upper bound to '12-31-9999' if the upper bound input parameter is null.
  */
 public class ReportDisplayTag extends TagSupport {
@@ -58,12 +59,12 @@ public class ReportDisplayTag extends TagSupport {
      * during the fetch of a Report instance from the Report factory, along with the category of the Report.
      */
     private static final String FORMAT = "HTML";
-    
+
     /**
      * The maximun possible date in database.
      */
     private static final String MAX_DATE = "12-31-9999";
-    
+
     /**
      * The minimun possible date in database.
      */
@@ -480,7 +481,7 @@ public class ReportDisplayTag extends TagSupport {
      * @throws ReportConfigurationException in case the any of the values looked up from context is not of type {@link
      *                                      String} or <tt>String[]</tt> or a <tt>String[]</tt> found contained
      *                                      <tt>null</tt>-values or empty (trim'd) Strings or the <tt>String[]</tt>s
-     *                                      found did not contain se same amount of elements or only one of the values
+     *                                      found did not contain same amount of elements or only one of the values
      *                                      was found during lookup
      */
     private RangeFilter safeCreateRangeFilter(final String lowerBoundAttribute, final String upperBoundAttribute,
@@ -491,23 +492,19 @@ public class ReportDisplayTag extends TagSupport {
             || upperBoundAttribute == null || upperBoundAttribute.trim().length() == 0) {
             return null;
         }
-        final String[] lowerBoundValues = safeLookupContextValueArray(lowerBoundAttribute);
-        final String[] upperBoundValues = safeLookupContextValueArray(upperBoundAttribute);
+        String[] lowerBoundValues = safeLookupContextValueArray(lowerBoundAttribute);
+        String[] upperBoundValues = safeLookupContextValueArray(upperBoundAttribute);
+
+        if (lowerBoundValues == null && upperBoundValues == null) {
+            return null;
+        }
 
         if (lowerBoundValues == null) {
-            if (upperBoundValues != null) {
-                throw new ReportConfigurationException("The context value for [" + upperBoundAttribute
-                    + "] was defined while the context value for [" + lowerBoundAttribute
-                    + "] was undefined, so no lower bound(s) exist for creation of range filter(s).");
-            } else {
-                return null;
-            }
+            lowerBoundValues = new String[upperBoundValues.length];
+        } else if (upperBoundValues == null){
+            upperBoundValues = new String[lowerBoundValues.length];
         }
-        if (upperBoundValues == null) {
-            throw new ReportConfigurationException("The context value for [" + lowerBoundAttribute
-                + "] was defined while the context value for [" + upperBoundAttribute
-                + "] was undefined, so no upper bound(s) exist for creation of range filter(s).");
-        }
+
         if (upperBoundValues.length != lowerBoundValues.length) {
             throw new ReportConfigurationException("The context value for [" + lowerBoundAttribute + "] had length ["
                 + lowerBoundValues.length + "] while the context value for [" + upperBoundAttribute + "]  had length ["
@@ -516,6 +513,8 @@ public class ReportDisplayTag extends TagSupport {
         }
 
         final RangeFilter filter = new RangeFilter(column, filterCategory);
+        // set lower bound to '01-01-0001' if lower bound input parameter is null
+        // and set upper bound to '12-31-9999' if the upper bound input parameter is null
         for (int i = 0; i < lowerBoundValues.length; i++) {
             final String lowerBoundValue = lowerBoundValues[i] != null ? lowerBoundValues[i] : MIN_DATE;
             final String upperBoundValue = upperBoundValues[i] != null ? upperBoundValues[i] : MAX_DATE;
