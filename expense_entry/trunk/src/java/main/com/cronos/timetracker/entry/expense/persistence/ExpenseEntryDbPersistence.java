@@ -50,39 +50,45 @@ import java.util.List;
  * );
  * </pre>
  * </p>
- *
+ * 
  * <p>
  * Changes in 1.1: Four new methods for doing bulk operations on sets of expense entries have been added. These method
  * can work in atomic mode (a failure on one entry causes the entire operation to fail) or non-atomic (a failure in
  * one entry doesn't affect the other and the user has a way to know which ones failed). There is also a search method
  * that provides the capability to search expense entries at the database level and return the ones that match.
  * </p>
+ * 
+ * <p>
+ * Bug fix for TT-1976: when retrieving ExpenseEntryRejectReason from database, also retrieve its descrption from
+ * 'Reject_Reason' table. Modified RETRIEVE_REJECT_REASON_SQL variable and private retrieveRejectReasons method.
+ * </p>
  *
  * @author adic, TCSDEVELOPER
  * @author DanLazar, visualage
+ * @author Xuchen
  * @version 1.1
  *
  * @since 1.0
  */
 public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
     /** Represents the prepared SQL statement to add an expense entry. */
-    private static final String ADD_ENTRY_SQL = "INSERT INTO ExpenseEntries (ExpenseEntriesID, ExpenseTypesID, "
-        + "ExpenseStatusesID, Description, EntryDate, Amount, Billable, CreationDate, CreationUser, ModificationDate, "
-        + "ModificationUser) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String ADD_ENTRY_SQL = "INSERT INTO ExpenseEntries (ExpenseEntriesID, ExpenseTypesID, " +
+        "ExpenseStatusesID, Description, EntryDate, Amount, Billable, CreationDate, CreationUser, ModificationDate, " +
+        "ModificationUser) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
     /**
      * Represents the prepared SQL statement to add into the exp_reject_reason table.
      *
      * @since 1.1
      */
-    private static final String ADD_EXP_REJECT_REASON_SQL = "INSERT INTO exp_reject_reason (ExpenseEntriesID,"
-        + "reject_reason_id, creation_date, creation_user, modification_date, modification_user) "
-        + "VALUES (?,?,?,?,?,?)";
+    private static final String ADD_EXP_REJECT_REASON_SQL = "INSERT INTO exp_reject_reason (ExpenseEntriesID," +
+        "reject_reason_id, creation_date, creation_user, modification_date, modification_user) " +
+        "VALUES (?,?,?,?,?,?)";
 
     /** Represents the prepared SQL statement to update an expense entry. */
-    private static final String UPDATE_ENTRY_SQL = "UPDATE ExpenseEntries SET ExpenseTypesID=?, ExpenseStatusesID=?, "
-        + "Description=?, EntryDate=?, Amount=?, Billable=?, ModificationDate=?, ModificationUser=? "
-        + "WHERE ExpenseEntriesID=?";
+    private static final String UPDATE_ENTRY_SQL = "UPDATE ExpenseEntries SET ExpenseTypesID=?, ExpenseStatusesID=?, " +
+        "Description=?, EntryDate=?, Amount=?, Billable=?, ModificationDate=?, ModificationUser=? " +
+        "WHERE ExpenseEntriesID=?";
 
     /** Represents the prepared SQL statement to delete an expense entry. */
     private static final String DELETE_ENTRY_SQL = "DELETE FROM ExpenseEntries WHERE ExpenseEntriesID=?";
@@ -92,8 +98,8 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @since 1.1
      */
-    private static final String DELETE_EXP_REJECT_REASON_SQL = "DELETE FROM exp_reject_reason "
-        + "WHERE ExpenseEntriesID=?";
+    private static final String DELETE_EXP_REJECT_REASON_SQL = "DELETE FROM exp_reject_reason " +
+        "WHERE ExpenseEntriesID=?";
 
     /** Represents the prepared SQL statement to delete all expense entries. */
     private static final String DELETE_ALL_ENTRY_SQL = "DELETE FROM ExpenseEntries";
@@ -106,46 +112,46 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
     private static final String DELETE_ALL_EXP_REJECT_REASON_SQL = "DELETE FROM exp_reject_reason";
 
     /** Represents the prepared SQL statement to get an expense entry, including its entry type and status. */
-    private static final String RETRIEVE_ENTRY_SQL = "SELECT E.ExpenseEntriesID, E.ExpenseTypesID, "
-        + "E.ExpenseStatusesID, E.Description, E.EntryDate, E.Amount, E.Billable, E.CreationDate, E.CreationUser, "
-        + "E.ModificationDate, E.ModificationUser, T.Description AS TypeDescription, "
-        + "T.CreationDate AS TypeCreationDate, T.CreationUser AS TypeCreationUser, "
-        + "T.ModificationDate AS TypeModificationDate, T.ModificationUser AS TypeModificationUser, "
-        + "S.Description AS StatusDescription, S.CreationDate AS StatusCreationDate, "
-        + "S.CreationUser AS StatusCreationUser, S.ModificationDate AS StatusModificationDate, "
-        + "S.ModificationUser AS StatusModificationUser FROM ExpenseEntries AS E "
-        + "LEFT OUTER JOIN ExpenseTypes AS T ON E.ExpenseTypesID = T.ExpenseTypesID "
-        + "LEFT OUTER JOIN ExpenseStatuses AS S ON E.ExpenseStatusesID = S.ExpenseStatusesID "
-        + "WHERE E.ExpenseEntriesID=?";
+    private static final String RETRIEVE_ENTRY_SQL = "SELECT E.ExpenseEntriesID, E.ExpenseTypesID, " +
+        "E.ExpenseStatusesID, E.Description, E.EntryDate, E.Amount, E.Billable, E.CreationDate, E.CreationUser, " +
+        "E.ModificationDate, E.ModificationUser, T.Description AS TypeDescription, " +
+        "T.CreationDate AS TypeCreationDate, T.CreationUser AS TypeCreationUser, " +
+        "T.ModificationDate AS TypeModificationDate, T.ModificationUser AS TypeModificationUser, " +
+        "S.Description AS StatusDescription, S.CreationDate AS StatusCreationDate, " +
+        "S.CreationUser AS StatusCreationUser, S.ModificationDate AS StatusModificationDate, " +
+        "S.ModificationUser AS StatusModificationUser FROM ExpenseEntries AS E " +
+        "LEFT OUTER JOIN ExpenseTypes AS T ON E.ExpenseTypesID = T.ExpenseTypesID " +
+        "LEFT OUTER JOIN ExpenseStatuses AS S ON E.ExpenseStatusesID = S.ExpenseStatusesID " +
+        "WHERE E.ExpenseEntriesID=?";
 
     /**
      * Represents the prepared SQL statement to get the reject reasons with given ExpenseEntriesID.
      *
      * @since 1.1
      */
-    private static final String RETRIEVE_REJECT_REASON_SQL = "SELECT R.reject_reason_id, "
-        + "R.creation_date, R.creation_user, R.modification_date, R.modification_user FROM exp_reject_reason AS E "
-        + "LEFT OUTER JOIN reject_reason AS R ON E.reject_reason_id = R.reject_reason_id "
-        + "WHERE E.ExpenseEntriesID=?";
+    private static final String RETRIEVE_REJECT_REASON_SQL = "SELECT R.reject_reason_id, R.description, " +
+        "R.creation_date, R.creation_user, R.modification_date, R.modification_user FROM exp_reject_reason AS E " +
+        "LEFT OUTER JOIN reject_reason AS R ON E.reject_reason_id = R.reject_reason_id " +
+        "WHERE E.ExpenseEntriesID=?";
 
     /**
      * Represents the prepared SQL statement to get all expense entries, including their entry types and statuses.
      *
      * @since 1.0
      */
-    private static final String RETRIEVE_ALL_ENTRY_SQL = "SELECT ExpenseEntries.ExpenseEntriesID, "
-        + "ExpenseEntries.ExpenseTypesID, ExpenseEntries.ExpenseStatusesID, ExpenseEntries.Description, "
-        + "ExpenseEntries.EntryDate, ExpenseEntries.Amount, ExpenseEntries.Billable, ExpenseEntries.CreationDate, "
-        + "ExpenseEntries.CreationUser, ExpenseEntries.ModificationDate, ExpenseEntries.ModificationUser,"
-        + "ExpenseTypes.Description AS TypeDescription, "
-        + "ExpenseTypes.CreationDate AS TypeCreationDate, ExpenseTypes.CreationUser AS TypeCreationUser, "
-        + "ExpenseTypes.ModificationDate AS TypeModificationDate, ExpenseTypes.ModificationUser AS "
-        + "TypeModificationUser, ExpenseStatuses.Description AS StatusDescription, "
-        + "ExpenseStatuses.CreationDate AS StatusCreationDate, ExpenseStatuses.CreationUser AS "
-        + "StatusCreationUser, ExpenseStatuses.ModificationDate AS StatusModificationDate, "
-        + "ExpenseStatuses.ModificationUser AS StatusModificationUser FROM ExpenseEntries "
-        + "LEFT OUTER JOIN ExpenseTypes ON ExpenseEntries.ExpenseTypesID = ExpenseTypes.ExpenseTypesID "
-        + "LEFT OUTER JOIN ExpenseStatuses ON ExpenseEntries.ExpenseStatusesID = ExpenseStatuses.ExpenseStatusesID";
+    private static final String RETRIEVE_ALL_ENTRY_SQL = "SELECT ExpenseEntries.ExpenseEntriesID, " +
+        "ExpenseEntries.ExpenseTypesID, ExpenseEntries.ExpenseStatusesID, ExpenseEntries.Description, " +
+        "ExpenseEntries.EntryDate, ExpenseEntries.Amount, ExpenseEntries.Billable, ExpenseEntries.CreationDate, " +
+        "ExpenseEntries.CreationUser, ExpenseEntries.ModificationDate, ExpenseEntries.ModificationUser," +
+        "ExpenseTypes.Description AS TypeDescription, " +
+        "ExpenseTypes.CreationDate AS TypeCreationDate, ExpenseTypes.CreationUser AS TypeCreationUser, " +
+        "ExpenseTypes.ModificationDate AS TypeModificationDate, ExpenseTypes.ModificationUser AS " +
+        "TypeModificationUser, ExpenseStatuses.Description AS StatusDescription, " +
+        "ExpenseStatuses.CreationDate AS StatusCreationDate, ExpenseStatuses.CreationUser AS " +
+        "StatusCreationUser, ExpenseStatuses.ModificationDate AS StatusModificationDate, " +
+        "ExpenseStatuses.ModificationUser AS StatusModificationUser FROM ExpenseEntries " +
+        "LEFT OUTER JOIN ExpenseTypes ON ExpenseEntries.ExpenseTypesID = ExpenseTypes.ExpenseTypesID " +
+        "LEFT OUTER JOIN ExpenseStatuses ON ExpenseEntries.ExpenseStatusesID = ExpenseStatuses.ExpenseStatusesID";
 
     /** Represents the column name for expense entry ID. */
     private static final String ID_COLUMN = "ExpenseEntriesID";
@@ -245,6 +251,13 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      */
     private static final String REASON_MODIFICATION_USER_COLUMN = "modification_user";
 
+    /**
+     * Represents the column name for reject reason description.
+     *
+     * @since 1.1
+     */
+    private static final String REASON_DESCRIPTION_COLUMN = "description";
+
     /** Represents the parameter index of ID in INSERT SQL statement. */
     private static final int INSERT_ID_INDEX = 1;
 
@@ -328,11 +341,10 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @param namespace the namespace to create DB connection factory.
      *
-     * @throws NullPointerException if <code>namespace</code> is <code>null</code>.
-     * @throws IllegalArgumentException if <code>namespace</code> is empty string.
      * @throws ConfigurationException if DB connection factory cannot be created.
      */
-    public ExpenseEntryDbPersistence(String namespace) throws ConfigurationException {
+    public ExpenseEntryDbPersistence(String namespace)
+        throws ConfigurationException {
         PersistenceHelper.validateNotNullOrEmpty(namespace, "namespace");
 
         this.namespace = namespace;
@@ -356,9 +368,6 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *        factory.
      * @param namespace the namespace to create DB connection factory.
      *
-     * @throws NullPointerException if <code>connectionProducerName</code> or <code>namespace</code> is
-     *         <code>null</code>.
-     * @throws IllegalArgumentException <code>connectionProducerName</code> or <code>namespace</code> is empty string.
      * @throws PersistenceException if <code>connectionProducerName</code> does not exist in DB connection factory.
      */
     public ExpenseEntryDbPersistence(String connectionProducerName, String namespace)
@@ -386,7 +395,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Adds a new <code>ExpenseEntry</code> instance to the database.
      * </p>
-     *
+     * 
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. For each contained reject reason, a
      * row needs to be inserted in the exp_reject_reason table.
@@ -397,7 +406,6 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * @return <code>true</code> if the ID does not exist in database and the expense entry is added;
      *         <code>false</code> otherwise.
      *
-     * @throws NullPointerException if <code>entry</code> is <code>null</code>.
      * @throws PersistenceException if error occurs when adding the expense entry to the persistence.
      *
      * @since 1.0
@@ -466,7 +474,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Deletes an <code>ExpenseEntry</code> instance with the given ID from the database.
      * </p>
-     *
+     * 
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. When deleting an entry, the linked
      * rows from exp_reject_reason must be deleted too.
@@ -515,7 +523,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Deletes all <code>ExpenseEntry</code> instances in the database.
      * </p>
-     *
+     * 
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. When deleting an entry, the linked
      * rows from exp_reject_reason must be deleted too.
@@ -545,7 +553,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Updates an <code>ExpenseEntry</code> instance to the database.
      * </p>
-     *
+     * 
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. The exp_reject_reason stores in
      * persistence the reject reason ids for an expense entries. The updated entry may contain a totally different set
@@ -560,7 +568,6 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @return <code>true</code> if the expense entry exists in database and is updated; <code>false</code> otherwise.
      *
-     * @throws NullPointerException if <code>entry</code> is <code>null</code>.
      * @throws PersistenceException if error occurs when updating the expense entry.
      *
      * @since 1.0
@@ -637,7 +644,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * Retrieves an <code>ExpenseEntry</code> instance with the given ID from the database. The related
      * <code>ExpenseEntryType</code> and <code>ExpenseEntryStatus</code> instances are also retrieved.
      * </p>
-     *
+     * 
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. The retrieval query must now be joined
      * with exp_reject_reason on the ExpenseEntriesID field (a separate query is acceptable too). The reject reason
@@ -694,7 +701,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * Retrieves all <code>ExpenseEntry</code> instances from the database. The related <code>ExpenseEntryType</code>
      * and <code>ExpenseEntryStatus</code> instances are also retrieved.
      * </p>
-     *
+     * 
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. The retrieval query must now be joined
      * with exp_reject_reason on the ExpenseEntriesID field (a separate query is acceptable too and in this case
@@ -771,6 +778,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
                 reason.setCreationUser(resultSet.getString(REASON_CREATION_USER_COLUMN));
                 reason.setModificationDate(resultSet.getDate(REASON_MODIFICATION_DATE_COLUMN));
                 reason.setModificationUser(resultSet.getString(REASON_MODIFICATION_USER_COLUMN));
+                reason.setDescription(resultSet.getString(REASON_DESCRIPTION_COLUMN));
                 entry.addRejectReason(reason);
             }
         } catch (SQLException e) {
@@ -789,12 +797,11 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @param connectionProducerName the connection producer name to obtain a connection from DB connection factory.
      *
-     * @throws NullPointerException if <code>connectionProducerName</code> is <code>null</code>.
-     * @throws IllegalArgumentException if <code>connectionProducerName</code> is empty string.
      * @throws PersistenceException if error occurs when closing the previous connection; or error occurs when
      *         obtaining the new connection from DB connection factory.
      */
-    public void initConnection(String connectionProducerName) throws PersistenceException {
+    public void initConnection(String connectionProducerName)
+        throws PersistenceException {
         PersistenceHelper.validateNotNullOrEmpty(connectionProducerName, "connectionProducerName");
 
         closeConnection();
@@ -810,7 +817,6 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @param connection the connection used to access database.
      *
-     * @throws NullPointerException if <code>connection</code> is <code>null</code>.
      * @throws PersistenceException if error occurs when closing the existing connection.
      */
     public void setConnection(Connection connection) throws PersistenceException {
@@ -855,19 +861,19 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Adds a set of entries to the database.
      * </p>
-     *
+     * 
      * <p>
      * If the addition is atomic then it means that entire retrieval will fail if a single expense entry addition
      * fails.
      * </p>
-     *
+     * 
      * <p>
      * If the addition is non-atomic then it means each expense entry is added individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs). If the
      * exception is related to acquiring an SQL connection or something like that, it is obvious that all entries will
      * fail so the exception should be thrown.
      * </p>
-     *
+     * 
      * <p>
      * Note: an JDBC transaction must be used in atomic mode to be able to rollback everything in case of failure.
      * </p>
@@ -877,8 +883,8 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @return the entries that failed to be added in non atomic mode.
      *
-     * @throws IllegalArgumentException if the array is <code>null</code>, empty or has <code>null</code> element.
      * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the array is <code>null</code>, empty or has <code>null</code> element.
      *
      * @since 1.1
      */
@@ -953,6 +959,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
                     if (isAtomic) {
                         // in atomic mode, cancel the entire retrieval
                         errors.add(objects[i]);
+
                         break;
                     } else {
                         // in non atomic mode, add the unsuccessful transaction
@@ -1072,17 +1079,17 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Deletes a set of entries from the database with the given IDs from the persistence.
      * </p>
-     *
+     * 
      * <p>
      * If the deletion is atomic then it means that entire retrieval will fail if a single expense entry deletion
      * fails.
      * </p>
-     *
+     * 
      * <p>
      * If the deletion is non-atomic then it means each expense entry is deleted individually. If it fails, that won't
      * affect the others. A list with the failed ids is returned to the user (empty if no error occurs).
      * </p>
-     *
+     * 
      * <p>
      * Note: an JDBC transaction must be used in atomic mode to be able to rollback everything in case of failure.
      * </p>
@@ -1092,12 +1099,13 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @return the entries that failed to be deleted in non atomic mode.
      *
-     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      *
      * @since 1.1
      */
-    public int[] deleteEntries(int[] entryIds, boolean isAtomic) throws PersistenceException {
+    public int[] deleteEntries(int[] entryIds, boolean isAtomic)
+        throws PersistenceException {
         // argument validation
         if (entryIds == null) {
             throw new IllegalArgumentException("entryIds should not be null.");
@@ -1135,16 +1143,16 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Updates a set of entries in the database.
      * </p>
-     *
+     * 
      * <p>
      * If the update is atomic then it means that entire retrieval will fail if a single expense entry update fails.
      * </p>
-     *
+     * 
      * <p>
      * If the update is non-atomic then it means each expense entry is updated individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs).
      * </p>
-     *
+     * 
      * <p>
      * Note: an JDBC transaction must be used in atomic mode to be able to rollback everything in case of failure.
      * </p>
@@ -1154,8 +1162,8 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @return the entries that failed to be updated in non atomic mode.
      *
-     * @throws IllegalArgumentException if the array is <code>null</code>, empty or has <code>null</code> element.
      * @throws PersistenceException wraps a persistence implementation specific exception. (such as SQL exception)
+     * @throws IllegalArgumentException if the array is <code>null</code>, empty or has <code>null</code> element.
      *
      * @since 1.1
      */
@@ -1183,12 +1191,12 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Retrieves a set of entries with given ids from the database.
      * </p>
-     *
+     * 
      * <p>
      * If the retrieval is atomic then it means that entire retrieval will fail if a single expense entry retrieval
      * fails.
      * </p>
-     *
+     * 
      * <p>
      * If the retrieval is non-atomic then it means each expense entry is retrieved individually. If it fails that
      * won't affect the others. The potentially partial list of results will be returned. If any error occurs or if
@@ -1201,8 +1209,8 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @return the entries that were retrieved in both modes.
      *
-     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the array is <code>null</code> or empty.
      *
      * @since 1.1
      */
@@ -1267,12 +1275,13 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *
      * @return the results of the search (can be empty if no matches found).
      *
-     * @throws IllegalArgumentException if the argument is <code>null</code>
      * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the argument is <code>null</code>
      *
      * @since 1.1
      */
-    public ExpenseEntry[] searchEntries(Criteria criteria) throws PersistenceException {
+    public ExpenseEntry[] searchEntries(Criteria criteria)
+        throws PersistenceException {
         // argument validation
         if (criteria == null) {
             throw new IllegalArgumentException("criteria should not be null.");
@@ -1296,6 +1305,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
                 if (parameters[i] instanceof java.util.Date) {
                     parameters[i] = new Date(((java.util.Date) parameters[i]).getTime());
                 }
+
                 statement.setObject(i + 1, parameters[i]);
             }
 
@@ -1337,7 +1347,8 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      *         connection producer name does not exist in DB connection factory; or database connection cannot be
      *         created.
      */
-    private void createConnection(String connectionProducerName) throws PersistenceException {
+    private void createConnection(String connectionProducerName)
+        throws PersistenceException {
         if (connection != null) {
             return;
         }
@@ -1369,7 +1380,8 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * @throws PersistenceException if the flag for billable is neither 0 nor 1; or the column value is
      *         <code>null</code>, empty string or invalid value.
      */
-    private ExpenseEntry createExpenseEntry(ResultSet resultSet) throws SQLException, PersistenceException {
+    private ExpenseEntry createExpenseEntry(ResultSet resultSet)
+        throws SQLException, PersistenceException {
         if (!resultSet.next()) {
             return null;
         }
