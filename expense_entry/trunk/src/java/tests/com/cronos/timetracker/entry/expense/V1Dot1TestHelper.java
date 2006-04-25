@@ -9,6 +9,7 @@ import com.topcoder.util.config.ConfigManagerException;
 import junit.framework.Assert;
 
 import java.io.File;
+
 import java.lang.reflect.Field;
 
 import java.sql.Connection;
@@ -27,6 +28,12 @@ import java.util.Set;
 /**
  * <p>
  * Defines helper methods used in tests.
+ * </p>
+ * 
+ * <p>
+ * Bug fix for TT-1976. Modify assertEquals method also to check the description of reject reason of given entries. Add
+ * two helper methods checkEquals(ExpenseEntryRejectReason[], ExpenseEntryRejectReason[]) and
+ * sortReasons(ExpenseEntryRejectReason[]).
  * </p>
  *
  * @author TCSDEVELOPER
@@ -111,8 +118,7 @@ public final class V1Dot1TestHelper {
         assertEquals("The creation date should be correct.", expected.getCreationDate(), actual.getCreationDate());
         assertEquals("The modification date should be correct.", expected.getModificationDate(),
             actual.getModificationDate());
-        Assert.assertEquals("The creation user should be correct.", expected.getCreationUser(),
-                actual.getCreationUser());
+        Assert.assertEquals("The creation user should be correct.", expected.getCreationUser(), actual.getCreationUser());
         Assert.assertEquals("The modification user should be correct.", expected.getModificationUser(),
             actual.getModificationUser());
     }
@@ -137,7 +143,50 @@ public final class V1Dot1TestHelper {
         final double eps = 1E-9;
         Assert.assertEquals("The amount of money should be correct.", expected.getAmount().doubleValue(),
             actual.getAmount().doubleValue(), eps);
-        Assert.assertEquals(expected.getRejectReasons().length, actual.getRejectReasons().length);
+        Assert.assertTrue(checkEquals(expected.getRejectReasons(), actual.getRejectReasons()));
+    }
+
+    /**
+     * Check the equalness (reject reason id and its description) of given ExpenseEntryRejectReason array.
+     *
+     * @param reasons1 the ExpenseEntryRejectReason array to compare
+     * @param reasons2 the ExpenseEntryRejectReason array to compare
+     *
+     * @return true if and only if these given two array are equal.
+     */
+    public static boolean checkEquals(ExpenseEntryRejectReason[] reasons1, ExpenseEntryRejectReason[] reasons2) {
+        if (reasons1.length != reasons2.length) {
+            return false;
+        }
+
+        sortReasons(reasons1);
+        sortReasons(reasons2);
+
+        for (int i = 0; i < reasons1.length; i++) {
+            if ((reasons1[i].getRejectReasonId() != reasons2[i].getRejectReasonId()) ||
+                    !reasons1[i].getDescription().equals(reasons2[i].getDescription())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Sort given array according their reject reason id (in asending order).
+     *
+     * @param reasons the ExpenseEntryRejectReason array to sort.
+     */
+    public static void sortReasons(ExpenseEntryRejectReason[] reasons) {
+        for (int i = 0; i < reasons.length; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (reasons[i].getRejectReasonId() < reasons[j].getRejectReasonId()) {
+                    ExpenseEntryRejectReason r = reasons[i];
+                    reasons[i] = reasons[j];
+                    reasons[j] = r;
+                }
+            }
+        }
     }
 
     /**
@@ -215,7 +264,8 @@ public final class V1Dot1TestHelper {
      *
      * @throws SQLException if database error occurs.
      */
-    public static void clearDatabase(Connection connection) throws SQLException {
+    public static void clearDatabase(Connection connection)
+        throws SQLException {
         Statement statement = connection.createStatement();
 
         try {

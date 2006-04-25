@@ -44,6 +44,12 @@ public class V1Dot1DemoTest extends TestCase {
     /** Represents the namespace to load DB connection factory configuration. */
     private static final String DB_NAMESPACE = "com.cronos.timetracker.entry.expense.connection";
 
+    /** The description of reject reason. */
+    private final String description1 = "description1";
+
+    /** The description of reject reason. */
+    private final String description2 = "description2";
+
     /** Represents the database connection to access database. */
     private Connection connection;
 
@@ -65,8 +71,8 @@ public class V1Dot1DemoTest extends TestCase {
         V1Dot1TestHelper.clearDatabase(connection);
 
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO ExpenseTypes(ExpenseTypesID, Description, "
-                + "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO ExpenseTypes(ExpenseTypesID, Description, " +
+                "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
 
         try {
             ps.setInt(1, 1);
@@ -81,8 +87,8 @@ public class V1Dot1DemoTest extends TestCase {
         }
 
         // Insert an expense status
-        ps = connection.prepareStatement("INSERT INTO ExpenseStatuses(ExpenseStatusesID, Description, CreationUser, "
-                + "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+        ps = connection.prepareStatement("INSERT INTO ExpenseStatuses(ExpenseStatusesID, Description, CreationUser, " +
+                "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
 
         try {
             ps.setInt(1, 2);
@@ -97,12 +103,12 @@ public class V1Dot1DemoTest extends TestCase {
         }
 
         // Insert an reject reason
-        ps = connection.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, creation_date, "
-                + "creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?)");
+        ps = connection.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, creation_date, " +
+                "creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?)");
 
         try {
             ps.setInt(1, 1);
-            ps.setString(2, "reason");
+            ps.setString(2, description1);
             ps.setDate(3, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 1, 1).getTime()));
             ps.setString(4, "TangentZ");
             ps.setDate(5, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 2, 1).getTime()));
@@ -110,7 +116,7 @@ public class V1Dot1DemoTest extends TestCase {
             ps.executeUpdate();
 
             ps.setInt(1, 3);
-            ps.setString(2, "reason");
+            ps.setString(2, description2);
             ps.setDate(3, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 1, 1).getTime()));
             ps.setString(4, "TangentZ");
             ps.setDate(5, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 2, 1).getTime()));
@@ -354,12 +360,14 @@ public class V1Dot1DemoTest extends TestCase {
         reason1.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
         reason1.setCreationUser("TangentZ");
         reason1.setModificationUser("Ivern");
+        reason1.setDescription(description1);
 
         ExpenseEntryRejectReason reason2 = new ExpenseEntryRejectReason(3);
         reason2.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
         reason2.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
         reason2.setCreationUser("TangentZ");
         reason2.setModificationUser("Ivern");
+        reason2.setDescription(description2);
 
         // add the reject reason to entry
         entry.addRejectReason(reason1);
@@ -381,8 +389,8 @@ public class V1Dot1DemoTest extends TestCase {
             ExpenseEntryRejectReason[] r = e.getRejectReasons();
 
             for (int j = 0; j < r.length; j++) {
-                System.out.println(r[j].getRejectReasonId() + " " + r[j].getCreationUser() + " "
-                    + r[j].getCreationDate());
+                System.out.println(r[j].getRejectReasonId() + " " + r[j].getCreationUser() + " " +
+                    r[j].getCreationDate());
             }
 
             //get the reject reason ids directly and print them
@@ -462,12 +470,12 @@ public class V1Dot1DemoTest extends TestCase {
 
         // three entries are updated in one call, atomically (meaning if one fails, all fail
         // without any database changes)
-        manager.updateEntries(new ExpenseEntry[] {expected[0], expected[1], expected[2]}, true);
+        manager.updateEntries(new ExpenseEntry[] { expected[0], expected[1], expected[2] }, true);
 
         // three entries are updated in one call, non atomically (meaning if one fails, the
         // others are still performed independently and the failed ones are returned to
         // the user)
-        failed = manager.updateEntries(new ExpenseEntry[] {expected[0], expected[1], expected[2]}, false);
+        failed = manager.updateEntries(new ExpenseEntry[] { expected[0], expected[1], expected[2] }, false);
 
         for (int i = 0; i < failed.length; i++) {
             System.out.println(failed[i].getDescription() + " update failed");
@@ -475,7 +483,7 @@ public class V1Dot1DemoTest extends TestCase {
 
         // three entries are retrieved in one call, atomically (meaning if one fails, all fail
         // without any results being returned)
-        ExpenseEntry[] receive = manager.retrieveEntries(new int[] {0, 1, 2}, true);
+        ExpenseEntry[] receive = manager.retrieveEntries(new int[] { 0, 1, 2 }, true);
 
         if (receive.length == 0) {
             System.out.println("retrieval failed");
@@ -488,7 +496,7 @@ public class V1Dot1DemoTest extends TestCase {
         // three entries are retrieved in one call, non atomically (meaning if one fails, the
         // others are still retrieved independently and the retrieved ones are returned to
         // the user ¨C note the difference from add/delete/update)
-        receive = manager.retrieveEntries(new int[] {0, 1, 2}, false);
+        receive = manager.retrieveEntries(new int[] { 0, 1, 2 }, false);
 
         for (int i = 0; i < receive.length; i++) {
             System.out.println(receive[i].getDescription() + " retrieved");
@@ -496,12 +504,12 @@ public class V1Dot1DemoTest extends TestCase {
 
         // three entries are deleted in one call, atomically (meaning if one fails, all fail
         // without any database changes)
-        manager.deleteEntries(new int[] {0, 1, 2}, true);
+        manager.deleteEntries(new int[] { 0, 1, 2 }, true);
 
         // three entries are deleted in one call, non atomically (meaning if one fails, the
         // others are still performed independently and the ids of the failed ones are
         // returned to the user)
-        int[] failedIds = manager.deleteEntries(new int[] {0, 1, 2}, false);
+        int[] failedIds = manager.deleteEntries(new int[] { 0, 1, 2 }, false);
 
         for (int i = 0; i < failedIds.length; i++) {
             System.out.println(failedIds[i] + " deletion failed");
@@ -617,10 +625,10 @@ public class V1Dot1DemoTest extends TestCase {
 
         // look for entries matching more criteria at the same time
         // in this particular case it looks for an entry having reject reason 50, 51 AND 52
-        Criteria crit20 = CompositeCriteria.getAndCompositeCriteria(new Criteria[] {crit16, crit16b, crit16c});
+        Criteria crit20 = CompositeCriteria.getAndCompositeCriteria(new Criteria[] { crit16, crit16b, crit16c });
 
         // look for entries matching any of more criteria
-        Criteria criteria = CompositeCriteria.getOrCompositeCriteria(new Criteria[] {crit2, crit6, crit12});
+        Criteria criteria = CompositeCriteria.getOrCompositeCriteria(new Criteria[] { crit2, crit6, crit12 });
 
         // the actual search and result printing
         ExpenseEntry[] entries = manager.searchEntries(criteria);

@@ -33,6 +33,12 @@ import java.util.List;
  * <p>
  * Tests functionality and error cases of <code>ExpenseEntryDbPersistence</code> class.
  * </p>
+ * 
+ * <p>
+ * Modify test cases for bug fix for TT-1976. Adding descriptions to reject reason of entry. Add checking the
+ * description of reject reason in entries returned from retrieveEntry, retrieveEntries and  retrieveAllEntries
+ * methods. This checking is done in helper class V1Dot1TestHelper#assertEquals method.
+ * </p>
  *
  * @author TCSDEVELOPER
  * @version 1.1
@@ -40,6 +46,12 @@ import java.util.List;
 public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
     /** Represents the namespace to load DB connection factory configuration. */
     private static final String DB_NAMESPACE = "com.cronos.timetracker.entry.expense.connection";
+
+    /** The description of reject reason. */
+    private final String description1 = "description1";
+
+    /** The description of reject reason. */
+    private final String description2 = "description2";
 
     /** Represents the manager instance used in tests. */
     private ExpenseEntryPersistence persistence;
@@ -123,7 +135,7 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
 
         try {
             ps.setInt(1, 1);
-            ps.setString(2, "reason");
+            ps.setString(2, description1);
             ps.setDate(3, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 1, 1).getTime()));
             ps.setString(4, "TangentZ");
             ps.setDate(5, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 2, 1).getTime()));
@@ -131,7 +143,7 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
             ps.executeUpdate();
 
             ps.setInt(1, 3);
-            ps.setString(2, "reason");
+            ps.setString(2, description2);
             ps.setDate(3, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 1, 1).getTime()));
             ps.setString(4, "TangentZ");
             ps.setDate(5, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 2, 1).getTime()));
@@ -165,12 +177,14 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
         reason1.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
         reason1.setCreationUser("TangentZ");
         reason1.setModificationUser("Ivern");
+        reason1.setDescription(description1);
 
         reason2 = new ExpenseEntryRejectReason(3);
         reason2.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
         reason2.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
         reason2.setCreationUser("TangentZ");
         reason2.setModificationUser("Ivern");
+        reason2.setDescription(description2);
 
         // Create the expense entry
         entry = new ExpenseEntry(5);
@@ -402,7 +416,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteAllEntriesPersistenceError() throws Exception {
+    public void testDeleteAllEntriesPersistenceError()
+        throws Exception {
         Connection conn = factory.createConnection();
 
         conn.close();
@@ -744,7 +759,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveAllEntriesPersistenceError() throws Exception {
+    public void testRetrieveAllEntriesPersistenceError()
+        throws Exception {
         Connection conn = factory.createConnection();
 
         conn.close();
@@ -784,7 +800,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveAllEntriesNoRecordAccuracy() throws Exception {
+    public void testRetrieveAllEntriesNoRecordAccuracy()
+        throws Exception {
         assertTrue("The retrieved list should be empty.", persistence.retrieveAllEntries().isEmpty());
 
         assertNotNull("A connection should be created.", persistence.getConnection());
@@ -872,7 +889,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_EntriesContainsNullElement() throws Exception {
+    public void testAddEntries_EntriesContainsNullElement()
+        throws Exception {
         try {
             persistence.addEntries(new ExpenseEntry[] { null }, true);
             fail("Should throw IllegalArgumentException.");
@@ -1200,7 +1218,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -1242,7 +1261,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -1280,7 +1300,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy3() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy3()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -1318,7 +1339,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testAddEntries_NonAtomicModeAccuracy4() throws Exception {
+    public void testAddEntries_NonAtomicModeAccuracy4()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -1535,7 +1557,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_AtomicModeAccuracy1() throws Exception {
+    public void testDeleteEntries_AtomicModeAccuracy1()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -1569,7 +1592,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_AtomicModeAccuracy2() throws Exception {
+    public void testDeleteEntries_AtomicModeAccuracy2()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -1606,7 +1630,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testDeleteEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -1640,7 +1665,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testDeleteEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testDeleteEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -1711,7 +1737,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_EntriesContainsNullElement() throws Exception {
+    public void testUpdateEntries_EntriesContainsNullElement()
+        throws Exception {
         try {
             persistence.updateEntries(new ExpenseEntry[] { null }, true);
             fail("Should throw IllegalArgumentException.");
@@ -1942,7 +1969,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_AtomicModeAccuracy1() throws Exception {
+    public void testUpdateEntries_AtomicModeAccuracy1()
+        throws Exception {
         persistence.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -1971,7 +1999,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_AtomicModeAccuracy2() throws Exception {
+    public void testUpdateEntries_AtomicModeAccuracy2()
+        throws Exception {
         persistence.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(4);
@@ -2002,7 +2031,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_AtomicModeAccuracy3() throws Exception {
+    public void testUpdateEntries_AtomicModeAccuracy3()
+        throws Exception {
         persistence.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -2036,7 +2066,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testUpdateEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         persistence.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -2066,7 +2097,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testUpdateEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         persistence.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(4);
@@ -2097,7 +2129,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testUpdateEntries_NonAtomicModeAccuracy3() throws Exception {
+    public void testUpdateEntries_NonAtomicModeAccuracy3()
+        throws Exception {
         persistence.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
@@ -2160,7 +2193,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntriesPersistenceError1() throws Exception {
+    public void testRetrieveEntriesPersistenceError1()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -2197,7 +2231,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntriesPersistenceError2() throws Exception {
+    public void testRetrieveEntriesPersistenceError2()
+        throws Exception {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
@@ -2305,7 +2340,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_AtomicModeAccuracy1() throws Exception {
+    public void testRetrieveEntries_AtomicModeAccuracy1()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -2345,7 +2381,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_AtomicModeAccuracy2() throws Exception {
+    public void testRetrieveEntries_AtomicModeAccuracy2()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 3 instances
@@ -2380,7 +2417,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_AtomicModeAccuracy3() throws Exception {
+    public void testRetrieveEntries_AtomicModeAccuracy3()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 5 instances
@@ -2425,7 +2463,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_NonAtomicModeAccuracy1() throws Exception {
+    public void testRetrieveEntries_NonAtomicModeAccuracy1()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[5];
 
         // Add 5 instances
@@ -2465,7 +2504,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_NonAtomicModeAccuracy2() throws Exception {
+    public void testRetrieveEntries_NonAtomicModeAccuracy2()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 3 instances
@@ -2505,7 +2545,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    public void testRetrieveEntries_NonAtomicModeAccuracy3() throws Exception {
+    public void testRetrieveEntries_NonAtomicModeAccuracy3()
+        throws Exception {
         ExpenseEntry[] expected = new ExpenseEntry[3];
 
         // Add 5 instances
@@ -2878,7 +2919,8 @@ public class V1Dot1ExpenseEntryDbPersistenceUnitTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    private void verifyUpdatedEntry(ExpenseEntry update) throws Exception {
+    private void verifyUpdatedEntry(ExpenseEntry update)
+        throws Exception {
         Statement statement = null;
         ResultSet resultSet = null;
 

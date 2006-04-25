@@ -38,6 +38,12 @@ import java.util.Set;
  * 2. Modify two test cases testAddEntries_AtomicModeAccuracy1() and testAddEntries_NonAtomicModeAccuracy1(), in which
  * we add the asserting at the bottom that the original id (which is not -1) does not change after adding entries.
  * </p>
+ * 
+ * <p>
+ * Modify test cases for bug fix for TT-1976. Adding descriptions to reject reason of entry (in setUp method.).  Add
+ * checking the description of reject reason in entries returned from searchEntries methods. This checking  is done in
+ * helper class V1Dot1TestHelper#assertEquals method.
+ * </p>
  *
  * @author TCSDEVELOPER
  * @version 1.1
@@ -48,6 +54,12 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
     /** Represents the namespace to load DB connection factory configuration. */
     private static final String DB_NAMESPACE = "com.cronos.timetracker.entry.expense.connection";
+
+    /** The description of reject reason. */
+    private final String description1 = "description1";
+
+    /** The description of reject reason. */
+    private final String description2 = "description2";
 
     /** Represents the manager instance used in tests. */
     private ExpenseEntryManager manager;
@@ -131,7 +143,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         try {
             ps.setInt(1, 1);
-            ps.setString(2, "reason");
+            ps.setString(2, description1);
             ps.setDate(3, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 1, 1).getTime()));
             ps.setString(4, "TangentZ");
             ps.setDate(5, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 2, 1).getTime()));
@@ -139,7 +151,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             ps.executeUpdate();
 
             ps.setInt(1, 3);
-            ps.setString(2, "reason");
+            ps.setString(2, description2);
             ps.setDate(3, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 1, 1).getTime()));
             ps.setString(4, "TangentZ");
             ps.setDate(5, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 2, 1).getTime()));
@@ -173,12 +185,14 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         reason1.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
         reason1.setCreationUser("TangentZ");
         reason1.setModificationUser("Ivern");
+        reason1.setDescription(description1);
 
         reason2 = new ExpenseEntryRejectReason(3);
         reason2.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
         reason2.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
         reason2.setCreationUser("TangentZ");
         reason2.setModificationUser("Ivern");
+        reason2.setDescription(description2);
 
         // Create the expense entry
         entry = new ExpenseEntry(5);
