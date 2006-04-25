@@ -59,7 +59,7 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
     public void tearDown() throws Exception {
         FailureTestHelper.clearTables();
         FailureTestHelper.unloadConfig();
-//      FIXME: persistence.closeConnection();
+        persistence.closeConnection();
     }
 
     /**

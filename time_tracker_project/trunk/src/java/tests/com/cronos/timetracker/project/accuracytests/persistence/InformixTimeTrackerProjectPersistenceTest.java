@@ -73,6 +73,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      *             to JUnit
      */
     protected void tearDown() throws Exception {
+    	persistence.closeConnection();
         Helper.clearTables();
         Helper.closeResources(null, null, connection);
         Helper.clearConfig();

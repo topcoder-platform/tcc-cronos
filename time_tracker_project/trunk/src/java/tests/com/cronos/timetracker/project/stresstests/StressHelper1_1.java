@@ -194,6 +194,7 @@ public final class StressHelper1_1 extends TestCase {
         }
         
         conn.commit();
+        conn.close();
     }
     
     /**

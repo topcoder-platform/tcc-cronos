@@ -63,6 +63,7 @@ public class InformixTimeTrackerProjectPersistence1_1StressTest extends
 	 * Remove all the namespaces and clear all the tables in db.
 	 */
 	protected void tearDown() throws Exception {
+		persistence.closeConnection();
 		StressHelper1_1.clearTables();
 		StressHelper1_1.releaseNamespaces();
 	}
