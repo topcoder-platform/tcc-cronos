@@ -621,6 +621,17 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             // assert the return value is the exactly one which has just inserted into the database
             assertEquals("record was not properly got", entry, returnTimeEntry);
+            if (((TimeEntry) returnTimeEntry).getAllRejectReasons()[0].getPrimaryId() == reason1.getPrimaryId()) {
+                assertEquals("not correctly record returned from the TimeEntries table",
+                    reason1, ((TimeEntry) returnTimeEntry).getAllRejectReasons()[0]);
+                assertEquals("not correctly record returned from the TimeEntries table",
+                    reason2, ((TimeEntry) returnTimeEntry).getAllRejectReasons()[1]);
+            } else {
+                assertEquals("not correctly record returned from the TimeEntries table",
+                        reason1, ((TimeEntry) returnTimeEntry).getAllRejectReasons()[1]);
+                assertEquals("not correctly record returned from the TimeEntries table",
+                        reason2, ((TimeEntry) returnTimeEntry).getAllRejectReasons()[0]);
+            }
         } finally {
             V1Dot1TestHelper.closeResources(null, null, conn);
         }
@@ -792,7 +803,10 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 assertEquals("not correctly record returned from the TimeEntries table",
-                    (TimeEntry) returnTimeEntrys.get(i), myTimeEntrys[i]);
+                        myTimeEntrys[i], (TimeEntry) returnTimeEntrys.get(i));
+                assertEquals("not correctly record returned from the TimeEntries table",
+                        (i % 2 == 1) ? reason1 : reason2 ,
+                        ((TimeEntry) returnTimeEntrys.get(i)).getAllRejectReasons()[0]);
             }
         } finally {
             V1Dot1TestHelper.closeResources(null, null, conn);
@@ -3529,6 +3543,24 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
         assertEquals(message, expected.getModificationUser(), actual.getModificationUser());
         V1Dot1TestHelper.assertEquals(message, expected.getModificationDate(), actual.getModificationDate());
         assertEquals(message, expected.getAllRejectReasons().length, actual.getAllRejectReasons().length);
+    }
+
+    /**
+     * <p>
+     * judge whether the two RejectReason are equals. They are equals when all their fields contain the same value.
+     * </p>
+     *
+     * @param message the error message when the two entry are not equal.
+     * @param expected the expected RejectReason.
+     * @param actual the actual RejectReason.
+     */
+    private void assertEquals(String msg, RejectReason expected, RejectReason actual) {
+        assertEquals(msg, expected.getCreationDate().toString(), actual.getCreationDate().toString());
+        assertEquals(msg, expected.getCreationUser(), actual.getCreationUser());
+        assertEquals(msg, expected.getDescription(), actual.getDescription());
+        assertEquals(msg, expected.getModificationDate().toString(), actual.getModificationDate().toString());
+        assertEquals(msg, expected.getModificationUser(), actual.getModificationUser());
+        assertEquals(msg, expected.getPrimaryId(), actual.getPrimaryId());
     }
 
     /**
