@@ -12,12 +12,27 @@ import java.lang.reflect.Field;
 /**
  * This class contains the unit tests for {@link ReportDisplayTag}.
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * 2006-4-25
+ * Bug fix for TT-1980, allow null parameter; and bug fix for TT-1979 "Specifiy start date and end date.".
  *
+ * Remove testDoStartTagFailEndDateFilterNullWhileStartDateFilterDefined() and
+ * testDoStartTagFailStartDateFilterNullWhileEndDateFilterDefined() methods.
+ *
+ * Add
+ * testDoStartTagSuccessEndDateFilterAndStartDateFilterDefined(),
+ * testDoStartTagSuccessEndDateFilterNullWhileStartDateFilterDefined(),
+ * testDoStartTagSuccessStartDateFilterNullWhileEndDateFilterDefined(),
+ * testDoStartTagSuccessEndDateFilterContaindNullStartDateFilterDefined(),
+ * testDoStartTagSuccessStartDateFilterContaindNullEndDateFilterDefined(),
+ * testDoStartTagSuccessBillableFilterContextValueNullInStringArray(),
+ * testDoStartTagSuccessEmployeeFilterContextValueNullInStringArray(),
+ * testDoStartTagSuccessProjectFilterContextValueNullInStringArray(),
+ * testDoStartTagSuccessStartDateFilterContextValueNullInStringArray(),
+ * and testDoStartTagSuccessEndDateFilterContextValueNullInStringArray() methods.
+ *
+ * @author TCSDEVELOPER
  * @author Xuchen
- * 2006-4-21
- * Bug fix for TT-1980, allow null parameter.
+ * @version 1.0
  */
 public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     /**
@@ -705,7 +720,7 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
      */
     public void testDoStartTagFailStartDateFilterContextValueEmptyString() {
         try {
-            pageContext.setAttribute(END_DATE_FILTER_STRING, "   ");
+            pageContext.setAttribute(START_DATE_FILTER_STRING, "   ");
             reportDisplayTag.doStartTag();
             fail("should throw");
         } catch (JspException expected) {
@@ -721,7 +736,7 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
      */
     public void testDoStartTagFailStartDateFilterContextValueEmptyStringInStringArray() {
         try {
-            pageContext.setAttribute(END_DATE_FILTER_STRING, new String []{"  "});
+            pageContext.setAttribute(START_DATE_FILTER_STRING, new String []{"  "});
             reportDisplayTag.doStartTag();
             fail("should throw");
         } catch (JspException expected) {
@@ -737,7 +752,7 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
      */
     public void testDoStartTagFailStartDateFilterContextValueWrongType() {
         try {
-            pageContext.setAttribute(END_DATE_FILTER_STRING, new Object());
+            pageContext.setAttribute(START_DATE_FILTER_STRING, new Object());
             reportDisplayTag.doStartTag();
             fail("should throw");
         } catch (JspException expected) {
@@ -795,39 +810,109 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
     }
 
     /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
-     * <b>Failure reason</b>: end date filter context value is <tt>null</tt> while start date filter context value is
-     * defined
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * Both end date and start date are specified. It should be valid.
+     * @throws Exception to JUnit
      */
-    public void testDoStartTagFailEndDateFilterNullWhileStartDateFilterDefined() {
-        try {
-            pageContext.removeAttribute(END_DATE_FILTER_STRING);
-            pageContext.setAttribute(START_DATE_FILTER_STRING, VALUE);
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
-
-        }
+    public void testDoStartTagSuccessEndDateFilterAndStartDateFilterDefined() throws Exception {
+        pageContext.setAttribute(END_DATE_FILTER_STRING, "12-31-2007");
+        pageContext.setAttribute(START_DATE_FILTER_STRING, "12-31-2006");
+        reportDisplayTag.doStartTag();
     }
 
     /**
-     * This method tests {@link ReportDisplayTag#doStartTag()} for correct failure behavior.
-     * <p/>
-     * <b>Failure reason</b>: start date filter context value is <tt>null</tt> while end date filter context value is
-     * defined
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * End date has not been specified, while start date is specified. It should be valid.
+     * @throws Exception to JUnit
      */
-    public void testDoStartTagFailStartDateFilterNullWhileEndDateFilterDefined() {
-        try {
-            pageContext.removeAttribute(START_DATE_FILTER_STRING);
-            pageContext.setAttribute(END_DATE_FILTER_STRING, VALUE);
-            reportDisplayTag.doStartTag();
-            fail("should throw");
-        } catch (JspException expected) {
-            checkWrappedExceptionHasCorrectType(expected);
+    public void testDoStartTagSuccessEndDateFilterNullWhileStartDateFilterDefined() throws Exception {
+        pageContext.removeAttribute(END_DATE_FILTER_STRING);
+        pageContext.setAttribute(START_DATE_FILTER_STRING, "12-31-2006");
+        reportDisplayTag.doStartTag();
+    }
 
-        }
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * Start date has not been specified, while end date is specified. It should be valid.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessStartDateFilterNullWhileEndDateFilterDefined() throws Exception {
+        pageContext.removeAttribute(START_DATE_FILTER_STRING);
+        pageContext.setAttribute(END_DATE_FILTER_STRING, "12-31-2006");
+        reportDisplayTag.doStartTag();
+    }
+
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * End date filter's value contains null (not been specified), and start date is specified. It should be valid.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessEndDateFilterContaindNullStartDateFilterDefined() throws Exception {
+        pageContext.setAttribute(END_DATE_FILTER_STRING, new String[]{null});
+        pageContext.setAttribute(START_DATE_FILTER_STRING, "12-31-2006");
+        reportDisplayTag.doStartTag();
+    }
+
+
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * End date filter's value contains null (not been specified), and start date is specified. It should be valid.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessStartDateFilterContaindNullEndDateFilterDefined() throws Exception {
+        pageContext.setAttribute(START_DATE_FILTER_STRING, new String[]{null});
+        pageContext.setAttribute(END_DATE_FILTER_STRING, "12-31-2006");
+        reportDisplayTag.doStartTag();
+    }
+
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * It should allow null parameter.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessBillableFilterContextValueNullInStringArray() throws Exception {
+        pageContext.setAttribute(BILLABLE_FILTER_STRING, new String []{null});
+        reportDisplayTag.doStartTag();
+    }
+
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * It should allow null parameter.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessEmployeeFilterContextValueNullInStringArray() throws Exception {
+        pageContext.setAttribute(EMPLOYEE_FILTER_STRING, new String []{null});
+        reportDisplayTag.doStartTag();
+    }
+
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * It should allow null parameter.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessProjectFilterContextValueNullInStringArray() throws Exception {
+        pageContext.setAttribute(PROJECT_FILTER_STRING, new String []{null});
+        reportDisplayTag.doStartTag();
+    }
+
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * It should allow null parameter.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessStartDateFilterContextValueNullInStringArray() throws Exception {
+        pageContext.setAttribute(START_DATE_FILTER_STRING, new String []{null});
+        reportDisplayTag.doStartTag();
+    }
+
+    /**
+     * This method tests {@link ReportDisplayTag#doStartTag()} for correct behavior.
+     * It should allow null parameter.
+     * @throws Exception to JUnit
+     */
+    public void testDoStartTagSuccessEndDateFilterContextValueNullInStringArray() throws Exception {
+        pageContext.setAttribute(END_DATE_FILTER_STRING, new String []{null});
+        reportDisplayTag.doStartTag();
     }
 
     /**
@@ -836,7 +921,7 @@ public class ReportDisplayTagTest extends BaseTimeTrackerReportTest {
      * <b>Failure reason</b>: start date filter context value is and end date filter context value  are
      * <tt>String[]</tt>s of different length
      */
-    public void testDoStartTagFailStartDateFilterANdEndDAteFilterListHaveDifferentLength() {
+    public void testDoStartTagFailStartDateFilterAndEndDateFilterListHaveDifferentLength() {
         try {
             pageContext.setAttribute(START_DATE_FILTER_STRING, new String[]{VALUE, VALUE});
             pageContext.setAttribute(END_DATE_FILTER_STRING, new String[]{VALUE, VALUE, VALUE});
