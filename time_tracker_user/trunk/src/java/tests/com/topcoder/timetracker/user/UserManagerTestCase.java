@@ -6,6 +6,7 @@ package com.topcoder.timetracker.user;
 import com.topcoder.security.authenticationfactory.AuthenticateException;
 import com.topcoder.security.authenticationfactory.Response;
 import com.topcoder.security.authorization.SecurityRole;
+import com.topcoder.security.authorization.persistence.GeneralSecurityRole;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -383,11 +384,21 @@ public abstract class UserManagerTestCase extends DbTestCase {
      */
     public void testAuthenticateUserCaching() throws Exception {
         insertUsers();
+        String username = "username1";
+        String password = "password1";
 
         assertNull("The user should not be in the cache", manager.getUser("username1"));
 
-        Response response = manager.authenticate("username1", "password1");
+        Response response = manager.authenticate(username, password);
         assertTrue("The user should be authenticated successfully.", response.isSuccessful());
+
+        SecurityRole role = manager.getUserRole(username);
+        assertNull("The user role should be obtained", role);
+
+        manager.setUserRole(username, UserManager.ACCOUNT_MANAGER);
+
+        role = manager.getUserRole(username);
+        assertNotNull("The user role should be obtained", role);
 
         cleanupDatabase();
     }

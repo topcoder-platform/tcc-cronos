@@ -652,13 +652,20 @@ public class UserManager {
         if (user == null) {
             // iterate thru all the stores and try to get one containing the specified user
             for (Iterator iter = storeManager.getUserStoreNames().iterator(); iter.hasNext();) {
-                UserStore store = storeManager.getUserStore((String) iter.next());
+                String storeName = (String) iter.next();
+                UserStore store = storeManager.getUserStore(storeName);
                 try {
                     if (store.contains(name)) {
-                        return store.authenticate(name, password);
+                        Response response = store.authenticate(name, password);
+                        if (response.isSuccessful()) {
+                            importUser(name, storeName);
+                            return response;
+                        }
                     }
                 } catch (PersistenceException e) {
                     throw new AuthenticateException("Fail to access the persistence", e);
+                } catch (UnknownUserException e) {
+                    throw new AuthenticateException("The specified user can not be found", e);
                 }
             }
 
