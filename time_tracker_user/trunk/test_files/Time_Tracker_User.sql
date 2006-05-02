@@ -17,9 +17,10 @@ CREATE TABLE DefaultUsers (
 CREATE TABLE Users (
        UsersID              integer NOT NULL,
        Name                 varchar(64) NOT NULL,
-       CreationDate         datetime year to second,	  	
-       CreationUser         varchar(64),	
-       ModificationDate     datetime year to second,	  
+       Email                varchar(255),
+       CreationDate         datetime year to second,
+       CreationUser         varchar(64),
+       ModificationDate     datetime year to second,
        ModificationUser     varchar(64),
        UserStore            varchar(255),
        PRIMARY KEY (UsersID)
@@ -36,7 +37,7 @@ CREATE TABLE id_sequences (
 );
 
 create table principal(
-           principal_id INT8 not null primary key, 
+           principal_id INT8 not null primary key,
 		   principal_name varchar(255));
 
 
@@ -48,20 +49,20 @@ create table role(
 create table principal_role(
            principal_id INT8 not null,
 		   role_id INT8 not null,
-		   primary key(principal_id, role_id), 
-		   foreign key (principal_id) references principal(principal_id), 
+		   primary key(principal_id, role_id),
+		   foreign key (principal_id) references principal(principal_id),
 		   foreign key (role_id) references role(role_id));
 
 
 create table action(
-           action_id INT8 not null primary key, 
-           class_name VARCHAR(255) not null, 
+           action_id INT8 not null primary key,
+           class_name VARCHAR(255) not null,
 		   action_name varchar(255)
 );
 
 
 create table action_context(
-           action_context_id INT8 not null primary key, 
+           action_context_id INT8 not null primary key,
 		   action_context_name varchar(255),
 		   action_context_parent_id INT8 references action_context(action_context_id),
            class_name VARCHAR(255) not null);
