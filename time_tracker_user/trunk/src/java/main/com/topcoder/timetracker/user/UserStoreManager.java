@@ -90,7 +90,7 @@ public interface UserStoreManager {
      * </p>
      *
      * @param name unique name of user store to retrieve
-     * @return the UserStore instance freferenced by the given user store name
+     * @return the UserStore instance referenced by the given user store name
      * @throws NullPointerException if name is null
      * @throws IllegalArgumentException if name is the empty String
      * @throws UnknownUserStoreException if no user store exists for the given name
