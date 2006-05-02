@@ -33,7 +33,7 @@ public class UserAccuracyTest extends TestCase {
      * Test constructor User(long id, String name, String storeName).
      */
     public void testUser() {
-        User user = new User(id, name, storeName);
+        User user = new User(id, name, storeName, null);
         // verify whether the fields are properly set
         assertNotNull("fail to create User instance.", user);
         assertEquals("the id field is not properly set.", id, user.getId());
@@ -47,7 +47,7 @@ public class UserAccuracyTest extends TestCase {
      */
     public void testGetUserStoreName() {
         assertEquals("the storeName field is not properly set.", storeName, (new User(id, name,
-                storeName)).getUserStoreName());
+                storeName, null)).getUserStoreName());
     }
 
 }

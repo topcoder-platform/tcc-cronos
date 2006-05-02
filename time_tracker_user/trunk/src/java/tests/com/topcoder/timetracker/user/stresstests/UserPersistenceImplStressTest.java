@@ -10,12 +10,12 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
 
 import junit.framework.TestCase;
 
-/** 
+/**
  * <p>
  * Stress test for <code>UserPersistenceImpl</code> class.
  * </p>
- * 
- * 
+ *
+ *
  * @author arylio
  * @version 1.0
  */
@@ -24,24 +24,24 @@ public class UserPersistenceImplStressTest extends TestCase {
     /**
      * <p>
      * Const defined for operator, add a user to persistence.
-     * </p> 
+     * </p>
      */
     private static final int ADD = 1;
 
     /**
      * <p>
      * Const defined for operator, remove a user from persistence.
-     * </p> 
+     * </p>
      */
     private static final int REMOVE = 2;
 
     /**
      * <p>
      * Const defined for operator, get all users from persistence.
-     * </p> 
+     * </p>
      */
     private static final int GET = 3;
-    
+
     /**
      * <p>
      * Const defined the number of threads to execute.
@@ -94,7 +94,7 @@ public class UserPersistenceImplStressTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         StressHelper.addConfigFile();
-        
+
         StressHelper.clearTables();
 
         generator = IDGeneratorFactory.getIDGenerator(StressHelper.IDGENERATOR_NAME);
@@ -280,7 +280,7 @@ public class UserPersistenceImplStressTest extends TestCase {
             try {
                 for (int i = 0; i < count; i++) {
                     int id = (int) generator.getNextID();
-                    persistence.addUser(new User(id, "topcoder_" + id, "StressTest1"));
+                    persistence.addUser(new User(id, "topcoder_" + id, "StressTest1", null));
                 }
             } catch (Exception e) {
                 exception = e;

@@ -45,7 +45,7 @@ import java.util.Collection;
 public class UserPersistenceImpl implements UserPersistence {
 
     /**
-     * The configuration property name for the connection name to be used whne requesting connections
+     * The configuration property name for the connection name to be used when requesting connections
      * from the DBConnectionFactory.
      */
     private static final String CONNECTION_NAME = "connection_name";
@@ -54,21 +54,24 @@ public class UserPersistenceImpl implements UserPersistence {
      * The SQL statement that is used by addUser to insert a new user. The values will be filled
      * in using a PreparedStatement.
      */
-    private static final String INSERT_SQL = "INSERT into Users (UsersID, Name, UserStore) VALUES (?, ?, ?)";
+    private static final String INSERT_SQL = "INSERT into Users (UsersID, Name, UserStore, Email) VALUES (?, ?, ?, ?)";
 
     /**
      * The SQL statement that is used by getUsers to retrieve all imported Users from the database.
      */
-    private static final String GET_USERS_SQL = "SELECT UsersID, Name, UserStore FROM Users";
+    private static final String GET_USERS_SQL = "SELECT UsersID, Name, UserStore, Email FROM Users";
 
     /** The index of the ID column in the INSERT_SQL and GET_USERS_SQL strings. */
     private static final int ID_COLUMN = 1;
 
-    /** The index of the nane column in the INSERT_SQL and GET_USERS_SQL strings. */
+    /** The index of the name column in the INSERT_SQL and GET_USERS_SQL strings. */
     private static final int NAME_COLUMN = 2;
 
     /** The index of the user store column in the INSERT_SQL and GET_USERS_SQL strings. */
     private static final int USER_STORE_COLUMN = 3;
+
+    /** The index of the email column in the INSERT_SQL and GET_USERS_SQL strings. */
+    private static final int EMAIL_COLUMN = 4;
 
     /**
      * The SQL statement that is used by removeUser to remove the specified user from the
@@ -272,6 +275,7 @@ public class UserPersistenceImpl implements UserPersistence {
             stmt.setInt(ID_COLUMN, (int) user.getId());
             stmt.setString(NAME_COLUMN, user.getName());
             stmt.setString(USER_STORE_COLUMN, user.getUserStoreName());
+            stmt.setString(EMAIL_COLUMN, user.getEmail());
 
             // insert the row and close the statement.
             stmt.executeUpdate();
@@ -352,7 +356,8 @@ public class UserPersistenceImpl implements UserPersistence {
                 int id = rs.getInt(ID_COLUMN);
                 String name = rs.getString(NAME_COLUMN);
                 String userStore = rs.getString(USER_STORE_COLUMN);
-                User user = new User(id, name, userStore);
+                String email = rs.getString(EMAIL_COLUMN);
+                User user = new User(id, name, userStore, email);
                 users.add(user);
             }
 

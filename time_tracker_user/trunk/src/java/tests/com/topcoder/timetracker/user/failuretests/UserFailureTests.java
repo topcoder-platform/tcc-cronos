@@ -19,7 +19,7 @@ public class UserFailureTests extends TestCase {
      */
     public void testCreate_NegativeId() {
         try {
-            new User(-1, "name", "store");
+            new User(-1, "name", "store", null);
             fail("Should have thrown IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
         }
@@ -30,7 +30,7 @@ public class UserFailureTests extends TestCase {
      */
     public void testCreate_NullName() {
         try {
-            new User(1, null, "store");
+            new User(1, null, "store", null);
             fail("Should have thrown NullPointerException.");
         } catch (NullPointerException npe) {
         }
@@ -41,7 +41,7 @@ public class UserFailureTests extends TestCase {
      */
     public void testCreate_EmptyName() {
         try {
-            new User(1, "", "store");
+            new User(1, "", "store", null);
             fail("Should have thrown IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
         }
@@ -52,7 +52,7 @@ public class UserFailureTests extends TestCase {
      */
     public void testCreate_NullStoreName() {
         try {
-            new User(1, "name", null);
+            new User(1, "name", null, null);
             fail("Should have thrown NullPointerException.");
         } catch (NullPointerException npe) {
         }
@@ -63,7 +63,7 @@ public class UserFailureTests extends TestCase {
      */
     public void testCreate_EmptyStoreName() {
         try {
-            new User(1, "name", "");
+            new User(1, "name", "", null);
             fail("Should have thrown IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
         }

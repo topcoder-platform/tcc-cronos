@@ -66,7 +66,7 @@ public abstract class UserPersistenceImplTestCase extends DbTestCase {
         inserted();
 
         // add a user using the persistence...
-        User user = new User(10, "user10", "DefaultUserStore");
+        User user = new User(10, "user10", "DefaultUserStore", "user@topcoder.com");
         persistence.addUser(user);
 
         // ...and now validate using JDBC.
@@ -96,7 +96,7 @@ public abstract class UserPersistenceImplTestCase extends DbTestCase {
 
         // insert the same id twice
         try {
-            User user = new User(10, "user10", "DefaultUserStore");
+            User user = new User(10, "user10", "DefaultUserStore", null);
             persistence.addUser(user);
             // Force a PersistenceException
             persistence.addUser(user);
@@ -118,7 +118,7 @@ public abstract class UserPersistenceImplTestCase extends DbTestCase {
         assertEquals("before remove, getUsers doesn't return correct # of users",
                      0, persistence.getUsers().size());
 
-        User user = new User(1, "user1", "store1");
+        User user = new User(1, "user1", "store1", null);
         // should do nothing.
         persistence.removeUser(user);
 
@@ -137,9 +137,9 @@ public abstract class UserPersistenceImplTestCase extends DbTestCase {
      */
     public void testRemoveUser() throws Exception {
 
-        User user = new User(1, "user1", "store1");
+        User user = new User(1, "user1", "store1", null);
         persistence.addUser(user);
-        User user2 = new User(2, "user2", "store2");
+        User user2 = new User(2, "user2", "store2", null);
         persistence.addUser(user2);
 
         // remove it

@@ -169,7 +169,7 @@ public class UserPersistenceImplAccuracyTest extends TestCase {
      */
     public void testAddUser() throws Exception {
         // create a new User with id '3', name 'user3', store name 'store3'
-        User user = new User(3, "user3", "store3");
+        User user = new User(3, "user3", "store3", null);
         // add the user into db
         userPersistence.addUser(user);
         Connection conn = AccuracyTestHelper.getConnection();
@@ -194,7 +194,7 @@ public class UserPersistenceImplAccuracyTest extends TestCase {
      * @throws Exception if any problem occurs.
      */
     public void testRemoveUser1() throws Exception {
-        User user = new User(2, "user2", "DbUserStore1");
+        User user = new User(2, "user2", "DbUserStore1", null);
         // remove the user.
         userPersistence.removeUser(user);
         Connection conn = AccuracyTestHelper.getConnection();
@@ -219,7 +219,7 @@ public class UserPersistenceImplAccuracyTest extends TestCase {
      * @throws Exception if any problem occurs.
      */
     public void testRemoveUser2() throws Exception {
-        User user = new User(100, "unknown", "unknown");
+        User user = new User(100, "unknown", "unknown", null);
         // remove the user.
         userPersistence.removeUser(user);
     }

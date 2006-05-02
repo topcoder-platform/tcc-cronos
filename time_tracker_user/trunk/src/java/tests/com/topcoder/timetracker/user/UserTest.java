@@ -26,6 +26,8 @@ public class UserTest extends TestCase {
     /** The user store to test with. */
     private static final String USER_STORE_NAME = "storeName";
 
+    private static final String EMAIL = "name@mail.com";
+
     /** The User that we're testing. */
     private User user;
 
@@ -38,7 +40,7 @@ public class UserTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        user = new User(USER_ID_NUMBER, USER_NAME, USER_STORE_NAME);
+        user = new User(USER_ID_NUMBER, USER_NAME, USER_STORE_NAME, EMAIL);
     }
 
 
@@ -61,6 +63,9 @@ public class UserTest extends TestCase {
         assertEquals("id is not set by ctor!",
                      USER_ID_NUMBER,
                      user.getId());
+        assertEquals("email is not set by ctor!",
+                     EMAIL,
+                     user.getEmail());
     }
 
 
@@ -72,21 +77,21 @@ public class UserTest extends TestCase {
     public void testCtorThrowsNPE() throws Exception {
 
         try {
-            new User(USER_ID_NUMBER, null, null);
+            new User(USER_ID_NUMBER, null, null, EMAIL);
             fail("ctor didn't throw NullPointerException");
         } catch (NullPointerException expected) {
             assertNotNull(expected);
         }
 
         try {
-            new User(USER_ID_NUMBER, USER_NAME, null);
+            new User(USER_ID_NUMBER, USER_NAME, null, EMAIL);
             fail("ctor didn't throw NullPointerException");
         } catch (NullPointerException expected) {
             assertNotNull(expected);
         }
 
         try {
-            new User(USER_ID_NUMBER, null, USER_STORE_NAME);
+            new User(USER_ID_NUMBER, null, USER_STORE_NAME, EMAIL);
             fail("ctor didn't throw NullPointerException");
         } catch (NullPointerException expected) {
             assertNotNull(expected);
@@ -102,24 +107,24 @@ public class UserTest extends TestCase {
     public void testCtorThrowsIAEEmptyString() throws Exception {
 
         // this should succeed - we don't trim
-        new User(USER_ID_NUMBER, USER_NAME, " ");
+        new User(USER_ID_NUMBER, USER_NAME, " ", EMAIL);
 
         try {
-            new User(USER_ID_NUMBER, "", "");
+            new User(USER_ID_NUMBER, "", "", null);
             fail("ctor didn't throw IllegalArgumentException");
         } catch (IllegalArgumentException expected) {
             assertNotNull(expected);
         }
 
         try {
-            new User(USER_ID_NUMBER, USER_NAME, "");
+            new User(USER_ID_NUMBER, USER_NAME, "", EMAIL);
             fail("ctor didn't throw IllegalArgumentException");
         } catch (IllegalArgumentException expected) {
             assertNotNull(expected);
         }
 
         try {
-            new User(USER_ID_NUMBER, "", USER_STORE_NAME);
+            new User(USER_ID_NUMBER, "", USER_STORE_NAME, EMAIL);
             fail("ctor didn't throw IllegalArgumentException");
         } catch (IllegalArgumentException expected) {
             assertNotNull(expected);
@@ -135,17 +140,27 @@ public class UserTest extends TestCase {
     public void testCtorThrowsIAENonPositiveId() throws Exception {
 
         try {
-            new User(0, USER_NAME, USER_STORE_NAME);
+            new User(0, USER_NAME, USER_STORE_NAME, EMAIL);
             fail("ctor didn't throw IllegalArgumentException");
         } catch (IllegalArgumentException expected) {
             assertNotNull(expected);
         }
 
         try {
-            new User(-1, USER_NAME, USER_STORE_NAME);
+            new User(-1, USER_NAME, USER_STORE_NAME, EMAIL);
             fail("ctor didn't throw IllegalArgumentException");
         } catch (IllegalArgumentException expected) {
             assertNotNull(expected);
         }
+    }
+
+    /**
+     * Test that the constructor accepts a null email address.
+     *
+     * @throws Exception Never under normal conditions.
+     */
+    public void testCtorNullEmail() throws Exception {
+        user = new User(USER_ID_NUMBER, USER_NAME, USER_STORE_NAME, null);
+        assertNull("The email should be null", user.getEmail());
     }
 }

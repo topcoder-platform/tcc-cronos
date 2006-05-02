@@ -102,7 +102,7 @@ public class UserPersistenceImplFailureTests extends TestCase {
      */
     public void testAddUser_InvalidPersistence() {
         try {
-            new UserPersistenceImpl("invalid", TestHelper.getConnectionFactory()).addUser(new User(1, "name", "store"));
+            new UserPersistenceImpl("invalid", TestHelper.getConnectionFactory()).addUser(new User(1, "name", "store", null));
             fail("Should have thrown PersistenceException.");
         } catch (PersistenceException pe) {
         }
@@ -126,7 +126,7 @@ public class UserPersistenceImplFailureTests extends TestCase {
      */
     public void testRemoveUser_InvalidPersistence() {
         try {
-            new UserPersistenceImpl("invalid", TestHelper.getConnectionFactory()).removeUser(new User(1, "name", "store"));
+            new UserPersistenceImpl("invalid", TestHelper.getConnectionFactory()).removeUser(new User(1, "name", "store", null));
             fail("Should have thrown PersistenceException.");
         } catch (PersistenceException pe) {
         }

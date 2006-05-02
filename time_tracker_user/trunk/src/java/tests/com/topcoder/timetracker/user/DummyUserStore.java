@@ -112,4 +112,9 @@ public class DummyUserStore implements UserStore {
     public Object getConnectionString() {
         return connectionString;
     }
+
+
+    public String getEmail(String name) {
+        return null;
+    }
 }

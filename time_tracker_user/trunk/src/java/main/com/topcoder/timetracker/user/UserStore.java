@@ -125,7 +125,7 @@ public interface UserStore {
      * <p>
      * Sets the connection String to the underlying user store. For example, this might be the
      * JDBC connection string, or a URL defining where to contact an LDAP server.  This method
-     * should be called immedidately after instantiating UserStore objects, otherwise, the other
+     * should be called immediately after instantiating UserStore objects, otherwise, the other
      * methods in this interface may throw IllegalStateException.
      * </p>
      *
@@ -134,4 +134,13 @@ public interface UserStore {
      * @throws IllegalArgumentException if connection is the empty String
      */
     void setConnectionString(String connection);
+
+    /**
+     * Retrieves the email address of the specified user.
+     *
+     * @param name the user name to get the email address from
+     * @return the email address of the specified user
+     * @throws PersistenceException if any error occurs during the retrieving.
+     */
+    String getEmail(String name) throws PersistenceException;
 }

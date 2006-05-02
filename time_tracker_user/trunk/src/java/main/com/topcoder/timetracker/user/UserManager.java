@@ -391,7 +391,7 @@ public class UserManager {
 
         // Generate a new User object.
         // cast the ID to int so it is compatible with the rest of the Time Tracker project
-        User user = new User((int) id, name, userStore);
+        User user = new User((int) id, name, userStore, store.getEmail(name));
 
         // add user to the User store (this is probably the database table "Users")
         userPersistence.addUser(user);

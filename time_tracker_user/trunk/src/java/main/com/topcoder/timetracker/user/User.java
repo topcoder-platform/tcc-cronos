@@ -29,21 +29,25 @@ public class User extends GeneralPrincipal {
      */
     private final String storeName;
 
+    /** The email address of this user. */
+    private final String email;
+
 
     /**
      * <p>
-     * Creates a new User entity with the given ID, username and user store name.
+     * Creates a new User entity with the given ID, username, user store name and email.
      * </p>
      *
      * @param id unique ID for this User. Uniqueness is not maintained internally, but in the
-     *  persistent store (databaes) itself.
+     *  persistent store (databases) itself.
      * @param name the username of this User
      * @param storeName the user store name this user was imported from
+     * @param email the email address of this user, which can be null if not provided
      * @throws NullPointerException if name or storeName is null
      * @throws IllegalArgumentException if id is non-positive or name is the empty String (after trim)
      *  or storeName is the empty String (no trim)
      */
-    public User(int id, String name, String storeName) {
+    public User(int id, String name, String storeName, String email) {
         // handles IAE of ID and name.length; down-cast to int so that the
         // database table will be OK.
         super(id, name);
@@ -60,7 +64,9 @@ public class User extends GeneralPrincipal {
         if (storeName.length() == 0) {
             throw new IllegalArgumentException("storeName cannot be empty.");
         }
+
         this.storeName = storeName;
+        this.email = email;
     }
 
 
@@ -71,5 +77,14 @@ public class User extends GeneralPrincipal {
      */
     public String getUserStoreName() {
         return storeName;
+    }
+
+    /**
+     * Returns the email address of this user.
+     *
+     * @return the email address of this user.
+     */
+    public String getEmail() {
+        return email;
     }
 }

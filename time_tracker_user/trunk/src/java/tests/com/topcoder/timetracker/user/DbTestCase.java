@@ -31,8 +31,9 @@ abstract class DbTestCase extends ConfigTestCase {
         + "       CreationDate, "
         + "       CreationUser, "
         + "       ModificationDate, "
-        + "       ModificationUser)"
-        + " values (?, ?, ?, ?, 'user', ?, 'user')";
+        + "       ModificationUser, "
+        + "       Email)"
+        + " values (?, ?, ?, ?, 'user', ?, 'user', ?)";
 
     /** The Insert statement that is used to insert records into the Users table. */
     private static final String INSERT_USER_STMT =
@@ -127,6 +128,7 @@ abstract class DbTestCase extends ConfigTestCase {
             stmt.setString(3, "password" + i);
             stmt.setDate(4, new Date(System.currentTimeMillis()));
             stmt.setDate(5, new Date(System.currentTimeMillis()));
+            stmt.setString(6, "username" + i + "@topcoder.com");
             stmt.executeUpdate();
         }
         stmt.setInt(1, 4);
@@ -134,6 +136,7 @@ abstract class DbTestCase extends ConfigTestCase {
         stmt.setString(3, "password");
         stmt.setDate(4, new Date(System.currentTimeMillis()));
         stmt.setDate(5, new Date(System.currentTimeMillis()));
+        stmt.setString(6, "username" + "@topcoder.com");
         stmt.executeUpdate();
         stmt.close();
     }

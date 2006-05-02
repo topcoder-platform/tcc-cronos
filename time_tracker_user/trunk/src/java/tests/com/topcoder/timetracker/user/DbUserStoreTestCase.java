@@ -94,10 +94,22 @@ public abstract class DbUserStoreTestCase extends DbTestCase {
         assertEquals("getNames is wrong", expected, names);
     }
 
+    /**
+     * Test the <code>getEmail</code> method, after inserting some users into the database.
+     *
+     * @throws Exception Never under normal conditions.
+     */
+    public void testGetEmail() throws Exception {
+
+        insertDefaultUsers();
+
+        String expected = "username@topcoder.com";
+        assertEquals("getEmail is wrong", expected, store.getEmail("username"));
+    }
 
     /**
      * Test the <code>search</code> method when the database is empty; should always
-     * return an emtpy list.
+     * return an empty list.
      *
      * @throws Exception Never under normal conditions.
      */

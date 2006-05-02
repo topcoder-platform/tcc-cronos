@@ -21,10 +21,10 @@ import com.topcoder.util.idgenerator.IDGenerator;
  * <p>
  * Helper class for stress test.
  * </p>
- * 
+ *
  * @author arylio
  * @version 1.0
- *  
+ *
  */
 final class StressHelper {
 
@@ -85,7 +85,7 @@ final class StressHelper {
      * Represents the insert sql statement for users.
      * </p>
      */
-    private static final String SQL_INSERT_USER = 
+    private static final String SQL_INSERT_USER =
         "INSERT into Users (UsersID, Name, UserStore) VALUES (?, ?, ?)";
 
     /**
@@ -93,7 +93,7 @@ final class StressHelper {
      * Represents the insert sql statement for userstore.
      * </p>
      */
-    private static final String SQL_INSERT_USERSTORE = 
+    private static final String SQL_INSERT_USERSTORE =
         "INSERT into DefaultUsers (DefaultUsersID, UserName, Password, CreationDate,"
         + " CreationUser, ModificationDate, ModificationUser) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -102,14 +102,14 @@ final class StressHelper {
      * Represents the insert sql statement for principal.
      * </p>
      */
-    private static final String SQL_INSERT_PRINCIPAL = 
+    private static final String SQL_INSERT_PRINCIPAL =
         "INSERT INTO Principal (principal_id, principal_name) VALUES (?, ?)";
 
     /**
      * <p>
      * Add config file for testing.
      * </p>
-     * 
+     *
      * @throws Exception
      *             Exception to JUnit.
      */
@@ -127,7 +127,7 @@ final class StressHelper {
      * <p>
      * Remove config file for testing.
      * </p>
-     * 
+     *
      * @throws Exception
      *             Exception to JUnit.
      */
@@ -144,7 +144,7 @@ final class StressHelper {
      * <p>
      * Clear the test datas from the tables.
      * </p>
-     * 
+     *
      * @throws Exception
      *             Exception to JUnit.
      */
@@ -159,7 +159,7 @@ final class StressHelper {
      * <p>
      * Delete all rows from the specific table.
      * </p>
-     * 
+     *
      * @param tableName
      *            the name of the table to delete rows.
      * @throws Exception
@@ -172,9 +172,9 @@ final class StressHelper {
 
     /**
      * Get a connection to the database.
-     * 
+     *
      * @return a connection to the database.
-     * 
+     *
      * @throws Exception
      *             to JUnit
      */
@@ -192,14 +192,14 @@ final class StressHelper {
      * <p>
      * Add specified record into users table.
      * </p>
-     * 
+     *
      * @param generator
      *            the id generator
      * @param count
      *            the record count to add
      * @param users
      *            the array to save users added.
-     * 
+     *
      * @throws Exception
      *             to JUnit
      */
@@ -218,7 +218,7 @@ final class StressHelper {
             String name = "topcoder_" + id;
 
             users[i] = new User(id, name, "StressTest"
-                    + (((i % 2) == 0) ? "1" : "2"));
+                    + (((i % 2) == 0) ? "1" : "2"), null);
 
             stmt.setLong(1, id);
             stmt.setString(2, name);
@@ -236,7 +236,7 @@ final class StressHelper {
      * <p>
      * Add a user to table.
      * </p>
-     * 
+     *
      * @param user
      *            the user to add.
      * @throws Exception
@@ -262,7 +262,7 @@ final class StressHelper {
      * <p>
      * Add a pricipal to table.
      * </p>
-     * 
+     *
      * @param id
      *            the principal id.
      * @param principal
@@ -282,7 +282,7 @@ final class StressHelper {
 
     /**
      * Add Roles and principal to table for test.
-     * 
+     *
      * @throws Exception
      *             Exception to JUnit.
      */
@@ -308,7 +308,7 @@ final class StressHelper {
      * <p>
      * Add test data for UserManager.
      * </p>
-     * 
+     *
      * @param generator
      *            the idgenereator.
      * @param count

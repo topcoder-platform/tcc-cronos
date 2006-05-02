@@ -385,11 +385,12 @@ public abstract class UserManagerTestCase extends DbTestCase {
     public void testAuthenticateUserCaching() throws Exception {
         cleanupDatabase();
         insertDefaultUsers();
+        insertUsers();
 
         String username = "username1";
         String password = "password1";
 
-        assertNull("The user should not be in the cache", manager.getUser("username1"));
+        assertNull("The user should not be in the cache", manager.getUser(username));
 
         Response response = manager.authenticate(username, password);
         assertTrue("The user should be authenticated successfully.", response.isSuccessful());

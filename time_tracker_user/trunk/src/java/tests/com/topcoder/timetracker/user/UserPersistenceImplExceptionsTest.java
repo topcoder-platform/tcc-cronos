@@ -67,7 +67,7 @@ public class UserPersistenceImplExceptionsTest extends ConfigTestCase {
 
         try {
             // The configuration doesn't point at the right database
-            persistence.addUser(new User(1, "user1", "store"));
+            persistence.addUser(new User(1, "user1", "store", null));
             fail("addUsers didn't throw PersistenceException");
         } catch (PersistenceException expected) {
             assertNotNull(expected);
@@ -102,7 +102,7 @@ public class UserPersistenceImplExceptionsTest extends ConfigTestCase {
 
         try {
             // The configuration doesn't point at the right database
-            persistence.removeUser(new User(1, "name", "storeName"));
+            persistence.removeUser(new User(1, "name", "storeName", null));
             fail("removeUser didn't throw PersistenceException");
         } catch (PersistenceException expected) {
             assertNotNull(expected);

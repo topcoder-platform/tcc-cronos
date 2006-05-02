@@ -46,6 +46,11 @@ public class DbUserStore implements UserStore {
     private static final String GET_NAMES_SQL = "SELECT USERNAME FROM DefaultUsers";
 
     /**
+     * This is the SQL query that is run from getEmail method.
+     */
+    private static final String GET_EMAIL_SQL = "SELECT EMAIL FROM DefaultUsers where USERNAME like ?";
+
+    /**
      * This is the SQL query that is run from the search method.
      */
     private static final String SEARCH_SQL =
@@ -61,7 +66,6 @@ public class DbUserStore implements UserStore {
      * This SQL query is run from the contains method and is used for exact matches only.
      */
     private static final String CONTAINS_SQL = "SELECT USERNAME FROM DefaultUsers where USERNAME = ?";
-
 
     /**
      * The DBConnectionFactory instance used to create database connections for database-
@@ -205,7 +209,7 @@ public class DbUserStore implements UserStore {
     /**
      * <p>
      * Authenticate the user with the given username against the given password in the DefaultUsers
-     * table.  In this impelmentation, the password is treated as a String, and is compared to the
+     * table.  In this implementation, the password is treated as a String, and is compared to the
      * password column in the table to determine if the user is authorized or not.
      * </p>
      *
@@ -275,6 +279,18 @@ public class DbUserStore implements UserStore {
         this.connectionName = connection;
     }
 
+    /**
+     * Retrieves the email address of the specified user.
+     *
+     * @param name the user name to get the email address from
+     * @return the email address of the specified user
+     * @throws PersistenceException if any error occurs during the retrieving.
+     */
+    public String getEmail(String name) throws PersistenceException {
+        Collection matches = retrieveNames(GET_EMAIL_SQL, new Object[] { name });
+
+        return (String) matches.iterator().next();
+    }
 
     /**
      * This method is the "work-horse" of this class. It runs the given SQL "select" statement,

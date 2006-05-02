@@ -72,4 +72,9 @@ public class ThrowingUserStore implements UserStore {
       */
     public void setConnectionString(String connection) {
     }
+
+
+    public String getEmail(String name) {
+        return null;
+    }
 }
