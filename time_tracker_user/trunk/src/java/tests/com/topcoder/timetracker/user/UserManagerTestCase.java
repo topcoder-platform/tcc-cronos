@@ -385,7 +385,6 @@ public abstract class UserManagerTestCase extends DbTestCase {
     public void testAuthenticateUserCaching() throws Exception {
         cleanupDatabase();
         insertDefaultUsers();
-        insertUsers();
 
         String username = "username1";
         String password = "password1";
