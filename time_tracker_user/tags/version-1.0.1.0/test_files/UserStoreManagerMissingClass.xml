@@ -1,0 +1,13 @@
+<CMConfig>
+    <Property name="UserStoreNames">
+        <Value>dummyStore</Value>
+        <!-- this store doesn't exist in this file -->
+        <Value>missingStore</Value>
+    </Property>
+    <Property name="ClassName.dummyStore">
+        <Value>com.topcoder.timetracker.user.DummyUserStore</Value>
+    </Property>
+    <Property name="ConnectionString.dummyStore">
+        <Value>Connect</Value>
+    </Property>
+</CMConfig>
