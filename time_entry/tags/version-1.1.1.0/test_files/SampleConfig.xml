@@ -1,0 +1,52 @@
+<CMConfig>
+  <Config name="com.topcoder.timetracker.entry.time">
+    <Property name="com.topcoder.timetracker.entry.time.TimeEntry">
+      <Property name="class">
+        <Value>com.topcoder.timetracker.entry.time.TimeEntryDAO</Value>
+      </Property>
+      <Property name="connectionName">
+        <Value>Connection</Value>
+      </Property>
+    </Property>
+    <Property name="com.topcoder.timetracker.entry.time.TimeStatus">
+      <Property name="class">
+        <Value>com.topcoder.timetracker.entry.time.TimeStatusDAO</Value>
+      </Property>
+      <Property name="connectionName">
+        <Value>Connection</Value>
+      </Property>
+    </Property>
+    <Property name="com.topcoder.timetracker.entry.time.TaskType">
+      <Property name="class">
+        <Value>com.topcoder.timetracker.entry.time.TaskTypeDAO</Value>
+      </Property>
+      <Property name="connectionName">
+        <Value>Connection</Value>
+      </Property>
+    </Property>
+    <Property name="connections">
+      <Property name="default">
+        <Value>Connection</Value>
+      </Property>
+      <Property name="Connection">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+          <Property name="jdbc_driver">
+            <Value>com.informix.jdbc.IfxDriver</Value>
+          </Property>
+          <Property name="jdbc_url">
+            <Value>jdbc:informix-sqli://172.16.214.52:1526/comp_test:informixserver=devinformix10_shm</Value>
+          </Property>
+          <Property name="user">
+            <Value>informix</Value>
+          </Property>
+          <Property name="password">
+            <Value>informix</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

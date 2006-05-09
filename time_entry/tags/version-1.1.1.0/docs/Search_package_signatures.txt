@@ -1,0 +1,93 @@
+---------------------
+SearchExpression
+---------------------
+
+String getSearchExpressionString();
+
+---------------------
+BooleanExpression
+---------------------
+Will have an array of two SearchExpression variables and an operator
+SearchExpression[] innerExpressions = new SearchExpression[2];
+String operator = null; //AND OR NOT
+
+
+BooleanExpression(); // private empty do nothing constructor.
+public static BooleanExpression and(SearchExpression left, searchExpression right);
+public static BooleanExpression or(SearchExpression left, searchExpression right);
+public static BooleanExpression not(SearchExpression expressionToNegate);
+SearchExpression[] getInnerExpressions();
+String getSearchExpressionString();
+String getOperator();
+
+
+---------------------
+ComparisonExpression
+---------------------
+will contain three variables
+TimeEntryCriteria criteria = null;
+String value = null;
+String operator = null; // EQUALS, NOT_EQUALS, GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL
+
+
+ComparisonExpression(); // // private empty do nothing constructor.
+void equals(TimeEntryCriteria criteria, String value);
+public static ComparisonExpression notEquals(TimeEntryCriteria criteria, String value);
+public static ComparisonExpression greaterThan(TimeEntryCriteria criteria, String value);
+public static ComparisonExpression greaterThanOrEquals(TimeEntryCriteria criteria, String value);
+public static ComparisonExpression lessThan(TimeEntryCriteria criteria, String value);
+public static ComparisonExpression lessThanOrEquals(TimeEntryCriteria criteria, String value);
+String getValue();
+TimeEntryCriteria getCriteria();
+String getSearchExpressionString();
+
+
+---------------------
+SubstringExpression
+---------------------
+will contain two variables
+TimeEntryCriteria criteria = null;
+String value = null;
+String operator = null; // CONTAINS
+
+
+SubstringExpression(); // private empty do nothing constructor.
+public static SubstringExpression contains(TimeEntryCriteria criteria, String value);
+String getValue();
+String getSearchExpressionString();
+TimeEntryCriteria getCriteria();
+
+---------------------
+RangeExpression
+---------------------
+will contain two variables
+TimeEntryCriteria criteria = null;
+String from = null;
+String to = null;
+String operator = null; // FROM, FROM_TO, TO
+
+
+RangeExpression(); // private empty do nothing constructor.
+public static RangeExpressio fromTo(TimeEntryCriteria criteria, String from, String to);
+public static RangeExpressio from(TimeEntryCriteria criteria, String from);
+public static RangeExpressio to(TimeEntryCriteria criteria, String to);
+String getFromValue();
+String getToValue();
+String getSearchExpressionString();
+TimeEntryCriteria getCriteria();
+
+---------------------
+ExpressionEvaluator 
+---------------------
+
+Object[] evaluate(SearchExpression expression) throws SearchException;
+
+---------------------------------------------
+SQLBasedTimeEntryCriteriaExpressionEvaluator 
+---------------------------------------------
+
+SQLBasedTimeEntryCriteriaExpressionEvaluator(); //empty do nothing constructor.
+Object[] evaluate(SearchExpression expression) throws SearchException;;
+
+
+
