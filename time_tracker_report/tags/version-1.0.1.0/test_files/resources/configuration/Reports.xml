@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<CMConfig>
+    <Config name="com.topcoder.timetracker.report.Reports">
+
+        <Property name="ReportClasses">
+            <Value>com.topcoder.timetracker.report.htmlreport.TimeReport</Value>
+            <Value>com.topcoder.timetracker.report.htmlreport.ExpenseReport</Value>
+            <Value>com.topcoder.timetracker.report.htmlreport.TimeExpenseReport</Value>
+        </Property>
+
+    </Config>
+
+</CMConfig>
