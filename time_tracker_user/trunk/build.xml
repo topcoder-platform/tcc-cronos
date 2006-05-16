@@ -141,7 +141,9 @@
         <pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${simple_cache.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
+        <!--
         <pathelement location="${search_builder.jar}" />
+        -->
         <pathelement location="${encryption.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
@@ -355,10 +357,16 @@
         <copy file="${id_generator.jar}" todir="${jar_tcs_libdir}/${id_generator.path}" />
         <mkdir dir="${jar_tcs_libdir}/${base_exception.path}"/>
         <copy file="${base_exception.jar}" todir="${jar_tcs_libdir}/${base_exception.path}" />
+        <!--
         <mkdir dir="${jar_tcs_libdir}/${search_builder.path}"/>
         <copy file="${search_builder.jar}" todir="${jar_tcs_libdir}/${search_builder.path}" />
+        -->
         <mkdir dir="${jar_tcs_libdir}/${encryption.path}"/>
         <copy file="${encryption.jar}" todir="${jar_tcs_libdir}/${encryption.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${simple_cache.path}"/>
+        <copy file="${simple_cache.jar}" todir="${jar_tcs_libdir}/${simple_cache.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${logging_wrapper.path}"/>
+        <copy file="${logging_wrapper.jar}" todir="${jar_tcs_libdir}/${logging_wrapper.path}" />
 
         <jar jarfile="${dev_dist.jar}"
              basedir="."
