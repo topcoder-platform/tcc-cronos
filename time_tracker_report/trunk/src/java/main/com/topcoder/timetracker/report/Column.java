@@ -78,6 +78,11 @@ public class Column extends Enum {
     public static final Column AMOUNT = new Column("AMOUNT");
 
     /**
+     * Represents the enumeration constant for Column "Status".
+     */
+    public static final Column STATUS = new Column("STATUS");
+
+    /**
      * A String specifying the name of the Column. This instance member will not be <tt>null</tt> in an instantiated
      * object.
      * <p/>
