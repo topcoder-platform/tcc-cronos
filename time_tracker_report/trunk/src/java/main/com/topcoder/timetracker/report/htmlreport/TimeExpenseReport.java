@@ -9,6 +9,8 @@ import com.topcoder.timetracker.report.ReportCategory;
 import com.topcoder.timetracker.report.ReportConfiguration;
 import com.topcoder.timetracker.report.ReportConfigurationException;
 import com.topcoder.timetracker.report.ReportException;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.UnknownNamespaceException;
 
 
 /**
@@ -60,8 +62,18 @@ public class TimeExpenseReport extends AbstractReport {
         ret.append(totalHours.getCurrentValue());
         ret.append("</CENTER>");
 
+        String amtPrefix = null;
+        try {
+	        String prefixkey = "PREFIX_COLUMN_AMOUNT";
+	        amtPrefix = ConfigManager.getInstance().getString(config.getNamespace(), prefixkey);
+        }
+        catch (UnknownNamespaceException e) {
+        	// ignore
+        }
+
         //append the amount line
         ret.append("<BR/><BR/><CENTER>Total Amount: ");
+        ret.append(amtPrefix);
         ret.append(totalAmount.getCurrentValue());
         ret.append("</CENTER>");
 
