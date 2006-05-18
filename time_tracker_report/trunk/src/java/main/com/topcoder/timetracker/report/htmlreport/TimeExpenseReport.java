@@ -73,7 +73,7 @@ public class TimeExpenseReport extends AbstractReport {
 
         //append the amount line
         ret.append("<BR/><BR/><CENTER>Total Amount: ");
-        ret.append(amtPrefix);
+        if (amtPrefix != null && amtPrefix.length() > 0) ret.append(amtPrefix);
         ret.append(totalAmount.getCurrentValue());
         ret.append("</CENTER>");
 
