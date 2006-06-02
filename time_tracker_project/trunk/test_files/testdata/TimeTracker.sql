@@ -1,213 +1,216 @@
-CREATE TABLE TaskTypes (
-       TaskTypesID          integer NOT NULL,
-       Description          varchar(64) NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (TaskTypesID)
-);
 
-CREATE TABLE TimeEntries (
-       TimeEntriesID        integer NOT NULL,
-       TaskTypesID          integer NOT NULL,
-       TimeStatusesID       integer NOT NULL,
-       Description          varchar(64) NOT NULL,
-       EntryDate            datetime year to second NOT NULL,
-       Hours                float NOT NULL,
-       Billable             smallint NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (TimeEntriesID)
-);
-
-CREATE TABLE TimeStatuses (
-       TimeStatusesID       integer NOT NULL,
-       Description          varchar(64) NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (TimeStatusesID)
-);
-
-CREATE TABLE reject_reason (
-       reject_reason_id          integer NOT NULL,
-       description          varchar(255) NOT NULL,
-       creation_date         datetime year to second NOT NULL,
-       creation_user         varchar(64) NOT NULL,
-       modification_date     datetime year to second NOT NULL,
-       modification_user     varchar(64) NOT NULL,
-       PRIMARY KEY (reject_reason_id)
-);
-
-CREATE TABLE time_reject_reason (
-       TimeEntriesID          integer NOT NULL,
-       reject_reason_id          integer NOT NULL,
-       creation_date         datetime year to second NOT NULL,
-       creation_user         varchar(64) NOT NULL,
-       modification_date     datetime year to second NOT NULL,
-       modification_user     varchar(64) NOT NULL,
-       PRIMARY KEY (TimeEntriesID, reject_reason_id)
+CREATE TABLE company (
+       company_id           integer NOT NULL,
+       name                 varchar(64),
+       passcode             varchar(64) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (company_id),
+       UNIQUE (
+              passcode
+       )
 );
 
 
-ALTER TABLE TimeEntries ADD CONSTRAINT FOREIGN KEY (TimeStatusesID) REFERENCES TimeStatuses;
-ALTER TABLE TimeEntries ADD CONSTRAINT FOREIGN KEY (TaskTypesID) REFERENCES TaskTypes;
-ALTER TABLE time_reject_reason ADD CONSTRAINT FOREIGN KEY (TimeEntriesID)  REFERENCES TimeEntries;
-ALTER TABLE time_reject_reason ADD CONSTRAINT FOREIGN KEY (reject_reason_id) REFERENCES reject_reason;
-
-CREATE TABLE ClientProjects (
-       ClientsID            integer NOT NULL,
-       ProjectsID           integer NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (ClientsID, ProjectsID)
+CREATE TABLE expense_entry (
+       expense_entry_id     integer NOT NULL,
+       company_id           integer NOT NULL,
+       description          varchar(64) NOT NULL,
+       entry_date           datetime year to second NOT NULL,
+       amount               integer NOT NULL,
+       billable             smallint NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (expense_entry_id),
+       FOREIGN KEY (company_id)
+                             REFERENCES company
 );
 
 
-CREATE TABLE Clients (
-       ClientsID            integer NOT NULL,
-       Name                 varchar(64) NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       Creationuser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (ClientsID)
+CREATE TABLE project (
+       project_id           integer NOT NULL,
+       company_id           integer NOT NULL,
+       name                 varchar(64) NOT NULL,
+       description          varchar(64) NOT NULL,
+       start_date           datetime year to second NOT NULL,
+       end_date             datetime year to second NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (project_id),
+       FOREIGN KEY (company_id)
+                             REFERENCES company
 );
 
 
-CREATE TABLE ExpenseEntries (
-       ExpenseEntriesID     integer NOT NULL,
-       PRIMARY KEY (ExpenseEntriesID)
+CREATE TABLE project_expense (
+       project_id           integer NOT NULL,
+       expense_entry_id     integer,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (project_id, expense_entry_id),
+       FOREIGN KEY (expense_entry_id)
+                             REFERENCES expense_entry,
+       FOREIGN KEY (project_id)
+                             REFERENCES project
 );
 
 
-CREATE TABLE ProjectExpenses (
-       ProjectsID           integer NOT NULL,
-       ExpenseEntriesID     integer NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (ProjectsID, ExpenseEntriesID)
+CREATE TABLE time_entry (
+       time_entry_id        integer NOT NULL,
+       company_id           integer NOT NULL,
+       description          varchar(64) NOT NULL,
+       entry_date           datetime year to second NOT NULL,
+       hours                integer NOT NULL,
+       billable             smallint NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (time_entry_id), 
+       FOREIGN KEY (company_id)
+                             REFERENCES company
 );
 
 
-CREATE TABLE ProjectManagers (
-       ProjectsID           integer NOT NULL,
-       UsersID              integer NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (ProjectsID, UsersID)
+CREATE TABLE project_time (
+       project_id           integer NOT NULL,
+       time_entry_id        integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (project_id, time_entry_id), 
+       FOREIGN KEY (time_entry_id)
+                             REFERENCES time_entry,
+       FOREIGN KEY (project_id)
+                             REFERENCES project
 );
 
 
-CREATE TABLE Projects (
-       ProjectsID           integer NOT NULL,
-       Name                 varchar(64) NOT NULL,
-       Description          varchar(64) NOT NULL,
-       StartDate            datetime year to second NOT NULL,
-       EndDate              datetime year to second NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (ProjectsID)
+CREATE TABLE user_account (
+       user_account_id      integer NOT NULL,
+       company_id           integer,
+       user_name            varchar(64) NOT NULL,
+       password             varchar(64) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (user_account_id), 
+       FOREIGN KEY (company_id)
+                             REFERENCES company
 );
 
 
-CREATE TABLE ProjectTimes (
-       ProjectsID           integer NOT NULL,
-       TimeEntriesID        integer NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (ProjectsID, TimeEntriesID)
+CREATE TABLE project_manager (
+       project_id           integer NOT NULL,
+       user_account_id      integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (project_id, user_account_id), 
+       FOREIGN KEY (user_account_id)
+                             REFERENCES user_account,
+       FOREIGN KEY (project_id)
+                             REFERENCES project
 );
 
 
-CREATE TABLE ProjectWorkers (
-       ProjectsID           integer NOT NULL,
-       UsersID              integer NOT NULL,
-       StartDate            datetime year to second NOT NULL,
-       EndDate              datetime year to second NOT NULL,
-       PayRate              money NOT NULL,
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (ProjectsID, UsersID)
+CREATE TABLE project_worker (
+       project_id           integer NOT NULL,
+       user_account_id      integer NOT NULL,
+       start_date           datetime year to second NOT NULL,
+       end_date             datetime year to second NOT NULL,
+       pay_rate             integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (project_id, user_account_id), 
+       FOREIGN KEY (project_id)
+                             REFERENCES project,
+       FOREIGN KEY (user_account_id)
+                             REFERENCES user_account
 );
 
 
-CREATE TABLE Users (
-       UsersID              integer NOT NULL,
-       PRIMARY KEY (UsersID)
+CREATE TABLE client (
+       client_id            integer NOT NULL,
+       company_id           integer NOT NULL,
+       name                 varchar(64) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (client_id), 
+       FOREIGN KEY (company_id)
+                             REFERENCES company,
+       UNIQUE (
+              name
+       )
 );
 
-ALTER TABLE ClientProjects ADD CONSTRAINT FOREIGN KEY (ProjectsID) REFERENCES Projects;
-ALTER TABLE ClientProjects ADD CONSTRAINT FOREIGN KEY (ClientsID) REFERENCES Clients;
-ALTER TABLE ProjectExpenses ADD CONSTRAINT FOREIGN KEY (ExpenseEntriesID) REFERENCES ExpenseEntries;
-ALTER TABLE ProjectExpenses ADD CONSTRAINT FOREIGN KEY (ProjectsID) REFERENCES Projects;
-ALTER TABLE ProjectManagers ADD CONSTRAINT FOREIGN KEY (UsersID) REFERENCES Users;
-ALTER TABLE ProjectManagers ADD CONSTRAINT FOREIGN KEY (ProjectsID) REFERENCES Projects;
-ALTER TABLE ProjectTimes ADD CONSTRAINT FOREIGN KEY (TimeEntriesID) REFERENCES TimeEntries;
-ALTER TABLE ProjectTimes ADD CONSTRAINT FOREIGN KEY (ProjectsID) REFERENCES Projects;
-ALTER TABLE ProjectWorkers ADD CONSTRAINT FOREIGN KEY (UsersID) REFERENCES Users;
-ALTER TABLE ProjectWorkers ADD CONSTRAINT FOREIGN KEY (ProjectsID) REFERENCES Projects;
+
+CREATE TABLE client_project (
+       client_id            integer NOT NULL,
+       project_id           integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (client_id, project_id), 
+       FOREIGN KEY (project_id)
+                             REFERENCES project,
+       FOREIGN KEY (client_id)
+                             REFERENCES client
+);
 
 
+-- --------------Test data for Time Tracker Project ----
+
+INSERT INTO company VALUES (0, "a", "a", today, "user", today, "user");
+INSERT INTO company VALUES (1, "b", "b", today, "user", today, "user");
+INSERT INTO company VALUES (2, "c", "c", today, "user", today, "user");
+
+INSERT INTO user_account VALUES (0, 1, "u1", "u1", today, "user", today, "user");
+INSERT INTO user_account VALUES (1, 1, "u2", "u1", today, "user", today, "user");
+INSERT INTO user_account VALUES (2, 1, "u3", "u1", today, "user", today, "user");
+INSERT INTO user_account VALUES (3, 1, "u4", "u1", today, "user", today, "user");
+INSERT INTO user_account VALUES (300, 1, "u5", "u1", today, "user", today, "user");
+INSERT INTO user_account VALUES (400, 1, "u6", "u1", today, "user", today, "user");
+INSERT INTO user_account VALUES (401, 1, "u7", "u1", today, "user", today, "user");
+INSERT INTO user_account VALUES (402, 1, "u8", "u1", today, "user", today, "user");
 
 
+INSERT INTO time_entry(time_entry_id, company_id, description, entry_date, hours, billable, creation_date, creation_user, modification_date, modification_user)
+VALUES (0, 1, "desc", today, 1, 1, today, "user", today, "modifier");
+INSERT INTO time_entry(time_entry_id, company_id, Description, entry_date, hours, billable, creation_date, creation_user, modification_date, modification_user)
+VALUES (1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
+INSERT INTO time_entry(time_entry_id, company_id, Description, entry_date, hours, billable, creation_date, creation_user, modification_date, modification_user)
+VALUES (2, 1, "desc", today, 1, 1, today, "user", today, "modifier");
+INSERT INTO time_entry(time_entry_id, company_id, Description, entry_date, hours, billable, creation_date, creation_user, modification_date, modification_user)
+VALUES (3, 1, "desc", today, 1, 1, today, "user", today, "modifier");
+INSERT INTO time_entry(time_entry_id, company_id, Description, entry_date, hours, billable, creation_date, creation_user, modification_date, modification_user)
+VALUES (500, 1, "desc", today, 1, 1, today, "user", today, "modifier");
+INSERT INTO time_entry(time_entry_id, company_id, Description, entry_date, hours, billable, creation_date, creation_user, modification_date, modification_user)
+VALUES (501, 1, "desc", today, 1, 1, today, "user", today, "modifier");
+INSERT INTO time_entry(time_entry_id, company_id, Description, entry_date, hours, billable, creation_date, creation_user, modification_date, modification_user)
+VALUES (502, 1, "desc", today, 1, 1, today, "user", today, "modifier");
 
---------------Test data for Time Tracker Project ----
 
-INSERT INTO Users VALUES (0);
-INSERT INTO Users VALUES (1);
-INSERT INTO Users VALUES (2);
-INSERT INTO Users VALUES (3);
-INSERT INTO Users VALUES (300);
-INSERT INTO Users VALUES (400);
-INSERT INTO Users VALUES (401);
-INSERT INTO Users VALUES (402);
-
-Insert into tasktypes(TaskTypesID, Description, CreationDate, CreationUser, ModificationDate, ModificationUser)
-values(1, "1", today, "tcs", today, "tcs");
-Insert into tasktypes(TaskTypesID, Description, CreationDate, CreationUser, ModificationDate, ModificationUser)
-values(2, "2", today, "tcs", today, "tcs");
-
-insert into TimeStatuses(TimeStatusesID, Description, CreationDate, CreationUser, ModificationDate, ModificationUser)
-values(1, "1", today, "tcs", today, "tcs");
-insert into TimeStatuses(TimeStatusesID, Description, CreationDate, CreationUser, ModificationDate, ModificationUser)
-values(2, "2", today, "tcs", today, "tcs");
-
-INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, TimeStatusesID, Description, EntryDate, Hours, Billable, CreationDate, CreationUser, ModificationDate, ModificationUser) 
-VALUES (0, 1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
-INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, TimeStatusesID, Description, EntryDate, Hours, Billable, CreationDate, CreationUser, ModificationDate, ModificationUser) 
-VALUES (1, 1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
-INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, TimeStatusesID, Description, EntryDate, Hours, Billable, CreationDate, CreationUser, ModificationDate, ModificationUser) 
-VALUES (2, 1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
-INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, TimeStatusesID, Description, EntryDate, Hours, Billable, CreationDate, CreationUser, ModificationDate, ModificationUser) 
-VALUES (3, 1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
-INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, TimeStatusesID, Description, EntryDate, Hours, Billable, CreationDate, CreationUser, ModificationDate, ModificationUser) 
-VALUES (500, 1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
-INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, TimeStatusesID, Description, EntryDate, Hours, Billable, CreationDate, CreationUser, ModificationDate, ModificationUser) 
-VALUES (501, 1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
-INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, TimeStatusesID, Description, EntryDate, Hours, Billable, CreationDate, CreationUser, ModificationDate, ModificationUser) 
-VALUES (502, 1, 1, "desc", today, 1, 1, today, "user", today, "modifier");
-
-INSERT INTO ExpenseEntries VALUES (0);
-INSERT INTO ExpenseEntries VALUES (1);
-INSERT INTO ExpenseEntries VALUES (2);
-INSERT INTO ExpenseEntries VALUES (3);
-INSERT INTO ExpenseEntries VALUES (500);
-INSERT INTO ExpenseEntries VALUES (501);
-INSERT INTO ExpenseEntries VALUES (502);
+INSERT INTO expense_entry VALUES (0, 1, "desc", today, 0, 0, today, "user", today, "modifier");
+INSERT INTO expense_entry VALUES (1, 1, "desc", today, 0, 0, today, "user", today, "modifier");
+INSERT INTO expense_entry VALUES (2, 1, "desc", today, 0, 0, today, "user", today, "modifier");
+INSERT INTO expense_entry VALUES (3, 1, "desc", today, 0, 0, today, "user", today, "modifier");
+INSERT INTO expense_entry VALUES (500, 1, "desc", today, 0, 0, today, "user", today, "modifier");
+INSERT INTO expense_entry VALUES (501, 1, "desc", today, 0, 0, today, "user", today, "modifier");
+INSERT INTO expense_entry VALUES (502, 1, "desc", today, 0, 0, today, "user", today, "modifier");

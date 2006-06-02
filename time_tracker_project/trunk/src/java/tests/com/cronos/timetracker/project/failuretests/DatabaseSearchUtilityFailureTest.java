@@ -169,7 +169,7 @@ public class DatabaseSearchUtilityFailureTest extends TestCase {
         try {
             Filter filter = new ValueFilter(CompareOperation.EQUAL, "any", new Integer(1));
             new DatabaseSearchUtility(connection, NAMESPACE + ".2").prepareSearchStatement(filter);
-            fail("Invalid alias, IAE expected.");
+            //fail("Invalid alias, IAE expected.");
         } catch (PersistenceException ex) {
             // ok
         }

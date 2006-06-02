@@ -226,7 +226,8 @@ public class Helper extends TestCase {
         Client client = new Client();
 
         client.setId(clientId);
-        client.setName("name");
+        client.setCompanyId(1);
+        client.setName("name" + "_" + clientId);
         client.setCreationUser("creationUser");
         client.setModificationUser("modificationUser");
 
@@ -243,6 +244,7 @@ public class Helper extends TestCase {
         Project project = new Project();
 
         project.setId(projectId);
+        project.setCompanyId(1);
         project.setName("name");
         project.setDescription("description");
         project.setCreationUser("creationUser");
@@ -292,8 +294,8 @@ public class Helper extends TestCase {
      */
     public static void clearTables() throws Exception {
         Connection conn = getConnection();
-        String[] tableNames = {"ClientProjects", "ProjectExpenses", "ProjectManagers", "ProjectWorkers",
-                "ProjectTimes", "Clients", "Projects"};
+        String[] tableNames = {"client_project", "project_expense", "project_manager", "project_worker",
+                "project_time", "client", "project"};
 
         PreparedStatement pstmt = null;
 
@@ -354,5 +356,28 @@ public class Helper extends TestCase {
         assertEquals("description should be equal", p1.getDescription(), p2.getDescription());
         assertEquals("id should be equal", p1.getId(), p2.getId());
         assertEquals("name should be equal", p1.getName(), p2.getName());
+    }
+
+    // since 2.0
+
+    public static void createCompany(int id) throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("INSERT INTO company(company_id, name, passcode, creation_date," +
+                "creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?,?)");
+
+        try {
+        pstmt.setInt(1, id);
+        pstmt.setString(2, "name");
+        pstmt.setString(3, "passcode");
+        pstmt.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+        pstmt.setString(5, "kr");
+        pstmt.setDate(6, new java.sql.Date(System.currentTimeMillis()));
+        pstmt.setString(7, "kr");
+
+        pstmt.execute();
+        } finally {
+            pstmt.close();
+            conn.close();
+        }
     }
 }

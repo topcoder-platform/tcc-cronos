@@ -33,25 +33,28 @@
 
     <!-- The SQL query template, required -->
     <Property name="query_template">
-      <Value>select distinct Clients.ClientsID from Clients where </Value>
+      <Value>select distinct client.client_id from client where </Value>
     </Property>
 
     <!-- The aliases of the DB column names, required -->
     <Property name="column_aliases">
+      <Property name="Company ID">
+        <Value>client.company_id</Value>
+      </Property>
       <Property name="Name">
-        <Value>Clients.Name</Value>
+        <Value>client.name</Value>
       </Property>
       <Property name="Creation User">
-        <Value>Clients.CreationUser</Value>
+        <Value>client.creation_user</Value>
       </Property>
       <Property name="Modification User">
-        <Value>Clients.ModificationUser</Value>
+        <Value>client.modification_user</Value>
       </Property>
       <Property name="Creation Date">
-        <Value>Clients.CreationDate</Value>
+        <Value>client.creation_date</Value>
       </Property>
       <Property name="Modification Date">
-        <Value>Clients.ModificationDate</Value>
+        <Value>client.modification_date</Value>
       </Property>
     </Property>
 
@@ -61,25 +64,28 @@
 
     <!-- The SQL query template, required -->
     <Property name="query_template">
-      <Value>select distinct Projects.ProjectsID from Projects where </Value>
+      <Value>select distinct project.project_id from project where </Value>
     </Property>
 
     <!-- The aliases of the DB column names, required -->
     <Property name="column_aliases">
+      <Property name="Company ID">
+        <Value>project.company_id</Value>
+      </Property>
       <Property name="Name">
-        <Value>Projects.Name</Value>
+        <Value>project.name</Value>
       </Property>
       <Property name="Creation User">
-        <Value>Projects.CreationUser</Value>
+        <Value>project.creation_user</Value>
       </Property>
       <Property name="Modification User">
-        <Value>Projects.ModificationUser</Value>
+        <Value>project.modification_user</Value>
       </Property>
       <Property name="Creation Date">
-        <Value>Projects.CreationDate</Value>
+        <Value>project.creation_date</Value>
       </Property>
       <Property name="Modification Date">
-        <Value>Projects.ModificationDate</Value>
+        <Value>project.modification_date</Value>
       </Property>
     </Property>
 

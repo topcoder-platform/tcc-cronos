@@ -22,7 +22,7 @@ import com.topcoder.util.config.ConfigManager;
  *
  * @author dmks
  * @author kr00tki
- * @version 1.1
+ * @version 2.0
  * @since 1.0
  */
 public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
@@ -48,7 +48,7 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
         persistence = new InformixTimeTrackerProjectPersistence(FailureTestHelper.DB_NAMESPACE,
                 FailureTestHelper.CONNECTION_PRODUCER_NAME);
 
-        persistence.addProject(FailureTestHelper.createProject(1));
+        persistence.addProject(FailureTestHelper.createProject(1, 1));
     }
 
     /**
@@ -393,7 +393,7 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
         persistence.closeConnection();
 
         try {
-            persistence.addProject(FailureTestHelper.createProject(100));
+            persistence.addProject(FailureTestHelper.createProject(100, 1));
             fail("Fails to close connection");
         } catch (PersistenceException e) {
         }
@@ -916,7 +916,7 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
      */
     public void testUpdateProjects_NoProject() throws Exception {
         try {
-            persistence.updateProjects(new Project[] { FailureTestHelper.createProject(10) }, true);
+            persistence.updateProjects(new Project[] { FailureTestHelper.createProject(10, 1) }, true);
             fail("No project to update, BatchOperationException expected.");
         } catch (BatchOperationException ex) {
             // ok
@@ -1020,7 +1020,7 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
      * @since 1.1
      */
     public void testRemoveWorkers_NullArray() throws Exception {
-        persistence.addProject(FailureTestHelper.createProject(1));
+        persistence.addProject(FailureTestHelper.createProject(1, 1));
         try {
             persistence.removeWorkers(null, 1, true);
             fail("Null array, IAE expected.");
@@ -1036,7 +1036,7 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
      * @since 1.1
      */
     public void testRemoveWorkers_NoProject() throws Exception {
-        Project project = FailureTestHelper.createProject(1);
+        Project project = FailureTestHelper.createProject(1, 1);
         persistence.addProject(project);
 
         ProjectWorker worker = new ProjectWorker(project, 1);
@@ -1196,7 +1196,7 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
      * @since 1.1
      */
     public void testGetWorkers_NoProject() throws Exception {
-        Project project = FailureTestHelper.createProject(1);
+        Project project = FailureTestHelper.createProject(1, 1);
         persistence.addProject(project);
 
         ProjectWorker worker = new ProjectWorker(project, 1);
@@ -1480,6 +1480,116 @@ public class InformixTimeTrackerProjectPersistenceFailureTest extends TestCase {
             persistence.removeExpenseEntries(new int[]{111}, 1, true);
             fail("N such entry, BatchOperationException expected.");
         } catch (BatchOperationException ex) {
+            // ok
+        }
+    }
+
+    // since 2.0
+
+    /**
+     * Tests the {@link InformixTimeTrackerProjectPersistence#getCompanyIdForClient(int)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForClient_IllegalId() throws Exception {
+        try {
+            persistence.getCompanyIdForClient(-1);
+            fail("Id == -1, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link InformixTimeTrackerProjectPersistence#getCompanyIdForProject(int)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForProject_IllegalId() throws Exception {
+        try {
+            persistence.getCompanyIdForProject(-1);
+            fail("Id == -1, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link InformixTimeTrackerProjectPersistence#getCompanyIdForTimeEntry(int)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForTimeEntry_IllegalId() throws Exception {
+        try {
+            persistence.getCompanyIdForTimeEntry(-1);
+            fail("Id == -1, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link InformixTimeTrackerProjectPersistence#getCompanyIdForExpenseEntry(int)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForExpenseEntry_IllegalId() throws Exception {
+        try {
+            persistence.getCompanyIdForExpenseEntry(-1);
+            fail("Id == -1, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link InformixTimeTrackerProjectPersistence#getCompanyIdForUserAccount(int)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForUserAccount_IllegalId() throws Exception {
+        try {
+            persistence.getCompanyIdForUserAccount(-1);
+            fail("Id == -1, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link InformixTimeTrackerProjectPersistence#existClientWithNameForCompany(Client, boolean)}
+     * method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testExistClientWithNameForCompany_NullClient() throws Exception {
+        try {
+            persistence.existClientWithNameForCompany(null, true);
+            fail("Null client, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link InformixTimeTrackerProjectPersistence#existClientWithNameForCompany(Client, boolean)}
+     * method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testExistClientWithNameForCompany_NullName() throws Exception {
+        Client client = FailureTestHelper.createInsufficientClient();
+        try {
+            persistence.existClientWithNameForCompany(client, true);
+            fail("Null client, IAE expected.");
+        } catch (IllegalArgumentException ex) {
             // ok
         }
     }

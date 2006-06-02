@@ -3,6 +3,8 @@
  */
 package com.cronos.timetracker.project.failuretests;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import com.cronos.timetracker.project.InsufficientDataException;
@@ -19,6 +21,8 @@ import com.cronos.timetracker.project.searchfilters.Filter;
  * @version 1.0
  * @author kr00tki
  * @version 1.1
+ * @author costty000
+ * @version 2.0
  */
 public class ProjectUtilityFailureTest extends TestCase {
     /**
@@ -27,11 +31,10 @@ public class ProjectUtilityFailureTest extends TestCase {
     private ProjectUtility utility = null;
 
     /**
-     * Prepares a ProjectUtility for testing. Also prepares the method
-     * arguments, the persistence manager and the persistence.
+     * Prepares a ProjectUtility for testing. Also prepares the method arguments, the persistence manager and the
+     * persistence.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void setUp() throws Exception {
         FailureTestHelper.loadConfig();
@@ -42,8 +45,7 @@ public class ProjectUtilityFailureTest extends TestCase {
     /**
      * Clears all the namespaces.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void tearDown() throws Exception {
         FailureTestHelper.unloadConfig();
@@ -61,11 +63,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addProject method with null project. Expects
-     * NullPointerException.
+     * Test of addProject method with null project. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProject_NullProject() throws Exception {
         try {
@@ -76,11 +76,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addProject method with illegal project. Expects
-     * IllegalArgumentException.
+     * Test of addProject method with illegal project. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProject_IllegalProject() throws Exception {
         try {
@@ -91,11 +89,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addProject method with project with insufficient data. Expects
-     * InsufficientDataException.
+     * Test of addProject method with project with insufficient data. Expects InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProject_InsufficientProject() throws Exception {
         try {
@@ -106,11 +102,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of updateProject method with null project. Expects
-     * NullPointerException.
+     * Test of updateProject method with null project. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testUpdateProject_NullProject() throws Exception {
         try {
@@ -121,11 +115,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of updateProject method with project with insufficient data. Expects
-     * InsufficientDataException.
+     * Test of updateProject method with project with insufficient data. Expects InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testUpdateProject_InsufficientProject() throws Exception {
         try {
@@ -138,23 +130,21 @@ public class ProjectUtilityFailureTest extends TestCase {
     /**
      * Test of assignClient method with null user. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAssignClient_NullUser() throws Exception {
         try {
             utility.assignClient(-1, -1, null);
             fail("Assigns client with null user");
         } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
         }
     }
 
     /**
-     * Test of assignClient method with empty user. Expects
-     * IllegalArgumentException.
+     * Test of assignClient method with empty user. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAssignClient_EmptyUser() throws Exception {
         try {
@@ -165,11 +155,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of assignProjectManager method with null manager. Expects
-     * NullPointerException.
+     * Test of assignProjectManager method with null manager. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAssignProjectManager_NullManager() throws Exception {
         try {
@@ -180,11 +168,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of assignProjectManager method with illegal manager. Expects
-     * IllegalArgumentException.
+     * Test of assignProjectManager method with illegal manager. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAssignProjectManager_IllegalManager() throws Exception {
         try {
@@ -195,11 +181,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of assignProjectManager method with manager with insufficient data.
-     * Expects InsufficientDataException.
+     * Test of assignProjectManager method with manager with insufficient data. Expects InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAssignProjectManager_InsufficientManager() throws Exception {
         try {
@@ -212,8 +196,7 @@ public class ProjectUtilityFailureTest extends TestCase {
     /**
      * Test of addWorker method with null worker. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddWorker_NullWorker() throws Exception {
         try {
@@ -224,11 +207,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addWorker method with illegal worker. Expects
-     * IllegalArgumentException.
+     * Test of addWorker method with illegal worker. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddWorker_IllegalWorker() throws Exception {
         try {
@@ -239,11 +220,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addWorker method with worker with insufficient data. Expects
-     * InsufficientDataException.
+     * Test of addWorker method with worker with insufficient data. Expects InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddWorker_InsufficientWorker() throws Exception {
         try {
@@ -254,11 +233,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of updateWorker method with null worker. Expects
-     * NullPointerException.
+     * Test of updateWorker method with null worker. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testUpdateWorker_NullWorker() throws Exception {
         try {
@@ -269,11 +246,9 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of updateWorker method with worker with insufficient data. Expects
-     * InsufficientDataException.
+     * Test of updateWorker method with worker with insufficient data. Expects InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testUpdateWorker_InsufficientWorker() throws Exception {
         try {
@@ -286,23 +261,21 @@ public class ProjectUtilityFailureTest extends TestCase {
     /**
      * Test of addTimeEntry method with null user. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddTimeEntry_NullUser() throws Exception {
         try {
-            utility.addTimeEntry(-1, -1, null);
+            utility.addTimeEntry(1, 1, null);
             fail("Adds time entry with null user");
         } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
         }
     }
 
     /**
-     * Test of addTimeEntry method with empty user. Expects
-     * IllegalArgumentException.
+     * Test of addTimeEntry method with empty user. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddTimeEntry_EmptyUser() throws Exception {
         try {
@@ -313,26 +286,23 @@ public class ProjectUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addExpenseEntry method with null user. Expects
-     * NullPointerException.
+     * Test of addExpenseEntry method with null user. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddExpenseEntry_NullUser() throws Exception {
         try {
             utility.addExpenseEntry(-1, -1, null);
             fail("Adds expense entry with null user");
         } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
         }
     }
 
     /**
-     * Test of addExpenseEntry method with empty user. Expects
-     * IllegalArgumentException.
+     * Test of addExpenseEntry method with empty user. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddExpenseEntry_EmptyUser() throws Exception {
         try {
@@ -358,7 +328,6 @@ public class ProjectUtilityFailureTest extends TestCase {
             // ok
         }
     }
-
 
     /**
      * Tests the {@link ProjectUtility#addProjects(Project[], boolean)} method failure.
@@ -398,7 +367,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddProjects_ArrayWithNull() throws Exception {
         try {
-            utility.addProjects(new Project[] { null }, true);
+            utility.addProjects(new Project[] {null}, true);
             fail("Array with null, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -413,7 +382,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddProjects_InsufficientData() throws Exception {
         try {
-            utility.addProjects(new Project[] { FailureTestHelper.createInsufficientProject() }, true);
+            utility.addProjects(new Project[] {FailureTestHelper.createInsufficientProject()}, true);
             fail("Insufficient project data, IAE expected.");
         } catch (InsufficientDataException ex) {
             // ok
@@ -428,7 +397,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddProjects_IllegalData() throws Exception {
         try {
-            utility.addProjects(new Project[] { FailureTestHelper.createIllegalProject() }, true);
+            utility.addProjects(new Project[] {FailureTestHelper.createIllegalProject()}, true);
             fail("Too much data, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -503,7 +472,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testUpdateProjects_ArrayWithNull() throws Exception {
         try {
-            utility.updateProjects(new Project[] { null }, true);
+            utility.updateProjects(new Project[] {null}, true);
             fail("Array with null, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -518,7 +487,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testUpdateProjects_InsufficientData() throws Exception {
         try {
-            utility.updateProjects(new Project[] { FailureTestHelper.createInsufficientProject() }, true);
+            utility.updateProjects(new Project[] {FailureTestHelper.createInsufficientProject()}, true);
             fail("Insufficient project data, IAE expected.");
         } catch (InsufficientDataException ex) {
             // ok
@@ -593,7 +562,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddWorkers_ArrayWithNull() throws Exception {
         try {
-            utility.addWorkers(new ProjectWorker[] { null }, true);
+            utility.addWorkers(new ProjectWorker[] {null}, true);
             fail("Array with null, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -608,7 +577,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddWorkers_InsufficientData() throws Exception {
         try {
-            utility.addWorkers(new ProjectWorker[] { FailureTestHelper.createInsufficientWorker() }, true);
+            utility.addWorkers(new ProjectWorker[] {FailureTestHelper.createInsufficientWorker()}, true);
             fail("Insufficient worker data, IAE expected.");
         } catch (InsufficientDataException ex) {
             // ok
@@ -623,7 +592,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddWorkers_IllegalData() throws Exception {
         try {
-            utility.addWorkers(new ProjectWorker[] { FailureTestHelper.createIllegalWorker() }, true);
+            utility.addWorkers(new ProjectWorker[] {FailureTestHelper.createIllegalWorker()}, true);
             fail("Illegal worker data, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -637,7 +606,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      * @since 1.1
      */
     public void testRemoveWorkers_NullArray() throws Exception {
-        utility.addProject(FailureTestHelper.createProject(1));
+        utility.addProject(FailureTestHelper.createProject(1, 1));
         try {
             utility.removeWorkers(null, 1, true);
             fail("Null array, IAE expected.");
@@ -699,7 +668,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testUpdateWorkers_ArrayWithNull() throws Exception {
         try {
-            utility.updateWorkers(new ProjectWorker[] { null }, true);
+            utility.updateWorkers(new ProjectWorker[] {null}, true);
             fail("Array with null, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -714,7 +683,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testUpdateWorkers_InsufficientData() throws Exception {
         try {
-            utility.addWorkers(new ProjectWorker[] { FailureTestHelper.createInsufficientWorker() }, true);
+            utility.addWorkers(new ProjectWorker[] {FailureTestHelper.createInsufficientWorker()}, true);
             fail("Insufficient data, IAE expected.");
         } catch (InsufficientDataException ex) {
             // ok
@@ -774,7 +743,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddTimeEntries_NullUser() throws Exception {
         try {
-            utility.addTimeEntries(new int[] { 500 }, 1, null, true);
+            utility.addTimeEntries(new int[] {500}, 1, null, true);
             fail("Null user, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -789,7 +758,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddTimeEntries_EmptyUser() throws Exception {
         try {
-            utility.addTimeEntries(new int[] { 500 }, 1, " ", true);
+            utility.addTimeEntries(new int[] {500}, 1, " ", true);
             fail("Empty user, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -849,7 +818,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddExpenseEntries_NullUser() throws Exception {
         try {
-            utility.addExpenseEntries(new int[]{0}, 1, null, true);
+            utility.addExpenseEntries(new int[] {0}, 1, null, true);
             fail("Null user, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -864,7 +833,7 @@ public class ProjectUtilityFailureTest extends TestCase {
      */
     public void testAddExpenseEntries_EmptyUser() throws Exception {
         try {
-            utility.addExpenseEntries(new int[]{0}, 1, " ", true);
+            utility.addExpenseEntries(new int[] {0}, 1, " ", true);
             fail("Empty user, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -896,6 +865,160 @@ public class ProjectUtilityFailureTest extends TestCase {
         try {
             utility.removeExpenseEntries(new int[0], 1, true);
             fail("Empty array, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    // since 2.0
+    /**
+     * Tests the {@link ProjectUtility#addProjects(Project[], boolean)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddProjects_ManagerFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 2);
+        project.setManagerId(3);
+
+        try {
+            utility.addProjects(new Project[] {project}, true);
+            fail("PM is from other company than project.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ProjectUtility#addProjects(Project[], boolean)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddProjects_ExpenseEntryFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+        project.addExpenseEntry(503);
+        project.setManagerId(3);
+
+        try {
+            utility.addProjects(new Project[] {project}, true);
+            fail("Expense is from other company than project.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ProjectUtility#addProjects(Project[], boolean)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddProjects_TimeEntryFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+        project.addTimeEntry(503);
+        project.setManagerId(3);
+
+        try {
+            utility.addProjects(new Project[] {project}, true);
+            fail("Time is from other company than project.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ProjectUtility#addProjects(Project[], boolean)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddProjects_WorkerFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+        project.addWorkerId(503);
+        project.setManagerId(3);
+
+        try {
+            utility.addProjects(new Project[] {project}, true);
+            fail("Worker is from other company than project.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ProjectUtility#addProject(Project)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddProject_ExpenseEntryFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+        project.addExpenseEntry(503);
+        project.setManagerId(3);
+
+        try {
+            utility.addProject(project);
+            fail("Expense is from other company than project.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ProjectUtility#addProject(Project)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddProject_TimeEntryFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+        project.addTimeEntry(503);
+        project.setManagerId(3);
+
+        try {
+            utility.addProject(project);
+            fail("Time is from other company than project.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ProjectUtility#addProject(Project)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddProject_WorkerFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+        project.addWorkerId(503);
+        project.setManagerId(3);
+
+        try {
+            utility.addProject(project);
+            fail("Worker is from other company than project.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ProjectUtility#updateProjects(Project[], boolean)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testUpdateProjects_ManagerFromDifferentCompany() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 2);
+        project.setManagerId(3);
+        project.setId(1);
+        project.setModificationDate(new Date());
+        project.setCreationDate(new Date());
+
+        try {
+            utility.updateProjects(new Project[] {project}, true);
+            fail("PM is from other company than project.");
         } catch (IllegalArgumentException ex) {
             // ok
         }

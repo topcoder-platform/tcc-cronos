@@ -18,7 +18,8 @@ import java.util.List;
  *
  * @author colau
  * @author TCSDEVELOPER
- * @version 1.1
+ * @author costty000
+ * @version 2.0
  *
  * @since 1.0
  */
@@ -134,6 +135,8 @@ public class TestHelper {
 
         for (int i = 0; i < ARRAY_SIZE; i++) {
             clients[i] = createClient();
+            // added in 2.0: set a unique names to clients
+            clients[i].setName(clients[i].getName() + "_" + i);
         }
         return clients;
     }
@@ -149,7 +152,10 @@ public class TestHelper {
         Client client = new Client();
 
         client.setId(clientId);
-        client.setName("name");
+        // from 2.0: set the corespondace with the company
+        client.setCompanyId(1);
+        // from 2.0: assign a unique name to all clients
+        client.setName("name" + "_" + clientId);
         client.setCreationUser("creationUser");
         client.setModificationUser("modificationUser");
 
@@ -223,6 +229,10 @@ public class TestHelper {
         Project project = new Project();
 
         project.setId(projectId);
+        // from 2.0: set a specific company for the project
+        project.setCompanyId(1);
+        //project.setManagerId(1);
+
         project.setName("name");
         project.setDescription("description");
         project.setCreationUser("creationUser");
@@ -280,7 +290,11 @@ public class TestHelper {
     public static ProjectManager createManager() {
         ProjectManager manager = new ProjectManager();
 
-        manager.setProject(new Project());
+        // from 2.0: create a project with specific id (that has assigned a company)
+        Project project = new Project();
+        project.setId(1);
+        manager.setProject(project);
+        manager.setManagerId(1);
         manager.setCreationUser("creationUser");
         manager.setModificationUser("modificationUser");
 
@@ -328,7 +342,13 @@ public class TestHelper {
     public static ProjectWorker createWorker() {
         ProjectWorker worker = new ProjectWorker();
 
-        worker.setProject(new Project());
+        worker.setWorkerId(1);
+        // from 2.0: create and assign a specific project for worker, that has assigned a specific company
+        Project project = new Project();
+        project.setId(1);
+        project.setCompanyId(1);
+
+        worker.setProject(project);
         worker.setStartDate(new Date());
         worker.setEndDate(new Date());
         worker.setPayRate(new BigDecimal(10));
@@ -337,6 +357,32 @@ public class TestHelper {
 
         return worker;
     }
+
+    /**
+     * Creates a project worker with specific id for testing..
+     *
+     * @param id
+     *            id of the worker
+     * @param project
+     *            the assigned project to created worker
+     * @return a project worker
+     *
+     * @since 2.0
+     */
+    public static ProjectWorker createWorker(int id, Project project) {
+        ProjectWorker worker = new ProjectWorker();
+
+        worker.setWorkerId(id);
+        worker.setProject(project);
+        worker.setStartDate(new Date(System.currentTimeMillis()));
+        worker.setEndDate(new Date(System.currentTimeMillis()));
+        worker.setPayRate(new BigDecimal(1));
+        worker.setCreationUser("creationUser");
+        worker.setModificationUser("creationUser");
+
+        return worker;
+    }
+
 
     /**
      * Creates a valid array of project workers for testing. All necessary fields of the project workers are filled.

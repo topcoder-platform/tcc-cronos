@@ -3,11 +3,14 @@
  */
 package com.cronos.timetracker.project.failuretests;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import com.cronos.timetracker.project.Client;
 import com.cronos.timetracker.project.ClientUtility;
 import com.cronos.timetracker.project.InsufficientDataException;
+import com.cronos.timetracker.project.Project;
 import com.cronos.timetracker.project.ProjectPersistenceManager;
 import com.cronos.timetracker.project.persistence.BatchOperationException;
 import com.cronos.timetracker.project.searchfilters.Filter;
@@ -16,14 +19,16 @@ import com.cronos.timetracker.project.searchfilters.Filter;
  * Failure tests for ClientUtility implementation.
  *
  * <p>
- * Here assump that all failure tests about PersistenceException will be taken
- * in the failure test of persistence class.
+ * Here assump that all failure tests about PersistenceException will be taken in the failure test of persistence
+ * class.
  * </p>
  *
  * @author dmks
  * @version 1.0
  * @author kr00tki
  * @version 1.1
+ * @author costty000
+ * @version 2.0
  */
 public class ClientUtilityFailureTest extends TestCase {
 
@@ -33,23 +38,29 @@ public class ClientUtilityFailureTest extends TestCase {
     private ClientUtility utility = null;
 
     /**
-     * Prepares a ClientUtility for testing. Also prepares the method arguments,
-     * the persistence manager and the persistence.
+     * Prepares a ClientUtility for testing. Also prepares the method arguments, the persistence manager and the
+     * persistence.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     protected void setUp() throws Exception {
         FailureTestHelper.loadConfig();
+        FailureTestHelper.clearTables();
         ProjectPersistenceManager manager = new ProjectPersistenceManager(FailureTestHelper.NAMESPACE);
         utility = new ClientUtility(manager);
+        Client newClient = new Client();
+        newClient.setId(1);
+        newClient.setName("name");
+        newClient.setCompanyId(1);
+        newClient.setCreationUser("creationUser");
+        newClient.setModificationUser("modificationUser");
+        utility.addClient(newClient);
     }
 
     /**
      * Clears all the namespaces.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     protected void tearDown() throws Exception {
         FailureTestHelper.unloadConfig();
@@ -70,8 +81,7 @@ public class ClientUtilityFailureTest extends TestCase {
     /**
      * Test of addClient method with null client. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddClient_NullClient() throws Exception {
         try {
@@ -82,11 +92,9 @@ public class ClientUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addClient method with illegal client. Expects
-     * IllegalArgumentException.
+     * Test of addClient method with illegal client. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddClient_IllegalClient() throws Exception {
         try {
@@ -97,11 +105,9 @@ public class ClientUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addClient method with client with insufficient data. Expects
-     * InsufficientDataException.
+     * Test of addClient method with client with insufficient data. Expects InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddClient_InsufficientClient() throws Exception {
         try {
@@ -112,11 +118,9 @@ public class ClientUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of updateClient method with null client. Expects
-     * NullPointerException.
+     * Test of updateClient method with null client. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testUpdateClient_NullClient() throws Exception {
         try {
@@ -127,11 +131,9 @@ public class ClientUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of updateClient method with client with insufficient data. Expects
-     * InsufficientDataException.
+     * Test of updateClient method with client with insufficient data. Expects InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testUpdateClient_InsufficientClient() throws Exception {
         try {
@@ -142,11 +144,9 @@ public class ClientUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addProjectToClient method with null project. Expects
-     * NullPointerException.
+     * Test of addProjectToClient method with null project. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProjectToClient_NullProject() throws Exception {
         try {
@@ -157,41 +157,36 @@ public class ClientUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addProjectToClient method with null user. Expects
-     * NullPointerException.
+     * Test of addProjectToClient method with null user. Expects NullPointerException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProjectToClient_NullUser() throws Exception {
         try {
-            utility.addProjectToClient(1, FailureTestHelper.createProject(-1), null);
+            utility.addProjectToClient(1, FailureTestHelper.createProject(-1, 1), null);
             fail("Adds FailureTestHelper.createProject() to client with null user");
         } catch (NullPointerException e) {
         }
     }
 
     /**
-     * Test of addProjectToClient method with empty user. Expects
-     * IllegalArgumentException.
+     * Test of addProjectToClient method with empty user. Expects IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProjectToClient_EmptyUser() throws Exception {
         try {
-            utility.addProjectToClient(1, FailureTestHelper.createProject(-1), "");
+            utility.addProjectToClient(1, FailureTestHelper.createProject(-1, 1), "");
             fail("Adds FailureTestHelper.createProject() to client with empty user");
         } catch (IllegalArgumentException e) {
         }
     }
 
     /**
-     * Test of addProjectToClient method with illegal
-     * FailureTestHelper.createProject(). Expects IllegalArgumentException.
+     * Test of addProjectToClient method with illegal FailureTestHelper.createProject(). Expects
+     * IllegalArgumentException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProjectToClient_IllegalProject() throws Exception {
         try {
@@ -202,11 +197,10 @@ public class ClientUtilityFailureTest extends TestCase {
     }
 
     /**
-     * Test of addProjectToClient method with FailureTestHelper.createProject()
-     * with insufficient data. Expects InsufficientDataException.
+     * Test of addProjectToClient method with FailureTestHelper.createProject() with insufficient data. Expects
+     * InsufficientDataException.
      *
-     * @throws Exception
-     *             if any unexpected exception occurs.
+     * @throws Exception if any unexpected exception occurs.
      */
     public void testAddProjectToClient_InsufficientProject() throws Exception {
         try {
@@ -287,7 +281,7 @@ public class ClientUtilityFailureTest extends TestCase {
      */
     public void testAddClients_ArrayWithNull() throws Exception {
         try {
-            utility.addClients(new Client[] { null }, true);
+            utility.addClients(new Client[] {null}, true);
             fail("Array with null, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -302,7 +296,7 @@ public class ClientUtilityFailureTest extends TestCase {
      */
     public void testAddClients_InsufficientData() throws Exception {
         try {
-            utility.addClients(new Client[] { FailureTestHelper.createInsufficientClient() }, true);
+            utility.addClients(new Client[] {FailureTestHelper.createInsufficientClient()}, true);
             fail("Insufficient data, IAE expected.");
         } catch (InsufficientDataException ex) {
             // ok
@@ -317,7 +311,7 @@ public class ClientUtilityFailureTest extends TestCase {
      */
     public void testAddClients_IllegalData() throws Exception {
         try {
-            utility.addClients(new Client[] { FailureTestHelper.createIllegalClient() }, true);
+            utility.addClients(new Client[] {FailureTestHelper.createIllegalClient()}, true);
             fail("Illegal data, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -362,7 +356,7 @@ public class ClientUtilityFailureTest extends TestCase {
      */
     public void testRemoveClients_NoClient() throws Exception {
         try {
-            utility.removeClients(new int[] { 1 }, true);
+            utility.removeClients(new int[] {100}, true);
             fail("No such client, BatchOperationException expected.");
         } catch (BatchOperationException ex) {
             // ok
@@ -407,7 +401,7 @@ public class ClientUtilityFailureTest extends TestCase {
      */
     public void testUpdateClients_ArrayWithNull() throws Exception {
         try {
-            utility.updateClients(new Client[] { null }, true);
+            utility.updateClients(new Client[] {null}, true);
             fail("Array with null, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -422,7 +416,7 @@ public class ClientUtilityFailureTest extends TestCase {
      */
     public void testUpdateClients_InsufficientData() throws Exception {
         try {
-            utility.updateClients(new Client[] { FailureTestHelper.createInsufficientClient() }, true);
+            utility.updateClients(new Client[] {FailureTestHelper.createInsufficientClient()}, true);
             fail("Insufficient data, IAE expected.");
         } catch (InsufficientDataException ex) {
             // ok
@@ -467,9 +461,137 @@ public class ClientUtilityFailureTest extends TestCase {
      */
     public void testGetClients_NoClient() throws Exception {
         try {
-            utility.getClients(new int[] { 1 }, true);
+            utility.getClients(new int[] {100}, true);
             fail("No such client, IAE expected.");
         } catch (BatchOperationException ex) {
+            // ok
+        }
+    }
+
+    // since 2.0
+    /**
+     * Tests the {@link ClientUtility#addClient(Client)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddClient_NoCompanyId() throws Exception {
+        Client client = FailureTestHelper.createInsufficientClient();
+        client.setName("kr");
+        try {
+            utility.addClient(client);
+            fail("Company id not set, IDE expected.");
+        } catch (InsufficientDataException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ClientUtility#addClient(Client)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddClient_DuplicatedName() throws Exception {
+        Client client = FailureTestHelper.createInsufficientClient();
+        client.setName("kr");
+        client.setCompanyId(2);
+        utility.addClient(client);
+
+        // change id and try again
+        client = FailureTestHelper.createInsufficientClient();
+        client.setCompanyId(2);
+        client.setName("kr");
+        try {
+            utility.addClient(client);
+            fail("User name duplicated for company, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ClientUtility#addClient(Client)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddClients_DuplicatedName() throws Exception {
+        Client client = FailureTestHelper.createInsufficientClient();
+        client.setName("kr");
+        client.setCompanyId(2);
+        utility.addClient(client);
+
+        // change id and try again
+        client = FailureTestHelper.createInsufficientClient();
+        client.setCompanyId(2);
+        client.setName("kr");
+        try {
+            utility.addClients(new Client[] {client}, true);
+            fail("User name duplicated for company, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ClientUtility#addClient(Client)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddClient_ProjectNotUsers() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+
+
+        Client client = FailureTestHelper.createInsufficientClient();
+        client.setName("kr");
+        client.setCompanyId(2);
+        client.addProject(project);
+        try {
+            utility.addClient(client);
+            fail("Project not belongs to client, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ClientUtility#addClient(Client)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testAddClients_ProjectNotUsers() throws Exception {
+        Project project = FailureTestHelper.createProject(10, 1);
+
+        Client client = FailureTestHelper.createInsufficientClient();
+        client.setName("kr");
+        client.setCompanyId(2);
+        client.addProject(project);
+        try {
+            utility.addClients(new Client[] {client}, false);
+            fail("Project not belongs to client, IAE expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Tests the {@link ClientUtility#updateClient(Client)} method failure.
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testUpdateClient_NoCompanyId() throws Exception {
+        Client client = FailureTestHelper.createInsufficientClient();
+        client.setName("kr");
+        client.setCreationDate(new Date());
+        client.setModificationDate(new Date());
+        try {
+            utility.updateClient(client);
+            fail("Company id not set, IDE expected.");
+        } catch (InsufficientDataException ex) {
             // ok
         }
     }

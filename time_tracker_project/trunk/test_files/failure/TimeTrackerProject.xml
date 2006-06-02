@@ -18,20 +18,18 @@
 		</Property>
 
 	</Config>
-
-
 	<!-- Configuration of the DatabseSearchUtility used to search projects -->
 	<Config
 		name="com.cronos.timetracker.project.persistence.DatabaseSearchUtility.projects">
 		<!--The SQL query template, required-->
 		<Property name="query_template">
 			<Value>
-				select distinct Projects.ProjectsID from Projects,
-				ProjectWorkers, ProjectManagers, ClientProjects where
-				(Projects.ProjectsID = ProjectWorkers.ProjectsID)
-				and(Projects.ProjectsID =
-				ClientProjects.ProjectsID)and(Projects.ProjectsID =
-				ProjectManagers.ProjectsID)and
+				select distinct project.project_id from project,
+				project_worker, project_manager, client_project where
+				(project.project_id = project_worker.project_id)
+				and(project.project_id =
+				client_project.project_id)and(project.project_id =
+				project_manager.project_id)and
 			</Value>
 		</Property>
 		<!-- The aliases of the DB column names, required-->
@@ -39,36 +37,39 @@
 		<!-- Name of a particular Property is a name of the alias -->
 			<Property name="Name">
 			<!-- Value of a particular Property is a Value of the alias -->
-				<Value>Projects.Name</Value>
+				<Value>project.name</Value>
 				<Property name="Description"></Property>
-				<Value>Projects.Description</Value>
+				<Value>project.description</Value>
+			</Property>
+			<Property name="Company ID">
+				<Value>project.company_id</Value>
 			</Property>
 			<Property name="Project Manager ">
-				<Value>ProjectManagers.UsersID</Value>
+				<Value>project_manager.user_account_id</Value>
 			</Property>
 			<Property name="Project Worker ">
-				<Value>ProjectWorkers.UsersID</Value>
+				<Value>project_worker.user_account_id</Value>
 			</Property>
 			<Property name="Project Client ">
-				<Value>ClientProjects.ClientsID</Value>
+				<Value>client_project.client_id</Value>
 			</Property>
 			<Property name="Creation User ">
-				<Value>Projects.CreationUser</Value>
+				<Value>project.creation_user</Value>
 			</Property>
 			<Property name="Modification User ">
-				<Value>Projects.ModificationUser</Value>
+				<Value>project.modification_user</Value>
 			</Property>
 			<Property name="Start Date ">
-				<Value>Projects.StartDate</Value>
+				<Value>project.start_date</Value>
 			</Property>
 			<Property name="End Date ">
-				<Value>Projects.EndDate</Value>
+				<Value>project.end_date</Value>
 			</Property>
 			<Property name="Creation Date ">
-				<Value>Projects.CreationDate</Value>
+				<Value>project.creation_date</Value>
 			</Property>
 			<Property name="Modification Date ">
-				<Value>Projects.ModificationDate</Value>
+				<Value>project.modification_date</Value>
 			</Property>
 		</Property>
 	</Config>
@@ -79,7 +80,7 @@
 		<!--The SQL query template, required-->
 		<Property name="query_template">
 			<Value>
-				select distinct Clients.ClientsID from Clients where
+				select distinct client.client_id from client where
 			</Value>
 		</Property>
 		<!-- The aliases of the DB column names, required-->
@@ -87,20 +88,24 @@
 		<!-- Name of a particular Property is a name of the alias -->
 			<Property name="Name">
 			<!-- Value of a particular Property is a Value of the alias -->
-				<Value>Clients.Name</Value>
+				<Value>client.name</Value>
+			</Property>
+			<Property name="Company ID">
+				<Value>client.company_id</Value>
 			</Property>
 			<Property name="Creation User">
-				<Value>Clients.CreationUser</Value>
+				<Value>client.creation_user</Value>
 			</Property>
 			<Property name="Modification User">
-				<Value>Clients.ModificationUser</Value>
+				<Value>client.modification_user</Value>
 			</Property>
 			<Property name="Creation Date">
-				<Value>Clients.CreationDate</Value>
+				<Value>client.creation_date</Value>
 			</Property>
 			<Property name="Modification Date">
-				<Value>Clients.ModificationDate</Value>
+				<Value>client.modification_date</Value>
 			</Property>
 		</Property>
 	</Config>
+
 </CMConfig>

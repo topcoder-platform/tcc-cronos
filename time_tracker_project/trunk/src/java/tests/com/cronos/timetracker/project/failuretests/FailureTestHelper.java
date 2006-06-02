@@ -26,6 +26,8 @@ import com.topcoder.util.config.ConfigManager;
  * @version 1.0
  * @author kr00tki
  * @version 1.1
+ * @author costty000
+ * @version 2.0
  */
 public class FailureTestHelper {
     /**
@@ -71,7 +73,7 @@ public class FailureTestHelper {
      */
     public static void loadConfig() throws Exception {
         ConfigManager config = ConfigManager.getInstance();
-
+        unloadConfig();
         config.add(CONFIG_FILE);
         config.add(DB_CONFIG_FILE);
         config.add(SEARCH_UTILITY_CONFIG_FILE);
@@ -139,13 +141,16 @@ public class FailureTestHelper {
      * Creates a valid project with the specified id for testing. All necessary fields of the project are filled.
      *
      * @param projectId the id of the project
+     * @param companyId the company id.
      *
      * @return a valid project
      */
-    public static Project createProject(int projectId) {
+    public static Project createProject(int projectId, int companyId) {
         Project project = new Project();
 
         project.setId(projectId);
+        project.setCompanyId(companyId);
+        project.setManagerId(1);
         project.setName("name");
         project.setDescription("description");
         project.setCreationUser("creationUser");
@@ -487,13 +492,13 @@ public class FailureTestHelper {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         try {
-            stmt.executeUpdate("DELETE FROM ProjectWorkers");
-            stmt.executeUpdate("DELETE FROM ProjectTimes");
-            stmt.executeUpdate("DELETE FROM ProjectManagers");
-            stmt.executeUpdate("DELETE FROM ProjectExpenses");
-            stmt.executeUpdate("DELETE FROM ClientProjects");
-            stmt.executeUpdate("DELETE FROM Projects");
-            stmt.executeUpdate("DELETE FROM Clients");
+            stmt.executeUpdate("DELETE FROM project_worker");
+            stmt.executeUpdate("DELETE FROM project_time");
+            stmt.executeUpdate("DELETE FROM project_manager");
+            stmt.executeUpdate("DELETE FROM project_expense");
+            stmt.executeUpdate("DELETE FROM client_project");
+            stmt.executeUpdate("DELETE FROM project");
+            stmt.executeUpdate("DELETE FROM client");
         } finally {
             stmt.close();
             closeConnection(conn);

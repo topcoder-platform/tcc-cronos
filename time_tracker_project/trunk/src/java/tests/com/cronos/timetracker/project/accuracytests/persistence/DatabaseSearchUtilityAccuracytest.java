@@ -26,14 +26,14 @@ import com.cronos.timetracker.project.searchfilters.ValueFilter;
 /**
  * The class <code>DatabaseSearchUtilityAccuracytest</code> contains tests for the class
  * {@link <code>DatabaseSearchUtility</code>}.
- * @author FireIce
- * @version 1.1
+ * @author FireIce, costty
+ * @version 2.0
  */
 public class DatabaseSearchUtilityAccuracytest extends TestCase {
     /**
      * The SQL statement to insert a client.
      */
-    private static final String SQL_INS_CLIENT = "INSERT INTO Clients VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_CLIENT = "INSERT INTO client VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * The DatabaseSearchUtility instance to test against.
@@ -140,11 +140,12 @@ public class DatabaseSearchUtilityAccuracytest extends TestCase {
         PreparedStatement pstmt = connection.prepareStatement(SQL_INS_CLIENT);
 
         pstmt.setInt(1, 1);
-        pstmt.setString(2, "name");
-        pstmt.setTimestamp(3, new Timestamp(date.getTime()));
-        pstmt.setString(4, "creationUser");
-        pstmt.setTimestamp(5, new Timestamp(date.getTime()));
-        pstmt.setString(6, "modificationUser");
+        pstmt.setInt(2, 1);
+        pstmt.setString(3, "name");
+        pstmt.setTimestamp(4, new Timestamp(date.getTime()));
+        pstmt.setString(5, "creationUser");
+        pstmt.setTimestamp(6, new Timestamp(date.getTime()));
+        pstmt.setString(7, "modificationUser");
 
         pstmt.executeUpdate();
         pstmt.close();

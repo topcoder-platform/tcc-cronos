@@ -148,6 +148,7 @@ public final class StressHelper1_1 extends TestCase {
         
         // Set the properties of client.
         client.setId(clientId);
+        client.setCompanyId(1);
         client.setName("name" + clientId);
         client.setCreationUser("creationUser" + clientId);
         client.setModificationUser("modificationUser" + clientId);
@@ -167,6 +168,7 @@ public final class StressHelper1_1 extends TestCase {
 
         // Set the properties of Project.
         project.setId(projectId);
+        project.setCompanyId(1);
         project.setName("name" + projectId);
         project.setDescription("description" + projectId);
         project.setCreationUser("creationUser" + projectId);
@@ -183,8 +185,8 @@ public final class StressHelper1_1 extends TestCase {
      */
     static final void clearTables() throws Exception {
         final String[] tableNames = {
-                "ProjectTimes", "ProjectExpenses", "ProjectManagers", "ProjectWorkers",
-                "ClientProjects", "Projects", "Clients"
+                "project_time", "project_expense", "project_manager", "project_worker",
+                "client_project", "project", "client"
             };
         
         Connection conn = createConnection();

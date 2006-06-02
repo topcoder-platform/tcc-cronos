@@ -32,9 +32,12 @@ import com.cronos.timetracker.project.searchfilters.ValueFilter;
  * <p>
  * This class contains the accuracy unit tests for InformixTimeTrackerProjectPersistence.java.
  * </p>
+ *
  * @author FireIce
  * @author PE
- * @version 1.1
+ * @author costty000
+ * @author kr00tki
+ * @version 2.0
  * @since 1.0
  */
 public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
@@ -54,8 +57,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Sets up the test environment.
      * </p>
-     * @throws Exception
-     *             throw to JUnit
+     *
+     * @throws Exception throw to JUnit
      */
     protected void setUp() throws Exception {
         Helper.addConfig();
@@ -69,11 +72,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Clear the test environment.
      * </p>
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
-    	persistence.closeConnection();
+        persistence.closeConnection();
         Helper.clearTables();
         Helper.closeResources(null, null, connection);
         Helper.clearConfig();
@@ -83,6 +86,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Creates a test suite of the tests contained in this class.
      * </p>
+     *
      * @return a test suite of the tests contained in this class.
      */
     public static Test suite() {
@@ -93,13 +97,13 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of addClient() method. Simple Client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddClientAccuracy1() throws Exception {
         Client client = Helper.createClient(1);
         assertTrue("client should be added successfully", this.persistence.addClient(client));
-        assertEquals("one record should be added into Client", 1, Helper.countTableRows("Clients", connection));
+        assertEquals("one record should be added into Client", 1, Helper.countTableRows("client", connection));
         assertFalse("repeated client should not be added successfully", this.persistence.addClient(client));
     }
 
@@ -107,12 +111,10 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of addClient() method. Complex client.
      * </p>
-     * @param count
-     *            the count of records
-     * @param tableName
-     *            the table name
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @param count the count of records
+     * @param tableName the table name
+     * @throws Exception exception to JUnit
      */
     private void addClientAccuracy(int count, String tableName) throws Exception {
         client.addProject(project);
@@ -125,49 +127,49 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of addClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddClient_ClientsTable() throws Exception {
-        addClientAccuracy(1, "Clients");
+        addClientAccuracy(1, "client");
     }
 
     /**
      * <p>
      * Tests accuracy of addClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddClient_ClientProjectsTable() throws Exception {
-        addClientAccuracy(1, "ClientProjects");
+        addClientAccuracy(1, "client_project");
     }
 
     /**
      * <p>
      * Tests accuracy of addClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddClient_ProjectsTable() throws Exception {
-        addClientAccuracy(1, "Projects");
+        addClientAccuracy(1, "project");
     }
 
     /**
      * <p>
      * Tests accuracy of removeClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testRemoveClientAccuracy() throws Exception {
         client.addProject(project);
         persistence.addClient(client);
 
         assertTrue("Fails to remove existing client", persistence.removeClient(client.getId()));
-        assertEquals("Fails to remove from the Clients table", 0, Helper.countTableRows("Clients", connection));
-        assertEquals("Fails to remove from the ClientProjects table", 0, Helper.countTableRows("ClientProjects",
+        assertEquals("Fails to remove from the client table", 0, Helper.countTableRows("client", connection));
+        assertEquals("Fails to remove from the client_project table", 0, Helper.countTableRows("client_project",
                 connection));
     }
 
@@ -175,8 +177,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of updateClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testUpdateClientAccuracy() throws Exception {
         persistence.addClient(client);
@@ -186,22 +188,22 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         assertTrue("Fails to update the client", persistence.updateClient(client));
 
-        assertEquals("Fails to update the Clients table", "update", persistence.getClient(client.getId()).getName());
+        assertEquals("Fails to update the client table", "update", persistence.getClient(client.getId()).getName());
     }
 
     /**
      * <p>
      * Tests accuracy of addProjectToClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddProjectToClientAccuracy() throws Exception {
         persistence.addClient(client);
 
-        assertTrue("Fails to add project to the client", persistence
-                .addProjectToClient(client.getId(), project, "user"));
-        assertEquals("Fails to insert the new project into Projects table", 1, Helper.countTableRows("Projects",
+        assertTrue("Fails to add project to the client", persistence.addProjectToClient(client.getId(), project,
+                "user"));
+        assertEquals("Fails to insert the new project into project table", 1, Helper.countTableRows("project",
                 connection));
     }
 
@@ -209,8 +211,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of getClientProject() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetClientProjectAccuracy() throws Exception {
         client.addProject(project);
@@ -224,8 +226,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of getAllClientProjects() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetAllClientProjectsAccuracy() throws Exception {
         client.addProject(project);
@@ -242,8 +244,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of getClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetClientAccuracy() throws Exception {
         persistence.addClient(client);
@@ -257,8 +259,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of getAllClients() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetAllClientsAccuracy() throws Exception {
         for (int i = 0; i < 4; i++) {
@@ -274,12 +276,10 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of addProject() method. Complex Project.
      * </p>
-     * @param count
-     *            the count of records
-     * @param tableName
-     *            the table name
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @param count the count of records
+     * @param tableName the table name
+     * @throws Exception exception to JUnit
      */
     private void addProjectAccuracy(int count, String tableName) throws Exception {
         project = Helper.createProject(1);
@@ -300,8 +300,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of updateProject() method.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testUpdateProjectAccuracy() throws Exception {
         persistence.addProject(project);
@@ -310,15 +310,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         assertTrue("Fails to update the project", persistence.updateProject(project));
 
-        assertEquals("Fails to update the Projects table", "update", persistence.getProject(project.getId()).getName());
+        assertEquals("Fails to update the project table", "update", persistence.getProject(project.getId())
+                .getName());
     }
 
     /**
      * <p>
      * Tests accuracy of removeProject() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testRemoveProjectAccuracy() throws Exception {
         for (int i = 0; i < 4; i++) {
@@ -330,21 +331,21 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
         persistence.addProject(project);
         assertTrue("Fails to remove existing project", persistence.removeProject(project.getId()));
 
-        assertEquals("Fails to remove from the Projects table", 0, Helper.countTableRows("Projects", connection));
-        assertEquals("Fails to remove from the ProjectExpenses table", 0, Helper.countTableRows("ProjectExpenses",
+        assertEquals("Fails to remove from the project table", 0, Helper.countTableRows("project", connection));
+        assertEquals("Fails to remove from the project_expense table", 0, Helper.countTableRows("project_expense",
                 connection));
-        assertEquals("Fails to remove from the ProjectManagers table", 0, Helper.countTableRows("ProjectManagers",
+        assertEquals("Fails to remove from the project_manager table", 0, Helper.countTableRows("project_manager",
                 connection));
-        assertEquals("Fails to remove from the ProjectTimes table", 0, Helper
-                .countTableRows("ProjectTimes", connection));
+        assertEquals("Fails to remove from the project_time table", 0, Helper.countTableRows("project_time",
+                connection));
     }
 
     /**
      * <p>
      * Tests accuracy of removeAllProjects() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testRemoveAllProjectsAccuracy() throws Exception {
         for (int i = 0; i < 4; i++) {
@@ -353,31 +354,32 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
         }
 
         persistence.removeAllProjects();
-        assertEquals("Fails to remove from the Projects table", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("Fails to remove from the project table", 0, Helper.countTableRows("project", connection));
     }
 
     /**
      * <p>
      * Tests accuracy of assignClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAssignClientAccuracy() throws Exception {
         persistence.addClient(client);
         persistence.addProject(project);
 
-        assertTrue("Fails to add the client to the project", persistence.assignClient(project.getId(), client.getId(),
-                "user"));
-        assertEquals("Fails to add to ClientProjects table", 1, Helper.countTableRows("ClientProjects", connection));
+        assertTrue("Fails to add the client to the project", persistence.assignClient(project.getId(), client
+                .getId(), "user"));
+        assertEquals("Fails to add to client_project table", 1, Helper
+                .countTableRows("client_project", connection));
     }
 
     /**
      * <p>
      * Tests accuracy of getProjectClient() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetProjectClientAccuracy() throws Exception {
         client.addProject(project);
@@ -390,8 +392,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of assignProjectManager() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAssignProjectManagerAccuracy() throws Exception {
         persistence.addProject(project);
@@ -407,8 +409,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of getProjectManager() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetProjectManagerAccuracy() throws Exception {
         project.setManagerId(0);
@@ -426,8 +428,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of addWorker() method. Complex client.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddWorkerAccuracy() throws Exception {
         persistence.addProject(project);
@@ -442,37 +444,38 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of addExpenseEntry() method.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddExpenseEntryAccuracy() throws Exception {
         project = Helper.createProject(1);
         persistence.addProject(project);
         persistence.addExpenseEntry(1, 1, "user");
-        assertEquals("ProjectExpenses table should be updated", 1, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table should be updated", 1, Helper.countTableRows("project_expense",
+                connection));
     }
 
     /**
      * <p>
      * Tests accuracy of addTimeEntry() method.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testAddTimeEntryAccuracy() throws Exception {
         project = Helper.createProject(1);
         persistence.addProject(project);
 
         persistence.addTimeEntry(1, 1, "user");
-        assertEquals("ProjectTimes table should be updated", 1, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table should be updated", 1, Helper.countTableRows("project_time", connection));
     }
 
     /**
      * <p>
      * Tests accuracy of getProject() method.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetProjectAccuracy() throws Exception {
         project = Helper.createProject(1);
@@ -484,8 +487,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of getAllProjects() method.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testGetAllProjectsAccuracy() throws Exception {
         Project[] projects = new Project[2];
@@ -503,8 +506,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of RemoveProjectFromClient() method.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testRemoveProjectFromClientAccuracy() throws Exception {
         client.addProject(project);
@@ -517,8 +520,8 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
      * <p>
      * Tests accuracy of closeConnection() method.
      * </p>
-     * @throws Exception
-     *             exception to JUnit
+     *
+     * @throws Exception exception to JUnit
      */
     public void testCloseConnectionAccuary() throws Exception {
         persistence.closeConnection();
@@ -533,13 +536,13 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for searchForProjects method.
-     * @throws Excpetion
-     *             to Junit
+     *
+     * @throws Excpetion to Junit
      */
     public void testSearchForProjectsAccuracy() throws Exception {
         // make user the table has no data.
 
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
 
         Filter filter = new ValueFilter(CompareOperation.LIKE, "Creation User", "creation%");
         Project[] projects = persistence.searchForProjects(filter);
@@ -586,7 +589,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProject(project);
 
-        assertEquals("Projects table not empty", 2, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 2, Helper.countTableRows("project", connection));
 
         filter = new ValueFilter(CompareOperation.EQUAL, "Name", "name");
         projects = persistence.searchForProjects(filter);
@@ -617,13 +620,13 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for searchForClients method.
-     * @throws Excpetion
-     *             to Junit
+     *
+     * @throws Excpetion to Junit
      */
     public void testSearchForClientsAccuracy() throws Exception {
         // make user the table has no data.
 
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("project_time", connection));
 
         Filter filter = new ValueFilter(CompareOperation.LIKE, "Creation User", "creation%");
         Client[] clients = persistence.searchForClients(filter);
@@ -640,7 +643,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
         assertNotNull(clients);
         assertEquals("should return 0-length array", 0, clients.length);
 
-        Filter leftOperand = new ValueFilter(CompareOperation.EQUAL, "Name", "name");
+        Filter leftOperand = new ValueFilter(CompareOperation.EQUAL, "Name", "name_1");
         Filter rightOperand = new ValueFilter(CompareOperation.EQUAL, "Creation User", "creationUser");
 
         filter = new BinaryOperationFilter(BinaryOperation.AND, leftOperand, rightOperand);
@@ -667,7 +670,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClient(client);
 
-        assertEquals("Clients table not empty", 2, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 2, Helper.countTableRows("client", connection));
 
         filter = new ValueFilter(CompareOperation.LIKE, "Creation User", "creation%");
         clients = persistence.searchForClients(filter);
@@ -698,11 +701,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for addProjects(Projects[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddProjectsAccuracyFalse() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -712,16 +715,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, false);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
     }
 
     /**
      * accuracy test for addProjects(Projects[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddProjectsAccuracyTrue() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -731,16 +734,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, true);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
     }
 
     /**
      * accuracy test for addClients(Client[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddClientsAccuracyFalse() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -750,16 +753,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, false);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
     }
 
     /**
      * accuracy test for addProjects(Projects[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddClientsAccuracyTrue() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -769,16 +772,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, true);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
     }
 
     /**
      * accuracy test for removeProjects(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveProjectsAccuracyTrue() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -788,7 +791,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, false);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
 
         int[] part = new int[size / 2];
         for (int i = 0; i < size / 2; i++) {
@@ -796,16 +799,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
         }
         persistence.removeProjects(part, true);
 
-        assertEquals("Projects table not empty", size - size / 2, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size - size / 2, Helper.countTableRows("project", connection));
     }
 
     /**
      * accuracy test for removeProjects(Projects[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveProjectsAccuracyFalse() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -815,7 +818,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, true);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
 
         int[] part = new int[size / 2];
         for (int i = 0; i < size / 2; i++) {
@@ -823,16 +826,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
         }
         persistence.removeProjects(part, false);
 
-        assertEquals("Projects table not empty", size - size / 2, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size - size / 2, Helper.countTableRows("project", connection));
     }
 
     /**
      * accuracy test for removeClients(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveClientsAccuracyTrue() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -842,7 +845,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, false);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
 
         int[] part = new int[size / 2];
         for (int i = 0; i < size / 2; i++) {
@@ -850,16 +853,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
         }
         persistence.removeClients(part, true);
 
-        assertEquals("Clients table not empty", size - size / 2, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size - size / 2, Helper.countTableRows("client", connection));
     }
 
     /**
      * accuracy test for removeProjects(Projects[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveClientsAccuracyFalse() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -869,7 +872,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, false);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
 
         int[] part = new int[size / 2];
         for (int i = 0; i < size / 2; i++) {
@@ -877,16 +880,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
         }
         persistence.removeClients(part, true);
 
-        assertEquals("Clients table not empty", size - size / 2, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size - size / 2, Helper.countTableRows("client", connection));
     }
 
     /**
      * accuracy test for updateProjects(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testUpdateProjectsAccuracyFalse() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -896,7 +899,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, false);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
         Project[] toUpdate = new Project[1];
         toUpdate[0] = projects[2];
 
@@ -910,12 +913,12 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
     }
 
     /**
-     * accuracy test for updateProjects(Projects[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     * accuracy test for updateProjects(project[], boolean) method.
+     *
+     * @throws Exception to JUnit
      */
     public void testUpdateProjectsAccuracyTrue() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -925,7 +928,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, true);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
         Project[] toUpdate = new Project[1];
         toUpdate[0] = projects[2];
 
@@ -940,11 +943,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for updateClients(Client[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testUpdateClientsAccuracyFalse() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -954,7 +957,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, false);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
         Client[] toUpdate = new Client[1];
         toUpdate[0] = clients[2];
 
@@ -969,11 +972,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for updateClients(Client[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testUpdateClientsAccuracyTrue() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -983,7 +986,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, false);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
         Client[] toUpdate = new Client[1];
         toUpdate[0] = clients[2];
 
@@ -998,11 +1001,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for getProjects(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testGetProjectsAccuracyFalse() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -1012,7 +1015,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, false);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
 
         int[] ids = new int[5];
         for (int i = 0; i < 5; i++) {
@@ -1026,11 +1029,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for updateProjects(Projects[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testGetProjectsAccuracyTrue() throws Exception {
-        assertEquals("Projects table not empty", 0, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", 0, Helper.countTableRows("project", connection));
         int size = 10;
         Project[] projects = new Project[size];
 
@@ -1040,7 +1043,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addProjects(projects, true);
 
-        assertEquals("Projects table not empty", size, Helper.countTableRows("Projects", connection));
+        assertEquals("project table not empty", size, Helper.countTableRows("project", connection));
 
         int[] ids = new int[5];
         for (int i = 0; i < 5; i++) {
@@ -1054,11 +1057,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for getClients(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testGetClientsAccuracyFalse() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -1068,7 +1071,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, false);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
 
         int[] ids = new int[5];
         for (int i = 0; i < 5; i++) {
@@ -1082,11 +1085,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for getClients(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testGetClientsAccuracyTrue() throws Exception {
-        assertEquals("Clients table not empty", 0, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", 0, Helper.countTableRows("client", connection));
         int size = 10;
         Client[] clients = new Client[size];
 
@@ -1096,7 +1099,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addClients(clients, false);
 
-        assertEquals("Clients table not empty", size, Helper.countTableRows("Clients", connection));
+        assertEquals("client table not empty", size, Helper.countTableRows("client", connection));
 
         int[] ids = new int[5];
         for (int i = 0; i < 5; i++) {
@@ -1110,11 +1113,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for addWorkers(ProjectWorker[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddWorkersAccuracyFalse() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1127,16 +1130,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, false);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
     }
 
     /**
      * accuracy test for addWorkers(ProjectWorker[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddWorkersAccuracyTrue() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1149,16 +1152,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, true);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
     }
 
     /**
      * accuracy test for removeWorkers(int[],int, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveWorkersAccuracyFalse() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1171,7 +1174,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, false);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         int[] workerIds = new int[size / 2];
 
@@ -1181,17 +1184,17 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.removeWorkers(workerIds, project.getId(), false);
 
-        assertEquals("ProjectWorkers table not empty", size - size / 2, Helper.countTableRows("ProjectWorkers",
+        assertEquals("project_worker table not empty", size - size / 2, Helper.countTableRows("project_worker",
                 connection));
     }
 
     /**
      * accuracy test for removeWorkers(int[],int, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveWorkersAccuracyTrue() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1204,7 +1207,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, true);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         int[] workerIds = new int[size / 2];
 
@@ -1214,17 +1217,17 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.removeWorkers(workerIds, project.getId(), true);
 
-        assertEquals("ProjectWorkers table not empty", size - size / 2, Helper.countTableRows("ProjectWorkers",
+        assertEquals("project_worker table not empty", size - size / 2, Helper.countTableRows("project_worker",
                 connection));
     }
 
     /**
      * accuracy test for updateWorkers(ProjectWorker[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testUpdateWorkersAccuracyFalse() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1237,7 +1240,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, false);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         for (int i = 0; i < size; i++) {
             workers[i].setModificationUser("FireIce");
@@ -1245,12 +1248,12 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.updateWorkers(workers, false);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         ResultSet rs = null;
         try {
             rs = connection.createStatement().executeQuery(
-                    "SELECT count(*) FROM ProjectWorkers WHERE ProjectWorkers.ModificationUser = 'FireIce'");
+                    "SELECT count(*) FROM project_worker WHERE project_worker.modification_user = 'FireIce'");
             assertTrue(rs.next());
             assertEquals("query result not correct", size, rs.getInt(1));
         } finally {
@@ -1262,11 +1265,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for updateWorkers(ProjectWorker[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testUpdateWorkersAccuracyTrue() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1279,7 +1282,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, true);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         for (int i = 0; i < size; i++) {
             workers[i].setModificationUser("FireIce");
@@ -1287,12 +1290,12 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.updateWorkers(workers, true);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         ResultSet rs = null;
         try {
             rs = connection.createStatement().executeQuery(
-                    "SELECT count(*) FROM ProjectWorkers WHERE ProjectWorkers.ModificationUser = 'FireIce'");
+                    "SELECT count(*) FROM project_worker WHERE project_worker.modification_user = 'FireIce'");
             assertTrue(rs.next());
             assertEquals("query result not correct", size, rs.getInt(1));
         } finally {
@@ -1304,11 +1307,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for getWorkers(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testGetWorkersAccuracyFalse() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1321,7 +1324,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, false);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         int[] ids = new int[2];
         ids[0] = 1;
@@ -1334,11 +1337,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for getWorkers(int[], boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testGetWorkersAccuracyTrue() throws Exception {
-        assertEquals("ProjectWorkers table not empty", 0, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", 0, Helper.countTableRows("project_worker", connection));
         int size = 4;
         ProjectWorker[] workers = new ProjectWorker[size];
         // add project
@@ -1351,7 +1354,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addWorkers(workers, true);
 
-        assertEquals("ProjectWorkers table not empty", size, Helper.countTableRows("ProjectWorkers", connection));
+        assertEquals("project_worker table not empty", size, Helper.countTableRows("project_worker", connection));
 
         int[] ids = new int[2];
         ids[0] = 1;
@@ -1364,11 +1367,11 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
     /**
      * accuracy test for addTimeEntries(int[], int, String, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddTimeEntriesAccuracyFalse() throws Exception {
-        assertEquals("ProjectTimes table not empty", 0, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", 0, Helper.countTableRows("project_time", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1379,16 +1382,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addTimeEntries(entryids, project.getId(), "FireIce", false);
 
-        assertEquals("ProjectTimes table not empty", size, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", size, Helper.countTableRows("project_time", connection));
     }
 
     /**
      * accuracy test for addTimeEntries(int[], int, String, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddTimeEntriesAccuracyTrue() throws Exception {
-        assertEquals("ProjectTimes table not empty", 0, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", 0, Helper.countTableRows("project_time", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1399,16 +1402,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addTimeEntries(entryids, project.getId(), "FireIce", true);
 
-        assertEquals("ProjectTimes table not empty", size, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", size, Helper.countTableRows("project_time", connection));
     }
 
     /**
      * accuracy test for removeTimeEntries(int[], int, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveTimeEntriesAccuracyFalse() throws Exception {
-        assertEquals("ProjectTimes table not empty", 0, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", 0, Helper.countTableRows("project_time", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1419,7 +1422,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addTimeEntries(entryids, project.getId(), "FireIce", false);
 
-        assertEquals("ProjectTimes table not empty", size, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", size, Helper.countTableRows("project_time", connection));
 
         entryids = new int[size / 2];
 
@@ -1429,16 +1432,17 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.removeTimeEntries(entryids, project.getId(), false);
 
-        assertEquals("ProjectTimes table not empty", size - size / 2, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", size - size / 2, Helper.countTableRows("project_time",
+                connection));
     }
 
     /**
      * accuracy test for removeTimeEntries(int[], int, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveTimeEntriesAccuracyTrue() throws Exception {
-        assertEquals("ProjectTimes table not empty", 0, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", 0, Helper.countTableRows("project_time", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1449,7 +1453,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addTimeEntries(entryids, project.getId(), "FireIce", true);
 
-        assertEquals("ProjectTimes table not empty", size, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", size, Helper.countTableRows("project_time", connection));
 
         entryids = new int[size / 2];
 
@@ -1459,16 +1463,17 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.removeTimeEntries(entryids, project.getId(), true);
 
-        assertEquals("ProjectTimes table not empty", size - size / 2, Helper.countTableRows("ProjectTimes", connection));
+        assertEquals("project_time table not empty", size - size / 2, Helper.countTableRows("project_time",
+                connection));
     }
 
     /**
      * accuracy test for addExpenseEntries(int[], int, String, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddExpenseEntriesAccuracyFalse() throws Exception {
-        assertEquals("ProjectExpenses table not empty", 0, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", 0, Helper.countTableRows("project_expense", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1479,16 +1484,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addExpenseEntries(entryids, project.getId(), "FireIce", false);
 
-        assertEquals("ProjectExpenses table not empty", size, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", size, Helper.countTableRows("project_expense", connection));
     }
 
     /**
      * accuracy test for addExpenseEntries(int[], int, String, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testAddExpenseEntriesAccuracyTrue() throws Exception {
-        assertEquals("ProjectExpenses table not empty", 0, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", 0, Helper.countTableRows("project_expense", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1499,16 +1504,16 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addExpenseEntries(entryids, project.getId(), "FireIce", true);
 
-        assertEquals("ProjectExpenses table not empty", size, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", size, Helper.countTableRows("project_expense", connection));
     }
 
     /**
      * accuracy test for removeExpenseEntries(int[], int, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveExpenseEntriesAccuracyFalse() throws Exception {
-        assertEquals("ProjectExpenses table not empty", 0, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", 0, Helper.countTableRows("project_expense", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1519,7 +1524,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addExpenseEntries(entryids, project.getId(), "FireIce", false);
 
-        assertEquals("ProjectExpenses table not empty", size, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", size, Helper.countTableRows("project_expense", connection));
 
         entryids = new int[size / 2];
 
@@ -1529,17 +1534,17 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.removeExpenseEntries(entryids, project.getId(), false);
 
-        assertEquals("ProjectExpenses table not empty", size - size / 2, Helper.countTableRows("ProjectExpenses",
+        assertEquals("project_expense table not empty", size - size / 2, Helper.countTableRows("project_expense",
                 connection));
     }
 
     /**
      * accuracy test for removeExpenseEntries(int[], int, boolean) method.
-     * @throws Exception
-     *             to JUnit
+     *
+     * @throws Exception to JUnit
      */
     public void testRemoveExpenseEntriesAccuracyTrue() throws Exception {
-        assertEquals("ProjectExpenses table not empty", 0, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", 0, Helper.countTableRows("project_expense", connection));
         int size = 4;
         int[] entryids = new int[size];
         // add project
@@ -1550,7 +1555,7 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.addExpenseEntries(entryids, project.getId(), "FireIce", true);
 
-        assertEquals("ProjectExpenses table not empty", size, Helper.countTableRows("ProjectExpenses", connection));
+        assertEquals("project_expense table not empty", size, Helper.countTableRows("project_expense", connection));
 
         entryids = new int[size / 2];
 
@@ -1560,8 +1565,181 @@ public class InformixTimeTrackerProjectPersistenceTest extends TestCase {
 
         persistence.removeExpenseEntries(entryids, project.getId(), true);
 
-        assertEquals("ProjectExpenses table not empty", size - size / 2, Helper.countTableRows("ProjectExpenses",
+        assertEquals("project_expense table not empty", size - size / 2, Helper.countTableRows("project_expense",
                 connection));
     }
 
+    // since 2.0
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForClient</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForClient() throws Exception {
+        Client client = Helper.createClient(1);
+        client.setCompanyId(2);
+        persistence.addClient(client);
+
+        // get the company id.
+        assertEquals("Incorrect company id.", 2, persistence.getCompanyIdForClient(1));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForClient</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForClient_NotFound() throws Exception {
+        assertEquals("Client not exists", -1, persistence.getCompanyIdForClient(5));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForProject</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForProject() throws Exception {
+        Project project = Helper.createProject(10);
+        project.setCompanyId(1);
+        persistence.addProject(project);
+
+        // get the company id
+        assertEquals("Incorrect company id.", 1, persistence.getCompanyIdForProject(10));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForProject</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForProject_NotFound() throws Exception {
+        assertEquals("Project not exists", -1, persistence.getCompanyIdForProject(5));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForTimeEntry</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForTimeEntry() throws Exception {
+        // this time entry is loaded in the init script
+        assertEquals("Incorrect company id.", 1, persistence.getCompanyIdForTimeEntry(0));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForTimeEntry</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForTimeEntry_NotFound() throws Exception {
+        assertEquals("Time entry not exists.", -1, persistence.getCompanyIdForTimeEntry(110));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForExpenseEntry</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForExpenseEntry() throws Exception {
+        // this expense entry is loaded in the init script
+        assertEquals("Incorrect company id.", 1, persistence.getCompanyIdForExpenseEntry(0));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForExpenseEntry</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForExpenseEntry_NotFound() throws Exception {
+        assertEquals("Expense entry not exists.", -1, persistence.getCompanyIdForExpenseEntry(110));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForUserAccount</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForUserAccount() throws Exception {
+        // this expense entry is loaded in the init script
+        assertEquals("Incorrect company id.", 1, persistence.getCompanyIdForUserAccount(400));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>getCompanyIdForUserAccount</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testGetCompanyIdForUserAccount_NotFound() throws Exception {
+        assertEquals("User account not exists.", -1, persistence.getCompanyIdForUserAccount(110));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>existClientWithNameForCompany</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testExistClientWithNameForCompany_IsNew() throws Exception {
+        Client client = Helper.createClient(10);
+        client.setName("kr");
+        client.setCompanyId(1);
+
+        assertFalse("Client should not exist", persistence.existClientWithNameForCompany(client, true));
+
+        // 2nd case, name exists
+        persistence.addClient(client);
+        assertTrue("Client should exist", persistence.existClientWithNameForCompany(client, true));
+    }
+
+    /**
+     * <c>
+     * Tests the accuracy of <code>existClientWithNameForCompany</code> method.
+     * </c>
+     *
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public void testExistClientWithNameForCompany_IsNotNew() throws Exception {
+        Client client = Helper.createClient(10);
+        client.setName("kr");
+        client.setCompanyId(1);
+
+        assertFalse("Client should not exist", persistence.existClientWithNameForCompany(client, false));
+
+        // 2nd case, name should not exists
+        persistence.addClient(client);
+        assertFalse("Client shouldn't exist", persistence.existClientWithNameForCompany(client, false));
+    }
 }

@@ -11,15 +11,15 @@ import com.cronos.timetracker.project.searchfilters.Filter;
 
 import java.util.List;
 
-
 /**
- * A simple implementation of the TimeTrackerProjectPersistence interface for testing. It has an additional method
- * which returns the name of the last method being called. The argument(s) passed to the method can also be retrieved
- * by corresponding getter methods.
+ * A simple implementation of the TimeTrackerProjectPersistence interface for
+ * testing. It has an additional method which returns the name of the last
+ * method being called. The argument(s) passed to the method can also be
+ * retrieved by corresponding getter methods.
  *
- * @author colau
+ * @author colau, costty000
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  *
  * @since 1.0
  */
@@ -119,6 +119,20 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
      */
     private Filter lastFilter = null;
 
+    private int lastClientIdForCompany = -1;
+
+    private int lastProjectIdForCompany = -1;
+
+    private int lastTimeEntryId = -1;
+
+    private int lastExpenseEntryId = -1;
+
+    private int lastUserAccountId = -1;
+
+    private Client lastClientForNameSeacrh = null;
+
+    private boolean lastWasNewForClientNameSeacrh = false;
+
     /**
      * The name of the last method being called.
      */
@@ -127,7 +141,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Creates a new instance of SimplePersistence.
      *
-     * @param dbNamespace the namespace of the DB Connection Factory configuration file
+     * @param dbNamespace
+     *            the namespace of the DB Connection Factory configuration file
      */
     public SimplePersistence(String dbNamespace) {
     }
@@ -135,7 +150,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addClient() method.
      *
-     * @param client the client to add
+     * @param client
+     *            the client to add
      *
      * @return false
      */
@@ -148,9 +164,12 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addExpenseEntry() method.
      *
-     * @param entryId the id of the expense entry
-     * @param projectId the id of the project
-     * @param user the user who created the expense entry for the project
+     * @param entryId
+     *            the id of the expense entry
+     * @param projectId
+     *            the id of the project
+     * @param user
+     *            the user who created the expense entry for the project
      *
      * @return false
      */
@@ -165,7 +184,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addProject() method.
      *
-     * @param project the project to add
+     * @param project
+     *            the project to add
      *
      * @return false
      */
@@ -178,9 +198,12 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addProjectToClient() method.
      *
-     * @param clientId the id of the client
-     * @param project the project to add to the client
-     * @param user the user who assigned the client for the project
+     * @param clientId
+     *            the id of the client
+     * @param project
+     *            the project to add to the client
+     * @param user
+     *            the user who assigned the client for the project
      *
      * @return false
      */
@@ -195,9 +218,12 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addTimeEntry() method.
      *
-     * @param entryId the id of the time entry
-     * @param projectId the id of the project
-     * @param user the user who created the time entry for the project
+     * @param entryId
+     *            the id of the time entry
+     * @param projectId
+     *            the id of the project
+     * @param user
+     *            the user who created the time entry for the project
      *
      * @return false
      */
@@ -212,7 +238,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addWorker() method.
      *
-     * @param projectWorker the project worker to assign
+     * @param projectWorker
+     *            the project worker to assign
      *
      * @return false
      */
@@ -225,9 +252,12 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the assignClient() method.
      *
-     * @param projectId the id of the project
-     * @param clientId the id of the client
-     * @param user the user who assigned the client for the project
+     * @param projectId
+     *            the id of the project
+     * @param clientId
+     *            the id of the client
+     * @param user
+     *            the user who assigned the client for the project
      *
      * @return false
      */
@@ -242,7 +272,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the assignProjectManager() method.
      *
-     * @param projectManager the project manager to assign
+     * @param projectManager
+     *            the project manager to assign
      *
      * @return false
      */
@@ -262,7 +293,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getAllClientProjects() method.
      *
-     * @param clientId the id of the client
+     * @param clientId
+     *            the id of the client
      *
      * @return null
      */
@@ -295,7 +327,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getClient() method.
      *
-     * @param clientId the id of the client
+     * @param clientId
+     *            the id of the client
      *
      * @return null
      */
@@ -308,8 +341,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getClientProject() method.
      *
-     * @param clientId the id of the client
-     * @param projectId the id of the project
+     * @param clientId
+     *            the id of the client
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -323,7 +358,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getExpenseEntries() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -336,7 +372,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getProject() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -349,7 +386,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getProjectClient() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -362,7 +400,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getProjectManager() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -375,7 +414,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getTimeEntries() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -388,8 +428,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getWorker() method.
      *
-     * @param workerId the id of the worker
-     * @param projectId the id of the project
+     * @param workerId
+     *            the id of the worker
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -403,7 +445,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getWorkers() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return null
      */
@@ -430,7 +473,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeClient() method.
      *
-     * @param clientId the id of the client
+     * @param clientId
+     *            the id of the client
      *
      * @return false
      */
@@ -443,8 +487,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeExpenseEntry() method.
      *
-     * @param entryId the id of the expense entry
-     * @param projectId the id of the project
+     * @param entryId
+     *            the id of the expense entry
+     * @param projectId
+     *            the id of the project
      *
      * @return false
      */
@@ -458,7 +504,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeProject() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return false
      */
@@ -471,8 +518,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeProjectFromClient() method.
      *
-     * @param clientId the id of the client
-     * @param projectId the id of the project
+     * @param clientId
+     *            the id of the client
+     * @param projectId
+     *            the id of the project
      *
      * @return false
      */
@@ -486,8 +535,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeProjectManager() method.
      *
-     * @param managerId the id of the manager
-     * @param projectId the id of the project
+     * @param managerId
+     *            the id of the manager
+     * @param projectId
+     *            the id of the project
      *
      * @return false
      */
@@ -501,8 +552,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeTimeEntry() method.
      *
-     * @param entryId the id of the time entry
-     * @param projectId the id of the project
+     * @param entryId
+     *            the id of the time entry
+     * @param projectId
+     *            the id of the project
      *
      * @return false
      */
@@ -516,8 +569,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeWorker() method.
      *
-     * @param workerId the id of the worker
-     * @param projectId the id of the project
+     * @param workerId
+     *            the id of the worker
+     * @param projectId
+     *            the id of the project
      *
      * @return false
      */
@@ -531,7 +586,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeWorkers() method.
      *
-     * @param projectId the id of the project
+     * @param projectId
+     *            the id of the project
      *
      * @return false
      */
@@ -544,7 +600,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the updateClient() method.
      *
-     * @param client the client to update
+     * @param client
+     *            the client to update
      *
      * @return false
      */
@@ -557,7 +614,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the updateProject() method.
      *
-     * @param project the project to update
+     * @param project
+     *            the project to update
      *
      * @return false
      */
@@ -570,7 +628,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the updateWorker() method.
      *
-     * @param projectWorker the worker to update
+     * @param projectWorker
+     *            the worker to update
      *
      * @return false
      */
@@ -599,16 +658,19 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     }
 
     /**
-     * Returns the project manager passed as the argument of the last method call.
+     * Returns the project manager passed as the argument of the last method
+     * call.
      *
-     * @return the project manager passed as the argument of the last method call
+     * @return the project manager passed as the argument of the last method
+     *         call
      */
     public ProjectManager getLastManager() {
         return lastManager;
     }
 
     /**
-     * Returns the project worker passed as the argument of the last method call.
+     * Returns the project worker passed as the argument of the last method
+     * call.
      *
      * @return the project worker passed as the argument of the last method call
      */
@@ -635,18 +697,22 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     }
 
     /**
-     * Returns the project manager id passed as the argument of the last method call.
+     * Returns the project manager id passed as the argument of the last method
+     * call.
      *
-     * @return the project manager id passed as the argument of the last method call
+     * @return the project manager id passed as the argument of the last method
+     *         call
      */
     public int getLastManagerId() {
         return lastManagerId;
     }
 
     /**
-     * Returns the project worker id passed as the argument of the last method call.
+     * Returns the project worker id passed as the argument of the last method
+     * call.
      *
-     * @return the project worker id passed as the argument of the last method call
+     * @return the project worker id passed as the argument of the last method
+     *         call
      */
     public int getLastWorkerId() {
         return lastWorkerId;
@@ -734,7 +800,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     }
 
     /**
-     * Returns the atomic boolean passed as the argument of the last method call.
+     * Returns the atomic boolean passed as the argument of the last method
+     * call.
      *
      * @return the atomic boolean passed as the argument of the last method call
      */
@@ -763,8 +830,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the updateClients() method.
      *
-     * @param clients the clients to update.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param clients
+     *            the clients to update.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void updateClients(Client[] clients, boolean atomic) {
         lastMethod = "updateClients";
@@ -775,8 +844,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addClients() method.
      *
-     * @param clients the clients to add.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param clients
+     *            the clients to add.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void addClients(Client[] clients, boolean atomic) {
         lastMethod = "addClients";
@@ -787,8 +858,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the updateProjects() method.
      *
-     * @param projects the projects to update.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param projects
+     *            the projects to update.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void updateProjects(Project[] projects, boolean atomic) {
         lastMethod = "updateProjects";
@@ -799,8 +872,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addProjects() method.
      *
-     * @param projects the projects to add.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param projects
+     *            the projects to add.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void addProjects(Project[] projects, boolean atomic) {
         lastMethod = "addProjects";
@@ -811,7 +886,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the searchForProjects() method.
      *
-     * @param searchFilter the search filter to match.
+     * @param searchFilter
+     *            the search filter to match.
      *
      * @return always null.
      */
@@ -824,7 +900,8 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the searchForClients() method.
      *
-     * @param searchFilter the search filter to match.
+     * @param searchFilter
+     *            the search filter to match.
      *
      * @return always null.
      */
@@ -837,12 +914,17 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addExpenseEntries() method.
      *
-     * @param entryIds the ids of the expense entries to add.
-     * @param projectId the id of the project.
-     * @param user the user who created the expense entries for the project.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param entryIds
+     *            the ids of the expense entries to add.
+     * @param projectId
+     *            the id of the project.
+     * @param user
+     *            the user who created the expense entries for the project.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
-    public void addExpenseEntries(int[] entryIds, int projectId, String user, boolean atomic) {
+    public void addExpenseEntries(int[] entryIds, int projectId, String user,
+            boolean atomic) {
         lastMethod = "addExpenseEntries";
         lastEntryIds = entryIds;
         lastProjectId = projectId;
@@ -853,12 +935,17 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addTimeEntries() method.
      *
-     * @param entryIds the ids of the time entries to add.
-     * @param projectId the id of the project.
-     * @param user the user who created the time entries for the project.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param entryIds
+     *            the ids of the time entries to add.
+     * @param projectId
+     *            the id of the project.
+     * @param user
+     *            the user who created the time entries for the project.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
-    public void addTimeEntries(int[] entryIds, int projectId, String user, boolean atomic) {
+    public void addTimeEntries(int[] entryIds, int projectId, String user,
+            boolean atomic) {
         lastMethod = "addTimeEntries";
         lastEntryIds = entryIds;
         lastProjectId = projectId;
@@ -869,8 +956,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getClients() method.
      *
-     * @param clientIds the ids of the clients to retrieve.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param clientIds
+     *            the ids of the clients to retrieve.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      *
      * @return always null.
      */
@@ -884,8 +973,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getProjects() method.
      *
-     * @param projectIds the ids of the projects to retrieve.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param projectIds
+     *            the ids of the projects to retrieve.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      *
      * @return always null.
      */
@@ -899,13 +990,17 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the getWorkers() method.
      *
-     * @param workerIds the ids of the workers to retrieve.
-     * @param projectId the id of the project.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param workerIds
+     *            the ids of the workers to retrieve.
+     * @param projectId
+     *            the id of the project.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      *
      * @return always null.
      */
-    public ProjectWorker[] getWorkers(int[] workerIds, int projectId, boolean atomic) {
+    public ProjectWorker[] getWorkers(int[] workerIds, int projectId,
+            boolean atomic) {
         lastMethod = "getWorkers";
         lastWorkerIds = workerIds;
         lastProjectId = projectId;
@@ -916,8 +1011,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeClients() method.
      *
-     * @param clientIds the ids of clients to delete.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param clientIds
+     *            the ids of clients to delete.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void removeClients(int[] clientIds, boolean atomic) {
         lastMethod = "removeClients";
@@ -928,11 +1025,15 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeExpenseEntries() method.
      *
-     * @param entryIds the ids of the expense entries to delete.
-     * @param projectId the id of the project.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param entryIds
+     *            the ids of the expense entries to delete.
+     * @param projectId
+     *            the id of the project.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
-    public void removeExpenseEntries(int[] entryIds, int projectId, boolean atomic) {
+    public void removeExpenseEntries(int[] entryIds, int projectId,
+            boolean atomic) {
         lastMethod = "removeExpenseEntries";
         lastEntryIds = entryIds;
         lastProjectId = projectId;
@@ -942,8 +1043,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeProjects() method.
      *
-     * @param projectIds the ids of the projects to delete.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param projectIds
+     *            the ids of the projects to delete.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void removeProjects(int[] projectIds, boolean atomic) {
         lastMethod = "removeProjects";
@@ -954,9 +1057,12 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeTimeEntries() method.
      *
-     * @param entryIds the ids of the time entries to delete.
-     * @param projectId the id of the project.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param entryIds
+     *            the ids of the time entries to delete.
+     * @param projectId
+     *            the id of the project.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void removeTimeEntries(int[] entryIds, int projectId, boolean atomic) {
         lastMethod = "removeTimeEntries";
@@ -968,9 +1074,12 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the removeWorkers() method.
      *
-     * @param workerIds the ids of the workers to delete.
-     * @param projectId the id of the project.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param workerIds
+     *            the ids of the workers to delete.
+     * @param projectId
+     *            the id of the project.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void removeWorkers(int[] workerIds, int projectId, boolean atomic) {
         lastMethod = "removeWorkers";
@@ -982,8 +1091,10 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the updateWorkers() method.
      *
-     * @param workers the workers to update.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param workers
+     *            the workers to update.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void updateWorkers(ProjectWorker[] workers, boolean atomic) {
         lastMethod = "updateWorkers";
@@ -994,12 +1105,74 @@ public class SimplePersistence implements TimeTrackerProjectPersistence {
     /**
      * Implementation of the addWorkers() method.
      *
-     * @param workers the project workers to assign.
-     * @param atomic whether the operation should be atomic (all-or-nothing).
+     * @param workers
+     *            the project workers to assign.
+     * @param atomic
+     *            whether the operation should be atomic (all-or-nothing).
      */
     public void addWorkers(ProjectWorker[] workers, boolean atomic) {
         lastMethod = "addWorkers";
         lastWorkers = workers;
         lastAtomic = atomic;
+    }
+
+    /**
+     * Implementation for getCompanyIdForClient
+     */
+    public int getCompanyIdForClient(int clientId) throws PersistenceException {
+        lastMethod = "getCompanyIdForClient";
+        lastClientIdForCompany = clientId;
+        return 1;
+    }
+
+    /**
+     * Implementation for getCompanyIdForProject
+     */
+    public int getCompanyIdForProject(int projectId)
+            throws PersistenceException {
+        lastMethod = "getCompanyIdForProject";
+        lastProjectIdForCompany = projectId;
+        return 1;
+    }
+
+    /**
+     * Implementation for getCompanyIdForTimeEntry
+     */
+    public int getCompanyIdForTimeEntry(int timeEntryId)
+            throws PersistenceException {
+        lastMethod = "getCompanyIdForTimeEntry";
+        lastTimeEntryId = timeEntryId;
+        return 1;
+    }
+
+    /**
+     * Implementation for getCompanyIdForExpenseEntry
+     */
+    public int getCompanyIdForExpenseEntry(int expenseEntryId)
+            throws PersistenceException {
+        lastMethod = "getCompanyIdForExpenseEntry";
+        lastExpenseEntryId = expenseEntryId;
+        return 1;
+    }
+
+    /**
+     * Implementation for getCompanyIdForUserAccount
+     */
+    public int getCompanyIdForUserAccount(int userAccountId)
+            throws PersistenceException {
+        lastMethod = "getCompanyIdForUserAccount";
+        lastUserAccountId = userAccountId;
+        return 1;
+    }
+
+    /**
+     * Implementation for existClientWithNameForCompany
+     */
+    public boolean existClientWithNameForCompany(Client client, boolean isNew)
+            throws PersistenceException {
+        lastMethod = "existClientWithNameForCompany";
+        lastClientForNameSeacrh = client;
+        lastWasNewForClientNameSeacrh = isNew;
+        return false;
     }
 }

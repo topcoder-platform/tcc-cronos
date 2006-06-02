@@ -24,7 +24,8 @@ import junit.framework.TestSuite;
  *
  * @author colau
  * @author TCSDEVELOPER
- * @version 1.1
+ * @author costty000
+ * @version 2.0
  *
  * @since 1.0
  */
@@ -606,5 +607,51 @@ public class ClientUtilityTest extends TestCase {
         assertEquals("Fails to call method", "getClients", persistence.getLastMethod());
         assertEquals("Fails to pass arguments", clientIds, persistence.getLastClientIds());
         assertEquals("Fails to pass arguments", atomic, persistence.getLastAtomic());
+    }
+
+    /**
+     * Test to see if client with no company can be saved
+     *
+     * @throws Exception
+     * @since 2.0
+     */
+    public void testClientMustHaveCompanyId() throws Exception {
+        try {
+            Client client = new Client();
+            client.setId(2000);
+            utility.addClient(client);
+            fail("InsufficientDataException expected.");
+        } catch (InsufficientDataException ex) {
+            // ok
+        }
+    }
+
+    /**
+     * Test to see if client with different company that the project can be
+     * saved
+     *
+     * @throws Exception
+     * @since 2.0
+     */
+    public void testClientMustHaveSameCompanyIdAsProjects() throws Exception {
+        try {
+            // create a client
+            Client client = new Client();
+            client.setId(2000);
+            client.setCompanyId(1);
+            client.setName("new_name_1");
+            client.setCreationUser("some user");
+            client.setModificationUser("some user");
+            // create a project and assign to the client
+            Project project = new Project();
+            project.setId(2000);
+            // set a different company that the client has.
+            project.setCompanyId(2);
+            client.addProject(project);
+            utility.addClient(client);
+            fail("IllegalArgumentException expected.");
+        } catch (IllegalArgumentException ex) {
+            // ok
+        }
     }
 }

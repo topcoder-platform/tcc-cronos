@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * <p>
  * This class holds the information about a client associated with the projects.
@@ -20,49 +19,57 @@ import java.util.Map;
  * When creating an instance of this class the user has two options:
  *
  * <ul>
- * <li>
- * Use the default constructor and allow the GUID Generator component to generate a unique id.
- * </li>
- * <li>
- * Use one of the parameterized constructors and provide an id for the Client instance; if the id is already used by
- * another client from the persistence, then the newly created client will not be added to it.
- * </li>
+ * <li> Use the default constructor and allow the GUID Generator component to
+ * generate a unique id. </li>
+ * <li> Use one of the parameterized constructors and provide an id for the
+ * Client instance; if the id is already used by another client from the
+ * persistence, then the newly created client will not be added to it. </li>
  * </ul>
  * </p>
  *
  * <p>
- * Also the user should not populate the creationDate and modificationDate fields, because if he does, the client will
- * not be added to the persistence. These fields will be handled automatically by the component (the current date will
- * be used). When loading from the persistence, all the fields will be properly populated.
+ * Also the user should not populate the creationDate and modificationDate
+ * fields, because if he does, the client will not be added to the persistence.
+ * These fields will be handled automatically by the component (the current date
+ * will be used). When loading from the persistence, all the fields will be
+ * properly populated.
  * </p>
  *
- * @author DanLazar, colau
- * @version 1.1
+ * <p>
+ * Version 2.0 added companyId field, setter and getter for this field and
+ * constructors that initialize this new field.
+ * </p>
+ *
+ *
+ * @author DanLazar, colau, costty000
+ * @version 2.0
  *
  * @since 1.0
  */
 public class Client {
     /**
      * <p>
-     * Represents the id of the client. A value of -1 means that the user wants this component to generate a value for
-     * this field using the GUID Generator. This field can be initialized in the parameterized constructor or by using
-     * the setId method.
+     * Represents the id of the client. A value of -1 means that the user wants
+     * this component to generate a value for this field using the GUID
+     * Generator. This field can be initialized in the parameterized constructor
+     * or by using the setId method.
      * </p>
      */
     private int id = -1;
 
     /**
      * <p>
-     * Represents the name of the client. It can be set using the setName method. Valid values: non-null, non-empty
-     * string.
+     * Represents the name of the client. It can be set using the setName
+     * method. Valid values: non-null, non-empty string.
      * </p>
      */
     private String name = null;
 
     /**
      * <p>
-     * Represents the creation date of the client, which is the date when the client was newly added into the
-     * persistence. This field should not be initialized by the user. It will be handled automatically by the
+     * Represents the creation date of the client, which is the date when the
+     * client was newly added into the persistence. This field should not be
+     * initialized by the user. It will be handled automatically by the
      * component (the current date will be used or loaded from persistence).
      * </p>
      */
@@ -70,16 +77,18 @@ public class Client {
 
     /**
      * <p>
-     * Represents the user which created the client. Must be initialized by the user, using the setCreationUser method.
-     * Valid values: non-null, non-empty string.
+     * Represents the user which created the client. Must be initialized by the
+     * user, using the setCreationUser method. Valid values: non-null, non-empty
+     * string.
      * </p>
      */
     private String creationUser = null;
 
     /**
      * <p>
-     * Represents the modification date of the client, which is the date when the client was updated in the
-     * persistence. This field should not be initialized by the user. It will be handled automatically by the
+     * Represents the modification date of the client, which is the date when
+     * the client was updated in the persistence. This field should not be
+     * initialized by the user. It will be handled automatically by the
      * component (the current date will be used or loaded from persistence).
      * </p>
      */
@@ -87,24 +96,36 @@ public class Client {
 
     /**
      * <p>
-     * Represents the user which modified the client. Must be initialized by the user, using the setModificationUser
-     * method. Valid values: non-null, non-empty string.
+     * Represents the user which modified the client. Must be initialized by the
+     * user, using the setModificationUser method. Valid values: non-null,
+     * non-empty string.
      * </p>
      */
     private String modificationUser = null;
 
     /**
      * <p>
-     * A map holding the projects of the client. It maps the project ids (Integer) to Project instances. It is
-     * initialized in the constructors and the reference cannot be changed.
+     * A map holding the projects of the client. It maps the project ids
+     * (Integer) to Project instances. It is initialized in the constructors and
+     * the reference cannot be changed.
      * </p>
      */
     private Map projects = null;
 
     /**
      * <p>
-     * Creates a new instance. The client will be assigned an id generated by the GUID Generator, and have no projects
-     * associated with.
+     * Represents the id of the Company that this Client is bound to (the
+     * company associated with this client). It will be initialized in the
+     * parameterized constructor. Can also be initialized by using the setter.
+     * </p>
+     * Added from v2.0
+     */
+    private int companyId = -1;
+
+    /**
+     * <p>
+     * Creates a new instance. The client will be assigned an id generated by
+     * the GUID Generator, and have no projects associated with.
      * </p>
      */
     public Client() {
@@ -113,14 +134,16 @@ public class Client {
 
     /**
      * <p>
-     * Creates a new instance. The client will be assigned the given id, and have no projects associated with.
+     * Creates a new instance. The client will be assigned the given id, and
+     * have no projects associated with.
      * </p>
-     *
      * <p>
-     * If the given id has the value of -1, the actual id will be assigned by the GUID Generator.
+     * If the given id has the value of -1, the actual id will be assigned by
+     * the GUID Generator.
      * </p>
      *
-     * @param id the id of the client
+     * @param id
+     *            the id of the client
      */
     public Client(int id) {
         this(id, new ArrayList());
@@ -128,18 +151,22 @@ public class Client {
 
     /**
      * <p>
-     * Creates a new instance. The client will be assigned the given id and associated with the given projects.
+     * Creates a new instance. The client will be assigned the given id and
+     * associated with the given projects.
      * </p>
-     *
      * <p>
-     * If the given id has the value of -1, the actual id will be assigned by the GUID Generator.
+     * If the given id has the value of -1, the actual id will be assigned by
+     * the GUID Generator.
      * </p>
      *
-     * @param id the id of the client
-     * @param projects the projects of the client
-     *
-     * @throws NullPointerException if the projects is null
-     * @throws IllegalArgumentException if the projects contains null or non-Project element
+     * @param id
+     *            the id of the client
+     * @param projects
+     *            the projects of the client
+     * @throws NullPointerException
+     *             if the projects is null
+     * @throws IllegalArgumentException
+     *             if the projects contains null or non-Project element
      */
     public Client(int id, List projects) {
         this.projects = new HashMap();
@@ -150,11 +177,55 @@ public class Client {
 
     /**
      * <p>
-     * Setter for the id of the client. If the given id has the value of -1, the actual id will be assigned by the GUID
-     * Generator.
+     * Create a new instance. Initialize the id field. Initialize the clientId
+     * field. Initialize the projects map to the empty map.
      * </p>
      *
-     * @param id the id of the client
+     * @param id
+     *            this value that will be assigned to the id field
+     * @param companyId
+     *            the value that will be assigned to the companyId field
+     * @since 2.0
+     */
+    public Client(int id, int companyId) {
+        this(id);
+        setCompanyId(companyId);
+    }
+
+    /**
+     * <p>
+     * Create a new instance. Initialize the id field. Initialize the companyId
+     * field. Initialize the projects map. For each project instance from the
+     * List a pair of this form will be added into the map: {projectId, project
+     * instance).
+     * </p>
+     *
+     * @param id
+     *            this value that will be assigned to the id field
+     * @param companyId
+     *            the value that will be assigned to the companyId field
+     * @param projects
+     *            the projects of the client
+     * @throws NullpointerException -
+     *             if the projects argument is null
+     * @throws IllegalArgumentException -
+     *             if the projects argument doesn't contain only Project
+     *             instances
+     * @since 2.0
+     */
+    public Client(int id, int companyId, java.util.List projects) {
+        this(id, projects);
+        setCompanyId(companyId);
+    }
+
+    /**
+     * <p>
+     * Setter for the id of the client. If the given id has the value of -1, the
+     * actual id will be assigned by the GUID Generator.
+     * </p>
+     *
+     * @param id
+     *            the id of the client
      */
     public void setId(int id) {
         this.id = id;
@@ -162,13 +233,15 @@ public class Client {
 
     /**
      * <p>
-     * Setter for the creation date of the client, which is the date when the client was newly added into the
-     * persistence. The user should not use this method. This method should only be used by the persistence layer.
+     * Setter for the creation date of the client, which is the date when the
+     * client was newly added into the persistence. The user should not use this
+     * method. This method should only be used by the persistence layer.
      * </p>
      *
-     * @param creationDate the creation date of the client
-     *
-     * @throws NullPointerException if the creationDate is null
+     * @param creationDate
+     *            the creation date of the client
+     * @throws NullPointerException
+     *             if the creationDate is null
      */
     public void setCreationDate(Date creationDate) {
         if (creationDate == null) {
@@ -182,10 +255,12 @@ public class Client {
      * Setter for the user which created the client.
      * </p>
      *
-     * @param creationUser the user which created the client
-     *
-     * @throws NullPointerException if the creationUser is null
-     * @throws IllegalArgumentException if the creationUser is the empty string
+     * @param creationUser
+     *            the user which created the client
+     * @throws NullPointerException
+     *             if the creationUser is null
+     * @throws IllegalArgumentException
+     *             if the creationUser is the empty string
      */
     public void setCreationUser(String creationUser) {
         Util.checkString(creationUser);
@@ -194,13 +269,15 @@ public class Client {
 
     /**
      * <p>
-     * Setter for the modification date of the client, which is the date when the client was updated in the
-     * persistence. The user should not use this method. This method should only be used by the persistence layer.
+     * Setter for the modification date of the client, which is the date when
+     * the client was updated in the persistence. The user should not use this
+     * method. This method should only be used by the persistence layer.
      * </p>
      *
-     * @param modificationDate the modification date of the client
-     *
-     * @throws NullPointerException if the modificationDate is null
+     * @param modificationDate
+     *            the modification date of the client
+     * @throws NullPointerException
+     *             if the modificationDate is null
      */
     public void setModificationDate(Date modificationDate) {
         if (modificationDate == null) {
@@ -214,10 +291,12 @@ public class Client {
      * Setter for the user which modified the client.
      * </p>
      *
-     * @param modificationUser the user which modified the client
-     *
-     * @throws NullPointerException if the modificationUser is null
-     * @throws IllegalArgumentException if the modificationUser is the empty string
+     * @param modificationUser
+     *            the user which modified the client
+     * @throws NullPointerException
+     *             if the modificationUser is null
+     * @throws IllegalArgumentException
+     *             if the modificationUser is the empty string
      */
     public void setModificationUser(String modificationUser) {
         Util.checkString(modificationUser);
@@ -229,10 +308,12 @@ public class Client {
      * Setter for the name of the client.
      * </p>
      *
-     * @param name the name of the client
-     *
-     * @throws NullPointerException if the name is null
-     * @throws IllegalArgumentException if the name is the empty string
+     * @param name
+     *            the name of the client
+     * @throws NullPointerException
+     *             if the name is null
+     * @throws IllegalArgumentException
+     *             if the name is the empty string
      */
     public void setName(String name) {
         Util.checkString(name);
@@ -241,14 +322,17 @@ public class Client {
 
     /**
      * <p>
-     * Setter for the projects of the client. All the old projects associated with the client will be cleared first
-     * before adding the given projects. The projects will be copied to an inner map.
+     * Setter for the projects of the client. All the old projects associated
+     * with the client will be cleared first before adding the given projects.
+     * The projects will be copied to an inner map.
      * </p>
      *
-     * @param projects the projects of the client
-     *
-     * @throws NullPointerException if the projects is null
-     * @throws IllegalArgumentException if the projects contains null or non-Project element
+     * @param projects
+     *            the projects of the client
+     * @throws NullPointerException
+     *             if the projects is null
+     * @throws IllegalArgumentException
+     *             if the projects contains null or non-Project element
      */
     public void setProjects(List projects) {
         if (projects == null) {
@@ -260,10 +344,12 @@ public class Client {
             Object obj = i.next();
 
             if (obj == null) {
-                throw new IllegalArgumentException("projects contains null element");
+                throw new IllegalArgumentException(
+                        "projects contains null element");
             }
             if (!(obj instanceof Project)) {
-                throw new IllegalArgumentException("projects contains non-Project element");
+                throw new IllegalArgumentException(
+                        "projects contains non-Project element");
             }
         }
 
@@ -277,8 +363,8 @@ public class Client {
 
     /**
      * <p>
-     * Getter for the id of the client. If it returns the value of -1, the actual id will be assigned by the GUID
-     * Generator.
+     * Getter for the id of the client. If it returns the value of -1, the
+     * actual id will be assigned by the GUID Generator.
      * </p>
      *
      * @return the id of the client
@@ -289,8 +375,8 @@ public class Client {
 
     /**
      * <p>
-     * Getter for the creation date of the client, which is the date when the client was newly added into the
-     * persistence.
+     * Getter for the creation date of the client, which is the date when the
+     * client was newly added into the persistence.
      * </p>
      *
      * @return the creation date of the client
@@ -312,8 +398,8 @@ public class Client {
 
     /**
      * <p>
-     * Getter for the modification date of the client, which is the date when the client was updated in the
-     * persistence.
+     * Getter for the modification date of the client, which is the date when
+     * the client was updated in the persistence.
      * </p>
      *
      * @return the modification date of the client
@@ -346,7 +432,8 @@ public class Client {
 
     /**
      * <p>
-     * Getter for the projects associated with the client. Returns a shallow copy of the values from the inner map.
+     * Getter for the projects associated with the client. Returns a shallow
+     * copy of the values from the inner map.
      * </p>
      *
      * @return a List containing the projects associated with the client
@@ -357,15 +444,15 @@ public class Client {
 
     /**
      * <p>
-     * Adds the given project to the client. If a project with the same id already exists in the client, it will not be
-     * added and false is returned.
+     * Adds the given project to the client. If a project with the same id
+     * already exists in the client, it will not be added and false is returned.
      * </p>
      *
-     * @param project the project to add
-     *
+     * @param project
+     *            the project to add
      * @return true if the project was added, false otherwise
-     *
-     * @throws NullPointerException if the project is null
+     * @throws NullPointerException
+     *             if the project is null
      */
     public boolean addProject(Project project) {
         if (project == null) {
@@ -386,17 +473,43 @@ public class Client {
 
     /**
      * <p>
-     * Removes the project of the given id from the client. If a project with the given id does not exist in the
-     * client, nothing happens and false is returned.
+     * Removes the project of the given id from the client. If a project with
+     * the given id does not exist in the client, nothing happens and false is
+     * returned.
      * </p>
      *
-     * @param projectId the id of the project to remove
-     *
+     * @param projectId
+     *            the id of the project to remove
      * @return true if the project was removed, false otherwise
      */
     public boolean removeProject(int projectId) {
         Integer id = new Integer(projectId);
 
         return (projects.remove(id) != null);
+    }
+
+    /**
+     * <p>
+     * Setter for the companyId field.
+     * </p>
+     *
+     * @param companyId
+     *            the id of the company that this client will be assigned to
+     * @since 2.0
+     */
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+
+    /**
+     * <p>
+     * Getter for companyId field.
+     * </p>
+     *
+     * @return the id of the company that this client is assigned to
+     * @since 2.0
+     */
+    public int getCompanyId() {
+        return companyId;
     }
 }

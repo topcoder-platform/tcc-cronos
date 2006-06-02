@@ -18,8 +18,8 @@ import java.sql.ResultSet;
  * InformixTimeTrackerProjectPersistence class. These include checking whether a table is empty, clearing the tables,
  * etc.
  *
- * @author colau
- * @version 1.1
+ * @author colau, costty000
+ * @version 2.0
  *
  * @since 1.0
  */
@@ -76,9 +76,10 @@ public class DBHelper {
      * @throws Exception if any unexpected exception occurs.
      */
     public static void clearTables() throws Exception {
+        // from 2.0: modified table names
         String[] tableNames = {
-            "ProjectTimes", "ProjectExpenses", "ProjectManagers", "ProjectWorkers", "ClientProjects", "Projects",
-            "Clients"
+            "project_time", "project_expense", "project_manager", "project_worker", "client_project", "project",
+            "client"
         };
 
         Connection conn = getConnection();

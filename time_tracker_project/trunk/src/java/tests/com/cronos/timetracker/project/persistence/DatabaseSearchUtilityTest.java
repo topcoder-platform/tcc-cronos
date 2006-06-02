@@ -27,14 +27,15 @@ import java.util.Date;
 /**
  * Unit tests for DatabaseSearchUtility implementation.
  *
- * @author TCSDEVELOPER
- * @version 1.1
+ * @author TCSDEVELOPER, costty000
+ * @version 2.0
  */
 public class DatabaseSearchUtilityTest extends TestCase {
     /**
      * The SQL statement to insert a client.
+     * from 2.0: added new parameters for company id
      */
-    private static final String SQL_INS_CLIENT = "INSERT INTO Clients VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_CLIENT = "INSERT INTO client VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * The DatabaseSearchUtility instance to test against.
@@ -90,12 +91,14 @@ public class DatabaseSearchUtilityTest extends TestCase {
         Date date = new Date();
         PreparedStatement pstmt = connection.prepareStatement(SQL_INS_CLIENT);
 
+        // from 2.0: added new parameters for company id
         pstmt.setInt(1, 1);
-        pstmt.setString(2, "name");
-        pstmt.setTimestamp(3, DBUtil.toSQLDate(date));
-        pstmt.setString(4, "creationUser");
-        pstmt.setTimestamp(5, DBUtil.toSQLDate(date));
-        pstmt.setString(6, "modificationUser");
+        pstmt.setInt(2, 1);
+        pstmt.setString(3, "name");
+        pstmt.setTimestamp(4, DBUtil.toSQLDate(date));
+        pstmt.setString(5, "creationUser");
+        pstmt.setTimestamp(6, DBUtil.toSQLDate(date));
+        pstmt.setString(7, "modificationUser");
 
         pstmt.executeUpdate();
         pstmt.close();
