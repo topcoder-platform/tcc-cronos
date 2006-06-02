@@ -363,6 +363,252 @@ public class V1Dot1FieldBetweenCriteriaUnitTest extends TestCase {
 
     /**
      * <p>
+     * Tests the method of <code>getExpenseStatusCreateDateBetweenCriteria(Date, Date)</code>
+     * when fromDate is <code>null</code>. No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseStatusCreateDateBetweenCriteria_NullFromDate() {
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseStatusCreateDateBetweenCriteria(null, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_STATUS_CREATE_DATE_FIELD,
+                criteria.getField());
+        assertNull("The from value should be correct.", criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusCreateDateBetweenCriteria(Date, Date)</code>
+     * when toDate is <code>null</code>. No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseStatusCreateDateBetweenCriteria_NullToDate() {
+        Date fromDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseStatusCreateDateBetweenCriteria(fromDate, null);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_STATUS_CREATE_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertNull("The to value should be correct.", criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusCreateDateBetweenCriteria(Date, Date)</code> when both
+     * the fromDate and toDate are<code>null </code>. Expect IllegalArgumentException.
+     * </p>
+     */
+    public void testGetExpenseStatusCreateDateBetweenCriteria_NullFromDateNullToDate() {
+        try {
+            FieldBetweenCriteria.getExpenseStatusCreateDateBetweenCriteria(null, null);
+            fail("Should throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of method <code>getExpenseStatusCreateDateBetweenCriteria(Date, Date)</code>.
+     * </p>
+     */
+    public void testGetExpenseStatusCreateDateBetweenCriteria_Accuracy() {
+        Date fromDate = new Date();
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseStatusCreateDateBetweenCriteria(fromDate, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_STATUS_CREATE_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusModificationDateBetweenCriteria(Date, Date)</code>
+     * when fromDate is <code>null </code>.
+     * No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseStatusModificationDateBetweenCriteria_NullFromDate() {
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseStatusModificationDateBetweenCriteria(null, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_STATUS_MODIFICATION_DATE_FIELD,
+                criteria.getField());
+        assertNull("The from value should be correct.", criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusModificationDateBetweenCriteria(Date, Date)</code>
+     * when toDate is <code>null </code>.
+     * No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseStatusModificationDateBetweenCriteria_NullToDate() {
+        Date fromDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseStatusModificationDateBetweenCriteria(fromDate, null);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_STATUS_MODIFICATION_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertNull("The to value should be correct.", criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusModificationDateBetweenCriteria(Date, Date)</code>
+     * when both the fromDate and toDate
+     * are<code>null </code>. Expect IllegalArgumentException.
+     * </p>
+     */
+    public void testGetExpenseStatusModificationDateBetweenCriteria_NullFromDateNullToDate() {
+        try {
+            FieldBetweenCriteria.getExpenseStatusModificationDateBetweenCriteria(null, null);
+            fail("Should throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of method <code>getExpenseStatusModificationDateBetweenCriteria(Date, Date)</code>.
+     * </p>
+     */
+    public void testGetExpenseStatusModificationDateBetweenCriteria_Accuracy() {
+        Date fromDate = new Date();
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseStatusModificationDateBetweenCriteria(fromDate, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_STATUS_MODIFICATION_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusCreateDateBetweenCriteria(Date, Date)</code>
+     * when fromDate is <code>null</code>. No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseTypeCreateDateBetweenCriteria_NullFromDate() {
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseTypeCreateDateBetweenCriteria(null, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_TYPE_CREATE_DATE_FIELD,
+                criteria.getField());
+        assertNull("The from value should be correct.", criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusCreateDateBetweenCriteria(Date, Date)</code>
+     * when toDate is <code>null</code>. No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseTypeCreateDateBetweenCriteria_NullToDate() {
+        Date fromDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseTypeCreateDateBetweenCriteria(fromDate, null);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_TYPE_CREATE_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertNull("The to value should be correct.", criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseStatusCreateDateBetweenCriteria(Date, Date)</code>
+     * when both the fromDate and toDate are<code>null </code>. Expect IllegalArgumentException.
+     * </p>
+     */
+    public void testGetExpenseTypeCreateDateBetweenCriteria_NullFromDateNullToDate() {
+        try {
+            FieldBetweenCriteria.getExpenseTypeCreateDateBetweenCriteria(null, null);
+            fail("Should throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of method <code>getExpenseTypeCreateDateBetweenCriteria(Date, Date)</code>.
+     * </p>
+     */
+    public void testGetExpenseTypeCreateDateBetweenCriteria_Accuracy() {
+        Date fromDate = new Date();
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseTypeCreateDateBetweenCriteria(fromDate, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_TYPE_CREATE_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseTypeModificationDateBetweenCriteria(Date, Date)</code>
+     * when fromDate is <code>null </code>.
+     * No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseTypeModificationDateBetweenCriteria_NullFromDate() {
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseTypeModificationDateBetweenCriteria(null, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_TYPE_MODIFICATION_DATE_FIELD,
+                criteria.getField());
+        assertNull("The from value should be correct.", criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseTypeModificationDateBetweenCriteria(Date, Date)</code>
+     * when toDate is <code>null </code>.
+     * No exception will be expected.
+     * </p>
+     */
+    public void testGetExpenseTypeModificationDateBetweenCriteria_NullToDate() {
+        Date fromDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseTypeModificationDateBetweenCriteria(fromDate, null);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_TYPE_MODIFICATION_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertNull("The to value should be correct.", criteria.getToValue());
+    }
+
+    /**
+     * <p>
+     * Tests the method of <code>getExpenseTypeModificationDateBetweenCriteria(Date, Date)</code>
+     * when both the fromDate and toDate
+     * are<code>null </code>. Expect IllegalArgumentException.
+     * </p>
+     */
+    public void testGetExpenseTypeModificationDateBetweenCriteria_NullFromDateNullToDate() {
+        try {
+            FieldBetweenCriteria.getExpenseTypeModificationDateBetweenCriteria(null, null);
+            fail("Should throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of method <code>getExpenseTypeModificationDateBetweenCriteria(Date, Date)</code>.
+     * </p>
+     */
+    public void testGetExpenseTypeModificationDateBetweenCriteria_Accuracy() {
+        Date fromDate = new Date();
+        Date toDate = new Date();
+        criteria = FieldBetweenCriteria.getExpenseTypeModificationDateBetweenCriteria(fromDate, toDate);
+        assertEquals("The field value should be correct.", FieldBetweenCriteria.EXPENSE_TYPE_MODIFICATION_DATE_FIELD,
+                criteria.getField());
+        assertEquals("The from value should be correct.", fromDate, criteria.getFromValue());
+        assertEquals("The to value should be correct.", toDate, criteria.getToValue());
+    }
+
+    /**
+     * <p>
      * Tests the method of <code>getModificationDateBetweenCriteria(Date, Date)</code> when fromDate is <code>null
      * </code>. No exception will be expected.
      * </p>

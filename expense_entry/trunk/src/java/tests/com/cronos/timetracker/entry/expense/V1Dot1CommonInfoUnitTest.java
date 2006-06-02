@@ -12,7 +12,7 @@ import java.util.Date;
  * <p>
  * Tests functionality and error cases of <code>CommonInfo</code> class. A mock sub-class is used for testing.
  * </p>
- * 
+ *
  * <p>
  * 2006-4-24: Moving test cases for getter and setter methods of description from V1Dot1BasicInfoUnitTest class to
  * V1Dot1CommonInfoUnitTest class for bug fix for TT-1976 by Xuchen.

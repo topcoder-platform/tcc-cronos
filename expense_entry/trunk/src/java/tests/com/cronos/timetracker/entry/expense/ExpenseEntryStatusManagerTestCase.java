@@ -18,6 +18,8 @@ import junit.framework.TestSuite;
 import com.cronos.timetracker.entry.expense.persistence.ExpenseEntryStatusDbPersistence;
 import com.cronos.timetracker.entry.expense.persistence.ExpenseEntryStatusPersistence;
 import com.cronos.timetracker.entry.expense.persistence.PersistenceException;
+import com.cronos.timetracker.entry.expense.search.Criteria;
+import com.cronos.timetracker.entry.expense.search.FieldMatchCriteria;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
@@ -838,18 +840,19 @@ public class ExpenseEntryStatusManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseStatuses");
+            resultSet = statement.executeQuery("SELECT * FROM expense_status");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", status.getId(), resultSet.getInt("ExpenseStatusesID"));
-            assertEquals("The description should be correct.", "Description", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", status.getId(), resultSet.getInt("expense_status_id"));
+            assertEquals("The description should be correct.", "Description", resultSet.getString("description"));
             TestHelper.assertEquals("The creation date should be correct.", status.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             TestHelper.assertEquals("The modification date should be correct.", status.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should be correct.", "Create", resultSet.getString("CreationUser"));
-            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("ModificationUser"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
+            assertEquals("The modification user should be correct.", "Modify",
+                resultSet.getString("modification_user"));
 
             assertFalse("Only one record should exist.", resultSet.next());
         } finally {
@@ -893,18 +896,19 @@ public class ExpenseEntryStatusManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseStatuses");
+            resultSet = statement.executeQuery("SELECT * FROM expense_status");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", status.getId(), resultSet.getInt("ExpenseStatusesID"));
-            assertEquals("The description should be correct.", "Description", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", status.getId(), resultSet.getInt("expense_status_id"));
+            assertEquals("The description should be correct.", "Description", resultSet.getString("description"));
             TestHelper.assertEquals("The creation date should be correct.", status.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             TestHelper.assertEquals("The modification date should be correct.", status.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should be correct.", "Create", resultSet.getString("CreationUser"));
-            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("ModificationUser"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
+            assertEquals("The modification user should be correct.", "Modify",
+                resultSet.getString("modification_user"));
 
             assertFalse("Only one record should exist.", resultSet.next());
         } finally {
@@ -968,7 +972,7 @@ public class ExpenseEntryStatusManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseStatuses");
+            resultSet = statement.executeQuery("SELECT * FROM expense_status");
 
             assertFalse("No record should exist.", resultSet.next());
         } finally {
@@ -1014,7 +1018,7 @@ public class ExpenseEntryStatusManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseStatuses");
+            resultSet = statement.executeQuery("SELECT * FROM expense_status");
 
             assertFalse("No record should exist.", resultSet.next());
         } finally {
@@ -1074,19 +1078,19 @@ public class ExpenseEntryStatusManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseStatuses");
+            resultSet = statement.executeQuery("SELECT * FROM expense_status");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", update.getId(), resultSet.getInt("ExpenseStatusesID"));
-            assertEquals("The description should be correct.", "Modified", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", update.getId(), resultSet.getInt("expense_status_id"));
+            assertEquals("The description should be correct.", "Modified", resultSet.getString("description"));
             TestHelper.assertEquals("The creation date should not be modified.", status.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             TestHelper.assertEquals("The modification date should be correct.", update.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should not be modified.", "Create", resultSet.getString("CreationUser"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should not be modified.", "Create", resultSet.getString("creation_user"));
             assertEquals("The modification user should be correct.", "Modify2",
-                resultSet.getString("ModificationUser"));
+                resultSet.getString("modification_user"));
 
             assertFalse("Only one record should exist.", resultSet.next());
         } finally {
@@ -1215,6 +1219,48 @@ public class ExpenseEntryStatusManagerTestCase extends TestCase {
         } finally {
             field.setAccessible(false);
         }
+    }
+
+    /**
+     * <p>
+     * Test searchEntries(Criteria criteria), with criteria is null,
+     * IllegalArugmentException is expected.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testSearchEntriesCriteriaIsNull() throws Exception {
+        try {
+            manager.searchEntries(null);
+            fail("criteria is null, IllegalArugmentException is expected.");
+        } catch (IllegalArgumentException e) {
+            //good.
+        }
+    }
+
+    /**
+     * <p>
+     * Test searchEntries(Criteria criteria), with criteria is null,
+     * IllegalArugmentException is expected.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testSearchEntries() throws Exception {
+        status = new ExpenseEntryStatus();
+        status.setDescription("search");
+        status.setCreationUser("admin");
+        status.setModificationUser("Modify");
+        manager.addStatus(status);
+        status = new ExpenseEntryStatus();
+        status.setDescription("search");
+        status.setCreationUser("client");
+        status.setModificationUser("Modify");
+        manager.addStatus(status);
+
+        Criteria criteria = FieldMatchCriteria.getExpenseStatusCreationUserMatchCriteria("admin");
+        ExpenseEntryStatus[] status = manager.searchEntries(criteria);
+        assertEquals("One record should be matched", 1, status.length);
     }
 
     /**

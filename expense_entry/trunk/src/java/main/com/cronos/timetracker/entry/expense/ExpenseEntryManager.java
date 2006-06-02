@@ -23,19 +23,19 @@ import java.util.List;
  * persisted automatically according to the current time. The manager uses <code>ExpenseEntryPersistence</code>
  * implementation to do actual operations on persistence. It can only be created from configuration.
  * </p>
- * 
+ *
  * <p>
  * Usage note: if a expense entry has new expense entry type and/or expense entry status, the type and status should be
  * added first to the persistence. After adding the type and/or status, the new expense entry can be added correctly.
  * </p>
- * 
+ *
  * <p>
  * Changes in 1.1: Four new methods for doing bulk operations on sets of expense entries have been added. These method
  * can work in atomic mode (a failure on one entry causes the entire operation to fail) or non-atomic (a failure in
  * one entry doesn't affect the other and the user has a way to know which ones failed). There is also a search method
  * that provides the capability to search expense entries at the database level and return the ones that match.
  * </p>
- * 
+ *
  * <p>
  * Bug fix for TT-1974. Bug description is "The ExpenseEntryManager generates the ID for the single entry  if it is
  * added by the addEntry() method. But it doesn't generate the IDs for the multiple entries added by the  batch
@@ -224,12 +224,12 @@ public class ExpenseEntryManager {
      * generated. Otherwise, the user-specified ID is used. All fields in the instance must be set except creation
      * date and modification date, which must be <code>null</code> and be set as the current time.
      * </p>
-     * 
+     *
      * <p>
      * If the addition is atomic then it means that entire retrieval will fail if a single expense entry addition
      * fails.
      * </p>
-     * 
+     *
      * <p>
      * If the addition is non-atomic then it means each expense entry is added individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs). If the
@@ -326,12 +326,12 @@ public class ExpenseEntryManager {
      * <p>
      * Deletes a set of entries from the database with the given IDs from the persistence.
      * </p>
-     * 
+     *
      * <p>
      * If the deletion is atomic then it means that entire retrieval will fail if a single expense entry deletion
      * fails.
      * </p>
-     * 
+     *
      * <p>
      * If the deletion is non-atomic then it means each expense entry is deleted individually. If it fails, that won't
      * affect the others. A list with the failed ids is returned to the user (empty if no error occurs).
@@ -364,11 +364,11 @@ public class ExpenseEntryManager {
      * <p>
      * Updates a set of entries in the database.
      * </p>
-     * 
+     *
      * <p>
      * If the update is atomic then it means that entire retrieval will fail if a single expense entry update fails.
      * </p>
-     * 
+     *
      * <p>
      * If the update is non-atomic then it means each expense entry is updated individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs).
@@ -433,8 +433,8 @@ public class ExpenseEntryManager {
         ExpenseEntry[] ret = new ExpenseEntry[0];
 
         if (!correct.isEmpty()) {
-            ret = this.entryPersistence.updateEntries((ExpenseEntry[]) correct.toArray(new ExpenseEntry[correct.size()]),
-                    isAtomic);
+            ret = this.entryPersistence.updateEntries((ExpenseEntry[]) correct.toArray(
+                new ExpenseEntry[correct.size()]), isAtomic);
         }
 
         if (isAtomic) {
@@ -450,12 +450,12 @@ public class ExpenseEntryManager {
      * <p>
      * Retrieves a set of entries with given ids from the database.
      * </p>
-     * 
+     *
      * <p>
      * If the retrieval is atomic then it means that entire retrieval will fail if a single expense entry retrieval
      * fails.
      * </p>
-     * 
+     *
      * <p>
      * If the retrieval is non-atomic then it means each expense entry is retrieved individually. If it fails that
      * won't affect the others. The potentially partial list of results will be returned. If any error occurs or if

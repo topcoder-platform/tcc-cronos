@@ -22,7 +22,7 @@ import java.util.List;
  * </p>
  *
  * @author adic, TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class CompositeCriteria implements Criteria {
     /** Represents the constant for the AND boolean operator keyword. */

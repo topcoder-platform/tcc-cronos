@@ -9,7 +9,7 @@ package com.cronos.timetracker.entry.expense;
  * <code>ExpenseEntryStatus</code>. Though it has no abstract method, it is marked as abstract to avoid direct
  * instantiation. It is also serializable via object streams. The common information includes a unique ID.
  * </p>
- * 
+ *
  * <p>
  * Bug fixed on 2006-4-22, modified by Xuchen. Bug Fix for TT-1976: "It is not possible to directly retrieve the
  * textual description of rejected reason from the  ExpenseEntryRejectReason object. This object is derived from the
@@ -20,7 +20,7 @@ package com.cronos.timetracker.entry.expense;
  * @author adic, TCSDEVELOPER
  * @author DanLazar, visualage
  * @author Xuchen
- * @version 1.1
+ * @version 2.0
  *
  * @since 1.1
  */

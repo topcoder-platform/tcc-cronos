@@ -41,7 +41,9 @@ import java.util.List;
  * </p>
  *
  * @author -oo-
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
  */
 public class ExpenseEntryDbPersistenceTest extends TestCase {
     /** Represents the namespace to load DB connection factory configuration. */
@@ -131,6 +133,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
         entry.setDate(TestHelper.createDate(2005, 7, 29));
         entry.setExpenseType(type);
         entry.setStatus(status);
+        entry.setCompanyId(TestHelper.COMPANY_ID);
 
         for (int i = 0; i < 3; i++) {
             entry.addRejectReason(new ExpenseEntryRejectReason(i));
@@ -151,6 +154,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
             entries[i].setExpenseType(type);
             entries[i].setStatus(status);
             entries[i].addRejectReason(new ExpenseEntryRejectReason(i));
+            entries[i].setCompanyId(TestHelper.COMPANY_ID);
         }
 
         initConnection();
@@ -165,7 +169,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfiguration();
-        TestHelper.clearDatabase(connection);
+        //TestHelper.clearDatabase(connection);
         closeConnection();
         persistence.closeConnection();
     }
@@ -643,7 +647,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
         persistence.addEntries(entries, true);
 
         // invoke
-        Criteria criteria = new FieldLikeCriteria(FieldLikeCriteria.DESCRIPTION_FIELD, "description%");
+        Criteria criteria = FieldLikeCriteria.getDescriptionContainsCriteria("description");
         ExpenseEntry[] ret = persistence.searchEntries(criteria);
 
         // check the search result
@@ -674,7 +678,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
         persistence.addEntries(entries, true);
 
         // invoke
-        Criteria criteria = new FieldBetweenCriteria(FieldBetweenCriteria.AMOUNT_FIELD,
+        Criteria criteria = FieldBetweenCriteria.getAmountBetweenCriteria(
                 entries[0].getAmount().add(new BigDecimal(10)), entries[2].getAmount().add(new BigDecimal(10)));
         ExpenseEntry[] ret = persistence.searchEntries(criteria);
 
@@ -734,6 +738,20 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
     }
 
     /**
+     * Accuracy tests for searchEntries() with company criteria.
+     *
+     * @throws Exception to JUnit
+     */
+    public void testSearchEntries_Company() throws Exception {
+        entries[2].setCompanyId(20);
+        persistence.addEntries(entries, false);
+
+        Criteria criteria = FieldMatchCriteria.getExpenseEntryCompanyIdMatchCriteria(10);
+        ExpenseEntry[] result = persistence.searchEntries(criteria);
+        assertEquals("Should return 2 entries", 2, result.length);
+    }
+
+    /**
      * Asserts the entry is consistent with the data in database.
      *
      * @param entry the expense entry to assert
@@ -748,32 +766,33 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
 
         try {
             initConnection();
-            ps = connection.prepareStatement("SELECT * FROM ExpenseEntries WHERE ExpenseEntriesID=?");
+            ps = connection.prepareStatement("SELECT * FROM expense_entry WHERE expense_entry_id=?");
             ps.setInt(1, entry.getId());
             resultSet = ps.executeQuery();
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("ExpenseEntriesID"));
+            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("expense_entry_id"));
             assertEquals("The description should be correct.", entry.getDescription(),
                 resultSet.getString("Description"));
             TestHelper.assertEquals("The creation date should be correct.", entry.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             TestHelper.assertEquals("The modification date should be correct.", entry.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
+                resultSet.getDate("modification_date"));
             assertEquals("The creation user should be correct.", entry.getCreationUser(),
-                resultSet.getString("CreationUser"));
+                resultSet.getString("creation_user"));
             assertEquals("The modification user should be correct.", entry.getModificationUser(),
-                resultSet.getString("ModificationUser"));
+                resultSet.getString("modification_user"));
             assertEquals("The amount of money should be correct.", entry.getAmount().doubleValue(),
                 resultSet.getDouble("Amount"), 1E-9);
             assertEquals("The billable flag should be correct.", entry.isBillable() ? 1 : 0,
                 resultSet.getShort("Billable"));
             assertEquals("The expense type ID should be correct.", entry.getExpenseType().getId(),
-                resultSet.getInt("ExpenseTypesID"));
+                resultSet.getInt("expense_type_id"));
             assertEquals("The expense status ID should be correct.", entry.getStatus().getId(),
-                resultSet.getInt("ExpenseStatusesID"));
-            TestHelper.assertEquals("The date should be correct.", entry.getDate(), resultSet.getDate("EntryDate"));
+                resultSet.getInt("expense_status_id"));
+            assertEquals("The company id should be same", entry.getCompanyId(), resultSet.getInt("company_id"));
+            TestHelper.assertEquals("The date should be correct.", entry.getDate(), resultSet.getDate("entry_date"));
         } finally {
             if (resultSet != null) {
                 resultSet.close();
@@ -800,7 +819,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
 
         try {
             initConnection();
-            ps = connection.prepareStatement("SELECT * FROM ExpenseEntries WHERE ExpenseEntriesID=?");
+            ps = connection.prepareStatement("SELECT * FROM expense_entry WHERE expense_entry_id=?");
             ps.setInt(1, entry.getId());
             resultSet = ps.executeQuery();
 
@@ -830,7 +849,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
 
         try {
             initConnection();
-            ps = connection.prepareStatement("SELECT * FROM exp_reject_reason WHERE ExpenseEntriesID=?");
+            ps = connection.prepareStatement("SELECT * FROM exp_reject_reason WHERE expense_entry_id=?");
             ps.setInt(1, entry.getId());
             resultSet = ps.executeQuery();
 
@@ -881,7 +900,7 @@ public class ExpenseEntryDbPersistenceTest extends TestCase {
 
         try {
             initConnection();
-            ps = connection.prepareStatement("SELECT * FROM exp_reject_reason WHERE ExpenseEntriesID=?");
+            ps = connection.prepareStatement("SELECT * FROM exp_reject_reason WHERE expense_entry_id=?");
             ps.setInt(1, entry.getId());
             resultSet = ps.executeQuery();
 

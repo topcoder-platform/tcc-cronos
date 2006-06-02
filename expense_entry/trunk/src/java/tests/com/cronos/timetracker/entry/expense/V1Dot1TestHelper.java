@@ -13,6 +13,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -29,7 +30,7 @@ import java.util.Set;
  * <p>
  * Defines helper methods used in tests.
  * </p>
- * 
+ *
  * <p>
  * Bug fix for TT-1976. Modify assertEquals method also to check the description of reject reason of given entries. Add
  * two helper methods checkEquals(ExpenseEntryRejectReason[], ExpenseEntryRejectReason[]) and
@@ -118,7 +119,8 @@ public final class V1Dot1TestHelper {
         assertEquals("The creation date should be correct.", expected.getCreationDate(), actual.getCreationDate());
         assertEquals("The modification date should be correct.", expected.getModificationDate(),
             actual.getModificationDate());
-        Assert.assertEquals("The creation user should be correct.", expected.getCreationUser(), actual.getCreationUser());
+        Assert.assertEquals("The creation user should be correct.", expected.getCreationUser(),
+            actual.getCreationUser());
         Assert.assertEquals("The modification user should be correct.", expected.getModificationUser(),
             actual.getModificationUser());
     }
@@ -269,11 +271,34 @@ public final class V1Dot1TestHelper {
         Statement statement = connection.createStatement();
 
         try {
+            statement.executeUpdate("DELETE FROM comp_rej_reason;");
+            statement.executeUpdate("DELETE FROM comp_exp_type;");
             statement.executeUpdate("DELETE FROM exp_reject_reason;");
+            statement.executeUpdate("DELETE FROM expense_entry;");
+            statement.executeUpdate("DELETE FROM expense_type;");
+            statement.executeUpdate("DELETE FROM expense_status;");
+            statement.executeUpdate("DELETE FROM company;");
             statement.executeUpdate("DELETE FROM reject_reason;");
-            statement.executeUpdate("DELETE FROM ExpenseEntries;");
-            statement.executeUpdate("DELETE FROM ExpenseStatuses;");
-            statement.executeUpdate("DELETE FROM ExpenseTypes;");
+        } finally {
+            statement.close();
+        }
+    }
+
+    /**
+     * <p>
+     * Execute the sql statement.
+     * </p>
+     *
+     * @param sql sql statement;
+     * @param connection the database connection used to access database.
+     *
+     * @throws SQLException if database error occurs.
+     */
+    public static void executeSql(String sql, Connection connection)
+        throws SQLException {
+        Statement statement = connection.createStatement();
+        try {
+            statement.executeUpdate(sql);
         } finally {
             statement.close();
         }
@@ -306,5 +331,27 @@ public final class V1Dot1TestHelper {
 
         configManager.add(new File("test_files/V1.1/Valid.xml").getAbsolutePath());
         configManager.add(new File("test_files/V1.1/Database.xml").getAbsolutePath());
+    }
+
+
+    /**
+     * <p>
+     * Execute the sql statement to add some test data.
+     * </p>
+     *
+     * @param sql the sql statement.
+     * @param conn the connection
+     * @throws SQLException if any SQL error occurs.
+     */
+    public static void executeSQL(String sql, Connection conn) throws SQLException {
+            PreparedStatement pstmt = null;
+            try {
+                pstmt = conn.prepareStatement(sql);
+                pstmt.executeUpdate();
+            } finally {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            }
     }
 }

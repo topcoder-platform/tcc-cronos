@@ -19,21 +19,45 @@ import java.util.Date;
  * </p>
  *
  * <p>
+ * Changes in version 2.0: adds the expense status filters by create date and modification date.
+ * </p>
+ *
+ * <p>
  * Thread safety: Immutable class so there are no thread safety issues.
  * </p>
  *
  * @author adic, TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class FieldBetweenCriteria implements Criteria {
     /** Represents the constant for the expense amount field in the expense entry table. */
-    public static final String AMOUNT_FIELD = "ExpenseEntries.Amount";
+    public static final String AMOUNT_FIELD = "expense_entry.amount";
 
     /** Represents the constant for the creation date field in the expense entry table. */
-    public static final String CREATION_DATE_FIELD = "ExpenseEntries.CreationDate";
+    public static final String CREATION_DATE_FIELD = "expense_entry.creation_date";
 
     /** Represents the constant for the modification date field in the expense entry table. */
-    public static final String MODIFICATION_DATE_FIELD = "ExpenseEntries.ModificationDate";
+    public static final String MODIFICATION_DATE_FIELD = "expense_entry.modification_date";
+
+    /** Represents the constant for the creation date field in the expense status table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_STATUS_CREATE_DATE_FIELD = "expense_status.creation_date";
+
+    /** Represents the constant for the modification date field in the expense status table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_STATUS_MODIFICATION_DATE_FIELD = "expense_status.modification_date";
+
+    /** Represents the constant for the creation date field in the expense type table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_TYPE_CREATE_DATE_FIELD = "expense_type.creation_date";
+
+    /** Represents the constant for the modification date field in the expense type table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_TYPE_MODIFICATION_DATE_FIELD = "expense_type.modification_date";
 
     /**
      * Represents the field the match should be applied on. The field must be fully qualified (table.field) because the
@@ -197,5 +221,69 @@ public class FieldBetweenCriteria implements Criteria {
      */
     public static FieldBetweenCriteria getModificationDateBetweenCriteria(Date fromDate, Date toDate) {
         return new FieldBetweenCriteria(MODIFICATION_DATE_FIELD, fromDate, toDate);
+    }
+
+    /**
+     * Static shortcut method for creating a modification date between two given dates criteria for expense status.
+     * The between filter can be open ended (one limit being <code>null</code> means to limit) and inclusive.
+     *
+     * @param fromDate the lower value of the interval (can be <code>null</code>)
+     * @param toDate the higher value of the interval (can be <code>null</code>)
+     *
+     * @return the created modification date between criteria instance.
+     *
+     * @throws IllegalArgumentException if both value arguments are <code>null</code> at the same time.
+     * @since 2.0
+     */
+    public static FieldBetweenCriteria getExpenseStatusModificationDateBetweenCriteria(Date fromDate, Date toDate) {
+        return new FieldBetweenCriteria(EXPENSE_STATUS_MODIFICATION_DATE_FIELD, fromDate, toDate);
+    }
+
+    /**
+     * Static shortcut method for creating a creation date between two given dates criteria for expense status.
+     * The between filter can be open ended (one limit being <code>null</code> means to limit) and inclusive.
+     *
+     * @param fromDate the lower value of the interval (can be <code>null</code>)
+     * @param toDate the higher value of the interval (can be <code>null</code>)
+     *
+     * @return the created modification date between criteria instance.
+     *
+     * @throws IllegalArgumentException if both value arguments are <code>null</code> at the same time.
+     * @since 2.0
+     */
+    public static FieldBetweenCriteria getExpenseStatusCreateDateBetweenCriteria(Date fromDate, Date toDate) {
+        return new FieldBetweenCriteria(EXPENSE_STATUS_CREATE_DATE_FIELD, fromDate, toDate);
+    }
+
+    /**
+     * Static shortcut method for creating a modification date between two given dates criteria for expense type.
+     * The between filter can be open ended (one limit being <code>null</code> means to limit) and inclusive.
+     *
+     * @param fromDate the lower value of the interval (can be <code>null</code>)
+     * @param toDate the higher value of the interval (can be <code>null</code>)
+     *
+     * @return the created modification date between criteria instance.
+     *
+     * @throws IllegalArgumentException if both value arguments are <code>null</code> at the same time.
+     * @since 2.0
+     */
+    public static FieldBetweenCriteria getExpenseTypeModificationDateBetweenCriteria(Date fromDate, Date toDate) {
+        return new FieldBetweenCriteria(EXPENSE_TYPE_MODIFICATION_DATE_FIELD, fromDate, toDate);
+    }
+
+    /**
+     * Static shortcut method for creating a creation date between two given dates criteria for expense type.
+     * The between filter can be open ended (one limit being <code>null</code> means to limit) and inclusive.
+     *
+     * @param fromDate the lower value of the interval (can be <code>null</code>)
+     * @param toDate the higher value of the interval (can be <code>null</code>)
+     *
+     * @return the created modification date between criteria instance.
+     *
+     * @throws IllegalArgumentException if both value arguments are <code>null</code> at the same time.
+     * @since 2.0
+     */
+    public static FieldBetweenCriteria getExpenseTypeCreateDateBetweenCriteria(Date fromDate, Date toDate) {
+        return new FieldBetweenCriteria(EXPENSE_TYPE_CREATE_DATE_FIELD, fromDate, toDate);
     }
 }

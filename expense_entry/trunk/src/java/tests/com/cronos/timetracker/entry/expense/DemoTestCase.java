@@ -60,6 +60,7 @@ public class DemoTestCase extends TestCase {
         connection = factory.createConnection();
 
         TestHelper.clearDatabase(connection);
+        V1Dot1TestHelper.executeSQL("insert into company values(1, 'a', 'a', current, 'a', current, 'a')", connection);
     }
 
     /**
@@ -184,6 +185,7 @@ public class DemoTestCase extends TestCase {
 
         // Create an expense type without ID. The ID will be generated when adding it to the persistence.
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
 
         // Set fields
         type.setDescription("Description");
@@ -254,6 +256,7 @@ public class DemoTestCase extends TestCase {
         type.setCreationUser("Create");
         type.setDescription("Type");
         type.setModificationUser("Create");
+        type.setCompanyId(1);
 
         statusManager.addStatus(status);
         typeManager.addType(type);
@@ -284,6 +287,7 @@ public class DemoTestCase extends TestCase {
         entry = new ExpenseEntry();
 
         // Set fields
+        entry.setCompanyId(1);
         entry.setDescription("Description");
         entry.setCreationUser("Create");
         entry.setModificationUser("Create");

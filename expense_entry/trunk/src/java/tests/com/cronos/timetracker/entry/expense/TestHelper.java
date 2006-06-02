@@ -161,9 +161,14 @@ public final class TestHelper {
         Statement statement = connection.createStatement();
 
         try {
-            statement.executeUpdate("DELETE FROM ExpenseEntries;");
-            statement.executeUpdate("DELETE FROM ExpenseStatuses;");
-            statement.executeUpdate("DELETE FROM ExpenseTypes;");
+            statement.executeUpdate("DELETE FROM comp_rej_reason;");
+            statement.executeUpdate("DELETE FROM comp_exp_type;");
+            statement.executeUpdate("DELETE FROM exp_reject_reason;");
+            statement.executeUpdate("DELETE FROM expense_entry;");
+            statement.executeUpdate("DELETE FROM expense_type;");
+            statement.executeUpdate("DELETE FROM expense_status;");
+            statement.executeUpdate("DELETE FROM company;");
+            statement.executeUpdate("DELETE FROM reject_reason;");
         } finally {
             statement.close();
         }

@@ -70,9 +70,11 @@ public class V1Dot1DemoTest extends TestCase {
         connection = factory.createConnection();
         V1Dot1TestHelper.clearDatabase(connection);
 
+        V1Dot1TestHelper.executeSQL("insert into company values(1, 'a', 'a', current, 'a', current, 'a')", connection);
+
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO ExpenseTypes(ExpenseTypesID, Description, " +
-                "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO expense_type(expense_type_id, description, " +
+                "creation_user, creation_date, modification_user, modification_date, active) VALUES (?,?,?,?,?,?,0)");
 
         try {
             ps.setInt(1, 1);
@@ -87,8 +89,8 @@ public class V1Dot1DemoTest extends TestCase {
         }
 
         // Insert an expense status
-        ps = connection.prepareStatement("INSERT INTO ExpenseStatuses(ExpenseStatusesID, Description, CreationUser, " +
-                "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+        ps = connection.prepareStatement("INSERT INTO expense_status(expense_status_id, description, creation_user, " +
+                "creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)");
 
         try {
             ps.setInt(1, 2);
@@ -101,10 +103,11 @@ public class V1Dot1DemoTest extends TestCase {
         } finally {
             ps.close();
         }
+        V1Dot1TestHelper.executeSQL("insert into comp_exp_type values(1, 1, current, 'a', current, 'a')", connection);
 
         // Insert an reject reason
         ps = connection.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, creation_date, " +
-                "creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?)");
+                "creation_user, modification_date, modification_user, active) VALUES (?,?,?,?,?,?,0)");
 
         try {
             ps.setInt(1, 1);
@@ -125,6 +128,8 @@ public class V1Dot1DemoTest extends TestCase {
         } finally {
             ps.close();
         }
+        V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1, 1, current, 'a', current, 'a')", connection);
+        V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1, 3, current, 'a', current, 'a')", connection);
     }
 
     /**
@@ -252,6 +257,7 @@ public class V1Dot1DemoTest extends TestCase {
         type.setDescription("Description");
         type.setCreationUser("Create");
         type.setModificationUser("Create");
+        type.setCompanyId(1);
 
         // Add the expense entry entry to persistence.
         boolean success = manager.addType(type);
@@ -315,6 +321,7 @@ public class V1Dot1DemoTest extends TestCase {
         type.setCreationUser("Create");
         type.setDescription("Type");
         type.setModificationUser("Create");
+        type.setCompanyId(1);
 
         statusManager.addStatus(status);
         typeManager.addType(type);
@@ -343,6 +350,7 @@ public class V1Dot1DemoTest extends TestCase {
 
         // Create an expense entry without ID. The ID will be generated when adding it to the persistence.
         entry = new ExpenseEntry();
+        entry.setCompanyId(1);
 
         // Set fields
         entry.setDescription("Description");
@@ -452,6 +460,7 @@ public class V1Dot1DemoTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -566,6 +575,7 @@ public class V1Dot1DemoTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -586,8 +596,8 @@ public class V1Dot1DemoTest extends TestCase {
 
         // look for expense status, expense type, billable flag, creation and modification users
         // matching a given value
-        Criteria crit2 = new FieldMatchCriteria("ExpenseEntries.ExpenseStatusesID", new Integer(2));
-        Criteria crit3 = new FieldMatchCriteria("ExpenseEntries.ExpenseTypesID", new Integer(23));
+        Criteria crit2 = new FieldMatchCriteria("expense_entry.expense_entry_id", new Integer(2));
+        Criteria crit3 = new FieldMatchCriteria("expense_entry.expense_type_id", new Integer(23));
         Criteria crit4 = FieldMatchCriteria.getBillableMatchCriteria(true);
         Criteria crit5 = FieldMatchCriteria.getCreationUserMatchCriteria("me");
         Criteria crit6 = FieldMatchCriteria.getModificationUserMatchCriteria("boss");

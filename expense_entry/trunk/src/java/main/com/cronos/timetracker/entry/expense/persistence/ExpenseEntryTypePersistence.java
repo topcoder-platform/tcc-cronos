@@ -4,6 +4,7 @@
 package com.cronos.timetracker.entry.expense.persistence;
 
 import com.cronos.timetracker.entry.expense.ExpenseEntryType;
+import com.cronos.timetracker.entry.expense.search.Criteria;
 
 import java.sql.Connection;
 
@@ -107,6 +108,25 @@ public interface ExpenseEntryTypePersistence {
      *         persistence is invalid.
      */
     public List retrieveAllTypes() throws PersistenceException;
+
+    /**
+     * <p>
+     * Performs a search for expense types matching a given criteria. The criteria is abstracted using the <code>
+     * Criteria</code> interface. The <code>Criteria</code> implementations cover the basic SQL filtering abilities
+     * (=, like, between, or, and, not). The result of the search is an array with the matched expense types. It is
+     * empty if no matches found (but it can't be <code>null</code> or contain <code>null</code>) elements.
+     * </p>
+     *
+     * @param criteria the criteria to be used in the search.
+     *
+     * @return the results of the search (can be empty if no matches found).
+     *
+     * @throws IllegalArgumentException if the argument is <code>null</code>
+     * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     *
+     * @since 2.0
+     */
+    public ExpenseEntryType[] searchEntries(Criteria criteria) throws PersistenceException;
 
     /**
      * <p>

@@ -14,7 +14,9 @@ import junit.framework.TestSuite;
  * </p>
  *
  * @author -oo-
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
  */
 public class AccuracyTests extends TestCase {
     /**
@@ -29,6 +31,9 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(ExpenseEntryTest.class);
         suite.addTestSuite(ExpenseEntryDbPersistenceTest.class);
         suite.addTestSuite(ExpenseEntryManagerTest.class);
+        // since 2.0
+        suite.addTestSuite(ExpenseEntryTypeDbPersistenceTest.class);
+        suite.addTestSuite(ExpenseEntryStatusDbPersistenceAccuracyTest.class);
 
         return suite;
     }

@@ -18,45 +18,48 @@ import com.topcoder.util.config.ConfigManager;
 import junit.framework.TestCase;
 /**
  * FailureTests for ExpenseEntryManager class.
+ *
  * @author qiucx0161
- * @version 1.0
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.0
  */
 public class TestExpenseEntryManager extends TestCase {
     /** Failure config namespace. */
     private static final String NAMESPACE = "com.cronos.timetracker.entry.expense.failuretests";
     /** Failre config file. */
-    private static final String CONFIG_FILE = "test_files/failuretests/configfile.xml";
-    
+    private static final String CONFIG_FILE = "failuretests/configfile.xml";
+
     /** DBConnectionFactory config namespace. */
     protected static final String DB_FACTORY_NAMESPACE = "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
 
     /** DBConnectionFactory config file. */
-    private static final String DB_FACTORY_FILE = "test_files/failuretests/Database.xml";
+    private static final String DB_FACTORY_FILE = "failuretests/Database.xml";
 
     /** Producer name. Points to valid database. */
     protected static final String PRODUCER_NAME = "Connection";
 
     /** Producer name. Points to empty database. */
     protected static final String EMPTY_DATABASE = "empty";
-    
+
     /** ExpenseEntryManager instance to test on. */
     private ExpenseEntryManager manager = null;
-    
+
     /** Configuration Manager instance. */
     private ConfigManager config = null;
-    
+
     /**
      * Sets up test environment.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
         super.setUp();
-        
+
         clearConfigManager();
         config = ConfigManager.getInstance();
-        config.add(new File(DB_FACTORY_FILE).getAbsolutePath());
-        config.add(new File(CONFIG_FILE).getAbsolutePath());
+        config.add(DB_FACTORY_FILE);
+        config.add(CONFIG_FILE);
         manager = new ExpenseEntryManager(NAMESPACE);
     }
 
@@ -82,7 +85,7 @@ public class TestExpenseEntryManager extends TestCase {
             fail("testAddEntriesNullEntries is failure.");
         }
     }
-    
+
     /**
      * Tests addEntries(ExpenseEntry[] entries, boolean isAtomic) method with empty Entries
      * IllegalArgumentException should be thrown.
@@ -97,7 +100,7 @@ public class TestExpenseEntryManager extends TestCase {
             fail("testAddEntriesEmptyEntries is failure.");
         }
     }
-    
+
     /**
      * Tests addEntries(ExpenseEntry[] entries, boolean isAtomic) method with null element in Entries
      * IllegalArgumentException should be thrown.
@@ -112,10 +115,10 @@ public class TestExpenseEntryManager extends TestCase {
             fail("testAddEntriesNullElementInEntries is failure.");
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryNullStatus() throws Exception {
@@ -126,8 +129,8 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setCreationUser("tcs");
         entry.setDescription("description");
         entry.setModificationUser("tcs");
-        
-        
+
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("Null status, InsufficientDataException expected.");
@@ -135,10 +138,10 @@ public class TestExpenseEntryManager extends TestCase {
             // ok
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryNullType() throws Exception {
@@ -149,7 +152,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setCreationUser("tcs");
         entry.setDescription("description");
         entry.setModificationUser("tcs");
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("Null type, InsufficientDataException expected.");
@@ -157,10 +160,10 @@ public class TestExpenseEntryManager extends TestCase {
             // ok
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryNullDate() throws Exception {
@@ -171,7 +174,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setCreationUser("tcs");
         entry.setDescription("description");
         entry.setModificationUser("tcs");
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("Null date, InsufficientDataException expected.");
@@ -179,10 +182,10 @@ public class TestExpenseEntryManager extends TestCase {
             // ok
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryNullAmount() throws Exception {
@@ -193,7 +196,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setCreationUser("tcs");
         entry.setDescription("description");
         entry.setModificationUser("tcs");
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("Null amount, InsufficientDataException expected.");
@@ -201,10 +204,10 @@ public class TestExpenseEntryManager extends TestCase {
             // ok
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryNullCreationUser() throws Exception {
@@ -215,7 +218,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setAmount(new BigDecimal(1.0));
         entry.setDescription("description");
         entry.setModificationUser("tcs");
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("Null creation user, InsufficientDataException expected.");
@@ -223,10 +226,10 @@ public class TestExpenseEntryManager extends TestCase {
             // ok
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryNullModificationUser() throws Exception {
@@ -237,7 +240,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setAmount(new BigDecimal(1.0));
         entry.setCreationUser("tcs");
         entry.setDescription("description");
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("Null modification user, InsufficientDataException expected.");
@@ -245,10 +248,10 @@ public class TestExpenseEntryManager extends TestCase {
             // ok
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryNullDescritption() throws Exception {
@@ -259,7 +262,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setAmount(new BigDecimal(1.0));
         entry.setCreationUser("tcs");
         entry.setModificationUser("tcs");
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("Null description, InsufficientDataException expected.");
@@ -267,10 +270,10 @@ public class TestExpenseEntryManager extends TestCase {
             // ok
         }
     }
-    
+
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryModificationDateNotNull() throws Exception {
@@ -283,7 +286,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setDescription("description");
         entry.setModificationUser("tcs");
         entry.setModificationDate(new Date());
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("IllegalArgumentException expected.");
@@ -294,7 +297,7 @@ public class TestExpenseEntryManager extends TestCase {
 
     /**
      * Tests <c>addEntries</c> method failure.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     public void testAddEntryCreationDateNotNull() throws Exception {
@@ -307,7 +310,7 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setDescription("description");
         entry.setModificationUser("tcs");
         entry.setCreationDate(new Date());
-        
+
         try {
             manager.addEntries(new ExpenseEntry[]{entry}, true);
             fail("IllegalArgumentException expected.");
@@ -331,7 +334,7 @@ public class TestExpenseEntryManager extends TestCase {
             fail("testDeleteEntriesNullEntryIds is failure.");
         }
     }
-    
+
     /**
      * Tests deleteEntries(int[] entryIds, boolean isAtomic) method with empty EntryIds
      * IllegalArgumentException should be thrown.
@@ -376,7 +379,7 @@ public class TestExpenseEntryManager extends TestCase {
             fail("testRetrieveEntriesNullEntryIds is failure.");
         }
     }
-    
+
     /**
      * Tests retrieveEntries(int[] entryIds, boolean isAtomic) method with empty EntryIds
      * IllegalArgumentException should be thrown.
@@ -406,10 +409,10 @@ public class TestExpenseEntryManager extends TestCase {
             fail("testSearchEntriesNullCriteria is failure.");
         }
     }
-    
+
     /**
      * Helper method. Creates <c>ExpenseEntryType</c> filled with data.
-     * 
+     *
      * @return <c>ExpenseEntryType</c> instance.
      */
     private ExpenseEntryType getExpenseEntryType() {
@@ -417,10 +420,10 @@ public class TestExpenseEntryManager extends TestCase {
         setCommonInfo(type);
         return type;
     }
-    
+
     /**
      * Helper method. Fills <c>CommonInfo</c> with default data.
-     * 
+     *
      * @param type object to fill.
      */
     private void setCommonInfo(CommonInfo type) {
@@ -429,10 +432,10 @@ public class TestExpenseEntryManager extends TestCase {
         type.setModificationDate(new Date());
         type.setModificationUser("tcs");
     }
-    
+
     /**
      * Helper method. Creates <c>ExpenseEntryStatus</c> filled with data.
-     * 
+     *
      * @return <c>ExpenseEntryStatus</c> instance.
      */
     private ExpenseEntryStatus getExpenseEntryStatus() {
@@ -440,10 +443,10 @@ public class TestExpenseEntryManager extends TestCase {
         setCommonInfo(status);
         return status;
     }
-    
+
     /**
      * Helper method. Creates <c>ExpenseEntry</c> filled with data.
-     * 
+     *
      * @return <c>ExpenseEntry</c> instance.
      */
     private ExpenseEntry getExpenseEntry() {
@@ -453,13 +456,13 @@ public class TestExpenseEntryManager extends TestCase {
         entry.setDate(new Date());
         entry.setAmount(new BigDecimal(1.0));
         setCommonInfo(entry);
-        
+
         return entry;
     }
-    
+
     /**
      * Removes all namespaces from Configuration Manager.
-     * 
+     *
      * @throws Exception to JUnit.
      */
     private void clearConfigManager() throws Exception {

@@ -33,7 +33,9 @@ import java.util.List;
  * Stress test for class ExpenseEntryDbPersistence, ExpenseEntryTypeDbPersistence, ExpenseEntryStatusDbPersistence
  *
  * @author mgmg
- * @version 1.0
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.0
  */
 public class ExpenseEntryDbPersistenceStressTest extends TestCase {
     /** Represents the namespace to load manager configuration. */
@@ -88,9 +90,14 @@ public class ExpenseEntryDbPersistenceStressTest extends TestCase {
         Statement statement = connection.createStatement();
 
         try {
-            statement.executeUpdate("DELETE FROM ExpenseEntries;");
-            statement.executeUpdate("DELETE FROM ExpenseTypes;");
-            statement.executeUpdate("DELETE FROM ExpenseStatuses;");
+            statement.executeUpdate("DELETE FROM comp_exp_type;");
+            statement.executeUpdate("DELETE FROM comp_rej_reason;");
+            statement.executeUpdate("DELETE FROM exp_reject_reason;");
+            statement.executeUpdate("DELETE FROM expense_entry;");
+            statement.executeUpdate("DELETE FROM expense_status;");
+            statement.executeUpdate("DELETE FROM expense_type;");
+            statement.executeUpdate("DELETE FROM reject_reason;");
+            statement.executeUpdate("DELETE FROM company;");
         } finally {
             statement.close();
         }
@@ -118,6 +125,26 @@ public class ExpenseEntryDbPersistenceStressTest extends TestCase {
         factory = new DBConnectionFactoryImpl(DB_NAMESPACE);
         connection = factory.createConnection();
         DeleteAllTables();
+        createCompanies(connection);
+    }
+
+    /**
+     * Creates test companies.
+     *
+     * @param conn the database connection.
+     * @throws Exception to JUnit.
+     */
+    private void createCompanies(Connection conn) throws Exception {
+        Statement stmt = conn.createStatement();
+        try {
+        stmt.execute("insert into company values(10, 'a', 'a', current, 'a', current, 'a')");
+        stmt.execute("insert into company values(20, 'a', 'a1', current, 'a', current, 'a')");
+        stmt.execute("insert into company values(30, 'a', 'a2', current, 'a', current, 'a')");
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
     }
 
     /**
@@ -168,7 +195,7 @@ public class ExpenseEntryDbPersistenceStressTest extends TestCase {
         type.setModificationDate(createDate(2005, 2, 1));
         type.setCreationUser("TangentZ");
         type.setModificationUser("Ivern");
-
+        type.setCompanyId(10);
         try {
             typePersistence.addType(type);
             statusPersistence.addStatus(status);
@@ -187,6 +214,7 @@ public class ExpenseEntryDbPersistenceStressTest extends TestCase {
                 entry.setDate(createDate(2005, 2, 5));
                 entry.setExpenseType(type);
                 entry.setStatus(status);
+                entry.setCompanyId(10);
 
                 assertTrue("The entry should be added.", persistence.addEntry(entry));
             }
@@ -218,6 +246,7 @@ public class ExpenseEntryDbPersistenceStressTest extends TestCase {
                 entry.setDate(createDate(2005, 5, 6));
                 entry.setExpenseType(type);
                 entry.setStatus(status);
+                entry.setCompanyId(10);
 
                 assertTrue("The entry should be updated", persistence.updateEntry(entry));
             }
@@ -265,6 +294,7 @@ public class ExpenseEntryDbPersistenceStressTest extends TestCase {
                 type.setDescription("Description" + i);
                 type.setCreationUser("Create" + i);
                 type.setModificationUser("Modify" + i);
+                type.setCompanyId(10);
 
                 assertTrue("The type should be added.", persistence.addType(type));
             }
@@ -291,6 +321,7 @@ public class ExpenseEntryDbPersistenceStressTest extends TestCase {
                 type.setDescription("Description1" + i);
                 type.setCreationUser("Create2" + i);
                 type.setModificationUser("Modify3" + i);
+                type.setCompanyId(10);
 
                 assertTrue("The type should be updated", persistence.updateType(type));
             }

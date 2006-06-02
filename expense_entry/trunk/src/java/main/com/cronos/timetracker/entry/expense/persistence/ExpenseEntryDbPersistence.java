@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,64 +35,75 @@ import java.util.List;
  * obtained from the DB connection factory using a connection producer name, or given directly. The expense entries
  * are stored in the database using the following DDL:
  * <pre>
- * CREATE TABLE ExpenseEntries (
- *        ExpenseEntriesID     integer NOT NULL,
- *        ExpenseTypesID       integer NOT NULL,
- *        ExpenseStatusesID    integer NOT NULL,
- *        Description          varchar(64) NOT NULL,
- *        EntryDate            datetime year to second NOT NULL,
- *        Amount               money NOT NULL,
- *        Billable             smallint NOT NULL,
- *        CreationDate         datetime year to second NOT NULL,
- *        CreationUser         varchar(64) NOT NULL,
- *        ModificationDate     datetime year to second NOT NULL,
- *        ModificationUser     varchar(64) NOT NULL,
- *        PRIMARY KEY (ExpenseEntriesID)
+ * CREATE TABLE expense_entry (
+ *     expense_entry_id     integer NOT NULL,
+ *     company_id           integer NOT NULL,
+ *     expense_type_id      integer NOT NULL,
+ *     expense_status_id    integer NOT NULL,
+ *     description          varchar(64) NOT NULL,
+ *     entry_date           datetime year to second NOT NULL,
+ *     amount               integer NOT NULL,
+ *     billable             smallint NOT NULL,
+ *     creation_date        datetime year to second NOT NULL,
+ *     creation_user        varchar(64) NOT NULL,
+ *     modification_date    datetime year to second NOT NULL,
+ *     modification_user    varchar(64) NOT NULL,
+ *     PRIMARY KEY (expense_entry_id),
+ *     FOREIGN KEY (company_id) REFERENCES company,
+ *     FOREIGN KEY (expense_status_id) REFERENCES expense_status,
+ *     FOREIGN KEY (expense_type_id) REFERENCES expense_type
  * );
  * </pre>
  * </p>
- * 
+ *
  * <p>
  * Changes in 1.1: Four new methods for doing bulk operations on sets of expense entries have been added. These method
  * can work in atomic mode (a failure on one entry causes the entire operation to fail) or non-atomic (a failure in
  * one entry doesn't affect the other and the user has a way to know which ones failed). There is also a search method
  * that provides the capability to search expense entries at the database level and return the ones that match.
  * </p>
- * 
+ *
  * <p>
  * Bug fix for TT-1976: when retrieving ExpenseEntryRejectReason from database, also retrieve its descrption from
  * 'Reject_Reason' table. Modified RETRIEVE_REJECT_REASON_SQL variable and private retrieveRejectReasons method.
  * </p>
  *
+ * <p>
+ * Changes in 2.0: for the table name and fields name has changed, the sql statement has changed. And add
+ * Get/Set expense type of an existing expense entry (company ID must match),
+ * Link reject reason IDs to an existing expense entry (company ID must match).
+ * </p>
+ *
  * @author adic, TCSDEVELOPER
  * @author DanLazar, visualage
  * @author Xuchen
- * @version 1.1
+ * @author arylio
+ * @version 2.0
  *
  * @since 1.0
  */
 public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
     /** Represents the prepared SQL statement to add an expense entry. */
-    private static final String ADD_ENTRY_SQL = "INSERT INTO ExpenseEntries (ExpenseEntriesID, ExpenseTypesID, " +
-        "ExpenseStatusesID, Description, EntryDate, Amount, Billable, CreationDate, CreationUser, ModificationDate, " +
-        "ModificationUser) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String ADD_ENTRY_SQL = "INSERT INTO expense_entry (expense_entry_id, expense_type_id, " +
+        "expense_status_id, description, entry_date, amount, billable, creation_date, creation_user, " +
+        "modification_date, modification_user, company_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
     /**
      * Represents the prepared SQL statement to add into the exp_reject_reason table.
      *
      * @since 1.1
      */
-    private static final String ADD_EXP_REJECT_REASON_SQL = "INSERT INTO exp_reject_reason (ExpenseEntriesID," +
+    private static final String ADD_EXP_REJECT_REASON_SQL = "INSERT INTO exp_reject_reason (expense_entry_id," +
         "reject_reason_id, creation_date, creation_user, modification_date, modification_user) " +
         "VALUES (?,?,?,?,?,?)";
 
     /** Represents the prepared SQL statement to update an expense entry. */
-    private static final String UPDATE_ENTRY_SQL = "UPDATE ExpenseEntries SET ExpenseTypesID=?, ExpenseStatusesID=?, " +
-        "Description=?, EntryDate=?, Amount=?, Billable=?, ModificationDate=?, ModificationUser=? " +
-        "WHERE ExpenseEntriesID=?";
+    private static final String UPDATE_ENTRY_SQL = "UPDATE expense_entry SET expense_type_id=?, expense_status_id=?, " +
+        "description=?, entry_date=?, amount=?, billable=?, modification_date=?, modification_user=?, company_id=? " +
+        "WHERE expense_entry_id=?";
 
     /** Represents the prepared SQL statement to delete an expense entry. */
-    private static final String DELETE_ENTRY_SQL = "DELETE FROM ExpenseEntries WHERE ExpenseEntriesID=?";
+    private static final String DELETE_ENTRY_SQL = "DELETE FROM expense_entry WHERE expense_entry_id=?";
 
     /**
      * Represents the prepared SQL statement to delete the exp_reject_reason table.
@@ -99,10 +111,10 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * @since 1.1
      */
     private static final String DELETE_EXP_REJECT_REASON_SQL = "DELETE FROM exp_reject_reason " +
-        "WHERE ExpenseEntriesID=?";
+        "WHERE expense_entry_id=?";
 
     /** Represents the prepared SQL statement to delete all expense entries. */
-    private static final String DELETE_ALL_ENTRY_SQL = "DELETE FROM ExpenseEntries";
+    private static final String DELETE_ALL_ENTRY_SQL = "DELETE FROM expense_entry";
 
     /**
      * Represents the prepared SQL statement to delete all the records in exp_reject_reason table.
@@ -112,55 +124,74 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
     private static final String DELETE_ALL_EXP_REJECT_REASON_SQL = "DELETE FROM exp_reject_reason";
 
     /** Represents the prepared SQL statement to get an expense entry, including its entry type and status. */
-    private static final String RETRIEVE_ENTRY_SQL = "SELECT E.ExpenseEntriesID, E.ExpenseTypesID, " +
-        "E.ExpenseStatusesID, E.Description, E.EntryDate, E.Amount, E.Billable, E.CreationDate, E.CreationUser, " +
-        "E.ModificationDate, E.ModificationUser, T.Description AS TypeDescription, " +
-        "T.CreationDate AS TypeCreationDate, T.CreationUser AS TypeCreationUser, " +
-        "T.ModificationDate AS TypeModificationDate, T.ModificationUser AS TypeModificationUser, " +
-        "S.Description AS StatusDescription, S.CreationDate AS StatusCreationDate, " +
-        "S.CreationUser AS StatusCreationUser, S.ModificationDate AS StatusModificationDate, " +
-        "S.ModificationUser AS StatusModificationUser FROM ExpenseEntries AS E " +
-        "LEFT OUTER JOIN ExpenseTypes AS T ON E.ExpenseTypesID = T.ExpenseTypesID " +
-        "LEFT OUTER JOIN ExpenseStatuses AS S ON E.ExpenseStatusesID = S.ExpenseStatusesID " +
-        "WHERE E.ExpenseEntriesID=?";
+    private static final String RETRIEVE_ENTRY_SQL = "SELECT E.expense_entry_id, E.expense_type_id, " +
+        "E.expense_status_id, E.description, E.entry_date, E.amount, E.billable, E.creation_date, " +
+        "E.creation_user, E.modification_date, E.modification_user, E.company_id, " +
+        "T.description AS TypeDescription, T.creation_date AS TypeCreationDate, " +
+        "T.creation_user AS TypeCreationUser, T.modification_date AS TypeModificationDate, " +
+        "T.modification_user AS TypeModificationUser, S.description AS StatusDescription, " +
+        "S.creation_date AS StatusCreationDate, S.creation_user AS StatusCreationUser, " +
+        "S.modification_date AS StatusModificationDate, S.modification_user AS StatusModificationUser " +
+        "FROM expense_entry AS E " +
+        "LEFT OUTER JOIN expense_type AS T ON E.expense_type_id = T.expense_type_id " +
+        "LEFT OUTER JOIN expense_status AS S ON E.expense_status_id = S.expense_status_id " +
+        "WHERE E.expense_entry_id=?";
 
     /**
      * Represents the prepared SQL statement to get the reject reasons with given ExpenseEntriesID.
      *
      * @since 1.1
      */
-    private static final String RETRIEVE_REJECT_REASON_SQL = "SELECT R.reject_reason_id, R.description, " +
-        "R.creation_date, R.creation_user, R.modification_date, R.modification_user FROM exp_reject_reason AS E " +
-        "LEFT OUTER JOIN reject_reason AS R ON E.reject_reason_id = R.reject_reason_id " +
-        "WHERE E.ExpenseEntriesID=?";
+    private static final String RETRIEVE_REJECT_REASON_SQL = "SELECT reject_reason.reject_reason_id, " +
+        "reject_reason.description, reject_reason.creation_date, reject_reason.creation_user, " +
+        "reject_reason.modification_date, reject_reason.modification_user, reject_reason.active " +
+        "FROM exp_reject_reason " +
+        "LEFT OUTER JOIN reject_reason ON reject_reason.reject_reason_id = exp_reject_reason.reject_reason_id " +
+        "WHERE exp_reject_reason.expense_entry_id=?";
 
     /**
      * Represents the prepared SQL statement to get all expense entries, including their entry types and statuses.
      *
      * @since 1.0
      */
-    private static final String RETRIEVE_ALL_ENTRY_SQL = "SELECT ExpenseEntries.ExpenseEntriesID, " +
-        "ExpenseEntries.ExpenseTypesID, ExpenseEntries.ExpenseStatusesID, ExpenseEntries.Description, " +
-        "ExpenseEntries.EntryDate, ExpenseEntries.Amount, ExpenseEntries.Billable, ExpenseEntries.CreationDate, " +
-        "ExpenseEntries.CreationUser, ExpenseEntries.ModificationDate, ExpenseEntries.ModificationUser," +
-        "ExpenseTypes.Description AS TypeDescription, " +
-        "ExpenseTypes.CreationDate AS TypeCreationDate, ExpenseTypes.CreationUser AS TypeCreationUser, " +
-        "ExpenseTypes.ModificationDate AS TypeModificationDate, ExpenseTypes.ModificationUser AS " +
-        "TypeModificationUser, ExpenseStatuses.Description AS StatusDescription, " +
-        "ExpenseStatuses.CreationDate AS StatusCreationDate, ExpenseStatuses.CreationUser AS " +
-        "StatusCreationUser, ExpenseStatuses.ModificationDate AS StatusModificationDate, " +
-        "ExpenseStatuses.ModificationUser AS StatusModificationUser FROM ExpenseEntries " +
-        "LEFT OUTER JOIN ExpenseTypes ON ExpenseEntries.ExpenseTypesID = ExpenseTypes.ExpenseTypesID " +
-        "LEFT OUTER JOIN ExpenseStatuses ON ExpenseEntries.ExpenseStatusesID = ExpenseStatuses.ExpenseStatusesID";
+    private static final String RETRIEVE_ALL_ENTRY_SQL = "SELECT expense_entry.expense_entry_id, " +
+        "expense_entry.expense_type_id, expense_entry.expense_status_id, expense_entry.description, " +
+        "expense_entry.entry_date, expense_entry.amount, expense_entry.billable, expense_entry.creation_date, " +
+        "expense_entry.creation_user, expense_entry.modification_date, expense_entry.modification_user," +
+        "expense_entry.company_id, expense_type.description AS TypeDescription, " +
+        "expense_type.creation_date AS TypeCreationDate, expense_type.creation_user AS TypeCreationUser, " +
+        "expense_type.modification_date AS TypeModificationDate, expense_type.modification_user AS " +
+        "TypeModificationUser, expense_status.description AS StatusDescription, " +
+        "expense_status.creation_date AS StatusCreationDate, expense_status.creation_user AS " +
+        "StatusCreationUser, expense_status.modification_date AS StatusModificationDate, " +
+        "expense_status.modification_user AS StatusModificationUser FROM expense_entry " +
+        "LEFT OUTER JOIN expense_type ON expense_entry.expense_type_id = expense_type.expense_type_id " +
+        "LEFT OUTER JOIN expense_status ON expense_entry.expense_status_id = expense_status.expense_status_id";
+
+    /**
+     * Represents the prepared SQL statement to check the expense type id is associated with the company id.
+     *
+     * @since 2.0
+     */
+    private static final String CHECK_COMPANY_ID_EXPENSE_TYPE_SQL =
+        "Select 1 counts from comp_exp_type where company_id=? and expense_type_id=?";
+
+    /**
+     * Represents the prepared SQL statement to check the reject reason id is associated with the company id.
+     *
+     * @since 2.0
+     */
+    private static final String CHECK_COMPANY_ID_REJECT_REASON_SQL =
+        "Select 1 counts from comp_rej_reason where company_id=? and reject_reason_id=?";
 
     /** Represents the column name for expense entry ID. */
-    private static final String ID_COLUMN = "ExpenseEntriesID";
+    private static final String ID_COLUMN = "expense_entry_id";
 
     /** Represents the column name for the expense type ID of the expense entry. */
-    private static final String TYPE_ID_COLUMN = "ExpenseTypesID";
+    private static final String TYPE_ID_COLUMN = "expense_type_id";
 
     /** Represents the column name for the expense status ID of the expense entry. */
-    private static final String STATUS_ID_COLUMN = "ExpenseStatusesID";
+    private static final String STATUS_ID_COLUMN = "expense_status_id";
 
     /**
      * Represents the column name for the reject reason ID of the expense entry.
@@ -170,28 +201,33 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
     private static final String REASON_ID_COLUMN = "reject_reason_id";
 
     /** Represents the column name for expense entry description. */
-    private static final String DESCRIPTION_COLUMN = "Description";
+    private static final String DESCRIPTION_COLUMN = "description";
 
     /** Represents the column name for expense entry date. */
-    private static final String DATE_COLUMN = "EntryDate";
+    private static final String DATE_COLUMN = "entry_date";
 
     /** Represents the column name for expense entry amount. */
-    private static final String AMOUNT_COLUMN = "Amount";
+    private static final String AMOUNT_COLUMN = "amount";
 
     /** Represents the column name for a flag indicating whether the expense entry is billable. */
-    private static final String BILLABLE_COLUMN = "Billable";
+    private static final String BILLABLE_COLUMN = "billable";
 
     /** Represents the column name for expense entry creation date. */
-    private static final String CREATION_DATE_COLUMN = "CreationDate";
+    private static final String CREATION_DATE_COLUMN = "creation_date";
 
     /** Represents the column name for expense entry creation user. */
-    private static final String CREATION_USER_COLUMN = "CreationUser";
+    private static final String CREATION_USER_COLUMN = "creation_user";
 
     /** Represents the column name for expense entry modification date. */
-    private static final String MODIFICATION_DATE_COLUMN = "ModificationDate";
+    private static final String MODIFICATION_DATE_COLUMN = "modification_date";
 
     /** Represents the column name for expense entry modification user. */
-    private static final String MODIFICATION_USER_COLUMN = "ModificationUser";
+    private static final String MODIFICATION_USER_COLUMN = "modification_user";
+
+    /**
+     * Represents the column name for company id.
+     */
+    private static final String COMPANY_ID_COLUMN = "company_id";
 
     /** Represents the column name for expense entry type description. */
     private static final String TYPE_DESCRIPTION_COLUMN = "TypeDescription";
@@ -291,6 +327,9 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
     /** Represents the parameter index of modification user in INSERT SQL statement. */
     private static final int INSERT_MODIFICATIONUSER_INDEX = 11;
 
+    /** Represents the  parameter index of company id in insert sql statement.*/
+    private static final int INSERT_COMPANYID_INDEX = 12;
+
     /** Represents the parameter index of task type ID in UPDATE SQL statement. */
     private static final int UPDATE_TYPEID_INDEX = 1;
 
@@ -316,7 +355,10 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
     private static final int UPDATE_MODIFICATIONUSER_INDEX = 8;
 
     /** Represents the parameter index of ID in UPDATE SQL statement. */
-    private static final int UPDATE_ID_INDEX = 9;
+    private static final int UPDATE_ID_INDEX = 10;
+
+    /** Represents the parameter index of ID in UPDATE SQL statement. */
+    private static final int COMPANY_ID_INDEX = 9;
 
     /**
      * Represents the current connection used to access database. If it is <code>null</code>, when needed, the
@@ -395,10 +437,16 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Adds a new <code>ExpenseEntry</code> instance to the database.
      * </p>
-     * 
+     *
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. For each contained reject reason, a
      * row needs to be inserted in the exp_reject_reason table.
+     * </p>
+     *
+     * <p>
+     * Changes in 2.0:
+     *  the company id fieled added and in the component level,
+     *  it will check the expense type is associated with the company id.
      * </p>
      *
      * @param entry the expense entry to be added to the database.
@@ -419,6 +467,15 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
         }
 
         createConnection(connectionProducerName);
+        if (!checkExpenseType(entry.getCompanyId(), entry.getExpenseType().getId(), connection)) {
+            throw new PersistenceException("The expense type id is not matched with the compay id.");
+        }
+        ExpenseEntryRejectReason[] rejectReasons = entry.getRejectReasons();
+        for (int i = 0; i < rejectReasons.length; i++) {
+            if (!checkRejectReason(entry.getCompanyId(), rejectReasons[i].getRejectReasonId(), connection)) {
+                throw new PersistenceException("The reject reason is not matched with the compay id.");
+            }
+        }
 
         Date now = new Date(new java.util.Date().getTime());
         PreparedStatement statement = null;
@@ -438,15 +495,13 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
             statement.setString(INSERT_CREATIONUSER_INDEX, entry.getCreationUser());
             statement.setDate(INSERT_MODIFICATIONDATE_INDEX, now);
             statement.setString(INSERT_MODIFICATIONUSER_INDEX, entry.getModificationUser());
+            statement.setInt(INSERT_COMPANYID_INDEX, entry.getCompanyId());
 
             // Execute
             statement.executeUpdate();
 
             // add into the exp_reject_reason table
             statement = connection.prepareStatement(ADD_EXP_REJECT_REASON_SQL);
-
-            ExpenseEntryRejectReason[] rejectReasons = entry.getRejectReasons();
-
             for (int i = 0; i < rejectReasons.length; ++i) {
                 int index = 0;
                 statement.setInt(++index, entry.getId());
@@ -472,9 +527,72 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
 
     /**
      * <p>
+     * Check the expense type id is assocaited with the company id.
+     * </p>
+     *
+     * @param companyId the company id.
+     * @param expenseTypeId the task type id.
+     * @param conn the connection.
+     * @return true for matched, false otherwise.
+     *
+     * @throws PersistenceException exception thrown when close resource.
+     *
+     * @since 2.0
+     */
+    private boolean checkExpenseType(int companyId, int expenseTypeId, Connection conn) throws PersistenceException {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = conn.prepareStatement(CHECK_COMPANY_ID_EXPENSE_TYPE_SQL);
+            statement.setInt(1, companyId);
+            statement.setInt(2, expenseTypeId);
+            rs = statement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new PersistenceException("Failed to check the expense type.", e);
+        } finally {
+            PersistenceHelper.close(rs);
+            PersistenceHelper.close(statement);
+        }
+    }
+
+    /**
+     * <p>
+     * Check the reject reason id is assocaited with the company id.
+     * </p>
+     *
+     * @param companyId the company id.
+     * @param rejectReasonId the reject reason id.
+     * @param conn the connection.
+     * @return true for matched, false otherwise.
+     *
+     * @throws PersistenceException exception thrown when close resource.
+     *
+     * @since 2.0
+     */
+    private boolean checkRejectReason(int companyId, int rejectReasonId, Connection conn)
+        throws PersistenceException {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = conn.prepareStatement(CHECK_COMPANY_ID_REJECT_REASON_SQL);
+            statement.setInt(1, companyId);
+            statement.setInt(2, rejectReasonId);
+            rs = statement.executeQuery();
+            return rs.next();
+        }catch (SQLException e) {
+            throw new PersistenceException("Failed to check the reject reason.", e);
+        } finally {
+            PersistenceHelper.close(rs);
+            PersistenceHelper.close(statement);
+        }
+    }
+
+    /**
+     * <p>
      * Deletes an <code>ExpenseEntry</code> instance with the given ID from the database.
      * </p>
-     * 
+     *
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. When deleting an entry, the linked
      * rows from exp_reject_reason must be deleted too.
@@ -523,7 +641,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Deletes all <code>ExpenseEntry</code> instances in the database.
      * </p>
-     * 
+     *
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. When deleting an entry, the linked
      * rows from exp_reject_reason must be deleted too.
@@ -553,7 +671,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Updates an <code>ExpenseEntry</code> instance to the database.
      * </p>
-     * 
+     *
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. The exp_reject_reason stores in
      * persistence the reject reason ids for an expense entries. The updated entry may contain a totally different set
@@ -562,6 +680,11 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * the update object must be eliminated (they don't need updating). All reject entries present in the update
      * object but not in the table, must be added. All reject entries present in the table but not in the update
      * object, must be deleted. The reject entries present in both but with different users/dates, must be updated.
+     * </p>
+     *
+     * <p>
+     * Change in 2.0: the company id fieled added and in the component level,
+     * it will check the expense type is associated with the company id.
      * </p>
      *
      * @param entry the expense entry to be updated in the database.
@@ -583,6 +706,15 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
         }
 
         createConnection(connectionProducerName);
+        if (!checkExpenseType(entry.getCompanyId(), entry.getExpenseType().getId(), connection)) {
+            throw new PersistenceException("The expense type id is not matched with the compay id.");
+        }
+        ExpenseEntryRejectReason[] rejectReasons = entry.getRejectReasons();
+        for (int i = 0; i < rejectReasons.length; i++) {
+            if (!checkRejectReason(entry.getCompanyId(), rejectReasons[i].getRejectReasonId(), connection)) {
+                throw new PersistenceException("The reject reason is not matched with the compay id.");
+            }
+        }
 
         Date now = new Date(new java.util.Date().getTime());
         PreparedStatement statement = null;
@@ -600,7 +732,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
             statement.setDate(UPDATE_MODIFICATIONDATE_INDEX, now);
             statement.setString(UPDATE_MODIFICATIONUSER_INDEX, entry.getModificationUser());
             statement.setInt(UPDATE_ID_INDEX, entry.getId());
-
+            statement.setInt(COMPANY_ID_INDEX, entry.getCompanyId());
             // Execute
             statement.executeUpdate();
 
@@ -612,8 +744,6 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
 
             // then add all the records into the exp_reject_reason table.
             statement = connection.prepareStatement(ADD_EXP_REJECT_REASON_SQL);
-
-            ExpenseEntryRejectReason[] rejectReasons = entry.getRejectReasons();
 
             for (int i = 0; i < rejectReasons.length; ++i) {
                 int index = 0;
@@ -644,7 +774,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * Retrieves an <code>ExpenseEntry</code> instance with the given ID from the database. The related
      * <code>ExpenseEntryType</code> and <code>ExpenseEntryStatus</code> instances are also retrieved.
      * </p>
-     * 
+     *
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. The retrieval query must now be joined
      * with exp_reject_reason on the ExpenseEntriesID field (a separate query is acceptable too). The reject reason
@@ -701,7 +831,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * Retrieves all <code>ExpenseEntry</code> instances from the database. The related <code>ExpenseEntryType</code>
      * and <code>ExpenseEntryStatus</code> instances are also retrieved.
      * </p>
-     * 
+     *
      * <p>
      * Changes in 1.1: The expense entry may contain now several reject reasons. The retrieval query must now be joined
      * with exp_reject_reason on the ExpenseEntriesID field (a separate query is acceptable too and in this case
@@ -861,19 +991,19 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Adds a set of entries to the database.
      * </p>
-     * 
+     *
      * <p>
      * If the addition is atomic then it means that entire retrieval will fail if a single expense entry addition
      * fails.
      * </p>
-     * 
+     *
      * <p>
      * If the addition is non-atomic then it means each expense entry is added individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs). If the
      * exception is related to acquiring an SQL connection or something like that, it is obvious that all entries will
      * fail so the exception should be thrown.
      * </p>
-     * 
+     *
      * <p>
      * Note: an JDBC transaction must be used in atomic mode to be able to rollback everything in case of failure.
      * </p>
@@ -1079,17 +1209,17 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Deletes a set of entries from the database with the given IDs from the persistence.
      * </p>
-     * 
+     *
      * <p>
      * If the deletion is atomic then it means that entire retrieval will fail if a single expense entry deletion
      * fails.
      * </p>
-     * 
+     *
      * <p>
      * If the deletion is non-atomic then it means each expense entry is deleted individually. If it fails, that won't
      * affect the others. A list with the failed ids is returned to the user (empty if no error occurs).
      * </p>
-     * 
+     *
      * <p>
      * Note: an JDBC transaction must be used in atomic mode to be able to rollback everything in case of failure.
      * </p>
@@ -1143,16 +1273,16 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Updates a set of entries in the database.
      * </p>
-     * 
+     *
      * <p>
      * If the update is atomic then it means that entire retrieval will fail if a single expense entry update fails.
      * </p>
-     * 
+     *
      * <p>
      * If the update is non-atomic then it means each expense entry is updated individually. If it fails, that won't
      * affect the others. A list with the failed entries is returned to the user (empty if no error occurs).
      * </p>
-     * 
+     *
      * <p>
      * Note: an JDBC transaction must be used in atomic mode to be able to rollback everything in case of failure.
      * </p>
@@ -1191,12 +1321,12 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * <p>
      * Retrieves a set of entries with given ids from the database.
      * </p>
-     * 
+     *
      * <p>
      * If the retrieval is atomic then it means that entire retrieval will fail if a single expense entry retrieval
      * fails.
      * </p>
-     * 
+     *
      * <p>
      * If the retrieval is non-atomic then it means each expense entry is retrieved individually. If it fails that
      * won't affect the others. The potentially partial list of results will be returned. If any error occurs or if
@@ -1303,7 +1433,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
 
             for (int i = 0; i < parameters.length; ++i) {
                 if (parameters[i] instanceof java.util.Date) {
-                    parameters[i] = new Date(((java.util.Date) parameters[i]).getTime());
+                    parameters[i] = new Timestamp(((java.util.Date) parameters[i]).getTime());
                 }
 
                 statement.setObject(i + 1, parameters[i]);
@@ -1391,6 +1521,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
         try {
             // Set properties
             entry = new ExpenseEntry(resultSet.getInt(ID_COLUMN));
+            entry.setCompanyId(resultSet.getInt(COMPANY_ID_COLUMN));
             entry.setDescription(resultSet.getString(DESCRIPTION_COLUMN));
             entry.setCreationDate(resultSet.getDate(CREATION_DATE_COLUMN));
             entry.setCreationUser(resultSet.getString(CREATION_USER_COLUMN));

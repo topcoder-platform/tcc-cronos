@@ -26,7 +26,9 @@ import java.util.List;
  * </p>
  *
  * @author -oo-
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
  */
 public class ExpenseEntryManagerTest extends TestCase {
     /** Represents the namespace to load manager configuration. */
@@ -98,6 +100,8 @@ public class ExpenseEntryManagerTest extends TestCase {
             entries[i].setExpenseType(type);
             entries[i].setStatus(status);
             entries[i].addRejectReason(new ExpenseEntryRejectReason(i));
+            // since 2.0
+            entries[i].setCompanyId(TestHelper.COMPANY_ID);
         }
 
         initConnection();
@@ -344,7 +348,7 @@ public class ExpenseEntryManagerTest extends TestCase {
 
         try {
             initConnection();
-            ps = connection.prepareStatement("SELECT * FROM ExpenseEntries WHERE ExpenseEntriesID=?");
+            ps = connection.prepareStatement("SELECT * FROM expense_entry WHERE expense_entry_id=?");
             ps.setInt(1, entry.getId());
             resultSet = ps.executeQuery();
 
@@ -374,7 +378,7 @@ public class ExpenseEntryManagerTest extends TestCase {
 
         try {
             initConnection();
-            ps = connection.prepareStatement("SELECT * FROM exp_reject_reason WHERE ExpenseEntriesID=?");
+            ps = connection.prepareStatement("SELECT * FROM exp_reject_reason WHERE expense_entry_id=?");
             ps.setInt(1, entry.getId());
             resultSet = ps.executeQuery();
 

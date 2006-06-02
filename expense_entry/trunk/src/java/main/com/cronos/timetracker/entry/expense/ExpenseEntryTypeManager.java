@@ -5,6 +5,7 @@ package com.cronos.timetracker.entry.expense;
 
 import com.cronos.timetracker.entry.expense.persistence.ExpenseEntryTypePersistence;
 import com.cronos.timetracker.entry.expense.persistence.PersistenceException;
+import com.cronos.timetracker.entry.expense.search.Criteria;
 
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
@@ -195,5 +196,33 @@ public class ExpenseEntryTypeManager {
      */
     public ExpenseEntryTypePersistence getTypePersistence() {
         return typePersistence;
+    }
+
+    /**
+     * <p>
+     * Performs a search for expense types matching a given criteria. The criteria is abstracted using the <code>
+     * Criteria</code> interface. The <code>Criteria</code> implementations cover the basic SQL filtering abilities
+     * (=, like, between, or, and, not). The result of the search is an array with the matched expense entries. It is
+     * empty if no matches found (but it can't be <code>null</code> or contain <code>null</code>) elements.
+     * </p>
+     *
+     * @param criteria the criteria to be used in the search.
+     *
+     * @return the results of the search (can be empty if no matches found).
+     *
+     * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     * @throws IllegalArgumentException if the argument is <code>null</code>
+     *
+     * @since 2.0
+     */
+    public ExpenseEntryType[] searchEntries(Criteria criteria)
+        throws PersistenceException {
+        // argument validation
+        if (criteria == null) {
+            throw new IllegalArgumentException("criteria should not be null.");
+        }
+
+        // process the deletion.
+        return this.typePersistence.searchEntries(criteria);
     }
 }

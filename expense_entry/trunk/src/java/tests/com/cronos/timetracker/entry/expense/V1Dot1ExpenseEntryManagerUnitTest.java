@@ -29,7 +29,7 @@ import java.util.Set;
  * <p>
  * Tests functionality and error cases of <code>ExpenseEntryManager</code> class.
  * </p>
- * 
+ *
  * <p>
  * 2006-4-24: Add/Modify Test Cases by Xuchen for TT-1974 which is about generating unique id for entries whose
  * original id is -1 in adding entries batch. <br>
@@ -38,7 +38,7 @@ import java.util.Set;
  * 2. Modify two test cases testAddEntries_AtomicModeAccuracy1() and testAddEntries_NonAtomicModeAccuracy1(), in which
  * we add the asserting at the bottom that the original id (which is not -1) does not change after adding entries.
  * </p>
- * 
+ *
  * <p>
  * Modify test cases for bug fix for TT-1976. Adding descriptions to reject reason of entry (in setUp method.).  Add
  * checking the description of reject reason in entries returned from searchEntries methods. This checking  is done in
@@ -104,11 +104,10 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         connection = factory.createConnection();
 
         V1Dot1TestHelper.clearDatabase(connection);
-
+        V1Dot1TestHelper.executeSQL("insert into company values(1, 'a', 'a', current, 'a', current, 'a')", connection);
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO ExpenseTypes(ExpenseTypesID, Description, " +
-                "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
-
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO expense_type(expense_type_id, description, " +
+                "creation_user, creation_date, modification_user, modification_date, active) VALUES (?,?,?,?,?,?,?)");
         try {
             ps.setInt(1, 1);
             ps.setString(2, "Travel Expense");
@@ -116,15 +115,16 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             ps.setDate(4, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 1, 1).getTime()));
             ps.setString(5, "Ivern");
             ps.setDate(6, new java.sql.Date(V1Dot1TestHelper.createDate(2005, 2, 1).getTime()));
+            ps.setShort(7, (short) 0);
             ps.executeUpdate();
         } finally {
             ps.close();
         }
+        V1Dot1TestHelper.executeSQL("insert into comp_exp_type values(1, 1, current, 'a', current, 'a')", connection);
 
         // Insert an expense status
-        ps = connection.prepareStatement("INSERT INTO ExpenseStatuses(ExpenseStatusesID, Description, CreationUser, " +
-                "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
-
+        ps = connection.prepareStatement("INSERT INTO expense_status(expense_status_id, description, creation_user, " +
+                "creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)");
         try {
             ps.setInt(1, 2);
             ps.setString(2, "Pending Approval");
@@ -139,7 +139,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         // Insert an reject reason
         ps = connection.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, creation_date, " +
-                "creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?)");
+                "creation_user, modification_date, modification_user, active) VALUES (?,?,?,?,?,?, 0)");
 
         try {
             ps.setInt(1, 1);
@@ -160,10 +160,11 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         } finally {
             ps.close();
         }
+        V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1, 1, current, 'a', current, 'a')", connection);
+        V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1, 3, current, 'a', current, 'a')", connection);
 
         // Create the expense status
         status = new ExpenseEntryStatus(2);
-
         status.setDescription("Pending Approval");
         status.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
         status.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
@@ -172,7 +173,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         // Create the expense type
         type = new ExpenseEntryType(1);
-
+        type.setCompanyId(1);
         type.setDescription("Travel Expense");
         type.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
         type.setModificationDate(V1Dot1TestHelper.createDate(2005, 2, 1));
@@ -196,6 +197,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         // Create the expense entry
         entry = new ExpenseEntry(5);
+        entry.setCompanyId(1);
         entry.setDescription("Description");
         entry.setCreationUser("Create");
         entry.setModificationUser("Modify");
@@ -373,6 +375,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -416,6 +419,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -427,6 +431,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         entry = new ExpenseEntry(4);
+        entry.setCompanyId(1);
         entry.setCreationUser("Create");
         entry.setModificationUser("Modify");
         entry.setDescription("Description");
@@ -462,6 +467,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -501,6 +507,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -540,6 +547,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -581,6 +589,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry();
+            expected[i].setCompanyId(1);
 
             // check the default original id is -1.
             assertEquals("The default original id should be -1.", -1, expected[i].getId());
@@ -641,6 +650,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -685,6 +695,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -696,6 +707,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         entry = new ExpenseEntry(4);
+        entry.setCompanyId(1);
         entry.setCreationUser("Create");
         entry.setModificationUser("Modify");
         entry.setDescription("Description");
@@ -732,6 +744,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -769,6 +782,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -806,6 +820,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -845,6 +860,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry();
+            expected[i].setCompanyId(1);
 
             // check the default original id is -1.
             assertEquals("The default original id should be -1.", -1, expected[i].getId());
@@ -934,6 +950,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -969,6 +986,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1006,6 +1024,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1039,6 +1058,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1075,6 +1095,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1108,6 +1129,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1195,6 +1217,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1248,6 +1271,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1269,6 +1293,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -1302,12 +1327,13 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
-        update.setCreationUser("Create2");
+        update.setCompanyId(1);
         update.setModificationUser("Modify2");
         update.setDescription("Modified");
-        update.setCreationDate(new Date());
+        update.setCreationDate(entry.getCreationDate());
+        update.setCreationUser(entry.getCreationUser());
         update.setModificationDate(new Date());
-        update.setAmount(new BigDecimal(200.12));
+        update.setAmount(new BigDecimal(201));
         update.setBillable(false);
         update.setDate(V1Dot1TestHelper.createDate(2005, 3, 5));
         update.setExpenseType(type);
@@ -1332,6 +1358,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(4);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
         update.setDescription("Modified");
@@ -1364,6 +1391,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
         update.setDescription("Modified");
@@ -1400,6 +1428,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         // no description
         ExpenseEntry update = new ExpenseEntry(5);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
         update.setCreationDate(new Date());
@@ -1434,12 +1463,13 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
         update.setDescription("Modified");
-        update.setCreationDate(new Date());
-        update.setModificationDate(new Date());
-        update.setAmount(new BigDecimal(200.12));
+        update.setCreationDate(entry.getCreationDate());
+        update.setCreationUser(entry.getCreationUser());
+        update.setAmount(new BigDecimal(201));
         update.setBillable(false);
         update.setDate(V1Dot1TestHelper.createDate(2005, 3, 5));
         update.setExpenseType(type);
@@ -1465,12 +1495,13 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(4);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
         update.setDescription("Modified");
-        update.setCreationDate(new Date());
+        update.setCreationDate(entry.getCreationDate());
         update.setModificationDate(new Date());
-        update.setAmount(new BigDecimal(200.12));
+        update.setAmount(new BigDecimal(201));
         update.setBillable(false);
         update.setDate(V1Dot1TestHelper.createDate(2005, 3, 5));
         update.setExpenseType(type);
@@ -1497,12 +1528,13 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.addEntry(entry);
 
         ExpenseEntry update = new ExpenseEntry(5);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
         update.setDescription("Modified");
         update.setCreationDate(new Date());
         update.setModificationDate(new Date());
-        update.setAmount(new BigDecimal(200.12));
+        update.setAmount(new BigDecimal(201));
         update.setBillable(false);
         update.setDate(V1Dot1TestHelper.createDate(2005, 3, 5));
         update.setExpenseType(type);
@@ -1530,11 +1562,12 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         // no description
         ExpenseEntry update = new ExpenseEntry(5);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
-        update.setCreationDate(new Date());
+        update.setCreationDate(entry.getCreationDate());
         update.setModificationDate(new Date());
-        update.setAmount(new BigDecimal(200.12));
+        update.setAmount(new BigDecimal(201));
         update.setBillable(false);
         update.setDate(V1Dot1TestHelper.createDate(2005, 3, 5));
         update.setExpenseType(type);
@@ -1559,24 +1592,25 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseEntries");
+            resultSet = statement.executeQuery("SELECT * FROM expense_entry");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("ExpenseEntriesID"));
-            assertEquals("The description should be correct.", "Description", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("expense_entry_id"));
+            assertEquals("The description should be correct.", "Description", resultSet.getString("description"));
             V1Dot1TestHelper.assertEquals("The creation date should be correct.", entry.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             V1Dot1TestHelper.assertEquals("The modification date should be correct.", entry.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should be correct.", "Create", resultSet.getString("CreationUser"));
-            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("ModificationUser"));
-            assertEquals("The amount of money should be correct.", 100.12, resultSet.getDouble("Amount"), 1E-9);
-            assertEquals("The billable flag should be correct.", 1, resultSet.getShort("Billable"));
-            assertEquals("The expense type ID should be correct.", 1, resultSet.getInt("ExpenseTypesID"));
-            assertEquals("The expense status ID should be correct.", 2, resultSet.getInt("ExpenseStatusesID"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
+            assertEquals("The modification user should be correct.", "Modify",
+                resultSet.getString("modification_user"));
+            assertEquals("The amount of money should be correct.", 100.12, resultSet.getDouble("amount"), 1E-9);
+            assertEquals("The billable flag should be correct.", 1, resultSet.getShort("billable"));
+            assertEquals("The expense type ID should be correct.", 1, resultSet.getInt("expense_type_ID"));
+            assertEquals("The expense status ID should be correct.", 2, resultSet.getInt("expense_status_ID"));
             V1Dot1TestHelper.assertEquals("The date should be correct.", V1Dot1TestHelper.createDate(2005, 2, 5),
-                resultSet.getDate("EntryDate"));
+                resultSet.getDate("entry_date"));
 
             assertFalse("Only one record should exist.", resultSet.next());
         } finally {
@@ -1596,17 +1630,21 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
             assertTrue("First record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("ExpenseEntriesID"));
-            assertEquals("The ID should be correct.", reason1.getRejectReasonId(), resultSet.getInt("reject_reason_id"));
+            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("expense_entry_id"));
+            assertEquals("The ID should be correct.", reason1.getRejectReasonId(),
+                resultSet.getInt("reject_reason_id"));
             assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
-            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("modification_user"));
+            assertEquals("The modification user should be correct.", "Modify",
+                resultSet.getString("modification_user"));
 
             assertTrue("Second record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("ExpenseEntriesID"));
-            assertEquals("The ID should be correct.", reason2.getRejectReasonId(), resultSet.getInt("reject_reason_id"));
+            assertEquals("The ID should be correct.", entry.getId(), resultSet.getInt("expense_entry_id"));
+            assertEquals("The ID should be correct.", reason2.getRejectReasonId(),
+                resultSet.getInt("reject_reason_id"));
             assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
-            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("modification_user"));
+            assertEquals("The modification user should be correct.", "Modify",
+                resultSet.getString("modification_user"));
 
             assertFalse("Only two records should exist.", resultSet.next());
         } finally {
@@ -1634,24 +1672,28 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseEntries");
+            resultSet = statement.executeQuery("SELECT * FROM expense_entry");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", update.getId(), resultSet.getInt("ExpenseEntriesID"));
-            assertEquals("The description should be correct.", "Modified", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", update.getId(), resultSet.getInt("expense_entry_id"));
+            assertEquals("The description should be correct.", update.getDescription(),
+                resultSet.getString("description"));
             V1Dot1TestHelper.assertEquals("The creation date should not be modified.", entry.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             V1Dot1TestHelper.assertEquals("The modification date should be correct.", update.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should not be modified.", "Create", resultSet.getString("CreationUser"));
-            assertEquals("The modification user should be correct.", "Modify2", resultSet.getString("ModificationUser"));
-            assertEquals("The amount of money should be correct.", 200.12, resultSet.getDouble("Amount"), 1E-9);
-            assertEquals("The billable flag should be correct.", 0, resultSet.getShort("Billable"));
-            assertEquals("The expense type ID should be correct.", 1, resultSet.getInt("ExpenseTypesID"));
-            assertEquals("The expense status ID should be correct.", 2, resultSet.getInt("ExpenseStatusesID"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should not be modified.",
+                    update.getCreationUser(), resultSet.getString("creation_user"));
+            assertEquals("The modification user should be correct.",
+                    update.getModificationUser(), resultSet.getString("modification_user"));
+            assertEquals("The amount of money should be correct.",
+                    update.getAmount().doubleValue(), resultSet.getDouble("amount"), 1E-9);
+            assertEquals("The billable flag should be correct.", 0, resultSet.getShort("billable"));
+            assertEquals("The expense type ID should be correct.", 1, resultSet.getInt("expense_type_iD"));
+            assertEquals("The expense status ID should be correct.", 2, resultSet.getInt("expense_status_id"));
             V1Dot1TestHelper.assertEquals("The date should be correct.", V1Dot1TestHelper.createDate(2005, 3, 5),
-                resultSet.getDate("EntryDate"));
+                resultSet.getDate("entry_date"));
 
             assertFalse("Only one record should exist.", resultSet.next());
 
@@ -1713,6 +1755,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1749,6 +1792,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -1788,6 +1832,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -1827,6 +1872,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 3 instances
         for (int i = 0; i < 3; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -1861,6 +1907,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 3; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -1873,8 +1920,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("Update ExpenseEntries set Billable = 4 where " +
-                "ExpenseEntriesID = 2");
+        PreparedStatement ps = connection.prepareStatement("Update expense_entry set billable = 4 where " +
+                "expense_entry_id = 2");
 
         try {
             ps.executeUpdate();
@@ -1905,6 +1952,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -1944,6 +1992,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 3 instances
         for (int i = 0; i < 3; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -1983,6 +2032,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 3; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -1995,8 +2045,8 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         }
 
         // Insert an expense type
-        PreparedStatement ps = connection.prepareStatement("Update ExpenseEntries set Billable = 4 where " +
-                "ExpenseEntriesID = 2");
+        PreparedStatement ps = connection.prepareStatement("Update expense_entry set billable = 4 where " +
+                "expense_entry_id = 2");
 
         try {
             ps.executeUpdate();
@@ -2042,6 +2092,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             entry = new ExpenseEntry(i);
+            entry.setCompanyId(1);
             entry.setCreationUser("Create" + i);
             entry.setModificationUser("Modify" + i);
             entry.setDescription("Description" + i);
@@ -2059,7 +2110,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         manager.getEntryPersistence().setConnection(conn);
 
         try {
-            manager.searchEntries(new FieldMatchCriteria("ExpenseEntries.ExpenseTypesID", new Integer(type.getId())));
+            manager.searchEntries(new FieldMatchCriteria("expense_type.expense_type_id", new Integer(type.getId())));
             fail("The persistence error occurs, should throw PersistenceException.");
         } catch (PersistenceException e) {
             // good
@@ -2079,6 +2130,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             expected[i] = new ExpenseEntry(i);
+            expected[i].setCompanyId(1);
             expected[i].setCreationUser("Create" + i);
             expected[i].setModificationUser("Modify" + i);
             expected[i].setDescription("Description" + i);
@@ -2092,7 +2144,7 @@ public class V1Dot1ExpenseEntryManagerUnitTest extends TestCase {
             manager.addEntry(expected[i]);
         }
 
-        ExpenseEntry[] actual = manager.searchEntries(new FieldMatchCriteria("ExpenseEntries.ExpenseTypesID",
+        ExpenseEntry[] actual = manager.searchEntries(new FieldMatchCriteria("expense_type.expense_type_id",
                     new Integer(type.getId())));
 
         // Verify number

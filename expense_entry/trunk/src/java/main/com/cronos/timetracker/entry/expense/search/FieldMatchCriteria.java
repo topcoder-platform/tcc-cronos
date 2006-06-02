@@ -13,27 +13,73 @@ package com.cronos.timetracker.entry.expense.search;
  * </p>
  *
  * <p>
+ * Changes in 2.0: the static fields changed according to field name.
+ * </p>
+ *
+ * <p>
  * Thread safety: Immutable class so there are no thread safety issues.
  * </p>
  *
  * @author adic, TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class FieldMatchCriteria implements Criteria {
     /** Represents the constant for the expense type id field in the expense entry table. */
-    public static final String EXPENSE_TYPE_FIELD = "ExpenseEntries.ExpenseTypesID";
+    public static final String EXPENSE_TYPE_FIELD = "expense_entry.expense_type_id";
 
     /** Represents the constant for the expense status id field in the expense entry table. */
-    public static final String EXPENSE_STATUS_FIELD = "ExpenseEntries.ExpenseStatusesID";
+    public static final String EXPENSE_STATUS_FIELD = "expense_entry.expense_status_id";
 
     /** Represents the constant for the creation user field in the expense entry table. */
-    public static final String CREATION_USER_FIELD = "ExpenseEntries.CreationUser";
+    public static final String CREATION_USER_FIELD = "expense_entry.creation_user";
 
     /** Represents the constant for the modification user field in the expense entry table. */
-    public static final String MODIFICATION_USER_FIELD = "ExpenseEntries.ModificationUser";
+    public static final String MODIFICATION_USER_FIELD = "expense_entry.modification_user";
 
     /** Represents the constant for the billable field in the expense entry table. */
-    public static final String BILLABLE_FIELD = "ExpenseEntries.Billable";
+    public static final String BILLABLE_FIELD = "expense_entry.billable";
+
+    /**
+     * Represents the constant for the active field in the expense type table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_TYPE_ACTIVE_FIELD = "expense_type.active";
+
+    /**
+     * Represents the constant for the company_id field in the expense entry table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_ENTRY_COMPANY_ID_FIELD = "expense_entry.company_id";
+
+    /**
+     * Represesnts the constant for the company_id field in the expense type table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_TYPE_COMPANY_ID_FIELD = "comp_exp_type.company_id";
+
+    /**
+     * Represents the constant for the creation_user field in the expense status table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_STATUS_CREATION_USER = "expense_status.creation_user";
+
+    /**
+     * Represents the constant for the modification_user field in the expense status table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_STATUS_MODIFICATION_USER = "expense_status.modification_user";
+
+    /**
+     * Represents the constant for the creation_user field in the expense type table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_TYPE_CREATION_USER = "expense_type.creation_user";
+
+    /**
+     * Represents the constant for the modification_user field in the expense type table.
+     * @since 2.0
+     */
+    public static final String EXPENSE_TYPE_MODIFICATION_USER = "expense_type.modification_user";
 
     /**
      * Represents the field the match should be applied on. The field must be fully qualified (table.field) because the
@@ -145,6 +191,28 @@ public class FieldMatchCriteria implements Criteria {
     }
 
     /**
+     * Static shortcut method for creating an company id field match criteria.
+     *
+     * @param companyId the company id.
+     *
+     * @return the created expense entry's company  id field match criteria instance.
+     */
+    public static FieldMatchCriteria getExpenseEntryCompanyIdMatchCriteria(int companyId) {
+        return new FieldMatchCriteria(EXPENSE_ENTRY_COMPANY_ID_FIELD, new Integer(companyId));
+    }
+
+    /**
+     * Static shortcut method for creating an company id field match criteria.
+     *
+     * @param companyId the company id.
+     *
+     * @return  the created expense type's company  id field match criteria instance.
+     */
+    public static FieldMatchCriteria getExpenseTypeCompanyIdMatchCriteria(int companyId) {
+        return new FieldMatchCriteria(EXPENSE_TYPE_COMPANY_ID_FIELD, new Integer(companyId));
+    }
+
+    /**
      * Static shortcut method for creating a creation user field match criteria.
      *
      * @param user the creation user.
@@ -189,6 +257,96 @@ public class FieldMatchCriteria implements Criteria {
     }
 
     /**
+     * Static shortcut method for creating a modification user field match criteria for expense status.
+     *
+     * @param user the modification user.
+     *
+     * @return the created modification user field match criteria instance.
+     *
+     * @throws IllegalArgumentException if the argument is <code>null</code>, empty or all spaces
+     * @since 2.0
+     */
+    public static FieldMatchCriteria getExpenseStatusModificationUserMatchCriteria(String user) {
+        // arguments validation
+        if (user == null) {
+            throw new IllegalArgumentException("user can not be null.");
+        }
+
+        if (user.trim().length() == 0) {
+            throw new IllegalArgumentException("user can not be empty string.");
+        }
+
+        return new FieldMatchCriteria(EXPENSE_STATUS_MODIFICATION_USER, user);
+    }
+
+    /**
+     * Static shortcut method for creating a creation user field match criteria for expense status.
+     *
+     * @param user the creation user.
+     *
+     * @return the created modification user field match criteria instance.
+     *
+     * @throws IllegalArgumentException if the argument is <code>null</code>, empty or all spaces
+     */
+    public static FieldMatchCriteria getExpenseStatusCreationUserMatchCriteria(String user) {
+        // arguments validation
+        if (user == null) {
+            throw new IllegalArgumentException("user can not be null.");
+        }
+
+        if (user.trim().length() == 0) {
+            throw new IllegalArgumentException("user can not be empty string.");
+        }
+
+        return new FieldMatchCriteria(EXPENSE_STATUS_CREATION_USER, user);
+    }
+
+    /**
+     * Static shortcut method for creating a modification user field match criteria for expense type.
+     *
+     * @param user the modification user.
+     *
+     * @return the created modification user field match criteria instance.
+     *
+     * @throws IllegalArgumentException if the argument is <code>null</code>, empty or all spaces
+     * @since 2.0
+     */
+    public static FieldMatchCriteria getExpenseTypeModificationUserMatchCriteria(String user) {
+        // arguments validation
+        if (user == null) {
+            throw new IllegalArgumentException("user can not be null.");
+        }
+
+        if (user.trim().length() == 0) {
+            throw new IllegalArgumentException("user can not be empty string.");
+        }
+
+        return new FieldMatchCriteria(EXPENSE_TYPE_MODIFICATION_USER, user);
+    }
+
+    /**
+     * Static shortcut method for creating a creation user field match criteria for expense type.
+     *
+     * @param user the creation user.
+     *
+     * @return the created modification user field match criteria instance.
+     *
+     * @throws IllegalArgumentException if the argument is <code>null</code>, empty or all spaces
+     */
+    public static FieldMatchCriteria getExpenseTypeCreationUserMatchCriteria(String user) {
+        // arguments validation
+        if (user == null) {
+            throw new IllegalArgumentException("user can not be null.");
+        }
+
+        if (user.trim().length() == 0) {
+            throw new IllegalArgumentException("user can not be empty string.");
+        }
+
+        return new FieldMatchCriteria(EXPENSE_TYPE_CREATION_USER, user);
+    }
+
+    /**
      * Static shortcut method for creating a billable field match criteria.
      *
      * @param billable the billable value.
@@ -197,5 +355,16 @@ public class FieldMatchCriteria implements Criteria {
      */
     public static FieldMatchCriteria getBillableMatchCriteria(boolean billable) {
         return new FieldMatchCriteria(BILLABLE_FIELD, new Short((short) (billable ? 1 : 0)));
+    }
+
+    /**
+     * Static shortcut method for creating a active field match criteria.
+     *
+     * @param active the active value.
+     *
+     * @return the created active field match criteria instance.
+     */
+    public static FieldMatchCriteria getExpenseTypeActiveMatchCriteria(boolean active) {
+        return new FieldMatchCriteria(EXPENSE_TYPE_ACTIVE_FIELD, new Short((short) (active ? 1 : 0)));
     }
 }

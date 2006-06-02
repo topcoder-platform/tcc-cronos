@@ -16,7 +16,9 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author -oo-
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
  */
 public class ExpenseEntryTest extends TestCase {
     /** Represents the reject reason id array used in tests. */

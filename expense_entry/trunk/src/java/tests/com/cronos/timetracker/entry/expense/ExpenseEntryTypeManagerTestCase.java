@@ -18,6 +18,10 @@ import junit.framework.TestSuite;
 import com.cronos.timetracker.entry.expense.persistence.ExpenseEntryTypeDbPersistence;
 import com.cronos.timetracker.entry.expense.persistence.ExpenseEntryTypePersistence;
 import com.cronos.timetracker.entry.expense.persistence.PersistenceException;
+import com.cronos.timetracker.entry.expense.search.CompositeCriteria;
+import com.cronos.timetracker.entry.expense.search.Criteria;
+import com.cronos.timetracker.entry.expense.search.FieldLikeCriteria;
+import com.cronos.timetracker.entry.expense.search.FieldMatchCriteria;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
@@ -85,7 +89,9 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
             configManager.removeNamespace(NAMESPACE);
         }
 
+        V1Dot1TestHelper.executeSQL("insert into company values(1, 'a', 'a', current, 'a', current, 'a')", connection);
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setCreationDate(new Date());
         type.setModificationDate(new Date());
         type.setDescription("Description");
@@ -425,6 +431,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeCreationDateNotNull() throws Exception {
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setDescription("Description");
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
@@ -447,6 +454,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeModificationDateNotNull() throws Exception {
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setDescription("Description");
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
@@ -469,6 +477,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeCreationUserNull() throws Exception {
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setDescription("Description");
         type.setModificationUser("Modify");
 
@@ -489,6 +498,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeModificationUserNull() throws Exception {
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setDescription("Description");
         type.setCreationUser("Create");
 
@@ -509,6 +519,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeDescriptionNull() throws Exception {
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
 
@@ -534,6 +545,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
         manager.getTypePersistence().setConnection(conn);
 
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -613,6 +625,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testUpdateTypeCreationUserNull() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setDescription("Description");
         type.setModificationUser("Modify");
 
@@ -633,6 +646,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testUpdateTypeModificationUserNull() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setDescription("Description");
         type.setCreationUser("Create");
 
@@ -653,6 +667,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testUpdateTypeDescriptionNull() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
 
@@ -678,6 +693,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
         manager.getTypePersistence().setConnection(conn);
 
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -821,6 +837,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeAccuracy() throws Exception {
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -840,18 +857,19 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseTypes");
+            resultSet = statement.executeQuery("SELECT * FROM expense_type");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", type.getId(), resultSet.getInt("ExpenseTypesID"));
-            assertEquals("The description should be correct.", "Description", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", type.getId(), resultSet.getInt("expense_type_id"));
+            assertEquals("The description should be correct.", "Description", resultSet.getString("description"));
             TestHelper.assertEquals("The creation date should be correct.", type.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             TestHelper.assertEquals("The modification date should be correct.", type.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should be correct.", "Create", resultSet.getString("CreationUser"));
-            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("ModificationUser"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
+            assertEquals("The modification user should be correct.", "Modify",
+                resultSet.getString("modification_user"));
 
             assertFalse("Only one record should exist.", resultSet.next());
         } finally {
@@ -876,6 +894,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeIDSetAccuracy() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -895,18 +914,19 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseTypes");
+            resultSet = statement.executeQuery("SELECT * FROM expense_type");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", type.getId(), resultSet.getInt("ExpenseTypesID"));
-            assertEquals("The description should be correct.", "Description", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", type.getId(), resultSet.getInt("expense_type_id"));
+            assertEquals("The description should be correct.", "Description", resultSet.getString("description"));
             TestHelper.assertEquals("The creation date should be correct.", type.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             TestHelper.assertEquals("The modification date should be correct.", type.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should be correct.", "Create", resultSet.getString("CreationUser"));
-            assertEquals("The modification user should be correct.", "Modify", resultSet.getString("ModificationUser"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should be correct.", "Create", resultSet.getString("creation_user"));
+            assertEquals("The modification user should be correct.", "Modify",
+                resultSet.getString("modification_user"));
 
             assertFalse("Only one record should exist.", resultSet.next());
         } finally {
@@ -930,6 +950,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testAddTypeExistAccuracy() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -938,6 +959,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
 
         // Add again, should return false.
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -955,6 +977,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testDeleteTypeAccuracy() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -970,7 +993,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseTypes");
+            resultSet = statement.executeQuery("SELECT * FROM expense_type");
 
             assertFalse("No record should exist.", resultSet.next());
         } finally {
@@ -994,6 +1017,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
     public void testDeleteAllTypeesAccuracy() throws Exception {
         // Add two records
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -1001,6 +1025,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
         manager.addType(type);
 
         type = new ExpenseEntryType();
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -1016,7 +1041,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseTypes");
+            resultSet = statement.executeQuery("SELECT * FROM expense_type");
 
             assertFalse("No record should exist.", resultSet.next());
         } finally {
@@ -1053,13 +1078,14 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testUpdateTypeAccuracy() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
-
         manager.addType(type);
 
         ExpenseEntryType update = new ExpenseEntryType(5);
+        update.setCompanyId(1);
         update.setCreationUser("Create2");
         update.setModificationUser("Modify2");
         update.setDescription("Modified");
@@ -1076,19 +1102,19 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
 
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM ExpenseTypes");
+            resultSet = statement.executeQuery("SELECT * FROM expense_type");
 
             assertTrue("A record should exist.", resultSet.next());
 
-            assertEquals("The ID should be correct.", update.getId(), resultSet.getInt("ExpenseTypesID"));
-            assertEquals("The description should be correct.", "Modified", resultSet.getString("Description"));
+            assertEquals("The ID should be correct.", update.getId(), resultSet.getInt("expense_type_id"));
+            assertEquals("The description should be correct.", "Modified", resultSet.getString("description"));
             TestHelper.assertEquals("The creation date should not be modified.", type.getCreationDate(),
-                resultSet.getDate("CreationDate"));
+                resultSet.getDate("creation_date"));
             TestHelper.assertEquals("The modification date should be correct.", update.getModificationDate(),
-                resultSet.getDate("ModificationDate"));
-            assertEquals("The creation user should not be modified.", "Create", resultSet.getString("CreationUser"));
+                resultSet.getDate("modification_date"));
+            assertEquals("The creation user should not be modified.", "Create", resultSet.getString("creation_user"));
             assertEquals("The modification user should be correct.", "Modify2",
-                resultSet.getString("ModificationUser"));
+                resultSet.getString("modification_user"));
 
             assertFalse("Only one record should exist.", resultSet.next());
         } finally {
@@ -1112,6 +1138,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testUpdateTypeIDNotExistAccuracy() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create2");
         type.setModificationUser("Modify2");
         type.setDescription("Modified");
@@ -1141,6 +1168,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
      */
     public void testRetrieveTypeAccuracy() throws Exception {
         type = new ExpenseEntryType(5);
+        type.setCompanyId(1);
         type.setCreationUser("Create");
         type.setModificationUser("Modify");
         type.setDescription("Description");
@@ -1178,6 +1206,7 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
         // Add 5 instances
         for (int i = 0; i < 5; ++i) {
             type = new ExpenseEntryType(i);
+            type.setCompanyId(1);
             type.setCreationUser("Create" + i);
             type.setModificationUser("Modify" + i);
             type.setDescription("Description" + i);
@@ -1219,6 +1248,35 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
 
     /**
      * <p>
+     * Test ExpenseEntryType[] searchEntries(Criteria criteria),
+     * the types matched should be returned.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testSearchEntries() throws Exception {
+        for (int i = 0; i < 5; ++i) {
+            type = new ExpenseEntryType(i);
+            type.setCompanyId(1);
+            type.setCreationUser("Create" + i);
+            type.setModificationUser("Modify" + i);
+            if (i % 3 == 0) {
+                type.setDescription("Description" + i);
+            } else {
+                type.setDescription("xxxx");
+            }
+            manager.addType(type);
+        }
+        Criteria c1 = FieldMatchCriteria.getExpenseTypeCompanyIdMatchCriteria(1);
+        Criteria c2 = FieldLikeCriteria.getExpenseTypeDescriptionContainsCriteria("Des");
+        Criteria criteria = CompositeCriteria.getAndCompositeCriteria(new Criteria[] {c1, c2});
+
+        ExpenseEntryType[] types = manager.searchEntries(criteria);
+        assertEquals("Failed to get the expected result.", 2, types.length);
+    }
+
+    /**
+     * <p>
      * Aggragates all tests in this class.
      * </p>
      *
@@ -1228,9 +1286,3 @@ public class ExpenseEntryTypeManagerTestCase extends TestCase {
         return new TestSuite(ExpenseEntryTypeManagerTestCase.class);
     }
 }
-
-
-
-
-
-

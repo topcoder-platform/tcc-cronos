@@ -5,6 +5,8 @@ package com.cronos.timetracker.entry.expense.persistence;
 
 import com.cronos.timetracker.entry.expense.ConfigurationException;
 import com.cronos.timetracker.entry.expense.ExpenseEntryStatus;
+import com.cronos.timetracker.entry.expense.ExpenseEntryType;
+import com.cronos.timetracker.entry.expense.search.Criteria;
 
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -16,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +32,14 @@ import java.util.List;
  * can be either obtained from the DB connection factory using a connection producer name, or given directly. The
  * expense entry statuses are stored in the database using the following DDL:
  * <pre>
- * CREATE TABLE ExpenseStatuses (
- *        ExpenseStatusesID    integer NOT NULL,
- *        Description          varchar(20) NOT NULL,
- *        CreationDate         datetime year to second NOT NULL,
- *        CreationUser         varchar(64) NOT NULL,
- *        ModificationDate     datetime year to second NOT NULL,
- *        ModificationUser     varchar(64) NOT NULL,
- *        PRIMARY KEY (ExpenseStatusesID)
+ * CREATE TABLE expense_status (
+ *     expense_status_id    integer NOT NULL,
+ *     description          varchar(64) NOT NULL,
+ *     creation_date        datetime year to second NOT NULL,
+ *     creation_user        varchar(64) NOT NULL,
+ *     modification_date    datetime year to second NOT NULL,
+ *     modification_user    varchar(64) NOT NULL,
+ *     PRIMARY KEY (expense_status_id)
  * );
  * </pre>
  * </p>
@@ -46,42 +49,42 @@ import java.util.List;
  */
 public class ExpenseEntryStatusDbPersistence implements ExpenseEntryStatusPersistence {
     /** Represents the prepared SQL statement to add an expense status. */
-    private static final String ADD_STATUS_SQL = "INSERT INTO ExpenseStatuses (ExpenseStatusesID, Description, "
-        + "CreationDate, CreationUser, ModificationDate, ModificationUser) VALUES (?,?,?,?,?,?)";
+    private static final String ADD_STATUS_SQL = "INSERT INTO expense_status(expense_status_id, description, "
+        + "creation_date, creation_user, modification_date, modification_user) VALUES (?,?,?,?,?,?)";
 
     /** Represents the prepared SQL statement to update an expense status. */
-    private static final String UPDATE_STATUS_SQL = "UPDATE ExpenseStatuses SET Description=?, ModificationDate=?, "
-        + "ModificationUser=? WHERE ExpenseStatusesID=?";
+    private static final String UPDATE_STATUS_SQL = "UPDATE expense_status SET description=?, modification_date=?, "
+        + "modification_user=? WHERE expense_status_id=?";
 
     /** Represents the prepared SQL statement to delete an expense status. */
-    private static final String DELETE_STATUS_SQL = "DELETE FROM ExpenseStatuses WHERE ExpenseStatusesID=?";
+    private static final String DELETE_STATUS_SQL = "DELETE FROM expense_status WHERE expense_status_id=?";
 
     /** Represents the prepared SQL statement to delete all expense statuses. */
-    private static final String DELETE_ALL_STATUS_SQL = "DELETE FROM ExpenseStatuses";
+    private static final String DELETE_ALL_STATUS_SQL = "DELETE FROM expense_status";
 
     /** Represents the prepared SQL statement to get an expense status. */
-    private static final String RETRIEVE_STATUS_SQL = "SELECT * FROM ExpenseStatuses WHERE ExpenseStatusesID=?";
+    private static final String RETRIEVE_STATUS_SQL = "SELECT * FROM expense_status WHERE expense_status_id=?";
 
     /** Represents the prepared SQL statement to get all expense statuses. */
-    private static final String RETRIEVE_ALL_STATUS_SQL = "SELECT * FROM ExpenseStatuses";
+    private static final String RETRIEVE_ALL_STATUS_SQL = "SELECT * FROM expense_status";
 
     /** Represents the column name for description. */
-    private static final String DESCRIPTION_COLUMN = "Description";
+    private static final String DESCRIPTION_COLUMN = "description";
 
     /** Represents the column name for creation date. */
-    private static final String CREATION_DATE_COLUMN = "CreationDate";
+    private static final String CREATION_DATE_COLUMN = "creation_date";
 
     /** Represents the column name for creation user. */
-    private static final String CREATION_USER_COLUMN = "CreationUser";
+    private static final String CREATION_USER_COLUMN = "creation_user";
 
     /** Represents the column name for modification date. */
-    private static final String MODIFICATION_DATE_COLUMN = "ModificationDate";
+    private static final String MODIFICATION_DATE_COLUMN = "modification_date";
 
     /** Represents the column name for modification user. */
-    private static final String MODIFICATION_USER_COLUMN = "ModificationUser";
+    private static final String MODIFICATION_USER_COLUMN = "modification_user";
 
     /** Represents the column name for expense status ID. */
-    private static final String ID_COLUMN = "ExpenseStatusesID";
+    private static final String ID_COLUMN = "expense_status_id";
 
     /** Represents the parameter index of ID in INSERT SQL statement. */
     private static final int INSERT_ID_INDEX = 1;
@@ -423,6 +426,58 @@ public class ExpenseEntryStatusDbPersistence implements ExpenseEntryStatusPersis
         }
 
         return list;
+    }
+
+    /**
+     * <p>
+     * Performs a search for expense status matching a given criteria. The criteria is abstracted using the <code>
+     * Criteria</code> interface. The <code>Criteria</code> implementations cover the basic SQL filtering abilities
+     * (=, like, between, or, and, not). The result of the search is an array with the matched expense status. It is
+     * empty if no matches found (but it can't be <code>null</code> or contain <code>null</code>) elements.
+     * </p>
+     *
+     * @param criteria the criteria to be used in the search.
+     *
+     * @return the results of the search (can be empty if no matches found).
+     *
+     * @throws IllegalArgumentException if the argument is <code>null</code>
+     * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     *
+     * @since 2.0
+     */
+    public ExpenseEntryStatus[] searchEntries(Criteria criteria) throws PersistenceException {
+        createConnection(connectionProducerName);
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        ExpenseEntryStatus status;
+        List list = new ArrayList();
+
+        try {
+            statement = connection.prepareStatement(RETRIEVE_ALL_STATUS_SQL + " Where " + criteria.getWhereClause());
+
+            // Set parameter
+            Object[] parameters = criteria.getParameters();
+            for (int i = 0; i < parameters.length; ++i) {
+                if (parameters[i] instanceof java.util.Date) {
+                    parameters[i] = new Timestamp(((java.util.Date) parameters[i]).getTime());
+                }
+                statement.setObject(i + 1, parameters[i]);
+            }
+            resultSet = statement.executeQuery();
+
+            // For each record, create an expense entry status instance
+            while ((status = createExpenseEntryStatus(resultSet)) != null) {
+                list.add(status);
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException("Accessing database fails.", e);
+        } finally {
+            PersistenceHelper.close(resultSet);
+            PersistenceHelper.close(statement);
+        }
+
+        return (ExpenseEntryStatus[]) list.toArray(new ExpenseEntryStatus[list.size()]);
     }
 
     /**

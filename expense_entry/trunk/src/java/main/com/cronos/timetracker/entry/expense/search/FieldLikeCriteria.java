@@ -17,11 +17,25 @@ package com.cronos.timetracker.entry.expense.search;
  * </p>
  *
  * @author adic, TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class FieldLikeCriteria implements Criteria {
-    /** Represents the constant for the description field in the expense entry table. */
-    public static final String DESCRIPTION_FIELD = "ExpenseEntries.Description";
+    /** Represents the constant for the description field in the expense entry table.
+     * for the const defined in version 1.0, here, not changed it.
+     */
+    public static final String DESCRIPTION_FIELD = "expense_entry.description";
+
+    /**
+     * Represents the constant for the description field in the expense status table.
+     * since 2.0
+     */
+    public static final String EXPENSE_STATUS_DESCRIPTION_FIELD = "expense_status.description";
+
+    /**
+     * Represents the constant for the description field in the expense type table.
+     * since 2.0
+     */
+    public static final String EXPENSE_TYPE_DESCRIPTION_FIELD = "expense_type.description";
 
     /**
      * Represents the field the match should be applied on. The field must be fully qualified (table.field) because the
@@ -139,4 +153,54 @@ public class FieldLikeCriteria implements Criteria {
 
         return new FieldLikeCriteria(DESCRIPTION_FIELD, "%" + value + "%");
     }
+
+    /**
+     * Static shortcut method for creating a description of expense status contains match criteria
+     * (looks for descriptions containing the given value).
+     *
+     * @param value the value (cannot be empty but can be all spaces).
+     *
+     * @return the created description contains match criteria instance.
+     *
+     * @throws IllegalArgumentException if value argument is <code>null</code> or empty(length of zero).
+     *
+     * @since 2.0
+     */
+    public static FieldLikeCriteria getExpenseStatusDescriptionContainsCriteria(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value can not be null.");
+        }
+
+        if (value.length() == 0) {
+            throw new IllegalArgumentException("value can not be length of zero.");
+        }
+
+        return new FieldLikeCriteria(EXPENSE_STATUS_DESCRIPTION_FIELD, "%" + value + "%");
+    }
+
+    /**
+     * Static shortcut method for creating a description of expense status contains match criteria
+     * (looks for descriptions containing the given value).
+     *
+     * @param value the value (cannot be empty but can be all spaces).
+     *
+     * @return the created description contains match criteria instance.
+     *
+     * @throws IllegalArgumentException if value argument is <code>null</code> or empty(length of zero).
+     *
+     * @since 2.0
+     */
+    public static FieldLikeCriteria getExpenseTypeDescriptionContainsCriteria(String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value can not be null.");
+        }
+
+        if (value.length() == 0) {
+            throw new IllegalArgumentException("value can not be length of zero.");
+        }
+
+        return new FieldLikeCriteria(EXPENSE_TYPE_DESCRIPTION_FIELD, "%" + value + "%");
+    }
+
+
 }

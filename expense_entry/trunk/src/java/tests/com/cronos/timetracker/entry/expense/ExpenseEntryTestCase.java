@@ -18,7 +18,7 @@ import junit.framework.TestSuite;
  * </p>
  *
  * @author visualage
- * @version 1.0
+ * @version 2.0
  */
 public class ExpenseEntryTestCase extends TestCase {
     /** Represents the <code>ExpenseEntry</code> instance used in tests. */
@@ -252,7 +252,7 @@ public class ExpenseEntryTestCase extends TestCase {
     public void testIsBillableDefaultAccuracy() {
         assertFalse("By default, the billable flag should be false.", entry.isBillable());
     }
-    
+
     /**
      * <p>
      * Tests accuracy of <code>getBillable</code> for default value. By default, the billable flag is
@@ -278,6 +278,41 @@ public class ExpenseEntryTestCase extends TestCase {
 
     /**
      * <p>
+     * Test accuracy of <code>getCompanyId</code>.
+     * </p>
+     */
+    public void testGetCompanyId() {
+        assertEquals("Failed to get the company id", -1, entry.getCompanyId());
+    }
+
+    /**
+     * <p>
+     * Test accuracy of <code>setCompanyId</code>. The company id should set to new value.
+     * </p>
+     */
+    public void testSetCompanyId() {
+        assertEquals("Failed to get the company id", -1, entry.getCompanyId());
+
+        entry.setCompanyId(1);
+        assertEquals("Failed to get the company id", 1, entry.getCompanyId());
+    }
+
+    /**
+     * <p>
+     * Test <code>setCompanyId</code>. When set to -1, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetCompanyIdNegative() {
+        try {
+            entry.setCompanyId(-1);
+            fail("company id can't be set to -1, IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
      * Aggragates all tests in this class.
      * </p>
      *
@@ -287,9 +322,3 @@ public class ExpenseEntryTestCase extends TestCase {
         return new TestSuite(ExpenseEntryTestCase.class);
     }
 }
-
-
-
-
-
-

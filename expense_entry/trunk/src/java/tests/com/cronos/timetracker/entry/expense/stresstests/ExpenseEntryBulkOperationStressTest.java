@@ -31,7 +31,9 @@ import java.util.Date;
  * Stress testing for bulk operation and search functionality of ExpenseEntry component.
  *
  * @author brain_cn
- * @version 1.0
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.0
  */
 public class ExpenseEntryBulkOperationStressTest extends TestCase {
     /** Represents the namespace to load manager configuration. */
@@ -98,9 +100,14 @@ public class ExpenseEntryBulkOperationStressTest extends TestCase {
         Statement statement = connection.createStatement();
 
         try {
-            statement.executeUpdate("DELETE FROM ExpenseEntries;");
-            statement.executeUpdate("DELETE FROM ExpenseTypes;");
-            statement.executeUpdate("DELETE FROM ExpenseStatuses;");
+            statement.executeUpdate("DELETE FROM comp_exp_type;");
+            statement.executeUpdate("DELETE FROM comp_rej_reason;");
+            statement.executeUpdate("DELETE FROM exp_reject_reason;");
+            statement.executeUpdate("DELETE FROM expense_entry;");
+            statement.executeUpdate("DELETE FROM expense_status;");
+            statement.executeUpdate("DELETE FROM expense_type;");
+            statement.executeUpdate("DELETE FROM reject_reason;");
+            statement.executeUpdate("DELETE FROM company;");
         } finally {
             statement.close();
         }
@@ -142,15 +149,25 @@ public class ExpenseEntryBulkOperationStressTest extends TestCase {
         DeleteAllTables();
 
         String typeSql =
-            "insert into ExpenseTypes (ExpenseTypesID, Description, CreationDate, CreationUser, ModificationDate, ModificationUser)"
-            + " values (1, 'test', today, 'user', today, 'user');";
+            "insert into expense_type (expense_type_id, Description, creation_date, creation_user, " +
+            "modification_date, modification_user, active)"
+            + " values (1, 'test', today, 'user', today, 'user', 1);";
         Statement stmt = connection.createStatement();
         stmt.execute(typeSql);
 
         String statusSql =
-            "insert into ExpenseStatuses (ExpenseStatusesID, Description, CreationDate, CreationUser, ModificationDate, ModificationUser)"
+            "insert into expense_status (expense_status_id, Description, creation_date, creation_user, " +
+            "modification_date, modification_user)"
             + " values (1, 'test', today, 'user', today, 'user');";
         stmt.execute(statusSql);
+
+        // add in 2.0
+        stmt.execute("insert into company values(10, 'a', 'a', current, 'a', current, 'a')");
+        String typeClientSQL = "INSERT INTO comp_exp_type(company_id, expense_type_id, creation_date, " +
+                "creation_user, modification_date, modification_user) VALUES " +
+                "(10, 1, CURRENT, 'system', CURRENT, 'system')";
+
+        stmt.execute(typeClientSQL);
         stmt.close();
     }
 
@@ -309,6 +326,7 @@ public class ExpenseEntryBulkOperationStressTest extends TestCase {
             entries[i].setDate(createDate(2005, 2, 5));
             entries[i].setExpenseType(TEST_ETNRY_TYPE);
             entries[i].setStatus(TEST_ETNRY_STATUS);
+            entries[i].setCompanyId(10);
         }
 
         return entries;

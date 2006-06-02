@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * @author adic, TCSDEVELOPER
  * @author DanLazar, visualage
- * @version 1.1
+ * @version 2.0
  *
  * @since 1.0
  */
@@ -50,6 +50,11 @@ public class ExpenseEntry extends BasicInfo {
 
     /** Represents a flag indicating whether the client should be billed for this expense. */
     private boolean billable = false;
+
+    /**
+     * Represetns the company id this expense entry associated to.
+     */
+    private int companyId = -1;
 
     /**
      * Represents the mapping with the reject reasons (ids to <code>ExpenseEntryRejectReason</code> objects).
@@ -209,7 +214,7 @@ public class ExpenseEntry extends BasicInfo {
     public boolean isBillable() {
         return billable;
     }
-    
+
     /**
      * <p>
      * Gets a flag indicating whether the client should be billed for this expense.
@@ -542,7 +547,31 @@ public class ExpenseEntry extends BasicInfo {
         for (Iterator iter = this.rejectReasons.keySet().iterator(); iter.hasNext();) {
             ret[index++] = ((Integer) iter.next()).intValue();
         }
-
         return ret;
+    }
+
+    /**
+     * <p>
+     * The company id this expense entry associated to.
+     * </p>
+     *
+     * @return the company id.
+     */
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    /**
+     * <p>
+     * Set the company id.
+     * </p>
+     *
+     * @param companyId the company id to set.
+     * @throws IllegalArgumentException if <code>id</code> is -1.
+     */
+    public void setCompanyId(int companyId) {
+        ExpenseEntryHelper.validateId(companyId);
+
+        this.companyId = companyId;
     }
 }

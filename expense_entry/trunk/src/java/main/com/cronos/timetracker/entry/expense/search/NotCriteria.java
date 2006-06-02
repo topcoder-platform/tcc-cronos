@@ -16,7 +16,7 @@ package com.cronos.timetracker.entry.expense.search;
  * </p>
  *
  * @author adic, TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class NotCriteria implements Criteria {
     /** Represents the contained criteria which will be negated. */

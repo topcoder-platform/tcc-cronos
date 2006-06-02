@@ -22,7 +22,7 @@ import junit.framework.TestSuite;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class UnitTests extends TestCase {
     /**
@@ -55,6 +55,9 @@ public class UnitTests extends TestCase {
 
         // demo for V1.1
         suite.addTestSuite(V1Dot1DemoTest.class);
+
+        // demo for v2.0
+        suite.addTestSuite(V2DotDemoTest.class);
 
         // unit test cases for v1.0
         suite.addTest(DemoTestCase.suite());

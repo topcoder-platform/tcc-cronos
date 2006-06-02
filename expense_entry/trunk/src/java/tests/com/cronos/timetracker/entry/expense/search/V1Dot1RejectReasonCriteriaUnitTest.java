@@ -75,7 +75,7 @@ public class V1Dot1RejectReasonCriteriaUnitTest extends TestCase {
     public void testGetWhereClause_Accuracy() {
         assertEquals("The whereClause should be correct.",
             "? IN (SELECT reject_reason_id FROM exp_reject_reason WHERE "
-            + "exp_reject_reason.ExpenseEntriesId = ExpenseEntries.ExpenseEntriesId)", this.criteria.getWhereClause());
+            + "exp_reject_reason.expense_entry_id = expense_entry.expense_entry_id)", this.criteria.getWhereClause());
     }
 
     /**

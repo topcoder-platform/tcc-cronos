@@ -5,6 +5,7 @@ package com.cronos.timetracker.entry.expense.persistence;
 
 import com.cronos.timetracker.entry.expense.ConfigurationException;
 import com.cronos.timetracker.entry.expense.ExpenseEntryType;
+import com.cronos.timetracker.entry.expense.search.Criteria;
 
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -16,8 +17,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -29,59 +32,119 @@ import java.util.List;
  * be either obtained from the DB connection factory using a connection producer name, or given directly. The expense
  * entry statuses are stored in the database using the following DDL:
  * <pre>
- * CREATE TABLE ExpenseTypes (
- *        ExpenseTypesID       integer NOT NULL,
- *        Description          varchar(64) NOT NULL,
- *        CreationDate         datetime year to second NOT NULL,
- *        CreationUser         varchar(64) NOT NULL,
- *        ModificationDate     datetime year to second NOT NULL,
- *        ModificationUser     varchar(64) NOT NULL,
- *        PRIMARY KEY (ExpenseTypesID)
+ * CREATE TABLE expense_type (
+ *     expense_type_id      integer NOT NULL,
+ *     description          varchar(64) NOT NULL,
+ *     active               smallint NOT NULL,
+ *     creation_date        datetime year to second NOT NULL,
+ *     creation_user        varchar(64) NOT NULL,
+ *     modification_date    datetime year to second NOT NULL,
+ *     modification_user    varchar(64) NOT NULL,
+ *     PRIMARY KEY (expense_type_id)
  * );
  * </pre>
  * </p>
  *
  * @author DanLazar, visualage
- * @version 1.0
+ * @author arylio
+ *
+ * @version 2.0
+ * @since 1.0
  */
 public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistence {
     /** Represents the prepared SQL statement to add an expense type. */
-    private static final String ADD_TYPE_SQL = "INSERT INTO ExpenseTypes (ExpenseTypesID, Description, "
-        + "CreationDate, CreationUser, ModificationDate, ModificationUser) VALUES (?,?,?,?,?,?)";
+    private static final String ADD_TYPE_SQL = "INSERT INTO expense_type(expense_type_id, description, "
+        + "creation_date, creation_user, modification_date, modification_user, active) VALUES (?,?,?,?,?,?,?)";
+
+    /**
+     * Represents the prepared SQL statement to add a comp expense type.
+     *
+     * @since 2.0
+     */
+    private static final String ADD_COMP_EXP_TYPE_SQL = "Insert into comp_exp_type (company_id, expense_type_id, " +
+            "creation_date, creation_user, modification_date, modification_user) values(?,?,?,?,?,?)";
 
     /** Represents the prepared SQL statement to update an expense type. */
-    private static final String UPDATE_TYPE_SQL = "UPDATE ExpenseTypes SET Description=?, ModificationDate=?, "
-        + "ModificationUser=? WHERE ExpenseTypesID=?";
+    private static final String UPDATE_TYPE_SQL = "UPDATE expense_type SET description=?, modification_date=?, "
+        + "modification_user=?, active=? WHERE expense_type_id=?";
+
+
+    /** Represents the prepared SQL statement to update a comp expense type. */
+    private static final String UPDATE_COMP_EXP_TYPE_SQL = "UPDATE comp_exp_type SET company_id=?," +
+        " modification_date=?, modification_user=? WHERE expense_type_id=?";
 
     /** Represents the prepared SQL statement to delete an expense type. */
-    private static final String DELETE_TYPE_SQL = "DELETE FROM ExpenseTypes WHERE ExpenseTypesID=?";
+    private static final String DELETE_TYPE_SQL = "DELETE FROM expense_type WHERE expense_type_id=?";
+
+    /**
+     * Represents the prepared SQL statement to delete a comp expense type.
+     * @since 2.0
+     */
+    private static final String DETELET_COMP_EXP_TYPE = "Delete From comp_exp_type where expense_type_id=?";
 
     /** Represents the prepared SQL statement to delete all expense types. */
-    private static final String DELETE_ALL_TYPE_SQL = "DELETE FROM ExpenseTypes";
+    private static final String DELETE_ALL_TYPE_SQL = "DELETE FROM expense_type";
+
+    /**
+     * Represents the prepared SQL statement to delete all comp expense type.
+     * @since 2.0
+     */
+    private static final String DETELET_ALL_COMP_EXP_TYPE = "Delete From comp_exp_type";
 
     /** Represents the prepared SQL statement to get an expense type. */
-    private static final String RETRIEVE_TYPE_SQL = "SELECT * FROM ExpenseTypes WHERE ExpenseTypesID=?";
+    private static final String RETRIEVE_TYPE_SQL = "SELECT expense_type.expense_type_id, expense_type.description," +
+        "expense_type.creation_date, expense_type.creation_user, expense_type.modification_date, " +
+        "expense_type.modification_user, expense_type.active, comp_exp_type.company_id FROM expense_type " +
+        "Left Join comp_exp_type on comp_exp_type.expense_type_id = expense_type.expense_type_id " +
+        "WHERE expense_type.expense_type_id=?";
 
     /** Represents the prepared SQL statement to get all expense types. */
-    private static final String RETRIEVE_ALL_TYPE_SQL = "SELECT * FROM ExpenseTypes";
+    private static final String RETRIEVE_ALL_TYPE_SQL = "SELECT expense_type.expense_type_id, " +
+        "expense_type.description, expense_type.creation_date, expense_type.creation_user, " +
+        "expense_type.modification_date, expense_type.modification_user, expense_type.active, " +
+        "comp_exp_type.company_id FROM expense_type " +
+        "Left Join comp_exp_type on expense_type.expense_type_id = comp_exp_type.expense_type_id ";
+
+    /**
+     * Represents the prepared SQL statement to get all expense entries, including their entry types and statuses.
+     *
+     * @since 2.0
+     */
+    private static final String RETRIEVE_ALL_ENTRY_SQL =
+        "select expense_type.expense_type_id, expense_type.description, expense_type.active, " +
+        "expense_type.creation_date, expense_type.creation_user, expense_type.modification_date, " +
+        "expense_type.modification_user, comp_exp_type.company_id from expense_type " +
+        "Left join comp_exp_type on comp_exp_type.expense_type_id = expense_type.expense_type_id";
 
     /** Represents the column name for description. */
-    private static final String DESCRIPTION_COLUMN = "Description";
+    private static final String DESCRIPTION_COLUMN = "description";
 
     /** Represents the column name for creation date. */
-    private static final String CREATION_DATE_COLUMN = "CreationDate";
+    private static final String CREATION_DATE_COLUMN = "creation_date";
 
     /** Represents the column name for creation user. */
-    private static final String CREATION_USER_COLUMN = "CreationUser";
+    private static final String CREATION_USER_COLUMN = "creation_user";
 
     /** Represents the column name for modification date. */
-    private static final String MODIFICATION_DATE_COLUMN = "ModificationDate";
+    private static final String MODIFICATION_DATE_COLUMN = "modification_date";
 
     /** Represents the column name for modification user. */
-    private static final String MODIFICATION_USER_COLUMN = "ModificationUser";
+    private static final String MODIFICATION_USER_COLUMN = "modification_user";
+
+    /**
+     * Represents the column name for company id.
+     * @since 2.0
+     */
+    private static final String COMPANY_ID_COLUMN = "company_id";
+
+    /**
+     * Represents the column name for active.
+     * @since 2.0
+     */
+    private static final String ACTIVE_COLUMN = "active";
 
     /** Represents the column name for expense type ID. */
-    private static final String ID_COLUMN = "ExpenseTypesID";
+    private static final String ID_COLUMN = "expense_type_id";
 
     /** Represents the parameter index of ID in INSERT SQL statement. */
     private static final int INSERT_ID_INDEX = 1;
@@ -101,6 +164,11 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
     /** Represents the parameter index of modification user in INSERT SQL statement. */
     private static final int INSERT_MODIFICATIONUSER_INDEX = 6;
 
+    /** Represents the parameter index of active in INSERT SQL statement.
+     * @since 2.0
+     */
+    private static final int INSERT_ACTIVE_INDEX = 7;
+
     /** Represents the parameter index of description in UPDATE SQL statement. */
     private static final int UPDATE_DESCRIPTION_INDEX = 1;
 
@@ -110,8 +178,14 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
     /** Represents the parameter index of modification user in UPDATE SQL statement. */
     private static final int UPDATE_MODIFICATIONUSER_INDEX = 3;
 
+    /**
+     * Represents the parameter index of active in UPDATE SQL statement.
+     * @since 2.0
+     */
+    private static final int UPDATE_ACTIVE_INDEX = 4;
+
     /** Represents the parameter index of ID in UPDATE SQL statement. */
-    private static final int UPDATE_ID_INDEX = 4;
+    private static final int UPDATE_ID_INDEX = 5;
 
     /**
      * Represents the current connection used to access database. If it is <code>null</code>, when needed, the
@@ -217,6 +291,7 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
         PreparedStatement statement = null;
 
         try {
+            startTransaction();
             statement = connection.prepareStatement(ADD_TYPE_SQL);
 
             // Set parameters
@@ -226,14 +301,28 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
             statement.setString(INSERT_CREATIONUSER_INDEX, type.getCreationUser());
             statement.setDate(INSERT_MODIFICATIONDATE_INDEX, now);
             statement.setString(INSERT_MODIFICATIONUSER_INDEX, type.getModificationUser());
+            statement.setShort(INSERT_ACTIVE_INDEX, (short) (type.isActive() ? 1 : 0));
+            statement.executeUpdate();
+            statement.close();
 
-            // Execute
+            // Insert into comp_exp_type (company_id, expense_type_id, " +
+            // "creation_date, creation_user, modification_date, modification_user) values(?,?,?,?,?,?)";
+            statement = connection.prepareStatement(ADD_COMP_EXP_TYPE_SQL);
+            int index = 0;
+            statement.setInt(++index, type.getCompanyId());
+            statement.setInt(++index, type.getId());
+            statement.setDate(++index, now);
+            statement.setString(++index, type.getCreationUser());
+            statement.setDate(++index, now);
+            statement.setString(++index, type.getModificationUser());
             statement.executeUpdate();
 
+            endTransaction(true);
             // Set property only after successful execution of the query
             type.setCreationDate(now);
             type.setModificationDate(now);
         } catch (SQLException e) {
+            endTransaction(false);
             throw new PersistenceException("Accessing database fails.", e);
         } finally {
             PersistenceHelper.close(statement);
@@ -261,19 +350,23 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
         boolean success;
 
         try {
-            statement = connection.prepareStatement(DELETE_TYPE_SQL);
-
-            // Set parameters
+            startTransaction();
+            statement = connection.prepareStatement(DETELET_COMP_EXP_TYPE);
             statement.setInt(1, typeId);
-
-            // Execute
             success = (statement.executeUpdate() > 0);
+            if (success) {
+                statement.close();
+                statement = connection.prepareStatement(DELETE_TYPE_SQL);
+                statement.setInt(1, typeId);
+                success = (statement.executeUpdate() > 0);
+            }
+            endTransaction(success);
         } catch (SQLException e) {
+            endTransaction(false);
             throw new PersistenceException("Accessing database fails.", e);
         } finally {
             PersistenceHelper.close(statement);
         }
-
         return success;
     }
 
@@ -290,10 +383,13 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
         Statement statement = null;
 
         try {
+            startTransaction();
             statement = connection.createStatement();
-
+            statement.execute(DETELET_ALL_COMP_EXP_TYPE);
             statement.execute(DELETE_ALL_TYPE_SQL);
+            endTransaction(true);
         } catch (SQLException e) {
+            endTransaction(false);
             throw new PersistenceException("Accessing database fails.", e);
         } finally {
             PersistenceHelper.close(statement);
@@ -323,22 +419,34 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
         boolean success;
 
         try {
+            startTransaction();
             statement = connection.prepareStatement(UPDATE_TYPE_SQL);
-
-            // Set parameters
             statement.setString(UPDATE_DESCRIPTION_INDEX, type.getDescription());
             statement.setDate(UPDATE_MODIFICATIONDATE_INDEX, now);
             statement.setString(UPDATE_MODIFICATIONUSER_INDEX, type.getModificationUser());
+            statement.setShort(UPDATE_ACTIVE_INDEX, (short) (type.isActive() ? 1 : 0));
             statement.setInt(UPDATE_ID_INDEX, type.getId());
-
-            // Execute
             success = (statement.executeUpdate() > 0);
 
+            if (success) {
+                statement.close();
+                statement = connection.prepareStatement(UPDATE_COMP_EXP_TYPE_SQL);
+                //UPDATE comp_exp_type SET company_id=?, modification_date=?, "
+                //        + "modification_user=? WHERE expense_type_id=?";
+                int index = 0;
+                statement.setInt(++index, type.getCompanyId());
+                statement.setDate(++index, now);
+                statement.setString(++index, type.getModificationUser());
+                statement.setInt(++index, type.getId());
+                success = (statement.executeUpdate() > 0);
+            }
             // Set property only after successful execution of the query
             if (success) {
                 type.setModificationDate(now);
             }
+            endTransaction(success);
         } catch (SQLException e) {
+            endTransaction(false);
             throw new PersistenceException("Accessing database fails.", e);
         } finally {
             PersistenceHelper.close(statement);
@@ -385,6 +493,68 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
         }
 
         return type;
+    }
+
+    /**
+     * <p>
+     * Performs a search for expense types matching a given criteria. The criteria is abstracted using the <code>
+     * Criteria</code> interface. The <code>Criteria</code> implementations cover the basic SQL filtering abilities
+     * (=, like, between, or, and, not). The result of the search is an array with the matched expense types. It is
+     * empty if no matches found (but it can't be <code>null</code> or contain <code>null</code>) elements.
+     * </p>
+     *
+     * @param criteria the criteria to be used in the search.
+     *
+     * @return the results of the search (can be empty if no matches found).
+     *
+     * @throws IllegalArgumentException if the argument is <code>null</code>
+     * @throws PersistenceException wraps a persistence implementation specific exception (such as SQL exception).
+     *
+     * @since 2.0
+     */
+    public ExpenseEntryType[] searchEntries(Criteria criteria) throws PersistenceException {
+        // argument validation
+        if (criteria == null) {
+            throw new IllegalArgumentException("criteria should not be null.");
+        }
+
+        List ret = new ArrayList();
+
+        createConnection(connectionProducerName);
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        ExpenseEntryType entryType;
+
+        try {
+            statement = connection.prepareStatement(RETRIEVE_ALL_ENTRY_SQL + " where " + criteria.getWhereClause());
+
+            // Set parameter
+            Object[] parameters = criteria.getParameters();
+
+            for (int i = 0; i < parameters.length; ++i) {
+                if (parameters[i] instanceof java.util.Date) {
+                    parameters[i] = new Timestamp(((java.util.Date) parameters[i]).getTime());
+                }
+
+                statement.setObject(i + 1, parameters[i]);
+            }
+
+            // Execute
+            resultSet = statement.executeQuery();
+
+            // For each record, create an expense entry status instance
+            while ((entryType = createExpenseEntryType(resultSet)) != null) {
+                ret.add(entryType);
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException("Accessing database fails.", e);
+        } finally {
+            PersistenceHelper.close(resultSet);
+            PersistenceHelper.close(statement);
+        }
+
+        return (ExpenseEntryType[]) ret.toArray(new ExpenseEntryType[ret.size()]);
     }
 
     /**
@@ -535,6 +705,8 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
             type.setCreationUser(resultSet.getString(CREATION_USER_COLUMN));
             type.setModificationDate(resultSet.getDate(MODIFICATION_DATE_COLUMN));
             type.setModificationUser(resultSet.getString(MODIFICATION_USER_COLUMN));
+            type.setCompanyId(resultSet.getInt(COMPANY_ID_COLUMN));
+            type.setActive(!(resultSet.getShort(ACTIVE_COLUMN) == 0));
         } catch (NullPointerException e) {
             throw new PersistenceException("Column value cannot be null.", e);
         } catch (IllegalArgumentException e) {
@@ -560,6 +732,37 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
             }
 
             connection = null;
+        }
+    }
+
+    /**
+     * <p>
+     * Start transaction.
+     * </p>
+     *
+     * @throws SQLException the exception thrown by connection.
+     *
+     */
+    private void startTransaction() throws SQLException {
+        connection.setAutoCommit(false);
+    }
+
+    /**
+     * <p>
+     * Stop transaction.
+     * </p>
+     *
+     * @param isCommited True for commited, false for roll back.
+     */
+    private void endTransaction(boolean isCommited) {
+        try {
+            if (isCommited) {
+                connection.commit();
+            } else {
+                connection.rollback();
+            }
+        } catch (SQLException e) {
+            // ignore it.
         }
     }
 }
