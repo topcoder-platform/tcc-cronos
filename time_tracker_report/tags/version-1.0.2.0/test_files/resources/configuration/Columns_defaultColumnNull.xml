@@ -1,0 +1,98 @@
+<Config name="com.topcoder.timetracker.report.ColumnsConfiguration">
+
+    <!-- Default Columns Configuration for the "Employee Time Report" -->
+
+    <Property name="EMPLOYEE_TIME_COLUMNS">
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Project Time Report" -->
+
+    <Property name="PROJECT_TIME_COLUMNS">
+        <Value>DATE</Value>
+        <Value>EMPLOYEE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>TASK</Value>
+        <Value>HOURS</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Client Time Report" -->
+
+    <Property name="CLIENT_TIME_COLUMNS">
+        <Value>DATE</Value>
+        <Value>EMPLOYEE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>TASK</Value>
+        <Value>HOURS</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Employee Expense Report" -->
+
+    <Property name="EMPLOYEE_EXPENSE_COLUMNS">
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Project Expense Report" -->
+
+    <Property name="PROJECT_EXPENSE_COLUMNS">
+        <Value>DATE</Value>
+        <Value>EMPLOYEE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>TYPE</Value>
+        <Value>DESCRIPTION</Value>
+        <Value>AMOUNT</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Client Expense Report" -->
+
+    <Property name="CLIENT_EXPENSE_COLUMNS">
+        <Value>DATE</Value>
+        <Value>EMPLOYEE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>TYPE</Value>
+        <Value>DESCRIPTION</Value>
+        <Value>AMOUNT</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Employee Time and Expense Report" -->
+
+    <Property name="EMPLOYEE_TIMEEXPENSE_COLUMNS">
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Project Time and Expense Report" -->
+
+    <Property name="PROJECT_TIMEEXPENSE_COLUMNS">
+        <Value>DATE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>HOURS</Value>
+        <Value>AMOUNT</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+
+    <!-- Default Columns Configuration for the "Client Time and Expense Report" -->
+
+    <Property name="CLIENT_TIMEEXPENSE_COLUMNS">
+        <Value>DATE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>HOURS</Value>
+        <Value>AMOUNT</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+</Config>

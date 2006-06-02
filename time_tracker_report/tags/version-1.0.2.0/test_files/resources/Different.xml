@@ -1,0 +1,2 @@
+<BODY>This file is different to all reports, thus it can be used tio assure thta the checks performed in testcases would
+    actually fail upon mismatch between actual and expected</BODY>
