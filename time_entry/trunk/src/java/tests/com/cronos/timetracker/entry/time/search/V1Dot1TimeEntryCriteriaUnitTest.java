@@ -12,7 +12,10 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @author arylio
+ *
+ * @version 2.0
+ * @since 1.1
  */
 public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
     /**
@@ -21,7 +24,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testDESCRIPTION() {
-        assertEquals("The static final field should be correct.", "TimeEntries.Description",
+        assertEquals("The static final field should be correct.", "time_entry.description",
             TimeEntryCriteria.DESCRIPTION.getName());
     }
 
@@ -31,7 +34,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testTIME_STATUS_ID() {
-        assertEquals("The static final field should be correct.", "TimeEntries.TimeStatusesID",
+        assertEquals("The static final field should be correct.", "time_entry.time_status_id",
             TimeEntryCriteria.TIME_STATUS_ID.getName());
     }
 
@@ -41,7 +44,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testCREATION_USER() {
-        assertEquals("The static final field should be correct.", "TimeEntries.CreationUser",
+        assertEquals("The static final field should be correct.", "time_entry.creation_user",
             TimeEntryCriteria.CREATION_USER.getName());
     }
 
@@ -51,7 +54,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testMODIFICATION_USER() {
-        assertEquals("The static final field should be correct.", "TimeEntries.ModificationUser",
+        assertEquals("The static final field should be correct.", "time_entry.modification_user",
             TimeEntryCriteria.MODIFICATION_USER.getName());
     }
 
@@ -61,7 +64,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testBILLABLE_FLAG() {
-        assertEquals("The static final field should be correct.", "TimeEntries.Billable",
+        assertEquals("The static final field should be correct.", "time_entry.billable",
             TimeEntryCriteria.BILLABLE_FLAG.getName());
     }
 
@@ -71,7 +74,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testREJECT_REASON_ID() {
-        assertEquals("The static final field should be correct.", "time_reject_reason.TimeEntriesID",
+        assertEquals("The static final field should be correct.", "time_reject_reason.reject_reason_id",
             TimeEntryCriteria.REJECT_REASON_ID.getName());
     }
 
@@ -82,7 +85,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      */
     public void testHOURS() {
         assertEquals("The static final field should be correct.",
-                "TimeEntries.Hours", TimeEntryCriteria.HOURS.getName());
+                "time_entry.hours", TimeEntryCriteria.HOURS.getName());
     }
 
     /**
@@ -91,7 +94,8 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testDATE() {
-        assertEquals("The static final field should be correct.", "TimeEntries.Date", TimeEntryCriteria.DATE.getName());
+        assertEquals("The static final field should be correct.", "time_entry.entry_date",
+                TimeEntryCriteria.DATE.getName());
     }
 
     /**
@@ -100,7 +104,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testCREATION_DATE() {
-        assertEquals("The static final field should be correct.", "TimeEntries.CreationDate",
+        assertEquals("The static final field should be correct.", "time_entry.creation_date",
             TimeEntryCriteria.CREATION_DATE.getName());
     }
 
@@ -110,7 +114,7 @@ public class V1Dot1TimeEntryCriteriaUnitTest extends TestCase {
      * </p>
      */
     public void testMODIFICATION_DATE() {
-        assertEquals("The static final field should be correct.", "TimeEntries.ModificationDate",
+        assertEquals("The static final field should be correct.", "time_entry.modification_date",
             TimeEntryCriteria.MODIFICATION_DATE.getName());
     }
 }

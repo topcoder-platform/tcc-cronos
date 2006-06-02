@@ -17,9 +17,15 @@ import java.util.List;
  * data object. Implements all abstract helper methods. The creation and modification parameters for the create and
  * update operations are obtained from the user parameter passed as part of these operations and current time.
  * </p>
+ * <p>
+ * Changes in version 2.0, the table name and fields have been changed.
+ * </p>
  *
  * @author argolite, TCSDEVELOPER
- * @version 1.0
+ * @author arylio
+ *
+ * @version 2.0
+ * @since 1.0
  */
 public class TimeStatusDAO extends BaseDAO {
     /**
@@ -28,8 +34,8 @@ public class TimeStatusDAO extends BaseDAO {
      * <code>getCreateSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_CREATE_STATEMENT = "INSERT INTO TimeStatuses(TimeStatusesID, Description,"
-            + "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)";
+    public static final String SQL_CREATE_STATEMENT = "INSERT INTO time_status(time_status_id, description,"
+        + "creation_user, creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)";
 
     /**
      * <p>
@@ -37,8 +43,8 @@ public class TimeStatusDAO extends BaseDAO {
      * <code>getUpdateSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_UPDATE_STATEMENT = "UPDATE TimeStatuses SET Description=?, ModificationUser=?,"
-            + "ModificationDate=? WHERE TimeStatusesID=?";
+    public static final String SQL_UPDATE_STATEMENT = "UPDATE time_status SET description=?, modification_user=?,"
+            + "modification_date=? WHERE time_status_id=?";
 
     /**
      * <p>
@@ -46,7 +52,7 @@ public class TimeStatusDAO extends BaseDAO {
      * <code>getDeleteSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_DELETE_STATEMENT = "DELETE FROM TimeStatuses WHERE TimeStatusesID=?";
+    public static final String SQL_DELETE_STATEMENT = "DELETE FROM time_status WHERE time_status_id=?";
 
     /**
     /**
@@ -55,7 +61,7 @@ public class TimeStatusDAO extends BaseDAO {
      * </code> helper method in this class.
      * </p>
      */
-    public static final String SQL_GET_STATEMENT = "SELECT * FROM TimeStatuses WHERE TimeStatusesID=?";
+    public static final String SQL_GET_STATEMENT = "SELECT * FROM time_status WHERE time_status_id=?";
 
     /**
      * <p>
@@ -63,7 +69,7 @@ public class TimeStatusDAO extends BaseDAO {
      * <code>getReadListSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_GET_LIST_STATEMENT = "SELECT * FROM TimeStatuses";
+    public static final String SQL_GET_LIST_STATEMENT = "SELECT * FROM time_status";
 
     /**
      * <p>
@@ -430,13 +436,12 @@ public class TimeStatusDAO extends BaseDAO {
         TimeStatus timeStatus = new TimeStatus();
 
         // get record from the resultSet
-        timeStatus.setPrimaryId(resultSet.getInt("TimeStatusesID"));
-        timeStatus.setDescription(resultSet.getString("Description"));
-        timeStatus.setCreationUser(resultSet.getString("CreationUser"));
-        timeStatus.setCreationDate(resultSet.getDate("CreationDate"));
-        timeStatus.setModificationUser(resultSet.getString("ModificationUser"));
-        timeStatus.setModificationDate(resultSet.getDate("ModificationDate"));
-
+        timeStatus.setPrimaryId(resultSet.getInt("time_status_id"));
+        timeStatus.setDescription(resultSet.getString("description"));
+        timeStatus.setCreationUser(resultSet.getString("creation_user"));
+        timeStatus.setCreationDate(resultSet.getDate("creation_date"));
+        timeStatus.setModificationUser(resultSet.getString("modification_user"));
+        timeStatus.setModificationDate(resultSet.getDate("modification_date"));
         return timeStatus;
     }
 

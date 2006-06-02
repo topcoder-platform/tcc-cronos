@@ -9,7 +9,7 @@ package com.cronos.timetracker.entry.time;
  * A mock class which implements the <code>ResultListener</code> for testing.
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class MockResultListener implements ResultListener {
     /** Represents the actual result data to check. */

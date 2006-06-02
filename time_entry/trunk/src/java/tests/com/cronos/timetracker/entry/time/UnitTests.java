@@ -6,7 +6,7 @@ package com.cronos.timetracker.entry.time;
 import com.cronos.timetracker.entry.time.search.V1Dot1BooleanExpressionUnitTest;
 import com.cronos.timetracker.entry.time.search.V1Dot1ComparisonExpressionUnitTest;
 import com.cronos.timetracker.entry.time.search.V1Dot1RangeExpressionUnitTest;
-import com.cronos.timetracker.entry.time.search.V1Dot1SQLBasedTimeEntryCriteriaExpressionEvaluatorUnitTest;
+import com.cronos.timetracker.entry.time.search.V1Dot1SQLBasedCriteriaExpressionEvaluatorUnitTest;
 import com.cronos.timetracker.entry.time.search.V1Dot1SearchExceptionUnitTest;
 import com.cronos.timetracker.entry.time.search.V1Dot1SubstringExpressionUnitTest;
 import com.cronos.timetracker.entry.time.search.V1Dot1TimeEntryCriteriaUnitTest;
@@ -22,7 +22,7 @@ import junit.framework.TestSuite;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class UnitTests extends TestCase {
     /**
@@ -51,10 +51,13 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(V1Dot1SearchExceptionUnitTest.class);
         suite.addTestSuite(V1Dot1SubstringExpressionUnitTest.class);
         suite.addTestSuite(V1Dot1TimeEntryCriteriaUnitTest.class);
-        suite.addTestSuite(V1Dot1SQLBasedTimeEntryCriteriaExpressionEvaluatorUnitTest.class);
+        suite.addTestSuite(V1Dot1SQLBasedCriteriaExpressionEvaluatorUnitTest.class);
 
         // V1.1 demo test
         suite.addTestSuite(V1Dot1DemoTest.class);
+
+        suite.addTestSuite(V2DotTimeStatusDAOUnitTest.class);
+        suite.addTestSuite(V2DotTaskTypeDAOUnitTest.class);
         return suite;
     }
 }

@@ -16,7 +16,7 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class V1Dot1RejectReasonUnitTest extends TestCase {
     /**

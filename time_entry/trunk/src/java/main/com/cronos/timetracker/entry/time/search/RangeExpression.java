@@ -15,7 +15,16 @@ package com.cronos.timetracker.entry.time.search;
  * Thread safety: Immutable class so there are no thread safety issues.
  * </p>
  *
+ * <p>
+ * Changes in 2.0: since the search criteria is not only for time entry.
+ * In 2.0, added abstract class Criteria, entity's search criteria should extends from Criteria.
+ * Changes the argument TimeEntryCriteria of constructors and getCriteria to Criteria.
+ * </p>
+ *
  * @author AleaActaEst, TCSDEVELOPER
+ * @author arylio
+ *
+ * @version 2.0
  * @version 1.1
  */
 public class RangeExpression implements SearchExpression {
@@ -30,10 +39,10 @@ public class RangeExpression implements SearchExpression {
 
     /**
      * <p>
-     * Represents the <code>TimeEntryCriteria</code> used for this expression.
+     * Represents the <code>Criteria</code> used for this expression.
      * </p>
      */
-    private TimeEntryCriteria criteria = null;
+    private Criteria criteria = null;
 
     /**
      * <p>
@@ -87,7 +96,7 @@ public class RangeExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static RangeExpression fromTo(TimeEntryCriteria criteria, String from, String to) {
+    public static RangeExpression fromTo(Criteria criteria, String from, String to) {
         return createRangeExpression(criteria, from, to, FROMTO_OPERATOR);
     }
 
@@ -105,7 +114,7 @@ public class RangeExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    private static RangeExpression createRangeExpression(TimeEntryCriteria criteria, String from, String to,
+    private static RangeExpression createRangeExpression(Criteria criteria, String from, String to,
         String operator) {
         if (criteria == null) {
             throw new IllegalArgumentException("criteria can not be null.");
@@ -155,7 +164,7 @@ public class RangeExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static RangeExpression from(TimeEntryCriteria criteria, String from) {
+    public static RangeExpression from(Criteria criteria, String from) {
         return createRangeExpression(criteria, from, null, FROM_OPERATOR);
     }
 
@@ -171,7 +180,7 @@ public class RangeExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static RangeExpression to(TimeEntryCriteria criteria, String to) {
+    public static RangeExpression to(Criteria criteria, String to) {
         return createRangeExpression(criteria, null, to, TO_OPERATOR);
     }
 
@@ -215,7 +224,7 @@ public class RangeExpression implements SearchExpression {
      *
      * @return the criteria part of the expression.
      */
-    public TimeEntryCriteria getCriteria() {
+    public Criteria getCriteria() {
         return this.criteria;
     }
 

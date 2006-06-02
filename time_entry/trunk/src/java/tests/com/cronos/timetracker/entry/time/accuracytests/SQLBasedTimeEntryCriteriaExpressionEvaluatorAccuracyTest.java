@@ -26,8 +26,14 @@ import java.sql.Connection;
  * Accuracy tests for <code>SQLBasedTimeEntryCriteriaExpressionEvaluator</code> class.
  * </p>
  *
+ * <p>
+ * Since 2.0, updated database names and added the company entity to test data.
+ * </p>
+ *
  * @author oodinary
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
  */
 public class SQLBasedTimeEntryCriteriaExpressionEvaluatorAccuracyTest extends TestCase {
     /**
@@ -92,6 +98,7 @@ public class SQLBasedTimeEntryCriteriaExpressionEvaluatorAccuracyTest extends Te
         // delete all the records in all tables
         conn = AccuracyTestHelper.getConnection(NAMESPACE, CONNAME);
         AccuracyTestHelper.clearDatabase(conn);
+        AccuracyTestHelper.insertCompany(AccuracyTestHelper.COMPANY_ID, conn);
 
         // Insert an task type
         type = new TaskType();
@@ -102,8 +109,9 @@ public class SQLBasedTimeEntryCriteriaExpressionEvaluatorAccuracyTest extends Te
         type.setModificationDate(AccuracyTestHelper.createDate(2005, 2, 1));
         type.setCreationUser("taskTypeCreate");
         type.setModificationUser("taskTypeModification");
+        type.setCompanyId(AccuracyTestHelper.COMPANY_ID);
 
-        AccuracyTestHelper.insertTaskTypes(type, conn);
+        AccuracyTestHelper.insertTaskTypes(type, conn, 10);
 
         // Insert the time status
         status = new TimeStatus();
@@ -128,7 +136,7 @@ public class SQLBasedTimeEntryCriteriaExpressionEvaluatorAccuracyTest extends Te
             reasons[i].setModificationDate(AccuracyTestHelper.createDate(2005, 6, 1));
             reasons[i].setCreationUser("reasonCreate");
             reasons[i].setModificationUser("reasonModification");
-            AccuracyTestHelper.insertRejectReasons(reasons[i], conn);
+            AccuracyTestHelper.insertRejectReasons(reasons[i], conn, 10);
         }
 
         this.timeEntryDAO = new TimeEntryDAO(CONNAME, NAMESPACE);
@@ -144,6 +152,7 @@ public class SQLBasedTimeEntryCriteriaExpressionEvaluatorAccuracyTest extends Te
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
 
             timeEntryDAO.create(myTimeEntrys[i], "create");
         }

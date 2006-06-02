@@ -14,7 +14,7 @@ import com.cronos.timetracker.entry.time.V1Dot1TestHelper;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class V1Dot1RangeExpressionUnitTest extends TestCase {
     /**

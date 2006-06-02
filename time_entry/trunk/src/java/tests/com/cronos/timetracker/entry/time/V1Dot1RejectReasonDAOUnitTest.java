@@ -750,6 +750,7 @@ public class V1Dot1RejectReasonDAOUnitTest extends TestCase {
              * creationDate: CREATION_DATE
              * modificationUser: MODIFICATION_USER
              * modificationDate: a new date
+             * active:0
              */
             List returnRejectReasons = V1Dot1TestHelper.selectRejectReasons(conn);
             assertEquals("record was not properly updated in the database", 1, returnRejectReasons.size());
@@ -1157,7 +1158,6 @@ public class V1Dot1RejectReasonDAOUnitTest extends TestCase {
         if (modificationDate1 != modificationDate2) {
             return false;
         }
-
         return true;
     }
 }

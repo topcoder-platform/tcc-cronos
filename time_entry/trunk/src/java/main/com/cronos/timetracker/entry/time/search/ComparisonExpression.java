@@ -15,8 +15,16 @@ package com.cronos.timetracker.entry.time.search;
  * Thread safety: Immutable class so there are no thread safety issues.
  * </p>
  *
+ * <p>
+ * Changes in 2.0: since the search criteria is not only for time entry.
+ * In 2.0, added abstract class Criteria, entity's search criteria should extends from Criteria.
+ * Changes the argument TimeEntryCriteria of constructors and getCriteria to Criteria.
+ * </p>
+ *
  * @author AleaActaEst, TCSDEVELOPER
- * @version 1.1
+ * @author arylio
+ * @version 2.0
+ * @since 1.1
  */
 public class ComparisonExpression implements SearchExpression {
     /** Represents the string representation of the equals operator. */
@@ -39,10 +47,10 @@ public class ComparisonExpression implements SearchExpression {
 
     /**
      * <p>
-     * Represents the <code>TimeEntryCriteria</code> used for this expression.
+     * Represents the <code>Criteria</code> used for this expression.
      * </p>
      */
-    private TimeEntryCriteria criteria = null;
+    private Criteria criteria = null;
 
     /**
      * <p>
@@ -87,7 +95,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static ComparisonExpression equals(TimeEntryCriteria criteria, String value) {
+    public static ComparisonExpression equals(Criteria criteria, String value) {
         return createComparisonExpression(criteria, value, EQUALS_OPERATOR);
     }
 
@@ -104,7 +112,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    private static ComparisonExpression createComparisonExpression(TimeEntryCriteria criteria, String value,
+    private static ComparisonExpression createComparisonExpression(Criteria criteria, String value,
         String operator) {
         if (criteria == null) {
             throw new IllegalArgumentException("criteria can not be null.");
@@ -135,7 +143,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static ComparisonExpression notEquals(TimeEntryCriteria criteria, String value) {
+    public static ComparisonExpression notEquals(Criteria criteria, String value) {
         return createComparisonExpression(criteria, value, NOT_EQUALS_OPERATOR);
     }
 
@@ -151,7 +159,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static ComparisonExpression greaterThan(TimeEntryCriteria criteria, String value) {
+    public static ComparisonExpression greaterThan(Criteria criteria, String value) {
         return createComparisonExpression(criteria, value, GREATER_THAN_OPERATOR);
     }
 
@@ -168,7 +176,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static ComparisonExpression greaterThanOrEquals(TimeEntryCriteria criteria, String value) {
+    public static ComparisonExpression greaterThanOrEquals(Criteria criteria, String value) {
         return createComparisonExpression(criteria, value, GREATER_THAN_OR_EQUAL_OPERATOR);
     }
 
@@ -184,7 +192,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static ComparisonExpression lessThan(TimeEntryCriteria criteria, String value) {
+    public static ComparisonExpression lessThan(Criteria criteria, String value) {
         return createComparisonExpression(criteria, value, LESS_THAN_OPERATOR);
     }
 
@@ -201,7 +209,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static ComparisonExpression lessThanOrEquals(TimeEntryCriteria criteria, String value) {
+    public static ComparisonExpression lessThanOrEquals(Criteria criteria, String value) {
         return createComparisonExpression(criteria, value, LESS_THAN_OR_EQUAL_OPERATOR);
     }
 
@@ -223,7 +231,7 @@ public class ComparisonExpression implements SearchExpression {
      *
      * @return the criteria part of the expression.
      */
-    public TimeEntryCriteria getCriteria() {
+    public Criteria getCriteria() {
         return this.criteria;
     }
 

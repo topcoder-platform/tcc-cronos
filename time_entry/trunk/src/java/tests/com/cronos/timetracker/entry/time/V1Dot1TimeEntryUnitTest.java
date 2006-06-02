@@ -15,7 +15,7 @@ import java.util.Map;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class V1Dot1TimeEntryUnitTest extends TestCase {
     /** Represents the <code>TimeEntry</code> instance used in tests. */
@@ -29,7 +29,7 @@ public class V1Dot1TimeEntryUnitTest extends TestCase {
     protected void setUp() {
         entry = new TimeEntry();
     }
-    
+
     /**
      * <p>
      * Tests accuracy of <code>getBillable</code> for default value. By default, the billable flag is

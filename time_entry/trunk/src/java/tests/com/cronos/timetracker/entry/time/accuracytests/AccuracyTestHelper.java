@@ -35,10 +35,23 @@ import java.util.List;
  * Defines helper methods used in tests.
  * </p>
  *
+ * <p>
+ * Since 2.0, the database tables have been updated.
+ * </p>
+ *
  * @author oodinary
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
+ *
  */
 public final class AccuracyTestHelper {
+    /**
+     * The id of the company.
+     *
+     * @since 2.0
+     */
+    public static final int COMPANY_ID = 10;
     /**
      * <p>
      * The private constructor prevents the creation of a new instance.
@@ -60,11 +73,15 @@ public final class AccuracyTestHelper {
         Statement statement = connection.createStatement();
 
         try {
+            statement.executeUpdate("DELETE FROM comp_rej_reason;");
+            statement.executeUpdate("DELETE FROM comp_task_type;");
             statement.executeUpdate("DELETE FROM time_reject_reason;");
             statement.executeUpdate("DELETE FROM reject_reason;");
-            statement.executeUpdate("DELETE FROM TimeEntries;");
-            statement.executeUpdate("DELETE FROM TimeStatuses;");
-            statement.executeUpdate("DELETE FROM TaskTypes;");
+            statement.executeUpdate("DELETE FROM time_entry;");
+            statement.executeUpdate("DELETE FROM time_status;");
+            statement.executeUpdate("DELETE FROM task_type;");
+            statement.executeUpdate("DELETE FROM company;");
+
         } finally {
             statement.close();
         }
@@ -75,15 +92,15 @@ public final class AccuracyTestHelper {
      *
      * @param taskType the DataObject instance holding the inforation to store into the database
      * @param conn the connection instance to connect the database
-     *
+     * @param companyId the id of the company to be associated with the task type.
      * @throws SQLException if any SQL error occurs.
      */
-    public static void insertTaskTypes(TaskType taskType, Connection conn) throws SQLException {
+    public static void insertTaskTypes(TaskType taskType, Connection conn, int companyId) throws SQLException {
         PreparedStatement pstmt = null;
 
         try {
-            pstmt = conn.prepareStatement("INSERT INTO TaskTypes(TaskTypesID, Description, CreationUser, " +
-                    "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+            pstmt = conn.prepareStatement("INSERT INTO task_type(task_type_id, description, creation_user, " +
+                    "creation_date, modification_user, modification_date, active) VALUES (?,?,?,?,?,?,?)");
 
             pstmt.setInt(1, taskType.getPrimaryId());
             pstmt.setString(2, taskType.getDescription());
@@ -91,8 +108,19 @@ public final class AccuracyTestHelper {
             pstmt.setDate(4, new java.sql.Date(taskType.getCreationDate().getTime()));
             pstmt.setString(5, taskType.getModificationUser());
             pstmt.setDate(6, new java.sql.Date(taskType.getModificationDate().getTime()));
+            pstmt.setInt(7, 1);
 
             pstmt.executeUpdate();
+            pstmt.close();
+
+            pstmt  = conn.prepareStatement("INSERT INTO comp_task_type(company_id, task_type_id, creation_date," +
+                    "creation_user, modification_date, modification_user) VALUES (?, ?, CURRENT, 'system', " +
+                    "CURRENT, 'system')");
+            pstmt.setInt(1, companyId);
+            pstmt.setInt(2, taskType.getPrimaryId());
+
+            pstmt.executeUpdate();
+
         } finally {
             if (pstmt != null) {
                 pstmt.close();
@@ -112,8 +140,8 @@ public final class AccuracyTestHelper {
         PreparedStatement pstmt = null;
 
         try {
-            pstmt = conn.prepareStatement("INSERT INTO TimeStatuses(TimeStatusesID, Description, " +
-                    "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)");
+            pstmt = conn.prepareStatement("INSERT INTO time_status(time_status_id, Description, " +
+                    "creation_user, creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)");
 
             pstmt.setInt(1, timeStatus.getPrimaryId());
             pstmt.setString(2, timeStatus.getDescription());
@@ -135,15 +163,16 @@ public final class AccuracyTestHelper {
      *
      * @param rejectReason the RejectReason instance holding the inforation to store into the database
      * @param conn the connection instance to connect the database
-     *
+     * @param companyId the id of the company to which this reject reason belongs.
      * @throws SQLException if any SQL error occurs.
      */
-    public static void insertRejectReasons(RejectReason rejectReason, Connection conn) throws SQLException {
+    public static void insertRejectReasons(RejectReason rejectReason, Connection conn, int companyId) throws SQLException {
         PreparedStatement pstmt = null;
 
         try {
             pstmt = conn.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, " +
-                    "creation_user, creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)");
+                    "creation_user, creation_date, modification_user, modification_date, active) VALUES " +
+                    "(?,?,?,?,?,?,?)");
 
             pstmt.setInt(1, rejectReason.getPrimaryId());
             pstmt.setString(2, rejectReason.getDescription());
@@ -151,6 +180,16 @@ public final class AccuracyTestHelper {
             pstmt.setDate(4, new java.sql.Date(rejectReason.getCreationDate().getTime()));
             pstmt.setString(5, rejectReason.getModificationUser());
             pstmt.setDate(6, new java.sql.Date(rejectReason.getModificationDate().getTime()));
+            pstmt.setInt(7, 1);
+
+            pstmt.executeUpdate();
+            pstmt.close();
+
+            pstmt  = conn.prepareStatement("INSERT INTO comp_rej_reason(company_id, reject_reason_id, creation_date," +
+                    "creation_user, modification_date, modification_user) VALUES (?, ?, CURRENT, 'system', " +
+                    "CURRENT, 'system')");
+            pstmt.setInt(1, companyId);
+            pstmt.setInt(2, rejectReason.getPrimaryId());
 
             pstmt.executeUpdate();
         } finally {
@@ -158,6 +197,33 @@ public final class AccuracyTestHelper {
                 pstmt.close();
             }
         }
+    }
+
+    /**
+     * Insert a company row with given id.
+     *
+     * @param companyId the id of company.
+     * @param conn the database connection.
+     * @throws Exception to JUnit.
+     */
+    public static void insertCompany(int companyId, Connection conn) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement("INSERT INTO company (company_id, name, passcode, " +
+                    "creation_date, creation_user, modification_date, modification_user) VALUES " +
+                    "(?, ?, ?, CURRENT, 'system', CURRENT, 'system')");
+
+            pstmt.setInt(1, companyId);
+            pstmt.setString(2, "TopCoder");
+            pstmt.setString(3, "passcode" + companyId);
+
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+
     }
 
     /**
@@ -210,23 +276,24 @@ public final class AccuracyTestHelper {
 
         pstmt = conn.createStatement();
 
-        ResultSet resultSet = pstmt.executeQuery("SELECT * FROM TimeEntries");
+        ResultSet resultSet = pstmt.executeQuery("SELECT * FROM time_entry");
 
         while (resultSet.next()) {
             TimeEntry timeEntry = new TimeEntry();
 
             // get record from the resultSet
-            timeEntry.setPrimaryId(resultSet.getInt("TimeEntriesID"));
-            timeEntry.setTaskTypeId(resultSet.getInt("TaskTypesID"));
-            timeEntry.setTimeStatusId(resultSet.getInt("TimeStatusesID"));
+            timeEntry.setPrimaryId(resultSet.getInt("time_entry_id"));
+            timeEntry.setTaskTypeId(resultSet.getInt("task_type_id"));
+            timeEntry.setCompanyId(resultSet.getInt("company_id"));
+            timeEntry.setTimeStatusId(resultSet.getInt("time_status_id"));
             timeEntry.setDescription(resultSet.getString("Description"));
-            timeEntry.setDate(resultSet.getDate("EntryDate"));
+            timeEntry.setDate(resultSet.getDate("entry_date"));
             timeEntry.setHours(resultSet.getFloat("Hours"));
             timeEntry.setBillable(resultSet.getBoolean("Billable"));
-            timeEntry.setCreationUser(resultSet.getString("CreationUser"));
-            timeEntry.setCreationDate(resultSet.getDate("CreationDate"));
-            timeEntry.setModificationUser(resultSet.getString("ModificationUser"));
-            timeEntry.setModificationDate(resultSet.getDate("ModificationDate"));
+            timeEntry.setCreationUser(resultSet.getString("Creation_User"));
+            timeEntry.setCreationDate(resultSet.getDate("Creation_Date"));
+            timeEntry.setModificationUser(resultSet.getString("Modification_User"));
+            timeEntry.setModificationDate(resultSet.getDate("Modification_Date"));
 
             timeEntries.add(timeEntry);
         }
@@ -358,6 +425,7 @@ public final class AccuracyTestHelper {
      */
     public static void assertEquals(String message, TimeEntry expected, TimeEntry actual) {
         Assert.assertEquals(message, expected.getPrimaryId(), actual.getPrimaryId());
+        Assert.assertEquals(message, expected.getCompanyId(), actual.getCompanyId());
         Assert.assertEquals(message, expected.getTaskTypeId(), actual.getTaskTypeId());
         Assert.assertEquals(message, expected.getTimeStatusId(), actual.getTimeStatusId());
         AccuracyTestHelper.assertEquals(message, expected.getDate(), actual.getDate());

@@ -23,10 +23,13 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 /**
  * <p>
  * UnitTestHelper class provides some useful helper methods. Such as create a
- * customer defined connection, insert/select/delete records in the datebase.
+ * customer defined connection, insert/select/delete records in the database.
  * </p>
+ *
  * @author fuyun
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
  */
 class StressTestHelper {
 
@@ -54,57 +57,76 @@ class StressTestHelper {
     /**
      * The SQL statement to insert a row into the TaskTypes table.
      */
-    private static final String INSERT_TASKTYPES_SQL = "INSERT INTO TaskTypes(TaskTypesID, Description, CreationUser, "
-            + "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)";
+    private static final String INSERT_TASKTYPES_SQL =
+        "INSERT INTO task_type(task_type_id, Description, Creation_User, "
+            + "Creation_Date, Modification_User, Modification_Date, active) VALUES (?,?,?,?,?,?, ?)";
 
     /**
      * The SQL statement to select all rows from the TaskTypes table.
      */
-    private static final String SELECT_TASKTYPES_SQL = "SELECT * FROM TaskTypes";
+    private static final String SELECT_TASKTYPES_SQL = "SELECT * FROM Task_Type";
 
     /**
      * The SQL statement to delete all rows from the TaskTypes table.
      */
-    private static final String DELETE_TASKTYPES_SQL = "DELETE FROM TaskTypes";
+    private static final String DELETE_TASKTYPES_SQL = "DELETE FROM Task_Type";
 
     /**
      * The SQL statement to insert a row into the TimeStatuses table.
      */
-    private static final String INSERT_TIMESTATUSES_SQL = "INSERT INTO TimeStatuses(TimeStatusesID, Description, "
-            + "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)";
+    private static final String INSERT_TIMESTATUSES_SQL =
+        "INSERT INTO time_status(time_status_id, Description, "
+            + "Creation_User, Creation_Date, Modification_User, Modification_Date) VALUES (?,?,?,?,?,?)";
 
     /**
      * The SQL statement to select all rows from the TimeStatuses table.
      */
-    private static final String SELECT_TIMESTATUSES_SQL = "SELECT * FROM TimeStatuses";
+    private static final String SELECT_TIMESTATUSES_SQL = "SELECT * FROM Time_Status";
 
     /**
      * The SQL statement to delete all rows from the TimeStatuses table.
      */
-    private static final String DELETE_TIMESTATUSES_SQL = "DELETE FROM TimeStatuses";
+    private static final String DELETE_TIMESTATUSES_SQL = "DELETE FROM Time_Status";
 
     /**
      * The SQL statement to insert a row into the TimeEntries table.
      */
-    private static final String INSERT_TIMEENTRIES_SQL = "INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, "
-            + "TimeStatusesID, Description, EntryDate, Hours, Billable, CreationUser, CreationDate, ModificationUser, "
-            + "ModificationDate) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String INSERT_TIMEENTRIES_SQL =
+        "INSERT INTO time_entry(time_entry_id, task_type_id, "
+            + "time_status_id, Description, entry_date, Hours, Billable, Creation_User, Creation_Date, " +
+                    "Modification_User, Modification_Date, company_id) VALUES (?,?,?,?,?,?,?,?,?,?,?, ?)";
 
     /**
      * The SQL statement to select all rows from the TimeEntries table.
      */
-    private static final String SELECT_TIMEENTRIES_SQL = "SELECT * FROM TimeEntries";
+    private static final String SELECT_TIMEENTRIES_SQL = "SELECT * FROM time_entry";
 
     /**
      * The SQL statement to delete all rows from the TimeEntries table.
      */
-    private static final String DELETE_TIMEENTRIES_SQL = "DELETE FROM TimeEntries";
+    private static final String DELETE_TIMEENTRIES_SQL = "DELETE FROM time_entry";
 
     /**
      * The SQL statement to delete all rows from the time_reject_reason table.
      */
     private static final String DELETE_TIMEREJECTREASON_SQL = "DELETE FROM time_reject_reason";
 
+    /**
+     * The SQL query. Inserts the company - task type mapping.
+     *
+     *  @since 2.0
+     */
+    private static final String INSERT_COMPANY_TASK =
+        "INSERT INTO comp_task_type(company_id, task_type_id, creation_date," +
+                "creation_user, modification_date, modification_user) VALUES (?, ?, CURRENT, 'system', " +
+                "CURRENT, 'system')";
+
+    /**
+     * The SQL delete query. Deletes the data from comp_task_type table.
+     *
+     * @since 2.0
+     */
+    private static final String DELETE_COMPANY_TASK = "DELETE FROM comp_task_type";
     /**
      * <p>
      * Private constructor to prevent this class be instantiated.
@@ -119,9 +141,10 @@ class StressTestHelper {
      * @param taskType the DataObject instance holding the inforation to store
      *            into the database
      * @param conn the connection instance to connect the database
+     * @param companyId the id of the company to which the task type belongs.
      * @throws SQLException if any SQL error occurs.
      */
-    static void insertTaskTypes(TaskType taskType, Connection conn)
+    static void insertTaskTypes(TaskType taskType, Connection conn, int companyId)
         throws SQLException {
         PreparedStatement pstmt = null;
 
@@ -136,6 +159,14 @@ class StressTestHelper {
             pstmt.setString(5, truncatesString(taskType.getModificationUser()));
             pstmt.setDate(6, new java.sql.Date(taskType.getModificationDate()
                     .getTime()));
+            pstmt.setInt(7, 1);
+
+            pstmt.executeUpdate();
+            pstmt.close();
+
+            pstmt = conn.prepareStatement(INSERT_COMPANY_TASK);
+            pstmt.setInt(1, companyId);
+            pstmt.setInt(2, taskType.getPrimaryId());
 
             pstmt.executeUpdate();
         } finally {
@@ -329,7 +360,45 @@ class StressTestHelper {
                     truncatesString(timeEntry.getModificationUser()));
             pstmt.setDate(11, new java.sql.Date(timeEntry.getModificationDate()
                     .getTime()));
+            pstmt.setInt(12, timeEntry.getCompanyId());
 
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+    }
+
+    /**
+     * Inserts the given RejectReason into the database.
+     *
+     * @param reason the RejectReason object to be set.
+     * @param conn the connection instance to connect the database.
+     * @param companyId the id of the company to be associated with reaject reason.
+     * @throws SQLException if any SQL error occurs.
+     */
+    static void insertRejectReason(RejectReason reason, Connection conn, int companyId)
+        throws SQLException {
+        PreparedStatement pstmt = null;
+
+        try {
+            pstmt = conn.prepareStatement("INSERT INTO reject_reason(reject_reason_id, description, active," +
+                    "creation_date, creation_user, modification_date, modification_user) VALUES (?, ?, 1, " +
+                    "CURRENT, 'system', CURRENT, 'system')");
+
+            pstmt.setInt(1, reason.getPrimaryId());
+            pstmt.setString(2, truncatesString(reason.getDescription()));
+
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            pstmt = conn.prepareStatement("INSERT INTO comp_rej_reason(company_id, reject_reason_id, creation_date," +
+                    "creation_user, modification_date, modification_user) VALUES (?, ?, CURRENT, 'system', " +
+                    "CURRENT, 'system')");
+
+            pstmt.setInt(1, companyId);
+            pstmt.setInt(2, reason.getPrimaryId());
             pstmt.executeUpdate();
         } finally {
             if (pstmt != null) {
@@ -498,16 +567,17 @@ class StressTestHelper {
      */
     static void cleanDB(String namespace, String connName) throws Exception {
         Connection conn = getConnection(namespace, connName);
-        PreparedStatement stmt = null;
+        Statement stmt = null;
         try {
-            stmt = conn.prepareStatement(DELETE_TIMEREJECTREASON_SQL);
-            stmt.executeUpdate();
-            stmt = conn.prepareStatement(DELETE_TIMEENTRIES_SQL);
-            stmt.executeUpdate();
-            stmt = conn.prepareStatement(DELETE_TASKTYPES_SQL);
-            stmt.executeUpdate();
-            stmt = conn.prepareStatement(DELETE_TIMESTATUSES_SQL);
-            stmt.executeUpdate();
+            stmt = conn.createStatement();
+            stmt.executeUpdate(DELETE_COMPANY_TASK);
+            stmt.executeUpdate(DELETE_TIMEREJECTREASON_SQL);
+            stmt.execute("DELETE FROM comp_rej_reason");
+            stmt.execute("DELETE FROM reject_reason");
+            stmt.executeUpdate(DELETE_TIMEENTRIES_SQL);
+            stmt.executeUpdate(DELETE_TASKTYPES_SQL);
+            stmt.executeUpdate(DELETE_TIMESTATUSES_SQL);
+            stmt.execute("DELETE FROM company");
         } finally {
             closeResources(null, stmt, conn);
         }
@@ -559,15 +629,18 @@ class StressTestHelper {
      * </p>
      * @param rejectReason1 the RejectReason object in TimeEntry.
      * @param rejectReason2 the RejectReason object in TimeEntry.
+     * @param companyId the id of the company to which this entry belongs.
      * @return a TimeEntry instance for testing.
      */
     static DataObject getTimeEntry(RejectReason rejectReason1,
-            RejectReason rejectReason2) {
+            RejectReason rejectReason2, int companyId) {
         TimeEntry timeEntry = new TimeEntry();
         timeEntry.addRejectReason(rejectReason1);
         timeEntry.addRejectReason(rejectReason2);
         timeEntry.setDescription(StressTestHelper.DESCRIPTION);
         timeEntry.setDate(StressTestHelper.CREATION_DATE);
+        timeEntry.setCompanyId(companyId);
+
         return timeEntry;
     }
 
@@ -581,6 +654,35 @@ class StressTestHelper {
     static RejectReason getRejectReason(int id) {
         RejectReason rejectReason = new RejectReason();
         rejectReason.setPrimaryId(id);
+        rejectReason.setDescription("any");
         return rejectReason;
+    }
+
+    /**
+     * Insert a company row with given id.
+     *
+     * @param companyId the id of company.
+     * @param conn the database connection.
+     * @throws Exception to JUnit.
+     * @since 2.0
+     */
+    public static void insertCompany(int companyId, Connection conn) throws Exception {
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = conn.prepareStatement("INSERT INTO company (company_id, name, passcode, " +
+                    "creation_date, creation_user, modification_date, modification_user) VALUES " +
+                    "(?, ?, ?, CURRENT, 'system', CURRENT, 'system')");
+
+            pstmt.setInt(1, companyId);
+            pstmt.setString(2, "TopCoder");
+            pstmt.setString(3, "passcode" + companyId);
+
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        }
+
     }
 }

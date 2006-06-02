@@ -59,7 +59,7 @@ public class AsynchBatchDAOWrapperStressTest extends TestCase {
     /**
      * Represents the SQL statement to select records from TimeEntries table.
      */
-    private static final String TIME_ENTRY_SELECT_SQL = "select * from TimeEntries";
+    private static final String TIME_ENTRY_SELECT_SQL = "select * from Time_Entry";
 
     /**
      * Represents the SQL statement to select records from time_reject_reason
@@ -128,7 +128,8 @@ public class AsynchBatchDAOWrapperStressTest extends TestCase {
             TimeStatus myTimeStatus = (TimeStatus) StressTestHelper
                     .getTimeStatus(0);
             TaskType myTaskType = (TaskType) StressTestHelper.getTaskType(0);
-            StressTestHelper.insertTaskTypes(myTaskType, conn);
+            StressTestHelper.insertCompany(10, conn);
+            StressTestHelper.insertTaskTypes(myTaskType, conn, 10);
             StressTestHelper.insertTimeStatuses(myTimeStatus, conn);
 
             dataObjects = new DataObject[TIME_ENTRY_NUM];
@@ -138,10 +139,13 @@ public class AsynchBatchDAOWrapperStressTest extends TestCase {
             timeEntry.addRejectReason(REJECT_REASON_2);
             timeEntry.setDescription(StressTestHelper.DESCRIPTION);
             timeEntry.setDate(StressTestHelper.CREATION_DATE);
+            StressTestHelper.insertRejectReason(REJECT_REASON_1, conn, 10);
+            StressTestHelper.insertRejectReason(REJECT_REASON_2, conn, 10);
+            StressTestHelper.insertRejectReason(StressTestHelper.getRejectReason(3), conn, 10);
 
             for (int i = 0; i < TIME_ENTRY_NUM; i++) {
                 dataObjects[i] = StressTestHelper.getTimeEntry(REJECT_REASON_1,
-                        REJECT_REASON_2);
+                        REJECT_REASON_2, 10);
             }
 
             wrapper = new AsynchBatchDAOWrapper(timeEntryDAO);

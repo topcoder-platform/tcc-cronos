@@ -73,7 +73,7 @@ public class TimeEntryDAOStressTest extends TestCase {
     /**
      * Represents the SQL statement to select records from TimeEntries table.
      */
-    private static final String TIME_ENTRY_SELECT_SQL = "select * from TimeEntries";
+    private static final String TIME_ENTRY_SELECT_SQL = "select * from time_entry";
 
     /**
      * Represents the SQL statement to select records from time_reject_reason
@@ -133,18 +133,26 @@ public class TimeEntryDAOStressTest extends TestCase {
             TimeStatus myTimeStatus = (TimeStatus) StressTestHelper
                     .getTimeStatus(0);
             TaskType myTaskType = (TaskType) StressTestHelper.getTaskType(0);
-            StressTestHelper.insertTaskTypes(myTaskType, conn);
+
             StressTestHelper.insertTimeStatuses(myTimeStatus, conn);
+            StressTestHelper.insertCompany(10, conn);
+            StressTestHelper.insertCompany(20, conn);
+            StressTestHelper.insertTaskTypes(myTaskType, conn, 10);
+
+            StressTestHelper.insertRejectReason(REJECT_REASON_1, conn, 10);
+            StressTestHelper.insertRejectReason(REJECT_REASON_2, conn, 10);
+            StressTestHelper.insertRejectReason(StressTestHelper.getRejectReason(3), conn, 10);
 
             dataObjects = new DataObject[TIME_ENTRY_NUM];
 
             for (int i = 0; i < TIME_ENTRY_NUM; i++) {
-                dataObjects[i] = StressTestHelper.getTimeEntry(REJECT_REASON_1, REJECT_REASON_2);
+                dataObjects[i] = StressTestHelper.getTimeEntry(REJECT_REASON_1, REJECT_REASON_2, 10);
+                ((TimeEntry) dataObjects[i]).setTaskTypeId(myTaskType.getPrimaryId());
             }
 
             resultData = new ResultData();
             timeEntryDAO.batchCreate(dataObjects,
-                    StressTestHelper.CREATION_USER, false, resultData);
+                    StressTestHelper.CREATION_USER, true, resultData);
 
         } finally {
             StressTestHelper.closeResources(null, null, conn);
@@ -252,6 +260,7 @@ public class TimeEntryDAOStressTest extends TestCase {
      */
     public void testBatchUpdate() throws Exception {
         RejectReason rejectReason = StressTestHelper.getRejectReason(3);
+
         for (int i = 0; i < TIME_ENTRY_NUM; i++) {
             ((TimeEntry) dataObjects[i]).removeRejectReason(REJECT_REASON_1
                     .getPrimaryId());
@@ -259,7 +268,7 @@ public class TimeEntryDAOStressTest extends TestCase {
         }
 
         timeEntryDAO.batchUpdate(dataObjects, StressTestHelper.CREATION_USER,
-                false, resultData);
+                true, resultData);
 
         Connection conn = null;
         ResultSet resultSet = null;

@@ -26,9 +26,14 @@ import java.util.Map;
  * dependency which allows for linking rejectReasons to time entries.
  * </p>
  *
+ * <p>
+ * Changes in version 2.0: add company id field.
+ * </p>
+ *
  * @author AleaActaEst, TCSDEVELOPER
  * @author argolite, TCSDEVELOPER
- * @version 1.1
+ * @author arylio
+ * @version 2.0
  *
  * @since 1.0
  */
@@ -67,6 +72,17 @@ public class TimeEntry extends BaseDataObject {
      * </p>
      */
     private boolean billable = false;
+
+    /**
+     * <p>
+     * Represents the company ID associated with the time entry.
+     * Initialized to zero. Accessed by GetCompanyId and SetCompanyId.
+     * Notes: The company id must match taskType company id.
+     * </p>
+     *
+     * @since 2.0
+     */
+    private int companyId = 0;
 
     /**
      * <p>
@@ -150,7 +166,7 @@ public class TimeEntry extends BaseDataObject {
     public boolean isBillable() {
         return this.billable;
     }
-    
+
     /**
      * <p>
      * Checks if the hours are billable or not.
@@ -276,5 +292,29 @@ public class TimeEntry extends BaseDataObject {
      */
     public void removeRejectReason(int rejectReasonId) {
         this.rejectReasons.remove(new Integer(rejectReasonId));
+    }
+
+    /**
+     * <p>
+     * Gets the company id this time entry associated to.
+     * </p>
+     *
+     * @return the company id.
+     *
+     * @since 2.0
+     */
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    /**
+     * <p>
+     * Set the company id to new value, it must match taskType's company id.
+     * </p>
+     *
+     * @since 2.0
+     */
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 }

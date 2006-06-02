@@ -23,7 +23,7 @@ import java.util.List;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
     /**
@@ -117,10 +117,11 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
             // delete all the records in all tables
             conn = V1Dot1TestHelper.getConnection(NAMESPACE, CONNAME);
             V1Dot1TestHelper.clearDatabase(conn);
+            V1Dot1TestHelper.executeSQL("insert into company values(1, 'a', 'a', current, 'a', current, 'a');", conn);
 
             // Insert an task type
             type = new TaskType();
-
+            type.setCompanyId(1);
             type.setPrimaryId(1);
             type.setDescription("taskType");
             type.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
@@ -160,6 +161,9 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
             reason2.setCreationUser("reason2Create");
             reason2.setModificationUser("reason2Modification");
             V1Dot1TestHelper.insertRejectReasons(reason2, conn);
+
+            V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1,3,current,'a', current,'a');", conn);
+            V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1,4,current,'a', current,'a');", conn);
         } finally {
             V1Dot1TestHelper.closeResources(null, null, conn);
         }
@@ -217,6 +221,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
              * modificationDate: default: null
              */
             entry = new TimeEntry();
+            entry.setCompanyId(1);
             entry.setDescription(DESCRIPTION);
             entry.setDate(CREATION_DATE);
             entry.setTaskTypeId(type.getPrimaryId());
@@ -279,10 +284,11 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
             assertTrue("There should be two records in time_reject_reason table.", resultSet.next());
 
             assertEquals("Table time_reject_reason is not updated.", entry.getPrimaryId(),
-                resultSet.getInt("TimeEntriesID"));
+                resultSet.getInt("time_entry_id"));
             assertEquals("Table time_reject_reason is not updated.", reason1.getPrimaryId(),
                 resultSet.getInt("reject_reason_id"));
-            assertEquals("Table time_reject_reason is not updated.", CREATION_USER, resultSet.getString("creation_user"));
+            assertEquals("Table time_reject_reason is not updated.", CREATION_USER,
+                resultSet.getString("creation_user"));
             assertEquals("Table time_reject_reason is not updated.", CREATION_USER,
                 resultSet.getString("modification_user"));
             V1Dot1TestHelper.assertEquals("Table time_reject_reason is not updated.", entry.getCreationDate(),
@@ -294,10 +300,11 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
             assertTrue("There should be two records in time_reject_reason table.", resultSet.next());
 
             assertEquals("Table time_reject_reason is not updated.", entry.getPrimaryId(),
-                resultSet.getInt("TimeEntriesID"));
+                resultSet.getInt("time_entry_id"));
             assertEquals("Table time_reject_reason is not updated.", reason2.getPrimaryId(),
                 resultSet.getInt("reject_reason_id"));
-            assertEquals("Table time_reject_reason is not updated.", CREATION_USER, resultSet.getString("creation_user"));
+            assertEquals("Table time_reject_reason is not updated.", CREATION_USER,
+                resultSet.getString("creation_user"));
             assertEquals("Table time_reject_reason is not updated.", CREATION_USER,
                 resultSet.getString("modification_user"));
             V1Dot1TestHelper.assertEquals("Table time_reject_reason is not updated.", entry.getCreationDate(),
@@ -377,7 +384,8 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
                 returnTimeEntry.getTaskTypeId());
             assertEquals("record was not properly updated in the database", status.getPrimaryId(),
                 returnTimeEntry.getTimeStatusId());
-            assertEquals("record was not properly updated in the database", "changed", returnTimeEntry.getDescription());
+            assertEquals("record was not properly updated in the database", "changed",
+                returnTimeEntry.getDescription());
             V1Dot1TestHelper.assertEquals("record was not properly updated in the database", MODIFICATION_DATE,
                 returnTimeEntry.getDate());
             assertEquals("record was not properly updated in the database", 0, returnTimeEntry.getHours(), 1e-8);
@@ -408,10 +416,11 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
             assertTrue("There should be one record in time_reject_reason table.", resultSet.next());
 
             assertEquals("Table time_reject_reason is not updated.", entry.getPrimaryId(),
-                resultSet.getInt("TimeEntriesID"));
+                resultSet.getInt("time_entry_id"));
             assertEquals("Table time_reject_reason is not updated.", reason1.getPrimaryId(),
                 resultSet.getInt("reject_reason_id"));
-            assertEquals("Table time_reject_reason is not updated.", CREATION_USER, resultSet.getString("creation_user"));
+            assertEquals("Table time_reject_reason is not updated.", CREATION_USER,
+                resultSet.getString("creation_user"));
             assertEquals("Table time_reject_reason is not updated.", MODIFICATION_USER,
                 resultSet.getString("modification_user"));
             V1Dot1TestHelper.assertEquals("Table time_reject_reason is not updated.", entry.getCreationDate(),
@@ -486,6 +495,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
              * modificationDate: default: null
              */
             entry = new TimeEntry();
+            entry.setCompanyId(1);
             entry.setDescription(DESCRIPTION);
             entry.setDate(CREATION_DATE);
             entry.setTaskTypeId(type.getPrimaryId());
@@ -546,6 +556,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
              * modificationDate: default: null
              */
             entry = new TimeEntry();
+            entry.setCompanyId(1);
             entry.setDescription(DESCRIPTION);
             entry.setDate(CREATION_DATE);
             entry.setTaskTypeId(type.getPrimaryId());
@@ -603,6 +614,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
              * modificationDate: default: null
              */
             entry = new TimeEntry();
+            entry.setCompanyId(1);
             entry.setDescription(DESCRIPTION);
             entry.setDate(CREATION_DATE);
             entry.setTaskTypeId(type.getPrimaryId());
@@ -665,6 +677,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
              * modificationDate: default: null
              */
             entry = new TimeEntry();
+            entry.setCompanyId(1);
             entry.setDescription(DESCRIPTION);
             entry.setDate(CREATION_DATE);
             entry.setTaskTypeId(type.getPrimaryId());
@@ -706,6 +719,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
                 myTimeEntrys[i].setDescription(DESCRIPTION);
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
                 myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
@@ -730,7 +744,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
     /**
      * <p>
-     * Tests the getList(String whereClause). With whereClause = "CreationUser = \'ivern\'"
+     * Tests the getList(String whereClause). With whereClause = "creation_user = \'ivern\'"
      * </p>
      *
      * @throws Exception throw Exception to junit
@@ -745,6 +759,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -755,7 +770,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
             }
 
             // assert records properly got from database
-            List returnTimeEntrys = timeEntryDAO.getList("CreationUser = \'ivern\'");
+            List returnTimeEntrys = timeEntryDAO.getList("creation_user = \'ivern\'");
 
             assertEquals("not correctly record returned from the TimeEntries table", 0, returnTimeEntrys.size());
         } finally {
@@ -765,7 +780,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
     /**
      * <p>
-     * Tests the getList(String whereClause). With whereClause = "CreationUser = CREATIONUSER"
+     * Tests the getList(String whereClause). With whereClause = "creation_user = CREATIONUSER"
      * </p>
      *
      * @throws Exception throw Exception to junit
@@ -780,6 +795,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -796,7 +812,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
                 timeEntryDAO.create(myTimeEntrys[i], CREATION_USER);
             }
 
-            String whereCause = "CreationUser=\'" + CREATION_USER + "\'";
+            String whereCause = "creation_user=\'" + CREATION_USER + "\'";
             List returnTimeEntrys = timeEntryDAO.getList(whereCause);
 
             assertEquals("not correctly record returned from the TimeEntries table", 10, returnTimeEntrys.size());
@@ -1017,6 +1033,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1075,6 +1092,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1143,6 +1161,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1213,6 +1232,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1284,6 +1304,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1365,6 +1386,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1442,6 +1464,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1500,6 +1523,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1569,6 +1593,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1640,6 +1665,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1711,6 +1737,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1793,6 +1820,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2065,6 +2093,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2141,6 +2170,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2227,6 +2257,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2315,6 +2346,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2404,6 +2436,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2503,6 +2536,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2598,6 +2632,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2674,6 +2709,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2761,6 +2797,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2850,6 +2887,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2939,6 +2977,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -3039,6 +3078,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -3264,6 +3304,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -3461,6 +3502,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -3494,7 +3536,8 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
 
             Object[] operations = resultData.getOperations();
             assertNotNull("The operations field should be set in reading module.", operations);
-            assertEquals("The operations field should be set in reading module.", operations.length, myTimeEntrys.length);
+            assertEquals("The operations field should be set in reading module.",
+                operations.length, myTimeEntrys.length);
 
             Integer[] expected = new Integer[myTimeEntrys.length];
 
@@ -3572,7 +3615,7 @@ public class V1Dot1TimeEntryDAOUnitTest extends TestCase {
      */
     private TimeEntry getTimeEntry() {
         TimeEntry myTimeEntry = new TimeEntry();
-
+        myTimeEntry.setCompanyId(1);
         myTimeEntry.setDescription(DESCRIPTION);
         myTimeEntry.setCreationUser(CREATION_USER);
         myTimeEntry.setCreationDate(CREATION_DATE);

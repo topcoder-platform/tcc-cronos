@@ -7,7 +7,7 @@ import com.cronos.timetracker.entry.time.search.BooleanExpression;
 import com.cronos.timetracker.entry.time.search.ComparisonExpression;
 import com.cronos.timetracker.entry.time.search.ExpressionEvaluator;
 import com.cronos.timetracker.entry.time.search.RangeExpression;
-import com.cronos.timetracker.entry.time.search.SQLBasedTimeEntryCriteriaExpressionEvaluator;
+import com.cronos.timetracker.entry.time.search.SQLBasedCriteriaExpressionEvaluator;
 import com.cronos.timetracker.entry.time.search.SearchExpression;
 import com.cronos.timetracker.entry.time.search.SubstringExpression;
 import com.cronos.timetracker.entry.time.search.TimeEntryCriteria;
@@ -64,7 +64,7 @@ import java.util.List;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class V1Dot1DemoTest extends TestCase {
     /**
@@ -136,6 +136,8 @@ public class V1Dot1DemoTest extends TestCase {
             // delete all the records in all tables
             conn = V1Dot1TestHelper.getConnection(NAMESPACE, CONNAME);
             V1Dot1TestHelper.clearDatabase(conn);
+
+            V1Dot1TestHelper.executeSQL("insert into company values(1, 'a', 'a', current, 'a', current, 'a');", conn);
         } finally {
             V1Dot1TestHelper.closeResources(null, null, conn);
         }
@@ -170,6 +172,7 @@ public class V1Dot1DemoTest extends TestCase {
     public void testTaskTypeDAODemo() throws Exception {
         // Create a TaskType
         TaskType type = new TaskType();
+        type.setCompanyId(1);
         type.setDescription("Component Specification");
 
         // Get the DAO
@@ -185,7 +188,7 @@ public class V1Dot1DemoTest extends TestCase {
 
         // to do searches:
         // formulate a where clause
-        String whereClause = "CreationUser = \'ivern\'";
+        String whereClause = "task_type.creation_user=\'ivern\'";
 
         // Get TaskTypes for a range of values
         List types = myDAO.getList(whereClause);
@@ -196,6 +199,8 @@ public class V1Dot1DemoTest extends TestCase {
         // Or, get a specific Task Type and see some values
         int id = type.getPrimaryId();
         TaskType myType = (TaskType) myDAO.get(id);
+
+        // make sure the refernece delete.
 
         // to do deletes:
         // Delete the record with the given Id
@@ -228,7 +233,7 @@ public class V1Dot1DemoTest extends TestCase {
 
         // to do searches:
         // formulate a where clause
-        String whereClause = "CreationUser = \'ivern\'";
+        String whereClause = "creation_user = \'ivern\'";
 
         // Get TimeStatuses for a range of values
         List statuses = myDAO.getList(whereClause);
@@ -256,21 +261,33 @@ public class V1Dot1DemoTest extends TestCase {
     public void testTimeEntryDAODemo() throws Exception {
         Connection conn = null;
 
+        // add task type.
+        TaskType type = new TaskType();
+        type.setCompanyId(1);
+        type.setDescription("Component Specification");
+        DAO myDAO = DAOFactory.getDAO(TaskType.class, NAMESPACE);
+        myDAO.create(type, "ivern");
+
+        // add time status
+        TimeStatus status = new TimeStatus();
+        status.setDescription("Reaby");
+        myDAO = DAOFactory.getDAO(TimeStatus.class, NAMESPACE);
+        myDAO.create(status, "ivern");
+
         try {
             // Create a TimeEntry
             TimeEntry entry = new TimeEntry();
+            entry.setCompanyId(1);
             entry.setDescription("Coding class zec");
             entry.setDate(new Date());
             entry.setHours(2.5F);
             entry.setBillable(true);
-            entry.setTaskTypeId(0);
-            entry.setTimeStatusId(0);
+            entry.setTaskTypeId(type.getPrimaryId());
+            entry.setTimeStatusId(status.getPrimaryId());
             conn = V1Dot1TestHelper.getConnection(NAMESPACE, CONNAME);
-            V1Dot1TestHelper.insertTaskTypes((TaskType) getTaskType(), conn);
-            V1Dot1TestHelper.insertTimeStatuses((TimeStatus) getTimeStatus(), conn);
 
             // Get the DAO
-            DAO myDAO = DAOFactory.getDAO(TimeEntry.class, NAMESPACE);
+            myDAO = DAOFactory.getDAO(TimeEntry.class, NAMESPACE);
 
             // Create a record. assume key generated = 1
             myDAO.create(entry, "ivern");
@@ -282,7 +299,7 @@ public class V1Dot1DemoTest extends TestCase {
 
             // to do searches:
             // formulate a where clause
-            String whereClause = "CreationUser = \'ivern\'";
+            String whereClause = "creation_user = \'ivern\'";
 
             // Get TimeEntries for a range of values
             List entries = myDAO.getList(whereClause);
@@ -313,6 +330,9 @@ public class V1Dot1DemoTest extends TestCase {
             reason1.setCreationUser("reason1Create");
             reason1.setModificationUser("reason1Modification");
             V1Dot1TestHelper.insertRejectReasons(reason1, conn);
+
+            // make sure the reject is associated with the company
+            V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1,3,current,'a', current,'a');", conn);
 
             // add the reason to some time entry
             entry.addRejectReason(reason1);
@@ -367,6 +387,7 @@ public class V1Dot1DemoTest extends TestCase {
             // initiate local transaction
             // create new taskType
             TaskType type = new TaskType();
+            type.setCompanyId(1);
             type.setDescription("Component Devastation");
             myTaskTypeDAO.create(type, CREATION_USER);
             System.out.println(type.getModificationUser());
@@ -410,7 +431,7 @@ public class V1Dot1DemoTest extends TestCase {
 
             // Insert an task type
             TaskType type = new TaskType();
-
+            type.setCompanyId(1);
             type.setPrimaryId(1);
             type.setDescription("taskType");
             type.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
@@ -441,6 +462,7 @@ public class V1Dot1DemoTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -519,7 +541,7 @@ public class V1Dot1DemoTest extends TestCase {
 
             // Insert an task type
             TaskType type = new TaskType();
-
+            type.setCompanyId(1);
             type.setPrimaryId(1);
             type.setDescription("taskType");
             type.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
@@ -553,6 +575,7 @@ public class V1Dot1DemoTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -586,7 +609,7 @@ public class V1Dot1DemoTest extends TestCase {
 
             // Insert an task type
             TaskType type = new TaskType();
-
+            type.setCompanyId(1);
             type.setPrimaryId(1);
             type.setDescription("taskType");
             type.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
@@ -617,6 +640,7 @@ public class V1Dot1DemoTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -625,17 +649,18 @@ public class V1Dot1DemoTest extends TestCase {
             }
 
             // get all time entries that contain the description "Doomed Project"
-            SearchExpression expression1 = SubstringExpression.contains(TimeEntryCriteria.DESCRIPTION, "Doomed Project");
+            SearchExpression expression1 = SubstringExpression.contains(
+                TimeEntryCriteria.DESCRIPTION, "Doomed Project");
 
             // do the actual search
-            ExpressionEvaluator evaluator = new SQLBasedTimeEntryCriteriaExpressionEvaluator((TimeEntryDAO) myDAO);
+            ExpressionEvaluator evaluator = new SQLBasedCriteriaExpressionEvaluator(myDAO);
             Object[] matches = (Object[]) (evaluator.evaluate(expression1));
 
             // get all time entries that contain the statusID of "10000"
             SearchExpression expression2 = ComparisonExpression.equals(TimeEntryCriteria.TIME_STATUS_ID, "10000");
             matches = (Object[]) (evaluator.evaluate(expression2));
 
-            // We can do a reverse and by using a boolean NOT we can actual get all 
+            // We can do a reverse and by using a boolean NOT we can actual get all
             // that do NOT contain this status id
             SearchExpression expression2NOT = BooleanExpression.not(expression2);
             matches = (Object[]) (evaluator.evaluate(expression2NOT));
@@ -681,6 +706,7 @@ public class V1Dot1DemoTest extends TestCase {
     private DataObject getTaskType() {
         TaskType myTaskType = new TaskType();
 
+        myTaskType.setActive(false);
         myTaskType.setDescription(DESCRIPTION);
         myTaskType.setCreationUser(CREATION_USER);
         myTaskType.setCreationDate(CREATION_DATE);

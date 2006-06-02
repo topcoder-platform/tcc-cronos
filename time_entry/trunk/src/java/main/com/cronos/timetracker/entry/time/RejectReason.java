@@ -17,7 +17,8 @@ package com.cronos.timetracker.entry.time;
  * </p>
  *
  * @author AleaActaEst, TCSDEVELOPER
- * @version 1.1
+ *
+ * @since 1.1
  */
 public class RejectReason extends BaseDataObject {
     /**

@@ -16,10 +16,38 @@ package com.cronos.timetracker.entry.time;
  * database. Please see <code>TaskTypeDAO</code> for more details.
  * </p>
  *
+ * <p>
+ * Changes in version 2.0: add active and company id field.
+ * </p>
+ *
  * @author argolite, TCSDEVELOPER
- * @version 1.0
+ * @author arylio
+ *
+ * @version 2.0
+ * @since 1.0
+ *
  */
 public class TaskType extends BaseDataObject {
+    /**
+     * <p>
+     * Represents the task type is active or not.
+     * Intialize to zero, accessed by getActive/setActive.
+     * </p>
+     *
+     * @since 2.0
+     */
+    private boolean active = false;
+
+    /**
+     * <p>
+     * Represents the company id of the task type.
+     * Intialize to zero, accessed by getCompanyId/setCompanyId.
+     * </p>
+     *
+     * @since 2.0
+     */
+    private int companyId = 0;
+
     /**
      * <p>
      * Sole constructor.
@@ -27,5 +55,52 @@ public class TaskType extends BaseDataObject {
      */
     public TaskType() {
         // empty here
+    }
+
+    /**
+     * <p>
+     * Gets the active status.
+     * </p>
+     *
+     * @return the active to this reject reason.
+     * @since 2.0
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * <p>
+     * Set active to new value, no restriction.
+     * </p>
+     *
+     * @param active the active to set.
+     * @since 2.0
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
+     * <p>
+     * Get the company id.
+     * </p>
+     *
+     * @return the comapny id.
+     * @since 2.0
+     */
+    public int getCompanyId() {
+        return this.companyId;
+    }
+
+    /**
+     * <p>
+     * Set the company id to new value
+     * </p>
+     *
+     * @param companyId the new company id.
+     */
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 }

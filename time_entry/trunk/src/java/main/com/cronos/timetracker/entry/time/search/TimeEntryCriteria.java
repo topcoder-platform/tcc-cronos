@@ -17,85 +17,96 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * </p>
  *
  * @author AleaActaEst, TCSDEVELOPER
- * @version 1.1
+ * @author arylio
+ *
+ * @version 2.0
+ * @since 1.1
  */
-public class TimeEntryCriteria extends Enum {
+public class TimeEntryCriteria extends Criteria {
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.Description field.
+     * Represents a criterion for the time_entry.description field.
      * </p>
      */
-    public static final TimeEntryCriteria DESCRIPTION = new TimeEntryCriteria("TimeEntries.Description");
+    public static final TimeEntryCriteria DESCRIPTION = new TimeEntryCriteria("time_entry.description");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.TimeStatusesID field.
+     * Represents a criterion for the time_entry.time_status_id field.
      * </p>
      */
-    public static final TimeEntryCriteria TIME_STATUS_ID = new TimeEntryCriteria("TimeEntries.TimeStatusesID");
+    public static final TimeEntryCriteria TIME_STATUS_ID = new TimeEntryCriteria("time_entry.time_status_id");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.TaskTypesID field.
+     * Represents a criterion for the time_entry.task_type_id field.
      * </p>
      */
-    public static final TimeEntryCriteria TASK_TYPE_ID = new TimeEntryCriteria("TimeEntries.TaskTypesID");
+    public static final TimeEntryCriteria TASK_TYPE_ID = new TimeEntryCriteria("time_entry.task_type_id");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.CreationUser field.
+     * Represents a criterion for the time_entry.creation_user field.
      * </p>
      */
-    public static final TimeEntryCriteria CREATION_USER = new TimeEntryCriteria("TimeEntries.CreationUser");
+    public static final TimeEntryCriteria CREATION_USER = new TimeEntryCriteria("time_entry.creation_user");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.ModificationUser field.
+     * Represents a criterion for the time_entry.modification_user field.
      * </p>
      */
-    public static final TimeEntryCriteria MODIFICATION_USER = new TimeEntryCriteria("TimeEntries.ModificationUser");
+    public static final TimeEntryCriteria MODIFICATION_USER = new TimeEntryCriteria("time_entry.modification_user");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.Billable field.
+     * Represents a criterion for the time_entry.billable field.
      * </p>
      */
-    public static final TimeEntryCriteria BILLABLE_FLAG = new TimeEntryCriteria("TimeEntries.Billable");
+    public static final TimeEntryCriteria BILLABLE_FLAG = new TimeEntryCriteria("time_entry.billable");
 
     /**
      * <p>
-     * Represents a criterion for the reject_reason.TimeEntries.reject_reason_id field.
+     * Represents a criterion for the time_reject_reason.reject_reason_id field.
      * </p>
      */
-    public static final TimeEntryCriteria REJECT_REASON_ID = new TimeEntryCriteria("time_reject_reason.TimeEntriesID");
+    public static final TimeEntryCriteria REJECT_REASON_ID =
+        new TimeEntryCriteria("time_reject_reason.reject_reason_id");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.Hours field.
+     * Represents a criterion for the time_entry.hours field.
      * </p>
      */
-    public static final TimeEntryCriteria HOURS = new TimeEntryCriteria("TimeEntries.Hours");
+    public static final TimeEntryCriteria HOURS = new TimeEntryCriteria("time_entry.hours");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.Date field.
+     * Represents a criterion for the time_entry.entry_date field.
      * </p>
      */
-    public static final TimeEntryCriteria DATE = new TimeEntryCriteria("TimeEntries.Date");
+    public static final TimeEntryCriteria DATE = new TimeEntryCriteria("time_entry.entry_date");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.CreationDate field.
+     * Represents a criterion for the time_entry.creation_date field.
      * </p>
      */
-    public static final TimeEntryCriteria CREATION_DATE = new TimeEntryCriteria("TimeEntries.CreationDate");
+    public static final TimeEntryCriteria CREATION_DATE = new TimeEntryCriteria("time_entry.creation_date");
 
     /**
      * <p>
-     * Represents a criterion for the TimeEntries.ModificationDate field.
+     * Represents a criterion for the time_entry.modification_date field.
      * </p>
      */
-    public static final TimeEntryCriteria MODIFICATION_DATE = new TimeEntryCriteria("TimeEntries.ModificationDate");
+    public static final TimeEntryCriteria MODIFICATION_DATE = new TimeEntryCriteria("time_entry.modification_date");
+
+    /**
+     * <p>
+     * Represents a criterion for the time_entry.company_id field.
+     * </p>
+     */
+    public static final TimeEntryCriteria COMPANY_ID = new TimeEntryCriteria("time_entry.company_id");
 
     /**
      * <p>

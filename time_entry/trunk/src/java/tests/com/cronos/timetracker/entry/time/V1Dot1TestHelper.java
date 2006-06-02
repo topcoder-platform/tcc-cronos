@@ -35,31 +35,35 @@ import java.util.Set;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public final class V1Dot1TestHelper {
     /** The SQL statement to insert a row into the TaskTypes table. */
-    private static final String INSERT_TASKTYPES_SQL = "INSERT INTO TaskTypes(TaskTypesID, Description, CreationUser, "
-        + "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)";
+    private static final String INSERT_TASKTYPES_SQL = "INSERT INTO task_type(task_type_id, description," +
+        " creation_user, creation_date, modification_user, modification_date, active) VALUES (?,?,?,?,?,?,0)";
+
+    /** The SQL statement to insert a row into the TaskTypes table. */
+    private static final String INSERT_COMP_TASKTYPES_SQL = "INSERT INTO comp_task_type(company_id, task_type_id, " +
+            "creation_user, creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)";
 
     /** The SQL statement to insert a row into the TimeStatuses table. */
-    private static final String INSERT_TIMESTATUSES_SQL = "INSERT INTO TimeStatuses(TimeStatusesID, Description, "
-        + "CreationUser, CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)";
+    private static final String INSERT_TIMESTATUSES_SQL = "INSERT INTO time_status(time_status_id, description, "
+        + "creation_user, creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)";
 
     /** The SQL statement to insert a row into the reject_reason table. */
     private static final String INSERT_REJECTREASON_SQL = "INSERT INTO reject_reason(reject_reason_id, description, "
-        + "creation_user, creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)";
+        + "creation_user, creation_date, modification_user, modification_date, active) VALUES (?,?,?,?,?,?,0)";
 
     /** The SQL statement to select all rows from the reject_reason table. */
     private static final String SELECT_REJECTREASON_SQL = "SELECT * FROM reject_reason";
 
     /** The SQL statement to insert a row into the TimeEntries table. */
-    private static final String INSERT_TIMEENTRIES_SQL = "INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, "
-        + "TimeStatusesID, Description, EntryDate, Hours, Billable, CreationUser, CreationDate, ModificationUser, "
-        + "ModificationDate) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String INSERT_TIMEENTRIES_SQL = "INSERT INTO time_entry(time_entry_id, task_type_id, "
+        + "time_status_id, description, entry_date, hours, billable, creation_user, creation_date, modification_user, "
+        + "modification_date, company_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,1)";
 
     /** The SQL statement to select all rows from the TimeEntries table. */
-    private static final String SELECT_TIMEENTRIES_SQL = "SELECT * FROM TimeEntries";
+    private static final String SELECT_TIMEENTRIES_SQL = "SELECT * FROM time_entry";
 
     /**
      * <p>
@@ -118,11 +122,14 @@ public final class V1Dot1TestHelper {
         Statement statement = connection.createStatement();
 
         try {
+            statement.executeUpdate("DELETE FROM comp_rej_reason;");
+            statement.executeUpdate("DELETE FROM comp_task_type;");
             statement.executeUpdate("DELETE FROM time_reject_reason;");
+            statement.executeUpdate("DELETE FROM time_entry;");
+            statement.executeUpdate("DELETE FROM task_type;");
+            statement.executeUpdate("DELETE FROM time_status;");
+            statement.executeUpdate("DELETE FROM company;");
             statement.executeUpdate("DELETE FROM reject_reason;");
-            statement.executeUpdate("DELETE FROM TimeEntries;");
-            statement.executeUpdate("DELETE FROM TimeStatuses;");
-            statement.executeUpdate("DELETE FROM TaskTypes;");
         } finally {
             statement.close();
         }
@@ -142,14 +149,21 @@ public final class V1Dot1TestHelper {
 
         try {
             pstmt = conn.prepareStatement(INSERT_TASKTYPES_SQL);
-
             pstmt.setInt(1, taskType.getPrimaryId());
             pstmt.setString(2, taskType.getDescription());
             pstmt.setString(3, taskType.getCreationUser());
             pstmt.setDate(4, new java.sql.Date(taskType.getCreationDate().getTime()));
             pstmt.setString(5, taskType.getModificationUser());
             pstmt.setDate(6, new java.sql.Date(taskType.getModificationDate().getTime()));
+            pstmt.executeUpdate();
 
+            pstmt = conn.prepareStatement(INSERT_COMP_TASKTYPES_SQL);
+            pstmt.setInt(1, taskType.getCompanyId());
+            pstmt.setInt(2, taskType.getPrimaryId());
+            pstmt.setString(3, taskType.getCreationUser());
+            pstmt.setDate(4, new java.sql.Date(taskType.getCreationDate().getTime()));
+            pstmt.setString(5, taskType.getModificationUser());
+            pstmt.setDate(6, new java.sql.Date(taskType.getModificationDate().getTime()));
             pstmt.executeUpdate();
         } finally {
             if (pstmt != null) {
@@ -209,13 +223,59 @@ public final class V1Dot1TestHelper {
             pstmt.setDate(4, new java.sql.Date(rejectReason.getCreationDate().getTime()));
             pstmt.setString(5, rejectReason.getModificationUser());
             pstmt.setDate(6, new java.sql.Date(rejectReason.getModificationDate().getTime()));
-
             pstmt.executeUpdate();
         } finally {
             if (pstmt != null) {
                 pstmt.close();
             }
         }
+    }
+
+    /**
+     * <p>
+     * Execute the sql statement to add some test data.
+     * </p>
+     *
+     * @param sql the sql statement.
+     * @param conn the connection
+     * @throws SQLException if any SQL error occurs.
+     */
+    public static void executeSQL(String sql, Connection conn) throws SQLException {
+            PreparedStatement pstmt = null;
+            try {
+                pstmt = conn.prepareStatement(sql);
+                pstmt.executeUpdate();
+            } finally {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            }
+    }
+
+    /**
+     * <p>
+     * Execute the sql statement to add some test data.
+     * </p>
+     *
+     * @param sql the sql statement.
+     * @param conn the connection
+     * @throws SQLException if any SQL error occurs.
+     */
+    public static void printSql(String sql, Connection conn) throws SQLException {
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+            try {
+                pstmt = conn.prepareStatement(sql);
+                rs = pstmt.executeQuery();
+                System.out.println(rs.next());
+            } finally {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            }
     }
 
     /**
@@ -316,19 +376,18 @@ public final class V1Dot1TestHelper {
             if (resultSet != null) {
                 while (resultSet.next()) {
                     TimeEntry timeEntry = new TimeEntry();
-
                     // get record from the resultSet
-                    timeEntry.setPrimaryId(resultSet.getInt("TimeEntriesID"));
-                    timeEntry.setTaskTypeId(resultSet.getInt("TaskTypesID"));
-                    timeEntry.setTimeStatusId(resultSet.getInt("TimeStatusesID"));
-                    timeEntry.setDescription(resultSet.getString("Description"));
-                    timeEntry.setDate(resultSet.getDate("EntryDate"));
-                    timeEntry.setHours(resultSet.getFloat("Hours"));
-                    timeEntry.setBillable(resultSet.getBoolean("Billable"));
-                    timeEntry.setCreationUser(resultSet.getString("CreationUser"));
-                    timeEntry.setCreationDate(resultSet.getDate("CreationDate"));
-                    timeEntry.setModificationUser(resultSet.getString("ModificationUser"));
-                    timeEntry.setModificationDate(resultSet.getDate("ModificationDate"));
+                    timeEntry.setPrimaryId(resultSet.getInt("time_entry_id"));
+                    timeEntry.setTaskTypeId(resultSet.getInt("task_type_id"));
+                    timeEntry.setTimeStatusId(resultSet.getInt("time_status_id"));
+                    timeEntry.setDescription(resultSet.getString("description"));
+                    timeEntry.setDate(resultSet.getDate("entry_date"));
+                    timeEntry.setHours(resultSet.getFloat("hours"));
+                    timeEntry.setBillable(resultSet.getBoolean("billable"));
+                    timeEntry.setCreationUser(resultSet.getString("creation_user"));
+                    timeEntry.setCreationDate(resultSet.getDate("creation_date"));
+                    timeEntry.setModificationUser(resultSet.getString("modification_user"));
+                    timeEntry.setModificationDate(resultSet.getDate("modification_date"));
 
                     timeEntries.add(timeEntry);
                 }

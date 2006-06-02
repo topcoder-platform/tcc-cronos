@@ -3,6 +3,7 @@
  */
 package com.cronos.timetracker.entry.time;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,10 @@ import java.util.List;
  * update operations are obtained from the user parameter passed as part of these operations and current time.
  * </p>
  *
+ * <p>
+ * Changes in vesion 2.0: the table name and fields has bee changed.
+ * </p>
+ *
  * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
@@ -28,8 +33,8 @@ public class TaskTypeDAO extends BaseDAO {
      * <code>getCreateSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_CREATE_STATEMENT = "INSERT INTO TaskTypes(TaskTypesID, Description, CreationUser,"
-        + "CreationDate, ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?)";
+    public static final String SQL_CREATE_STATEMENT = "INSERT INTO task_type(task_type_id, description, creation_user,"
+        + "creation_date, modification_user, modification_date, active) VALUES (?,?,?,?,?,?,?)";
 
     /**
      * <p>
@@ -37,8 +42,38 @@ public class TaskTypeDAO extends BaseDAO {
      * <code>getUpdateSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_UPDATE_STATEMENT = "UPDATE TaskTypes SET Description=?, ModificationUser=?,"
-        + "ModificationDate=? WHERE TaskTypesID=?";
+    public static final String SQL_UPDATE_STATEMENT = "UPDATE task_type SET description=?, modification_user=?,"
+        + "modification_date=?, active=? WHERE task_type_id=?";
+
+    /**
+     * <p>
+     * Represents the create sql statement that is used to insert record to comp_task_type.
+     * </p>
+     *
+     * @since 2.0
+     */
+    public static final String SQL_INSERT_COMP_TASK_TYPE = "Insert Into comp_task_type(company_id, task_type_id, " +
+            "creation_user, creation_date, modification_user, modification_date) values(?,?,?,?,?,?)";
+
+    /**
+     * <p>
+     * Represents the update sql statement that update the company id.
+     * </p>
+     *
+     * @since 2.0
+     */
+    public static final String SQL_UPDATE_COMP_TASK_TYPE =
+        "update comp_task_type set company_id=? where task_type_id=?";
+
+    /**
+     * <p>
+     * Represents the delete sql statement that delete the comp_task_type record assocaited to task_type_id.
+     * </p>
+     *
+     * @since 2.0
+     */
+    private static final String SQL_DELETE_COMP_TASK_TYPE =
+        "delete from comp_task_type where task_type_id=?";
 
     /**
      * <p>
@@ -46,7 +81,7 @@ public class TaskTypeDAO extends BaseDAO {
      * <code>getDeleteSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_DELETE_STATEMENT = "DELETE FROM TaskTypes WHERE TaskTypesID=?";
+    public static final String SQL_DELETE_STATEMENT = "DELETE FROM task_type WHERE task_type_id=?";
 
     /**
      * <p>
@@ -54,7 +89,10 @@ public class TaskTypeDAO extends BaseDAO {
      * </code> helper method in this class.
      * </p>
      */
-    public static final String SQL_GET_STATEMENT = "SELECT * FROM TaskTypes WHERE TaskTypesID=?";
+    public static final String SQL_GET_STATEMENT = "SELECT task_type.task_type_id, task_type.description, " +
+        "task_type.active, task_type.creation_date, task_type.creation_user, task_type.modification_date," +
+        "task_type.modification_user, comp_task_type.company_id FROM task_type " +
+        "left join comp_task_type on comp_task_type.task_type_id=task_type.task_type_id where task_type.task_type_id=?";
 
     /**
      * <p>
@@ -62,7 +100,10 @@ public class TaskTypeDAO extends BaseDAO {
      * <code>getReadListSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_GET_LIST_STATEMENT = "SELECT * FROM TaskTypes";
+    public static final String SQL_GET_LIST_STATEMENT = "SELECT task_type.task_type_id, task_type.description, " +
+        "task_type.active, task_type.creation_date, task_type.creation_user, task_type.modification_date," +
+        "task_type.modification_user, comp_task_type.company_id FROM task_type " +
+        "left join comp_task_type on comp_task_type.task_type_id=task_type.task_type_id";
 
     /**
      * <p>
@@ -144,6 +185,7 @@ public class TaskTypeDAO extends BaseDAO {
             statement.setDate(++i, date);
             statement.setString(++i, user);
             statement.setDate(++i, date);
+            statement.setBoolean(++i, taskType.isActive());
         } catch (SQLException e) {
             throw new DAOActionException("can not fill the create preparedStatement", e);
         } catch (Exception e) {
@@ -253,6 +295,7 @@ public class TaskTypeDAO extends BaseDAO {
             statement.setString(++i, TimeEntryHelper.truncatesString(taskType.getDescription()));
             statement.setString(++i, user);
             statement.setDate(++i, date);
+            statement.setBoolean(++i, taskType.isActive());
             statement.setInt(++i, dataObject.getPrimaryId());
         } catch (SQLException e) {
             // wrap the SQLException with DAOActionException
@@ -420,12 +463,14 @@ public class TaskTypeDAO extends BaseDAO {
         TaskType taskType = new TaskType();
 
         // get record from the resultSet
-        taskType.setPrimaryId(resultSet.getInt("TaskTypesID"));
-        taskType.setDescription(resultSet.getString("Description"));
-        taskType.setCreationUser(resultSet.getString("CreationUser"));
-        taskType.setCreationDate(resultSet.getDate("CreationDate"));
-        taskType.setModificationUser(resultSet.getString("ModificationUser"));
-        taskType.setModificationDate(resultSet.getDate("ModificationDate"));
+        taskType.setPrimaryId(resultSet.getInt("task_type_id"));
+        taskType.setDescription(resultSet.getString("description"));
+        taskType.setCreationUser(resultSet.getString("creation_user"));
+        taskType.setCreationDate(resultSet.getDate("creation_date"));
+        taskType.setModificationUser(resultSet.getString("modification_user"));
+        taskType.setModificationDate(resultSet.getDate("modification_date"));
+        taskType.setActive(resultSet.getBoolean("active"));
+        taskType.setCompanyId(resultSet.getInt("company_id"));
 
         return taskType;
     }
@@ -453,6 +498,274 @@ public class TaskTypeDAO extends BaseDAO {
         // only the decription field of the dataObject will be checked.
         if (((TaskType) dataObject).getDescription() == null) {
             throw new IllegalArgumentException("description in dataObject is null");
+        }
+    }
+
+
+
+    /**
+     * <p>
+     * Adds a new <code>TaskType</code> instance to the database.
+     * </p>
+     *
+     * @param dataObject <code>DataObject</code> to create
+     * @param user The user that initiates this creation.
+     *
+     * @throws NullPointerException if <code>dataObject</code> or <code>user</code> is <code>null</code>.
+     * @throws IllegalArgumentException if <code>user</code> is empty string; or if <code>dataObject</code> is not
+     *         an instance of TimeEntry, or if description or date member in <code>dataObject</code> is
+     *         <code>null</code>, or hours below 0.0F.
+     * @throws DAOActionException if error occurs when creating the data object in database.
+     *
+     * @since 2.0
+     */
+    public void create(DataObject dataObject, String user) throws DAOActionException {
+        TimeEntryHelper.checkString(user, "user");
+        // verify the given dataObject
+        this.verifyCreateDataObject(dataObject);
+
+        // add into the comp_task_type table
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        TaskType backed = new TaskType();
+        copyObject(backed, (TaskType) dataObject);
+
+        try {
+            // get the connection
+            conn = super.createConnection();
+            startTransaction(conn);
+
+            // generate primary Id and add to dataObject
+            super.setDataObjectPrimaryId(dataObject);
+
+            // obtain sql statement for creating a record in the persistence store based on the info in the data object
+            // and get the prepare statement
+            statement = conn.prepareStatement(this.getCreateSqlString());
+
+            // get the current date
+            Date date = new Date();
+
+            // fill prepared statement with parameters
+            this.fillCreatePreparedStatement(statement, dataObject, user, date);
+            statement.executeUpdate();
+
+            // update dataObject with used creation params to maintain consistency
+            this.setCreationParametersInDataObject(dataObject, user, date);
+
+            TaskType taskType = (TaskType) dataObject;
+            statement = conn.prepareStatement(SQL_INSERT_COMP_TASK_TYPE);
+
+            //get the current date and change the java.util.Date to java.sql.Date
+            java.sql.Date now = new java.sql.Date(taskType.getCreationDate().getTime());
+            int index = 0;
+            statement.setInt(++index, taskType.getCompanyId());
+            statement.setInt(++index, taskType.getPrimaryId());
+            statement.setString(++index, user);
+            statement.setDate(++index, now);
+            statement.setString(++index, user);
+            statement.setDate(++index, now);
+            statement.executeUpdate();
+            endTransaction(conn, true);
+        } catch (SQLException e) {
+            endTransaction(conn, false);
+            copyObject((TaskType) dataObject, backed);
+            // wrap the SQLException with DAOActionException
+            throw new DAOActionException("error happened in the database operation", e);
+        } finally {
+            // close the resources
+            this.closeResources(null, statement, conn);
+        }
+    }
+
+    /**
+     * <p>
+     * Copy the src to dest.
+     * </p>
+     *
+     * @param dest the dest task type.
+     * @param src the src task type.
+     */
+    private void copyObject(TaskType dest, TaskType src) {
+        dest.setActive(src.isActive());
+        dest.setCompanyId(src.getCompanyId());
+        dest.setCreationDate(src.getCreationDate());
+        dest.setCreationUser(src.getCreationUser());
+        dest.setDescription(src.getDescription());
+        dest.setModificationDate(src.getModificationDate());
+        dest.setModificationUser(src.getModificationUser());
+        dest.setPrimaryId(src.getPrimaryId());
+    }
+
+    /**
+     * <p>
+     * Updates a record in the persistence store based on the info in the data object.
+     * </p>
+     *
+     * @since 2.0
+     *
+     * @param dataObject <code>DataObject</code> to update
+     * @param user The user that initiates this update.
+     *
+     * @throws NullPointerException if <code>dataObject</code> or <code>user</code> is <code>null</code>.
+     * @throws IllegalArgumentException if <code>user</code> is empty string; or any required member in data object is
+     *         <code>null</code>.
+     * @throws DAOActionException if error occurs when updating the data object in database.
+     */
+    public void update(DataObject dataObject, String user) throws DAOActionException {
+         TimeEntryHelper.checkString(user, "user");
+         this.verifyUpdateDataObject(dataObject);
+
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+
+        TaskType backed = new TaskType();
+        copyObject(backed, (TaskType) dataObject);
+
+        try {
+            // get the connection
+            conn = this.createConnection();
+            startTransaction(conn);
+
+            // obtain sql statement for updating a record in the persistence store based on the info in the data object
+            // and get the prepare statement
+            preparedStatement = conn.prepareStatement(this.getUpdateSqlString());
+
+            // get the current date
+            Date date = new Date();
+
+            // fill prepared statement with parameters
+            this.fillUpdatePreparedStatement(preparedStatement, dataObject, user, date);
+
+            // execute query
+            preparedStatement.executeUpdate();
+
+            // update dataObject with used modification params to maintain consistency
+            this.setModificationParametersInDataObject(dataObject, user, date);
+
+            // obtain sql statement for updating a record in the persistence store based on the info in the data object
+            // and get the prepare statement
+            preparedStatement = conn.prepareStatement(SQL_UPDATE_COMP_TASK_TYPE);
+
+            preparedStatement.setInt(1, ((TaskType) dataObject).getCompanyId());
+            preparedStatement.setInt(2, ((TaskType) dataObject).getPrimaryId());
+
+            // execute query
+            preparedStatement.executeUpdate();
+            endTransaction(conn, true);
+        } catch (SQLException e) {
+            endTransaction(conn, false);
+            copyObject((TaskType) dataObject, backed);
+            // wrap the SQLException with DAOActionException
+            throw new DAOActionException("error happened in the database operation", e);
+        } catch (DAOActionException e) {
+            endTransaction(conn, false);
+            copyObject((TaskType) dataObject, backed);
+            // do not wrap it
+            throw e;
+        } catch (Exception e) {
+            endTransaction(conn, false);
+            copyObject((TaskType) dataObject, backed);
+            // wrap any exception with DAOActionException
+            throw new DAOActionException("Exception occurs during update process", e);
+        } finally {
+            // close the resources
+            this.closeResources(null, preparedStatement, conn);
+        }
+    }
+
+    /**
+     * <p>
+     * Deletes the record from the persistence store based on the primary Id. If there is no match, i.e., no such
+     * record exists to delete, <code>false</code> is returned. If the deletion is successful, <code>true</code> is
+     * returned.
+     * </p>
+     *
+     * <p>
+     * Changes in version 2.0: delete both from task_type and comp_task_type.
+     * </p>
+     *
+     * @param primaryId the ID of the data object to be deleted from the database.
+     *
+     * @return <code>true</code> if the ID exists in database and the data object is deleted; <code>false</code>
+     *         otherwise.
+     *
+     * @throws DAOActionException if error occurs when deleting the data object from database.
+     */
+    public boolean delete(int primaryId) throws DAOActionException {
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // get the connection
+            conn = this.createConnection();
+            startTransaction(conn);
+
+            preparedStatement = conn.prepareStatement(SQL_DELETE_COMP_TASK_TYPE);
+            preparedStatement.setInt(1, primaryId);
+            int ret = preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            // obtain sql statement for deleting the record form the persistence store based on the primary id
+            // and get the prepare statement and set the primaryId as the parameter
+            preparedStatement = conn.prepareStatement(this.getDeleteSqlString());
+            preparedStatement.setInt(1, primaryId);
+            // execute query
+            ret = preparedStatement.executeUpdate();
+            endTransaction(conn, true);
+
+            // return value indicates whether the record was deleted successfully
+            return !(ret == 0);
+        } catch (SQLException e) {
+            endTransaction(conn, false);
+            // wrap the SQLException with DAOActionException
+            throw new DAOActionException("error happened in the database operation", e);
+        } catch (DAOActionException e) {
+            endTransaction(conn, false);
+            // do not wrap it
+            throw e;
+        } catch (Exception e) {
+            endTransaction(conn, false);
+            // wrap any exception with DAOActionException
+            throw new DAOActionException("Exception occurs during delete process", e);
+        } finally {
+            // close the resources
+            this.closeResources(null, preparedStatement, conn);
+        }
+    }
+
+    /**
+     * <p>
+     * Start transaction.
+     * </p>
+     *
+     * @param conn the connection to database.
+     * @throws SQLException exception thrown by connection.
+     */
+    private void startTransaction(Connection conn) throws SQLException {
+        conn.setAutoCommit(false);
+    }
+
+    /**
+     * <p>
+     * Stop transaction.
+     * </p>
+     *
+     * @param conn the connection to database.
+     */
+    private void endTransaction(Connection conn, boolean isCommited) {
+        if (conn == null) {
+            return;
+        }
+        try {
+            if (isCommited) {
+                conn.commit();
+            } else {
+                conn.rollback();
+            }
+            conn.setAutoCommit(true);
+        } catch(SQLException e) {
+            // ignore
         }
     }
 }

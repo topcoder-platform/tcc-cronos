@@ -27,7 +27,9 @@ import java.util.List;
  * </p>
  *
  * @author oodinary
- * @version 1.1
+ * @author kr00tki
+ * @version 2.0
+ * @since 1.1
  */
 public class TimeEntryDAOAccuracyTest extends TestCase {
     /**
@@ -118,6 +120,8 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
         // delete all the records in all tables
         conn = AccuracyTestHelper.getConnection(NAMESPACE, CONNAME);
         AccuracyTestHelper.clearDatabase(conn);
+        AccuracyTestHelper.insertCompany(10, conn);
+        AccuracyTestHelper.insertCompany(20, conn);
 
         // Insert an task type
         type = new TaskType();
@@ -129,7 +133,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
         type.setCreationUser("taskTypeCreate");
         type.setModificationUser("taskTypeModification");
 
-        AccuracyTestHelper.insertTaskTypes(type, conn);
+        AccuracyTestHelper.insertTaskTypes(type, conn, 10);
 
         // Insert the time status
         status = new TimeStatus();
@@ -154,7 +158,8 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             reasons[i].setModificationDate(AccuracyTestHelper.createDate(2005, 6, 1));
             reasons[i].setCreationUser("reasonCreate");
             reasons[i].setModificationUser("reasonModification");
-            AccuracyTestHelper.insertRejectReasons(reasons[i], conn);
+            AccuracyTestHelper.insertRejectReasons(reasons[i], conn, 10);
+
         }
 
         this.timeEntryDAO = new TimeEntryDAO(CONNAME, NAMESPACE);
@@ -188,6 +193,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
         entry.setDate(CREATION_DATE);
         entry.setTaskTypeId(type.getPrimaryId());
         entry.setTimeStatusId(status.getPrimaryId());
+        entry.setCompanyId(AccuracyTestHelper.COMPANY_ID);
 
         for (int i = 0; i < reasons.length; i++) {
             entry.addRejectReason(reasons[i]);
@@ -208,7 +214,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             assertTrue("There should be ten records in time_reject_reason table.", resultSet.next());
 
             assertEquals("Table time_reject_reason is not updated.", entry.getPrimaryId(),
-                resultSet.getInt("TimeEntriesID"));
+                resultSet.getInt("time_entry_id"));
             assertEquals("Table time_reject_reason is not updated.", reasons[i].getPrimaryId(),
                 resultSet.getInt("reject_reason_id"));
             assertEquals("Table time_reject_reason is not updated.", CREATION_USER, resultSet.getString("creation_user"));
@@ -237,6 +243,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
         entry.setDate(CREATION_DATE);
         entry.setTaskTypeId(type.getPrimaryId());
         entry.setTimeStatusId(status.getPrimaryId());
+        entry.setCompanyId(AccuracyTestHelper.COMPANY_ID);
         timeEntryDAO.create(entry, CREATION_USER);
 
         for (int i = 0; i < reasons.length; i++) {
@@ -258,7 +265,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             assertTrue("There should be ten records in time_reject_reason table.", resultSet.next());
 
             assertEquals("Table time_reject_reason is not updated.", entry.getPrimaryId(),
-                resultSet.getInt("TimeEntriesID"));
+                resultSet.getInt("Time_Entry_ID"));
             assertEquals("Table time_reject_reason is not updated.", reasons[i].getPrimaryId(),
                 resultSet.getInt("reject_reason_id"));
             assertEquals("Table time_reject_reason is not updated.", CREATION_USER, resultSet.getString("creation_user"));
@@ -277,6 +284,36 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
 
     /**
      * <p>
+     * Tests the update(DataObject dataObject, String user).
+     * </p>
+     *
+     * @throws Exception throw Exception to junit
+     */
+    public void testUpdate_Accuracy() throws Exception {
+        entry = new TimeEntry();
+        entry.setDescription(DESCRIPTION);
+        entry.setDate(CREATION_DATE);
+        entry.setTaskTypeId(type.getPrimaryId());
+        entry.setTimeStatusId(status.getPrimaryId());
+        entry.setCompanyId(AccuracyTestHelper.COMPANY_ID);
+        timeEntryDAO.create(entry, CREATION_USER);
+
+        entry.setCompanyId(20);
+        entry.setTaskTypeId(500);
+
+        type.setCompanyId(20);
+        type.setPrimaryId(500);
+        AccuracyTestHelper.insertTaskTypes(type, conn, 20);
+
+        timeEntryDAO.update(entry, MODIFICATION_USER);
+
+        // validate
+        AccuracyTestHelper.assertEquals("TimeEntry was not properly created.", entry,
+            (TimeEntry) timeEntryDAO.get(entry.getPrimaryId()));
+    }
+
+    /**
+     * <p>
      * Tests the delete(int primaryId). The link of the reject reasons should also be deleted from the database.
      * </p>
      *
@@ -288,6 +325,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
         entry.setDate(CREATION_DATE);
         entry.setTaskTypeId(type.getPrimaryId());
         entry.setTimeStatusId(status.getPrimaryId());
+        entry.setCompanyId(AccuracyTestHelper.COMPANY_ID);
 
         for (int i = 0; i < reasons.length; i++) {
             entry.addRejectReason(reasons[i]);
@@ -324,6 +362,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             timeEntries[i].setBillable(true);
             timeEntries[i].setTaskTypeId(type.getPrimaryId());
             timeEntries[i].setTimeStatusId(status.getPrimaryId());
+            timeEntries[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
 
             if (i == 0) {
                 timeEntryDAO.create(timeEntries[i], CREATION_USER);
@@ -332,9 +371,9 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             }
         }
 
-        List list = timeEntryDAO.getList("CreationUser='" + MODIFICATION_USER + "'");
+        List list = timeEntryDAO.getList("Creation_User='" + MODIFICATION_USER + "'");
         assertEquals("there should be 2 records", 2, list.size());
-        list = timeEntryDAO.getList("CreationUser='" + CREATION_USER + "'");
+        list = timeEntryDAO.getList("Creation_User='" + CREATION_USER + "'");
         assertEquals("there should be 1 records", 1, list.size());
         list = timeEntryDAO.getList("   ");
         assertEquals("there should be 3 records", 3, list.size());
@@ -358,6 +397,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
         }
 
         ResultData resultData = new ResultData();
@@ -408,6 +448,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
         }
 
         ResultData resultData = new ResultData();
@@ -459,6 +500,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
         }
 
         myTimeEntrys[9].setTaskTypeId(10);
@@ -519,6 +561,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
         }
 
         myTimeEntrys[9].setDescription(null);
@@ -580,6 +623,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
             timeEntryDAO.create(myTimeEntrys[i], CREATION_USER);
         }
 
@@ -621,6 +665,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
             timeEntryDAO.create(myTimeEntrys[i], CREATION_USER);
         }
 
@@ -685,6 +730,7 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
             myTimeEntrys[i].setTimeStatusId(status.getPrimaryId());
             myTimeEntrys[i].addRejectReason(reasons[i]);
+            myTimeEntrys[i].setCompanyId(AccuracyTestHelper.COMPANY_ID);
             timeEntryDAO.create(myTimeEntrys[i], CREATION_USER);
         }
 
@@ -734,4 +780,6 @@ public class TimeEntryDAOAccuracyTest extends TestCase {
                 (TimeEntry) resultData.getBatchResults()[i]);
         }
     }
+
+
 }

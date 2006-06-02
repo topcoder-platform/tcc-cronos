@@ -5,9 +5,9 @@ package com.cronos.timetracker.entry.time.search;
 
 import java.util.List;
 
+import com.cronos.timetracker.entry.time.BaseDataObject;
+import com.cronos.timetracker.entry.time.DAO;
 import com.cronos.timetracker.entry.time.DAOActionException;
-import com.cronos.timetracker.entry.time.TimeEntry;
-import com.cronos.timetracker.entry.time.TimeEntryDAO;
 
 
 /**
@@ -21,31 +21,32 @@ import com.cronos.timetracker.entry.time.TimeEntryDAO;
  * @author AleaActaEst, TCSDEVELOPER
  * @version 1.1
  */
-public class SQLBasedTimeEntryCriteriaExpressionEvaluator implements ExpressionEvaluator {
+public class SQLBasedCriteriaExpressionEvaluator implements ExpressionEvaluator {
     /**
      * <p>
-     * Represents the time entry dao that will be used to execute the final query created from the search expression.
+     * Represents the base dao that will be used to execute the final query created from the search expression.
      * It is set in the constructor and never changed after that.
      * </p>
      */
-    private TimeEntryDAO timeEntryDAO = null;
+    private DAO dao = null;
 
     /**
      * <p>
-     * Constructor. Accepts a dao representing the TimeEntryDAO which will be used here to execute the  actual sql
-     * query through its +getList(whereClause:String) : List method. This way we do not have to worry about
-     * connections or any other aspects of the query. It is strongly typed on purpose. #throws
+     * Constructor. Accepts a dao representing the base dao (time entry/task type/time status) which will be used
+     * here to execute the  actual sql query through its +getList(whereClause:String) : List method.
+     * This way we do not have to worry about connections or any other aspects of the query. It is strongly typed
+     * on purpose. #throws
      * IllegalArgumentException If the input dao is null.
      * </p>
      *
-     * @param timeEntryDAO the dao taht will be used to evaluate the sql for the search expression
+     * @param dao the dao taht will be used to evaluate the sql for the search expression
      */
-    public SQLBasedTimeEntryCriteriaExpressionEvaluator(TimeEntryDAO timeEntryDAO) {
-        if (timeEntryDAO == null) {
-            throw new IllegalArgumentException("timeEntryDAO can not be null.");
+    public SQLBasedCriteriaExpressionEvaluator(DAO dao) {
+        if (dao == null) {
+            throw new IllegalArgumentException("dao can not be null.");
         }
 
-        this.timeEntryDAO = timeEntryDAO;
+        this.dao = dao;
     }
 
     /**
@@ -66,9 +67,9 @@ public class SQLBasedTimeEntryCriteriaExpressionEvaluator implements ExpressionE
         }
 
         try {
-            List ret = timeEntryDAO.getList(this.getSearchExpressionString(expression).toString());
+            List ret = dao.getList(this.getSearchExpressionString(expression).toString());
 
-            return (TimeEntry[]) ret.toArray(new TimeEntry[ret.size()]);
+            return (BaseDataObject[]) ret.toArray(new BaseDataObject[ret.size()]);
         } catch (DAOActionException e) {
             throw new SearchException("Failed in the search.", e);
         }

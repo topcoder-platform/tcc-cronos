@@ -15,16 +15,25 @@ package com.cronos.timetracker.entry.time.search;
  * Thread safety: Immutable class so there are no thread safety issues.
  * </p>
  *
+ * <p>
+ * Changes in 2.0: since the search criteria is not only for time entry.
+ * In 2.0, added abstract class Criteria, entity's search criteria should extends from Criteria.
+ * Changes the argument TimeEntryCriteria of constructors and getCriteria to Criteria.
+ * </p>
+ *
  * @author AleaActaEst, TCSDEVELOPER
+ * @author arylio
+ *
+ * @version 2.0
  * @version 1.1
  */
 public class SubstringExpression implements SearchExpression {
     /**
      * <p>
-     * Represents the <code>TimeEntryCriteria</code> used for this expression.
+     * Represents the <code>Criteria</code> used for this expression.
      * </p>
      */
-    private TimeEntryCriteria criteria = null;
+    private Criteria criteria = null;
 
     /**
      * <p>
@@ -68,7 +77,7 @@ public class SubstringExpression implements SearchExpression {
      *
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
-    public static SubstringExpression contains(TimeEntryCriteria criteria, String value) {
+    public static SubstringExpression contains(Criteria criteria, String value) {
         if (criteria == null) {
             throw new IllegalArgumentException("criteria can not be null.");
         }
@@ -116,7 +125,7 @@ public class SubstringExpression implements SearchExpression {
      *
      * @return the criteria part of the expression.
      */
-    public TimeEntryCriteria getCriteria() {
+    public Criteria getCriteria() {
         return this.criteria;
     }
 

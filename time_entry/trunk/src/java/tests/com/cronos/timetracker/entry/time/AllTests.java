@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.cronos.timetracker.entry.time.accuracytests.AccuracyTests;
-import com.cronos.timetracker.entry.time.failuretests.FailureTests11;
+import com.cronos.timetracker.entry.time.failuretests.FailureTests;
 import com.cronos.timetracker.entry.time.stresstests.StressTests;
 
 
@@ -32,7 +32,7 @@ public class AllTests extends TestCase {
         final TestSuite suite = new TestSuite();
 
         suite.addTest(UnitTests.suite());
-        suite.addTest(FailureTests11.suite());
+        suite.addTest(FailureTests.suite());
         suite.addTest(StressTests.suite());
         suite.addTest(AccuracyTests.suite());
 

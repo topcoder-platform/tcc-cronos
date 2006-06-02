@@ -28,10 +28,16 @@ import java.util.List;
  * know which ones failed).
  * </p>
  *
+ * <p>
+ * Version 2.0 changes: In version 2.0, the table name and fields name has been changed and add the company id fields.
+ * </p>
+ *
+ *
  * @author AleaActaEst, TCSDEVELOPER
  * @author argolite, TCSDEVELOPER
- * @version 1.1
+ * @author arylio
  *
+ * @version 2.0
  * @since 1.0
  */
 public class TimeEntryDAO extends BaseDAO {
@@ -41,9 +47,9 @@ public class TimeEntryDAO extends BaseDAO {
      * <code>getCreateSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_CREATE_STATEMENT = "INSERT INTO TimeEntries(TimeEntriesID, TaskTypesID, "
-        + "TimeStatusesID, Description, EntryDate, Hours, Billable, CreationUser, CreationDate, "
-        + "ModificationUser, ModificationDate) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String SQL_CREATE_STATEMENT = "Insert Into time_entry(time_entry_id, task_type_id, "
+        + "time_status_id, description, entry_date, hours, billable, creation_user, creation_date, "
+        + "modification_user, modification_date, company_id) Values(?,?,?,?,?,?,?,?,?,?,?,?)";
 
     /**
      * <p>
@@ -51,17 +57,16 @@ public class TimeEntryDAO extends BaseDAO {
      * <code>getUpdateSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_UPDATE_STATEMENT = "UPDATE TimeEntries SET TaskTypesID=?, TimeStatusesID=?, "
-        + "Description=?, EntryDate=?, Hours=?, Billable=?, ModificationUser=?, ModificationDate=? "
-        + "WHERE TimeEntriesID=?";
-
+    public static final String SQL_UPDATE_STATEMENT = "UPDATE time_entry SET task_type_id=?, time_status_id=?, "
+        + "description=?, entry_date=?, hours=?, billable=?, modification_user=?, modification_date=?, "
+        + "company_id=? WHERE time_entry_id=?";
     /**
      * <p>
      * Represents the delete sql statement that is returned to the <code>delete</code> method by the
      * <code>getDeleteSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_DELETE_STATEMENT = "DELETE FROM TimeEntries WHERE TimeEntriesID=?";
+    public static final String SQL_DELETE_STATEMENT = "DELETE FROM time_entry WHERE time_entry_id=?";
 
     /**
      * <p>
@@ -69,7 +74,14 @@ public class TimeEntryDAO extends BaseDAO {
      * </code> helper method in this class.
      * </p>
      */
-    public static final String SQL_GET_STATEMENT = "SELECT * FROM TimeEntries WHERE TimeEntriesID=?";
+    public static final String SQL_GET_STATEMENT = "SELECT * FROM time_entry where time_entry_id=?";
+    /*
+        "SELECT time_entry.time_entry_id, time_entry.company_id, " +
+        "time_entry.time_status_id, time_entry.task_type_id, time_entry.description, time_entry.entry_date, " +
+        "time_entry.hours, time_entry.billable, time_entry.creation_date, time_entry.creation_user, " +
+        "time_entry.modification_date, time_entry.modification_user FROM time_entry, comp_task_type " +
+        "WHERE time_entry.time_entry_id=? and time_entry.task_type_id = comp_task_type.task_type_id and " +
+        "time_entry.company_id = comp_task_type.company_id";*/
 
     /**
      * <p>
@@ -77,16 +89,16 @@ public class TimeEntryDAO extends BaseDAO {
      * <code>getReadListSqlString</code> helper method in this class.
      * </p>
      */
-    public static final String SQL_GET_LIST_STATEMENT = "SELECT * FROM TimeEntries ";
+    public static final String SQL_GET_LIST_STATEMENT = "SELECT * FROM time_entry";
 
     /**
      * Represents the prepared SQL statement to add into the time_reject_reason table.
      *
      * @since 1.1
      */
-    private static final String ADD_TIME_REJECT_REASON_SQL = "INSERT INTO time_reject_reason (TimeEntriesID,"
-        + "reject_reason_id, creation_date, creation_user, modification_date, modification_user) "
-        + "VALUES (?,?,?,?,?,?)";
+    private static final String ADD_TIME_REJECT_REASON_SQL = "INSERT INTO time_reject_reason (time_entry_id,"
+            + "reject_reason_id, creation_date, creation_user, modification_date, modification_user) "
+            + "VALUES (?,?,?,?,?,?)";
 
     /**
      * Represents the prepared SQL statement to delete the time_reject_reason table.
@@ -94,16 +106,32 @@ public class TimeEntryDAO extends BaseDAO {
      * @since 1.1
      */
     private static final String DELETE_TIME_REJECT_REASON_SQL = "DELETE FROM time_reject_reason "
-        + "WHERE TimeEntriesID=?";
+        + "WHERE time_entry_id=?";
 
     /**
-     * Represents the prepared SQL statement to get the reject reasons with given TimeEntriesID.
+     * Represents the prepared SQL statement to get the reject reasons with given time_entry_id.
      *
      * @since 1.1
      */
     private static final String RETRIEVE_REJECT_REASON_SQL = "SELECT R.reject_reason_id, R.description, "
         + "R.creation_date, R.creation_user, R.modification_date, R.modification_user FROM time_reject_reason AS E "
-        + "LEFT OUTER JOIN reject_reason AS R ON E.reject_reason_id = R.reject_reason_id " + "WHERE E.TimeEntriesID=?";
+        + "LEFT OUTER JOIN reject_reason AS R ON E.reject_reason_id = R.reject_reason_id WHERE E.time_entry_id=?";
+
+    /**
+     * Represents the prepared SQL statement to check the reject reason id is associated with the company id.
+     *
+     * @since 2.0
+     */
+    private static final String CHECK_COMPANY_ID_REJECT_REASON_SQL =
+        "Select count(company_id) counts from comp_rej_reason where company_id=? and reject_reason_id=?";
+
+    /**
+     * Represents the prepared SQL statement to check the task type id is associated with the company id.
+     *
+     * @since 2.0
+     */
+    private static final String CHECK_COMPANY_ID_TASK_TYPE_SQL =
+        "Select count(company_id) counts from comp_task_type where company_id=? and task_type_id=?";
 
     /**
      * Represents the column name for the reject reason ID of the expense entry.
@@ -111,7 +139,7 @@ public class TimeEntryDAO extends BaseDAO {
      * @since 1.1
      */
     private static final String REASON_ID_COLUMN = "reject_reason_id";
-    
+
     /**
      * Represents the column name for the reject reason description of the expense entry.
      *
@@ -221,6 +249,10 @@ public class TimeEntryDAO extends BaseDAO {
      * ModificationDate parameters in the statement. Truncates all String fileds to length of 64 if they are longer.
      * </p>
      *
+     * <p>
+     * Changes in 2.0: add the company id field.
+     * </p>
+     *
      * @param statement the PreparedStatement to fill with values
      * @param dataObject the DataObject which contains the values to fill into PreparedStatement
      * @param creationUser the creation user of this database operation
@@ -252,6 +284,7 @@ public class TimeEntryDAO extends BaseDAO {
             statement.setDate(++i, date);
             statement.setString(++i, user);
             statement.setDate(++i, date);
+            statement.setInt(++i, timeEntry.getCompanyId());
         } catch (SQLException e) {
             // wrap the SQLException with DAOActionException
             throw new DAOActionException("can not fill the create preparedStatement", e);
@@ -337,6 +370,10 @@ public class TimeEntryDAO extends BaseDAO {
      * set  from the dataObject. Truncates all String fileds to length of 64 if they are longer.
      * </p>
      *
+     * <p>
+     * Changes in 2.0, add the company id field.
+     * </p>
+     *
      * @param statement the PreparedStatement to fill with values
      * @param dataObject the DataObject which contains the values to fill into PreparedStatement
      * @param modificationUser the modification user of this database operation
@@ -365,6 +402,7 @@ public class TimeEntryDAO extends BaseDAO {
             statement.setBoolean(++i, timeEntry.isBillable());
             statement.setString(++i, user);
             statement.setDate(++i, date);
+            statement.setInt(++i, timeEntry.getCompanyId());
             statement.setInt(++i, dataObject.getPrimaryId());
         } catch (SQLException e) {
             // wrap the SQLException with DAOActionException
@@ -1063,6 +1101,13 @@ public class TimeEntryDAO extends BaseDAO {
      * be deleted. The reject entries present in both but with different users/dates, must be updated.
      * </p>
      *
+     * <p>
+     * Changes in 2.0: The time_reject_reason table links a Time Entry to a Reject Reason. The "company id must match"
+     * condition is not enforceable by the DB, since it is possible to link a reject_reason of Company A to a time_entry
+     * of Company B. Here in the component level, before link the reject reason, checks the reject reason is associated
+     * with the correct company id.
+     * </p>
+     *
      * @param dataObject <code>DataObject</code> to update
      * @param user The user that initiates this update.
      *
@@ -1072,6 +1117,7 @@ public class TimeEntryDAO extends BaseDAO {
      *         <code>null</code>, or hours below 0.0F.
      * @throws DAOActionException if error occurs when updating the data object in database.
      *
+     * @version 2.0
      * @since 1.0
      */
     public void update(DataObject dataObject, String user) throws DAOActionException {
@@ -1092,7 +1138,6 @@ public class TimeEntryDAO extends BaseDAO {
 
             // then add all the records into the time_reject_reason table.
             statement = conn.prepareStatement(ADD_TIME_REJECT_REASON_SQL);
-
             RejectReason[] rejectReasons = ((TimeEntry) dataObject).getAllRejectReasons();
 
             // get the current date and change the java.util.Date to java.sql.Date
@@ -1100,6 +1145,7 @@ public class TimeEntryDAO extends BaseDAO {
 
             for (int i = 0; i < rejectReasons.length; ++i) {
                 int index = 0;
+                // check the reject reason id is not associated with the company id
                 statement.setInt(++index, ((TimeEntry) dataObject).getPrimaryId());
                 statement.setInt(++index, rejectReasons[i].getPrimaryId());
                 statement.setDate(++index, new java.sql.Date(((TimeEntry) dataObject).getCreationDate().getTime()));
@@ -1299,6 +1345,10 @@ public class TimeEntryDAO extends BaseDAO {
      * retrieve the DataObject record from the given resultSet.
      * </p>
      *
+     * <p>
+     * Changes in 2.0: add the company id field.
+     * </p>
+     *
      * @param resultSet the ResultSet to retrieve the DataObject record
      *
      * @return the retrieved the DataObject record
@@ -1309,17 +1359,18 @@ public class TimeEntryDAO extends BaseDAO {
         TimeEntry timeEntry = new TimeEntry();
 
         // get record from the resultSet
-        timeEntry.setPrimaryId(resultSet.getInt("TimeEntriesID"));
-        timeEntry.setTaskTypeId(resultSet.getInt("TaskTypesID"));
-        timeEntry.setTimeStatusId(resultSet.getInt("TimeStatusesID"));
-        timeEntry.setDescription(resultSet.getString("Description"));
-        timeEntry.setDate(resultSet.getDate("EntryDate"));
-        timeEntry.setHours(resultSet.getFloat("Hours"));
-        timeEntry.setBillable(resultSet.getBoolean("Billable"));
-        timeEntry.setCreationUser(resultSet.getString("CreationUser"));
-        timeEntry.setCreationDate(resultSet.getDate("CreationDate"));
-        timeEntry.setModificationUser(resultSet.getString("ModificationUser"));
-        timeEntry.setModificationDate(resultSet.getDate("ModificationDate"));
+        timeEntry.setPrimaryId(resultSet.getInt("time_entry_id"));
+        timeEntry.setTaskTypeId(resultSet.getInt("task_type_id"));
+        timeEntry.setTimeStatusId(resultSet.getInt("time_status_id"));
+        timeEntry.setDescription(resultSet.getString("description"));
+        timeEntry.setDate(resultSet.getDate("entry_date"));
+        timeEntry.setHours(resultSet.getFloat("hours"));
+        timeEntry.setBillable(resultSet.getBoolean("billable"));
+        timeEntry.setCreationUser(resultSet.getString("creation_user"));
+        timeEntry.setCreationDate(resultSet.getDate("creation_date"));
+        timeEntry.setModificationUser(resultSet.getString("modification_user"));
+        timeEntry.setModificationDate(resultSet.getDate("modification_date"));
+        timeEntry.setCompanyId(resultSet.getInt("company_id"));
 
         return timeEntry;
     }
@@ -1329,13 +1380,17 @@ public class TimeEntryDAO extends BaseDAO {
      * Checks the data object for illegal values, and throws appropriate exceptions if it finds them.
      * </p>
      *
+     * <p>
+     * Changes in 2.0, add the validate for task type id and reject reason id.
+     * </p>
+     *
      * @param dataObject The DataObject which will be checked
      *
      * @throws NullPointerException if <code>dataObject</code> is <code>null</code>.
      * @throws IllegalArgumentException if <code>dataObject</code> is not an instance of TimeEntry, or if description
      *         or date member in <code>dataObject</code> is <code>null</code>, or hours below 0.0F.
      */
-    private void validateDataObject(DataObject dataObject) {
+    private void validateDataObject(DataObject dataObject) throws DAOActionException {
         // check null
         TimeEntryHelper.checkNull(dataObject, "dataObject");
 
@@ -1344,17 +1399,98 @@ public class TimeEntryDAO extends BaseDAO {
             throw new IllegalArgumentException("dataObject is not instance of TimeEntry");
         }
 
+        TimeEntry timeEntry = (TimeEntry) dataObject;
+
         // only the decription, date and hours fields of the dataObject will be checked.
-        if (((TimeEntry) dataObject).getDescription() == null) {
+        if (timeEntry.getDescription() == null) {
             throw new IllegalArgumentException("description in dataObject is null");
         }
 
-        if (((TimeEntry) dataObject).getDate() == null) {
+        if (timeEntry.getDate() == null) {
             throw new IllegalArgumentException("date in dataObject is null");
         }
 
-        if (((TimeEntry) dataObject).getHours() < 0.0F) {
+        if (timeEntry.getHours() < 0.0F) {
             throw new IllegalArgumentException("hours in dataObject is below 0.0F");
+        }
+
+        Connection conn = null;
+        try {
+            conn = this.createConnection();
+            if (!checkTaskType(timeEntry.getCompanyId(), timeEntry.getTaskTypeId(), conn)) {
+                throw new DAOActionException("The task type id is not matched with the compay id.");
+            }
+
+            RejectReason[] rejectReasons = timeEntry.getAllRejectReasons();
+            for (int i = 0; i < rejectReasons.length; i++) {
+                if (!checkRejectReason(((TimeEntry) dataObject).getCompanyId(),
+                    rejectReasons[i].getPrimaryId(), conn)) {
+                    throw new DAOActionException("The reject reason id is not associated with the company id");
+                }
+            }
+        } finally {
+            this.closeResources(null, null, conn);
+        }
+    }
+
+    /**
+     * <p>
+     * Check the task type id is assocaited with the company id.
+     * </p>
+     *
+     * @param companyId the company id.
+     * @param taskTypeId the task type id.
+     * @param conn the connection.
+     * @return true for matched, false otherwise.
+     *
+     * @throws DAOActionException exception thrown when close resource.
+     *
+     * @since 2.0
+     */
+    private boolean checkTaskType(int companyId, int taskTypeId, Connection conn) throws DAOActionException {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = conn.prepareStatement(CHECK_COMPANY_ID_TASK_TYPE_SQL);
+            statement.setInt(1, companyId);
+            statement.setInt(2, taskTypeId);
+            rs = statement.executeQuery();
+            return rs.next() && (rs.getInt(1) > 0);
+        } catch (SQLException e) {
+            throw new DAOActionException("Failed to check the task type.", e);
+        } finally {
+            this.closeResources(rs, statement, null);
+        }
+    }
+
+    /**
+     * <p>
+     * Check the reject reason id is assocaited with the company id.
+     * </p>
+     *
+     * @param companyId the company id.
+     * @param rejectReasonId the reject reason id.
+     * @param conn the connection.
+     * @return true for matched, false otherwise.
+     *
+     * @throws DAOActionException exception thrown when close resource.
+     *
+     * @since 2.0
+     */
+    private boolean checkRejectReason(int companyId, int rejectReasonId, Connection conn)
+        throws DAOActionException {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = conn.prepareStatement(CHECK_COMPANY_ID_REJECT_REASON_SQL);
+            statement.setInt(1, companyId);
+            statement.setInt(2, rejectReasonId);
+            rs = statement.executeQuery();
+            return rs.next() && (rs.getInt(1) > 0);
+        }catch (SQLException e) {
+            throw new DAOActionException("Failed to check the reject reason.", e);
+        } finally {
+            this.closeResources(rs, statement, null);
         }
     }
 }

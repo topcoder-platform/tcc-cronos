@@ -19,7 +19,7 @@ import java.util.List;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 2.0
  */
 public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
     /**
@@ -119,10 +119,11 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
             // delete all the records in all tables
             conn = V1Dot1TestHelper.getConnection(NAMESPACE, CONNAME);
             V1Dot1TestHelper.clearDatabase(conn);
+            V1Dot1TestHelper.executeSQL("insert into company values(1, 'a', 'a', current, 'a', current, 'a');", conn);
 
             // Insert an task type
             type = new TaskType();
-
+            type.setCompanyId(1);
             type.setPrimaryId(1);
             type.setDescription("taskType");
             type.setCreationDate(V1Dot1TestHelper.createDate(2005, 1, 1));
@@ -162,6 +163,9 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
             reason2.setCreationUser("reason2Create");
             reason2.setModificationUser("reason2Modification");
             V1Dot1TestHelper.insertRejectReasons(reason2, conn);
+
+            V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1,3,current,'a', current,'a');", conn);
+            V1Dot1TestHelper.executeSQL("insert into comp_rej_reason values(1,4,current,'a', current,'a');", conn);
         } finally {
             V1Dot1TestHelper.closeResources(null, null, conn);
         }
@@ -403,6 +407,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -466,6 +471,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -536,6 +542,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -607,6 +614,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -683,6 +691,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -766,6 +775,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -845,6 +855,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -908,6 +919,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -981,6 +993,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1056,6 +1069,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1132,6 +1146,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1219,6 +1234,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1506,6 +1522,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1587,6 +1604,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1672,6 +1690,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1759,6 +1778,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1853,6 +1873,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -1951,6 +1972,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2045,6 +2067,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2126,6 +2149,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2217,6 +2241,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
         for (int i = 0; i < 10; i++) {
             myTimeEntrys[i] = new TimeEntry();
+            myTimeEntrys[i].setCompanyId(1);
             myTimeEntrys[i].setDescription(DESCRIPTION);
             myTimeEntrys[i].setDate(CREATION_DATE);
             myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2310,6 +2335,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2404,6 +2430,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2509,6 +2536,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2747,6 +2775,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2957,6 +2986,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             for (int i = 0; i < 10; i++) {
                 myTimeEntrys[i] = new TimeEntry();
+                myTimeEntrys[i].setCompanyId(1);
                 myTimeEntrys[i].setDescription(DESCRIPTION);
                 myTimeEntrys[i].setDate(CREATION_DATE);
                 myTimeEntrys[i].setTaskTypeId(type.getPrimaryId());
@@ -2995,7 +3025,8 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
 
             Object[] operations = resultData.getOperations();
             assertNotNull("The operations field should be set in reading module.", operations);
-            assertEquals("The operations field should be set in reading module.", operations.length, myTimeEntrys.length);
+            assertEquals("The operations field should be set in reading module.",
+                operations.length, myTimeEntrys.length);
 
             Integer[] expected = new Integer[myTimeEntrys.length];
 
@@ -3032,6 +3063,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
     private TimeEntry getTimeEntry() {
         TimeEntry myTimeEntry = new TimeEntry();
 
+        myTimeEntry.setCompanyId(1);
         myTimeEntry.setDescription(DESCRIPTION);
         myTimeEntry.setCreationUser(CREATION_USER);
         myTimeEntry.setCreationDate(CREATION_DATE);
@@ -3055,6 +3087,7 @@ public class V1Dot1AsynchBatchDAOWrapperUnitTest extends TestCase {
      */
     private void assertEquals(String message, TimeEntry expected, TimeEntry actual) {
         assertEquals(message, expected.getPrimaryId(), actual.getPrimaryId());
+        assertEquals(message, expected.getCompanyId(), actual.getCompanyId());
         assertEquals(message, expected.getTaskTypeId(), actual.getTaskTypeId());
         assertEquals(message, expected.getTimeStatusId(), actual.getTimeStatusId());
         V1Dot1TestHelper.assertEquals(message, expected.getDate(), actual.getDate());

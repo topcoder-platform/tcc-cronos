@@ -20,8 +20,17 @@ import java.util.List;
  * operations and current time.
  * </p>
  *
+ * <p>
+ * Changes in 2.0, field changed. And the active is maintained by other component.
+ * When create the reject reason, default to zero.
+ * </p>
+ *
  * @author AleaActaEst, TCSDEVELOPER
- * @version 1.1
+ * @author arylio
+ *
+ * @deprecated 2.0
+ * @version 2.0
+ * @since 1.0
  */
 public class RejectReasonDAO extends BaseDAO {
     /**
@@ -29,9 +38,13 @@ public class RejectReasonDAO extends BaseDAO {
      * Represents the create sql statement that is returned to the <code>create</code> method by the
      * <code>getCreateSqlString</code> helper method in this class.
      * </p>
+     * <p>
+     * Changes for 2.0, since active is not required in this component and active cannot be null,
+     * default to zero.
+     * </p>
      */
     public static final String SQL_CREATE_STATEMENT = "INSERT INTO reject_reason (reject_reason_id, description, "
-        + "creation_user, creation_date, modification_user, modification_date) VALUES (?,?,?,?,?,?)";
+        + "creation_user, creation_date, modification_user, modification_date, active) VALUES (?,?,?,?,?,?,0)";
 
     /**
      * <p>
@@ -41,6 +54,7 @@ public class RejectReasonDAO extends BaseDAO {
      */
     public static final String SQL_UPDATE_STATEMENT = "UPDATE reject_reason SET description=?, modification_user=?, "
         + "modification_date=? WHERE reject_reason_id=?";
+
 
     /**
      * <p>

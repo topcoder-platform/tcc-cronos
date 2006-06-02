@@ -30,6 +30,9 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(SQLBasedTimeEntryCriteriaExpressionEvaluatorAccuracyTest.class);
         suite.addTestSuite(TimeEntryDAOAccuracyTest.class);
 
+        // since 2.0
+        suite.addTestSuite(TaskTypeDAOAccuracyTest.class);
+
         return suite;
     }
 }
