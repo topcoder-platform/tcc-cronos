@@ -1,13 +1,14 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -27,7 +28,7 @@ public class ReportFactory {
     /**
      * This is the name of the {@link ConfigManager} namespace from which to lookup the Reports configuration.
      */
-    private static final String NAMESPACE = "com.topcoder.timetracker.report.Reports";
+    private static final String NAMESPACE = "com.cronos.timetracker.report.Reports";
     /**
      * This is the name of the {@link ConfigManager} property from which to lookup the Reports configuration.
      */
@@ -66,7 +67,7 @@ public class ReportFactory {
         final String[] reportClassNames;
         try {
             reportClassNames = manager.getStringArray(NAMESPACE, REPORT_CLASSES_PROPERTY);
-        } catch (UnknownNamespaceException e) {
+        } catch (Exception e) {
             throw new ReportConfigurationException(
                 "Unable to configure reports, as the needed namespace [" + NAMESPACE + "] is unknown in ConfigManger.",
                 e);

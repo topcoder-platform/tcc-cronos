@@ -1,13 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <RESULT date="2005-03-03 00:00:00.0" employee="ivern" client="client1" project="project1" task="tasktype2"
-            hours="3.0" billable="1"/>
-    <RESULT date="2005-10-10 00:00:00.0" employee="ivern" client="client1" project="project1" task="tasktype1"
-            hours="5.0" billable="1"/>
-    <RESULT date="2006-01-01 00:00:00.0" employee="ivern" client="client1" project="project1" task="tasktype1"
-            hours="4.0" billable="0"/>
-    <RESULT date="2006-01-01 00:00:00.0" employee="ivern" client="client2" project="project2" task="tasktype3"
-            hours="3.0" billable="0"/>
-    <RESULT date="2006-01-03 00:00:00.0" employee="ivern" client="client1" project="project1" task="tasktype2"
-            hours="6.0" billable="1"/>
+  <RESULT company="1" date="2006-01-01 00:00:00.0" employee="admin" client="Client 1" project="Project Name 1" task="Task Type 1" hours="10" billable="1"/>
+  <RESULT company="2" date="2006-01-01 00:00:00.0" employee="admin" client="Client 2" project="Project Name 2" task="Task Type 2" hours="20" billable="2"/>
 </dataset>

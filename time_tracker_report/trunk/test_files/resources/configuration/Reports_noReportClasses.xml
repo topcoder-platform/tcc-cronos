@@ -2,7 +2,7 @@
 
 
 <CMConfig>
-    <Config name="com.topcoder.timetracker.report.Reports">
+    <Config name="com.cronos.timetracker.report.Reports">
 
 
     </Config>

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import com.topcoder.util.collection.typesafeenum.Enum;
 
@@ -16,7 +16,6 @@ import java.util.List;
  * @version 1.0
  */
 public class ReportCategory extends Enum {
-
     /**
      * Represents the enumeration constant for the "TIME" category Report.
      */

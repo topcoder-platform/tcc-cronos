@@ -29,7 +29,7 @@ public class ClearDataDemoConvenienceHelper {
             System.out.println("clearing all data from database");
             ConfigManager.getInstance().add("demoWebapp/res/Time_Tracker_Report.xml");
             DBConnectionFactoryImpl factory = new DBConnectionFactoryImpl(
-                "com.topcoder.timetracker.report.Informix");
+                "com.cronos.timetracker.report.Informix");
             Connection jdbcConnection = factory.createConnection("InformixConnection");
             System.out.println("database is = " + jdbcConnection.getMetaData().getURL());
             //clear data

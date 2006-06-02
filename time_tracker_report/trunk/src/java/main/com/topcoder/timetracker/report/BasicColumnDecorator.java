@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 /**
  * This class implements the ColumnDecorator interface. It provides a basic column decoration feature, wherein the

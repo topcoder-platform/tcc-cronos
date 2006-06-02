@@ -1,4 +1,4 @@
-<Config name="com.topcoder.timetracker.report.FiltersConfiguration">
+<Config name="com.cronos.timetracker.report.FiltersConfiguration">
 
     <!-- Filter Configuration for the "Employee Time Report" -->
 

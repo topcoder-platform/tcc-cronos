@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import com.topcoder.util.collection.typesafeenum.Enum;
 
@@ -18,7 +18,8 @@ import java.util.List;
  * It is possible that the name of the application column is same as the Database column, but not necessary.
  *
  * @author fastprogrammer, traugust
- * @version 1.0
+ * @version 2.0
+ * @since 1.0
  */
 public class Column extends Enum {
 
@@ -81,6 +82,12 @@ public class Column extends Enum {
      * Represents the enumeration constant for Column "Status".
      */
     public static final Column STATUS = new Column("STATUS");
+
+    /**
+     * Represents the enumeration constant for Column "COMPANY".
+     * @since 2.0
+     */
+    public static final Column COMPANY = new Column("COMPANY");
 
     /**
      * A String specifying the name of the Column. This instance member will not be <tt>null</tt> in an instantiated

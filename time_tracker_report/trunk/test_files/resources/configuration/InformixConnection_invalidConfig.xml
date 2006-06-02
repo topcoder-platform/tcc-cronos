@@ -2,7 +2,7 @@
 
 
 <CMConfig>
-    <Config name="com.topcoder.timetracker.report.Informix">
+    <Config name="com.cronos.timetracker.report.Informix">
         <Property name="connexxions">
 
             <Property name="default">
@@ -24,7 +24,7 @@
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>topcoder</Value>
+                        <Value>informix</Value>
                     </Property>
                 </Property>
             </Property>

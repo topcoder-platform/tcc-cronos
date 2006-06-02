@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report.htmlreport;
+package com.cronos.timetracker.report.htmlreport;
 
-import com.topcoder.timetracker.report.AbstractReport;
-import com.topcoder.timetracker.report.Column;
-import com.topcoder.timetracker.report.ReportCategory;
-import com.topcoder.timetracker.report.ReportConfiguration;
-import com.topcoder.timetracker.report.ReportConfigurationException;
-import com.topcoder.timetracker.report.ReportException;
+import com.cronos.timetracker.report.AbstractReport;
+import com.cronos.timetracker.report.Column;
+import com.cronos.timetracker.report.ReportCategory;
+import com.cronos.timetracker.report.ReportConfiguration;
+import com.cronos.timetracker.report.ReportConfigurationException;
+import com.cronos.timetracker.report.ReportException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
@@ -55,7 +55,11 @@ public class TimeExpenseReport extends AbstractReport {
         //renders the HTML table and cumulates the amount
         final String renderedTable = HTMLRenderUtil.renderTable(config, getDBHandlerFactory(),
             new HTMLRenderUtil.Aggregator[]{totalAmount, totalHours});
-        final StringBuffer ret = new StringBuffer(renderedTable);
+        final StringBuffer ret = new StringBuffer();
+        ret.append("<CENTER>");
+        ret.append(config.getHeader());
+        ret.append("</CENTER>");
+        ret.append(renderedTable);
 
         //append the hours line
         ret.append("<BR/><BR/><CENTER>Total Hours: ");
@@ -64,11 +68,11 @@ public class TimeExpenseReport extends AbstractReport {
 
         String amtPrefix = null;
         try {
-	        String prefixkey = "PREFIX_COLUMN_AMOUNT";
-	        amtPrefix = ConfigManager.getInstance().getString(config.getNamespace(), prefixkey);
+            String prefixkey = "PREFIX_COLUMN_AMOUNT";
+            amtPrefix = ConfigManager.getInstance().getString(config.getNamespace(), prefixkey);
         }
         catch (UnknownNamespaceException e) {
-        	// ignore
+            // ignore
         }
 
         //append the amount line

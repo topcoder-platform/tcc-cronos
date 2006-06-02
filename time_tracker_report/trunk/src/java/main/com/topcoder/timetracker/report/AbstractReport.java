@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
-import com.topcoder.timetracker.report.dbhandler.DBHandlerFactory;
+import com.cronos.timetracker.report.dbhandler.DBHandlerFactory;
 import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
@@ -25,12 +25,12 @@ public abstract class AbstractReport implements Report {
     /**
      * This is the namespace from which the column type configuration is looked up in {@link ConfigManager}.
      */
-    private static final String COLUMNS_CONFIG_NAMESPACE = "com.topcoder.timetracker.report.ColumnsConfiguration";
+    private static final String COLUMNS_CONFIG_NAMESPACE = "com.cronos.timetracker.report.ColumnsConfiguration";
     /**
      * This is the namespace from which the filters configuration is looked up in {@link ConfigManager}.
      */
     private static final String FILTERS_CONFIGURATION_NAMESPACE
-        = "com.topcoder.timetracker.report.FiltersConfiguration";
+        = "com.cronos.timetracker.report.FiltersConfiguration";
 
     /**
      * This is a prefix used to construct the {@link ConfigManager} property name for default column configuration for a
@@ -149,6 +149,7 @@ public abstract class AbstractReport implements Report {
      *                  read
      * @param type      the type of the report
      * @param filters   the filters for filtering the Report data
+     * @param sortBy    the sort by clause
      *
      * @return a String containing the formatted report data
      *
@@ -156,9 +157,9 @@ public abstract class AbstractReport implements Report {
      * @throws ReportException          if there are problems during the processing of the report
      * @throws IllegalArgumentException if the namespace passed is an empty (trim'd) String
      */
-    public String execute(final String namespace, final ReportType type, final List filters) throws ReportException {
+    public String execute(String namespace, ReportType type, List filters, String sortBy) throws ReportException {
         // illegal args checked in createConfiguration
-        return executeReport(createConfiguration(namespace, type, filters));
+        return executeReport(createConfiguration(namespace, type, filters, sortBy));
     }
 
     /**
@@ -226,7 +227,8 @@ public abstract class AbstractReport implements Report {
      *
      * @param namespace the {@link ConfigManager} namespace from which the properties for the report are fetched
      * @param type      the type of the report
-     * @param filters   the filters to be used for the Report
+     * @param filters   the filters to be used for the Report.
+     * @param sortBy    the sort by clause for the Report.
      *
      * @return the configuration for the report
      *
@@ -234,8 +236,8 @@ public abstract class AbstractReport implements Report {
      * @throws ReportConfigurationException if there are problems creating the ReportConfiguration
      * @throws IllegalArgumentException     if the namespace passed is an empty (trim'd) String
      */
-    private ReportConfiguration createConfiguration(final String namespace, final ReportType type, final List filters)
-        throws ReportConfigurationException {
+    private ReportConfiguration createConfiguration(final String namespace, final ReportType type, final List filters,
+        final String sortBy) throws ReportConfigurationException {
         if (namespace == null) {
             throw new NullPointerException("The parameter named [namespace] was null.");
         }
@@ -254,6 +256,8 @@ public abstract class AbstractReport implements Report {
         final List validFilters = (List) validFiltersForType.get(type);
         final FilterCategory requiredDefaultFilter = (FilterCategory) defaultFilterForType.get(type);
         boolean defaultFilterExist = false;
+        String header = null;
+        String dateInfo = null;
         for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
             final Filter filter = (Filter) iterator.next();
             if (filter == null) {
@@ -269,11 +273,29 @@ public abstract class AbstractReport implements Report {
                 throw new ReportConfigurationException("The specified Filter of category [" + current
                     + "] was empty.");
 
-            } else if ((filter instanceof RangeFilter) && ((RangeFilter) filter).getLowerRangeValues().isEmpty()) {
-                throw new ReportConfigurationException("The specified Filter of category [" + current
-                    + "] was empty.");
+            } else if (filter instanceof RangeFilter) {
+                if (((RangeFilter) filter).getLowerRangeValues().isEmpty()) {
+                    throw new ReportConfigurationException("The specified Filter of category [" + current
+                            + "] was empty.");
+                } else {
+                    dateInfo = "";
+                    if (!ReportDisplayTag.MIN_DATE.equals(((RangeFilter) filter).getLowerRangeValues().get(0))) {
+                        dateInfo = " " + ((RangeFilter) filter).getLowerRangeValues().get(0);
+                    }
+                    if (!ReportDisplayTag.MAX_DATE.equals(((RangeFilter) filter).getUpperRangeValues().get(0))) {
+                        dateInfo = dateInfo + " to " + ((RangeFilter) filter).getUpperRangeValues().get(0);
+                    } else {
+                        dateInfo = " from " + dateInfo;
+                    }
+                }
+            } else if (filter instanceof InFilter) {
+                if (((InFilter) filter).getValues().isEmpty()) {
+                    throw new ReportConfigurationException("The specified Filter of category [" + current
+                            + "] was empty.");
+                }
             }
             if (current.equals(requiredDefaultFilter)) {
+                header = ((EqualityFilter) filter).getFilterValues().get(0).toString();
                 defaultFilterExist = true;
             }
         }
@@ -283,13 +305,14 @@ public abstract class AbstractReport implements Report {
                 + category.getCategory() + "] was not present in the given configuration.");
         }
 
-//        create the styles map
-
+        // create the styles map
         try {
             final ReportConfiguration reportConfiguration = new ReportConfiguration(category, type, namespace);
             reportConfiguration.setColumnDecorators(lookupColumnConfiguration(type, namespace));
             reportConfiguration.setStyles(lookupStyleConfiguration(namespace));
             reportConfiguration.setFilters(filters);
+            reportConfiguration.setHeader(header + (dateInfo == null ? "" : dateInfo));
+            reportConfiguration.setSortBy(sortBy);
             return reportConfiguration;
         } catch (UnknownNamespaceException e) {
             throw new ReportConfigurationException(
@@ -431,6 +454,7 @@ public abstract class AbstractReport implements Report {
                 + "] was an empty String.");
         }
         try {
+            FilterCategory bill = FilterCategory.BILLABLE;
             return (FilterCategory) safeConvertToEnumValue(enumValueName, FilterCategory.class);
         } catch (ReportConfigurationException e) {
             throw new ReportConfigurationException("Conversion of mandatory filter configuration for report type ["
@@ -544,6 +568,7 @@ public abstract class AbstractReport implements Report {
         ReportConfigurationException {
         final String key = propertyPrefix + reportType.getType() + "_" + category.getCategory() + "_COLUMNS";
         final String[] stringArray;
+
         try {
             stringArray = ConfigManager.getInstance().getStringArray(namespace, key);
         } catch (UnknownNamespaceException e) {

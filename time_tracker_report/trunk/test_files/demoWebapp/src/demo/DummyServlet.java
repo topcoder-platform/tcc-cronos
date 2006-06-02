@@ -3,14 +3,18 @@
  */
 package demo;
 
-import com.topcoder.timetracker.report.ReportCategory;
-import com.topcoder.timetracker.report.ReportType;
+import java.io.IOException;
+
+import com.cronos.timetracker.report.ReportCategory;
+import com.cronos.timetracker.report.ReportType;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -48,7 +52,11 @@ public class DummyServlet extends HttpServlet {
         servletContext.setAttribute("TYPE", ReportType.CLIENT.getType());
         servletContext.setAttribute("CATEGORY", ReportCategory.EXPENSE.getCategory());
         servletContext.setAttribute("CLIENT", "client1");
-
     }
+    
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    	resp.getWriter().write("hello");
+    }
+
 
 }

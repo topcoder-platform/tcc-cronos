@@ -1,4 +1,4 @@
-<Config name="com.topcoder.timetracker.report.DBHandlers">
+<Config name="com.cronos.timetracker.report.DBHandlers">
 
     <Property name="DBHandlers">
         <Value>InformixDBHandler</Value>

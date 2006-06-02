@@ -1,15 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <RESULT date="2005-03-03 00:00:00.0" client="client1" project="project1" type="expensetype1"
-            description="expense 1 desc" amount="15.00" billable="1"/>
-    <RESULT date="2005-11-11 00:00:00.0" client="client1" project="project1" type="expensetype2"
-            description="expense 2 desc" amount="1.00" billable="1"/>
-    <RESULT date="2006-01-01 00:00:00.0" client="client1" project="project1" type="expensetype1"
-            description="expense 4 desc" amount="15.03" billable="0"/>
-    <RESULT date="2006-01-01 00:00:00.0" client="client1" project="project1" type="expensetype3"
-            description="expense 3 desc&amp;ampersand" amount="5.00" billable="1"/>
-    <RESULT date="2006-01-01 00:00:00.0" client="client2" project="project2" type="expensetype2"
-            description="expense &lt;5&gt; desc" amount="15.30" billable="1"/>
-    <RESULT date="2006-01-02 00:00:00.0" client="client2" project="project2" type="expensetype3"
-            description="expense 6 desc" amount="1.06" billable="0"/>
+  <RESULT company="1" date="2006-01-01 00:00:00.0" client="Client 1" project="Project Name 1" type="Expense Type 1" description="Expense Entry 1" amount="100.00" billable="1"/>
+  <RESULT company="2" date="2006-02-01 00:00:00.0" client="Client 2" project="Project Name 2" type="Expense Type 2" description="Expense Entry 2" amount="200.00" billable="2"/>
 </dataset>

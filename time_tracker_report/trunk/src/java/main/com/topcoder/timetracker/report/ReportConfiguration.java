@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,6 +79,20 @@ public class ReportConfiguration {
      * This instance member will not be <tt>null</tt> in an instantiated object.
      */
     private final ReportCategory category;
+
+    /**
+     * <p>
+     * Represents the header string of the report.
+     * </p>
+     */
+    private String header;
+
+    /**
+     * <p>
+     * Represents the sort by clause.
+     * </p>
+     */
+    private String sortBy = null;
 
     /**
      * Constructor. Simply initializes the corresponding instance members from the values of the parameters passed.
@@ -277,4 +291,45 @@ public class ReportConfiguration {
         return category;
     }
 
+    /**
+     * <p>
+     * Get the header of the report.
+     * </p>
+     *
+     * @return the header.
+     */
+    public String getHeader() {
+        return header;
+    }
+
+    /**
+     * <p>
+     * Set the header for report. Can be null.
+     * </p>
+     * @param header the header.
+     */
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    /**
+     * <p>
+     * Get the sort by clause of the report.
+     * </p>
+     *
+     * @return the sort by clause.
+     */
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    /**
+     * <p>
+     * Set the sort by clause for report. Can be null.
+     * </p>
+     * @param sortBy the sort by clause.
+     */
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
 }

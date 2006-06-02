@@ -1,4 +1,4 @@
-<Config name="com.topcoder.timetracker.report.ColumnsConfiguration">
+<Config name="com.cronos.timetracker.report.ColumnsConfiguration">
 
     <!-- Default Columns Configuration for the "Employee Time Report" -->
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +63,12 @@ public class ReportDisplayTag extends TagSupport {
     /**
      * The maximun possible date in database.
      */
-    private static final String MAX_DATE = "12-31-9999";
+    public static final String MAX_DATE = "12-31-9999";
 
     /**
      * The minimun possible date in database.
      */
-    private static final String MIN_DATE = "01-01-0001";
+    public static final String MIN_DATE = "01-01-0001";
 
     /**
      * Represents the reportFactory instance used in this tag. This is a static field, as the instance is to be shared
@@ -176,6 +176,28 @@ public class ReportDisplayTag extends TagSupport {
     private String endDateFilter = null;
 
     /**
+     * Represents the key to be used for looking up the optional company id filter of the Report(as String
+     * representing a value in an {@link InFilter} for column {@link Column#COMPANY}) from all contexts
+     * (Page,Request,Session,Application) using {@link javax.servlet.jsp.PageContext#findAttribute(String)}.
+     * <p/>
+     * This field can hold <tt>null</tt> value indicating that the filter is not set.
+     *
+     * @since 2.0
+     */
+    private String companyFilter = null;
+
+    /**
+     * Represents the key to be used for looking up the optional sortColumns of the Report(as String representing a
+     * value in sort by clause from all contexts
+     * (Page,Request,Session,Application) using {@link javax.servlet.jsp.PageContext#findAttribute(String)}.
+     * <p/>
+     * This field can hold <tt>null</tt> value indicating that need not sort.
+     *
+     * @since 2.0
+     */
+    private String sortColumns = null;
+
+    /**
      * Empty constructor.
      */
     public ReportDisplayTag() {
@@ -203,14 +225,15 @@ public class ReportDisplayTag extends TagSupport {
             //create filters list
             final List filters = createFilters();
 
+            final String sortColumnsValue = safeLookupContextValue(sortColumns);
+
             //find the report
             final ReportCategory reportCategory = lookupReportCategory(categoryValue);
             final Report report = getReportFactory().getReport(FORMAT, reportCategory);
 
             // execute the report
             final ReportType reportType = lookupReportType(typeValue);
-            final String output = report.execute(namespace, reportType, filters);
-
+            final String output = report.execute(namespace, reportType, filters, sortColumnsValue);
             // write result to page
             pageContext.getOut().write(output);
 
@@ -374,6 +397,39 @@ public class ReportDisplayTag extends TagSupport {
     }
 
     /**
+     * Sets the <em>companyFilter</em> attribute. This method is called by the JSP container if the attribute
+     * <em>companyFilter</em> is specified in the tag usage.
+     *
+     * @param companyFilter the name of the context variable whose value specifies the upper bound for the company id
+     *                      that need be considered for the Report.
+     *
+     * @throws IllegalArgumentException if the companyFilter passed is an empty (trim'd) String
+     */
+    public void setCompanyFilter(final String companyFilter) {
+        if (companyFilter.trim().length() == 0) {
+            throw new IllegalArgumentException("The given tag attribute named [companyFilter] was an empty String.");
+        }
+        this.companyFilter = companyFilter;
+    }
+
+    /**
+     * Sets the <em>sortColumns</em> attribute. This method is called by the JSP container if the attribute
+     * <em>sortColumns</em> is specified in the tag usage.
+     *
+     * @param sortColumns the name of the context variable whose value specifies the sort by clause
+     *                      that need be considered for the Report.
+     *
+     * @throws IllegalArgumentException if the sortColumns passed is an empty (trim'd) String
+     */
+    public void setSortColumns(final String sortColumns) {
+        if (sortColumns.trim().length() == 0) {
+            throw new IllegalArgumentException("The given tag attribute named [sortColumns] was an empty String.");
+        }
+        this.sortColumns = sortColumns;
+
+    }
+
+    /**
      * Creates the {@link Filter} objects from the context data according to this instance's field values and returns a
      * List containing all the Filters created.
      * <p/>
@@ -415,8 +471,13 @@ public class ReportDisplayTag extends TagSupport {
         }
         final RangeFilter dateFilterInstance = safeCreateRangeFilter(startDateFilter, endDateFilter, Column.DATE,
             FilterCategory.DATE);
-        if (dateFilterInstance != null) {
+        if (dateFilterInstance !=null) {
             ret.add(dateFilterInstance);
+        }
+        final InFilter companyFilterInstance = safeCreateInFilter(companyFilter, Column.COMPANY,
+                FilterCategory.COMPANY);
+        if (companyFilterInstance !=null) {
+            ret.add(companyFilterInstance);
         }
         if (ret.isEmpty()) {
             throw new ReportConfigurationException(
@@ -488,17 +549,24 @@ public class ReportDisplayTag extends TagSupport {
                                               final Column column,
                                               final FilterCategory filterCategory)
         throws ReportConfigurationException {
-        if (lowerBoundAttribute == null || lowerBoundAttribute.trim().length() == 0
-            || upperBoundAttribute == null || upperBoundAttribute.trim().length() == 0) {
+        if ((lowerBoundAttribute == null || lowerBoundAttribute.trim().length() == 0)
+            && (upperBoundAttribute == null || upperBoundAttribute.trim().length() == 0)) {
             return null;
         }
-        String[] lowerBoundValues = safeLookupContextValueArray(lowerBoundAttribute);
-        String[] upperBoundValues = safeLookupContextValueArray(upperBoundAttribute);
+        String[] lowerBoundValues = null;
+        String[] upperBoundValues = null;
+        if (lowerBoundAttribute == null || lowerBoundAttribute.trim().length() == 0) {
+            upperBoundValues = safeLookupContextValueArray(upperBoundAttribute);
+        } else if (upperBoundAttribute == null || upperBoundAttribute.trim().length() == 0){
+            lowerBoundValues = safeLookupContextValueArray(lowerBoundAttribute);
+        } else {
+            upperBoundValues = safeLookupContextValueArray(upperBoundAttribute);
+            lowerBoundValues = safeLookupContextValueArray(lowerBoundAttribute);
+        }
 
         if (lowerBoundValues == null && upperBoundValues == null) {
             return null;
         }
-
         if (lowerBoundValues == null) {
             lowerBoundValues = new String[upperBoundValues.length];
         } else if (upperBoundValues == null){
@@ -525,6 +593,50 @@ public class ReportDisplayTag extends TagSupport {
     }
 
     /**
+     * This method creates a new {@link EqualityFilter} for the given {@link Column} if the given lowerBoundAttribute
+     * and upperBoundAttribute are both non-<tt>null</tt>, non-empty (trim'd) Strings that both refers to
+     * non-<tt>null</tt> request parameters or context variables of type {@link String} or <tt>String[]</tt>.
+     *
+     * @param lowerBoundAttribute the lookup key with which to lookup the actual lower bound value(s) in request
+     *                            parameters or the context of this {@link javax.servlet.jsp.tagext.Tag}.
+     * @param upperBoundAttribute the lookup key with which to lookup the actual upper bound value(s) in request
+     *                            parameters or the context of this {@link javax.servlet.jsp.tagext.Tag}.
+     * @param column              the column for which to create the filter
+     * @param filterCategory      the category for the filter to be created
+     *
+     * @return the filter created or <tt>null</tt> if no filter values were found for the given lowerBoundAttribute and
+     *         upperBoundAttribute
+     *
+     * @throws ReportConfigurationException in case the any of the values looked up from context is not of type {@link
+     *                                      String} or <tt>String[]</tt> or a <tt>String[]</tt> found contained
+     *                                      <tt>null</tt>-values or empty (trim'd) Strings or the <tt>String[]</tt>s
+     *                                      found did not contain same amount of elements or only one of the values
+     *                                      was found during lookup
+     */
+    private InFilter safeCreateInFilter(final String companyAttribute,
+                                              final Column column,
+                                              final FilterCategory filterCategory)
+        throws ReportConfigurationException {
+        if (companyAttribute == null || companyAttribute.trim().length() == 0) {
+            return null;
+        }
+        String[] values = safeLookupContextValueArray(companyAttribute);
+
+        if (values == null && values == null) {
+            return null;
+        }
+
+        final InFilter filter = new InFilter(column, filterCategory);
+        for (int i = 0; i < values.length; i++) {
+            String[] datas = values[i].split(",");
+            for (int j = 0; j < datas.length; j++) {
+                filter.addFilterValue(datas[i].trim());
+            }
+        }
+        return filter;
+    }
+
+    /**
      * This method converts the given String value into a {@link ReportCategory}.
      *
      * @param categoryValue the value to be converted into the {@link ReportCategory} value corresponding to the given
@@ -544,6 +656,7 @@ public class ReportDisplayTag extends TagSupport {
                 "The context value specifying the ReportCategory was an empty String.");
         }
 
+        ReportCategory time = ReportCategory.TIME;
         final ReportCategory ret = (ReportCategory) ReportCategory.getEnumByStringValue(categoryValue,
             ReportCategory.class);
 
@@ -677,6 +790,62 @@ public class ReportDisplayTag extends TagSupport {
 
             }
             return asArray;
+        } else {
+            throw new ReportConfigurationException(
+                "The value of the attribute named [" + attrValue + "] was not of type String or String[], "
+                    + "but was of type [" + typeValue.getClass().getName() + "].");
+        }
+    }
+
+    /**
+     * This method looks up a or {@link String} <tt>String</tt> value from the request parameters or context using the
+     * given attrValue. If a singe String is found it is returned as a <tt>String</tt> containing the value found.
+     *
+     * @param attrValue the lookup key with which to lookup the actual value in request parameters or the context of
+     *                  this {@link javax.servlet.jsp.tagext.Tag}.
+     *
+     * @return the value found or <tt>null</tt> to indicate that the given attrValue was <tt>null</tt> or an empty
+     *         String or the value looked up was <tt>null</tt>
+     *
+     * @throws ReportConfigurationException in case the value looked up from context is not of type {@link String} or
+     *                                      String is empty (trim'd) Strings.
+     */
+    private String safeLookupContextValue(final String attrValue) throws ReportConfigurationException {
+        if (attrValue == null || attrValue.trim().length() == 0) {
+            return null;
+        }
+
+        Object typeValue = pageContext.getRequest().getParameterValues(attrValue);
+        if (typeValue == null) {
+            typeValue = pageContext.findAttribute(attrValue);
+        }
+
+        if (typeValue == null) {
+            return null;
+        }
+
+        if (typeValue instanceof String) {
+            if (((String) typeValue).trim().length() == 0) {
+                throw new ReportConfigurationException(
+                    "The value of the attribute named [" + attrValue + "] was an empty String.");
+            }
+            return (String) typeValue;
+        } else if (typeValue instanceof String[]) {
+            final String[] asArray = (String[]) typeValue;
+            if (asArray.length == 0) {
+                throw new ReportConfigurationException("The value of the attribute named [" + attrValue
+                    + "] was an empty String[].");
+
+            }
+            for (int i = 0; i < asArray.length; i++) {
+                final String s = asArray[i];
+                if (s != null && s.trim().length() == 0) {
+                    throw new ReportConfigurationException("The value of the attribute named [" + attrValue
+                        + "] was a String[] that contained an empty String.");
+                }
+
+            }
+            return asArray[0];
         } else {
             throw new ReportConfigurationException(
                 "The value of the attribute named [" + attrValue + "] was not of type String or String[], "

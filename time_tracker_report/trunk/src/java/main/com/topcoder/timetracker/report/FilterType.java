@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import com.topcoder.util.collection.typesafeenum.Enum;
 
@@ -25,6 +25,12 @@ public class FilterType extends Enum {
      * Represents the enumeration constant for the filter of the type "EQUALITY".
      */
     public static final FilterType EQUALITY = new FilterType("EQUALITY");
+
+    /**
+     * Represents the enumeration constant for the filter of the type "IN".
+     * @since 2.0
+     */
+    public static final FilterType IN = new FilterType("IN");
 
     /**
      * A String specifying the type of the Filter. This instance member will not be <tt>null</tt> in an instantiated

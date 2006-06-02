@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import java.util.List;
 
@@ -27,17 +27,18 @@ public interface Report {
      * @param namespace the namespace from which the configuration properties for the Report are read.
      * @param type      the type of the Report
      * @param filters   the Filters to be used during the data fetch for the report.
+     * @param sortColumns the sort by clause.
      *
      * @return a String containing the formatted Report data.
      *
-     * @throws NullPointerException     if any of the arguments to the method is <tt>null</tt>
+     * @throws NullPointerException     if any of the arguments except by sortColumns to the method is <tt>null</tt>
      * @throws ReportException          if there are any errors during the processing of the Report or the given filters
      *                                  list contains illegal filters for this report or does not contain the manadatory
      *                                  filter for the given report type
      * @throws IllegalArgumentException if the value for the String "namespace" is an empty (trim'd) String or the
      *                                  given filters list contains a <tt>null</tt> value
      */
-    public String execute(String namespace, ReportType type, List filters) throws ReportException;
+    public String execute(String namespace, ReportType type, List filters, String sortColumns) throws ReportException;
 
     /**
      * Returns the category of the Report.

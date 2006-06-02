@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report.dbhandler;
+package com.cronos.timetracker.report.dbhandler;
 
-import com.topcoder.timetracker.report.ReportConfigurationException;
+import com.cronos.timetracker.report.ReportConfigurationException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
@@ -26,7 +26,7 @@ public class DBHandlerFactory {
     /**
      * This is the name of the {@link ConfigManager} namespace used for lookup of DBHandler implementations.
      */
-    private static final String NAMESPACE = "com.topcoder.timetracker.report.DBHandlers";
+    private static final String NAMESPACE = "com.cronos.timetracker.report.DBHandlers";
     /**
      * This is the name of the {@link ConfigManager} property used for lookup of DBHandler implementations.
      */
@@ -178,7 +178,6 @@ public class DBHandlerFactory {
         } catch (NoSuchMethodException e) {
             throw new ReportConfigurationException("DBHandler implementation class [" + implClass .getName()
                 + "] did not have a constructor with no parameters.", e);
-
         }
 
         //create DBHandler instance

@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report.dbhandler;
+package com.cronos.timetracker.report.dbhandler;
 
-import com.topcoder.timetracker.report.ReportConfiguration;
-import com.topcoder.timetracker.report.ReportConfigurationException;
+import com.cronos.timetracker.report.ReportConfiguration;
+import com.cronos.timetracker.report.ReportConfigurationException;
 
 import java.sql.ResultSet;
 

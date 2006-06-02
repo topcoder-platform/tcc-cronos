@@ -30,7 +30,7 @@ public class InsertTestDataDemoConvenienceHelper {
             System.out.println("Filling demo data into database");
             ConfigManager.getInstance().add("demoWebapp/res/Time_Tracker_Report.xml");
             DBConnectionFactoryImpl factory = new DBConnectionFactoryImpl(
-                "com.topcoder.timetracker.report.Informix");
+                "com.cronos.timetracker.report.Informix");
             Connection jdbcConnection = factory.createConnection(
                 "InformixConnection");
             System.out.println("database is = " + jdbcConnection.getMetaData().getURL());

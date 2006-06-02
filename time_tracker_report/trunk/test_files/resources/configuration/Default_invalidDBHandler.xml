@@ -2,9 +2,9 @@
 
 
 <CMConfig>
-    <Config name="com.topcoder.timetracker.report.DefaultConfiguration">
+    <Config name="com.cronos.timetracker.report.DefaultConfiguration">
         <Property name="DBConnectionFactoryNamespace">
-            <Value>com.topcoder.timetracker.report.Informix</Value>
+            <Value>com.cronos.timetracker.report.Informix</Value>
         </Property>
         <Property name="Connection">
             <Value>InformixConnection</Value>

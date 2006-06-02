@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <CMConfig>
-   <Config name="com.topcoder.timetracker.report.Informix">
+   <Config name="com.cronos.timetracker.report.Informix">
       <Property name="connections">
          <Property name="default">
             <Value>InformixConnection</Value>
@@ -11,17 +11,17 @@
             </Property>
             <Property name="parameters">
                 <Property name="jdbc_driver">
-                    <Value>com.informix.jdbc.IfxDriver</Value>
-                </Property>
-                <Property name="jdbc_url">
-                    <Value>jdbc:informix-sqli://127.0.0.1:1526/time_tracker_report:informixserver=devinformix10_shm</Value>
-                </Property>
-                <Property name="user">
-                    <Value>informix</Value>
-                </Property>
-                <Property name="password">
-                    <Value>informix</Value>
-                </Property>
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://tygrys:1526/report_2:informixserver=ol_tygrys</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>michal</Value>
+					</Property>
             </Property>
          </Property>
      </Property>

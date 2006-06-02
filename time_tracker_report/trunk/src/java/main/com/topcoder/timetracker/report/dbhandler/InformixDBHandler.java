@@ -1,21 +1,22 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report.dbhandler;
+package com.cronos.timetracker.report.dbhandler;
 
 import com.topcoder.db.connectionfactory.ConfigurationException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
-import com.topcoder.timetracker.report.EqualityFilter;
-import com.topcoder.timetracker.report.Filter;
-import com.topcoder.timetracker.report.FilterType;
-import com.topcoder.timetracker.report.RangeFilter;
-import com.topcoder.timetracker.report.ReportCategory;
-import com.topcoder.timetracker.report.ReportConfiguration;
-import com.topcoder.timetracker.report.ReportConfigurationException;
-import com.topcoder.timetracker.report.ReportType;
+import com.cronos.timetracker.report.EqualityFilter;
+import com.cronos.timetracker.report.Filter;
+import com.cronos.timetracker.report.FilterType;
+import com.cronos.timetracker.report.InFilter;
+import com.cronos.timetracker.report.RangeFilter;
+import com.cronos.timetracker.report.ReportCategory;
+import com.cronos.timetracker.report.ReportConfiguration;
+import com.cronos.timetracker.report.ReportConfigurationException;
+import com.cronos.timetracker.report.ReportType;
 import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
@@ -53,7 +54,7 @@ public class InformixDBHandler implements DBHandler {
      * of {@link #loadConfiguration()}.
      */
     private static final String QUERIES_CONFIGURATION_NAMESPACE
-        = "com.topcoder.timetracker.report.QueriesConfiguration";
+        = "com.cronos.timetracker.report.QueriesConfiguration";
     /**
      * This is the prefix from which the {@link ConfigManager} property names used for lookup of {@link #baseQueries}
      * during invocation of {@link #loadConfiguration()} are constructed.
@@ -62,7 +63,7 @@ public class InformixDBHandler implements DBHandler {
     /**
      * This is the name of the {@link ConfigManager} namespace used for lookup of column types by column name.
      */
-    private static final String COLUMN_TYPES_NAMESPACE = "com.topcoder.timetracker.report.ColumnTypes";
+    private static final String COLUMN_TYPES_NAMESPACE = "com.cronos.timetracker.report.ColumnTypes";
     /**
      * This is the suffix from which the {@link ConfigManager} property names used for lookup of column types by column
      * name are constructed.
@@ -73,6 +74,12 @@ public class InformixDBHandler implements DBHandler {
      * filter are constructed.
      */
     private static final String FILTER_LOOKUP_KEY_PREFIX = "FILTER_";
+
+    /**
+     * This is the prefix from which the {@link ConfigManager} property names used for lookup of SQL fragments for a
+     * sort by are constructed.
+     */
+    private static final String SORT_BY_LOOKUP_KEY_PREFIX = "SORT_BY_";
 
     /**
      * This map maintains a mapping between the {@link java.sql.ResultSet} object generated as a part of the call to the
@@ -89,7 +96,7 @@ public class InformixDBHandler implements DBHandler {
     /**
      * This is Map contains all the Base-Queries, for all the different Reports possible by the {@link ReportType} and
      * the {@link ReportCategory} defined. The Base-Queries for all the type and category of the {@link
-     * com.topcoder.timetracker.report.Report}, are specified in the configuration that is loaded via the {@link
+     * com.cronos.timetracker.report.Report}, are specified in the configuration that is loaded via the {@link
      * com.topcoder.util.config.ConfigManager} an then put into in the Map.
      * <p/>
      * The key for the Map will be a string which is combination of {@link ReportType} and the {@link ReportCategory}.
@@ -166,6 +173,8 @@ public class InformixDBHandler implements DBHandler {
         final String reportCategory = config.getCategory().getCategory();
         PreparedStatement statement = null;
         String sql = "";
+        String sortBy = getOptionalStringPropertyFromConfigManager(QUERIES_CONFIGURATION_NAMESPACE,
+                SORT_BY_LOOKUP_KEY_PREFIX + reportType + "_" + reportCategory);
 
         final String queryString = (String) baseQueries.get(reportType + "_" + reportCategory);
         if (queryString == null) {
@@ -202,9 +211,14 @@ public class InformixDBHandler implements DBHandler {
                     // appended to the corresponding part of the BaseQuery.
                     final String[] filterparts = splitIntoTwoParts(filterQueryPart, "UNION");
 
-                    int count = (filter instanceof RangeFilter)
-                                ? ((RangeFilter) filter).getLowerRangeValues().size()
-                                : ((EqualityFilter) filter).getFilterValues().size();
+                    int count = 0;
+                    if (filter instanceof RangeFilter) {
+                        count = ((RangeFilter) filter).getLowerRangeValues().size();
+                    } else if (filter instanceof EqualityFilter) {
+                        count = ((EqualityFilter) filter).getFilterValues().size();
+                    } else { // in filter
+                        count = 1;
+                    }
                     if (count > 0) { //don't put an empty 'AND()' into the query string if filter is empty
                         baseQueryPart1.append(" AND (");
                         baseQueryPart2.append(" AND (");
@@ -232,8 +246,12 @@ public class InformixDBHandler implements DBHandler {
                     totalParams += count;
                 }
                 String baseQuery = baseQueryPart1.append(" UNION ").append(baseQueryPart2).toString();
-                sql = baseQuery;
-                statement = con.prepareStatement(baseQuery);
+                if (config.getSortBy() == null) {
+                    sql = baseQuery + (sortBy == null ? "" : " Order By " + sortBy);
+                } else {
+                    sql = baseQuery + " Order By " + config.getSortBy();
+                }
+                statement = con.prepareStatement(sql);
 
                 int counter = 0;
                 for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
@@ -264,7 +282,7 @@ public class InformixDBHandler implements DBHandler {
                             setValueInStatement(statement, counter + totalParams, upperVal, colType);
                         }
 
-                    } else {
+                    } else if (filter instanceof EqualityFilter){
                         // filter is an EqualityFilter
                         final List values = ((EqualityFilter) filter).getFilterValues();
                         for (Iterator iterator1 = values.iterator(); iterator1.hasNext();) {
@@ -277,6 +295,11 @@ public class InformixDBHandler implements DBHandler {
                             // union so the placeholder list is 2*totalParams long)
                             setValueInStatement(statement, counter + totalParams, value, colType);
                         }
+                    } else {
+                        String value = ((InFilter) filter).toString();
+                        counter++;
+                        setValueInStatement(statement, counter, value, colType);
+                        setValueInStatement(statement, counter + totalParams, value, colType);
                     }
                 }
 
@@ -285,7 +308,6 @@ public class InformixDBHandler implements DBHandler {
                 return resultSet;
             } else {
                 // For reports belonging to the category of TIME or EXPENSE reports.
-
                 final StringBuffer baseQuery = new StringBuffer(queryString);
                 final List filters = config.getFilters();
                 for (Iterator iterator = filters.iterator(); iterator.hasNext();) {
@@ -295,9 +317,14 @@ public class InformixDBHandler implements DBHandler {
                     final String filterQueryPart = getStringPropertyFromConfigManager(QUERIES_CONFIGURATION_NAMESPACE,
                         FILTER_LOOKUP_KEY_PREFIX + colName + "_" + reportType + "_" + reportCategory);
 
-                    final int count = (filter instanceof RangeFilter)
-                                      ? ((RangeFilter) filter).getLowerRangeValues().size()
-                                      : ((EqualityFilter) filter).getFilterValues().size();
+                    int count = 0;
+                    if (filter instanceof RangeFilter) {
+                        count = ((RangeFilter) filter).getLowerRangeValues().size();
+                    } else if (filter instanceof EqualityFilter) {
+                        count = ((EqualityFilter) filter).getFilterValues().size();
+                    } else {
+                        count = ((InFilter) filter).getValues().size();
+                    }
                     if (count > 0) { //don't put an empty 'AND()' into the query string if filter is empty
                         baseQuery.append(" AND (");
                         for (int i = 0; i < count; i++) {
@@ -311,7 +338,11 @@ public class InformixDBHandler implements DBHandler {
                         baseQuery.append(")");
                     }
                 }
-                sql = baseQuery.toString();
+                if (config.getSortBy() == null) {
+                    sql = baseQuery + (sortBy == null ? "" : " Order By " + sortBy);
+                } else {
+                    sql = baseQuery + " Order By " + config.getSortBy();
+                }
                 statement = con.prepareStatement(sql);
                 int counter = 0;
 
@@ -334,7 +365,7 @@ public class InformixDBHandler implements DBHandler {
                             setValueInStatement(statement, counter, upperVal, colType);
                         }
 
-                    } else {
+                    } else if (filter instanceof EqualityFilter) {
                         // filter is an EqualityFilter
                         final List values = ((EqualityFilter) filter).getFilterValues();
                         for (Iterator iterator1 = values.iterator(); iterator1.hasNext();) {
@@ -342,6 +373,10 @@ public class InformixDBHandler implements DBHandler {
                             final String value = (String) iterator1.next();
                             setValueInStatement(statement, counter, value, colType);
                         }
+                    } else {
+                        String value = ((InFilter) filter).toString();
+                        counter++;
+                        setValueInStatement(statement, counter, value, colType);
                     }
                 }
                 final ResultSet resultSet = statement.executeQuery();
@@ -506,6 +541,57 @@ public class InformixDBHandler implements DBHandler {
     }
 
     /**
+     * This method looks up a configuration property of type {@link String} from the {@link ConfigManager}.
+     *
+     * @param namespace A non-<tt>null</tt>, non-empty (trim'd) string representing the {@link ConfigManager} namespace
+     *                  in which to lookup the configuration property
+     * @param key       A non-<tt>null</tt>, non-empty (trim'd) string representing the name of the property to be
+     *                  looked up
+     *
+     * @return the String value looked up from the {@link ConfigManager}
+     *
+     * @throws IllegalArgumentException     if namespace or key are empty (trim'd) strings
+     * @throws NullPointerException         if namespace or key are <tt>null</tt>
+     * @throws ReportConfigurationException in case the property lookup fails, returns <tt>null</tt>
+     */
+    private static String getOptionalStringPropertyFromConfigManager(final String namespace, final String key) throws
+        ReportConfigurationException {
+        if (namespace == null) {
+            throw new NullPointerException("The parameter named [namespace] was null.");
+        }
+        if (key == null) {
+            throw new NullPointerException("The parameter named [key] was null.");
+        }
+        if (namespace.trim().length() == 0) {
+            throw new IllegalArgumentException("The parameter named [namespace] was an empty String.");
+        }
+        if (key.trim().length() == 0) {
+            throw new IllegalArgumentException("The parameter named [key] was an empty String.");
+        }
+
+        final Property propertyObject;
+        try {
+            propertyObject = ConfigManager.getInstance().getPropertyObject(namespace, key);
+        } catch (UnknownNamespaceException e) {
+            throw new ReportConfigurationException(
+                "Unable to find [" + key + "] property, namespace [" + namespace + "] was not found.", e);
+        }
+        if (propertyObject == null) {
+            return null;
+        }
+        final String value = propertyObject.getValue();
+        if (value == null) {
+            throw new ReportConfigurationException(
+                "The configuration value for the property [" + key + "] in namespace [" + namespace + "] was null.");
+        }
+        if (value.trim().length() == 0) {
+            throw new ReportConfigurationException("The configuration value for the property [" + key
+                + "] in namespace [" + namespace + "] was an empty String.");
+        }
+        return value;
+    }
+
+    /**
      * This method looks up the {@link ColumnType} defined for the column with the given name.
      *
      * @param colName the name of the column to lookup the type for
@@ -532,6 +618,7 @@ public class InformixDBHandler implements DBHandler {
                     + COLUMN_TYPES_NAMESPACE + "], property [" + key + "] ).");
         }
 
+        ColumnType type = ColumnType.DATE;
         final ColumnType ret = (ColumnType) Enum.getEnumByStringValue(typeName, ColumnType.class);
 
         if (ret == null) {

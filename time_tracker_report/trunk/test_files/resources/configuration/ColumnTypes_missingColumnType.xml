@@ -2,7 +2,7 @@
 
 
 <CMConfig>
-    <Config name="com.topcoder.timetracker.report.ColumnTypes">
+    <Config name="com.cronos.timetracker.report.ColumnTypes">
 
         <Property name="CLIENT_TYPE">
             <Value>VARCHAR</Value>

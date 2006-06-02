@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 /**
  * This interface basically defines the behavior of a ColumnDecorator. A ColumnDecorator will be associated with a

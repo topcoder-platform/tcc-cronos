@@ -23,7 +23,7 @@
     </welcome-file-list>
 
     <taglib>
-        <taglib-uri>com.topcoder.timetracker.report</taglib-uri>
+        <taglib-uri>com.cronos.timetracker.report</taglib-uri>
         <taglib-location>/WEB-INF/lib/Time_Tracker_Report.jar</taglib-location>
     </taglib>
 

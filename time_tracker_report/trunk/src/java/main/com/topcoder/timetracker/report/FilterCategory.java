@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 import com.topcoder.util.collection.typesafeenum.Enum;
 
@@ -43,6 +43,12 @@ public class FilterCategory extends Enum {
      * Represents the enumeration constant for the filter for the "BILLABLE" column.
      */
     public static final FilterCategory BILLABLE = new FilterCategory("FILTER_BILLABLE");
+
+    /**
+     * Represents the enumeration constant for the filter for the "COMAPNY" column.
+     * @since 2.0
+     */
+    public static final FilterCategory COMPANY = new FilterCategory("FILTER_COMPANY");
 
     /**
      * A String specifying the category of the Filter. This instance member will not be <tt>null</tt> in an instantiated

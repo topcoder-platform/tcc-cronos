@@ -1,17 +1,17 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report.htmlreport;
+package com.cronos.timetracker.report.htmlreport;
 
-import com.topcoder.timetracker.report.Column;
-import com.topcoder.timetracker.report.ColumnDecorator;
-import com.topcoder.timetracker.report.ReportConfiguration;
-import com.topcoder.timetracker.report.ReportConfigurationException;
-import com.topcoder.timetracker.report.StyleConstant;
-import com.topcoder.timetracker.report.dbhandler.DBHandler;
-import com.topcoder.timetracker.report.dbhandler.DBHandlerFactory;
-import com.topcoder.timetracker.report.dbhandler.DBHandlerNotFoundException;
-import com.topcoder.timetracker.report.dbhandler.ReportSQLException;
+import com.cronos.timetracker.report.Column;
+import com.cronos.timetracker.report.ColumnDecorator;
+import com.cronos.timetracker.report.ReportConfiguration;
+import com.cronos.timetracker.report.ReportConfigurationException;
+import com.cronos.timetracker.report.StyleConstant;
+import com.cronos.timetracker.report.dbhandler.DBHandler;
+import com.cronos.timetracker.report.dbhandler.DBHandlerFactory;
+import com.cronos.timetracker.report.dbhandler.DBHandlerNotFoundException;
+import com.cronos.timetracker.report.dbhandler.ReportSQLException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
@@ -29,7 +29,7 @@ import java.util.Map;
  * DBHandler#getReportData(ReportConfiguration)} into a HTML table.
  * <p/>
  * This class has been introduced to extract and centralize the otherwise duplicate code from the {@link
- * com.topcoder.timetracker.report.AbstractReport#executeReport(ReportConfiguration)} implementations of {@link
+ * com.cronos.timetracker.report.AbstractReport#executeReport(ReportConfiguration)} implementations of {@link
  * ExpenseReport}, {@link TimeExpenseReport} and {@link TimeReport}.
  * <p/>
  * This class is completely thread safe as it has only static methods and cannot be instantiated.

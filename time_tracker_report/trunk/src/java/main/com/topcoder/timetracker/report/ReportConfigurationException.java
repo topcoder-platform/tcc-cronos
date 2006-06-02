@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.report;
+package com.cronos.timetracker.report;
 
 /**
  * This exception is thrown if any invalid configuration is detected  for a report. This includes <ul><li>Missing

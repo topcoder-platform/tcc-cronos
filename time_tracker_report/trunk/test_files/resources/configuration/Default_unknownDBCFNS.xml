@@ -2,7 +2,7 @@
 
 
 <CMConfig>
-    <Config name="com.topcoder.timetracker.report.DefaultConfiguration">
+    <Config name="com.cronos.timetracker.report.DefaultConfiguration">
         <Property name="DBConnectionFactoryNamespace">
             <Value>argh</Value>
         </Property>

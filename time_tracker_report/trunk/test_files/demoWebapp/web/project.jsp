@@ -1,6 +1,6 @@
-<%@ page import="com.topcoder.timetracker.report.ReportException" %>
+<%@ page import="com.cronos.timetracker.report.ReportException" %>
 <%@ page import="javax.servlet.jsp.JspException" %>
-<%@ taglib uri="com.topcoder.timetracker.report" prefix="ct" %>
+<%@ taglib uri="com.cronos.timetracker.report" prefix="ct" %>
 <!%--
  Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  -->
@@ -14,7 +14,7 @@
     try {
 %>
 <hr/>
-<ct:reportdisplay namespace="com.topcoder.timetracker.report.CustomConfiguration"
+<ct:reportdisplay namespace="com.cronos.timetracker.report.CustomConfiguration"
                   type="TYPE"
                   category="CATEGORY"
                   projectFilter="PROJECT"
