@@ -1,72 +1,219 @@
-/**
- * Copyright (c) 2005, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.user.failuretests;
+package com.cronos.timetracker.user.failuretests;
 
 import junit.framework.TestCase;
-import com.topcoder.timetracker.user.*;
+
+import com.cronos.timetracker.user.User;
 
 /**
- * Failure test cases for User.
- *
- * @author WishingBone
- * @version 1.0
+ * <p>
+ * Failure unit test cases for the User class.
+ * </p>
+ * @author agh
+ * @version 2.0
+ * @since 2.0
  */
 public class UserFailureTests extends TestCase {
+    /**
+     * <p>
+     * The User instance used for testing.
+     * </p>
+     */
+    private User user = null;
 
     /**
-     * Create with negative id.
+     * <p>
+     * Creates User instance.
+     * </p>
+     * @throws Exception to JUnit
      */
-    public void testCreate_NegativeId() {
+    protected void setUp() throws Exception {
+        user = new User();
+    }
+
+    /**
+     * <p>
+     * Tests setAccountStatus(AccountStatus) for failure. Passes null, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetAccountStatus1() {
         try {
-            new User(-1, "name", "store", null);
-            fail("Should have thrown IllegalArgumentException.");
-        } catch (IllegalArgumentException iae) {
+            user.setAccountStatus(null);
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
         }
     }
 
     /**
-     * Create with null name.
+     * <p>
+     * Tests setAddress(Address) for failure. Passes null, IllegalArgumentException is expected.
+     * </p>
      */
-    public void testCreate_NullName() {
+    public void testSetAddress1() {
         try {
-            new User(1, null, "store", null);
-            fail("Should have thrown NullPointerException.");
-        } catch (NullPointerException npe) {
+            user.setAddress(null);
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
         }
     }
 
     /**
-     * Create with empty name.
+     * <p>
+     * Tests setAlgorithmName(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * </p>
      */
-    public void testCreate_EmptyName() {
+    public void testSetAlgorithmName1() {
         try {
-            new User(1, "", "store", null);
-            fail("Should have thrown IllegalArgumentException.");
-        } catch (IllegalArgumentException iae) {
+            user.setAlgorithmName(" ");
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
         }
     }
 
     /**
-     * Create with null store name.
+     * <p>
+     * Tests setAlgorithmName(String) for failure. Passes name that is not contained in encryption repository,
+     * IllegalArgumentException is expected.
+     * </p>
      */
-    public void testCreate_NullStoreName() {
+    public void testSetAlgorithmName2() {
         try {
-            new User(1, "name", null, null);
-            fail("Should have thrown NullPointerException.");
-        } catch (NullPointerException npe) {
+            user.setAlgorithmName("abc");
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
         }
     }
 
     /**
-     * Create with empty store name.
+     * <p>
+     * Tests setCompanyId(String) for failure. Passes 0, IllegalArgumentException is expected.
+     * </p>
      */
-    public void testCreate_EmptyStoreName() {
+    public void testSetCompanyId1() {
         try {
-            new User(1, "name", "", null);
-            fail("Should have thrown IllegalArgumentException.");
-        } catch (IllegalArgumentException iae) {
+            user.setCompanyId(0);
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
         }
     }
 
+    /**
+     * <p>
+     * Tests setCompanyId(String) for failure. Passes negative argument, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetCompanyId2() {
+        try {
+            user.setCompanyId(-3);
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Tests setContactInfo(Contact) for failure. Passes null, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetContactInfo() {
+        try {
+            user.setContactInfo(null);
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Tests setFirstName(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetFirstName1() {
+        try {
+            user.setFirstName(" ");
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Tests setlastName(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetLastName1() {
+        try {
+            user.setLastName(" ");
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Tests setPassword(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetPassword1() {
+        try {
+            user.setPassword(" ");
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Tests setPassword(String) for failure. Passes passcode without specifying algorithm name,
+     * IllegalStateException is expected.
+     * </p>
+     */
+    public void testSetPassword2() {
+        try {
+            user.setPassword("abc");
+            fail("IllegalStateException should be thrown");
+        } catch (IllegalStateException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Tests setPhoneNumber(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetPhoneNumber1() {
+        try {
+            user.setPhoneNumber(" ");
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Tests setUsername(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * </p>
+     */
+    public void testSetUsername1() {
+        try {
+            user.setUsername(" ");
+            fail("IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
 }
