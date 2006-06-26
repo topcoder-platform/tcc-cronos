@@ -500,6 +500,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
             // Execute
             statement.executeUpdate();
 
+
             // add into the exp_reject_reason table
             statement = connection.prepareStatement(ADD_EXP_REJECT_REASON_SQL);
             for (int i = 0; i < rejectReasons.length; ++i) {
@@ -618,6 +619,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
             statement.setInt(1, entryId);
             statement.executeUpdate();
 
+
             // delete from the ExpenseEntries table
             statement = connection.prepareStatement(DELETE_ENTRY_SQL);
 
@@ -683,7 +685,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
      * </p>
      *
      * <p>
-     * Change in 2.0: the company id fieled added and in the component level,
+     * Change in 2.0: the company id field added and in the component level,
      * it will check the expense type is associated with the company id.
      * </p>
      *
@@ -736,15 +738,16 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
             // Execute
             statement.executeUpdate();
 
+
             // update the exp_reject_reason table
             // first delete all the records by given ExpenseEntriesID
             statement = connection.prepareStatement(DELETE_EXP_REJECT_REASON_SQL);
             statement.setInt(1, entry.getId());
             statement.executeUpdate();
 
+
             // then add all the records into the exp_reject_reason table.
             statement = connection.prepareStatement(ADD_EXP_REJECT_REASON_SQL);
-
             for (int i = 0; i < rejectReasons.length; ++i) {
                 int index = 0;
                 statement.setInt(++index, entry.getId());
@@ -813,6 +816,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
                 return null;
             }
 
+
             // retrieve the reject reasons
             statement = connection.prepareStatement(RETRIEVE_REJECT_REASON_SQL);
             retrieveRejectReasons(statement, entry);
@@ -865,6 +869,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
             while ((entry = createExpenseEntry(resultSet)) != null) {
                 list.add(entry);
             }
+
 
             // retrieve the reject reasons
             statement = connection.prepareStatement(RETRIEVE_REJECT_REASON_SQL);
@@ -1446,6 +1451,7 @@ public class ExpenseEntryDbPersistence implements ExpenseEntryPersistence {
             while ((entry = createExpenseEntry(resultSet)) != null) {
                 ret.add(entry);
             }
+
 
             // retrieve the reject reasons
             statement = connection.prepareStatement(RETRIEVE_REJECT_REASON_SQL);

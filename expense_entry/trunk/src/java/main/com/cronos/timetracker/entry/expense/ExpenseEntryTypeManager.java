@@ -104,7 +104,11 @@ public class ExpenseEntryTypeManager {
             type.setId(ExpenseEntryHelper.generateId());
         }
 
-        return typePersistence.addType(type);
+        try {
+            return typePersistence.addType(type);
+        } finally {
+            typePersistence.closeConnection();
+        }
     }
 
     /**
@@ -120,7 +124,11 @@ public class ExpenseEntryTypeManager {
      * @throws PersistenceException if error occurs when deleting the expense entry type.
      */
     public boolean deleteType(int typeId) throws PersistenceException {
-        return typePersistence.deleteType(typeId);
+        try {
+            return typePersistence.deleteType(typeId);
+        } finally {
+            typePersistence.closeConnection();
+        }
     }
 
     /**
@@ -131,7 +139,11 @@ public class ExpenseEntryTypeManager {
      * @throws PersistenceException if error occurs when deleting the expense entry types.
      */
     public void deleteAllTypes() throws PersistenceException {
-        typePersistence.deleteAllTypes();
+        try {
+            typePersistence.deleteAllTypes();
+        } finally {
+            typePersistence.closeConnection();
+        }
     }
 
     /**
@@ -152,8 +164,11 @@ public class ExpenseEntryTypeManager {
     public boolean updateType(ExpenseEntryType type) throws PersistenceException, InsufficientDataException {
         ExpenseEntryHelper.validateNotNull(type, "type");
         ExpenseEntryHelper.validateExpenseEntryTypeData(type);
-
-        return typePersistence.updateType(type);
+        try {
+            return typePersistence.updateType(type);
+        } finally {
+            typePersistence.closeConnection();
+        }
     }
 
     /**
@@ -170,7 +185,11 @@ public class ExpenseEntryTypeManager {
      *         is invalid.
      */
     public ExpenseEntryType retrieveType(int typeId) throws PersistenceException {
-        return typePersistence.retrieveType(typeId);
+        try {
+            return typePersistence.retrieveType(typeId);
+        } finally {
+            typePersistence.closeConnection();
+        }
     }
 
     /**
@@ -184,7 +203,11 @@ public class ExpenseEntryTypeManager {
      *         persistence is invalid.
      */
     public List retrieveAllTypes() throws PersistenceException {
-        return typePersistence.retrieveAllTypes();
+        try {
+            return typePersistence.retrieveAllTypes();
+        } finally {
+            typePersistence.closeConnection();
+        }
     }
 
     /**
@@ -222,7 +245,11 @@ public class ExpenseEntryTypeManager {
             throw new IllegalArgumentException("criteria should not be null.");
         }
 
-        // process the deletion.
-        return this.typePersistence.searchEntries(criteria);
+        try {
+            // process the deletion.
+            return this.typePersistence.searchEntries(criteria);
+        } finally {
+            typePersistence.closeConnection();
+        }
     }
 }

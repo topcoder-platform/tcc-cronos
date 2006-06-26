@@ -91,7 +91,8 @@ final class PersistenceHelper {
             try {
                 statement.close();
             } catch (SQLException e) {
-                throw new PersistenceException("Error occurs when closing the statement.", e);
+                // ignored
+                //throw new PersistenceException("Error occurs when closing the statement.", e);
             }
         }
     }
@@ -110,7 +111,8 @@ final class PersistenceHelper {
             try {
                 resultSet.close();
             } catch (SQLException e) {
-                throw new PersistenceException("Error occurs when closing the result set.", e);
+                // ignore
+                //throw new PersistenceException("Error occurs when closing the result set.", e);
             }
         }
     }

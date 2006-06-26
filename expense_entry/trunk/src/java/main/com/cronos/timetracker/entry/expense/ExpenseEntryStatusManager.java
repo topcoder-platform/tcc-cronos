@@ -104,7 +104,11 @@ public class ExpenseEntryStatusManager {
             status.setId(ExpenseEntryHelper.generateId());
         }
 
-        return statusPersistence.addStatus(status);
+        try {
+            return statusPersistence.addStatus(status);
+        } finally {
+            statusPersistence.closeConnection();
+        }
     }
 
     /**
@@ -120,7 +124,11 @@ public class ExpenseEntryStatusManager {
      * @throws PersistenceException if error occurs when deleting the expense entry status.
      */
     public boolean deleteStatus(int statusId) throws PersistenceException {
-        return statusPersistence.deleteStatus(statusId);
+        try {
+            return statusPersistence.deleteStatus(statusId);
+        } finally {
+            statusPersistence.closeConnection();
+        }
     }
 
     /**
@@ -131,7 +139,11 @@ public class ExpenseEntryStatusManager {
      * @throws PersistenceException if error occurs when deleting the expense entry statuses.
      */
     public void deleteAllStatuses() throws PersistenceException {
-        statusPersistence.deleteAllStatuses();
+        try {
+            statusPersistence.deleteAllStatuses();
+        } finally {
+            statusPersistence.closeConnection();
+        }
     }
 
     /**
@@ -153,7 +165,11 @@ public class ExpenseEntryStatusManager {
         ExpenseEntryHelper.validateNotNull(status, "status");
         ExpenseEntryHelper.validateExpenseEntryStatusData(status);
 
-        return statusPersistence.updateStatus(status);
+        try {
+            return statusPersistence.updateStatus(status);
+        } finally {
+            statusPersistence.closeConnection();
+        }
     }
 
     /**
@@ -170,10 +186,12 @@ public class ExpenseEntryStatusManager {
      *         persistence is invalid.
      */
     public ExpenseEntryStatus retrieveStatus(int statusId) throws PersistenceException {
-        return statusPersistence.retrieveStatus(statusId);
+        try {
+            return statusPersistence.retrieveStatus(statusId);
+        } finally {
+            statusPersistence.closeConnection();
+        }
     }
-
-
 
     /**
      * <p>
@@ -197,8 +215,12 @@ public class ExpenseEntryStatusManager {
             throw new IllegalArgumentException("criteria should not be null.");
         }
 
-        // process the deletion.
-        return this.statusPersistence.searchEntries(criteria);
+        try {
+            // process the deletion.
+            return this.statusPersistence.searchEntries(criteria);
+        } finally {
+            statusPersistence.closeConnection();
+        }
     }
 
     /**
@@ -212,7 +234,11 @@ public class ExpenseEntryStatusManager {
      *         persistence is invalid.
      */
     public List retrieveAllStatuses() throws PersistenceException {
-        return statusPersistence.retrieveAllStatuses();
+        try {
+            return statusPersistence.retrieveAllStatuses();
+        } finally {
+            statusPersistence.closeConnection();
+        }
     }
 
     /**

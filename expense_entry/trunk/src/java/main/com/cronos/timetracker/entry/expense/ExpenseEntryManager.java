@@ -123,7 +123,11 @@ public class ExpenseEntryManager {
             entry.setId(ExpenseEntryHelper.generateId());
         }
 
-        return entryPersistence.addEntry(entry);
+        try {
+            return entryPersistence.addEntry(entry);
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**
@@ -139,7 +143,11 @@ public class ExpenseEntryManager {
      * @throws PersistenceException if error occurs when deleting the expense entry.
      */
     public boolean deleteEntry(int entryId) throws PersistenceException {
-        return entryPersistence.deleteEntry(entryId);
+        try {
+            return entryPersistence.deleteEntry(entryId);
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**
@@ -150,7 +158,11 @@ public class ExpenseEntryManager {
      * @throws PersistenceException if error occurs when deleting the expense entries.
      */
     public void deleteAllEntries() throws PersistenceException {
-        entryPersistence.deleteAllEntries();
+        try {
+            entryPersistence.deleteAllEntries();
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**
@@ -171,7 +183,11 @@ public class ExpenseEntryManager {
         ExpenseEntryHelper.validateNotNull(entry, "entry");
         ExpenseEntryHelper.validateExpenseEntryData(entry);
 
-        return entryPersistence.updateEntry(entry);
+        try {
+            return entryPersistence.updateEntry(entry);
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**
@@ -189,7 +205,11 @@ public class ExpenseEntryManager {
      *         invalid.
      */
     public ExpenseEntry retrieveEntry(int entryId) throws PersistenceException {
-        return entryPersistence.retrieveEntry(entryId);
+        try {
+            return entryPersistence.retrieveEntry(entryId);
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**
@@ -204,7 +224,11 @@ public class ExpenseEntryManager {
      *         invalid.
      */
     public List retrieveAllEntries() throws PersistenceException {
-        return entryPersistence.retrieveAllEntries();
+        try {
+            return entryPersistence.retrieveAllEntries();
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**
@@ -310,7 +334,12 @@ public class ExpenseEntryManager {
                 }
             }
 
-            ret = this.entryPersistence.addEntries(correctEntriesArray, isAtomic);
+            try {
+                ret = this.entryPersistence.addEntries(correctEntriesArray,
+                        isAtomic);
+            } finally {
+                entryPersistence.closeConnection();
+            }
         }
 
         if (isAtomic) {
@@ -356,8 +385,12 @@ public class ExpenseEntryManager {
             throw new IllegalArgumentException("entryIds should not be empty.");
         }
 
-        // process the deletion.
-        return this.entryPersistence.deleteEntries(entryIds, isAtomic);
+        try {
+            // process the deletion.
+            return this.entryPersistence.deleteEntries(entryIds, isAtomic);
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**
@@ -432,9 +465,13 @@ public class ExpenseEntryManager {
 
         ExpenseEntry[] ret = new ExpenseEntry[0];
 
-        if (!correct.isEmpty()) {
-            ret = this.entryPersistence.updateEntries((ExpenseEntry[]) correct.toArray(
-                new ExpenseEntry[correct.size()]), isAtomic);
+        try {
+            if (!correct.isEmpty()) {
+                ret = this.entryPersistence.updateEntries(
+                    (ExpenseEntry[]) correct.toArray(new ExpenseEntry[correct.size()]),isAtomic);
+            }
+        } finally {
+            entryPersistence.closeConnection();
         }
 
         if (isAtomic) {
@@ -482,8 +519,12 @@ public class ExpenseEntryManager {
             throw new IllegalArgumentException("entryIds should not be empty.");
         }
 
-        // process the deletion.
-        return this.entryPersistence.retrieveEntries(entryIds, isAtomic);
+        try {
+            // process the deletion.
+            return this.entryPersistence.retrieveEntries(entryIds, isAtomic);
+        } finally {
+            entryPersistence.closeConnection();
+        }
     }
 
     /**

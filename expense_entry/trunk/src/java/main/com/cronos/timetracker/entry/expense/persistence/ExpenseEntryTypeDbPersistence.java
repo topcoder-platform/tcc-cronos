@@ -763,6 +763,12 @@ public class ExpenseEntryTypeDbPersistence implements ExpenseEntryTypePersistenc
             }
         } catch (SQLException e) {
             // ignore it.
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                // ignore it.
+            }
         }
     }
 }
