@@ -1,0 +1,953 @@
+{\rtf1\ansi\ansicpg1252\uc1\deff0\stshfdbch0\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman{\*\falt Times New Roman};}
+{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial{\*\falt Arial};}{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New{\*\falt Courier New};}
+{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol{\*\falt Symbol};}{\f10\fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings{\*\falt Wingdings};}
+{\f34\fswiss\fcharset128\fprq2{\*\panose 020b0604020202020204}Arial Unicode MS{\*\falt MS PGothic};}{\f41\fswiss\fcharset128\fprq2{\*\panose 020b0604020202020204}@Arial Unicode MS;}
+{\f78\froman\fcharset238\fprq2 Times New Roman CE{\*\falt Times New Roman};}{\f79\froman\fcharset204\fprq2 Times New Roman Cyr{\*\falt Times New Roman};}{\f81\froman\fcharset161\fprq2 Times New Roman Greek{\*\falt Times New Roman};}
+{\f82\froman\fcharset162\fprq2 Times New Roman Tur{\*\falt Times New Roman};}{\f83\froman\fcharset177\fprq2 Times New Roman (Hebrew){\*\falt Times New Roman};}{\f84\froman\fcharset178\fprq2 Times New Roman (Arabic){\*\falt Times New Roman};}
+{\f85\froman\fcharset186\fprq2 Times New Roman Baltic{\*\falt Times New Roman};}{\f86\froman\fcharset163\fprq2 Times New Roman (Vietnamese){\*\falt Times New Roman};}{\f88\fswiss\fcharset238\fprq2 Arial CE{\*\falt Arial};}
+{\f89\fswiss\fcharset204\fprq2 Arial Cyr{\*\falt Arial};}{\f91\fswiss\fcharset161\fprq2 Arial Greek{\*\falt Arial};}{\f92\fswiss\fcharset162\fprq2 Arial Tur{\*\falt Arial};}{\f93\fswiss\fcharset177\fprq2 Arial (Hebrew){\*\falt Arial};}
+{\f94\fswiss\fcharset178\fprq2 Arial (Arabic){\*\falt Arial};}{\f95\fswiss\fcharset186\fprq2 Arial Baltic{\*\falt Arial};}{\f96\fswiss\fcharset163\fprq2 Arial (Vietnamese){\*\falt Arial};}
+{\f98\fmodern\fcharset238\fprq1 Courier New CE{\*\falt Courier New};}{\f99\fmodern\fcharset204\fprq1 Courier New Cyr{\*\falt Courier New};}{\f101\fmodern\fcharset161\fprq1 Courier New Greek{\*\falt Courier New};}
+{\f102\fmodern\fcharset162\fprq1 Courier New Tur{\*\falt Courier New};}{\f103\fmodern\fcharset177\fprq1 Courier New (Hebrew){\*\falt Courier New};}{\f104\fmodern\fcharset178\fprq1 Courier New (Arabic){\*\falt Courier New};}
+{\f105\fmodern\fcharset186\fprq1 Courier New Baltic{\*\falt Courier New};}{\f106\fmodern\fcharset163\fprq1 Courier New (Vietnamese){\*\falt Courier New};}{\f420\fswiss\fcharset0\fprq2 Arial Unicode MS Western{\*\falt MS PGothic};}
+{\f418\fswiss\fcharset238\fprq2 Arial Unicode MS CE{\*\falt MS PGothic};}{\f419\fswiss\fcharset204\fprq2 Arial Unicode MS Cyr{\*\falt MS PGothic};}{\f421\fswiss\fcharset161\fprq2 Arial Unicode MS Greek{\*\falt MS PGothic};}
+{\f422\fswiss\fcharset162\fprq2 Arial Unicode MS Tur{\*\falt MS PGothic};}{\f423\fswiss\fcharset177\fprq2 Arial Unicode MS (Hebrew){\*\falt MS PGothic};}{\f424\fswiss\fcharset178\fprq2 Arial Unicode MS (Arabic){\*\falt MS PGothic};}
+{\f425\fswiss\fcharset186\fprq2 Arial Unicode MS Baltic{\*\falt MS PGothic};}{\f426\fswiss\fcharset163\fprq2 Arial Unicode MS (Vietnamese){\*\falt MS PGothic};}{\f427\fswiss\fcharset222\fprq2 Arial Unicode MS (Thai){\*\falt MS PGothic};}
+{\f490\fswiss\fcharset0\fprq2 @Arial Unicode MS Western;}{\f488\fswiss\fcharset238\fprq2 @Arial Unicode MS CE;}{\f489\fswiss\fcharset204\fprq2 @Arial Unicode MS Cyr;}{\f491\fswiss\fcharset161\fprq2 @Arial Unicode MS Greek;}
+{\f492\fswiss\fcharset162\fprq2 @Arial Unicode MS Tur;}{\f493\fswiss\fcharset177\fprq2 @Arial Unicode MS (Hebrew);}{\f494\fswiss\fcharset178\fprq2 @Arial Unicode MS (Arabic);}{\f495\fswiss\fcharset186\fprq2 @Arial Unicode MS Baltic;}
+{\f496\fswiss\fcharset163\fprq2 @Arial Unicode MS (Vietnamese);}{\f497\fswiss\fcharset222\fprq2 @Arial Unicode MS (Thai);}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;
+\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}
+{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{\s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 1;}{\s2\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 heading 2;}{
+\s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 
+heading 3;}{\s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 
+heading 4;}{\s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0 \fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 
+\sbasedon0 \snext0 heading 5;}{\s6\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl5\outlinelevel5\adjustright\rin0\lin0\itap0 
+\i\fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 6;}{\s7\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl6\outlinelevel6\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 7;}{\s8\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl7\outlinelevel7\adjustright\rin0\lin0\itap0 \i\f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 8;}{\s9\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl8\outlinelevel8\adjustright\rin0\lin0\itap0 \b\i\f1\fs18\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 9;}{\*\cs10 \additive \ssemihidden Default Paragraph Font;}{\*
+\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
+\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{\*\cs15 \additive \ul\cf2 \sbasedon10 Hyperlink;}{
+\s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext16 Body Text;}{\s17\ql \li720\ri0\sa120\sl240\slmult0
+\nowidctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \i\f1\fs20\cf2\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext16 \sautoupd InfoBlue;}{\s18\ql \li0\ri0\widctlpar\faauto\rin0\lin0\itap0 
+\f1\fs24\cf1\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \snext18 \styrsid9380693 Default;}{\s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0 
+\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext19 \styrsid9380693 Style Heading 3 + 10 pt Not Bold;}}{\*\listtable{\list\listtemplateid-1002801566{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fbias0 \s1\jclisttab\tx360 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'03\'00.\'01;}{\levelnumbers\'01\'03;}
+\fbias0 \s2\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'05\'00.\'01.\'02;}{\levelnumbers\'01\'03\'05;}\fbias0 \s3\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0
+\leveljc0\leveljcn0\levelfollow1\levelstartat1\levelspace0\levelindent0{\leveltext\'07\'00.\'01.\'02.\'03;}{\levelnumbers\'01\'03\'05\'07;}\fbias0 \s4}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'09\'00.\'01.\'02.\'03.\'04;}{\levelnumbers\'01\'03\'05\'07\'09;}\fbias0 \s5\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0b\'00.\'01.\'02.\'03.\'04.\'05;}{\levelnumbers\'01\'03\'05\'07\'09\'0b;}\fbias0 \s6\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0d\'00.\'01.\'02.\'03.\'04.\'05.\'06;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d;}\fbias0 \s7\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0f\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f;}\fbias0 \s8\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'11\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07.\'08;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f\'11;}\fbias0 \s9\jclisttab\tx0 }{\listname ;}\listid-5}{\list\listtemplateid-817471354\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid592376902\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \s19\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691
+\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}
+\f10\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li6120
+\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li7560\jclisttab\tx7560\lin7560 }{\listname ;}\listid297998283}
+{\list\listtemplateid435963285\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow2\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid592376902\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698693
+\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0
+\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'00;}{\levelnumbers
+;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0
+\levelindent0{\leveltext\leveltemplateid67698691\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'00;}{\levelnumbers;}}{\listname 
+;}\listid445777177}{\list\listtemplateid766663220\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }
+{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}
+\f2\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }
+{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li7560\jclisttab\tx7560\lin7560 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li8280\jclisttab\tx8280\lin8280 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0
+{\leveltext\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li9000\jclisttab\tx9000\lin9000 }{\listname ;}\listid659893714}{\list\listtemplateid-160384884\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\leveltemplateid67698691\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693
+\'02\'02.;}{\levelnumbers\'01;}\fi-180\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'02\'03.;}{\levelnumbers\'01;}\fi-360\li3240
+\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'02\'04.;}{\levelnumbers\'01;}\fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel
+\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'02\'05.;}{\levelnumbers\'01;}\fi-180\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'02\'06.;}{\levelnumbers\'01;}\fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\leveltemplateid67698691\'02\'07.;}{\levelnumbers\'01;}\fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\leveltemplateid67698693\'02\'08.;}{\levelnumbers\'01;}\fi-180\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid806357716}{\list\listtemplateid932329388\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\leveltemplateid67698713\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715
+\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'01\u-3913 ?;}{\levelnumbers;}
+\f3\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3960
+\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }
+{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23
+\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid876431865}{\list\listtemplateid667841226\listhybrid{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li360\jclisttab\tx360\lin360 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691
+\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}
+\f10\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li4680
+\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listname ;}\listid880173990}
+{\list\listtemplateid-2086119468\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1800
+\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0
+{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693
+\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li7560\jclisttab\tx7560\lin7560 }{\listname ;}\listid2078744589}{\list\listtemplateid-985754512{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'02\'00.;}{\levelnumbers\'01;}\jclisttab\tx360 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'03\'00.\'01;}{\levelnumbers\'01\'03;}\jclisttab\tx0 }{\listlevel\levelnfc0
+\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'05\'00.\'01.\'02;}{\levelnumbers\'01\'03\'05;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\'07\'00.\'01.\'02.\'03;}{\levelnumbers\'01\'03\'05\'07;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'09\'00.\'01.\'02.\'03.\'04;}{\levelnumbers
+\'01\'03\'05\'07\'09;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'0b\'00.\'01.\'02.\'03.\'04.\'05;}{\levelnumbers\'01\'03\'05\'07\'09\'0b;}\jclisttab\tx0 }{\listlevel
+\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'0d\'00.\'01.\'02.\'03.\'04.\'05.\'06;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'0f\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'11\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07.\'08;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f\'11;}\jclisttab\tx0 }{\listname ;}\listid2094743958}}{\*\listoverridetable{\listoverride\listid-5\listoverridecount0\ls1}
+{\listoverride\listid806357716\listoverridecount9{\lfolevel}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel
+\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}\ls2}{\listoverride\listid876431865\listoverridecount9{\lfolevel}{\lfolevel}
+{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}\ls3}{\listoverride\listid445777177\listoverridecount0\ls4}{\listoverride\listid876431865\listoverridecount0\ls5}{\listoverride\listid806357716\listoverridecount0\ls6}
+{\listoverride\listid297998283\listoverridecount0\ls7}{\listoverride\listid2094743958\listoverridecount0\ls8}{\listoverride\listid880173990\listoverridecount0\ls9}{\listoverride\listid659893714\listoverridecount0\ls10}{\listoverride\listid2078744589
+\listoverridecount0\ls11}{\listoverride\listid297998283\listoverridecount0\ls12}{\listoverride\listid297998283\listoverridecount0\ls13}}{\*\rsidtbl \rsid154166\rsid531271\rsid743570\rsid800590\rsid1399857\rsid1459238\rsid1512593\rsid1529164\rsid1728436
+\rsid1916625\rsid2122042\rsid2308297\rsid2309418\rsid2312770\rsid2449292\rsid2562558\rsid2714032\rsid2769449\rsid3085404\rsid3433924\rsid3609494\rsid3625850\rsid3739916\rsid3742193\rsid3885868\rsid3895503\rsid4158454\rsid4723834\rsid5126840\rsid5194961
+\rsid5249139\rsid5577096\rsid5772915\rsid5789468\rsid5926600\rsid6061708\rsid6162099\rsid6251675\rsid6491089\rsid6704384\rsid6771048\rsid6834741\rsid6885955\rsid6950849\rsid6960945\rsid7039124\rsid7152684\rsid7490597\rsid7542262\rsid7617680\rsid7693177
+\rsid7755077\rsid7764772\rsid7951447\rsid7961949\rsid8027735\rsid8196500\rsid8481689\rsid8724984\rsid8744715\rsid8803700\rsid8913157\rsid8926212\rsid8996656\rsid9111441\rsid9119689\rsid9380693\rsid9655635\rsid9771668\rsid9772491\rsid10298036\rsid10362329
+\rsid10487652\rsid10487688\rsid10632036\rsid10695579\rsid10700652\rsid10765256\rsid10771929\rsid10830148\rsid10972243\rsid11154015\rsid11229705\rsid11274567\rsid11367904\rsid11496956\rsid11620076\rsid12124621\rsid12333092\rsid12612589\rsid12800507
+\rsid13066773\rsid13205183\rsid13317101\rsid13393026\rsid13400541\rsid13401154\rsid13664048\rsid14160407\rsid14290961\rsid14291598\rsid14368902\rsid14373555\rsid14489810\rsid14615309\rsid14642844\rsid14703556\rsid14758265\rsid14838129\rsid14887976
+\rsid15300465\rsid15493990\rsid15547734\rsid15561098\rsid15609347\rsid15625242\rsid15819605\rsid15955933\rsid16018953\rsid16072218\rsid16200955\rsid16212739\rsid16265180\rsid16327083\rsid16330349\rsid16589815\rsid16657551\rsid16731167\rsid16731325}
+{\*\generator Microsoft Word 10.0.6612;}{\info{\title <<Component>> <<Version>> Component Specification}{\author gpaul}{\operator Kyle Littlefield}{\creatim\yr2004\mo6\dy16\hr17\min44}{\revtim\yr2006\mo7\dy3\min10}{\version94}{\edmins2815}{\nofpages18}
+{\nofwords4869}{\nofchars27757}{\*\company TopCoder}{\nofcharsws32561}{\vern16389}}\widowctrl\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180\dghorigin1800\dgvorigin1440
+\dghshow1\dgvshow1\jexpand\viewkind1\viewscale100\pgbrdrhead\pgbrdrfoot\splytwnine\ftnlytwnine\htmautsp\nolnhtadjtbl\useltbaln\alntblind\lytcalctblwd\lyttblrtgr\lnbrkrule\rsidroot13401154 \fet0\sectd \linex0\endnhere\sectlinegrid360\sectdefaultcl\sftnbj 
+{\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta )}}
+{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl8
+\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\tx720\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs28\ul\insrsid7755077 \hich\af1\dbch\af34\loch\f1 Deliverable}{\fs28\ul\insrsid9380693 
+\hich\af1\dbch\af34\loch\f1  Management 1.0}{\fs28\ul\insrsid12612589 \hich\af1\dbch\af34\loch\f1  Component Specification
+\par }\pard\plain \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Design
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1916625 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid9380693 The }{\insrsid1916625 Deliverable}{\insrsid9380693 
+ Management component provides }{\insrsid1916625 deliverable}{\insrsid9380693  management functionalities. }{\lang1033\langfe2052\langfenp2052\insrsid1916625 
+Various deliverables need to be fulfilled for a project during a specific phase.  Usually a phase can be concluded only when all the required deliverables are present.  The component defines an API to track the deliverables.  The actual mechanism to verif
+y each deliverable will be pluggable.
+\par }{\lang1033\langfe2052\langfenp2052\insrsid1916625\charrsid14291598 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6771048 {\lang1033\langfe2052\langfenp2052\insrsid1916625 It also supports two types of specific deliverables, document upload and submission.}{
+\lang1033\langfe2052\langfenp2052\insrsid6771048   Submission is a type of upload that has additional properties.}{\lang1033\langfe2052\langfenp2052\insrsid9380693 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid9380693 {\insrsid9380693 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6834741 {\insrsid9380693 For development, this co}{\insrsid6834741 mponent is split into two parts.  The main p
+art will need to be done first, as the persistence part can not be done without the object model classes (in the main part) }{\insrsid7764772 being}{\insrsid6834741  complete.
+\par {\listtext\pard\plain\s19 \f10\insrsid9380693 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard\plain \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid6834741 
+\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid9380693 Main part: This development project will be responsible for all classes and interfaces in the com.topcoder.management.}{\insrsid7755077 deliverable}{\insrsid9380693  package and the 
+}{\insrsid7755077 com.topcoder.management.deliverable}{\insrsid9380693 .search classes.  The }{\insrsid7755077 Upload}{\insrsid9380693 PersistenceException }{\insrsid7755077 and DeliverablePersistenceException }{\insrsid6834741 will also fall in this d}{
+\insrsid7755077 evelopment project because they are declared to be thrown in the m}{\insrsid6834741 anager interface.
+\par {\listtext\pard\plain\s19 \f10\insrsid9380693 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid9380693 {\insrsid9380693 
+Persistence part: This development project will be responsible for the classes in the com.topcoder.management.}{\insrsid7755077 deliverable}{\insrsid9380693 .persistence and }{\insrsid7755077 com.topcoder.management.deliverable}{\insrsid9380693 
+.persistence.sql packages.}{\insrsid6834741   Development of the}{\insrsid7755077  persistence exceptions}{\insrsid6834741  will not fall in this development project, as it will already have been done in the main part.}{\insrsid9380693 
+\par }\pard \s19\ql \li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid6834741 {\insrsid6834741\charrsid9380693 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid9380693 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Design Patterns }
+{\insrsid9380693 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6834741 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid8481689 The }{\insrsid9119689 Deliverable}{\insrsid8481689 
+Persistence interface and implementations uses the }{\b\insrsid8481689 Strategy Pattern}{\insrsid9119689 , as do}{\insrsid8481689  the }{\insrsid9119689 Deliverable}{\insrsid8481689 Manager}{\insrsid9119689 , UploadPersistence, and UploadManager}{
+\insrsid8481689  interface}{\insrsid13066773 s}{\insrsid8481689  and implementations.}{\insrsid6834741 
+\par }{\insrsid11229705\charrsid8481689 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Industry Standards 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6834741 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid6834741 SQL
+\par }{\insrsid6834741\charrsid6834741 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid12800507 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 
+Required Algorithms}{\insrsid12800507 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7617680 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid7617680 
+The only complicated part of this component is the SQL queries needed in the Sql}{\insrsid5772915 Upload}{\insrsid7617680 Persistence }{\insrsid13317101 and SqlDeliverable}{\insrsid5772915 Persistence }{\insrsid7617680 class}{\insrsid5772915 s}{
+\insrsid7617680 .  Beyond this, nothing more complicated than a simple for loop or an if/else is needed in this component.
+\par }{\insrsid7617680\charrsid7617680 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid7039124 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Sql Queries}{
+\insrsid14887976 \hich\af1\dbch\af34\loch\f1  for }{\insrsid9771668 \hich\af1\dbch\af34\loch\f1 SqlUpload}{\insrsid8724984 \hich\af1\dbch\af34\loch\f1 Persistence}{\insrsid7039124 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14368902 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid14368902 
+This section lists the SQL queries and statements that will be needed by the Sql}{\insrsid9771668 Upload}{\insrsid14368902 Persistence class, accompanied by a written explanation of what to do, when more logic than just a sequence of }{\insrsid6704384 
+SQL }{\insrsid14368902 statements is needed.  All of these }{\insrsid6704384 SQL }{\insrsid14368902 statements should be executed using PreparedStatements.  A typical method of this class would look like (this example us}{\insrsid9771668 es the \'93
+Update Upload Type}{\insrsid14368902 \'94 statement}{\insrsid6704384 ):}{\insrsid14368902 
+\par 
+\par SQL statement to execute:
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11154015 {\f2\fs20\insrsid11154015\charrsid6491089 UPDATE upload_type_lu
+\par SET name = ?, description = ?, modify_user = ?, modify_date = ?
+\par WHERE upload_type_id = ?
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14368902 {\insrsid14368902 
+\par }{\insrsid6704384 Sample Code:
+\par }{\insrsid14368902 
+\par }{\f2\fs20\cf11\insrsid14368902\charrsid2769449 // Open connection
+\par }{\f2\fs20\insrsid14368902\charrsid2769449 Connection connection = connectionFactory.createConnection();
+\par }{\f2\fs20\cf11\insrsid14368902\charrsid2769449 // Create a prepared statement
+\par }{\f2\fs20\insrsid14368902\charrsid2769449 PreparedStatement ps = }{\f2\fs20\insrsid2769449 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2769449 {\f2\fs20\insrsid14368902\charrsid2769449 connection.prepareStatement(< above text >);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1529164 {\f2\fs20\cf11\insrsid14368902\charrsid2769449 // Use data in NotificationType passed to method to set}{\f2\fs20\insrsid14368902\charrsid2769449  }{
+\f2\fs20\insrsid7490597 
+\par }{\f2\fs20\cf11\insrsid7490597\charrsid7490597 // parameters }{\f2\fs20\cf11\insrsid14368902\charrsid7490597 in prepared statement
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14368902 {\f2\fs20\insrsid14368902\charrsid2769449 ps.setString(1, }{\f2\fs20\insrsid11154015 uploadType}{\f2\fs20\insrsid14368902\charrsid2769449 .getName());
+
+\par ps.setString(2, }{\f2\fs20\insrsid11154015 uploadType}{\f2\fs20\insrsid14368902\charrsid2769449 .getDescription());
+\par ps.setString(3, }{\f2\fs20\insrsid11154015 uploadType}{\f2\fs20\insrsid14368902\charrsid2769449 .getModificationUser());
+\par ps.setDate(4, }{\f2\fs20\insrsid11154015 uploadType}{\f2\fs20\insrsid14368902\charrsid2769449 .getModificationDate());
+\par ps.setLong(5, }{\f2\fs20\insrsid11154015 uploadType}{\f2\fs20\insrsid14368902\charrsid2769449 .getId());
+\par }{\f2\fs20\cf11\insrsid2769449\charrsid2769449 // execute PreparedStatement
+\par }{\f2\fs20\insrsid2769449\charrsid2769449 ps.execute();
+\par }{\f2\fs20\cf11\insrsid2769449\charrsid2769449 // close connection
+\par }{\f2\fs20\insrsid2769449\charrsid2769449 connection.close();
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14368902 {\insrsid14368902\charrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.1\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14887976 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Add Upload Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 INSERT INTO upload_type_lu
+\par (upload_type_id, name, description, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?, ?, ?, ?)}{\f2\fs20\insrsid14887976 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.2\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Remove Upload Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 DELETE FROM upload_type_lu 
+\par WHERE upload_type_id = ?}{\f2\fs20\insrsid14887976 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.3\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Update Upload Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 UPDATE upload_type_lu
+\par SET name = ?, description = ?, modify_user = ?, modify_date = ?
+\par WHERE upload_type_id = ?}{\f2\fs20\insrsid14887976 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.4\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Load Upload Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 
+SELECT upload_type_id, name, description, create_user, create_date, modify_user, modify_date
+\par FROM upload_type_lu
+\par WHERE upload_type_id = ?}{\f2\fs20\insrsid14887976 
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid6885955\charrsid8926212 \hich\af1\dbch\af34\loch\f1 1.3.1.4.1\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid6885955 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid6885955\charrsid8926212 
+\hich\af1\dbch\af34\loch\f1 Load }{\fs20\insrsid6885955 \hich\af1\dbch\af34\loch\f1 Upload Types
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6885955 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid6885955 
+This is used to load multiple upload types with a single query.  The only difference is that the WHERE clause becomes:}{\insrsid6885955\charrsid8926212 
+\par }{\f2\fs20\insrsid6885955\charrsid6491089 WHERE }{\f2\fs20\insrsid6885955 upload_type_id IN (<id_values>)
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 {\f2\fs20\insrsid6885955 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.5\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Add Upload Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 INSERT INTO upload_status_lu
+\par (upload_status_id, name, description, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?, ?, ?, ?)}{\f2\fs20\insrsid14887976 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.6\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Remove Upload Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 DELETE FROM upload_status_lu
+\par WHERE upload_status_id = ?}{\f2\fs20\insrsid14887976 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.7\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Update Upload Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 UPDATE upload_status_lu
+\par SET name = ?, description = ?, modify_user = ?, modify_date = ?
+\par WHERE upload_status_id = ?}{\f2\fs20\insrsid14887976 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14887976 \hich\af1\dbch\af34\loch\f1 1.3.1.8\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14887976 \hich\af1\dbch\af34\loch\f1 
+Load Upload Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14887976\charrsid6491089 
+SELECT upload_status_id, name, description, create_user, create_date, modify_user, modify_date
+\par FROM upload_status_lu
+\par WHERE upload_status_id = ?}{\f2\fs20\insrsid14887976 
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid6885955\charrsid8926212 \hich\af1\dbch\af34\loch\f1 1.3.1.8.1\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid6885955 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid6885955\charrsid8926212 
+\hich\af1\dbch\af34\loch\f1 Load }{\fs20\insrsid6885955 \hich\af1\dbch\af34\loch\f1 Upload Statuses
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6885955 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid6885955 
+This is used to load multiple upload statuses with a single query.  The only difference is that the WHERE clause becomes:}{\insrsid6885955\charrsid8926212 
+\par }{\f2\fs20\insrsid6885955\charrsid6491089 WHERE }{\f2\fs20\insrsid6885955 upload_status_id IN (<id_values>)
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14887976 {\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.9\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 
+Add Submission Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 INSERT INTO submission_status_lu
+\par (submission_status_id, name, description, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?, ?, ?, ?)}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.10\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 
+Remove Submission Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 DELETE FROM submission_status_lu
+\par WHERE submission_status_id = ?}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.11\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 
+Update Submission Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 UPDATE submission_status_lu
+\par SET name = ?, description = ?, modify_user = ?, modify_date = ?
+\par WHERE submission_status_id = ?}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.12\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 
+Load Submission Status
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 SELECT submission_status_id, name, d
+escription, create_user, create_date, modify_user, modify_date
+\par FROM submission_status_id
+\par WHERE submission_status_id = ?}{\f2\fs20\insrsid8744715 
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid6885955 \hich\af1\dbch\af34\loch\f1 1.3.1.12.1\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid6885955 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid6885955 \hich\af1\dbch\af34\loch\f1 
+Load Submission Statuses
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6885955 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid6885955 This is used to load multiple submissions statuses with a single query.  
+The only difference is that the WHERE clause becomes:}{\insrsid6885955\charrsid8926212 
+\par }{\f2\fs20\insrsid6885955\charrsid6491089 WHERE submi}{\f2\fs20\insrsid6885955 ssion_status_id IN (<id_values>)
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 {\f2\fs20\insrsid6885955 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.13\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 Add Upload
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 INSERT INTO upload
+\par (upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) 
+\par VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.14\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 Remove Upload 
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 DELETE FROM upload
+\par WHERE upload_id = ?}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.15\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 Update Up
+\hich\af1\dbch\af34\loch\f1 load 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 UPDATE upload
+\par SET project_id = ?, resource_id = ?, upload_type_id = ?, upload_status_id = ?, parameter = ?, modify_user = ?, modify_date = ?
+\par WHERE upload_id = ?}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.16\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 Load Upload
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6885955 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid6885955\charrsid6491089 
+SELECT upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, }{\f2\fs20\insrsid6885955 upload.}{\f2\fs20\insrsid6885955\charrsid6491089 create_user, }{\f2\fs20\insrsid6885955 upload.}{\f2\fs20\insrsid6885955\charrsid6491089 
+create_date, }{\f2\fs20\insrsid6885955 upload.}{\f2\fs20\insrsid6885955\charrsid6491089 modify_user, }{\f2\fs20\insrsid6885955 upload.}{\f2\fs20\insrsid6885955\charrsid6491089 modify_date}{\f2\fs20\insrsid6885955 
+, upload_type_lu.name, upload_type_lu.upload_type_id, upload_status_lu.name, upload_status.upload_status_id,
+\par upload_type_lu.description, upload_status_lu.description,  upload_type_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 create_user, }{\f2\fs20\insrsid6885955 upload_type_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 create_date, }{\f2\fs20\insrsid6885955 
+upload_type_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 modify_user, }{\f2\fs20\insrsid6885955 upload_type_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 modify_date}{\f2\fs20\insrsid6885955 ,
+\par upload_status_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 create_user, }{\f2\fs20\insrsid6885955 upload_status_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 create_date, }{\f2\fs20\insrsid6885955 upload_status_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 
+modify_user, }{\f2\fs20\insrsid6885955 upload_status_lu.}{\f2\fs20\insrsid6885955\charrsid6491089 modify_date
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 {\f2\fs20\insrsid8744715\charrsid6491089 FROM upload }{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid15561098 INNER JOIN upload_type_lu
+\par \tab ON upload_type.upload_type_id = upload.upload_type_id
+\par INNER JOIN upload_status_lu
+\par \tab ON upload_status.upload_status_id = upload.upload_status_id}{\f2\fs20\insrsid15561098\charrsid6491089 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6885955 {\f2\fs20\insrsid8744715\charrsid6491089 WHERE upload_id = ?}{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid5126840\charrsid8926212 \hich\af1\dbch\af34\loch\f1 1.3.1.16.1\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid5126840 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid5126840\charrsid8926212 
+\hich\af1\dbch\af34\loch\f1 Load }{\fs20\insrsid5126840 \hich\af1\dbch\af34\loch\f1 Uploads
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5126840 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid5126840 This is
+ used to load multiple uploadsd with a single query.  All UploadType and UploadStatus objects should be loaded through the getAll methods, and these should be joined with the results of this query, instead of looking up each status/type object with a sepa
+rate query.  This will result in only three database queries being made, which will improve the performance of the application.}{\insrsid5126840\charrsid8926212 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10695579 {\f2\fs20\insrsid10695579\charrsid6491089 SELECT upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, }{
+\f2\fs20\insrsid9111441 upload.}{\f2\fs20\insrsid10695579\charrsid6491089 create_user, }{\f2\fs20\insrsid9111441 upload.}{\f2\fs20\insrsid10695579\charrsid6491089 create_date, }{\f2\fs20\insrsid9111441 upload.}{\f2\fs20\insrsid10695579\charrsid6491089 
+modify_user, }{\f2\fs20\insrsid9111441 upload.}{\f2\fs20\insrsid10695579\charrsid6491089 modify_date}{\f2\fs20\insrsid10695579 , upload_type_lu.name, upload_type_lu.upload_type_id, upload_status_lu.name, upload_status.upload_status_id}{
+\f2\fs20\insrsid9111441 ,}{\f2\fs20\insrsid6885955 
+\par upload_type_lu.description, upload_status_lu.description, }{\f2\fs20\insrsid9111441  upload_type_lu.}{\f2\fs20\insrsid9111441\charrsid6491089 create_user, }{\f2\fs20\insrsid9111441 upload_type_lu.}{\f2\fs20\insrsid9111441\charrsid6491089 create_date, }{
+\f2\fs20\insrsid9111441 upload_type_lu.}{\f2\fs20\insrsid9111441\charrsid6491089 modify_user, }{\f2\fs20\insrsid9111441 upload_type_lu.}{\f2\fs20\insrsid9111441\charrsid6491089 modify_date}{\f2\fs20\insrsid9111441 ,}{\f2\fs20\insrsid10695579 
+\par }{\f2\fs20\insrsid9111441 upload_status_lu.}{\f2\fs20\insrsid9111441\charrsid6491089 create_user, }{\f2\fs20\insrsid9111441 upload_status_lu.}{\f2\fs20\insrsid9111441\charrsid6491089 create_date, }{\f2\fs20\insrsid9111441 upload_status_lu.}{
+\f2\fs20\insrsid9111441\charrsid6491089 modify_user, }{\f2\fs20\insrsid9111441 upload_status_lu.}{\f2\fs20\insrsid9111441\charrsid6491089 modify_date
+\par }{\f2\fs20\insrsid10695579\charrsid6491089 FROM upload }{\f2\fs20\insrsid10695579 
+\par INNER JOIN upload_type_lu
+\par \tab ON upload_type.upload_type_id = upload.upload_type_id
+\par INNER JOIN upload_status_lu
+\par \tab ON upload_status.upload_status_id = upload.upload_status_id}{\f2\fs20\insrsid10695579\charrsid6491089 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5126840 {\f2\fs20\insrsid5126840\charrsid6491089 WHERE submi}{\f2\fs20\insrsid5126840 ssion_id IN (<id_values>)
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid5126840\charrsid5126840 \hich\af1\dbch\af34\loch\f1 1.3.1.16.2\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid5126840 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid5126840\charrsid5126840 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8196500 \hich\af1\dbch\af34\loch\f1 1.3.1.17\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8196500 \hich\af1\dbch\af34\loch\f1 Add Submission
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8196500 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8196500\charrsid6491089 INSERT INTO submission
+\par (submission_id, upload_id, submission_status_id, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?}{\f2\fs20\insrsid16072218\charrsid6491089 , ?, ?, ?)}{\f2\fs20\insrsid8196500 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid16072218 \hich\af1\dbch\af34\loch\f1 1.3.1.18\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid16072218 \hich\af1\dbch\af34\loch\f1 
+Remove Submission
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16072218 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid16072218\charrsid6491089 DELETE FROM submission
+\par WHERE submission_id = ?}{\f2\fs20\insrsid16072218 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid16072218 \hich\af1\dbch\af34\loch\f1 1.3.1.19\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid16072218 \hich\af1\dbch\af34\loch\f1 
+Update Submission
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16072218 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid16072218\charrsid6491089 UPDATE submission
+\par SET upload_id = ?, submission_status_id = ?, modify_user = ?, modify_date = ?
+\par WHERE submission_id = ?}{\f2\fs20\insrsid16072218 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid6491089 \hich\af1\dbch\af34\loch\f1 1.3.1.20\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid6491089 \hich\af1\dbch\af34\loch\f1 Load Submission
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6491089 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid6491089\charrsid6491089 
+SELECT submission_id, upload_id, submission_status_id, }{\f2\fs20\insrsid6885955 submission.}{\f2\fs20\insrsid6491089\charrsid6491089 create_user, }{\f2\fs20\insrsid6885955 submission.}{\f2\fs20\insrsid6491089\charrsid6491089 create_date, }{
+\f2\fs20\insrsid6885955 submission.}{\f2\fs20\insrsid6491089\charrsid6491089 modify_user, }{\f2\fs20\insrsid6885955 submission.}{\f2\fs20\insrsid6491089\charrsid6491089 modify_date}{\f2\fs20\insrsid6885955 ,}{\f2\fs20\insrsid6491089 
+\par }{\f2\fs20\insrsid6885955 submission_status_lu.submission_status_id, submission_status_lu.name, 
+\par submission_status_lu.description, 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6885955 {\f2\fs20\insrsid6885955 submission_status_lu.create_user, submission_status_lu.create_date, submission_status_lu.modify_user, submission_status_lu.modif
+y_date}{\f2\fs20\insrsid6885955\charrsid6491089 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6491089 {\f2\fs20\insrsid6491089\charrsid6491089 FROM submission
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6885955 {\f2\fs20\insrsid6491089\charrsid6491089 WHERE submission_id = ?}{\f2\fs20\insrsid6885955\charrsid6885955 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6491089 {\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8926212\charrsid8926212 \hich\af1\dbch\af34\loch\f1 1.3.1.20.1\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid8926212 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid8926212\charrsid8926212 
+\hich\af1\dbch\af34\loch\f1 Load Submissions}{\fs20\insrsid8926212 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8926212 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid8926212 This is used to load multiple submissions with a single query.  }{
+\insrsid6885955 The only difference is that the WHERE clause becomes:}{\insrsid8926212\charrsid8926212 
+\par }{\f2\fs20\insrsid8926212\charrsid6491089 WHERE submi}{\f2\fs20\insrsid8926212 ssion_id IN (<id_values>)
+\par }{\f2\fs20\insrsid8926212\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.21\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8744715 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 Load all Upload
+\hich\af1\dbch\af34\loch\f1  Type ids
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 SELECT upload_type_id
+\par FROM upload_type_lu
+\par WHERE TRUE}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.22\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14838129 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 
+Load all Upload Status ids
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 SELECT upload_status_id
+\par FROM upload_status_lu
+\par WHERE TRUE}{\f2\fs20\insrsid8744715 
+\par }{\f2\fs20\insrsid6491089\charrsid6491089 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8744715 \hich\af1\dbch\af34\loch\f1 1.3.1.23\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14838129 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8744715 \hich\af1\dbch\af34\loch\f1 
+Load all Submission Status ids
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8744715 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8744715\charrsid6491089 SELECT submission_status_id
+\par FROM submission_status_lu
+\par WHERE TRUE
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731167 {\insrsid16731167\charrsid16731167 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid10487688 \hich\af1\dbch\af34\loch\f1 1.3.2\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid10487688 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid10487688 \hich\af1\dbch\af34\loch\f1 
+Sql Queries for SqlDeliverablePersistence
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid10487688 
+This section lists the SQL queries and statements that will be needed by the SqlDeliverablePersistence class, accompanied by a written explanation of what to do, when more logic than just a sequen
+ce of SQL statements is needed.  For more development oriented details, see previous section.
+\par }{\insrsid10487688\charrsid10487688 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid10487688 \hich\af1\dbch\af34\loch\f1 1.3.2.1\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid10487688 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid10487688 \hich\af1\dbch\af34\loch\f1 
+Load deliverable with submission
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid10487688\charrsid10487688 
+SELECT deliverable_id, submission_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date
+\par FROM deliverable
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid10487688 {\f2\fs20\insrsid10487688\charrsid10487688 CROSS JOIN submission
+\par INNER JOIN submission_status
+\par \tab ON submission.submission_status_id = 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid10487688 {\f2\fs20\insrsid10487688\charrsid10487688 submission_status.submission_status_id
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 {\f2\fs20\insrsid10487688\charrsid10487688 WHERE submission_status.name = \lquote Active\rquote  AND deliverable.per_submission = TRUE}{
+\f2\fs20\insrsid10487688  AND 
+\par deliverable.deliverable_id = ? AND
+\par submission.submission_id = ?
+\par }{\f2\fs20\insrsid16200955 
+\par }{\insrsid16200955\charrsid16200955 For selecting multiple deliverables (the loadDeliverables(long[], long[]) overload), the WHERE clause should }{\insrsid16200955 be}{\insrsid16200955\charrsid16200955 :
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16200955 {\f2\fs20\insrsid16200955\charrsid10487688 WHERE submission_status.name = \lquote Active\rquote  }{\f2\fs20\insrsid16200955 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16200955 {\f2\fs20\insrsid16200955\charrsid10487688 AND deliverable.per_submission = TRUE}{\f2\fs20\insrsid16200955  
+\par AND (
+\par }{\f2\fs16\insrsid16200955\charrsid16200955 (deliverable.deliverable_id = ? AND submission.submission_id = ?)}{\f2\fs16\insrsid16200955 
+\par OR }{\f2\fs16\insrsid16200955\charrsid16200955 (deliverable.deliverable_id = ? AND submission.submission_id = ?)
+\par }{\f2\fs16\insrsid16200955 OR }{\f2\fs16\insrsid16200955\charrsid16200955 (deliverable.deliverable_id = ? AND submission.submission_id = ?)
+\par }{\f2\fs16\insrsid16200955 OR \'85}{\f2\fs20\insrsid16200955\charrsid16200955 )}{\f2\fs16\insrsid16200955\charrsid16200955 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 {\f2\fs20\insrsid16200955\charrsid10487688 
+\par }{\insrsid10487688\charrsid10487688 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid10487688 \hich\af1\dbch\af34\loch\f1 1.3.2.2\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid10487688 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid10487688 \hich\af1\dbch\af34\loch\f1 
+Load deliverable \hich\f1 \endash \loch\f1  generic
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid10487688\charrsid10487688 SELECT deliverable_id, submission_id, p}{
+\f2\fs20\insrsid16200955 hase_type_id, resource_role_id, }{\f2\fs20\insrsid10487688\charrsid10487688 name, description, per_submission, required, }{\f2\fs20\insrsid16200955 deliverable_lu.}{\f2\fs20\insrsid10487688\charrsid10487688 create_user, }{
+\f2\fs20\insrsid16200955 deliverable_lu.}{\f2\fs20\insrsid10487688\charrsid10487688 create_date, }{\f2\fs20\insrsid16200955 deliverable_lu.}{\f2\fs20\insrsid10487688\charrsid10487688 modify_user, }{\f2\fs20\insrsid16200955 deliverable_lu.}{
+\f2\fs20\insrsid10487688\charrsid10487688 modify_date}{\f2\fs20\insrsid16200955 , project_id}{\f2\fs20\insrsid10487688 
+\par }{\f2\fs20\insrsid16200955 CROSS JOIN project}{\f2\fs20\insrsid11274567 
+\par }{\f2\fs20\insrsid10487688 FROM deliverable}{\f2\fs20\insrsid16200955 _lu}{\f2\fs20\insrsid10487688 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16200955 {\f2\fs20\insrsid10487688 WHERE deliverable_id = ?}{\f2\fs20\insrsid16200955 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 {\f2\fs20\insrsid10487688 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16200955 {\insrsid16200955\charrsid16200955 For selecting multiple deliverables (the loadDeliverables(long) overload), the WHERE clause should }{\insrsid16200955 
+be}{\insrsid16200955\charrsid16200955 :}{\insrsid16200955 
+\par }{\f2\fs20\insrsid16200955 WHERE deliverable_id IN (?, ?, ?, \'85)
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 {\insrsid16200955 
+\par For each}{\insrsid10487688\charrsid10487688  returned row has }{\insrsid16200955 per_submission being true, }{\insrsid10487688\charrsid10487688 execute the }{\insrsid10487688 following query to select all active submission/deliverable pairs:
+\par }{\insrsid10487688\charrsid10487688 
+\par }{\f2\fs20\insrsid10487688\charrsid3742193 SELECT }{\f2\fs20\insrsid10487688 deliverable_id, submission_id}{\f2\fs20\insrsid10487688\charrsid3742193 
+\par FROM }{\f2\fs20\insrsid10487688 deliverable
+\par }{\f2\fs20\insrsid15955933 CROSS JOIN project
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid10487688 {\f2\fs20\insrsid10487688 CROSS JOIN submission
+\par INNER JOIN submission_status
+\par \tab ON submission.submission_status_id = 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid10487688 {\f2\fs20\insrsid10487688 submission_status.submission_status_id
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 {\f2\fs20\insrsid10487688 WHERE submission_status.name = \lquote Active\rquote  }{\f2\fs20\insrsid15955933 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15955933 {\f2\fs20\insrsid10487688 AND deliverable.per_submission = TRUE }{\f2\fs20\insrsid15955933 
+\par AND submission.project_id = project.project_id
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 {\f2\fs20\insrsid15955933 AND }{\f2\fs20\insrsid16200955 deliverable.deliverable_id IN (?, ?, ?, \'85)}{\f2\fs20\insrsid10487688 
+\par 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8926212 {\insrsid16200955 Put all the deliverable_id, submission_id pairs into two arrays and call the}{\insrsid10487688  loadDeliverable}{\insrsid16200955 s
+(long[], long[]) overload to load all}{\insrsid10487688  }{\insrsid16200955 per-submission }{\insrsid10487688 deliverable}{\insrsid16200955 s}{\insrsid10487688 .}{\insrsid8926212 
+\par 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8926212 \hich\af1\dbch\af34\loch\f1 1.3.2.3\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8926212 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8926212 \hich\af1\dbch\af34\loch\f1 
+Load deliverables \hich\f1 \endash \loch\f1  generic
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8926212 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid8926212 
+This is used to load multiple deliverables with a single query.  This will result in fewer database queries being made, which will improve the performance of the application.
+\par }{\insrsid3739916 
+\par }{\insrsid8926212 The que}{\insrsid3739916 ry is the same as for the Load D}{\insrsid8926212 eliverable above, but the last line should be changed to WHERE deliverable_id IN (<id_values).}{\insrsid8926212\charrsid8926212 
+\par }{\insrsid8926212 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487688 {\insrsid8913157\charrsid3742193 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.4\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Component Class Overview
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \tab }{\b\insrsid13205183\charrsid1916625 Upload}{\b\insrsid15493990\charrsid1916625 Manager}{
+\b\insrsid12612589\charrsid1916625 :}{\b\f1\fs20\insrsid12612589\charrsid1916625 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid16657551 The }{\insrsid13205183 Upload}{\insrsid16657551 Manager }{\insrsid10362329 interface }{\insrsid16657551 provides the ability to persist}{
+\insrsid10362329 , retrieve}{\insrsid16657551  and search for persisted }{\insrsid13205183 upload and submission}{\insrsid16657551  modeling objects.  This interface}{\insrsid10362329  provides a higher level of interaction than the }{\insrsid13205183 
+Upload}{\insrsid10362329 Persistence interface.}{\insrsid13205183  }{\insrsid10362329  The methods in this interface br}{\insrsid13205183 eak down into dealing with the 5}{\insrsid10362329  }{\insrsid13205183 Upload/Submission }{\insrsid10362329 
+modeling classes in this component, and the methods for each m}{\insrsid13205183 odeling class are fairly similar.  However, searching methods are provided only for the Upload and Submission objects.}{\insrsid12612589 
+\par }{\insrsid16657551 
+\par Implementations of this interface are not required to be thread safe.
+\par }{\insrsid1916625 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1916625 {\b\insrsid1916625\charrsid1916625 DeliverableManager:}{\b\f1\fs20\insrsid1916625\charrsid1916625 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1916625 {\insrsid1916625 The DeliverableManager interface provides the abilit
+y to persist, retrieve and search for persisted deliverable modeling objects.  This interface provides a higher level of interaction than the DeliverablePersistence interface.  This interface simply provides two methods to search a persistence store for D
+eliverables. 
+\par 
+\par Implementations of this interface are not required to be thread safe.
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid1459238 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid1459238 Audit}{\b\insrsid13317101 ed}{\b\insrsid15819605 Deliverable}{\b\insrsid14290961 Structure}{\insrsid1459238 :}{
+\f1\fs20\insrsid1459238 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1459238 {\insrsid13317101 The Audited}{\insrsid15819605 Deliverable}{\insrsid3895503 
+Structure is the base class for the modeling classes in this component.  It holds the information about when the structure was created and updated.  This class simply holds the four data fields needed for this auditing information }{\insrsid15819605 
+(as well as the id of the item) }{\insrsid3895503 and exposes b}{\insrsid9655635 oth getters and setters for these}{\insrsid3895503  field}{\insrsid9655635 s}{\insrsid3895503 .}{\insrsid1459238 
+\par }{\insrsid3895503 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15819605 {\insrsid15819605 The only thing to take note of when developing this class is that the setId method throws the IdAlreadySetException.
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3895503 {\insrsid3895503 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6162099 {\insrsid3895503 This class is highly mutable.  All fields can be changed.}{\insrsid1459238 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid15493990 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid15819605 NamedDeliverableStructure}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11496956 {\insrsid11496956 The }{\insrsid15819605 NamedDeliverableStruc}{\insrsid13317101 ture class extends the Audited}{\insrsid15819605 
+DeliverableStructure}{\insrsid11496956  class }{\insrsid15819605 to hold a name and description.  Like }{\insrsid13317101 Audited}{\insrsid15819605 DeliverableStructure, it is an abstract class.}{\insrsid11496956   The }{\insrsid15819605 
+NamedDeliverableStructure }{\insrsid11496956 cl}{\insrsid15819605 ass is simply a container for the name and description.  Both these}{\insrsid5926600  data fields have the getters and setters.}{\insrsid11496956 
+\par }{\insrsid5926600 
+\par This class should be very easy to implement, as all the methods just set the underlying fields.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15819605 {\insrsid11496956 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11496956 {\insrsid11496956 This class is highly mutable.  All fields can be changed.
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid15493990 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid11496956 {\b\insrsid531271 Upload}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11496956 {\insrsid11496956 The }{\insrsid531271 Upload}{\insrsid11496956  class is the }{\insrsid531271 one of the main modeling classes of this component}{
+\insrsid11496956 .  It represents a}{\insrsid531271 n uploaded document.}{\insrsid11496956   The }{\insrsid531271 Upload}{\insrsid11496956 
+ class is simply a container for a few basic data fields.  All data fields in this class are mutable and have get and set methods.
+\par 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid531271 {\insrsid531271 This class should be very easy to implement, as all the methods just set the underlying fields.
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11496956 {\insrsid11496956 
+\par This class is highly mutable.  All fields can be changed.
+\par }{\insrsid1459238 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid531271 Submission}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid531271 {\insrsid531271 
+The Submission class is the one of the main modeling classes of this component.  It represents a submission, which consists of an upload and a status.  The Submission class is simp
+ly a container for a few basic data fields.  All data fields in this class are mutable and have get and set methods.
+\par 
+\par This class should be very easy to implement, as all the methods just set the underlying fields.
+\par 
+\par This class is highly mutable.  All fields can be changed.
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid1459238 
+\par }{\b\insrsid531271 SubmissionStatus}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid531271 {\insrsid1459238 The }{\insrsid531271 SubmissionStatus class is a support class in the modeling classes}{\insrsid1459238 .  }{\insrsid531271 
+It is used to tag a submission as having a certain status}{\insrsid3895503 .  }{\insrsid531271 For development, this class will be very simple to implement, as has no fields of its own and simply delegates to the constructors of the base class.}{
+\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid3895503 
+\par This class is mutable because its base class is mutable.
+\par }{\insrsid531271 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid531271 {\b\insrsid531271 UploadStatus}{\insrsid531271 :}{\f1\fs20\insrsid531271 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid531271 {\insrsid531271 The UploadStatus class is a support class in the modeling classes.  It is used t
+o tag an upload as having a certain status.  For development, this class will be very simple to implement, as has no fields of its own and simply delegates to the constructors of the base class.
+\par 
+\par This class is mutable because its base class is mutable.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid531271 {\b\insrsid531271 UploadType}{\insrsid531271 :}{\f1\fs20\insrsid531271 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid531271 {\insrsid531271 
+The UploadType class is a support class in the modeling classes.  It is used to tag an upload as being of a certain type.  For development, this class will be very simple to implement, as has no fields of its own and simply delegates to the const
+ructors of the base class.
+\par 
+\par This class is mutable because its base class is mutable.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid531271 {\b\insrsid531271 Deliverable}{\insrsid531271 :}{\f1\fs20\insrsid531271 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid531271 {\insrsid531271 The Deliverable class is the one of the main modeling classes of this component.  It represents a}{\insrsid10487652 
+n item that must be delivered for the project}{\insrsid531271 .  The }{\insrsid10487652 Deliverable}{\insrsid531271  class is simply a container for a few basic data fields}{\insrsid10487652 
+, but unlike the Upload and Submission class, a deliverable is largely immutable}{\insrsid531271 .  }{\insrsid10487652 The data fields (except for completion date) have only get methods.}{\insrsid531271 
+\par 
+\par This class should be very easy to implem}{\insrsid10487652 ent, as all the methods just get or set}{\insrsid531271  the underlying fields.
+\par 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10487652 {\insrsid531271 This class is highly mutable.  All fields can be changed.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid13664048 {\insrsid13664048 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid13664048 {\b\insrsid13664048 DeliverableChecker}{\insrsid13664048 :}{\f1\fs20\insrsid13664048 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid13664048 {\insrsid13664048 The DeliverableChecker interface is responsible for deciding if a deliverable is complete.  If so, it sets the com
+pletion date of the deliverable.  Only a single method exists in this interface.  No concrete implementation of this interface is required in this component.
+\par 
+\par Implementations of this interface are not required to be thread safe.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid13664048 {\insrsid13664048 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid531271 {\b\insrsid1459238 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid14758265 Deliverable}{\b\insrsid15493990 FilterBuilder}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid15493990 The }{\insrsid14758265 Deliverable}{\insrsid15493990 FilterBuilder class supports building filters for searching for }{
+\insrsid14758265 Deliverables}{\insrsid15493990 .  This class consists of 2 parts.  The first part consists of static Strings that name the fields that are available for searching.  All }{\insrsid14758265 Deliverable}{\insrsid15493990 Manager impleme
+ntations should use SearchBundles that are configured to use these names.  The second part of this class consists of convenience methods to create common filters based on these field names.  Development-wise, this}{\insrsid14758265 
+ class should prove quite simple}{\insrsid15493990 , as all methods are a single line.
+\par 
+\par This class has only final static fields/methods, so mutability is not an issue.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid10972243 {\b\insrsid10972243 SubmissionFilterBuilder}{\insrsid10972243 :}{\f1\fs20\insrsid10972243 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10972243 {\insrsid10972243 The SubmissionFilterBuilder class supports building filters for searching for Submissions.  This class consists of 2 parts. 
+ The first part consists of static Strings that name the fields that are available for searching.  All UploadManager implementations should use SearchBundles that are configured to use these names.  The second part of this class consists of convenience me
+thods to create common filters based on these field names.  Development-wise, this class should prove quite simple, as all methods are a single line.
+\par 
+\par This class has only final static fields/methods, so mutability is not an issue.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid15493990 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid10972243 {\b\insrsid10972243 UploadFilterBuilder}{\insrsid10972243 :}{\f1\fs20\insrsid10972243 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10972243 {\insrsid10972243 The 
+UploadFilterBuilder class supports building filters for searching for Uploads.  This class consists of 2 parts.  The first part consists of static Strings that name the fields that are available for searching.  All UploadManager implementations should use
+ 
+SearchBundles that are configured to use these names.  The second part of this class consists of convenience methods to create common filters based on these field names.  Development-wise, this class should prove quite simple, as all methods are a single 
+line.
+\par 
+\par This class has only final static fields/methods, so mutability is not an issue.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid10972243 {\insrsid15493990 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid16018953 Upload}{\b\insrsid15493990 Persistence}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid15493990 The }{\insrsid16018953 Upload}{\insrsid15493990 
+Persistence interface defines the methods for persisting and retrieving the object model in this component.  }{\insrsid10771929 This }{\insrsid16327083 interface}{\insrsid10771929  handles the persistence of the }{\insrsid16018953 upload related}{
+\insrsid10771929  classes that make up the object model \endash  }{\insrsid16018953 Uploads, Submissions, UploadTypes, UploadStatuses, SubmissionStatuses}{\insrsid10771929 
+.  This interface is not responsible for searching the persistence for the various entities.  This is instead handled by a}{\insrsid16018953 n Upload}{\insrsid10771929 Manager implementation.}{\insrsid15493990 
+\par 
+\par Implementations of this }{\insrsid3433924 interface}{\insrsid15493990  are not required to be thread-safe or immutable.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3433924 {\b\insrsid3433924 Sql}{\b\insrsid16018953 Upload}{\b\insrsid3433924 Persistence}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid3433924 The Sql}{\insrsid16018953 Upload}{\insrsid3433924 Persistence class implements the }{\insrsid16018953 Upload}{\insrsid3433924 
+Persistence interface, in order to persist to the database structure given in the }{\insrsid16018953 deliverable}{\insrsid3433924 
+_management.sql script.  This class does not cache a Connection to the database.  Instead a new Connection is used on every method call.}{\insrsid6162099   Most methods in this clas
+s will just create and execute a single PreparedStatement.  However, some of the methods will need to execute several PreparedStatements in order to accomplish th}{\insrsid16018953 eir tasks.}{\insrsid15493990 
+\par }{\insrsid3433924 
+\par This class is immutable and thread-safe in the sense that multiple threads can not corrupt its internal data structures.  However, }{\insrsid6162099 
+the results if used from multiple threads can be unpredictable as the database is changed from different threads.  This can equally well occur when the component is used on multiple machines or multiple inst
+ances are used, so this is not a thread-safety concern.}{\insrsid3433924 
+\par }{\insrsid16018953 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16018953 {\b\insrsid16018953 DeliverablePersistence}{\insrsid16018953 :}{\f1\fs20\insrsid16018953 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16018953 {\insrsid16018953 
+The DeliverablePersistence interface defines the methods for persisting and retrieving the object model in this component.  This interface handles the persistence of the deliverable related classes that make up the object model \endash 
+ this consists only of the Deliverable class.  Unlike UploadPersistence, the DeliverablePersistence interface (currently) has no support for adding items.  Only retrieval is supported.  This interface i
+s not responsible for searching the persistence for the various entities.  This is instead handled by a DeliverableManager implementation.
+\par 
+\par Implementations of this interface are not required to be thread-safe or immutable.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16018953 {\b\insrsid16018953 SqlDeliverablePersistence}{\insrsid16018953 :}{\f1\fs20\insrsid16018953 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16018953 {\insrsid16018953 The S
+qlDeliverablePersistence class implements the DeliverablePersistence interface, in order to persist to the database structure given in the deliverable_management.sql script.  This class does not cache a Connection to the database.  Instead a new Connectio
+n is used on every method call.  }{\insrsid10765256 PreparedStatements should be used to execute the SQL statements.}{\insrsid16018953 
+\par 
+\par This class is immutable and thread-safe in the sense that multiple threads can not corrupt its internal data structures.  However, the results if used from mu
+ltiple threads can be unpredictable as the database is changed from different threads.  This can equally well occur when the component is used on multiple machines or multiple instances are used, so this is not a thread-safety concern.
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid16018953 
+\par }{\insrsid3433924 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6162099 {\b\insrsid6162099 Persistence}{\b\insrsid10765256 Upload}{\b\insrsid6162099 Manager}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid6162099 The Persistence}{\insrsid10765256 Upload}{\insrsid6162099 Manager class implements the }{\insrsid10765256 Upload}{\insrsid6162099 
+Manager interface.  It ties together a persistence mechanism, several Search Builder instances (for searching for various types of data), and several id generators (for generating ids for the various types).  This class consists }{\insrsid10765256 of }{
+\insrsid16657551 several methods styles.}{\insrsid6162099  }{\insrsid16657551  }{\insrsid6162099 The first }{\insrsid16657551 method style }{\insrsid6162099 just call}{\insrsid16657551 s}{\insrsid6162099  directly to a corresponding method}{
+\insrsid12612589  of the persistence.  The s}{\insrsid16657551 econd method style first assigns values to some data fields of the object before calling a persi
+stence method.  The third type of method uses a SearchBundle to execute a search and then uses the persistence to load an object for each of the ids found from the search.}{\insrsid15493990 
+\par }{\insrsid16657551 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16657551 {\insrsid16657551 This class is immutable and hence thread-safe.}{\insrsid15493990 
+\par }{\insrsid14703556 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14703556 {\b\insrsid14703556 PersistenceDeliverableManager}{\insrsid14703556 :}{\f1\fs20\insrsid14703556 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14703556 {\insrsid14703556 
+The PersistenceDeliverableManager class implements the DeliverableManager interface.  It ties together a persistence mechanism and two Search Builder instances (for searching for various types of data).  The methods in this class use a SearchBundle to exe
+cute a search and then use the persistence to load an object for each of the ids found from the search.
+\par 
+\par This class is immutable and hence thread-safe.
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\f1\fs20\insrsid16731167 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.5\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Component Exception Definitions
+
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \tab }{\b\insrsid14703556 Upload}{\b\insrsid3433924 PersistenceException}{\insrsid12612589 :}{
+\f1\fs20\insrsid12612589 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3433924 {\insrsid3433924 The }{\insrsid14703556 Upload}{\insrsid3433924 PersistenceException indicates that the}{\insrsid2449292 re}{\insrsid3433924 
+ was an error ac}{\insrsid1916625 cessing or updating a persisted storage}{\insrsid3433924 .  This exception is used to wrap the internal error that occurs when accessing the persistence store.  For example, }{\insrsid3085404 in the Sql}{\insrsid14703556 
+Upload}{\insrsid3085404 Persistence implementation it is used to wrap SqlExceptions.}{\insrsid12612589 
+\par }{\insrsid3085404 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3085404 {\insrsid3085404 This exception}{\insrsid14703556  is initially thrown in Upload}{\insrsid3085404 
+Persistence implementations and from there passes through }{\insrsid14703556 Upload}{\insrsid3085404 Manager implementations and back to the caller.  It is also thrown directly by some }{\insrsid14703556 Upload}{\insrsid3085404 Manager implementations.
+
+\par }{\insrsid14703556 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14703556 {\b\insrsid14703556 DeliverablePersistenceException}{\insrsid14703556 :}{\f1\fs20\insrsid14703556 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14703556 {\insrsid14703556 The DeliverablePersistenceException indicates that there was an error accessing o}{\insrsid1916625 r updating a persisted storage
+}{\insrsid14703556 .  This exception is used to wrap the internal error that occurs when accessing the persistence store.  For example, in the SqlDeliverablePersistence implementation it is used to wrap SqlExceptions.
+\par 
+\par This exception is initially thrown in DeliverablePersistence implementations and from there passes through DeliverableManager implementations and back to the caller.  It is also thrown directly by some DeliverableManager implementations.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3433924 {\insrsid3433924 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3433924 {\b\insrsid3433924 IdAlreadySetException}{\insrsid3433924 :}{\f1\fs20\insrsid3433924 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3085404 {\insrsid3433924 The IdAlreadySetException }{\insrsid3085404 is used to signal that the id of one of the modeling classes has already been set.}{
+\insrsid2449292   This is used to prevent the id being changed once it has been set.}{\insrsid3433924 
+\par }{\insrsid3085404 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10700652 {\insrsid3085404 This exception is initially thrown in the 3 setId methods of the }{\insrsid10700652 modeling classes.}{\insrsid3433924 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid16731167 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.6\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Thread Safety
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid154166 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid154166 
+This component is not thread safe.  This decision was made because the modeling classes in this component are mutable while the persistence classes make u
+se of non-thread-safe components such as Search Builder.  Combined with there being no business oriented requirement to make the component thread safe, making this component thread safe would only increase development work and needed testing while decreas
+ing runtime performance (because synchronization would be needed for various methods).  These tradeoffs can not be justified given that there is no current business need for this component to be thread-safe.
+\par 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15625242 {\insrsid154166 This does not mean that making this component th
+read-safe would be particularly hard.  Making the modeling classes thread safe can be done by simply adding the synchronized keyword to the various set and get methods.  The persistence and manager classes would be harder to make thread safe.  In addition
+ to making}{\insrsid15625242  manager and persistence method}{\insrsid13205183 s}{\insrsid15625242  synchronized}{\insrsid154166 , there would need to be logic added }{\insrsid15625242 
+to handle conditions that occur when multiple threads are manipulating the persistence.  For example, }{\insrsid13205183 \'93Upload}{\insrsid154166  removed between SearchBuilder query and }{\insrsid15625242 load}{\insrsid13205183 Upload}{
+\insrsid15625242  call\'94.}{\insrsid2312770   This logic would not need to be in Java code, as SQL transactions }{\insrsid9772491 can}{\insrsid2312770  be used for this purpose.}{\insrsid16731167 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16731167 {\insrsid16731167\charrsid16731167 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Environment Requirements\tab \tab 
+
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Environment
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 Java 1.4+ is required for compilation, testing, or use of this component
+
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 TopCoder Software Components
+
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid14489810 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard\plain \s16\ql \fi-360\li1080\ri0\sa120\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0 
+\f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f0\fs24\insrsid15300465\charrsid14489810 Search Builder 1.1 or greater: Used for searching for }{\f0\fs24\insrsid14489810\charrsid14489810 deliverables, uploads, and submissions
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid14489810 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}{\f0\fs24\insrsid15300465\charrsid14489810 
+DB Connection Factory 1.0: Used in SQL persistence implementation to connect to the database.  Also used by the Search Builder component.
+\par {\listtext\pard\plain\s16 \f3\insrsid7693177\charrsid14489810 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}{\f0\fs24\insrsid7693177\charrsid14489810 Custom Result Set 1.1
+: Returned by the Search Builder component and used to retrieve the ids of the items selected by the search.
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid14489810 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}{\f0\fs24\insrsid15300465\charrsid14489810 ID Generator 3.0: Used to create ids when new }{\f0\fs24\insrsid14489810\charrsid14489810 Uploads/Submissions}{
+\f0\fs24\insrsid15300465\charrsid14489810  and related objects are created.
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid14489810 \loch\af3\dbch\af0\hich\f3 \'b7\tab}Configuration Manager}{\f0\fs24\insrsid14489810\charrsid14489810  2.1.4}{\f0\fs24\insrsid15300465\charrsid14489810 
+: Used to configure the DB Connection Factory and Search Builder components.  Can also be used with the Object Factory component.  Not used directly in this component.
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid14489810 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \s16\ql \fi-360\li1080\ri0\sa120\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0\pararsid15300465 {
+\f0\fs24\insrsid15300465\charrsid14489810 Object Factory}{\f0\fs24\insrsid14489810  2.0}{\f0\fs24\insrsid15300465\charrsid14489810 : Can be used to create }{\f0\fs24\insrsid14489810\charrsid14489810 persistence and manager implementations}{
+\f0\fs24\insrsid15300465\charrsid14489810 .  There is no compile time or runtime dependency on this component.}{\f0\fs24\insrsid14489810\charrsid14489810   It is just a suggestion for how a client can use this component.}{
+\f0\fs24\insrsid12612589\charrsid14489810 
+\par }\pard \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14489810 {\insrsid14489810 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Third Party Components
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 None.
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Installation and Configuration
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Package Name
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 com.topcoder.management.}{\insrsid13400541 deliverable}{\insrsid15300465 
+
+\par com.topcoder.management.}{\insrsid13400541 deliverable}{\insrsid15300465 .persistence
+\par com.topcoder.management.}{\insrsid13400541 deliverable}{\insrsid15300465 .persistence.sql
+\par com.topcoder.management.}{\insrsid13400541 deliverable}{\insrsid15300465 .search
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid16657551 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 
+Configuration Parameters}{\insrsid16657551 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16657551 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid16657551 
+No direct configuration is used for this component.  The Object Factory component can be used to create Sql}{\insrsid14489810 UploadPersistences, SqlDeliverable}{\insrsid16731325 Persistence}{\insrsid14489810 s, PersistenceUploadManagers, and}{
+\insrsid16731325  }{\insrsid14489810 PersistenceDeliverableManagers, }{\insrsid16731325 if desired.  }{\insrsid14160407 The SearchBundles and IDGenerators needed can be configured or created programmatically.  For configuration,
+ see the component specs for these components.}{\insrsid16657551 
+\par }{\insrsid16731325 
+\par When using the SQL databas}{\insrsid14489810 e structure given in the deliverable}{\insrsid16731325 _management.sql}{\insrsid10830148  script, the SearchBundles passed to the Persistence}{\insrsid14489810 Deliverable}{\insrsid10830148 Manager}{
+\insrsid16731325  }{\insrsid14489810 and PersistenceUploadManager }{\insrsid16731325 should be configured to use }{\insrsid3609494 the following contexts (queries minus where clause)}{\insrsid16731325 :}{\insrsid16657551 
+\par }{\insrsid16731325 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\insrsid3609494 For searching Deliverables}{\insrsid6251675 :
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3609494 {\f2\fs20\insrsid3609494 SELECT deliverable_id}{\f2\fs20\insrsid16731325 
+\par }{\f2\fs20\insrsid3609494 FROM deliverable
+\par CROSS JOIN project
+\par WHERE}{\f2\fs20\insrsid3609494\charrsid3742193 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\insrsid16731325 
+\par \tab For searching }{\insrsid6061708 Deliverables with submission:}{\insrsid16731325 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3742193 {\f2\fs20\insrsid16731325\charrsid3742193 SELECT }{\f2\fs20\insrsid6061708 deliverable_id, submission_id}{\f2\fs20\insrsid16731325\charrsid3742193 
+\par FROM }{\f2\fs20\insrsid6061708 deliverable}{\f2\fs20\insrsid16731325 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid4158454 {\f2\fs20\insrsid4158454 CROSS JOIN project
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6061708 {\f2\fs20\insrsid6061708 CROSS JOIN submission
+\par INNER JOIN submission_status
+\par \tab ON submission.submission_status_id = 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid6061708 {\f2\fs20\insrsid6061708 submission_status.submission_status_id
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6061708 {\f2\fs20\insrsid6061708 WHERE submission_status.name = \lquote Active\rquote  AND}{\f2\fs20\insrsid1512593  deliverable.per_submission = TRUE AND }{
+\f2\fs20\insrsid16731325 
+\par }{\f2\fs20\insrsid15955933 s}{\f2\fs20\insrsid4158454 ubmission.project_id = project.project_id}{\f2\fs20\insrsid4158454\charrsid3742193 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\insrsid16731325 
+\par \tab For searching }{\insrsid16212739 Submissions:}{\insrsid16731325 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16212739 {\f2\fs20\insrsid16212739 SELECT submission_id}{\f2\fs20\insrsid16212739\charrsid3742193 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3742193 {\f2\fs20\insrsid16731325\charrsid3742193 FROM }{\f2\fs20\insrsid16212739 submission
+\par INNER JOIN upload 
+\par \tab ON submission.upload_id = upload.upload_id
+\par }{\f2\fs20\insrsid16731325\charrsid3742193 WHERE 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\insrsid16731325 
+\par For searching }{\insrsid16212739 Uploads:}{\insrsid16731325 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3742193 {\f2\fs20\insrsid16731325\charrsid3742193 SELECT }{\f2\fs20\insrsid16212739 upload_id}{\f2\fs20\insrsid16731325 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16212739 {\f2\fs20\insrsid16212739 FROM upload}{\f2\fs20\insrsid3742193\charrsid3742193 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid13393026 {\f2\fs20\insrsid3742193\charrsid3742193 WHERE }{\f2\fs20\insrsid12612589\charrsid13393026 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Dependencies Configuration
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 None
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Usage Notes
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 
+Required steps to test the component
+\par {\listtext\pard\plain\s16 \f3\fs20\insrsid12612589 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard\plain \s16\ql \fi-360\li1080\ri0\sa120\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0 
+\f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 Extract the component distribution.
+\par {\listtext\pard\plain\s16 \f3\fs20\insrsid12612589 \loch\af3\dbch\af0\hich\f3 \'b7\tab}Follow }{\field\fldedit{\*\fldinst {\insrsid12612589  HYPERLINK "C:\\filez\\work\\tc\\tcs_corp\\templates\\component\\" \\l "_Dependencies_Configuration" }{
+\insrsid16589815 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b02000000010000000303000000000000c00000000000004600002900000066696c657a776f726b74637463735f636f727074656d706c61746573636f6d706f6e656e7422206c00ffffadde000000000000000000000000000000000000000000000000000020006e006900}}
+}{\fldrslt {\cs15\ul\cf2\insrsid12612589 Dependencies Configuration}}}{\insrsid12612589 .
+\par {\listtext\pard\plain\s16 \f3\fs20\insrsid12612589 \loch\af3\dbch\af0\hich\f3 \'b7\tab}Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.
+\par }\pard \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 {\insrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid15300465 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 
+Required steps to use the component
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 
+Install and configure the other TopCoder component following their instructions.  Then follow section 4.1 and the demo.}{\insrsid15300465\charrsid15300465 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15300465 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid8027735 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Demo}{
+\insrsid8027735 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3885868 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid3885868 
+Unfortunately, as this component can not really be described in a full customer scenario without including all the other components up for design this week, this demo will not be a customer oriented demo but a rundown of the requirements in a demo form.  
+Where it makes sense, examples of what a customer might do with the information are shown.
+\par }{\insrsid3885868\charrsid3885868 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid7961949 \hich\af1\dbch\af34\loch\f1 4.3.1\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid7961949 \hich\af1\dbch\af34\loch\f1 
+Create Upload Manager
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7961949 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid7961949\charrsid1728436 Sql}{\f2\fs20\insrsid14615309 Upload}{
+\f2\fs20\insrsid7961949\charrsid1728436 Persistence }{\f2\fs20\insrsid7542262 uploadP}{\f2\fs20\insrsid7961949\charrsid1728436 ersistence = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7961949 {\f2\fs20\insrsid14615309 new SqlUpload}{\f2\fs20\insrsid7961949\charrsid1728436 Persistence(}{\f2\fs20\insrsid7961949 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid7961949 {\f2\fs20\insrsid7961949\charrsid1728436 <connection factory loaded from configuration>)}{\f2\fs20\insrsid16330349 ;}{\f2\fs20\insrsid7961949 
+
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid7961949 {\f2\fs20\insrsid7961949 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14615309 {\f2\fs20\insrsid14615309 UploadManager manager = new PersistenceUpload}{\f2\fs20\insrsid7961949 Manager(
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7961949 {\f2\fs20\insrsid7542262 uploadP}{\f2\fs20\insrsid7961949 ersistence, 
+\par <search builders loaded from configuration: See Search 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid7961949 {\f2\fs20\insrsid7961949 Builder component for configuration details>, 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7961949 {\f2\fs20\insrsid7961949 <id generators loaded from configuration: See Search 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid7961949 {\f2\fs20\insrsid7961949 Builder component for configuration details>);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7961949 {\insrsid7961949\charrsid7961949 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid7961949 \hich\af1\dbch\af34\loch\f1 4.3.2\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid7961949 \hich\af1\dbch\af34\loch\f1 
+Create an Upload and Submission (with supporting classes)}{\insrsid1728436 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid743570 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\cf11\insrsid14615309\charrsid743570 // Load tagging instances}{
+\f2\fs20\cf11\insrsid7542262\charrsid743570  (also demonstrates 
+\par // manager interactions)}{\f2\fs20\cf11\insrsid14615309\charrsid743570 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14615309 {\f2\fs20\insrsid14615309\charrsid14615309 UploadType uploadType = manager.getAllUploadTypes()[0];
+\par SubmissionStatus submissionType = }{\f2\fs20\insrsid14615309 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14615309 {\f2\fs20\insrsid14615309\charrsid14615309 manager.getAllSubmissionStatuses()[0];
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14615309 {\f2\fs20\insrsid14615309\charrsid14615309 UploadStatus uploadStatus = manager.getAllUploadStatuses()[0];}{\f2\fs20\insrsid14615309 
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid743570 {\f2\fs20\cf11\insrsid14615309\charrsid743570 // Create upload
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14615309 {\f2\fs20\insrsid14615309 Upload upload = new Upload(1234);
+\par upload.setProject(24);
+\par upload.setUploadType(uploadType);
+\par upload.setUploadStatus(uploadStatus);
+\par upload.setOwner(553);
+\par upload.setParameter(\'93The upload is somewhere\'94);
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid743570 {\f2\fs20\insrsid14615309 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid743570 {\f2\fs20\cf11\insrsid14615309\charrsid743570 // Create Submission
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14615309 {\f2\fs20\insrsid14615309 Submission submission = new Submission(823);
+\par submission.setUpload(upload);
+\par submission.setSubmissionStatus(submissionStatus);
+\par 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid1728436 \hich\af1\dbch\af34\loch\f1 4.3.3\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid1728436 \hich\af1\dbch\af34\loch\f1 Create}{
+\insrsid16330349 \hich\af1\dbch\af34\loch\f1  deliverable}{\insrsid1728436 \hich\af1\dbch\af34\loch\f1  persistence a\hich\af1\dbch\af34\loch\f1 nd manager
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid1728436\charrsid1728436 Sq}{\f2\fs20\insrsid7542262 lDeliverable}{
+\f2\fs20\insrsid1728436\charrsid1728436 Persistence }{\f2\fs20\insrsid7542262 deliverableP}{\f2\fs20\insrsid1728436\charrsid1728436 ersistence = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436\charrsid1728436 new Sql}{\f2\fs20\insrsid7542262 DeliverableP}{\f2\fs20\insrsid1728436\charrsid1728436 ersistence(}{
+\f2\fs20\insrsid1728436 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid1728436 {\f2\fs20\insrsid1728436\charrsid1728436 <connection factory loaded from configuration>)}{\f2\fs20\insrsid16330349 ;}{\f2\fs20\insrsid1728436 
+
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid743570 {\f2\fs20\insrsid16330349 
+\par }{\f2\fs20\cf11\insrsid743570\charrsid743570 \tab // The checker is used when deliverable instances 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid743570 {\f2\fs20\cf11\insrsid743570\charrsid743570 // are retrieved
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16330349 {\f2\fs20\insrsid16330349 \tab DeliverableChecker checker = new <Custom deliverable checker>;
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid7542262 {\f2\fs20\insrsid7542262 DeliverableManager manager = new PersistenceDeliverable}{\f2\fs20\insrsid1728436 Manager(
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16330349 {\f2\fs20\insrsid7542262 deliverableP}{\f2\fs20\insrsid7542262\charrsid1728436 ersistence}{\f2\fs20\insrsid1728436 , }{\f2\fs20\insrsid16330349 
+checker, 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 <search builders loaded from configuration: See Search 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 Builder component for configuration details>, 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 <id generators loaded from configuration: See Search 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid16330349 {\f2\fs20\insrsid1728436 Builder component for configuration details>);}{\f2\fs20\insrsid16330349 
+\par }{\f2\fs20\insrsid2309418 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid2309418 {\f2\fs20\cf11\insrsid2309418\charrsid2309418 \tab // Search for deliverables (see 4.3.5)}{\f2\fs20\cf11\insrsid16330349\charrsid2309418 
+\par }{\insrsid2309418\charrsid2309418 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid14615309 \hich\af1\dbch\af34\loch\f1 4.3.4\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14615309 \hich\af1\dbch\af34\loch\f1 
+Save the created Upload and Submission}{\insrsid1728436 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid1728436\charrsid1728436 manager.}{\f2\fs20\insrsid14615309 createUpload}{
+\f2\fs20\insrsid1728436\charrsid1728436 (}{\f2\fs20\insrsid14615309 upload}{\f2\fs20\insrsid1728436\charrsid1728436 , \'93Operator #1\'94);
+\par manager.}{\f2\fs20\insrsid14615309 createSubmission}{\f2\fs20\insrsid1728436\charrsid1728436 (}{\f2\fs20\insrsid14615309 submission}{\f2\fs20\insrsid1728436\charrsid1728436 , \'93Operator #1\'94);
+\par }{\f2\fs20\cf11\insrsid1728436\charrsid1728436 // }{\f2\fs20\cf11\insrsid14615309 New instances of the tagging classes can be created through }{\f2\fs20\cf11\insrsid1728436 
+\par }{\f2\fs20\cf11\insrsid14615309 // similar methods.
+\par }{\f2\fs20\cf11\insrsid5789468 
+\par // Change a property of the Upload
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid12124621 {\f2\fs20\insrsid5789468\charrsid5789468 upload.}{\f2\fs20\insrsid12124621\charrsid5789468 setProject(14424);
+\par }{\f2\fs20\insrsid12124621 
+\par }{\f2\fs20\cf11\insrsid5194961\charrsid5194961 // And update it in the persistence}{\f2\fs20\cf11\insrsid5789468\charrsid12124621 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10298036 {\f2\fs20\insrsid12124621\charrsid5789468 manager.updateUpload}{\f2\fs20\insrsid5789468\charrsid5789468 (upload, \'93Operator #1\'94);}{
+\f2\fs20\insrsid10298036 
+\par 
+\par }{\f2\fs20\cf11\insrsid10298036\charrsid10298036 // Remove it from the persistence
+\par }{\f2\fs20\insrsid10298036 manager.removeUpload(upload, \'93Operator #1\'94);}{\f2\fs20\insrsid10298036\charrsid5789468 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\cf11\insrsid5789468 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid800590 {\f2\fs20\cf11\insrsid5789468 // Submissions can be changed }{\f2\fs20\cf11\insrsid10298036 and removed }{\f2\fs20\cf11\insrsid5789468 similarly}{
+\f2\fs20\cf11\insrsid3885868\charrsid800590 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid3885868 \hich\af1\dbch\af34\loch\f1 4.3.5\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid3885868 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid3885868 \hich\af1\dbch\af34\loch\f1 
+Retrieve and search }{\insrsid14615309 \hich\af1\dbch\af34\loch\f1 for uploads}{\insrsid3885868 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5249139 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\cf11\insrsid1916625 // Get an upload }{
+\f2\fs20\cf11\insrsid5249139\charrsid5249139 for a given id
+\par }{\f2\fs20\insrsid14615309 Upload}{\f2\fs20\insrsid5249139\charrsid5249139  }{\f2\fs20\insrsid14615309 upload2 = manager.getUpload}{\f2\fs20\insrsid5249139\charrsid5249139 (14402);
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\cf11\insrsid5249139\charrsid14642844 /}{\f2\fs20\cf11\insrsid14615309 / The properties of the upload}{
+\f2\fs20\cf11\insrsid5249139\charrsid14642844  can then be queried 
+\par // and used by the client of this component}{\f2\fs20\cf11\insrsid1916625 .  Submissions}{\f2\fs20\cf11\insrsid5249139 
+\par }{\f2\fs20\cf11\insrsid1916625 // can be retrieved similarly.}{\f2\fs20\cf11\insrsid1916625\charrsid14642844 
+\par }{\f2\fs20\cf11\insrsid5249139\charrsid14642844 
+\par }{\f2\fs20\cf11\insrsid14615309 // Search for uploads}{\f2\fs20\cf11\insrsid5249139\charrsid14642844 
+\par // Build the }{\f2\fs20\cf11\insrsid14615309 uploads}{\f2\fs20\cf11\insrsid5249139\charrsid14642844  \endash  this example shows searching for 
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14615309 {\f2\fs20\cf11\insrsid5249139\charrsid14642844 // all }{\f2\fs20\cf11\insrsid14615309 uploads}{\f2\fs20\cf11\insrsid5249139\charrsid14642844  rela
+}{\f2\fs20\cf11\insrsid14615309 ted to a given project and having a }{\f2\fs20\cf11\insrsid5249139 
+\par }{\f2\fs20\cf11\insrsid14615309 // given upload type}{\f2\fs20\cf11\insrsid14615309\charrsid14642844 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5249139 {\f2\fs20\insrsid5249139 Filter}{\f2\fs20\insrsid6251675  projectFilter = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\f2\fs20\insrsid14615309 Upload}{\f2\fs20\insrsid6251675 F}{\f2\fs20\insrsid5249139 ilterBuilder.create}{\f2\fs20\insrsid6251675 
+ProjectIdFilter(953);}{\f2\fs20\insrsid5249139 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5249139 {\f2\fs20\insrsid6251675 Filter }{\f2\fs20\insrsid14615309 upload}{\f2\fs20\insrsid6251675 TypeFilter = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7542262 {\f2\fs20\insrsid14615309 UploadFilterBuilder.createUploadTypeIdFilter(4}{\f2\fs20\insrsid6251675 );}{\f2\fs20\insrsid7542262 
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid7542262 {\f2\fs20\insrsid6251675 Filter fullFilter = 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 \tab \tab SearchBundle.createAndFilter(
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid7542262 {\f2\fs20\insrsid6251675 proje}{\f2\fs20\insrsid7542262 ctFilter, uploadTypeFilter);}{\f2\fs20\insrsid6251675 
+\par }{\f2\fs20\insrsid7542262 
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\cf11\insrsid14642844 /}{\f2\fs20\cf11\insrsid7542262 / Search for the Uploads}{\f2\fs20\cf11\insrsid6251675\charrsid14642844 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid7542262 {\f2\fs20\insrsid7542262 Upload}{\f2\fs20\insrsid6251675 [] matching}{\f2\fs20\insrsid7542262 Uploads}{\f2\fs20\insrsid6251675  = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 manager.search}{\f2\fs20\insrsid7542262 Uploads}{\f2\fs20\insrsid6251675 (fullFilter);
+\par 
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7542262 {\f2\fs20\cf11\insrsid6251675\charrsid14642844 // }{\f2\fs20\cf11\insrsid7542262 Submissions and Deliverables}{
+\f2\fs20\cf11\insrsid6251675\charrsid14642844  can be searched similarly by }{\f2\fs20\cf11\insrsid7542262 
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\cf11\insrsid7542262 // }{\f2\fs20\cf11\insrsid6251675\charrsid14642844 using the other FilterBuilder classes and the corresponding }{
+\f2\fs20\cf11\insrsid7542262 
+\par // UploadManager or DeliverableManager methods}{\f2\fs20\cf11\insrsid6251675\charrsid14642844 .}{\f2\fs20\cf11\insrsid14642844 
+\par }{\f2\fs20\cf11\insrsid4723834 
+\par }{\f2\fs20\cf11\insrsid800590 // Get all the lookup table values.}{\f2\fs20\cf11\insrsid4723834 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid4723834 {\f2\fs20\insrsid4723834\charrsid4723834 UploadType[]}{\f2\fs20\insrsid4723834  uploadTypes = manager.getAllUploadTypes();}{\f2\fs20\insrsid7542262 
+
+\par }{\f2\fs20\insrsid4723834 UploadStatus[] uploadStatuses = manager.getAllUploadStatuses();
+\par SubmissionStatus[] submissionStatuses = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid4723834 {\f2\fs20\insrsid4723834 manager.getAllSubmissionStatuses();
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid800590 {\f2\fs20\insrsid800590 
+\par }{\f2\fs20\cf11\insrsid800590\charrsid800590 \tab // Alter a lookup table entry and update the persistence}{\f2\fs20\cf11\insrsid800590 
+\par }{\f2\fs20\insrsid800590\charrsid800590 \tab uploadTypes[0].setName(\'93Changed name\'94);
+\par \tab manager.updateUploadType(uploadTypes[0]);
+\par }{\f2\fs20\cf11\insrsid800590 
+\par \tab // Look}{\f2\fs20\cf11\insrsid10298036 up table entries can be created/removed through parallel}{\f2\fs20\cf11\insrsid800590 
+\par \tab // }{\f2\fs20\cf11\insrsid10298036 methods to those shown i}{\f2\fs20\cf11\insrsid800590 n section 4.3.4}{\f2\fs20\insrsid800590\charrsid800590 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid4723834 {\f2\fs20\insrsid4723834\charrsid4723834 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 5.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid15300465 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Future Enhancements
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15547734 
+At the current time, no future enhancements are expected for this component.}{\insrsid15300465\charrsid15300465 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par }}
