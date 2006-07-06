@@ -1,0 +1,795 @@
+{\rtf1\ansi\ansicpg1252\uc1\deff0\stshfdbch0\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman{\*\falt Times New Roman};}
+{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial{\*\falt Arial};}{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New{\*\falt Courier New};}
+{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol{\*\falt Symbol};}{\f10\fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings{\*\falt Wingdings};}
+{\f34\fswiss\fcharset128\fprq2{\*\panose 020b0604020202020204}Arial Unicode MS{\*\falt MS PGothic};}{\f37\fswiss\fcharset128\fprq2{\*\panose 020b0604020202020204}@Arial Unicode MS;}
+{\f77\froman\fcharset238\fprq2 Times New Roman CE{\*\falt Times New Roman};}{\f78\froman\fcharset204\fprq2 Times New Roman Cyr{\*\falt Times New Roman};}{\f80\froman\fcharset161\fprq2 Times New Roman Greek{\*\falt Times New Roman};}
+{\f81\froman\fcharset162\fprq2 Times New Roman Tur{\*\falt Times New Roman};}{\f82\froman\fcharset177\fprq2 Times New Roman (Hebrew){\*\falt Times New Roman};}{\f83\froman\fcharset178\fprq2 Times New Roman (Arabic){\*\falt Times New Roman};}
+{\f84\froman\fcharset186\fprq2 Times New Roman Baltic{\*\falt Times New Roman};}{\f85\froman\fcharset163\fprq2 Times New Roman (Vietnamese){\*\falt Times New Roman};}{\f87\fswiss\fcharset238\fprq2 Arial CE{\*\falt Arial};}
+{\f88\fswiss\fcharset204\fprq2 Arial Cyr{\*\falt Arial};}{\f90\fswiss\fcharset161\fprq2 Arial Greek{\*\falt Arial};}{\f91\fswiss\fcharset162\fprq2 Arial Tur{\*\falt Arial};}{\f92\fswiss\fcharset177\fprq2 Arial (Hebrew){\*\falt Arial};}
+{\f93\fswiss\fcharset178\fprq2 Arial (Arabic){\*\falt Arial};}{\f94\fswiss\fcharset186\fprq2 Arial Baltic{\*\falt Arial};}{\f95\fswiss\fcharset163\fprq2 Arial (Vietnamese){\*\falt Arial};}
+{\f97\fmodern\fcharset238\fprq1 Courier New CE{\*\falt Courier New};}{\f98\fmodern\fcharset204\fprq1 Courier New Cyr{\*\falt Courier New};}{\f100\fmodern\fcharset161\fprq1 Courier New Greek{\*\falt Courier New};}
+{\f101\fmodern\fcharset162\fprq1 Courier New Tur{\*\falt Courier New};}{\f102\fmodern\fcharset177\fprq1 Courier New (Hebrew){\*\falt Courier New};}{\f103\fmodern\fcharset178\fprq1 Courier New (Arabic){\*\falt Courier New};}
+{\f104\fmodern\fcharset186\fprq1 Courier New Baltic{\*\falt Courier New};}{\f105\fmodern\fcharset163\fprq1 Courier New (Vietnamese){\*\falt Courier New};}{\f419\fswiss\fcharset0\fprq2 Arial Unicode MS Western{\*\falt MS PGothic};}
+{\f417\fswiss\fcharset238\fprq2 Arial Unicode MS CE{\*\falt MS PGothic};}{\f418\fswiss\fcharset204\fprq2 Arial Unicode MS Cyr{\*\falt MS PGothic};}{\f420\fswiss\fcharset161\fprq2 Arial Unicode MS Greek{\*\falt MS PGothic};}
+{\f421\fswiss\fcharset162\fprq2 Arial Unicode MS Tur{\*\falt MS PGothic};}{\f422\fswiss\fcharset177\fprq2 Arial Unicode MS (Hebrew){\*\falt MS PGothic};}{\f423\fswiss\fcharset178\fprq2 Arial Unicode MS (Arabic){\*\falt MS PGothic};}
+{\f424\fswiss\fcharset186\fprq2 Arial Unicode MS Baltic{\*\falt MS PGothic};}{\f425\fswiss\fcharset163\fprq2 Arial Unicode MS (Vietnamese){\*\falt MS PGothic};}{\f426\fswiss\fcharset222\fprq2 Arial Unicode MS (Thai){\*\falt MS PGothic};}
+{\f449\fswiss\fcharset0\fprq2 @Arial Unicode MS Western;}{\f447\fswiss\fcharset238\fprq2 @Arial Unicode MS CE;}{\f448\fswiss\fcharset204\fprq2 @Arial Unicode MS Cyr;}{\f450\fswiss\fcharset161\fprq2 @Arial Unicode MS Greek;}
+{\f451\fswiss\fcharset162\fprq2 @Arial Unicode MS Tur;}{\f452\fswiss\fcharset177\fprq2 @Arial Unicode MS (Hebrew);}{\f453\fswiss\fcharset178\fprq2 @Arial Unicode MS (Arabic);}{\f454\fswiss\fcharset186\fprq2 @Arial Unicode MS Baltic;}
+{\f455\fswiss\fcharset163\fprq2 @Arial Unicode MS (Vietnamese);}{\f456\fswiss\fcharset222\fprq2 @Arial Unicode MS (Thai);}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;
+\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}
+{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{\s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 1;}{\s2\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 heading 2;}{
+\s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 
+heading 3;}{\s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 
+heading 4;}{\s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0 \fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 
+\sbasedon0 \snext0 heading 5;}{\s6\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl5\outlinelevel5\adjustright\rin0\lin0\itap0 
+\i\fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 6;}{\s7\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl6\outlinelevel6\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 7;}{\s8\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl7\outlinelevel7\adjustright\rin0\lin0\itap0 \i\f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 8;}{\s9\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl8\outlinelevel8\adjustright\rin0\lin0\itap0 \b\i\f1\fs18\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 9;}{\*\cs10 \additive \ssemihidden Default Paragraph Font;}{\*
+\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\trcbpat1\trcfpat1\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
+\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{\*\cs15 \additive \ul\cf2 \sbasedon10 Hyperlink;}{
+\s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext16 Body Text;}{\s17\ql \li720\ri0\sa120\sl240\slmult0
+\nowidctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \i\f1\fs20\cf2\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext16 \sautoupd InfoBlue;}{\s18\ql \li0\ri0\widctlpar\faauto\rin0\lin0\itap0 
+\f1\fs24\cf1\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \snext18 \styrsid9380693 Default;}{\s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0 
+\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext19 \styrsid9380693 Style Heading 3 + 10 pt Not Bold;}}{\*\listtable{\list\listtemplateid-1002801566{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fbias0 \s1\jclisttab\tx360 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'03\'00.\'01;}{\levelnumbers\'01\'03;}
+\fbias0 \s2\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'05\'00.\'01.\'02;}{\levelnumbers\'01\'03\'05;}\fbias0 \s3\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0
+\leveljc0\leveljcn0\levelfollow1\levelstartat1\levelspace0\levelindent0{\leveltext\'07\'00.\'01.\'02.\'03;}{\levelnumbers\'01\'03\'05\'07;}\fbias0 \s4}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'09\'00.\'01.\'02.\'03.\'04;}{\levelnumbers\'01\'03\'05\'07\'09;}\fbias0 \s5\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0b\'00.\'01.\'02.\'03.\'04.\'05;}{\levelnumbers\'01\'03\'05\'07\'09\'0b;}\fbias0 \s6\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0d\'00.\'01.\'02.\'03.\'04.\'05.\'06;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d;}\fbias0 \s7\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0f\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f;}\fbias0 \s8\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'11\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07.\'08;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f\'11;}\fbias0 \s9\jclisttab\tx0 }{\listname ;}\listid-5}{\list\listtemplateid-817471354\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid592376902\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \s19\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691
+\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}
+\f10\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li6120
+\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li7560\jclisttab\tx7560\lin7560 }{\listname ;}\listid297998283}
+{\list\listtemplateid435963285\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow2\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid592376902\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698693
+\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0
+\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'00;}{\levelnumbers
+;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0
+\levelindent0{\leveltext\leveltemplateid67698691\'00;}{\levelnumbers;}}{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'00;}{\levelnumbers;}}{\listname 
+;}\listid445777177}{\list\listtemplateid766663220\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }
+{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}
+\f2\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }
+{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li7560\jclisttab\tx7560\lin7560 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li8280\jclisttab\tx8280\lin8280 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0
+{\leveltext\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li9000\jclisttab\tx9000\lin9000 }{\listname ;}\listid659893714}{\list\listtemplateid-160384884\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\leveltemplateid67698691\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693
+\'02\'02.;}{\levelnumbers\'01;}\fi-180\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'02\'03.;}{\levelnumbers\'01;}\fi-360\li3240
+\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'02\'04.;}{\levelnumbers\'01;}\fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel
+\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'02\'05.;}{\levelnumbers\'01;}\fi-180\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'02\'06.;}{\levelnumbers\'01;}\fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\leveltemplateid67698691\'02\'07.;}{\levelnumbers\'01;}\fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\leveltemplateid67698693\'02\'08.;}{\levelnumbers\'01;}\fi-180\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid806357716}{\list\listtemplateid932329388\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\leveltemplateid67698713\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715
+\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'01\u-3913 ?;}{\levelnumbers;}
+\f3\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3960
+\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }
+{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23
+\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }{\listname ;}\listid876431865}{\list\listtemplateid667841226\listhybrid{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li360\jclisttab\tx360\lin360 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1080\jclisttab\tx1080\lin1080 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li1800\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691
+\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}
+\f10\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li4680
+\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listname ;}\listid880173990}
+{\list\listtemplateid-2086119468\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li1800
+\jclisttab\tx1800\lin1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li2520\jclisttab\tx2520\lin2520 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li3240\jclisttab\tx3240\lin3240 }{\listlevel\levelnfc23\levelnfcn23
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li3960\jclisttab\tx3960\lin3960 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li4680\jclisttab\tx4680\lin4680 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li5400\jclisttab\tx5400\lin5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0
+{\leveltext\leveltemplateid67698689\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li6120\jclisttab\tx6120\lin6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\fbias0 \fi-360\li6840\jclisttab\tx6840\lin6840 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693
+\'01\u-3929 ?;}{\levelnumbers;}\f10\fbias0 \fi-360\li7560\jclisttab\tx7560\lin7560 }{\listname ;}\listid2078744589}{\list\listtemplateid-985754512{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'02\'00.;}{\levelnumbers\'01;}\jclisttab\tx360 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'03\'00.\'01;}{\levelnumbers\'01\'03;}\jclisttab\tx0 }{\listlevel\levelnfc0
+\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'05\'00.\'01.\'02;}{\levelnumbers\'01\'03\'05;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\'07\'00.\'01.\'02.\'03;}{\levelnumbers\'01\'03\'05\'07;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'09\'00.\'01.\'02.\'03.\'04;}{\levelnumbers
+\'01\'03\'05\'07\'09;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'0b\'00.\'01.\'02.\'03.\'04.\'05;}{\levelnumbers\'01\'03\'05\'07\'09\'0b;}\jclisttab\tx0 }{\listlevel
+\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'0d\'00.\'01.\'02.\'03.\'04.\'05.\'06;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'0f\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f;}\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'11\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07.\'08;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f\'11;}\jclisttab\tx0 }{\listname ;}\listid2094743958}}{\*\listoverridetable{\listoverride\listid-5\listoverridecount0\ls1}
+{\listoverride\listid806357716\listoverridecount9{\lfolevel}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel
+\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}\ls2}{\listoverride\listid876431865\listoverridecount9{\lfolevel}{\lfolevel}
+{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}\ls3}{\listoverride\listid445777177\listoverridecount0\ls4}{\listoverride\listid876431865\listoverridecount0\ls5}{\listoverride\listid806357716\listoverridecount0\ls6}
+{\listoverride\listid297998283\listoverridecount0\ls7}{\listoverride\listid2094743958\listoverridecount0\ls8}{\listoverride\listid880173990\listoverridecount0\ls9}{\listoverride\listid659893714\listoverridecount0\ls10}{\listoverride\listid2078744589
+\listoverridecount0\ls11}{\listoverride\listid297998283\listoverridecount0\ls12}{\listoverride\listid297998283\listoverridecount0\ls13}}{\*\rsidtbl \rsid94061\rsid154166\rsid425770\rsid485027\rsid1271503\rsid1459238\rsid1529164\rsid1728436\rsid2122042
+\rsid2308297\rsid2449292\rsid2562558\rsid2714032\rsid2769449\rsid2843228\rsid3085404\rsid3433924\rsid3489020\rsid3742193\rsid3885868\rsid3895503\rsid5196338\rsid5249139\rsid5577096\rsid5924970\rsid6162099\rsid6251675\rsid6644740\rsid6704384\rsid6834741
+\rsid6950849\rsid6960945\rsid7039124\rsid7224800\rsid7490597\rsid7617680\rsid7693177\rsid7951447\rsid8027735\rsid8481689\rsid8724984\rsid8803700\rsid9380693\rsid9584681\rsid9655635\rsid10361880\rsid10362329\rsid10632036\rsid10700652\rsid10753943
+\rsid10771929\rsid10830148\rsid11011347\rsid11229705\rsid11367904\rsid11427598\rsid11496956\rsid11620076\rsid12198891\rsid12333092\rsid12529432\rsid12612589\rsid12651913\rsid12800507\rsid12863765\rsid12864684\rsid13128372\rsid13316994\rsid13393026
+\rsid13401154\rsid13526616\rsid14160407\rsid14290961\rsid14368902\rsid14373555\rsid14492923\rsid14642844\rsid14838129\rsid15300465\rsid15493990\rsid15547734\rsid15625242\rsid15952096\rsid16265180\rsid16327083\rsid16595021\rsid16657551\rsid16731167
+\rsid16731325}{\*\generator Microsoft Word 10.0.6612;}{\info{\title <<Component>> <<Version>> Component Specification}{\author gpaul}{\operator Kyle Littlefield}{\creatim\yr2004\mo6\dy16\hr17\min44}{\revtim\yr2006\mo6\dy26\hr15\min43}{\version57}
+{\edmins1013}{\nofpages15}{\nofwords4201}{\nofchars23947}{\*\company TopCoder}{\nofcharsws28092}{\vern16389}}\widowctrl\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180
+\dghorigin1800\dgvorigin1440\dghshow1\dgvshow1\jexpand\viewkind1\viewscale100\pgbrdrhead\pgbrdrfoot\splytwnine\ftnlytwnine\htmautsp\nolnhtadjtbl\useltbaln\alntblind\lytcalctblwd\lyttblrtgr\lnbrkrule\rsidroot13401154 \fet0\sectd 
+\linex0\endnhere\sectlinegrid360\sectdefaultcl\sftnbj {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl4
+\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}
+{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\tx720\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs28\ul\insrsid9380693 \hich\af1\dbch\af34\loch\f1 Resource Management 1.0}{
+\fs28\ul\insrsid12612589 \hich\af1\dbch\af34\loch\f1  Component Specification
+\par }\pard\plain \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Design
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid9380693 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid9380693 The Resource Management component provides resource management fun
+ctionalities. A resource can be associated with a project, phase and submission.  Each resource will have a role which identifies the resource\rquote 
+s responsibilities for the associated scope.  A set of resources can be created, updated or searched for a project.  Notifications can also be assigned and unassigned to users. The persistence logic for resources and related entities is pluggable.
+\par 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6834741 {\insrsid9380693 For development, this co}{\insrsid6834741 
+mponent is split into two parts.  The main part will need to be done first, as the persistence part can not be done without the object model classes (in the main part) are complete.
+\par {\listtext\pard\plain\s19 \f10\insrsid9380693 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard\plain \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid6834741 
+\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid9380693 Main part: This development project will be responsible for all classes and interfaces in the com.topcoder.management.resource package and the com.topcoder.management.r
+esource.search classes.  The ResourcePersistenceException }{\insrsid6834741 will also fall in this development project because it is declared to be thrown in the ResourceManager interface.
+\par {\listtext\pard\plain\s19 \f10\insrsid9380693 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid9380693 {\insrsid9380693 
+Persistence part: This development project will be responsible for the classes in the com.topcoder.management.resource.persistence and com.topcoder.management.resource.persistence.sql packages.}{\insrsid6834741 
+  Development of the ResourcePersistenceException will not fall in this development project, as it will already have been done in the main part.}{\insrsid9380693 
+\par }\pard \s19\ql \li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid6834741 {\insrsid6834741\charrsid9380693 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid9380693 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Design Patterns }
+{\insrsid9380693 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6834741 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid8481689 The ResourcePersistence interface and implementations uses the }{
+\b\insrsid8481689 Strategy Pattern}{\insrsid8481689 , as does the ResourceManager interface and implementations.}{\insrsid10361880   The Delegate pattern is used to delegate filter building tasks to the Search Builder component.}{
+\insrsid6834741\charrsid10361880 
+\par }{\insrsid11229705\charrsid8481689 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Industry Standards 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6834741 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid6834741 SQL
+\par }{\insrsid6834741\charrsid6834741 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid12800507 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 
+Required Algorithms}{\insrsid12800507 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7617680 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid7617680 
+The only complicated part of this component is the SQL queries needed in the SqlResourcePersistence class.  Beyond this, nothing more complicated than a simple for loop or an if/else is needed in this component.
+\par }{\insrsid7617680\charrsid7617680 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid7039124 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Sql Queries}{
+\insrsid8724984 \hich\af1\dbch\af34\loch\f1  for SqlResourcePersistence}{\insrsid7039124 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14368902 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid14368902 
+This section lists the SQL queries and statements that will be needed by the SqlResourcePersistence class, accompanied by a written explanation of what to do, when more logic than just a sequence of }{\insrsid6704384 SQL }{\insrsid14368902 
+statements is needed.  All of these }{\insrsid6704384 SQL }{\insrsid14368902 statements should be executed using PreparedStatements.  A typical method of this class would look like (this example uses the \'93Update Notification Type\'94 statement}{
+\insrsid6704384 ):}{\insrsid14368902 
+\par 
+\par SQL statement to execute:
+\par }{\f2\fs20\insrsid14368902\charrsid2308297 UPDATE notification_type_lu
+\par SET name = ?, description = ?, modify_user = ?, modify_date = ?
+\par WHERE notification_type_id = ?
+\par }{\insrsid14368902 
+\par }{\insrsid6704384 Sample Code:
+\par }{\insrsid14368902 
+\par }{\f2\fs20\cf11\insrsid14368902\charrsid2769449 // Open connection
+\par }{\f2\fs20\insrsid14368902\charrsid2769449 Connection connection = connectionFactory.createConnection();
+\par }{\f2\fs20\cf11\insrsid14368902\charrsid2769449 // Create a prepared statement
+\par }{\f2\fs20\insrsid14368902\charrsid2769449 PreparedStatement ps = }{\f2\fs20\insrsid2769449 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2769449 {\f2\fs20\insrsid14368902\charrsid2769449 connection.prepareStatement(< above text >);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1529164 {\f2\fs20\cf11\insrsid14368902\charrsid2769449 // Use data in NotificationType passed to method to set}{\f2\fs20\insrsid14368902\charrsid2769449  }{
+\f2\fs20\insrsid7490597 
+\par }{\f2\fs20\cf11\insrsid7490597\charrsid7490597 // parameters }{\f2\fs20\cf11\insrsid14368902\charrsid7490597 in prepared statement
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14368902 {\f2\fs20\insrsid14368902\charrsid2769449 ps.setString(1, notificationType.getName());
+\par ps.setString(2, notificationType.getDescription());
+\par ps.setString(3, notificationType.getModificationUser());
+\par ps.setDate(4, notificationType.getModificationDate());
+\par ps.setLong(5, notificationType.getId());
+\par }{\f2\fs20\cf11\insrsid2769449\charrsid2769449 // execute PreparedStatement
+\par }{\f2\fs20\insrsid2769449\charrsid2769449 ps.execute();
+\par }{\f2\fs20\cf11\insrsid2769449\charrsid2769449 // close connection
+\par }{\f2\fs20\insrsid2769449\charrsid2769449 connection.close();
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14368902 {\insrsid14368902\charrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.1\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Update Resource
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14368902 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid5577096\charrsid14368902 First, update the resource table
+\par UPDATE resource
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5577096 {\f2\fs20\insrsid5577096\charrsid14368902 SET resource_role_id = ?, project_id = ?, phase_id = ?, modify_user = ?, modify_date = ?
+\par WHERE resource_id = ?
+\par }{\insrsid5577096 
+\par Next, check if there is a submission entry for the resource:
+\par }{\f2\fs20\insrsid5577096\charrsid14368902 SELECT submission_id
+\par FROM resource_submission
+\par WHERE resource_id = ?
+\par }{\insrsid5577096 
+\par What to do with the submission depends on whether the previous query returns a row (there is a previous submission entry), and whether the Resource passed to the method has a current submission entry (its getSubmission() method returns a non-null value).
+
+\par {\listtext\pard\plain\s19 \f10\insrsid14373555 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard\plain \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid5577096 
+\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid14373555 No previous submission and}{\insrsid5577096  no current submission: }{\insrsid14373555 
+\par {\listtext\pard\plain\s19 \f2\insrsid5577096 \hich\af2\dbch\af0\loch\f2 o\tab}}\pard \s19\ql \fi-360\li2520\ri0\widctlpar\jclisttab\tx2520\aspalpha\aspnum\faauto\ls7\ilvl1\adjustright\rin0\lin2520\itap0\pararsid14373555 {\insrsid5577096 Do nothing
+\par {\listtext\pard\plain\s19 \f10\insrsid5577096 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid5577096 {\insrsid5577096 
+No previous submission}{\insrsid14373555  and}{\insrsid5577096  has current submission: }{\insrsid14373555 
+\par {\listtext\pard\plain\s19 \f2\insrsid5577096 \hich\af2\dbch\af0\loch\f2 o\tab}}\pard \s19\ql \fi-360\li2520\ri0\widctlpar\jclisttab\tx2520\aspalpha\aspnum\faauto\ls7\ilvl1\adjustright\rin0\lin2520\itap0\pararsid14373555 {\insrsid5577096 Add }{
+\insrsid7693177 a }{\insrsid5577096 row to}{\insrsid7693177  }{\insrsid5577096 resource_submission.  Use the second SQL statement in the Add Resource section)
+\par {\listtext\pard\plain\s19 \f10\insrsid5577096 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid5577096 {\insrsid5577096 Has p}{
+\insrsid14373555 revious submission and}{\insrsid5577096  no current submission: }{\insrsid14373555 
+\par {\listtext\pard\plain\s19 \f2\insrsid5577096 \hich\af2\dbch\af0\loch\f2 o\tab}}\pard \s19\ql \fi-360\li2520\ri0\widctlpar\jclisttab\tx2520\aspalpha\aspnum\faauto\ls7\ilvl1\adjustright\rin0\lin2520\itap0\pararsid14373555 {\insrsid5577096 Remove }{
+\insrsid7693177 a }{\insrsid5577096 row from resource_submission.  Use the second SQL statement in the Delete Resource section
+\par {\listtext\pard\plain\s19 \f10\insrsid5577096 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid5577096 {\insrsid5577096 Has}{
+\insrsid14373555  previous submission and}{\insrsid5577096  has current submission: }{\insrsid14373555 
+\par {\listtext\pard\plain\s19 \f2\insrsid5577096 \hich\af2\dbch\af0\loch\f2 o\tab}}\pard \s19\ql \fi-360\li2520\ri0\widctlpar\jclisttab\tx2520\aspalpha\aspnum\faauto\ls7\ilvl1\adjustright\rin0\lin2520\itap0\pararsid14373555 {\insrsid5577096 Update }{
+\insrsid7693177 a }{\insrsid5577096 row in resource_submission table using the SQL statement:
+\par }\pard \s19\ql \li2520\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin2520\itap0\pararsid14373555 {\f2\fs20\insrsid5577096\charrsid14373555 UPDATE resource_submission
+\par SET submission_id = ?, modify_user = ?, modify_date = ?
+\par WHERE resource_id = ?}{\insrsid5577096 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5577096 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid5577096\charrsid5577096 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2122042 {\insrsid2122042 Look up all the existing properties for this resource (see the second query in the Load Resource section).
+\par 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5577096 {\insrsid5577096 The task of updating the extended properties largely parallels the submission update.  For each}{\insrsid2122042  extended property }{
+\insrsid5577096 name that appears either in the map of the Resource passed to this method, or in the existing properties in the database:
+\par {\listtext\pard\plain\s19 \f10\insrsid14373555 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard\plain \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid14373555 
+\fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid14373555 No previous entry for property name and has current entry for property name: 
+\par {\listtext\pard\plain\s19 \f2\insrsid14373555 \hich\af2\dbch\af0\loch\f2 o\tab}}\pard \s19\ql \fi-360\li2520\ri0\widctlpar\jclisttab\tx2520\aspalpha\aspnum\faauto\ls7\ilvl1\adjustright\rin0\lin2520\itap0\pararsid14373555 {\insrsid14373555 Add }{
+\insrsid7693177 a }{\insrsid14373555 row to resource_info using the method given in the Add Resource section. Do not add the property if an entry for the name is not found in the resource_info_type_lu table.
+\par {\listtext\pard\plain\s19 \f10\insrsid14373555 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid14373555 {\insrsid14373555 
+Has previous entry for property name and has current entry for property name
+\par {\listtext\pard\plain\s19 \f2\insrsid14373555 \hich\af2\dbch\af0\loch\f2 o\tab}}\pard \s19\ql \fi-360\li2520\ri0\widctlpar\jclisttab\tx2520\aspalpha\aspnum\faauto\ls7\ilvl1\adjustright\rin0\lin2520\itap0\pararsid14373555 {\insrsid14373555 
+Look up resource_info_type_id using the third SQL statement in the Add Resource section.
+\par {\listtext\pard\plain\s19 \f2\insrsid14373555 \hich\af2\dbch\af0\loch\f2 o\tab}Update }{\insrsid7693177 a }{\insrsid14373555 row in resource_info using the SQL statement 
+\par }\pard \s19\ql \li2520\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin2520\itap0\pararsid14373555 {\f2\fs20\insrsid14373555\charrsid14373555 UPDATE resource_info
+\par SET value = ?
+\par WHERE resource_id = ? AND resource_info_type_id = ?
+\par {\listtext\pard\plain\s19 \f10\insrsid14373555 \loch\af10\dbch\af0\hich\f10 \'a7\tab}}\pard \s19\ql \fi-360\li1800\ri0\widctlpar\jclisttab\tx1800\aspalpha\aspnum\faauto\ls7\adjustright\rin0\lin1800\itap0\pararsid14373555 {\insrsid14373555 
+Previous entry for property name and no current entry for property name:
+\par {\listtext\pard\plain\s19 \f2\insrsid14373555 \hich\af2\dbch\af0\loch\f2 o\tab}}\pard \s19\ql \fi-360\li2520\ri0\widctlpar\jclisttab\tx2520\aspalpha\aspnum\faauto\ls7\ilvl1\adjustright\rin0\lin2520\itap0\pararsid14373555 {\insrsid14373555 
+Look up the resource_info_type_id using the third SQL statement in the Add Resource section.
+\par {\listtext\pard\plain\s19 \f2\insrsid14373555 \hich\af2\dbch\af0\loch\f2 o\tab}Remove the row in the resource_info table using the SQL statement
+\par }\pard \s19\ql \li2520\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin2520\itap0\pararsid14373555 {\f2\fs20\insrsid14373555\charrsid14373555 DELETE FROM resource_info
+\par WHER}{\f2\fs20\insrsid14368902 E}{\f2\fs20\insrsid14373555\charrsid14373555  resource_id = ? and resource_info_type_id = ?
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid2122042 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid2122042\charrsid2122042 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.2\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Delete Resource
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2122042 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid2122042 First, delete all extended properties for the resource: \line }{
+\f2\fs20\insrsid2122042\charrsid14368902 DELETE FROM resource_info
+\par WHERE resource_id = ?
+\par }{\insrsid2122042 
+\par Then delete entry from resource_submission table:
+\par }{\f2\fs20\insrsid2122042\charrsid14368902 DELETE FROM resource_submission
+\par WHERE resource_id = ?
+\par }{\insrsid2122042 
+\par Finally delete entry in resource table
+\par }{\f2\fs20\insrsid2122042\charrsid14368902 DELETE FROM resource
+\par WHERE resource_id = ?
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.3\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Add Resource
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11367904 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid11367904\charrsid14368902 INSERT INTO resource
+\par (resource_id, resource_role_id, project_id, phase_id, submission_id, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+\par }{\insrsid11367904 
+\par If submission is not null, then insert submission entry via:
+\par }{\f2\fs20\insrsid2122042\charrsid14368902 INSERT INTO resource_submission}{\f2\fs20\insrsid11367904\charrsid14368902 
+\par }{\f2\fs20\insrsid2122042\charrsid14368902 (resource_id, submission_id, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?, ?, ?)
+\par }{\insrsid2122042 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2122042 {\insrsid2122042 For each \{name, value\} extended property pair in the extended proper
+ties map, first look up the resource_info_type_id for the name using:
+\par }{\f2\fs20\insrsid2122042\charrsid14368902 SELECT resource_info_type_id
+\par FROM resource_info_type_lu 
+\par WHERE name = ?
+\par }{\insrsid2122042 
+\par If there is an entry for the name (i.e. the previous query returned a row), then check if there is already add an
+ info entry for the resource using the following query.  If there was no entry for the name, the extended property is silently ignored and will not be persisted.
+\par }{\f2\fs20\insrsid2122042\charrsid14368902 INSERT INTO resource_info
+\par (resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?, ?, ?, ?)
+\par }{\insrsid14373555 \line The value to insert is the .toString() return of the value in the properties map.
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8803700 {\insrsid2122042  }{\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.4\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Load Resource
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2308297 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid2308297\charrsid14368902 
+SELECT resource_id, resource_role_id, project_id, phase_id, }{\f2\fs20\insrsid11367904\charrsid14368902 submission_id, }{\f2\fs20\insrsid2308297\charrsid14368902 create_user, create_date, modify_user, modify_date
+\par FROM resource}{\f2\fs20\insrsid11367904\charrsid14368902  LEFT OUTER JOIN resource_submission 
+\par ON resource.resource_id = resource_submission.resource_id}{\f2\fs20\insrsid2308297\charrsid14368902 
+\par WHERE resource_id = ?
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid11367904 {\insrsid2308297 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2308297 {\insrsid2308297 To select }{\insrsid11367904 all }{\insrsid2308297 external properties:
+\par }{\f2\fs20\insrsid11367904\charrsid14368902 SELECT }{\f2\fs20\insrsid2308297\charrsid14368902 resource_info_type_lu.name}{\f2\fs20\insrsid11367904\charrsid14368902 , resource_info.value}{\f2\fs20\insrsid2308297\charrsid14368902 
+\par FROM resource_info}{\f2\fs20\insrsid11367904\charrsid14368902  INNER JOIN resource_info_type_lu ON (resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id)}{\f2\fs20\insrsid2308297\charrsid14368902 
+\par }{\f2\fs20\insrsid11367904\charrsid14368902 WHERE resource_id = ?
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.5\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Add Notification
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16265180 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid16265180\charrsid2308297 INSERT INTO notification
+\par }{\f2\fs20\insrsid2308297\charrsid2308297 (project_id, external_ref_id, notification_type_id, create_user, create_date, modify_user, modify_date)
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid2308297 {\f2\fs20\insrsid2308297\charrsid2308297 VALUES (?, ?, ?, ?, ?, ?, ?)}{\f2\fs20\insrsid2308297 
+\par }{\f2\fs20\insrsid14368902\charrsid2308297 
+\par }{\insrsid2308297 Note that for this table, both the create_user and modify_user are set to the operator passed to the method, as are the modify_user and modify_date.  The other add and update methods }{\insrsid7693177 in this class }{\insrsid2308297 
+use the values in the object passed to th}{\insrsid7693177 e methods.}{\insrsid2308297\charrsid16265180 
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.6\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Remove Notification
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6960945 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid6960945\charrsid2308297 DELETE FROM notification
+\par WHERE project = ? AND external_ref_id = ? AND notification_type_id = ?
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.7\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Add Notification Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6960945 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid6960945\charrsid2308297 INSERT INTO notification_type_lu
+\par (notification_type_id, name, description, create_user, create_date, modify_user, modify_date)
+\par VALUES(?, ?, ?, ?, ?, ?, ?)
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.8\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Delete Notification Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8724984 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8724984\charrsid2308297 DELETE FROM}{
+\f2\fs20\insrsid6960945\charrsid2308297  notification_type_lu}{\f2\fs20\insrsid8724984\charrsid2308297 
+\par }{\f2\fs20\insrsid6960945\charrsid2308297 WHERE notification_type_id = ?
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid8724984 \hich\af1\dbch\af34\loch\f1 1.3.1.9\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid8724984 {\insrsid8724984 \hich\af1\dbch\af34\loch\f1 Update Notification Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8724984 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8724984\charrsid2308297 UPDATE notification_type_lu
+\par SET name = ?, description = ?, modify_user = ?, modify_date = ?
+\par WHERE notification_type_id = ?
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.10\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Load Notification Type
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8724984 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8724984\charrsid2308297 SELECT notification_type_id, name, description,
+ create_user, create_date, modify_user, modify_date
+\par FROM notification_type_lu
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6960945 {\f2\fs20\insrsid8724984\charrsid2308297 WHERE notification_type_id = ?}{\f2\fs20\insrsid8724984 
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid13316994\charrsid13316994 \hich\af1\dbch\af34\loch\f1 1.3.1.10.1\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid13316994 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid13316994\charrsid13316994 
+\hich\af1\dbch\af34\loch\f1 Load }{\fs20\insrsid13316994 \hich\af1\dbch\af34\loch\f1 Notification Types
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid13316994 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid13316994 This is the same as above, but the WHERE clause becomes 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3489020 {\insrsid13316994 WHERE resource_role_id IN (<id_values)}{\insrsid13316994\charrsid3489020 
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7951447 \hich\af1\dbch\af34\loch\f1 1.3.1.11\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7951447 \hich\af1\dbch\af34\loch\f1 Add}{\insrsid7039124 \hich\af1\dbch\af34\loch\f1  Resource Role
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7951447 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid7951447\charrsid2308297 INSERT INTO resource_role_lu
+\par (resource_role_id, name, description, phase_type_id, create_user, create_date, modify_user, modify_date)
+\par VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.12\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Delete Resource Role
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7951447 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid7951447\charrsid2308297 DELETE FROM resource_role_lu
+\par WHERE resource_role_id = ?
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.13\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Update Resource Role
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7039124 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid7951447\charrsid2308297 UPDATE resource_role_lu}{
+\f2\fs20\insrsid7039124\charrsid2308297 
+\par }{\f2\fs20\insrsid2714032\charrsid2308297 SET phase_type_id = ?, name = ?, description = ?, }{\f2\fs20\insrsid7951447\charrsid2308297 phase_type_id = ?, modify_user = ?, modify_date = ?}{\f2\fs20\insrsid2714032\charrsid2308297 
+\par }{\f2\fs20\insrsid7951447\charrsid2308297 WHERE resource_role_id = ?
+\par }\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14368902 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {
+\insrsid14368902 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid7039124 \hich\af1\dbch\af34\loch\f1 1.3.1.14\tab}}\pard \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid7039124 {\insrsid7039124 \hich\af1\dbch\af34\loch\f1 Load Resource Role
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7039124 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid7039124\charrsid2308297 SELECT resource_role_id, phase_type_id, name, }{
+\f2\fs20\insrsid2714032\charrsid2308297 description, }{\f2\fs20\insrsid7039124\charrsid2308297 create_user, create_date, modify_user, modify_date
+\par FROM }{\f2\fs20\insrsid2714032\charrsid2308297 resource_role_lu}{\f2\fs20\insrsid7039124\charrsid2308297 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid13316994 {\f2\fs20\insrsid7039124\charrsid2308297 WHERE resource_role_id = ?}{\f2\fs20\insrsid13316994 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid7039124 {\f2\fs20\insrsid12800507 
+\par {\listtext\pard\plain\s5 \fs20\loch\af1\hich\af1\dbch\af34\insrsid13316994\charrsid13316994 \hich\af1\dbch\af34\loch\f1 1.3.1.14.1\tab}}\pard\plain \s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0\pararsid13316994 \fs22\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\fs20\insrsid13316994\charrsid13316994 
+\hich\af1\dbch\af34\loch\f1 Load Resource Roles}{\fs20\insrsid13316994 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid13316994 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid13316994 This is the same as above, but the WHERE clause becomes 
+\par WHERE resource_role_id IN (<id_values)}{\insrsid13316994\charrsid13316994 
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid14838129 \hich\af1\dbch\af34\loch\f1 1.3.1.15\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid14838129 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14838129 \hich\af1\dbch\af34\loch\f1 
+Load notification
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14838129 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14838129\charrsid2308297 SELECT }{\f2\fs20\insrsid12333092 project_id, }{
+\f2\fs20\insrsid14838129 external_ref_id}{\f2\fs20\insrsid12333092 , notification_type_id, create_user, create_date, modify_user, modify_date}{\f2\fs20\insrsid14838129 
+\par }{\f2\fs20\insrsid14838129\charrsid2308297 FROM }{\f2\fs20\insrsid14838129 notification}{\f2\fs20\insrsid14838129\charrsid2308297 
+\par WHERE }{\f2\fs20\insrsid14838129 project_id = ? AND external_ref_id = ? AND notification_type_id = ?
+\par }{\f2\fs20\insrsid10753943 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid94061 {\insrsid94061\charrsid94061 For getting multiple notifications at the same time, the WHERE clause becomes:
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14838129 {\f2\fs20\insrsid94061 WHERE (project_id = ? AND external_ref_id = ? AND notification_type_id = ?) OR (
+project_id = ? AND external_ref_id = ? AND notification_type_id = ?) OR \'85
+\par {\listtext\pard\plain\s4 \fs20\loch\af1\hich\af1\dbch\af34\insrsid10753943 \hich\af1\dbch\af34\loch\f1 1.3.1.16\tab}}\pard\plain \s4\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0\pararsid10753943 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid10753943 \hich\af1\dbch\af34\loch\f1 Load resources
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10753943 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid10753943 
+The loadResources method is designed to retrieve all resources with matching ids with the use of only two database queries.  This keeps the number of expensive database queries down and will improve the performance of the application.}{
+\insrsid10753943\charrsid10753943 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid10753943 {\f2\fs20\insrsid10753943 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10753943 {\f2\fs20\insrsid10753943\charrsid14368902 SELEC
+T resource_id, resource_role_id, project_id, phase_id, submission_id, create_user, create_date, modify_user, modify_date
+\par FROM resource LEFT OUTER JOIN resource_submission 
+\par ON resource.resource_id = resource_submission.resource_id
+\par }{\f2\fs20\insrsid10753943 WHERE resource_id IN (<id list>)}{\f2\fs20\insrsid10753943\charrsid14368902 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid10753943 {\insrsid10753943 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10753943 {\insrsid10753943 To select all external properties:
+\par }{\f2\fs20\insrsid10753943\charrsid14368902 SELECT resource_info_type_lu.name, resource_info.value
+\par FROM resource_info INNER JOIN resource_info_type_lu ON (resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id)
+\par }{\f2\fs20\insrsid10753943 WHERE resource_id IN (<id list>)
+\par 
+\par }{\insrsid10753943\charrsid10753943 The }{\insrsid10753943 selected external properties should then be matched up with the resources.}{\insrsid10753943\charrsid10753943 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14838129 {\f2\fs20\insrsid10753943 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14838129 {\insrsid14838129\charrsid14838129 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731167 {\insrsid16731167\charrsid16731167 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.4\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Component Class Overview
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \tab }{\b\insrsid15493990 ResourceManager}{\insrsid12612589 :}{\f1\fs20\insrsid12612589 
+
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid16657551 The ResourceManager }{\insrsid10362329 interface }{\insrsid16657551 provides the ability to persist}{\insrsid10362329 , retrieve}{
+\insrsid16657551  and search for persisted resource modeling objects.  This interface}{\insrsid10362329 
+ provides a higher level of interaction than the ResourcePersistence interface.  For example, the updateResource method will determine if the resource is new, and if so, assign it an id be
+fore persisting it, whereas the ResourcePersistence interface will simply fail in this situation.  The methods in this interface break down into dealing with the 4 main modeling classes in this component, and the methods for each modeling class are quite 
+similar.}{\insrsid12612589 
+\par }{\insrsid16657551 
+\par Implementations of this interface are not required to be thread safe.
+\par }{\insrsid1459238 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid1459238 Audit}{\b\insrsid14290961 ableResourceStructure}{\insrsid1459238 :}{\f1\fs20\insrsid1459238 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1459238 {\insrsid3895503 
+The AuditableResourceStructure is the base class for the modeling classes in this component.  It holds the information about when the structure was 
+created and updated.  This class simply holds the four data fields needed for this auditing information and exposes b}{\insrsid9655635 oth getters and setters for these}{\insrsid3895503  field}{\insrsid9655635 s}{\insrsid3895503 .}{\insrsid1459238 
+\par }{\insrsid3895503 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3895503 {\insrsid3895503 All the methods in this class do is get/set the underlying fields, so this class will be very easy to develop.
+\par 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6162099 {\insrsid3895503 This class is highly mutable.  All fields can be changed.}{\insrsid1459238 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid15493990 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid11496956 Resource}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11496956 {\insrsid11496956 The Resource class is the main modeling class in this component.  It repres
+ents any arbitrary resource.  The Resource class is simply a container for a few basic data fields.  All data fields in this class are mutable and have get and set methods.
+\par 
+\par The only thing to take note of when developing this class is that the setId method throws the IdAlreadySetException.
+\par 
+\par This class is highly mutable.  All fields can be changed.
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\insrsid15493990 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid11496956 {\b\insrsid11496956 ResourceRole}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11496956 {\insrsid11496956 The ResourceRole class is the second modeling class in this component.  It represents a type of resource and is used }{
+\insrsid1459238 to tag instances of the}{\insrsid11496956  Resource class }{\insrsid1459238 as playing a certain role}{\insrsid11496956 .  The Resource}{\insrsid1459238 Role}{\insrsid11496956 
+ class is simply a container for a few basic data fields.  All data fields in this class are mutable and have get and set methods.
+\par 
+\par The only thing to take note of when developing this class is that the setId method throws the IdAlreadySetException.
+\par 
+\par This class is highly mutable.  All fields can be changed.
+\par }{\insrsid1459238 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid1459238 NotificationType}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1459238 {\insrsid1459238 The NotificationType class is the third modeling class in this component.  It represents a type of notification.  It is ortho
+gonal to the Resource and ResourceRole classes.  This class is simply a container for a few basic data fields.  All data fields in this class are mutable and have get and set methods.
+\par 
+\par The only thing to take note of when developing this class is that the setId method throws the IdAlreadySetException.
+\par 
+\par This class is highly mutable.  All fields can be changed.
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid1459238 
+\par Notification}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid1459238 The Notification class is the final modeling class in this component.  It represent}{\insrsid3895503 s}{\insrsid1459238 
+ a notification, which is an association between an external id (the use }{\insrsid3895503 and meaning }{\insrsid1459238 of this field is up to the user of the component), a project, and }{\insrsid3895503 
+a notification type.  This class is simply a container for these data fields.  All data fields (directly in this class) are immutable and have only getters.}{\insrsid15493990 
+\par }{\insrsid3895503 
+\par This class is mutable because its base class is mutable.
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1459238 {\b\insrsid1459238 
+\par }{\b\insrsid15493990 ResourceFilterBuilder}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid15493990 
+The ResourceFilterBuilder class supports building filters for searching for Resources.  This class consists of 2 parts.  The first part consists of static Strings that name t
+he fields that are available for searching.  All ResourceManager implementations should use SearchBundles that are configured to use these names.  The second part of this class consists of convenience methods to create common filters based on these field 
+names.  Development-wise, this}{\insrsid7224800  class should prove quite simple}{\insrsid15493990 , as all methods are a single line.
+\par 
+\par This class has only final static fields/methods, so mutability is not an issue.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid15493990 ResourceRoleFilterBuilder}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid15493990 The Resource
+RoleFilterBuilder class supports building filters for searching for ResourceRoles.  This class consists of 2 parts.  The first part consists of static Strings that name the fields that are available for searching.  All ResourceManager implementations shou
+ld use SearchBundles that are configured to use these names.  The second part of this class consists of convenience methods to create common filters based on these field names.  Development-wise, this}{\insrsid7224800  class should prove quite simple}{
+\insrsid15493990 , as all methods are a single line.
+\par 
+\par This class has only final static fields/methods, so mutability is not an issue.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid15493990 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid15493990 NotificationFilterBuilder}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid15493990 
+The NotificationFilterBuilder class supports building filters for searching for Notifications.  This class consists of 2 parts.  The fir
+st part consists of static Strings that name the fields that are available for searching.  All ResourceManager implementations should use SearchBundles that are configured to use these names.  The second part of this class consists of convenience methods 
+to create common filters based on these field names.  Development-wise, this}{\insrsid7224800  class should prove quite simple}{\insrsid15493990 , as all methods are a single line.
+\par 
+\par This class has only final static fields/methods, so mutability is not an issue.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid15493990 NotificationTypeFilterBuilder}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid15493990 
+The NotificationTypeFilterBuilder class supports building filters for searching for NotificationTypes.  This class consists of 2 parts.  The first part consists of static Strings that name the fields that are available for searching.  All ResourceManager 
+implementations should use SearchBundles that are configured to use these names.  The second part of this class consists of convenience methods to create common filters based on these field names.  Development-wise, this}{\insrsid7224800 
+ class should prove quite simple}{\insrsid15493990 , as all methods are a single line.
+\par 
+\par This class has only final static fields/methods, so mutability is not an issue.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15493990 {\b\insrsid15493990 ResourcePersistence}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid15493990 The ResourcePersistence interface defines the methods for persisting and retrieving the object model in this component.  }{
+\insrsid10771929 This }{\insrsid16327083 interface}{\insrsid10771929  handles the persistence of the four classes that make up the object model \endash 
+ Resources, ResourceRoles, Notifications, and NotificationTypes.  This interface is not responsible for searching the persistence for the various entities.  This is instead handled by a ResourceManager implementation.}{\insrsid15493990 
+\par 
+\par Implementations of this }{\insrsid3433924 interface}{\insrsid15493990  are not required to be thread-safe or immutable.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3433924 {\b\insrsid3433924 SqlResourcePersistence}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid3433924 
+The SqlResourcePersistence class implements the ResourcePersistence interface, in order to persist to the database structure given in the resource_management.sql script.  This class does not cache a Connection to the database.  Instead a new Connection is
+ used on every method call.}{\insrsid6162099 
+  Most methods in this class will just create and execute a single PreparedStatement.  However, some of the Resource related methods will need to execute several PreparedStatements in order to accomplish the update/insertion/deletion of the Resource.}{
+\insrsid15493990 
+\par }{\insrsid3433924 
+\par This class is immutable and thread-safe in the sense that multiple threads can not corrupt its internal data structures.  However, }{\insrsid6162099 
+the results if used from multiple threads can be unpredictable as the database is changed from different threads.  This can equally well occur when the component is used on multiple machines or multiple instances are used, so this is not a thread-safety c
+oncern.}{\insrsid3433924 
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6162099 {\b\insrsid6162099 PersistenceResourceManager}{\insrsid15493990 :}{\f1\fs20\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15493990 {\insrsid6162099 
+The PersistenceResourceManager class implements the ResourceManager interface.  It ties together a persistence mechanism, several Search Builder searching instances (for searching for various types of data), and several 
+id generators (for generating ids for the various ty}{\insrsid425770 pes).  This class consists of }{\insrsid16657551 several methods styles.}{\insrsid6162099  }{\insrsid16657551  }{\insrsid6162099 The first }{\insrsid16657551 method style }{
+\insrsid6162099 just call}{\insrsid16657551 s}{\insrsid6162099  directly to a corresponding method}{\insrsid12612589  of the persistence.  The s}{\insrsid16657551 econd method style first assigns values to some data f
+ields of the object before calling a persistence method.  The third type of method uses a SearchBundle to execute a search and then uses the persistence to load an object for each of the ids found from the search.}{\insrsid15493990 
+\par }{\insrsid16657551 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16657551 {\insrsid16657551 This class is immutable and hence thread-safe.}{\insrsid15493990 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\f1\fs20\insrsid16731167 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.5\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Component Exception Definitions
+
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \tab }{\b\insrsid3433924 ResourcePersistenceException}{\insrsid12612589 :}{
+\f1\fs20\insrsid12612589 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3433924 {\insrsid3433924 The ResourcePersistenceException indicates that the}{\insrsid2449292 re}{\insrsid3433924 
+ was an error accessing or updating a persisted resource store.  This exception is used to wrap the internal error that occurs when accessing the persistence store.  For example, }{\insrsid3085404 
+in the SqlResourcePersistence implementation it is used to wrap SqlExceptions.}{\insrsid12612589 
+\par }{\insrsid3085404 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3085404 {\insrsid3085404 This exception is initially thrown in ResourcePersistence implementations and from there passes through ResourceManager implem
+entations and back to the caller.  It is also thrown directly by some ResourceManager implementations.
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3433924 {\insrsid3433924 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3433924 {\b\insrsid3433924 IdAlreadySetException}{\insrsid3433924 :}{\f1\fs20\insrsid3433924 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3085404 {\insrsid3433924 The IdAlreadySetException }{\insrsid3085404 
+is used to signal that the id of one of the resource modeling classes has already been set.}{\insrsid2449292   This is used to prevent the id being changed once it has been set.}{\insrsid3433924 
+\par }{\insrsid3085404 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid10700652 {\insrsid3085404 This exception is initially thrown in the 3 setId methods of the resource }{\insrsid10700652 modeling classes.}{\insrsid3433924 
+
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid16731167 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 1.6\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Thread Safety
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid154166 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid154166 This component is not thread safe.  This decision was made beca
+use the modeling classes in this component are mutable while the persistence classes make use of non-thread-safe components such as Search Builder.  Combined with there being no business oriented requirement to make the component thread safe, making this 
+c
+omponent thread safe would only increase development work and needed testing while decreasing runtime performance (because synchronization would be needed for various methods).  These tradeoffs can not be justified given that there is no current business 
+need for this component to be thread-safe.
+\par 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15625242 {\insrsid154166 
+This does not mean that making this component thread-safe would be particularly hard.  Making the modeling classes thread safe can be done by simply adding the synchronized keyword to the various set and get metho
+ds.  The persistence and manager classes would be harder to make thread safe.  In addition to making}{\insrsid11011347  manager and persistence methods }{\insrsid15625242 synchronized}{\insrsid154166 , there would need to be logic added }{
+\insrsid15625242 to handle conditions that occur when multiple threads are manipulating the persistence.  For example, \'93}{\insrsid11011347 Resource}{\insrsid154166  removed between SearchBuilder query and }{\insrsid15625242 load}{\insrsid11011347 
+Resource}{\insrsid15625242  call\'94.}{\insrsid16731167 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16731167 {\insrsid16731167\charrsid16731167 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Environment Requirements\tab \tab 
+
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Environment
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 Java 1.4+ is required for compilation, testing, or use of this component
+
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 TopCoder Software Components
+
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid13526616 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard\plain \s16\ql \fi-360\li1080\ri0\sa120\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0 
+\f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f0\fs24\insrsid15300465\charrsid13526616 Search Builder 1.1 or greater: Used for searching for resources and related resources.}{\f0\fs24\insrsid12612589\charrsid13526616 
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid13526616 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}{\f0\fs24\insrsid15300465\charrsid13526616 DB Connection Factory 1.0: Used in SQL persistence implementation to connect to the database.  
+Also used by the Search Builder component.
+\par {\listtext\pard\plain\s16 \f3\insrsid7693177\charrsid13526616 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}{\f0\fs24\insrsid7693177\charrsid13526616 
+Custom Result Set 1.1: Returned by the Search Builder component and used to retrieve the ids of the items selected by the search.
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid13526616 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}{\f0\fs24\insrsid15300465\charrsid13526616 ID Generator 3.0: Used to create ids when new Resources and related objects are created.
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid13526616 \loch\af3\dbch\af0\hich\f3 \'b7\tab}Configuration Manager}{\f0\fs24\insrsid13526616\charrsid13526616  2.1.4}{\f0\fs24\insrsid15300465\charrsid13526616 
+: Used to configure the DB Connection Factory and Search Builder components.  Can also be used with the Object Factory component.  Not used directly in this component.
+\par {\listtext\pard\plain\s16 \f3\insrsid15300465\charrsid13526616 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \s16\ql \fi-360\li1080\ri0\sa120\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0\pararsid15300465 {
+\f0\fs24\insrsid15300465\charrsid13526616 Object Factory}{\f0\fs24\insrsid13526616  2.0}{\f0\fs24\insrsid15300465\charrsid13526616 : Can be used to create Resou
+rceManager implementations, particularly the PersistenceResourceManager class.  There is no compile time or runtime dependency on this component.}{\f0\fs24\insrsid12612589\charrsid13526616 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 2.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Third Party Components
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 None.
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Installation and Configuration
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Package Name
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 com.topcoder.management.resource
+\par com.topcoder.management.resource.persistence
+\par com.topcoder.management.resource.persistence.sql
+\par com.topcoder.management.resource.search
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid16657551 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 
+Configuration Parameters}{\insrsid16657551 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16657551 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid16657551 No direct configuration is used for this component.  The O
+bject Factory component can be used to create SqlResource}{\insrsid16595021 Persistence}{\insrsid16657551 s }{\insrsid16731325 and PersistenceResourceManagers if desired.  }{\insrsid14160407 
+The SearchBundles and IDGenerators needed can be configured or created programmatically.  For configuration}{\insrsid16595021  of these objects}{\insrsid14160407 , see the }{\insrsid16595021 relevant }{\insrsid14160407 compo}{\insrsid16595021 
+nent specifications.}{\insrsid16657551 
+\par }{\insrsid16731325 
+\par When using the SQL database structure given in the resource_management.sql}{\insrsid10830148  script, the SearchBundles passed to the PersistenceResourceManager}{\insrsid16731325  should be configu}{\insrsid13128372 
+red to use the following contexts (queries minus where clause)}{\insrsid16731325 :}{\insrsid16657551 
+\par }{\insrsid16731325 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\insrsid16731325 For searching Resources}{\insrsid6251675 
+: (Note that this query allows only a single extension property name/value pair to be queried, combined with any other filters.  It will not allow queries of multiple extension property names/values: the query will not fail, but it will
+ never return any rows.)
+\par }{\f2\fs20\insrsid16731325\charrsid3742193 SELECT resource_id }{\insrsid16731325\charrsid6251675 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16657551 {\f2\fs20\insrsid16731325\charrsid3742193 FROM resource 
+\par LEFT OUTER JOIN resource_submission 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16731325 {\f2\fs20\insrsid16731325\charrsid3742193 ON resource.resource_id = resource_submission.resource_id
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\f2\fs20\insrsid16731325\charrsid3742193 \tab LEFT OUTER JOIN resource_info
+\par \tab \tab ON resource.resource_id = resource_info.resource_id
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\f2\fs20\insrsid16731325\charrsid3742193 LEFT OUTER JOIN resource_info_type_lu
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid16731325 {\f2\fs20\insrsid16731325\charrsid3742193 ON resource_info.resource_info_type_id = 
+\par }\pard \ql \li2160\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin2160\itap0\pararsid16731325 {\f2\fs20\insrsid16731325\charrsid3742193 resource_info_type_lu.resource_info_type_id
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\f2\fs20\insrsid16731325\charrsid3742193 \tab WHERE
+\par }{\insrsid16731325 
+\par \tab For searching ResourceRoles
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3742193 {\f2\fs20\insrsid16731325\charrsid3742193 SELECT resource_role_id
+\par FROM resource_role_lu
+\par WHERE
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\insrsid16731325 
+\par \tab For searching NotificationTypes
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3742193 {\f2\fs20\insrsid16731325\charrsid3742193 SELECT notification_type_id
+\par FROM notification_type_lu
+\par WHERE 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid16731325 {\insrsid16731325 
+\par For searching Notifications
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3742193 {\f2\fs20\insrsid16731325\charrsid3742193 SELECT external_ref_id, }{\f2\fs20\insrsid3742193\charrsid3742193 project_id, notification_type_id}{
+\f2\fs20\insrsid16731325\charrsid3742193 
+\par }{\f2\fs20\insrsid3742193\charrsid3742193 FROM notification
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid13393026 {\f2\fs20\insrsid3742193\charrsid3742193 WHERE }{\f2\fs20\insrsid12612589\charrsid13393026 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 3.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Dependencies Configuration
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 None
+\par }{\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Usage Notes
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Required steps to test the 
+\hich\af1\dbch\af34\loch\f1 component
+\par {\listtext\pard\plain\s16 \f3\fs20\insrsid12612589 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard\plain \s16\ql \fi-360\li1080\ri0\sa120\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0 
+\f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 Extract the component distribution.
+\par {\listtext\pard\plain\s16 \f3\fs20\insrsid12612589 \loch\af3\dbch\af0\hich\f3 \'b7\tab}Follow }{\field\fldedit{\*\fldinst {\insrsid12612589  HYPERLINK "C:\\filez\\work\\tc\\tcs_corp\\templates\\component\\" \\l "_Dependencies_Configuration" }{
+\insrsid12863765 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b02000000010000000303000000000000c00000000000004600002900000066696c657a776f726b74637463735f636f727074656d706c61746573636f6d706f6e656e7422206c00ffffadde0000000000000000000000000000000000000000000000000000200000000000000000
+00000000}}}{\fldrslt {\cs15\ul\cf2\insrsid12612589 Dependencies Configuration}}}{\insrsid12612589 .
+\par {\listtext\pard\plain\s16 \f3\fs20\insrsid12612589 \loch\af3\dbch\af0\hich\f3 \'b7\tab}Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.
+\par }\pard \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 {\insrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid15300465 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 
+Required steps to use the component
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465 
+Install and configure the other TopCoder component following their instructions.  Then follow section 4.1 and the demo.}{\insrsid15300465\charrsid15300465 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15300465 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s2 \b\fs20\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 4.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0\pararsid8027735 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Demo}{
+\insrsid8027735 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid3885868 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid3885868 
+Unfortunately, as this component can not really be described in a full customer scenario without including all the other components up for design this week, this demo will not be a customer oriented demo but a rundown of the requirements in a demo form.  
+Where it makes sense, examples of what a customer might do with the information are shown.
+\par }{\insrsid3885868\charrsid3885868 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid8027735 \hich\af1\dbch\af34\loch\f1 4.3.1\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid8027735 \hich\af1\dbch\af34\loch\f1 
+Create a Resource and ResourceRole}{\insrsid1728436 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8027735 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid8027735\charrsid1728436 ResourceRole resourceRole = new ResourceRole();
+
+\par resourceRole.setName(\'93Some Resource Role\'94);
+\par resourceRole.setDescription(\'93This role plays some purpose\'94);
+\par 
+\par }{\f2\fs20\cf11\insrsid1728436\charrsid1728436 // Note that it is not necessary to set any other field of the 
+\par // resource because they are all optional
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436\charrsid1728436 Resource resource = new Resource();
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid8027735 {\f2\fs20\insrsid8027735\charrsid1728436 resource.setResourceRole(resourceRole);}{\f2\fs20\insrsid8027735 
+\par }{\f2\fs20\insrsid1728436 
+\par }{\f2\fs20\cf11\insrsid1728436\charrsid9584681 // The creation of notification types is entirely similar
+\par // to the calls above.
+\par }{\insrsid1728436 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid1728436 \hich\af1\dbch\af34\loch\f1 4.3.2\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid1728436 \hich\af1\dbch\af34\loch\f1 
+Create persistence and manager
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid1728436\charrsid1728436 SqlResourcePersistence persistence = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436\charrsid1728436 new SqlResourcePersistence(}{\f2\fs20\insrsid1728436 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid1728436 {\f2\fs20\insrsid1728436\charrsid1728436 <connection factory loaded from configuration>)}{\f2\fs20\insrsid1728436 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 
+\par \tab ResourceManager manager = new }{\f2\fs20\insrsid6644740 Persistence}{\f2\fs20\insrsid1728436 ResourceManager(
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 persistence, 
+\par <search builders loaded from configuration: See Search 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 Builder component for configuration details>, 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 <id generators loaded from configuration: See Search 
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid1728436 {\f2\fs20\insrsid1728436 Builder component for configuration details>);
+\par 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid1728436 \hich\af1\dbch\af34\loch\f1 4.3.3\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid1728436 \hich\af1\dbch\af34\loch\f1 
+Save the created Resource and R\hich\af1\dbch\af34\loch\f1 esourceRole to the persistence
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid9584681 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\cf11\insrsid9584681\charrsid9584681 
+// Note that this will assign an id to the resource and }{\f2\fs20\cf11\insrsid9584681 
+\par // }{\f2\fs20\cf11\insrsid9584681\charrsid9584681 resource role
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436\charrsid1728436 manager.updateResourceRole(resourceRole, \'93Operator #1\'94);
+\par manager.updateResource(resource, \'93Operator #1\'94);
+\par }{\f2\fs20\cf11\insrsid1728436\charrsid1728436 // The updating of notification types is entirely similar 
+\par // to the calls above}{\f2\fs20\cf11\insrsid1728436 
+\par }{\f2\fs20\cf11\insrsid9584681 
+\par // The data can then be changed and the changes 
+\par // persisted
+\par }{\f2\fs20\insrsid9584681 resource.setName(\'93Changed name\'94);
+\par manager.updateResource(resource, \'93Operator #1\'94);}{\f2\fs20\insrsid9584681\charrsid9584681 
+\par }{\insrsid1728436 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid1728436 \hich\af1\dbch\af34\loch\f1 4.3.4\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid1728436 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid1728436 \hich\af1\dbch\af34\loch\f1 
+Update All Resources For a Project
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid1728436\charrsid1728436 long projectId = 1205;}{\f2\fs20\insrsid1728436 
+
+\par }{\f2\fs20\cf11\insrsid1728436\charrsid1728436 // Removes any resources for the project not in the array 
+\par // and updates/adds those in the array}{\f2\fs20\cf11\insrsid5249139  to the persistence}{\f2\fs20\cf11\insrsid1728436\charrsid1728436 
+\par }{\f2\fs20\insrsid1728436\charrsid1728436 manager.updateResources(new Resource[] \{resource\}, }{\f2\fs20\insrsid1728436 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid1728436 {\f2\fs20\insrsid1728436\charrsid1728436 project, \'93Operator #1\'94);}{\f2\fs20\insrsid1728436 
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid3885868 {\f2\fs20\insrsid3885868 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid3885868 \hich\af1\dbch\af34\loch\f1 4.3.5\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid3885868 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid3885868 \hich\af1\dbch\af34\loch\f1 
+Retrieve and search resources
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5249139 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\cf11\insrsid5249139\charrsid5249139 // Get a resource for a given id
+\par }{\f2\fs20\insrsid5249139\charrsid5249139 Resource resource2 = manager.getResource(14402);
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\cf11\insrsid5249139\charrsid14642844 // The properties of the resource can then be queried 
+\par // and used by the client of this component
+\par 
+\par // Search for resources
+\par // Build the filters \endash  this example shows searching for 
+\par // all resources related to a given project and of a 
+\par // given type}{\f2\fs20\cf11\insrsid6251675\charrsid14642844  and having an extension property of a given name}{\f2\fs20\cf11\insrsid5249139\charrsid14642844 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5249139 {\f2\fs20\insrsid5249139 Filter}{\f2\fs20\insrsid6251675  projectFilter = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 ResourceF}{\f2\fs20\insrsid5249139 ilterBuilder.create}{\f2\fs20\insrsid6251675 ProjectIdFilter(953);}{
+\f2\fs20\insrsid5249139 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid5249139 {\f2\fs20\insrsid6251675 Filter resourceTypeFilter = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 ResourceFilterBuilder.createResourceRoleIdFilter(1223);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 Filter extensionNameFilter = 
+\par \tab ResourceFilterBuilder.createExtensionPropertyNameFilter(
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 \'93Extension Prop Name\'94);
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 \tab Filter fullFilter = 
+\par \tab \tab SearchBundle.createAndFilter(SearchBundle.createAndFilter(
+\par }\pard \ql \fi720\li1440\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1440\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 projectFilter, resourceTypeFilter), 
+\par extensionNameFilter);
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 \tab 
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\cf11\insrsid14642844 /}{\f2\fs20\cf11\insrsid6251675\charrsid14642844 / Search for the Resources
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 \tab Resource[] matchingResources = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid6251675 {\f2\fs20\insrsid6251675 manager.searchResources(fullFilter);
+\par 
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\cf11\insrsid6251675\charrsid14642844 // ResourceRoles, NotificationTypes, and Notifications can be 
+\par // searched similarly by using the other FilterBuilder classes 
+\par // and the corresponding ResourceManager methods.}{\f2\fs20\cf11\insrsid14642844\charrsid14642844   They can 
+\par // also be retrieved through the getAll methods
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid14642844 {\f2\fs20\insrsid14642844 ResourceRole[] allResourceRoles = manager.getAllResourceRoles();
+\par NotificationType[] allNotificationTypes = 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\insrsid14642844 Manager.getAllNotificationTypes();
+\par 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid14642844 \hich\af1\dbch\af34\loch\f1 4.3.6\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid14642844 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14642844 \hich\af1\dbch\af34\loch\f1 
+Add/Remove notifications
+\par }\pard\plain \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\cf11\insrsid14642844\charrsid14642844 
+// Note that it is up to the application to decide what the 
+\par // user/external ids represent in their system
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\insrsid14642844\charrsid14642844 manager.addNotifications(new long[] \{1, 2, 3\}, 953, 192, }{\f2\fs20\insrsid14642844 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\insrsid14642844\charrsid14642844 \'93Operator #1\'94);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\insrsid14642844\charrsid14642844 manager.removeNotifications(new long[] \{1, 2, 3\}, 953, 192, }{\f2\fs20\insrsid14642844 
+\par }\pard \ql \fi720\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 {\f2\fs20\insrsid14642844\charrsid14642844 \'93Operator #1\'94);}{\f2\fs20\insrsid14642844 
+\par {\listtext\pard\plain\s3 \i\fs20\loch\af1\hich\af1\dbch\af34\insrsid14642844 \hich\af1\dbch\af34\loch\f1 4.3.7\tab}}\pard\plain \s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0\pararsid14642844 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid14642844 \hich\af1\dbch\af34\loch\f1 
+Retrieve notifications
+\par }\pard\plain \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid14642844 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\f2\fs20\insrsid14642844\charrsid14642844 
+long[] users = manager.getNotifications(953, 192);
+\par }{\f2\fs20\cf11\insrsid14642844\charrsid14642844 // This might, for example, represent the users to which an email
+\par // needs to be sent.  The client could then lookup the user 
+\par // information for each id and send the email.}{\f2\fs20\cf11\insrsid14642844 
+\par }{\f2\fs20\cf11\insrsid11620076 
+\par }\pard \ql \li720\ri0\widctlpar\tx3240\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid11620076 {\f2\fs20\cf11\insrsid11620076 // Searches for notifications can also be made using an API 
+\par // that precisely parallels that shown for Resources in 4.3.5.  
+\par // When searching is used, full-fledges Notification instances
+\par // are returned.}{\f2\fs20\cf11\insrsid11620076\charrsid14642844 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid15300465 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15300465\charrsid15300465 
+\par {\listtext\pard\plain\s1 \b\loch\af1\hich\af1\dbch\af34\insrsid12612589 \hich\af1\dbch\af34\loch\f1 5.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0\pararsid15300465 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af34\cgrid\langnp1033\langfenp1033 {\insrsid12612589 \hich\af1\dbch\af34\loch\f1 Future Enhancements
+
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0\pararsid15300465 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid15547734 
+At the current time, no future enhancements are expected for this component.}{\insrsid15300465\charrsid15300465 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \f1\fs20\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\insrsid12612589 
+\par }}
