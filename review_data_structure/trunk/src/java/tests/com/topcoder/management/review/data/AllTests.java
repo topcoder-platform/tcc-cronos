@@ -7,6 +7,7 @@ package com.topcoder.management.review.data;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import com.topcoder.management.review.data.accuracytests.AccuracyTests;
 import com.topcoder.management.review.data.failuretests.FailureTests;
 import com.topcoder.management.review.data.stresstests.StressTests;
@@ -22,17 +23,13 @@ public class AllTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
         
-        //unit tests
-        suite.addTest(UnitTests.suite());
-        
-        //accuracy tests
-        suite.addTest(AccuracyTests.suite());
-        
+
         //failure tests
         suite.addTest(FailureTests.suite());
-        
-        //stress tests
         suite.addTest(StressTests.suite());
+        suite.addTest(AccuracyTests.suite());
+        suite.addTest(UnitTests.suite());
+
         
         return suite;
     }

@@ -19,7 +19,11 @@ public class FailureTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(CommentFailureTests.class);
+        suite.addTestSuite(CommentTypeFailureTests.class);
+        suite.addTestSuite(ItemFailureTests.class);
+        suite.addTestSuite(ReviewEditorFailureTests.class);
+        suite.addTestSuite(ReviewFailureTests.class);
         return suite;
     }
 
