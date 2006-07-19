@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.topcoder.management.review.scorecalculator.AllTests" tests="403" failures="0" errors="0" time="11.266">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="memory_usage.jar.name" value="memory_usage.jar"></property>
+    <property name="package" value="com.topcoder.management.review.scorecalculator"></property>
+    <property name="docpackage.jar" value="review_score_calculator_docs.jar"></property>
+    <property name="memory_usage.path" value="memory_usage/1.0"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="simple_cache.version" value="2.0"></property>
+    <property name="sun.boot.class.path" value="C:\j2sdk1.4.2_10\jre\lib\rt.jar;C:\j2sdk1.4.2_10\jre\lib\i18n.jar;C:\j2sdk1.4.2_10\jre\lib\sunrsasign.jar;C:\j2sdk1.4.2_10\jre\lib\jsse.jar;C:\j2sdk1.4.2_10\jre\lib\jce.jar;C:\j2sdk1.4.2_10\jre\lib\charsets.jar;C:\j2sdk1.4.2_10\jre\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="weighted_calculator.jar" value="lib/tcs/weighted_calculator/1.0/weighted_calculator.jar"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="Review_Score_Calculator_1.0_design_submission.jar"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/review_score_calculator_tests.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="memory_usage.jar" value="lib/tcs/memory_usage/1.0/memory_usage.jar"></property>
+    <property name="ant.home" value="c:\ant"></property>
+    <property name="java.runtime.version" value="1.4.2_10-b03"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="component_path" value="review_score_calculator/1.0"></property>
+    <property name="simple_cache.jar.name" value="simple_cache.jar"></property>
+    <property name="user.name" value="hong"></property>
+    <property name="debug" value="off"></property>
+    <property name="simple_cache.jar" value="lib/tcs/simple_cache/2.0/simple_cache.jar"></property>
+    <property name="reports" value="reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dist_conf" value="build/dist/review_score_calculator-1.0/conf"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.4"></property>
+    <property name="ant.file.Review Score Calculator" value="E:\review\Review Score Calculator\final\build.xml"></property>
+    <property name="sun.boot.library.path" value="C:\j2sdk1.4.2_10\jre\bin"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="Review Score Calculator"></property>
+    <property name="java.version" value="1.4.2_10"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="Review_Score_Calculator_1.0_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="webdir" value="web"></property>
+    <property name="java.endorsed.dirs" value="C:\j2sdk1.4.2_10\jre\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="packagedir" value="com/topcoder/management/review/scorecalculator"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dev_submission.jar" value="Review_Score_Calculator_1.0_dev_submission.jar"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="java.home" value="C:\j2sdk1.4.2_10\jre"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="ant.file" value="E:\review\Review Score Calculator\final\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="build_tcsdistdir" value="build/dist/review_score_calculator-1.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.4.2_10-b03"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.library.dir" value="C:\ant\lib"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="weighted_calculator.version" value="1.0"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="dist_testfiles" value="build/dist/review_score_calculator-1.0/test_files"></property>
+    <property name="dist_javadocs" value="build/dist/review_score_calculator-1.0/docs/javadocs"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="component" value="Review_Score_Calculator"></property>
+    <property name="component.war" value="${dist_examples}/review_score_calculator.war"></property>
+    <property name="user.home" value="C:\Documents and Settings\hong"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="java.library.path" value="C:\j2sdk1.4.2_10\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;E:\oraclexe\app\oracle\product\10.2.0\server\bin;E:\oracle_database\bin;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\ATI Technologies\ATI Control Panel;C:\Program Files\IBM ThinkVantage\Client Security Solution;C:\Program Files\UltraEdit;C:\Program Files\Microsoft SQL Server\80\Tools\BINN;E:\Informix\Client-SDK\bin;c:\j2sdk1.4.2_10\bin;c:\ant\bin; c:\ant\lib;  c:\j2sdk1.4.2_10\lib;"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="java.class.path" value="E:\review\Review Score Calculator\final\build\testClasses;E:\review\Review Score Calculator\final\build\classes;E:\review\Review Score Calculator\final\lib\tcs\memory_usage\1.0\memory_usage.jar;E:\review\Review Score Calculator\final\lib\review_data_structure.jar;E:\review\Review Score Calculator\final\lib\scorecard_data_structure.jar;E:\review\Review Score Calculator\final\lib\tcs\configuration_manager\2.1.4\configuration_manager.jar;E:\review\Review Score Calculator\final\lib\tcs\simple_cache\2.0\simple_cache.jar;E:\review\Review Score Calculator\final\lib\tcs\weighted_calculator\1.0\weighted_calculator.jar;E:\review\Review Score Calculator\final\lib\tcs\base_exception\1.0\base_exception.jar;E:\review\Review Score Calculator\final\conf;E:\review\Review Score Calculator\final\test_files;C:\Program Files\Java\j2re1.4.2_10\lib\ext\QTJava.zip;C:\ant\lib\junit.jar;C:\ant\lib\ant-launcher.jar;C:\ant\lib\ant.jar;C:\ant\lib\ant-junit.jar"></property>
+    <property name="review_data_structure.jar" value="lib/review_data_structure.jar"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/review_score_calculator-1.0.jar"></property>
+    <property name="junit.jar" value="lib/junit/3.8.2/junit.jar"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="weighted_calculator.path" value="weighted_calculator/1.0"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\hong\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.4/configuration_manager.jar"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="scorecard_data_structure.jar" value="lib/scorecard_data_structure.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="simple_cache.path" value="simple_cache/2.0"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="java.ext.dirs" value="C:\j2sdk1.4.2_10\jre\lib\ext"></property>
+    <property name="dist_src" value="build/dist/review_score_calculator-1.0/src"></property>
+    <property name="user.dir" value="E:\review\Review Score Calculator\final"></property>
+    <property name="design_dist.jar" value="Review_Score_Calculator_1.0_design_dist.jar"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="weighted_calculator.jar.name" value="weighted_calculator.jar"></property>
+    <property name="distfilename" value="review_score_calculator"></property>
+    <property name="java_1_3_bootclasspath" value="C:\j2sdk1.4.2_10\jre\lib\rt.jar"></property>
+    <property name="basedir" value="E:\review\Review Score Calculator\final"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="file.encoding" value="GB18030"></property>
+    <property name="configmanager.version" value="2.1.4"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="dist_docs" value="build/dist/review_score_calculator-1.0/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/review_score_calculator/1.0/review_score_calculator.jar"></property>
+    <property name="java.specification.version" value="1.4"></property>
+    <property name="memory_usage.version" value="1.0"></property>
+  </properties>
+  <testcase name="test1CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.CalculationExceptionTest" time="0.0"></testcase>
+  <testcase name="test1CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.CalculationExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.CalculationExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.CalculationExceptionTest" time="0.0"></testcase>
+  <testcase name="test1CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="test1CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ReviewStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ReviewStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsReview" classname="com.topcoder.management.review.scorecalculator.ReviewStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ReviewStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ReviewStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsReview" classname="com.topcoder.management.review.scorecalculator.ReviewStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsItem" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsQuestion" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test4CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test4CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test4CtorSetsItem" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test4CtorSetsQuestion" classname="com.topcoder.management.review.scorecalculator.ScoreCalculatorExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ScorecardStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ScorecardStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsMessage" classname="com.topcoder.management.review.scorecalculator.ScorecardStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsCause" classname="com.topcoder.management.review.scorecalculator.ScorecardStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test2CtorSetsScorecard" classname="com.topcoder.management.review.scorecalculator.ScorecardStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="test3CtorSetsScorecard" classname="com.topcoder.management.review.scorecalculator.ScorecardStructureExceptionTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnNullScorecard" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnNullScorecardName" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnEmptyScorecardName" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnEmptyGroupsList" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.015"></testcase>
+  <testcase name="testBuildThrowsOnEmptySectionsList" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnEmptyQuestionsList" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnZeroWeightedGroup" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnZeroWeightedSection" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnZeroWeightedQuestion" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnNullGroupName" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnEmptyGroupName" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnNullSectionName" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnEmptySectionName" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnNoQuestionId" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnDuplicateQuestionId" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnNullQuestionDescription" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildThrowsOnEmptyQuestionDescription" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildAddedMatrix" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildAddedLineItemEntry" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="testBuildAddedQuestionEntry" classname="com.topcoder.management.review.scorecalculator.builders.DefaultScorecardMatrixBuilderTest" time="0.0"></testcase>
+  <testcase name="test0CtorWorksOnPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.063"></testcase>
+  <testcase name="test0CtorWorksOnNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.047"></testcase>
+  <testcase name="test0CtorThrowsOnUnknownAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test1CtorThrowsOnNullNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnEmptyNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.031"></testcase>
+  <testcase name="test1CtorThrowsOnBlankNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnMissingNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test1CtorThrowsOnMissingPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.031"></testcase>
+  <testcase name="test1CtorThrowsOnEmptyPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test1CtorThrowsOnBlankPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnMissingNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.031"></testcase>
+  <testcase name="test1CtorThrowsOnEmptyNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test1CtorThrowsOnBlankNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnSamePositiveNegativeAnswers" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test1CtorWorksOnPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorWorksOnNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnUnknownAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test2CtorThrowsOnNullPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test2CtorThrowsOnEmptyPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test2CtorThrowsOnBlankPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test2CtorThrowsOnNullNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test2CtorThrowsOnEmptyNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test2CtorThrowsOnBlankNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test2CtorThrowsOnSamePositiveNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test2CtorWorksOnPositiveAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test2CtorWorksOnNegativeAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test2CtorThrowsOnUnknownAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNullItem" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNullQuestion" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnUninitializedQuestionId" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnDifferentQuestionId" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNonStringAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNullAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnEmptyAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="testEvaluateItemThrowsOnBlankAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.BinaryScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test0CtorWorksOnValueScaleAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.047"></testcase>
+  <testcase name="test0CtorThrowsOnValueAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1LongCtorThrowsOnNegativeScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test1LongCtorThrowsOnZeroScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test1LongCtorWorksOnValueAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1LongCtorWorksOnValueScaleAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1StringCtorThrowsOnNullNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test1StringCtorThrowsOnEmptyNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test1StringCtorThrowsOnBlankNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1StringCtorThrowsOnMissingNamespace" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.031"></testcase>
+  <testcase name="test1CtorThrowsOnEmptyDefaultScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnBlankDefaultScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test1CtorThrowsOnInvalidDefaultScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnNegativeDefaultScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test1CtorThrowsOnZeroDefaultScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnTooLargeDefaultScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test1StringCtorValidWorksOnValueAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="test1StringCtorValidWorksOnValueScaleAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1StringCtorValidMissingThrowsOnValueAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="test1StringCtorValidMissingWorksOnValueScaleAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnInvalidAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNegativeValue" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="testEvaluateItemThrowsOnValueTooLarge" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNegativeScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnZeroScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnSuperLargeValue" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="testEvaluateItemThrowsOnSuperLargeScale" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNullItem" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNullQuestion" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="testEvaluateItemThrowsOnUninitializedQuestionId" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnDifferentQuestionId" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNonStringAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="testEvaluateItemThrowsOnNullAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.015"></testcase>
+  <testcase name="testEvaluateItemThrowsOnEmptyAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.0"></testcase>
+  <testcase name="testEvaluateItemThrowsOnBlankAnswer" classname="com.topcoder.management.review.scorecalculator.calculators.ScaledScoreCalculatorTest" time="0.016"></testcase>
+  <testcase name="test1CtorThrowsOnNullNamespace" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.141"></testcase>
+  <testcase name="test1CtorThrowsOnEmptyNamespace" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorThrowsOnBlankNamespace" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test1CtorThrowsOnMissingNamespace" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test0CtorSetScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorThrowsOnMissingBuilderClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test1CtorThrowsOnEmptyBuilderClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test1CtorThrowsOnBlankBuilderClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorThrowsOnInvalidBuilderClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test1CtorThrowsOnUnderivedBuilderClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test1CtorThrowsOnNoExistBuilderClassCtor" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test1CtorThrowsOnPrivateBuilderClassNSCtor" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.093"></testcase>
+  <testcase name="test1CtorThrowsOnMissingCalculators" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="test1CtorThrowsOnMissingCalcQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.093"></testcase>
+  <testcase name="test1CtorThrowsOnInvalidCalcQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="test1CtorThrowsOnTooLargeCalcQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorThrowsOnNegativeCalcQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="test1CtorThrowsOnZeroCalcQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.093"></testcase>
+  <testcase name="test1CtorThrowsOnDuplicateCalcQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="test1CtorThrowsOnMissingCalculatorClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorThrowsOnEmptyCalculatorClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorThrowsOnBlankCalculatorClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test1CtorThrowsOnInvalidCalculatorClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="test1CtorThrowsOnUnderivedCalculatorClass" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorThrowsOnNoExistCalculatorClassCtor" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="test1CtorThrowsOnNoExistCalculatorClassNSCtor" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test1CtorSetScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnNullQuestionTypes" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnNegativeQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.156"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnZeroQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.141"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnDuplicateQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.078"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnDifferentLengths" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnNullCalculators" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnNullCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.094"></testcase>
+  <testcase name="test4BooleanCtorThrowsOnNullBuilder" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="test4BooleanCtorSetScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.141"></testcase>
+  <testcase name="test4CacheCtorThrowsOnNullQuestionTypes" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test4CacheCtorThrowsOnNegativeQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="test4CacheCtorThrowsOnZeroQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.078"></testcase>
+  <testcase name="test4CacheCtorThrowsOnDuplicateQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test4CacheCtorThrowsOnDifferentLengths" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="test4CacheCtorThrowsOnNullCalculators" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.079"></testcase>
+  <testcase name="test4CacheCtorThrowsOnNullCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test4CacheCtorThrowsOnNullBuilder" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.078"></testcase>
+  <testcase name="test4CacheCtorThrowsOnNullCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="test4CacheCtorSetScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.141"></testcase>
+  <testcase name="testAddSCThrowsOnNegativeQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="testAddSCThrowsOnZeroQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="testAddSCThrowsOnNullScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="testAddSCAddedScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="testRemoveSCThrowsOnNegativeQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="testRemoveSCThrowsOnZeroQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="testRemoveSCReturnedScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.11"></testcase>
+  <testcase name="testRemoveSCReturnedNull" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.125"></testcase>
+  <testcase name="testRemoveSCRemovedScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="testGetSCThrowsOnNegativeQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.156"></testcase>
+  <testcase name="testGetSCThrowsOnZeroQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.141"></testcase>
+  <testcase name="testClearSCRemovedScoreCalculator" classname="com.topcoder.management.review.scorecalculator.CalculationManagerCtorCalculatorTest" time="0.109"></testcase>
+  <testcase name="testGetScoreThrowsOnNullScorecard" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnNullReview" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnNullScorecardNameWithCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnEmptyScorecardNameWithCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnBlankScorecardNameWithCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnNullScorecardVersionWithCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnEmptyScorecardVersionWithCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnBlankScorecardVersionWithCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnUninitializedScorecardIdWithCache" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnNoCalculatorForQuestionTypeId" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.11"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewHasNoItems" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewHasTooLittleItems" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewHasTooManyItems" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewItemHasNoQuestion" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewItemHasNoExistQuestion" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewItemHasDuplicateQuestion" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewItemHasUninitializedQuestionType" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreThrowsOnReviewItemHasUninitializedQuestionTypeId" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.015"></testcase>
+  <testcase name="testGetScoreWorksSimple" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreWorksForDesignScreening1" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreWorksForDesignScreening2" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testGetScoreWorksForDevelopmentScreening1" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.016"></testcase>
+  <testcase name="testGetScoreWorksForDevelopmentScreening2" classname="com.topcoder.management.review.scorecalculator.CalculationManagerGetScoreTest" time="0.0"></testcase>
+  <testcase name="testCtorThrowsOnNullMatrix" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testCtorSetsMathMatrix" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testCtorSetsEntryMap" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testAddEntryThrowsOnNegativeQuestionId" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testAddEntryThrowsOnZeroQuestionId" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testAddEntryThrowsOnNullItem" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testAddEntryThrowsOnNullQuestion" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testAddEntryAddedItem" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testAddEntryAddedQuestion" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testAddEntryIncrementedCount" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testRemoveEntryReturnsTrue" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testRemoveEntryReturnsFalse" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testRemoveEntryRemovedLineItem" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testRemoveEntryRemovedQuestion" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testRemoveEntryDecrementedCount" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testClearEntriesRemovedLineItem" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testClearEntriesRemovedQuestion" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testClearEntriesDecrementedCount" classname="com.topcoder.management.review.scorecalculator.ScorecardMatrixTest" time="0.0"></testcase>
+  <testcase name="testCheckNotNonPositiveThrowsOnNegative" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.015"></testcase>
+  <testcase name="testCheckNotNonPositiveThrowsOnZero" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testCheckNotNonPositiveArrayThrowsOnNull" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.016"></testcase>
+  <testcase name="testCheckNotNonPositiveArrayThrowsOnNegative" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testCheckNotNonPositiveArrayThrowsOnZero" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.016"></testcase>
+  <testcase name="testCheckNotNullThrowsOnNull" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testCheckNotNullArrayThrowsOnNullArray" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.015"></testcase>
+  <testcase name="testCheckNotNullArrayThrowsOnNullElement" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.016"></testcase>
+  <testcase name="testCheckNotNullOrEmptyThrowsOnNull" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testCheckNotNullOrEmptyThrowsOnEmpty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.016"></testcase>
+  <testcase name="testCheckNotNullOrEmptyThrowsOnBlank" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testIsEmptyReturnsTrueOnEmpty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testIsEmptyReturnsTrueOnBlank" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.015"></testcase>
+  <testcase name="testGetOptionalPropertyThrowsOnMissingNamespace" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.016"></testcase>
+  <testcase name="testGetOptionalPropertyWorksOnMissingProperty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testGetOptionalPropertyWorksOnConfiguredProperty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.015"></testcase>
+  <testcase name="testGetRequiredPropertyThrowsOnMissingNamespace" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testGetRequiredPropertyThrowsOnMissingProperty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.016"></testcase>
+  <testcase name="testGetRequiredPropertyThrowsOnEmptyProperty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testGetRequiredPropertyThrowsOnBlankProperty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.016"></testcase>
+  <testcase name="testGetRequiredPropertyWorksOnConfiguredProperty" classname="com.topcoder.management.review.scorecalculator.UtilTest" time="0.0"></testcase>
+  <testcase name="testDemoUsingAPI" classname="com.topcoder.management.review.scorecalculator.Demo" time="0.062"></testcase>
+  <testcase name="testDemoUsingConfig" classname="com.topcoder.management.review.scorecalculator.Demo" time="0.0"></testcase>
+  <testcase name="testScaledScoreCalculator" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.031"></testcase>
+  <testcase name="testScaledScoreCalculatorlong_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testScaledScoreCalculatorlong_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testScaledScoreCalculatorlong_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testScaledScoreCalculatorString_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testScaledScoreCalculatorString_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testScaledScoreCalculatorString_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testScaledScoreCalculatorString_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testScaledScoreCalculatorString_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testScaledScoreCalculatorString_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testScaledScoreCalculatorString_7" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testScaledScoreCalculatorString_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.0"></testcase>
+  <testcase name="testScaledScoreCalculatorString_9" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testScaledScoreCalculatorString_10" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.032"></testcase>
+  <testcase name="testScaledScoreCalculatorString_11" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateAnswer_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateAnswer_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateAnswer_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateAnswer_7" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_9" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.046"></testcase>
+  <testcase name="testEvaluateAnswer_10" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_11" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_12" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateAnswer_13" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_14" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_15" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateAnswer_16" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_17" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateAnswer_18" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_19" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScaledScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateAnswer_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateAnswer_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.0"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.0"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_7" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_9" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testBinaryScoreCalculatorString_10" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testBinaryScoreCalculatorStringString_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.0"></testcase>
+  <testcase name="testBinaryScoreCalculatorStringString_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testBinaryScoreCalculatorStringString_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateItem_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateItem_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateItem_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateItem_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateItem_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testEvaluateItem_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateItem_7" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.016"></testcase>
+  <testcase name="testEvaluateItem_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForBinaryScoreCalculator" time="0.015"></testcase>
+  <testcase name="testBuildScorecardMatrix_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_9" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_10" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_11" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_12" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_13" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testScorecardMatrix" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testAddEntry_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testAddEntry_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testAddEntry_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_9" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_10" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_11" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_12" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrix_13" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testCalculationManagerString_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testCalculationManagerString_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerString_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.063"></testcase>
+  <testcase name="testCalculationManagerString_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerString_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerString_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.032"></testcase>
+  <testcase name="testCalculationManagerString_7" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.078"></testcase>
+  <testcase name="testCalculationManagerString_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerString_9" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerString_10" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerString_11" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.063"></testcase>
+  <testcase name="testCalculationManagerString_12" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerString_13" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.032"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.078"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_7" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.063"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderboolean_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.062"></testcase>
+  <testcase name="testCalculationManagerlongArrayScoreCalculatorArrayScorecardMatrixBuilderCache" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testGetScore_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testGetScore_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.063"></testcase>
+  <testcase name="testGetScore_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testGetScore_4" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testGetScore_5" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testGetScore_6" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testGetScore_7" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.078"></testcase>
+  <testcase name="testGetScore_8" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testGetScore_9" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testGetScore_10" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testGetScore_11" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.078"></testcase>
+  <testcase name="testGetScoreCalculator_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testGetScoreCalculator_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.047"></testcase>
+  <testcase name="testAddScoreCalculator_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.032"></testcase>
+  <testcase name="testAddScoreCalculator_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.078"></testcase>
+  <testcase name="testAddScoreCalculator_3" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testRemoveScoreCalculator_1" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testRemoveScoreCalculator_2" classname="com.topcoder.management.review.scorecalculator.failuretests.FailureTestForCalculationManager" time="0.031"></testcase>
+  <testcase name="testGetScoreBenchmark" classname="com.topcoder.management.review.scorecalculator.stresstests.ScorecardCalculatorStressTests" time="0.079"></testcase>
+  <testcase name="testCocurrencyOfManager" classname="com.topcoder.management.review.scorecalculator.stresstests.ScorecardCalculatorStressTests" time="0.031"></testcase>
+  <testcase name="testCocurrencyOfCache" classname="com.topcoder.management.review.scorecalculator.stresstests.ScorecardCalculatorStressTests" time="0.453"></testcase>
+  <testcase name="testScorecardStructureException1Accuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScorecardStructureException" time="0.0"></testcase>
+  <testcase name="testScorecardStructureExceptionAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScorecardStructureException" time="0.0"></testcase>
+  <testcase name="testScorecardMatrixAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testAddEntryAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testRemoveEntryAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testClearEntriesAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScorecardMatrix" time="0.0"></testcase>
+  <testcase name="testScoreCalculatorException1Accuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScoreCalculatorException" time="0.0"></testcase>
+  <testcase name="testScoreCalculatorExceptionAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScoreCalculatorException" time="0.0"></testcase>
+  <testcase name="testEvaluateAnswer1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScaledScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateAnswer2" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScaledScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateAnswer3" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestScaledScoreCalculator" time="0.062"></testcase>
+  <testcase name="testReviewStructureException1Accuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestReviewStructureException" time="0.0"></testcase>
+  <testcase name="testReviewStructureExceptionAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestReviewStructureException" time="0.0"></testcase>
+  <testcase name="testDefaultScorecardMatrixBuilderAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testBuildScorecardMatrixAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestDefaultScorecardMatrixBuilder" time="0.0"></testcase>
+  <testcase name="testConstructor1_1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestConfigurationException" time="0.0"></testcase>
+  <testcase name="testConstructor2_1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestConfigurationException" time="0.0"></testcase>
+  <testcase name="testCalculationManagerAccuracy1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.016"></testcase>
+  <testcase name="testCalculationManagerAccuracy2" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.016"></testcase>
+  <testcase name="testCalculationManagerAccuracy3" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.015"></testcase>
+  <testcase name="testCalculationManagerAccuracy4" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.0"></testcase>
+  <testcase name="testGetScoreAccuracy1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.016"></testcase>
+  <testcase name="testGetScoreAccuracy2" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.0"></testcase>
+  <testcase name="testAddScoreCalculatorAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.016"></testcase>
+  <testcase name="testRemoveScoreCalculatorAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.015"></testcase>
+  <testcase name="testClearScoreCalculatorsAccuracy" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationManager" time="0.0"></testcase>
+  <testcase name="testConstructor1_1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationException" time="0.016"></testcase>
+  <testcase name="testConstructor2_1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestCalculationException" time="0.0"></testcase>
+  <testcase name="testEvaluateAnswer1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestBinaryScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateAnswer2" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestBinaryScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateAnswer3" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestBinaryScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateItemAccuracy1" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestAbstractScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateItemAccuracy2" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestAbstractScoreCalculator" time="0.0"></testcase>
+  <testcase name="testEvaluateItemAccuracy3" classname="com.topcoder.management.review.scorecalculator.accuracytests.TestAbstractScoreCalculator" time="0.0"></testcase>
+  <system-out><![CDATA[The score is : 90.0
+Getting the score with 1000 times took 79ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

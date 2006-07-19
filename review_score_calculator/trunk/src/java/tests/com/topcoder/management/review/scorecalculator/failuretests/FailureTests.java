@@ -2,24 +2,37 @@
  *
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
- package com.topcoder.management.review.scorecalculator.failuretests;
+package com.topcoder.management.review.scorecalculator.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
+ * <p>
+ * This test case aggregates all Failure test cases.
+ * </p>
  *
- * @author TopCoder
+ * @author Chenhong
  * @version 1.0
  */
 public class FailureTests extends TestCase {
 
+    /**
+     * Aggregates all failure test cases.
+     *
+     * @return Test
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(FailureTestForScaledScoreCalculator.class);
+        suite.addTestSuite(FailureTestForBinaryScoreCalculator.class);
+        suite.addTestSuite(FailureTestForDefaultScorecardMatrixBuilder.class);
+        suite.addTestSuite(FailureTestForScorecardMatrix.class);
+        suite.addTestSuite(FailureTestForDefaultScorecardMatrixBuilder.class);
+        suite.addTestSuite(FailureTestForCalculationManager.class);
+
         return suite;
     }
 

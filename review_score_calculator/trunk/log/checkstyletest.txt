@@ -1,0 +1,20 @@
+Starting audit...
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\AbstractScoreCalculatorTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\CalculationExceptionTest.java:18: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\CalculationManagerCtorCalculatorTest.java:24: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\CalculationManagerGetScoreTest.java:29: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\ConfigurationExceptionTest.java:18: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\Demo.java:32: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\ReviewStructureExceptionTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\ScoreCalculatorExceptionTest.java:21: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\ScorecardMatrixTest.java:22: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\ScorecardStructureExceptionTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\TestUtil.java:17: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\UtilTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\builders\DefaultScorecardMatrixBuilderTest.java:30: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\builders\MockNoZeroArgCtorScorecardMatrixBuilder.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\calculators\BinaryScoreCalculatorTest.java:25: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\calculators\MockNoNamespaceCtorScoreCalculator.java:19: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\calculators\MockNoZeroArgCtorScoreCalculator.java:19: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+D:\TopCoder\Development\Current\Java Review Score Calculator\src\java\tests\com\topcoder\management\review\scorecalculator\calculators\ScaledScoreCalculatorTest.java:25: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+Audit done.
