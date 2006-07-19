@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.topcoder.management.project.AllTests" tests="570" failures="0" errors="0" time="21.359">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="package" value="com.topcoder.management.project"></property>
+    <property name="docpackage.jar" value="project_management_docs.jar"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="id_generator.jar.name" value="id_generator.jar"></property>
+    <property name="sun.boot.class.path" value="C:\Java\jdk1.4\jre\lib\rt.jar;C:\Java\jdk1.4\jre\lib\i18n.jar;C:\Java\jdk1.4\jre\lib\sunrsasign.jar;C:\Java\jdk1.4\jre\lib\jsse.jar;C:\Java\jdk1.4\jre\lib\jce.jar;C:\Java\jdk1.4\jre\lib\charsets.jar;C:\Java\jdk1.4\jre\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="Project_Management_1.0_design_submission.jar"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/project_management_tests.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="ant.home" value="C:\Program Files\Ant"></property>
+    <property name="java.runtime.version" value="1.4.2_08-b03"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="search_builder.path" value="search_builder/1.1"></property>
+    <property name="component_path" value="project_management/1.0"></property>
+    <property name="database_abstraction.path" value="database_abstraction/1.0"></property>
+    <property name="user.name" value="VIVID"></property>
+    <property name="id_generator.version" value="3.0"></property>
+    <property name="debug" value="off"></property>
+    <property name="database_abstraction.jar.name" value="database_abstraction.jar"></property>
+    <property name="reports" value="reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dist_conf" value="build/dist/project_management-1.0/conf"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.4"></property>
+    <property name="sun.boot.library.path" value="C:\Java\jdk1.4\jre\bin"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="search_builder.jar" value="lib/tcs/search_builder/1.1/search_builder.jar"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="Project Management"></property>
+    <property name="java.version" value="1.4.2_08"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="Project_Management_1.0_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="webdir" value="web"></property>
+    <property name="java.endorsed.dirs" value="C:\Java\jdk1.4\jre\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="packagedir" value="com/topcoder/management/project"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="data_validation.jar.name" value="data_validation.jar"></property>
+    <property name="dev_submission.jar" value="Project_Management_1.0_dev_submission.jar"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="search_builder.jar.name" value="search_builder.jar"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="java.home" value="C:\Java\jdk1.4\jre"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="ant.file" value="D:\TopCoder\Review\project\finalsub\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="search_builder.version" value="1.1"></property>
+    <property name="database_abstraction.version" value="1.0"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="data_validation.version" value="1.0"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="build_tcsdistdir" value="build/dist/project_management-1.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.4.2_08-b03"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="database_abstraction.jar" value="lib/tcs/database_abstraction/1.0/database_abstraction.jar"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.library.dir" value="C:\Program Files\Ant\lib"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="dist_javadocs" value="build/dist/project_management-1.0/docs/javadocs"></property>
+    <property name="dist_testfiles" value="build/dist/project_management-1.0/test_files"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="component" value="Project_Management"></property>
+    <property name="component.war" value="${dist_examples}/project_management.war"></property>
+    <property name="user.home" value="C:\Documents and Settings\VIVID"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="data_validation.jar" value="lib/tcs/data_validation/1.0/data_validation.jar"></property>
+    <property name="java.library.path" value="C:\Java\jdk1.4\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\ATI Technologies\ATI Control Panel;C:\Program Files\PC-Doctor for Windows\;C:\WINDOWS\Downloaded Program Files;C:\IBMTOOLS\Python22;C:\Program Files\UltraEdit;C:\Program Files\Nant\bin;C:\Program Files\Microsoft SQL Server\80\Tools\BINN;C:\PROGRA~1\Borland\Delphi6\Bin;C:\PROGRA~1\Borland\Delphi6\Projects\Bpl;C:\Program Files\ThinkPad\ConnectUtilities;C:\Program Files\MySQL\MySQL Server 4.1\bin;C:\Program Files\Ant\bin"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="java.class.path" value="D:\TopCoder\Review\project\finalsub\build\testClasses;D:\TopCoder\Review\project\finalsub\build\classes;D:\TopCoder\Review\project\finalsub\lib\junit\3.8.1\junit.jar;D:\TopCoder\Review\project\finalsub\lib\ifxjdbc.jar;D:\TopCoder\Review\project\finalsub\lib\tcs\configuration_manager\2.1.4\configuration_manager.jar;D:\TopCoder\Review\project\finalsub\lib\tcs\db_connection_factory\1.0\db_connection_factory.jar;D:\TopCoder\Review\project\finalsub\lib\tcs\search_builder\1.1\search_builder.jar;D:\TopCoder\Review\project\finalsub\lib\tcs\id_generator\3.0\id_generator.jar;D:\TopCoder\Review\project\finalsub\lib\tcs\base_exception\1.0\base_exception.jar;D:\TopCoder\Review\project\finalsub\lib\tcs\data_validation\1.0\data_validation.jar;D:\TopCoder\Review\project\finalsub\lib\tcs\database_abstraction\1.0\database_abstraction.jar;D:\TopCoder\Review\project\finalsub\conf;D:\TopCoder\Review\project\finalsub\test_files;D:\TopCoder\Review\project\finalsub;C:\Java\jdk1.4\lib\dt.jar;C:\Java\jdk1.4\lib\tools.jar;C:\Program Files\Ant\lib\junit.jar;C:\Program Files\Ant\lib\ant-launcher.jar;C:\Program Files\Ant\lib\ant.jar;C:\Program Files\Ant\lib\ant-junit.jar"></property>
+    <property name="ant.file.Project Management" value="D:\TopCoder\Review\project\finalsub\build.xml"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="builddir" value="build"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/project_management-1.0.jar"></property>
+    <property name="junit.jar" value="lib/junit/3.8.1/junit.jar"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\VIVID\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.4/configuration_manager.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="id_generator.jar" value="lib/tcs/id_generator/3.0/id_generator.jar"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="java.ext.dirs" value="C:\Java\jdk1.4\jre\lib\ext"></property>
+    <property name="dist_src" value="build/dist/project_management-1.0/src"></property>
+    <property name="jdbc.jar" value="lib/ifxjdbc.jar"></property>
+    <property name="user.dir" value="D:\TopCoder\Review\project\finalsub"></property>
+    <property name="design_dist.jar" value="Project_Management_1.0_design_dist.jar"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="java_1_3_bootclasspath" value="C:\Java\jdk1.3\jre\lib\rt.jar"></property>
+    <property name="distfilename" value="project_management"></property>
+    <property name="basedir" value="D:\TopCoder\Review\project\finalsub"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="id_generator.path" value="id_generator/3.0"></property>
+    <property name="configmanager.version" value="2.1.4"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="dist_docs" value="build/dist/project_management-1.0/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/project_management/1.0/project_management.jar"></property>
+    <property name="java.specification.version" value="1.4"></property>
+    <property name="data_validation.path" value="data_validation/1.0"></property>
+  </properties>
+  <testcase name="testAuditableObject" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetCreationUserAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetCreationUserFailure1" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetCreationUserFailure2" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testGetCreationUserAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetCreationTimestampAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetCreationTimestampFailure" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testGetCreationTimestampAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetModificationUserAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetModificationUserFailure1" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetModificationUserFailure2" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testGetModificationUserAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetModificationTimestampAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testSetModificationTimestampFailure" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testGetModificationTimestampAccuracy" classname="com.topcoder.management.project.AuditableObjectTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionAccuracy1" classname="com.topcoder.management.project.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionAccuracy2" classname="com.topcoder.management.project.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testDefaultProjectValidatorAccuracy" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectAccuracy1" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectAccuracy2" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure1" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure2" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure3" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure4" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure5" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure6" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure7" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure8" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProjectFailure9" classname="com.topcoder.management.project.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testCheckNumberPositiveAccuracy1" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckNumberPositiveAccuracy2" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckNumberPositiveFailure1" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckNumberPositiveFailure2" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckObjectNotNullAccuracy" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckObjectNotNullFailure" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckStringNotNullOrEmptyAccuracy" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckStringNotNullOrEmptyFailure1" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testCheckStringNotNullOrEmptyFailure2" classname="com.topcoder.management.project.HelperTest" time="0.0"></testcase>
+  <testcase name="testPersistenceExceptionAccuracy1" classname="com.topcoder.management.project.PersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testPersistenceExceptionAccuracy2" classname="com.topcoder.management.project.PersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryAccuracy1" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure1" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure10" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure2" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure3" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure4" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryAccuracy2" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure5" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure11" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure6" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure7" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure8" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testProjectCategoryFailure9" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetIdAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetIdFailure1" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetIdFailure2" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testGetIdAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetNameAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetNameFailure1" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetNameFailure2" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testGetNameAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetDescriptionAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetDescriptionFailure" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testGetDescriptionAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetProjectTypeAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testSetProjectTypeFailure" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testGetProjectTypeAccuracy" classname="com.topcoder.management.project.ProjectCategoryTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterFailure5" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterFailure3" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterFailure4" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildAndFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildAndFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildOrFilterFailure1" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildOrFilterFailure2" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildNotFilterFailure" classname="com.topcoder.management.project.ProjectFilterUtilityFailureTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.016"></testcase>
+  <testcase name="testBuildTypeNameEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildAndFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildOrFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testBuildNotFilterAccuracy" classname="com.topcoder.management.project.ProjectFilterUtilityAccuracyTest" time="0.0"></testcase>
+  <testcase name="testSetIdAccuracy" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testGetIdAccuracy" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testSetNameAccuracy" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testSetNameFailure1" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testSetNameFailure2" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testGetNameAccuracy" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testSetDescriptionAccuracy" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testSetDescriptionFailure" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testGetDescriptionAccuracy" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusAccuracy1" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure1" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure8" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure2" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure3" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusAccuracy2" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure4" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure9" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure5" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure6" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testProjectStatusFailure7" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testSetIdFailure" classname="com.topcoder.management.project.ProjectStatusTest" time="0.0"></testcase>
+  <testcase name="testSetIdAccuracy" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetIdAccuracy" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetIdFailure" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectAccuracy1" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure1" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure2" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectAccuracy2" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure3" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure4" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure5" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectAccuracy3" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure6" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure7" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure8" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure9" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure10" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure11" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testProjectFailure12" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetProjectStatusAccuracy" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetProjectStatusFailure" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetProjectStatusAccuracy" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetProjectCategoryAccuracy" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetProjectCategoryFailure" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetProjectCategoryAccuracy" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetPropertyAccuracy1" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetPropertyAccuracy2" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetPropertyFailure1" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetPropertyFailure2" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetPropertyAccuracy1" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetPropertyAccuracy2" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetPropertyFailure1" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetPropertyFailure2" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testGetAllPropertiesAccuracy" classname="com.topcoder.management.project.ProjectTest" time="0.0"></testcase>
+  <testcase name="testSetIdAccuracy" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testSetIdFailure1" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testSetIdFailure2" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testGetIdAccuracy" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testSetNameAccuracy" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testSetNameFailure1" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testSetNameFailure2" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testGetNameAccuracy" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testSetDescriptionAccuracy" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testSetDescriptionFailure" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testGetDescriptionAccuracy" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeAccuracy1" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure1" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure8" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure2" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure3" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeAccuracy2" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure4" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure9" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure5" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure6" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testProjectTypeFailure7" classname="com.topcoder.management.project.ProjectTypeTest" time="0.0"></testcase>
+  <testcase name="testValidationExceptionAccuracy1" classname="com.topcoder.management.project.ValidationExceptionTest" time="0.0"></testcase>
+  <testcase name="testValidationExceptionAccuracy2" classname="com.topcoder.management.project.ValidationExceptionTest" time="0.0"></testcase>
+  <testcase name="testProjectManagerImplAccuracy1" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.187"></testcase>
+  <testcase name="testProjectManagerImplAccuracy2" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.063"></testcase>
+  <testcase name="testProjectManagerImplFailure1" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.062"></testcase>
+  <testcase name="testProjectManagerImplFailure2" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.063"></testcase>
+  <testcase name="testProjectManagerImplFailure3" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testProjectManagerImplFailure4" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testProjectManagerImplFailure5" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.047"></testcase>
+  <testcase name="testProjectManagerImplFailure6" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testProjectManagerImplFailure7" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.047"></testcase>
+  <testcase name="testProjectManagerImplFailure8" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.032"></testcase>
+  <testcase name="testCreateProjectAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.046"></testcase>
+  <testcase name="testCreateProjectFailure1" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.032"></testcase>
+  <testcase name="testCreateProjectFailure2" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.047"></testcase>
+  <testcase name="testCreateProjectFailure3" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testUpdateProjectAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testUpdateProjectFailure1" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.047"></testcase>
+  <testcase name="testUpdateProjectFailure2" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testUpdateProjectFailure3" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testUpdateProjectFailure4" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.063"></testcase>
+  <testcase name="testGetProjectAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.016"></testcase>
+  <testcase name="testGetProjectFailure" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testGetProjectsAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.047"></testcase>
+  <testcase name="testGetProjectsFailure1" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testGetProjectsFailure2" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testGetProjectsFailure3" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.047"></testcase>
+  <testcase name="testSearchProjectsAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.828"></testcase>
+  <testcase name="testSearchProjectsFailure" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.063"></testcase>
+  <testcase name="testGetUserProjectsAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.859"></testcase>
+  <testcase name="testGetAllProjectTypesAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.063"></testcase>
+  <testcase name="testGetAllProjectCategoriesAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testGetAllProjectStatusesAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.047"></testcase>
+  <testcase name="testGetAllProjectPropertyTypesAccuracy" classname="com.topcoder.management.project.ProjectManagerImplTest" time="0.031"></testcase>
+  <testcase name="testDemo1" classname="com.topcoder.management.project.DemoTest" time="0.062"></testcase>
+  <testcase name="testDemo2" classname="com.topcoder.management.project.DemoTest" time="0.25"></testcase>
+  <testcase name="testConstructorWithNegativeId1" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId1" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName1" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName1" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId2" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId2" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName2" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName2" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullDescription" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithNegativeId" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithZeroId" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithNullName" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetDescriptionWithNullName" classname="com.topcoder.management.project.failuretests.ProjectTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId1" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId1" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName1" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName1" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId2" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId2" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName2" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName2" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullDescription" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithNegativeId" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithZeroId" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithNullName" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testSetDescriptionWithNullName" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectType1" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectType" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testSetProjectTypeWithNullProjectType" classname="com.topcoder.management.project.failuretests.ProjectCategoryFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId1" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId1" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName1" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName1" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId2" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId2" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName2" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName2" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullDescription" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithNegativeId" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithZeroId" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithNullName" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testSetDescriptionWithNullName" classname="com.topcoder.management.project.failuretests.ProjectStatusFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId1" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId1" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName1" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName1" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId2" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithZeroId2" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullName2" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithEmptyName2" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullDescription" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithNegativeId" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithZeroId" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithNullName" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetNameWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testSetDescriptionWithNullName" classname="com.topcoder.management.project.failuretests.ProjectPropertyTypeFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdEqualFilterWithNegativeTypeId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdEqualFilterWithZeroTypeId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterWithNullTypeIds" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterWithEmptyTypeIds" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterWithNonLongTypeId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterWithNagetiveTypeId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeIdInFilterWithZeroTypeId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameEqualFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameEqualFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterWithNullNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterWithEmptyNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterWithNonStringName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildTypeNameInFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.016"></testcase>
+  <testcase name="testBuildTypeNameInFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdEqualFilterWithNegativeCategoryId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdEqualFilterWithZeroCategoryId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterWithNullCategoryIds" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterWithEmptyCategoryIds" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterWithNonLongCategoryId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterWithNagetiveCategoryId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryIdInFilterWithZeroCategoryId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameEqualFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameEqualFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterWithNullNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterWithEmptyNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterWithNonStringName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildCategoryNameInFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdEqualFilterWithNegativeStatusId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdEqualFilterWithZeroStatusId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterWithNullStatusIds" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterWithEmptyStatusIds" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterWithNonLongStatusId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterWithNagetiveStatusId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusIdInFilterWithZeroStatusId" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameEqualFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameEqualFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterWithNullNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterWithEmptyNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterWithNonStringName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildStatusNameInFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameEqualFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameEqualFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterWithNullNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterWithEmptyNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterWithNonStringName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyNameInFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueEqualFilterWithNullValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueEqualFilterWithEmptyValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterWithNullValues" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterWithEmptyValues" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterWithNonStringValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterWithNullValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyValueInFilterWithEmptyValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterWithNullValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyEqualFilterWithEmptyValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameEqualFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameEqualFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterWithNullNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterWithEmptyNames" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterWithNonStringName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyNameInFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueEqualFilterWithNullValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueEqualFilterWithEmptyValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterWithNullValues" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterWithEmptyValues" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterWithNonStringValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterWithNullValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectResourcePropertyValueInFilterWithEmptyValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterWithNullValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildProjectPropertyResourceEqualFilterWithEmptyValue" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildAndFilterWithNullF1" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildAndFilterWithNullF2" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildOrFilterWithNullF1" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildOrFilterWithNullF2" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testBuildNotFilterWithNullF1" classname="com.topcoder.management.project.failuretests.ProjectFilterUtilityFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId1" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNegativeId2" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithNegativeId" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetIdWithZeroId" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectCategory1" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectStatus1" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectCategory2" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectStatus2" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectCategory3" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProjectStatus3" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullProperties" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNonStringKeyProperties" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNonObjectValueProperties" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetProjectStatusWithNullProjectStatus" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetProjectCategoryWithNullProjectCategory" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetPropertyWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetPropertyWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testGetPropertyWithNullName" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testGetPropertyWithEmptyName" classname="com.topcoder.management.project.failuretests.ProjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetCreationUserWithNullCreationUser" classname="com.topcoder.management.project.failuretests.AuditableObjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetCreationUserWithEmptyCreationUser" classname="com.topcoder.management.project.failuretests.AuditableObjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetModificationUserWithNullModificationUser" classname="com.topcoder.management.project.failuretests.AuditableObjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetModificationUserWithEmptyModificationUser" classname="com.topcoder.management.project.failuretests.AuditableObjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetCreationTimestampWithNullCreationTimestamp" classname="com.topcoder.management.project.failuretests.AuditableObjectFailureTests" time="0.0"></testcase>
+  <testcase name="testSetModificationTimestampWithNullModificationTimestamp" classname="com.topcoder.management.project.failuretests.AuditableObjectFailureTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithNullNamespace" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testConstructorWithEmptyNamespace" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testConstructorWithInexistentNamespace" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.032"></testcase>
+  <testcase name="testConstructorConfigMissPersistenceClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testConstructorConfigEmptyPersistenceClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testConstructorConfigInvalidPersistenceClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testConstructorConfigOtherPersistenceClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testConstructorConfigMissValidatorClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testConstructorConfigEmptyValidatorClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.047"></testcase>
+  <testcase name="testConstructorConfigInvalidValidatorClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.063"></testcase>
+  <testcase name="testConstructorConfigOtherValidatorClass" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.047"></testcase>
+  <testcase name="testConstructorConfigMissSearchBuilderNamespace" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.062"></testcase>
+  <testcase name="testConstructorConfigEmptySearchBuilderNamespace" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.047"></testcase>
+  <testcase name="testConstructorConfigInvalidSearchBuilderNamespace" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.063"></testcase>
+  <testcase name="testCreateProjectWithNullProject" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.046"></testcase>
+  <testcase name="testCreateProjectWithInvalidProject" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.063"></testcase>
+  <testcase name="testCreateProjectWithNullOperator" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testCreateProjectWithEmptyOperator" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testCreateProjectWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.032"></testcase>
+  <testcase name="testUpdateProjectWithNullProject" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testUpdateProjectWithInvalidProject" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.047"></testcase>
+  <testcase name="testUpdateProjectWithNullOperator" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.062"></testcase>
+  <testcase name="testUpdateProjectWithEmptyOperator" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testUpdateProjectWithNullReason" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testUpdateProjectWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.032"></testcase>
+  <testcase name="testGetProjectWithNegativeId" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testGetProjectWithZeroId" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testGetProjectWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testGetProjectsWithNullIds" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testGetProjectsWithEmptyIds" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.063"></testcase>
+  <testcase name="testGetProjectsWithNegativeId" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testGetProjectsWithZeroId" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testGetProjectsWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.032"></testcase>
+  <testcase name="testSearchProjectsWithNullFilter" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.078"></testcase>
+  <testcase name="testGetAllProjectTypesWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.031"></testcase>
+  <testcase name="testGetAllProjectCategoriesWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.062"></testcase>
+  <testcase name="testGetAllProjectStatusesWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.047"></testcase>
+  <testcase name="testGetAllProjectPropertyTypesWhenPersistenceException" classname="com.topcoder.management.project.failuretests.ProjectManagerImplFailureTests" time="0.063"></testcase>
+  <testcase name="testValidateProjectWithNullProject" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.047"></testcase>
+  <testcase name="testValidateProjectWithTooLongTypeName" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.031"></testcase>
+  <testcase name="testValidateProjectWithTooLongCategoryName" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.047"></testcase>
+  <testcase name="testValidateProjectWithTooLongStatusName" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.047"></testcase>
+  <testcase name="testValidateProjectWithTooLongTypeDescription" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.031"></testcase>
+  <testcase name="testValidateProjectWithTooLongCategoryDescription" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.047"></testcase>
+  <testcase name="testValidateProjectWithTooLongStatusDescription" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.031"></testcase>
+  <testcase name="testValidateProjectWithTooLongPropertyKey" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.047"></testcase>
+  <testcase name="testValidateProjectWithTooLongPropertyValue" classname="com.topcoder.management.project.failuretests.DefaultProjectValidatorFailureTests" time="0.031"></testcase>
+  <testcase name="testExceptionMessage" classname="com.topcoder.management.project.accuracytests.ConfigurationExceptionAccuracyTests" time="0.0"></testcase>
+  <testcase name="testExceptionMessageCause" classname="com.topcoder.management.project.accuracytests.ConfigurationExceptionAccuracyTests" time="0.0"></testcase>
+  <testcase name="testExceptionMessage" classname="com.topcoder.management.project.accuracytests.ValidationExceptionAccuracyTests" time="0.0"></testcase>
+  <testcase name="testExceptionMessageCause" classname="com.topcoder.management.project.accuracytests.ValidationExceptionAccuracyTests" time="0.0"></testcase>
+  <testcase name="testExceptionMessage" classname="com.topcoder.management.project.accuracytests.PersistenceExceptionAccuracyTests" time="0.0"></testcase>
+  <testcase name="testExceptionMessageCause" classname="com.topcoder.management.project.accuracytests.PersistenceExceptionAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorNoDescription" classname="com.topcoder.management.project.accuracytests.ProjectTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithDescription" classname="com.topcoder.management.project.accuracytests.ProjectTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetId" classname="com.topcoder.management.project.accuracytests.ProjectTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetName" classname="com.topcoder.management.project.accuracytests.ProjectTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetDescription" classname="com.topcoder.management.project.accuracytests.ProjectTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorNoDescription" classname="com.topcoder.management.project.accuracytests.ProjectCategoryAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithDescription" classname="com.topcoder.management.project.accuracytests.ProjectCategoryAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetId" classname="com.topcoder.management.project.accuracytests.ProjectCategoryAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetName" classname="com.topcoder.management.project.accuracytests.ProjectCategoryAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetDescription" classname="com.topcoder.management.project.accuracytests.ProjectCategoryAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetProjectType" classname="com.topcoder.management.project.accuracytests.ProjectCategoryAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorNoDescription" classname="com.topcoder.management.project.accuracytests.ProjectStatusAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithDescription" classname="com.topcoder.management.project.accuracytests.ProjectStatusAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetId" classname="com.topcoder.management.project.accuracytests.ProjectStatusAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetName" classname="com.topcoder.management.project.accuracytests.ProjectStatusAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetDescription" classname="com.topcoder.management.project.accuracytests.ProjectStatusAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorNoDescription" classname="com.topcoder.management.project.accuracytests.ProjectPropertyTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithDescription" classname="com.topcoder.management.project.accuracytests.ProjectPropertyTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetId" classname="com.topcoder.management.project.accuracytests.ProjectPropertyTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetName" classname="com.topcoder.management.project.accuracytests.ProjectPropertyTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetDescription" classname="com.topcoder.management.project.accuracytests.ProjectPropertyTypeAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetId" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorNoIdAndProperties" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorNoProperties" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructorWithIdAndProperties" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetCreationUser" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetModificationUser" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetCreationTimestamp" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetModificationTimestamp" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetProjectStatus" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetProjectCategoty" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testSetAndGetProperty" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testGetAllProperties" classname="com.topcoder.management.project.accuracytests.ProjectAccuracyTests" time="0.0"></testcase>
+  <testcase name="testConstructor" classname="com.topcoder.management.project.accuracytests.validation.DefaultProjectValidatorAccuracyTests" time="0.0"></testcase>
+  <testcase name="testCreateProject" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.016"></testcase>
+  <testcase name="testUpdateProject" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.015"></testcase>
+  <testcase name="testGetProject" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.016"></testcase>
+  <testcase name="testGetProjects" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.0"></testcase>
+  <testcase name="testGetAllProjectTypes" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.016"></testcase>
+  <testcase name="testGetAllProjectCategories" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.0"></testcase>
+  <testcase name="testGetAllProjectStatuses" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.015"></testcase>
+  <testcase name="testGetAllProjectPropertyTypes" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplDelegateAccuracyTests" time="0.047"></testcase>
+  <testcase name="testSearchProjectsByProjectTypeId" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.906"></testcase>
+  <testcase name="testSearchProjectsByTypeName" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.907"></testcase>
+  <testcase name="testSearchProjectsByCategoryId" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.781"></testcase>
+  <testcase name="testSearchProjectsByCategoryName" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.719"></testcase>
+  <testcase name="testSearchProjectsByStatusIds" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.765"></testcase>
+  <testcase name="testSearchProjectsByPropertyName" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.766"></testcase>
+  <testcase name="testSearchProjectsByPropertyValue" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.75"></testcase>
+  <testcase name="testSearchProjectsByProperty" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.812"></testcase>
+  <testcase name="testSearchProjectsByResourcePropertyName" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.782"></testcase>
+  <testcase name="testSearchProjectsByResourcePropertyValue" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.765"></testcase>
+  <testcase name="testSearchProjectsByResourcePropertyValues" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.782"></testcase>
+  <testcase name="testSearchProjectsByResourceProperty" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.906"></testcase>
+  <testcase name="testSearchProjectsByStatusNameAndCategoryName" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.812"></testcase>
+  <testcase name="testSearchProjectsByStatusNameOrCategoryName" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.875"></testcase>
+  <testcase name="testSearchProjectsNotJava" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="1.078"></testcase>
+  <testcase name="testGetUserProjects" classname="com.topcoder.management.project.accuracytests.ProjectManagerImplSearchFunctionsAccuracyTests" time="0.907"></testcase>
+  <testcase name="testValidateProject1" classname="com.topcoder.management.project.stresstests.DefaultProjectValidatorTest" time="0.0"></testcase>
+  <testcase name="testValidateProject2" classname="com.topcoder.management.project.stresstests.DefaultProjectValidatorTest" time="0.015"></testcase>
+  <testcase name="testValidateProject3" classname="com.topcoder.management.project.stresstests.DefaultProjectValidatorTest" time="0.735"></testcase>
+  <testcase name="testConstructor1" classname="com.topcoder.management.project.stresstests.ProjectManagerImplTest" time="0.187"></testcase>
+  <testcase name="testConstructor2" classname="com.topcoder.management.project.stresstests.ProjectManagerImplTest" time="0.203"></testcase>
+  <testcase name="testConstructor3" classname="com.topcoder.management.project.stresstests.ProjectManagerImplTest" time="0.875"></testcase>
+  <system-out><![CDATA[validate simple project 100 times takes 0ms
+validate simple project 500 times takes 15ms
+validate complex project 500 times takes 735ms
+Create ProjectManagerImpl instance 100 times use default namespace takes 157ms
+Create ProjectManagerImpl instance 100 times use given namespace takes 203ms
+Create ProjectManagerImpl instance 500 times use given namespace takes 859ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

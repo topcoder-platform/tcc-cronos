@@ -1,25 +1,28 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Stress test cases.</p>
  *
- * @author TopCoder
+ * @author King_Bette
  * @version 1.0
  */
 public class StressTests extends TestCase {
-
+    /**
+     * Aggregates all tests in this class.
+     *
+     * @return Test suite aggregating all tests.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTest(DefaultProjectValidatorTest.suite());
+        suite.addTest(ProjectManagerImplTest.suite());
         return suite;
     }
 }
