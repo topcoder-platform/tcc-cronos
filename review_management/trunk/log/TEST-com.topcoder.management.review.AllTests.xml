@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.topcoder.management.review.AllTests" tests="171" failures="0" errors="0" time="2.125">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="package" value="com.topcoder.management.review"></property>
+    <property name="docpackage.jar" value="review_management_docs.jar"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="id_generator.jar.name" value="id_generator.jar"></property>
+    <property name="sun.boot.class.path" value="C:\j2sdk1.4.2_10\jre\lib\rt.jar;C:\j2sdk1.4.2_10\jre\lib\i18n.jar;C:\j2sdk1.4.2_10\jre\lib\sunrsasign.jar;C:\j2sdk1.4.2_10\jre\lib\jsse.jar;C:\j2sdk1.4.2_10\jre\lib\jce.jar;C:\j2sdk1.4.2_10\jre\lib\charsets.jar;C:\j2sdk1.4.2_10\jre\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="Review_Management_1.0_design_submission.jar"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/review_management_tests.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="ant.home" value="c:\ant"></property>
+    <property name="java.runtime.version" value="1.4.2_10-b03"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="search_builder.path" value="search_builder/1.1"></property>
+    <property name="component_path" value="review_management/1.0"></property>
+    <property name="user.name" value="hong"></property>
+    <property name="id_generator.version" value="3.0"></property>
+    <property name="debug" value="off"></property>
+    <property name="reports" value="reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dist_conf" value="build/dist/review_management-1.0/conf"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.4"></property>
+    <property name="sun.boot.library.path" value="C:\j2sdk1.4.2_10\jre\bin"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="search_builder.jar" value="lib/tcs/search_builder/1.1/search_builder.jar"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="Review Management"></property>
+    <property name="java.version" value="1.4.2_10"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="Review_Management_1.0_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="webdir" value="web"></property>
+    <property name="java.endorsed.dirs" value="C:\j2sdk1.4.2_10\jre\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="packagedir" value="com/topcoder/management/review"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dev_submission.jar" value="Review_Management_1.0_dev_submission.jar"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="search_builder.jar.name" value="search_builder.jar"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="java.home" value="C:\j2sdk1.4.2_10\jre"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="ant.file" value="E:\review\Review Management\final\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="search_builder.version" value="1.1"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="build_tcsdistdir" value="build/dist/review_management-1.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.4.2_10-b03"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="database_abstraction.jar" value="lib/database_abstraction.jar"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.library.dir" value="C:\ant\lib"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="dist_testfiles" value="build/dist/review_management-1.0/test_files"></property>
+    <property name="dist_javadocs" value="build/dist/review_management-1.0/docs/javadocs"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="component" value="Review_Management"></property>
+    <property name="component.war" value="${dist_examples}/review_management.war"></property>
+    <property name="user.home" value="C:\Documents and Settings\hong"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="data_validation.jar" value="lib/data_validation.jar"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="java.library.path" value="C:\j2sdk1.4.2_10\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;E:\oraclexe\app\oracle\product\10.2.0\server\bin;E:\oracle_database\bin;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\ATI Technologies\ATI Control Panel;C:\Program Files\IBM ThinkVantage\Client Security Solution;C:\Program Files\UltraEdit;C:\Program Files\Microsoft SQL Server\80\Tools\BINN;E:\Informix\Client-SDK\bin;c:\j2sdk1.4.2_10\bin;c:\ant\bin; c:\ant\lib;  c:\j2sdk1.4.2_10\lib;"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="java.class.path" value="E:\review\Review Management\final\build\testClasses;E:\review\Review Management\final\build\classes;E:\review\Review Management\final\lib\tcs\base_exception\1.0\base_exception.jar;E:\review\Review Management\final\lib\data_validation.jar;E:\review\Review Management\final\lib\database_abstraction.jar;E:\review\Review Management\final\lib\tcs\configuration_manager\2.1.4\configuration_manager.jar;E:\review\Review Management\final\lib\tcs\id_generator\3.0\id_generator.jar;E:\review\Review Management\final\lib\tcs\search_builder\1.1\search_builder.jar;E:\review\Review Management\final\lib\tcs\db_connection_factory\1.0\db_connection_factory.jar;E:\review\Review Management\final\conf;E:\review\Review Management\final\test_files;C:\Program Files\Java\j2re1.4.2_10\lib\ext\QTJava.zip;C:\ant\lib\junit.jar;C:\ant\lib\ant-launcher.jar;C:\ant\lib\ant.jar;C:\ant\lib\ant-junit.jar"></property>
+    <property name="ant.file.Review Management" value="E:\review\Review Management\final\build.xml"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/review_management-1.0.jar"></property>
+    <property name="junit.jar" value="lib/junit/3.8.2/junit.jar"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\hong\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.4/configuration_manager.jar"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="id_generator.jar" value="lib/tcs/id_generator/3.0/id_generator.jar"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="java.ext.dirs" value="C:\j2sdk1.4.2_10\jre\lib\ext"></property>
+    <property name="dist_src" value="build/dist/review_management-1.0/src"></property>
+    <property name="user.dir" value="E:\review\Review Management\final"></property>
+    <property name="design_dist.jar" value="Review_Management_1.0_design_dist.jar"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="distfilename" value="review_management"></property>
+    <property name="java_1_3_bootclasspath" value="C:\j2sdk1.4.2_10\jre\lib\rt.jar"></property>
+    <property name="basedir" value="E:\review\Review Management\final"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="id_generator.path" value="id_generator/3.0"></property>
+    <property name="file.encoding" value="GB18030"></property>
+    <property name="configmanager.version" value="2.1.4"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="dist_docs" value="build/dist/review_management-1.0/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/review_management/1.0/review_management.jar"></property>
+    <property name="java.specification.version" value="1.4"></property>
+  </properties>
+  <testcase name="testReviewManagementExceptionCtor1_Basic" classname="com.topcoder.management.review.ReviewManagementExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewManagementExceptionCtor1_Detail" classname="com.topcoder.management.review.ReviewManagementExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewManagementExceptionCtor2_Error" classname="com.topcoder.management.review.ReviewManagementExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewManagementExceptionCtor2_Exception" classname="com.topcoder.management.review.ReviewManagementExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewManagementExceptionUsage_Ctor1" classname="com.topcoder.management.review.ReviewManagementExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewManagementExceptionUsage_Ctor2" classname="com.topcoder.management.review.ReviewManagementExceptionTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionCtor1_Basic" classname="com.topcoder.management.review.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionCtor1_Detail" classname="com.topcoder.management.review.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionCtor2_Error" classname="com.topcoder.management.review.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionCtor2_Exception" classname="com.topcoder.management.review.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionUsage_Ctor1" classname="com.topcoder.management.review.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testConfigurationExceptionUsage_Ctor2" classname="com.topcoder.management.review.ConfigurationExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewPersistenceExceptionCtor1_Basic" classname="com.topcoder.management.review.ReviewPersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewPersistenceExceptionCtor1_Detail" classname="com.topcoder.management.review.ReviewPersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewPersistenceExceptionCtor2_Error" classname="com.topcoder.management.review.ReviewPersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewPersistenceExceptionCtor2_Exception" classname="com.topcoder.management.review.ReviewPersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewPersistenceExceptionUsage_Ctor1" classname="com.topcoder.management.review.ReviewPersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewPersistenceExceptionUsage_Ctor2" classname="com.topcoder.management.review.ReviewPersistenceExceptionTest" time="0.0"></testcase>
+  <testcase name="testDuplicateReviewEntityExceptionCtor_Basic" classname="com.topcoder.management.review.DuplicateReviewEntityExceptionTest" time="0.0"></testcase>
+  <testcase name="testDuplicateReviewEntityExceptionCtor_Detail" classname="com.topcoder.management.review.DuplicateReviewEntityExceptionTest" time="0.0"></testcase>
+  <testcase name="testGetId_Once" classname="com.topcoder.management.review.DuplicateReviewEntityExceptionTest" time="0.0"></testcase>
+  <testcase name="testGetId_More" classname="com.topcoder.management.review.DuplicateReviewEntityExceptionTest" time="0.0"></testcase>
+  <testcase name="testDuplicateReviewEntityExceptionUsage" classname="com.topcoder.management.review.DuplicateReviewEntityExceptionTest" time="0.0"></testcase>
+  <testcase name="testGetId_Once" classname="com.topcoder.management.review.ReviewEntityNotFoundExceptionTest" time="0.0"></testcase>
+  <testcase name="testGetId_More" classname="com.topcoder.management.review.ReviewEntityNotFoundExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewEntityNotFoundExceptionCtor_Basic" classname="com.topcoder.management.review.ReviewEntityNotFoundExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewEntityNotFoundExceptionCtor_Detail" classname="com.topcoder.management.review.ReviewEntityNotFoundExceptionTest" time="0.0"></testcase>
+  <testcase name="testReviewEntityNotFoundExceptionUsage" classname="com.topcoder.management.review.ReviewEntityNotFoundExceptionTest" time="0.0"></testcase>
+  <testcase name="testChainFilterCtor_Basic" classname="com.topcoder.management.review.ChainFilterTest" time="0.015"></testcase>
+  <testcase name="testChainFilterCtor_Detail" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testChainFilterCtorForException_Null" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testAnd_TwoFilters" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testAnd_MoreFilters" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testAnd_Immutable" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testAndForException_Null" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testOr_TwoFilters" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testOr_MoreFilters" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testOr_Immutable" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testOrForException_Null" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testNot_Once" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testNot_MoreTimes" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testNot_Immutable" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testAllOperations" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testGetFilter_Original" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testGetFilter_New" classname="com.topcoder.management.review.ChainFilterTest" time="0.0"></testcase>
+  <testcase name="testDefaultReviewManagerCtor1_Basic" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.141"></testcase>
+  <testcase name="testDefaultReviewManagerCtor1_Detail" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testDefaultReviewManagerCtor1ForException_MissingPersistence" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.047"></testcase>
+  <testcase name="testDefaultReviewManagerCtor1ForException_EmptyPersistence" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2_Basic" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2_Detail" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2_OnlyClass_Detail" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2ForException_Null" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2ForException_EmptyString" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2ForException_MissingPersistence" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2ForException_MissingClass" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2ForException_WrongType" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testDefaultReviewManagerCtor2ForException_Empty" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerCtor3_Basic" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testDefaultReviewManagerCtor3_Detail" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerCtor3ForException_Null" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testCreateReview_Simple_Once" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testCreateReview_Simple_MoreTimes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testCreateReview_Complex_Once" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testCreateReview_Complex_MoreTimes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testCreateReviewForException_NullReview" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testCreateReviewForException_NullOperator" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testCreateReviewForException_EmptyString" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testCreateReviewForException_DuplicateReview" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testCreateReviewForException_PersistenceException" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testUpdateReview_Simple_Once" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testUpdateReview_Simple_MoreTimes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testUpdateReview_Complex_Once" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testUpdateReview_Complex_MoreTimes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testUpdateReviewForException_NullReview" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testUpdateReviewForException_NullOperator" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testUpdateReviewForException_ReviewEntityNotFound" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testUpdateReviewForException_PersistenceException" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testGetReview_Once" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testGetReview_MoreTimes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testGetReviewForException_Negative" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testGetReviewForException_ReviewEntityNotFound" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testGetReviewForException_PersistenceException" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testSearchReviews_SimpleFilter" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testSearchReviews_ChainFilter" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testSearchReviewsForException_NullFilter" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testSearchReviewsForException_PersistenceException" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testAddReviewComment_Once" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testAddReviewComment_MoreTimes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddReviewComment_Complex" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testAddReviewCommentForException_Negative" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testAddReviewCommentForException_Zero" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddReviewCommentForException_NullString" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddReviewCommentForException_EmptyString" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testAddReviewCommentForException_NullComment" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testAddReviewCommentForException_ReviewEntityNotFound" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddReviewCommentForException_PersistenceException" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testAddItemComment_Once" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddItemComment_MoreTimes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testAddItemComment_Complex" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddItemCommentForException_Negative" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testAddItemCommentForException_Zero" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testAddItemCommentForException_NullString" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddItemCommentForException_EmptyString" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testAddItemCommentForException_NullComment" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testAddItemCommentForException_ReviewEntityNotFound" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testAddItemCommentForException_PersistenceException" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.015"></testcase>
+  <testcase name="testGetAllCommentTypes" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.016"></testcase>
+  <testcase name="testGetAllCommentTypesForException_PersistenceException" classname="com.topcoder.management.review.DefaultReviewManagerTest" time="0.0"></testcase>
+  <testcase name="testDemo" classname="com.topcoder.management.review.DemoTest" time="0.016"></testcase>
+  <testcase name="testAndFilter" classname="com.topcoder.management.review.accuracytests.ChainFilterAccuracyTest" time="0.0"></testcase>
+  <testcase name="testOrFilter" classname="com.topcoder.management.review.accuracytests.ChainFilterAccuracyTest" time="0.0"></testcase>
+  <testcase name="testNotFilter" classname="com.topcoder.management.review.accuracytests.ChainFilterAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetAllCommentTypes" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testCtorWithDefaultNamespace" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCtorWithNamespace1" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testCtorWithNamespace2" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCtorWithPersistence" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCreateReview" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.016"></testcase>
+  <testcase name="testUpdateReview" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetReview" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.015"></testcase>
+  <testcase name="testSearchReviews" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.0"></testcase>
+  <testcase name="testAddReviewComment" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.0"></testcase>
+  <testcase name="testAddItemComment" classname="com.topcoder.management.review.accuracytests.DefaultReviewManagerAccuracyTest" time="0.016"></testcase>
+  <testcase name="testCtor1" classname="com.topcoder.management.review.accuracytests.ReviewManagementExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCtor2" classname="com.topcoder.management.review.accuracytests.ReviewManagementExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCtor1" classname="com.topcoder.management.review.accuracytests.ConfigurationExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCtor2" classname="com.topcoder.management.review.accuracytests.ConfigurationExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCtor1" classname="com.topcoder.management.review.accuracytests.ReviewPersistenceExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCtor2" classname="com.topcoder.management.review.accuracytests.ReviewPersistenceExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testException" classname="com.topcoder.management.review.accuracytests.DuplicateReviewEntityExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testException" classname="com.topcoder.management.review.accuracytests.ReviewEntityNotFoundExceptionAccuracyTest" time="0.0"></testcase>
+  <testcase name="testChainFilter" classname="com.topcoder.management.review.failuretests.TestChainFilterFailure" time="0.0"></testcase>
+  <testcase name="testAnd" classname="com.topcoder.management.review.failuretests.TestChainFilterFailure" time="0.0"></testcase>
+  <testcase name="testOr" classname="com.topcoder.management.review.failuretests.TestChainFilterFailure" time="0.0"></testcase>
+  <testcase name="testGetAllCommentTypes" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.031"></testcase>
+  <testcase name="testSearchReviews" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.031"></testcase>
+  <testcase name="testDefaultReviewManagerString_1" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerString_2" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerString_3" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.015"></testcase>
+  <testcase name="testDefaultReviewManagerString_4" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerString_5" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerString_6" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.015"></testcase>
+  <testcase name="testDefaultReviewManagerString_7" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.0"></testcase>
+  <testcase name="testDefaultReviewManagerString_8" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testDefaultReviewManagerReviewPersistence" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.031"></testcase>
+  <testcase name="testCreateReview_1" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testCreateReview_2" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.015"></testcase>
+  <testcase name="testUpdateReview_1" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testUpdateReview_2" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testGetReview_1" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.0"></testcase>
+  <testcase name="testGetReview_2" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.015"></testcase>
+  <testcase name="testAddReviewComment_1" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testAddReviewComment_2" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.031"></testcase>
+  <testcase name="testAddItemComment_1" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.016"></testcase>
+  <testcase name="testAddItemComment_2" classname="com.topcoder.management.review.failuretests.TestDefaultReviewManagerFailure" time="0.015"></testcase>
+  <testcase name="testAnd" classname="com.topcoder.management.review.stresstests.ChainFilterStressTest" time="0.063"></testcase>
+  <testcase name="testOr" classname="com.topcoder.management.review.stresstests.ChainFilterStressTest" time="0.031"></testcase>
+  <testcase name="testCtor" classname="com.topcoder.management.review.stresstests.ChainFilterStressTest" time="0.0"></testcase>
+  <testcase name="testNot" classname="com.topcoder.management.review.stresstests.ChainFilterStressTest" time="0.031"></testcase>
+  <testcase name="testGetFilter" classname="com.topcoder.management.review.stresstests.ChainFilterStressTest" time="0.016"></testcase>
+  <testcase name="testGetAllCommentTypes" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.062"></testcase>
+  <testcase name="testCreateReview" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.032"></testcase>
+  <testcase name="testUpdateReview" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.047"></testcase>
+  <testcase name="testGetReview" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.031"></testcase>
+  <testcase name="testSearchReviews" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.031"></testcase>
+  <testcase name="testAddReviewComment" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.047"></testcase>
+  <testcase name="testAddItemComment" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.031"></testcase>
+  <testcase name="testCtor" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.141"></testcase>
+  <testcase name="testCtor_namespace" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.094"></testcase>
+  <testcase name="testCtor_persistence" classname="com.topcoder.management.review.stresstests.DefaultReviewManagerStressTest" time="0.015"></testcase>
+  <system-out><![CDATA[Testing and(Filter) for 100000 times costs 63ms
+Testing or(Filter) for 100000 times costs 31ms
+Testing ChainFilter(Filter) for 100000 times costs 0ms
+Testing not() for 100000 times costs 31ms
+Testing getFilter() for 100000 times costs 16ms
+Testing getAllCommentTypes() for 10000 times costs 46ms
+Testing createReview(Review, String) for 10000 times costs 32ms
+Testing updateReview(Review, String) for 10000 times costs 32ms
+Testing getReview(long) for 10000 times costs 31ms
+Testing searchReviews(Filter, boolean) for 10000 times costs 31ms
+Testing addReviewComment(long, Comment, String) for 10000 times costs 31ms
+Testing addItemComment(long, Comment, String) for 10000 times costs 31ms
+Testing DefaultReviewManager() for 10000 times costs 141ms
+Testing DefaultReviewManager(String) for 10000 times costs 94ms
+Testing DefaultReviewManager(ReviewPersistence) for 10000 times costs 15ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
