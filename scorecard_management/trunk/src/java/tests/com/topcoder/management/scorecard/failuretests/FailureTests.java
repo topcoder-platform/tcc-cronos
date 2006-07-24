@@ -1,26 +1,34 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (c) 2005, TopCoder, Inc. All rights reserved
  */
- package com.topcoder.management.scorecard.failuretests;
+package com.topcoder.management.scorecard.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
+
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
+ * <p>
+ * This test case aggregates all Stress test cases.
+ * </p>
  *
  * @author TopCoder
  * @version 1.0
  */
 public class FailureTests extends TestCase {
-
+    /**
+     * Aggregate the stress tests.
+     *
+     * @return Test instance
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(TestScorecardManagerImpl.class);
+        suite.addTestSuite(TestDefaultScorecardValidator.class);
+        suite.addTestSuite(TestScorecardSearchBundle.class);
+
         return suite;
     }
-
 }

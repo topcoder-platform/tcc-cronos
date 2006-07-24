@@ -1,26 +1,34 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.scorecard.accuracytests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
+
 
 /**
- * <p>This test case aggregates all Accuracy test cases.</p>
+ * <p>
+ * This test case aggregates all accuracy test cases.
+ * </p>
  *
- * @author TopCoder
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class AccuracyTests extends TestCase {
-
+    /**
+     * Returns the test suite for all accuracy tests.
+     *
+     * @return Test the test suite for all accuracy tests.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTest(new TestSuite(AccuracyTestDefaultScorecardValidator.class));
+        suite.addTest(new TestSuite(AccuracyTestScorecardManagementImpl.class));
+        suite.addTest(new TestSuite(AccuracyTestScorecardSearchBundle.class));
+
         return suite;
     }
-
 }

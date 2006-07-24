@@ -1,3 +1,7 @@
+CREATE TABLE project_scorecard (
+  scorecard_id                  int8                            NOT NULL,
+  PRIMARY KEY(scorecard_id)
+);
 CREATE TABLE project_category_lu (
   project_category_id           INTEGER                         NOT NULL,
   PRIMARY KEY(project_category_id)
