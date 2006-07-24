@@ -19,7 +19,7 @@ public class AccuracyTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(InformixProjectPersistenceAccuracyTest.class);;
         return suite;
     }
 
