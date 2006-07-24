@@ -1,0 +1,107 @@
+<CMConfig> 
+  <Config name="com.topcoder.search.builder.SearchBundleManager.lessThanThree"> 
+      <Property name="searchBundles"> 
+         <Property name="bundle1"> 
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Resource Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>SELECT resource.create_user
+						FROM resource
+						LEFT OUTER JOIN resource_submission
+						ON resource.resource_id = resource_submission.resource_id
+						LEFT OUTER JOIN resource_info
+						ON resource.resource_id = resource_info.resource_id
+						LEFT OUTER JOIN resource_info_type_lu
+						ON resource_info.resource_info_type_id =
+						resource_info_type_lu.resource_info_type_id
+						WHERE
+				</Value> 
+            </Property> 
+            <Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>  
+            </Property>
+			<Property name="alias"> 
+				<Property name="resource_id">                   
+					<Value>resource_id</Value>
+				</Property>
+           </Property> 
+        </Property>     
+        <Property name="bundle2"> 
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Resource Role Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>Select * from people where</Value> 
+            </Property> 
+           <Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>  
+            </Property>
+            <Property name="alias"> 
+                   <Property name="The ID"> 
+					    <Value>peopleID</Value> 
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+        <Property name="bundle3"> 
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Notification Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>SELECT external_ref_id, notification_type_id FROM notification WHERE</Value> 
+            </Property> 
+<Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>  
+            </Property>
+            <Property name="alias"> 
+                   <Property name="The ID"> 
+					    <Value>peopleID</Value> 
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+        <Property name="bundle4"> 
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Notification Type Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>Select * from people where</Value> 
+            </Property> 
+<Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>  
+            </Property>
+            <Property name="alias"> 
+                   <Property name="The ID"> 
+					    <Value>peopleID</Value> 
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+      </Property> 
+  </Config> 
+</CMConfig> 

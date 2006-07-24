@@ -1,0 +1,75 @@
+<CMConfig> 
+  <Config name="com.topcoder.search.builder.invalid"> 
+      <Property name="searchBundles"> 
+        <Property name="bundle2"> 
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Resource Role Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>Select * from people where</Value> 
+            </Property> 
+           <Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>  
+            </Property>
+            <Property name="alias"> 
+                   <Property name="The ID"> 
+					    <Value>peopleID</Value> 
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+        <Property name="bundle3"> 
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Notification Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>Select * from people where</Value> 
+            </Property> 
+<Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>  
+            </Property>
+            <Property name="alias"> 
+                   <Property name="The ID"> 
+					    <Value>peopleID</Value> 
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+        <Property name="bundle4"> 
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Notification Type Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>Select * from people where</Value> 
+            </Property> 
+<Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>  
+            </Property>
+            <Property name="alias"> 
+                   <Property name="The ID"> 
+					    <Value>peopleID</Value> 
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+      </Property> 
+  </Config> 
+</CMConfig> 

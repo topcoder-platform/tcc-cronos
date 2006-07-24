@@ -1,0 +1,117 @@
+<CMConfig> 
+<!--
+This namespace contains the configurations, whose sql query should be successful.
+But the value in the ResultSet is what we want.
+This will cause PersistenceResourceManager#searchXXXX methods throws SearchBuidlerConfigurationExceptions.
+-->
+  <Config name="com.topcoder.search.builder.SearchBundleManager.Failure"> 
+      <Property name="searchBundles"> 
+         <Property name="Resource Search Bundle">
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Resource Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <Value>SELECT resource.create_user
+						FROM resource
+						LEFT OUTER JOIN resource_submission
+						ON resource.resource_id = resource_submission.resource_id
+						LEFT OUTER JOIN resource_info
+						ON resource.resource_id = resource_info.resource_id
+						LEFT OUTER JOIN resource_info_type_lu
+						ON resource_info.resource_info_type_id =
+						resource_info_type_lu.resource_info_type_id
+						WHERE
+				</Value> 
+            </Property> 
+            <Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>
+            </Property>
+			<Property name="alias"> 
+				<Property name="resource_id">                   
+					<Value>resource_id</Value>
+				</Property>
+           </Property> 
+        </Property>     
+        
+        <Property name="Resource Role Search Bundle">
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Resource Role Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <!-- <Value>SELECT resource_role_id FROM resource_role_lu WHERE</Value>  -->
+                <Value>SELECT name, resource_role_id FROM resource_role_lu WHERE</Value>
+            </Property> 
+           <Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>
+            </Property>
+            <Property name="alias"> 
+                   <Property name="resource_role_id">
+					    <Value>resource_role_id</Value>
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+        <Property name="Notification Search Bundle">
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Notification Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <!-- <Value>SELECT external_ref_id, project_id, notification_type_id FROM notification WHERE</Value> -->
+                <Value>SELECT external_ref_id, notification_type_id FROM notification WHERE</Value>
+            </Property> 
+<Property name="DBNamcespace"> 
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>
+            </Property>
+            <Property name="alias"> 
+                   <Property name="notification_id">
+					    <Value>notification_id</Value>
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+        <Property name="Notification Type Search Bundle">
+      		<Property name="type"> 
+                <Value>Database</Value> 
+            </Property> 
+      		<Property name="name"> 
+                <Value>Notification Type Search Bundle</Value> 
+            </Property> 
+      		<Property name="context"> 
+                <!-- <Value>SELECT notification_type_id FROM notification_type_lu WHERE</Value> -->
+                <Value>SELECT description FROM notification_type_lu WHERE</Value> 
+            </Property> 
+            
+            <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+            </Property> 
+            <Property name="connectionProducerName"> 
+                    <Value>dbconnection</Value>
+            </Property>
+            <Property name="alias"> 
+                   <Property name="notification_Type_id">
+					    <Value>notification_Type_id</Value>
+			       </Property> 
+           </Property> 
+        </Property> 
+        
+      </Property> 
+  </Config> 
+</CMConfig> 
