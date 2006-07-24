@@ -1,0 +1,606 @@
+Testsuite: com.cronos.onlinereview.external.AllTests
+Tests run: 521, Failures: 0, Errors: 0, Time elapsed: 185.127 sec
+------------- Standard Output ---------------
+Demo 1: Retrieves the users by handle.
+1002
+Handle B
+First B
+Last B
+N/A
+N/A
+0
+N/A
+2
+User2@yahoo.com
+User2@hotmail.com
+2108
+131
+76.54 %
+3
+null
+1
+Handle A
+2
+
+Demo 2: Retrieves the users by id.
+1002
+null
+2
+
+Demo 3: Retrieves the users by names.
+1
+1
+User1@163.com
+10
+1563
+1.00 %
+431
+0
+N/A
+N/A
+N/A
+User1@gmail.com
+First A
+Last A
+Handle A
+1001
+3
+
+Demo 4: Retrieves the projects by id.
+2
+1002
+100002
+Project B
+Version 2           
+2
+Second Project B
+Average
+null
+1
+Project A
+
+Demo 5: Retrieves the projects by name and version.
+1
+Project A
+Version 1           
+1
+100001
+1
+Project A
+
+Testing BaseDBRetrieval(String) for 50 times costs 70ms
+Testing BaseDBRetrieval(DBConnectionFactory, String) for 5 times costs 1191ms
+Testing BaseDBRetrieval#retrieveObjects(PreparedStatement) for 50 times costs 651ms
+Testing DBProjectRetrieval(String) for 100 times costs 140ms
+Testing retrieveProject(String, String) for 20 times costs 4807ms
+Testing DBUserRetrieval#retrieveUser(long) for 10 times costs 6400ms
+Testing DBUserRetrieval#retrieveUser(long) for 10 times costs 7321ms when no user is found.
+Testing DBUserRetrieval#retrieveUser(String) for 10 times costs 7291ms.
+Testing DBUserRetrieval#retrieveUser(String) for 10 times costs 7772ms when no user is found.
+Testing DBUserRetrieval#retrieveUsersIgnoreCase(String[]) for 10 times costs 6880ms.
+Testing DBUserRetrieval#retrieveUsersByName(String, String) for 10 times costs 7290ms when lastName is empty.
+Testing DBUserRetrieval#retrieveUsersByName(String, String) for 10 times costs 6830ms when firstName is empty.
+Testing DBUserRetrieval#retrieveUsersByName(String, String) for 10 times costs 7171ms.
+------------- ---------------- ---------------
+
+Testcase: testCtor_String took 0 sec
+Testcase: testCtor_StringThrowable took 0 sec
+Testcase: testCtor_String took 0 sec
+Testcase: testCtor_StringThrowable took 0 sec
+Testcase: testCtor_String took 0 sec
+Testcase: testCtor_StringThrowable took 0 sec
+Testcase: testCtor took 0 sec
+Testcase: testCtor_RatingTypeIntIntInt took 0.07 sec
+Testcase: testGetters took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntInt_NullRatingType took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntInt_NegativeRating took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntInt_NegativeNumberRatings took 0.02 sec
+Testcase: testCtor_RatingTypeIntIntInt_NegativeVolatility took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntIntDouble took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntIntDouble_NullRatingType took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntIntDouble_NegativeRating took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntIntDouble_NegativeNumberRatings took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntIntDouble_NegativeVolatility took 0.01 sec
+Testcase: testCtor_RatingTypeIntIntIntDouble_NegativeReliability took 0 sec
+Testcase: testGetRatingType_String took 0.01 sec
+Testcase: testGetRatingType_String_Configured took 0.01 sec
+Testcase: testGetRatingType_String_Nonconfigured took 0 sec
+Testcase: testGetRatingType_String_NullTypeName took 0.01 sec
+Testcase: testGetRatingType_String_EmptyTypeName took 0 sec
+Testcase: testGetRatingType_Int took 0.01 sec
+Testcase: testGetRatingType_Int_NotFound took 0.01 sec
+Testcase: testGetRatingType_Int_NotPositive1 took 0.01 sec
+Testcase: testGetRatingType_Int_NotPositive2 took 0 sec
+Testcase: testGetter_GetName took 0.01 sec
+Testcase: testGetter_GetId took 0.01 sec
+Testcase: testToString took 0 sec
+Testcase: testHashCode took 0.01 sec
+Testcase: testEquals_EqualsObject took 0 sec
+Testcase: testEquals_NonEqualsObject1 took 0.02 sec
+Testcase: testEquals_NonEqualsObject2 took 0 sec
+Testcase: testEquals_NonEqualsObject3 took 0.01 sec
+Testcase: testGetter_GetId took 0 sec
+Testcase: testCtor_Long took 0 sec
+Testcase: testGetRatingType_Int_Negative took 0 sec
+Testcase: testGetter_GetName took 0 sec
+Testcase: testGetter_GetId took 0 sec
+Testcase: testCtor_LongLongString took 0 sec
+Testcase: testGetter_GetVersionId took 0 sec
+Testcase: testGetter_GetVersion took 0 sec
+Testcase: testCtor_LongLongString_NegativeId took 0 sec
+Testcase: testCtor_LongLongString_NegativeVersionId took 0 sec
+Testcase: testCtor_LongLongString_NullVersion took 0 sec
+Testcase: testSetter_SetCatalogId took 0 sec
+Testcase: testSetter_SetComments took 0 sec
+Testcase: testSetter_SetComponentId took 0 sec
+Testcase: testSetter_SetDescription took 0 sec
+Testcase: testSetter_SetForumId took 0 sec
+Testcase: testSetter_SetName took 0 sec
+Testcase: testSetter_SetCatalogId_NegativeCatalogId took 0 sec
+Testcase: testSetter_SetCatalogId_CatalogIdAlreadySet took 0 sec
+Testcase: testSetter_SetComments_NullComments took 0 sec
+Testcase: testSetter_SetComments_CommentsAlreadySet took 0 sec
+Testcase: testSetter_SetComponentId_NegativeComponentId took 0 sec
+Testcase: testSetter_SetComponentId_ComponentIdAlreadySet took 0 sec
+Testcase: testSetter_SetDescriptions_NullDescriptions took 0 sec
+Testcase: testSetter_SetDescription_DescriptionsAlreadySet took 0 sec
+Testcase: testSetter_SetForumId_NegativeForumId took 0 sec
+Testcase: testSetter_SetForumId_ForumIdAlreadySet took 0 sec
+Testcase: testSetter_SetName_NullDescriptions took 0 sec
+Testcase: testSetter_SetName_DescriptionsAlreadySet took 0 sec
+Testcase: testGetter_GetCatalogId took 0 sec
+Testcase: testGetter_GetCatalogId_NoCatalogIdSet took 0 sec
+Testcase: testGetter_GetComments took 0 sec
+Testcase: testGetter_GetComments_NoCommentsSet took 0 sec
+Testcase: testGetter_GetComponentId took 0 sec
+Testcase: testGetter_GetComponentId_NoComponentIdSet took 0 sec
+Testcase: testGetter_GetDescription took 0 sec
+Testcase: testGetter_GetDescription_NoDescriptionSet took 0 sec
+Testcase: testGetter_GetForumId took 0 sec
+Testcase: testGetter_GetForumId_NoForumIdSet took 0 sec
+Testcase: testGetter_GetName_NoNameSet took 0 sec
+Testcase: testGetter_GetId took 0.01 sec
+Testcase: testCtor_LongStringStringStringString took 0 sec
+Testcase: testGetter_GetHandle took 0.01 sec
+Testcase: testGetter_GetFirstName took 0.01 sec
+Testcase: testGetter_GetLastName took 0 sec
+Testcase: testGetter_GetEmail took 0.01 sec
+Testcase: testCtor_LongStringStringStringString_NegativeId took 0 sec
+Testcase: testCtor_LongStringStringStringString_NullHandle took 0.01 sec
+Testcase: testCtor_LongStringStringStringString_EmptyHandle took 0 sec
+Testcase: testCtor_LongStringStringStringString_NullFirstName took 0.01 sec
+Testcase: testCtor_LongStringStringStringString_EmptyFirstName took 0 sec
+Testcase: testCtor_LongStringStringStringString_NullLastName took 0 sec
+Testcase: testCtor_LongStringStringStringString_EmptyLastName took 0 sec
+Testcase: testCtor_LongStringStringStringString_NullEmail took 0.01 sec
+Testcase: testCtor_LongStringStringStringString_EmptyEmail took 0 sec
+Testcase: testAddRatingInfo_RatingInfo took 0.01 sec
+Testcase: testAddRatingInfo_RatingInfo_NullRatingInfo took 0 sec
+Testcase: testGetRatingInfo_RatingType took 0 sec
+Testcase: testGetRatingInfo_RatingType_NonFind took 0.01 sec
+Testcase: testGetRatingInfo_RatingType_NullRatingType took 0 sec
+Testcase: testAddAlternativeEmail_String took 0.01 sec
+Testcase: testAddAlternativeEmail_String_NullAlternativeEmail took 0 sec
+Testcase: testAddAlternativeEmail_String_EmptyAlternativeEmail took 0.01 sec
+Testcase: testGetAlternativeEmails took 0 sec
+Testcase: testGetAlternativeEmails_NoAlternativeEmail took 0.01 sec
+Testcase: testGetDesignRating took 0 sec
+Testcase: testGetDesignRating_NA took 0.01 sec
+Testcase: testGetDevRating took 0 sec
+Testcase: testGetDevRating_NA took 0 sec
+Testcase: testGetDesignVolatility took 0.01 sec
+Testcase: testGetDesignVolatility_NA took 0.01 sec
+Testcase: testGetDevVolatility took 0 sec
+Testcase: testGetDevVolatility_NA took 0 sec
+Testcase: testGetDesignNumRatings took 0.01 sec
+Testcase: testGetDesignNumRatings_Zero took 0 sec
+Testcase: testGetDevNumRatings took 0.01 sec
+Testcase: testGetDevNumRatings_Zero took 0 sec
+Testcase: testGetDesignReliability took 0.01 sec
+Testcase: testGetDesignReliability_NoDesignRating took 0 sec
+Testcase: testGetDesignReliability_NoReliability took 0.01 sec
+Testcase: testGetDevReliability_NoDevRating took 0 sec
+Testcase: testGetDevReliability_NoReliability took 0.01 sec
+Testcase: testGetDevReliability_Accuracy1 took 0 sec
+Testcase: testGetDevReliability_Accuracy2 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy3 took 0 sec
+Testcase: testGetDevReliability_Accuracy4 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy5 took 0 sec
+Testcase: testGetDevReliability_Accuracy6 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy7 took 0 sec
+Testcase: testGetDevReliability_Accuracy8 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy9 took 0 sec
+Testcase: testGetDevReliability_Accuracy10 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy11 took 0 sec
+Testcase: testGetDevReliability_Accuracy12 took 0 sec
+Testcase: testGetDevReliability_Accuracy13 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy14 took 0 sec
+Testcase: testCtor_String took 0.261 sec
+Testcase: testCtor_String_NullNamespace took 0.24 sec
+Testcase: testCtor_String_EmptyNamespace took 0.29 sec
+Testcase: testCtor_String_ConnNameNotInclude took 0.301 sec
+Testcase: testCtor_String_ConnNameEmpty took 0.27 sec
+Testcase: testCtor_String_UnknowNamespace took 0.251 sec
+Testcase: testCtor_DBConnectionFactoryString took 0.591 sec
+Testcase: testCtor_DBConnectionFactoryString_NullDBConnectionFactory took 0.28 sec
+Testcase: testCtor_DBConnectionFactoryString_NullConnName took 0.27 sec
+Testcase: testCtor_DBConnectionFactoryString_UnknownConnName took 0.271 sec
+Testcase: testGetConnection took 0.44 sec
+Testcase: testGetConnection_NoDefaultConnectionAndConnName took 0.241 sec
+Testcase: testClose_PreparedStatementConnection took 0.611 sec
+Testcase: testClose_PreparedStatementConnection_ConnAlreadyClosed took 0.55 sec
+Testcase: testRetrieveObjects_PreparedStatement took 0.852 sec
+Testcase: testCtor_String took 0.3 sec
+Testcase: testCtor_String_NullNamespace took 0.24 sec
+Testcase: testCtor_String_EmptyNamespace took 0.261 sec
+Testcase: testCtor_String_ConnNameNotInclude took 0.29 sec
+Testcase: testCtor_String_ConnNameEmpty took 0.331 sec
+Testcase: testCtor_String_UnknowNamespace took 0.38 sec
+Testcase: testCtor_String_ForumTypeParseError took 0.311 sec
+Testcase: testCtor_String_ForumTypeNegative took 0.28 sec
+Testcase: testCtor_DBConnectionFactoryStringInt took 0.421 sec
+Testcase: testCtor_DBConnectionFactoryStringInt_NullDBConnectionFactory took 0.3 sec
+Testcase: testCtor_DBConnectionFactoryStringInt_NullConnName took 0.311 sec
+Testcase: testCtor_DBConnectionFactoryStringInt_UnknownConnName took 0.25 sec
+Testcase: testCtor_DBConnectionFactoryStringInt_ForumTypeNegative took 0.721 sec
+Testcase: testRetrieveProjects_LongArray took 0.481 sec
+Testcase: testRetrieveProjects_LongArray_NullIds took 0.26 sec
+Testcase: testRetrieveProjects_LongArray_NotPositiveEntry took 0.36 sec
+Testcase: testRetrieveProjects_LongArray_NoDefaultConnectionAndConnName took 0.281 sec
+Testcase: testRetrieveProject_Long1 took 0.661 sec
+Testcase: testRetrieveProject_Long2 took 0.731 sec
+Testcase: testRetrieveProject_Long_NotPositive took 0.25 sec
+Testcase: testRetrieveProjects_StringArrayStringArray took 0.471 sec
+Testcase: testRetrieveProjects_StringArrayStringArray_NullArray took 0.39 sec
+Testcase: testRetrieveProjects_StringArrayStringArray_NullEntry took 0.251 sec
+Testcase: testRetrieveProjects_StringArrayStringArray_EmptyEntry took 0.24 sec
+Testcase: testRetrieveProjects_StringArrayStringArray_NotSameSize took 0.271 sec
+Testcase: testRetrieveProjects_StringArrayStringArray_NoDefaultConnectionAndConnName took 0.27 sec
+Testcase: testRetrieveProjects_StringString took 0.481 sec
+Testcase: testRetrieveProject_StringString_Null took 0.25 sec
+Testcase: testRetrieveProject_StringString_Empty took 0.25 sec
+Testcase: testCreateObject_ResultSet took 0.251 sec
+Testcase: testCtor_String took 0.25 sec
+Testcase: testCtor_String_NullNamespace took 0.321 sec
+Testcase: testCtor_String_EmptyNamespace took 0.26 sec
+Testcase: testCtor_String_ConnNameNotInclude took 0.33 sec
+Testcase: testCtor_String_ConnNameEmpty took 0.361 sec
+Testcase: testCtor_String_UnknowNamespace took 0.25 sec
+Testcase: testCtor_DBConnectionFactoryString took 0.471 sec
+Testcase: testCtor_DBConnectionFactoryString_NullDBConnectionFactory took 0.26 sec
+Testcase: testCtor_DBConnectionFactoryString_NullConnName took 0.311 sec
+Testcase: testCtor_DBConnectionFactoryString_UnknownConnName took 0.28 sec
+Testcase: testCreateObject_ResultSet took 0.281 sec
+Testcase: testRetrieveUsers_LongArray took 1.031 sec
+Testcase: testRetrieveUsers_LongArray_NullIds took 0.28 sec
+Testcase: testRetrieveUsers_LongArray_NotPositiveEntry took 0.241 sec
+Testcase: testRetrieveUsers_LongArray_NoDefaultConnectionAndConnName took 0.27 sec
+Testcase: testRetrieveUser_Long took 1.012 sec
+Testcase: testRetrieveUser_Long_NotPositive took 0.26 sec
+Testcase: testRetrieveUsers_StringArray took 0.941 sec
+Testcase: testRetrieveUsers_StringArray_NullArray took 0.271 sec
+Testcase: testRetrieveUsers_StringArray_NullEntry took 0.25 sec
+Testcase: testRetrieveUsers_StringArrayStringArray_EmptyEntry took 0.24 sec
+Testcase: testRetrieveUser_String took 0.952 sec
+Testcase: testRetrieveUser_String_NullHandle took 0.24 sec
+Testcase: testRetrieveUsers_String_EmptyHandle took 0.281 sec
+Testcase: testRetrieveUsersIgnoreCase_StringArray took 1.011 sec
+Testcase: testRetrieveUsersIgnoreCaseStringArray_NullArray took 0.25 sec
+Testcase: testRetrieveUsersIgnoreCaseStringArray_NullEntry took 0.241 sec
+Testcase: testRetrieveUsersIgnoreCaseStringArrayStringArray_EmptyEntry took 0.24 sec
+Testcase: testRetrieveUsersByName_StringString1 took 1.042 sec
+Testcase: testRetrieveUsersByName_StringString2 took 0.991 sec
+Testcase: testRetrieveUsersByName_StringString3 took 0.961 sec
+Testcase: testRetrieveUsersByName_StringString_NullFirstName took 0.311 sec
+Testcase: testRetrieveUsersByName_StringString_AllNameEmpty took 0.26 sec
+Testcase: testRetrieveUsersByHandle took 3.926 sec
+Testcase: testRetrieveUsersById took 2.534 sec
+Testcase: testRetrieveUsersByNames took 1.612 sec
+Testcase: testRetrieveProjectsById took 1.031 sec
+Testcase: testRetrieveProjectsByNameAndVersion took 0.731 sec
+Testcase: testRatingInfoRatingTypeIntIntInt_NullArg took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntInt_NegativeArg_1 took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntInt_NegativeArg_2 took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntInt_NegativeArg_3 took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntIntDouble_NullArg took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_1 took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_2 took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_3 took 0 sec
+Testcase: testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_4 took 0 sec
+Testcase: testGetRatingTypeString_NullArg took 0 sec
+Testcase: testGetRatingTypeString_EmptyStringArg_1 took 0 sec
+Testcase: testGetRatingTypeString_EmptyStringArg_2 took 0 sec
+Testcase: testGetRatingTypeString_EmptyStringArg_3 took 0 sec
+Testcase: testGetRatingTypeString_EmptyStringArg_4 took 0 sec
+Testcase: testGetRatingTypeInt_NegativeId took 0 sec
+Testcase: testGetRatingTypeInt_ZeroId took 0 sec
+Testcase: testBaseDBRetrievalDBConnectionFactoryString_NullArg_1 took 0.01 sec
+Testcase: testBaseDBRetrievalDBConnectionFactoryString_NullArg_2 took 0.02 sec
+Testcase: testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_1 took 0.071 sec
+Testcase: testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_2 took 0.02 sec
+Testcase: testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_3 took 0.04 sec
+Testcase: testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_4 took 0.02 sec
+Testcase: testBaseDBRetrievalDBConnectionFactoryString_UnknownConnName took 0.01 sec
+Testcase: testBaseDBRetrievalString_NullArg took 0.01 sec
+Testcase: testBaseDBRetrievalString_EmptyStringArg_1 took 0.02 sec
+Testcase: testBaseDBRetrievalString_EmptyStringArg_2 took 0.01 sec
+Testcase: testBaseDBRetrievalString_EmptyStringArg_3 took 0.02 sec
+Testcase: testBaseDBRetrievalString_EmptyStringArg_4 took 0.02 sec
+Testcase: testBaseDBRetrievalString_UnknownNamespace_1 took 0.01 sec
+Testcase: testBaseDBRetrievalString_UnknownNamespace_2 took 0.01 sec
+Testcase: testBaseDBRetrievalString_InvalidConfig_1 took 0.11 sec
+Testcase: testBaseDBRetrievalString_InvalidConfig_2 took 0.02 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_NullArg_1 took 0.24 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_NullArg_2 took 0.06 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_NegativeForumType took 0.04 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_1 took 0.031 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_2 took 0.04 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_3 took 0.02 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_4 took 0.05 sec
+Testcase: testDBProjectRetrievalDBConnectionFactoryStringInt_UnknownConnName took 0.04 sec
+Testcase: testDBProjectRetrievalString_NullArg took 0.03 sec
+Testcase: testDBProjectRetrievalString_EmptyStringArg_1 took 0.09 sec
+Testcase: testDBProjectRetrievalString_EmptyStringArg_2 took 0.02 sec
+Testcase: testDBProjectRetrievalString_EmptyStringArg_3 took 0.04 sec
+Testcase: testDBProjectRetrievalString_EmptyStringArg_4 took 0.02 sec
+Testcase: testDBProjectRetrievalString_UnknownNamespace_1 took 0.05 sec
+Testcase: testDBProjectRetrievalString_UnknownNamespace_2 took 0.02 sec
+Testcase: testDBProjectRetrievalString_InvalidConfig_1 took 0.04 sec
+Testcase: testDBProjectRetrievalString_InvalidConfig_2 took 0.08 sec
+Testcase: testDBProjectRetrievalString_InvalidConfig_3 took 0.03 sec
+Testcase: testDBProjectRetrievalString_InvalidConfig_4 took 0.06 sec
+Testcase: testRetrieveProjectLong_NegativeId took 0.02 sec
+Testcase: testRetrieveProjectLong_WithRetrievalError took 0.041 sec
+Testcase: testRetrieveProjectStringString_NullArg_1 took 0.03 sec
+Testcase: testRetrieveProjectStringString_NullArg_2 took 0.08 sec
+Testcase: testRetrieveProjectStringString_EmptyStringArg_1 took 0.03 sec
+Testcase: testRetrieveProjectStringString_EmptyStringArg_2 took 0.05 sec
+Testcase: testRetrieveProjectStringString_EmptyStringArg_3 took 0.04 sec
+Testcase: testRetrieveProjectStringString_EmptyStringArg_4 took 0.02 sec
+Testcase: testRetrieveProjectStringString_WithRetrievalError took 0.04 sec
+Testcase: testRetrieveProjectsLongArray_NullIds took 0.02 sec
+Testcase: testRetrieveProjectsLongArray_IdsWithNegativeElement took 0.03 sec
+Testcase: testRetrieveProjectsLongArray_WithRetrievalError took 0.03 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_NullArg_1 took 0.03 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_NullArg_2 took 0.03 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_ArrayWithNullElement_1 took 0.03 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_ArrayWithNullElement_2 took 0.08 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_1 took 0.03 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_2 took 0.02 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_3 took 0.03 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_4 took 0.04 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_ArrayWithDifferentSize took 0.041 sec
+Testcase: testRetrieveProjectsStringArrayStringArray_WithRetrievalError took 0.03 sec
+Testcase: testDBUserRetrievalDBConnectionFactoryString_NullArg_1 took 0.05 sec
+Testcase: testDBUserRetrievalDBConnectionFactoryString_NullArg_2 took 0.02 sec
+Testcase: testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_1 took 0.07 sec
+Testcase: testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_2 took 0.04 sec
+Testcase: testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_3 took 0.02 sec
+Testcase: testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_4 took 0.02 sec
+Testcase: testDBUserRetrievalDBConnectionFactoryString_UnknownConnName took 0.02 sec
+Testcase: testDBUserRetrievalString_NullArg_1 took 0.05 sec
+Testcase: testDBUserRetrievalString_EmptyStringArg_1 took 0.04 sec
+Testcase: testDBUserRetrievalString_EmptyStringArg_2 took 0.02 sec
+Testcase: testDBUserRetrievalString_EmptyStringArg_3 took 0.09 sec
+Testcase: testDBUserRetrievalString_EmptyStringArg_4 took 0.03 sec
+Testcase: testDBUserRetrievalString_UnknownNamespace_1 took 0.05 sec
+Testcase: testDBUserRetrievalString_UnknownNamespace_2 took 0.02 sec
+Testcase: testDBUserRetrievalString_InvalidConfig_1 took 0.03 sec
+Testcase: testDBUserRetrievalString_InvalidConfig_2 took 0.02 sec
+Testcase: testRetrieveUserLong_NegativeId took 0.091 sec
+Testcase: testRetrieveUserString_NullArg took 0.03 sec
+Testcase: testRetrieveUserString_EmptyStringArg_1 took 0.04 sec
+Testcase: testRetrieveUserString_EmptyStringArg_2 took 0.03 sec
+Testcase: testRetrieveUserString_EmptyStringArg_3 took 0.06 sec
+Testcase: testRetrieveUserString_EmptyStringArg_4 took 0.04 sec
+Testcase: testRetrieveUserString_WithRetrievalError took 0.02 sec
+Testcase: testRetrieveUsersLongArray_NullIds took 0.04 sec
+Testcase: testRetrieveUsersLongArray_IdsWithNegativeElement took 0.02 sec
+Testcase: testRetrieveUsersLongArray_WithRetrievalError took 0.04 sec
+Testcase: testRetrieveUsersStringArray_NullArg took 0.03 sec
+Testcase: testRetrieveUsersStringArray_ArrayWithNullElement took 0.02 sec
+Testcase: testRetrieveUsersStringArray_ArrayWithEmptyStringElement_1 took 0.08 sec
+Testcase: testRetrieveUsersStringArray_ArrayWithEmptyStringElement_2 took 0.02 sec
+Testcase: testRetrieveUsersStringArray_ArrayWithEmptyStringElement_3 took 0.03 sec
+Testcase: testRetrieveUsersStringArray_ArrayWithEmptyStringElement_4 took 0.04 sec
+Testcase: testRetrieveUsersStringArray_WithRetrievalError took 0.03 sec
+Testcase: testRetrieveUsersIgnoreCase_NullArg took 0.03 sec
+Testcase: testRetrieveUsersIgnoreCase_ArrayWithNullElement took 0.051 sec
+Testcase: testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_1 took 0.02 sec
+Testcase: testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_2 took 0.03 sec
+Testcase: testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_3 took 0.02 sec
+Testcase: testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_4 took 0.05 sec
+Testcase: testRetrieveUsersIgnoreCase_WithRetrievalError took 0.03 sec
+Testcase: testRetrieveUsersByName_NullArg_1 took 0.02 sec
+Testcase: testRetrieveUsersByName_NullArg_2 took 0.08 sec
+Testcase: testRetrieveUsersByName_EmptyStringArg_1 took 0.04 sec
+Testcase: testRetrieveUsersByName_EmptyStringArg_2 took 0.03 sec
+Testcase: testRetrieveUsersByName_WithRetrievalError took 0.05 sec
+Testcase: testExternalObjectImpl_NegativeId took 0 sec
+Testcase: testExternalProjectImpl_NullArg took 0 sec
+Testcase: testExternalProjectImpl_NegativeArg_1 took 0 sec
+Testcase: testExternalProjectImpl_NegativeArg_2 took 0 sec
+Testcase: testSetCatalogId_NegativeId took 0 sec
+Testcase: testSetCatalogId_IdAlreadySet took 0 sec
+Testcase: testSetComments_NullComments took 0 sec
+Testcase: testSetComments_CommentsAlreadySet took 0 sec
+Testcase: testSetComponentId_NegativeId took 0 sec
+Testcase: testSetComponentId_IdAlreadySet took 0 sec
+Testcase: testSetDescription_NullDescription took 0 sec
+Testcase: testSetDescription_DescriptionAlreadySet took 0 sec
+Testcase: testSetForumId_NegativeId took 0 sec
+Testcase: testSetForumId_IdAlreadySet took 0 sec
+Testcase: testSetName_NullName took 0 sec
+Testcase: testSetName_NameAlreadySet took 0 sec
+Testcase: testExternalUserImpl_NegativeId took 0 sec
+Testcase: testExternalUserImpl_NullArg_1 took 0 sec
+Testcase: testExternalUserImpl_NullArg_2 took 0 sec
+Testcase: testExternalUserImpl_NullArg_3 took 0 sec
+Testcase: testExternalUserImpl_NullArg_4 took 0 sec
+Testcase: testExternalUserImpl_EmptyStringArg_1 took 0 sec
+Testcase: testExternalUserImpl_EmptyStringArg_2 took 0 sec
+Testcase: testExternalUserImpl_EmptyStringArg_3 took 0 sec
+Testcase: testExternalUserImpl_EmptyStringArg_4 took 0 sec
+Testcase: testAddRatingInfo_NullArg took 0 sec
+Testcase: testAddAlternativeEmail_NullArg took 0 sec
+Testcase: testAddAlternativeEmail_EmptyStringArg_1 took 0 sec
+Testcase: testAddAlternativeEmail_EmptyStringArg_2 took 0 sec
+Testcase: testAddAlternativeEmail_EmptyStringArg_3 took 0 sec
+Testcase: testAddAlternativeEmail_EmptyStringArg_4 took 0 sec
+Testcase: testConstructor1_Accuracy took 0.01 sec
+Testcase: testConstructor2_Accuracy took 0.01 sec
+Testcase: testGetRatingType took 0 sec
+Testcase: testGetRating took 0.01 sec
+Testcase: testGetReliability took 0.01 sec
+Testcase: testHasReliability took 0 sec
+Testcase: testGetNumRatings took 0.01 sec
+Testcase: testGetVolatility took 0 sec
+Testcase: testGetRatingType_String_Configured took 0.01 sec
+Testcase: testGetter_GetName took 0 sec
+Testcase: testGetter_GetId took 0.01 sec
+Testcase: testToString took 0.02 sec
+Testcase: testHashCode took 0.02 sec
+Testcase: testGetRatingType_String_Accuracy took 0.01 sec
+Testcase: testGetRatingType_String_NoConfigured took 0.01 sec
+Testcase: testGetRatingType_Int_Accuracy took 0.01 sec
+Testcase: testGetRatingType_Int_Configured took 0 sec
+Testcase: testGetRatingType_Int_Unknown took 0.01 sec
+Testcase: testEquals_Accuracy1 took 0.01 sec
+Testcase: testEquals_Accuracy2 took 0 sec
+Testcase: testEquals_Accuracy3 took 0.01 sec
+Testcase: testEquals_Accuracy4 took 0.01 sec
+Testcase: testRetrieveProjects_LongArray took 0.531 sec
+Testcase: testCreateObject_ResultSet took 0.551 sec
+Testcase: testConstructor1_Accuracy took 0.461 sec
+Testcase: testConstructor2_Accuracy took 0.45 sec
+Testcase: testConstructor1_NoForumType took 0.511 sec
+Testcase: testRetrieveProjectLong_Accuracy1 took 0.731 sec
+Testcase: testRetrieveProjectLong_Accuracy2 took 0.711 sec
+Testcase: testRetrieveProjectLong_Accuracy3 took 0.751 sec
+Testcase: testRetrieveProjects_Duplicate took 0.701 sec
+Testcase: testRetrieveProjects_NotFound took 0.741 sec
+Testcase: testRetrieveProjectsStrings_Accuracy1 took 1.052 sec
+Testcase: testRetrieveProjectsStrings_Accuracy4 took 0.691 sec
+Testcase: testRetrieveProjectsStrings_Accuracy5 took 0.771 sec
+Testcase: testRetrieveProjectsStrings_Accuracy2 took 0.751 sec
+Testcase: testRetrieveProjectsStrings_Accuracy3 took 0.721 sec
+Testcase: testConstructor_String took 0.471 sec
+Testcase: testConstructor_DBConnectionFactoryString_Accuracy took 0.51 sec
+Testcase: testGetConnection_Accuracy took 0.721 sec
+Testcase: testClose_Accuracy took 0.751 sec
+Testcase: testClose_ConnAlreadyClosed took 0.722 sec
+Testcase: testClose_AllowNull took 0.61 sec
+Testcase: testConstructor_Accuracy took 0 sec
+Testcase: testGetId_Accuracy took 0 sec
+Testcase: testGetVersionId_Accuracy took 0 sec
+Testcase: testGetVersion_Accuracy took 0 sec
+Testcase: testSetCatalogId_Accuracy took 0 sec
+Testcase: testSetComments_Accuracy took 0 sec
+Testcase: testSetComponentId_Accuracy took 0 sec
+Testcase: testSetDescription_Accuracy took 0 sec
+Testcase: testSetForumId_Accuracy took 0 sec
+Testcase: testSetName_Accuracy took 0 sec
+Testcase: testGetCatalogId took 0 sec
+Testcase: testGetCatalogId_NoCatalogIdSet took 0 sec
+Testcase: testGetComments took 0 sec
+Testcase: testGetComments_NoCommentsSet took 0 sec
+Testcase: testGetComponentId took 0 sec
+Testcase: testGetComponentId_NoComponentIdSet took 0 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testGetDescription_NoDescriptionSet took 0 sec
+Testcase: testGetForumId_Accuracy took 0 sec
+Testcase: testGetName_Accuracy took 0 sec
+Testcase: testGetter_GetId took 0 sec
+Testcase: testConstructor_Long took 0 sec
+Testcase: testAddAlternativeEmail_String took 0.01 sec
+Testcase: testGetDesignRating took 0 sec
+Testcase: testGetDesignRating_NA took 0.01 sec
+Testcase: testGetDevRating_NA took 0.01 sec
+Testcase: testGetDesignVolatility took 0 sec
+Testcase: testGetDesignVolatility_NA took 0.01 sec
+Testcase: testGetDevVolatility took 0.01 sec
+Testcase: testGetDevVolatility_NA took 0.01 sec
+Testcase: testGetDesignNumRatings took 0 sec
+Testcase: testGetDesignNumRatings_Zero took 0.01 sec
+Testcase: testGetDevNumRatings took 0 sec
+Testcase: testGetDevNumRatings_Zero took 0.011 sec
+Testcase: testGetDesignReliability_NoDesignRating took 0.02 sec
+Testcase: testGetDesignReliability_NoReliability took 0.01 sec
+Testcase: testGetDevReliability_NoDevRating took 0 sec
+Testcase: testGetDevReliability_NoReliability took 0.01 sec
+Testcase: testGetDevReliability_Accuracy1 took 0 sec
+Testcase: testGetDevReliability_Accuracy2 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy3 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy4 took 0 sec
+Testcase: testGetDevReliability_Accuracy5 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy6 took 0 sec
+Testcase: testGetDevReliability_Accuracy7 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy8 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy9 took 0 sec
+Testcase: testGetDevReliability_Accuracy10 took 0 sec
+Testcase: testGetDevReliability_Accuracy11 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy12 took 0 sec
+Testcase: testGetDevReliability_Accuracy13 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy14 took 0 sec
+Testcase: testConstructor_Accuracy took 0.02 sec
+Testcase: testAddRatingInfo_Accuracy took 0.02 sec
+Testcase: testGetRatingInfo_Accuracy1 took 0 sec
+Testcase: testGetRatingInfo_Accuracy2 took 0.01 sec
+Testcase: test_GetId took 0 sec
+Testcase: test_GetHandle took 0.01 sec
+Testcase: test_GetFirstName took 0 sec
+Testcase: test_GetLastName took 0.01 sec
+Testcase: test_GetEmail took 0 sec
+Testcase: testGetAlternativeEmails_Accuracy1 took 0.01 sec
+Testcase: testGetAlternativeEmails_Accuracy2 took 0 sec
+Testcase: testGetDevRating_Accuracy took 0.01 sec
+Testcase: testGetDesignReliability_Accuracy took 0 sec
+Testcase: testGetDevReliability_Accuracy took 0.01 sec
+Testcase: testGetDevReliability_Accuracy0 took 0.01 sec
+Testcase: testGetDevReliability_Accuracy15 took 0 sec
+Testcase: testGetter_GetId took 0.01 sec
+Testcase: testConstructor_Long took 0 sec
+Testcase: testCreateObject_ResultSet took 0.481 sec
+Testcase: testRetrieveUsers_LongArray took 1.221 sec
+Testcase: testRetrieveUser_Long took 1.242 sec
+Testcase: testRetrieveUsers_StringArray took 1.172 sec
+Testcase: testRetrieveUsersIgnoreCase_StringArray took 1.232 sec
+Testcase: testRetrieveUsersByName_StringString1 took 1.121 sec
+Testcase: testRetrieveUsersByName_StringString2 took 1.282 sec
+Testcase: testRetrieveUsersByName_StringString3 took 1.502 sec
+Testcase: testConstructor2_Accuracy took 0.561 sec
+Testcase: testConstructor1_String took 0.551 sec
+Testcase: testRetrieveUser_Long_NotFound took 1.292 sec
+Testcase: testRetrieveUsers_LongArray_NotFound took 1.442 sec
+Testcase: testRetrieveUsers_LongArray_Duplicate took 1.101 sec
+Testcase: testRetrieveUser_String_Accuracy took 1.452 sec
+Testcase: testRetrieveUser_String_NotFound took 1.312 sec
+Testcase: testRetrieveUsers_StringArray_NotFound took 1.332 sec
+Testcase: testRetrieveUsers_StringArray_Duplicate took 1.322 sec
+Testcase: testRetrieveUsersIgnoreCase_StringArray2 took 1.232 sec
+Testcase: testRetrieveUsersIgnoreCase_StringArray3 took 1.162 sec
+Testcase: testRetrieveUsersByName_StringString4 took 1.211 sec
+Testcase: testRetrieveUsersByName_StringString5 took 1.212 sec
+Testcase: testConstructor_String took 0.461 sec
+Testcase: testConstructor_DBConnectionFactoryString_Accuracy took 0.53 sec
+Testcase: testGetConnection_Accuracy took 0.731 sec
+Testcase: testClose_Accuracy took 0.852 sec
+Testcase: testClose_ConnAlreadyClosed took 0.871 sec
+Testcase: testClose_AllowNull took 0.501 sec
+Testcase: testCtor_namespace took 0.08 sec
+Testcase: testCtor_connFactory_connName took 1.191 sec
+Testcase: testRetrieveObjects took 1.172 sec
+Testcase: testCtor took 0.881 sec
+Testcase: testRetrieveProjectsByID took 24.496 sec
+Testcase: testRetrieveProjectsByIDs took 0.871 sec
+Testcase: testRetrieveProjectByNameAndVerision took 5.428 sec
+Testcase: testRetrieveProjectsByNameAndVerision took 0.841 sec
+Testcase: testRetrieveUserById took 6.78 sec
+Testcase: testRetrieveUserByIdNotFound took 7.731 sec
+Testcase: testRetrieveUserByHandle took 7.691 sec
+Testcase: testRetrieveUserByHandleNotFound took 8.192 sec
+Testcase: testRetrieveUsers took 1.412 sec
+Testcase: testRetrieveUsersIgnoreCase took 7.33 sec
+Testcase: testRetrieveUsersByFirstName took 7.731 sec
+Testcase: testRetriveUsersByLastName took 7.241 sec
+Testcase: testRetriveUsersByFirstAndLastName took 7.611 sec

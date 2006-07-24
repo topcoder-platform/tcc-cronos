@@ -1,0 +1,16 @@
+Reviewer's tests I've changed:
+
+1. I've modified the tests of the accuracy, as the accuracy tester did not clear the configManager after
+   his testing. So there are still some configure remains in, and will cause conflicts to the other
+   reviewers tests.
+   I only add some tearDown method to some classes of the accuracy.
+
+2. Modify the DBProjectRetrievalAccuracyTest#testRetrieveProjectLong_Accuracy2, 
+   change "assertEquals("The forum id should be the same.", 0, project.getForumId());"
+   to "assertEquals("The forum id should be the same.", -1, project.getForumId());"
+   as if the forum id not exists, the forumId field would remain as -1.
+
+3. DBProjectRetrievalStressTest#testRetrieveProjectsByIDs,
+   change "if (projects[i].getId() < Helper.COMPONENT_ID_START + DATA_COUNT / 2)"
+   to "if (projects[i].getId() < Helper.COMP_VERS_ID_START + DATA_COUNT / 2)"
+   This must be a typo here.

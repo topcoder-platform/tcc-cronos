@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.cronos.onlinereview.external.AllTests" tests="521" failures="0" errors="0" time="185.127">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="package" value="com.cronos.onlinereview.external"></property>
+    <property name="docpackage.jar" value="user_project_data_store_docs.jar"></property>
+    <property name="typesafe_enum.version" value="1.0"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="sun.boot.class.path" value="D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\rt.jar;D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\i18n.jar;D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\sunrsasign.jar;D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\jsse.jar;D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\jce.jar;D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\charsets.jar;D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="User_Project_Data_Store_1.0_design_submission.jar"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/user_project_data_store_tests.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="ant.home" value="D:\Backup\Software\Soft Setup\apache-ant-1.6.2\bin\.."></property>
+    <property name="java.runtime.version" value="1.4.2_11-b06"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="component_path" value="user_project_data_store/1.0"></property>
+    <property name="user.name" value="Wildleopard"></property>
+    <property name="debug" value="off"></property>
+    <property name="reports" value="reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dist_conf" value="build/dist/user_project_data_store-1.0/conf"></property>
+    <property name="ant.file.User Project Data Store" value="D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\build.xml"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.4"></property>
+    <property name="sun.boot.library.path" value="D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\bin"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="User Project Data Store"></property>
+    <property name="java.version" value="1.4.2_11"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="User_Project_Data_Store_1.0_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="webdir" value="web"></property>
+    <property name="java.endorsed.dirs" value="D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="packagedir" value="com/cronos/onlinereview/external"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dev_submission.jar" value="User_Project_Data_Store_1.0_dev_submission.jar"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="java.home" value="D:\Softs\Program Tool\Java\jdk1.4.2_11\jre"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="ant.file" value="D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"></property>
+    <property name="build_tcsdistdir" value="build/dist/user_project_data_store-1.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.4.2_11-b06"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.library.dir" value="D:\Backup\Software\Soft Setup\apache-ant-1.6.2\lib"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="dist_testfiles" value="build/dist/user_project_data_store-1.0/test_files"></property>
+    <property name="dist_javadocs" value="build/dist/user_project_data_store-1.0/docs/javadocs"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="component" value="User_Project_Data_Store"></property>
+    <property name="component.war" value="${dist_examples}/user_project_data_store.war"></property>
+    <property name="user.home" value="C:\Documents and Settings\Wildleopard"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="java.library.path" value="D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\PROGRAM FILES\THINKPAD\UTILITIES;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\ATI Technologies\ATI Control Panel;C:\WINDOWS\Downloaded Program Files;C:\IBMTOOLS\Python22;C:\Program Files\PC-Doctor for Windows\services;d:\softs\network\SECURE~1;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Microsoft SQL Server\80\Tools\BINN;D:\Softs\Program Tool\MinGW\bin;D:\Softs\Edit\UltraEdit-32;D:\Softs\Program Tool\Java\jdk1.4.2_11\bin;D:\Softs\Other\nant-0.85-rc4-bin\nant-0.85-rc4\bin;D:\Backup\Software\Soft Setup\nant-0.84\bin;D:\Backup\Software\Soft Setup\apache-ant-1.6.2\bin"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.2 compiled on July 16 2004"></property>
+    <property name="java.class.path" value="D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\build\testClasses;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\build\classes;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\junit.jar;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\lib\tcs\configuration_manager\2.1.4\configuration_manager.jar;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\lib\tcs\db_connection_factory\1.0\db_connection_factory.jar;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\lib\tcs\base_exception\1.0\base_exception.jar;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\lib\tcs\typesafe_enum\1.0\typesafe_enum.jar;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\conf;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0\test_files;D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0;D:\Softs\Program Tool\Java\Informix JDBC Driver 2.21.JC5\lib\ifxjdbc.jar;D:\Softs\Program Tool\Java\Informix JDBC Driver 2.21.JC5\lib\ifxjdbcx.jar;D:\Softs\Program Tool\Java\Informix JDBC Driver 2.21.JC5\lib\ifxlang.jar;D:\Softs\Program Tool\Java\Informix JDBC Driver 2.21.JC5\lib\ifxlsupp.jar;D:\Softs\Program Tool\Java\Informix JDBC Driver 2.21.JC5\lib\ifxsqlj.jar;D:\Softs\Program Tool\Java\Informix JDBC Driver 2.21.JC5\lib\ifxtools.jar;D:\Backup\Software\Soft Setup\apache-ant-1.6.2\lib\ant-launcher.jar;D:\Backup\Software\Soft Setup\apache-ant-1.6.2\lib\ant.jar;D:\Backup\Software\Soft Setup\apache-ant-1.6.2\lib\ant-junit.jar"></property>
+    <property name="typesafe_enum.path" value="typesafe_enum/1.0"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="builddir" value="build"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/user_project_data_store-1.0.jar"></property>
+    <property name="junit.jar" value="./junit.jar"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\WILDLE~1\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.4/configuration_manager.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="java.ext.dirs" value="D:\Softs\Program Tool\Java\jdk1.4.2_11\jre\lib\ext"></property>
+    <property name="typesafe_enum.jar" value="lib/tcs/typesafe_enum/1.0/typesafe_enum.jar"></property>
+    <property name="dist_src" value="build/dist/user_project_data_store-1.0/src"></property>
+    <property name="user.dir" value="D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0"></property>
+    <property name="design_dist.jar" value="User_Project_Data_Store_1.0_design_dist.jar"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="distfilename" value="user_project_data_store"></property>
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"></property>
+    <property name="basedir" value="D:\Program\TopCoder\Dev\Java\Self Write\User_Project_Data_Store_1.0"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="configmanager.version" value="2.1.4"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="dist_docs" value="build/dist/user_project_data_store-1.0/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/user_project_data_store/1.0/user_project_data_store.jar"></property>
+    <property name="java.specification.version" value="1.4"></property>
+  </properties>
+  <testcase name="testCtor_String" classname="com.cronos.onlinereview.external.ConfigExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_StringThrowable" classname="com.cronos.onlinereview.external.ConfigExceptionUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_String" classname="com.cronos.onlinereview.external.RetrievalExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_StringThrowable" classname="com.cronos.onlinereview.external.RetrievalExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_String" classname="com.cronos.onlinereview.external.UserProjectDataStoreExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_StringThrowable" classname="com.cronos.onlinereview.external.UserProjectDataStoreExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor" classname="com.cronos.onlinereview.external.UserProjectDataStoreExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntInt" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.07"></testcase>
+  <testcase name="testGetters" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntInt_NullRatingType" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntInt_NegativeRating" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntInt_NegativeNumberRatings" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.02"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntInt_NegativeVolatility" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntIntDouble" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntIntDouble_NullRatingType" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntIntDouble_NegativeRating" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntIntDouble_NegativeNumberRatings" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntIntDouble_NegativeVolatility" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_RatingTypeIntIntIntDouble_NegativeReliability" classname="com.cronos.onlinereview.external.RatingInfoUnitTest" time="0.0"></testcase>
+  <testcase name="testGetRatingType_String" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_String_Configured" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_String_Nonconfigured" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.0"></testcase>
+  <testcase name="testGetRatingType_String_NullTypeName" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_String_EmptyTypeName" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.0"></testcase>
+  <testcase name="testGetRatingType_Int" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_Int_NotFound" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_Int_NotPositive1" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_Int_NotPositive2" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetName" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetter_GetId" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testToString" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.0"></testcase>
+  <testcase name="testHashCode" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testEquals_EqualsObject" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.0"></testcase>
+  <testcase name="testEquals_NonEqualsObject1" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.02"></testcase>
+  <testcase name="testEquals_NonEqualsObject2" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.0"></testcase>
+  <testcase name="testEquals_NonEqualsObject3" classname="com.cronos.onlinereview.external.RatingTypeUnitTest" time="0.01"></testcase>
+  <testcase name="testGetter_GetId" classname="com.cronos.onlinereview.external.impl.ExternalObjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_Long" classname="com.cronos.onlinereview.external.impl.ExternalObjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetRatingType_Int_Negative" classname="com.cronos.onlinereview.external.impl.ExternalObjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetName" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongLongString" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetVersionId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetVersion" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongLongString_NegativeId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongLongString_NegativeVersionId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongLongString_NullVersion" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetCatalogId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetComments" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetComponentId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetDescription" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetForumId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetName" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetCatalogId_NegativeCatalogId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetCatalogId_CatalogIdAlreadySet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetComments_NullComments" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetComments_CommentsAlreadySet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetComponentId_NegativeComponentId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetComponentId_ComponentIdAlreadySet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetDescriptions_NullDescriptions" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetDescription_DescriptionsAlreadySet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetForumId_NegativeForumId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetForumId_ForumIdAlreadySet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetName_NullDescriptions" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testSetter_SetName_DescriptionsAlreadySet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetCatalogId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetCatalogId_NoCatalogIdSet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetComments" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetComments_NoCommentsSet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetComponentId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetComponentId_NoComponentIdSet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetDescription" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetDescription_NoDescriptionSet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetForumId" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetForumId_NoForumIdSet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetName_NoNameSet" classname="com.cronos.onlinereview.external.impl.ExternalProjectImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetId" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_LongStringStringStringString" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetHandle" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetter_GetFirstName" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetter_GetLastName" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetEmail" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_NegativeId" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_NullHandle" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_EmptyHandle" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_NullFirstName" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_EmptyFirstName" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_NullLastName" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_EmptyLastName" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_NullEmail" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testCtor_LongStringStringStringString_EmptyEmail" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testAddRatingInfo_RatingInfo" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testAddRatingInfo_RatingInfo_NullRatingInfo" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetRatingInfo_RatingType" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetRatingInfo_RatingType_NonFind" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetRatingInfo_RatingType_NullRatingType" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_String" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testAddAlternativeEmail_String_NullAlternativeEmail" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_String_EmptyAlternativeEmail" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetAlternativeEmails" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetAlternativeEmails_NoAlternativeEmail" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDesignRating" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDesignRating_NA" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevRating" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevRating_NA" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDesignVolatility" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDesignVolatility_NA" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevVolatility" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevVolatility_NA" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDesignNumRatings" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDesignNumRatings_Zero" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevNumRatings" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevNumRatings_Zero" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDesignReliability" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDesignReliability_NoDesignRating" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDesignReliability_NoReliability" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_NoDevRating" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_NoReliability" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy1" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy2" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy3" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy4" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy5" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy6" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy7" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy8" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy9" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy10" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy11" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy12" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy13" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy14" classname="com.cronos.onlinereview.external.impl.ExternalUserImplUnitTest" time="0.0"></testcase>
+  <testcase name="testCtor_String" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.261"></testcase>
+  <testcase name="testCtor_String_NullNamespace" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.24"></testcase>
+  <testcase name="testCtor_String_EmptyNamespace" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.29"></testcase>
+  <testcase name="testCtor_String_ConnNameNotInclude" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.301"></testcase>
+  <testcase name="testCtor_String_ConnNameEmpty" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.27"></testcase>
+  <testcase name="testCtor_String_UnknowNamespace" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.251"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.591"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString_NullDBConnectionFactory" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.28"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString_NullConnName" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.27"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString_UnknownConnName" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.271"></testcase>
+  <testcase name="testGetConnection" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.44"></testcase>
+  <testcase name="testGetConnection_NoDefaultConnectionAndConnName" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.241"></testcase>
+  <testcase name="testClose_PreparedStatementConnection" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.611"></testcase>
+  <testcase name="testClose_PreparedStatementConnection_ConnAlreadyClosed" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.55"></testcase>
+  <testcase name="testRetrieveObjects_PreparedStatement" classname="com.cronos.onlinereview.external.impl.BaseDBRetrievalUnitTest" time="0.852"></testcase>
+  <testcase name="testCtor_String" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.3"></testcase>
+  <testcase name="testCtor_String_NullNamespace" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.24"></testcase>
+  <testcase name="testCtor_String_EmptyNamespace" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.261"></testcase>
+  <testcase name="testCtor_String_ConnNameNotInclude" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.29"></testcase>
+  <testcase name="testCtor_String_ConnNameEmpty" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.331"></testcase>
+  <testcase name="testCtor_String_UnknowNamespace" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.38"></testcase>
+  <testcase name="testCtor_String_ForumTypeParseError" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.311"></testcase>
+  <testcase name="testCtor_String_ForumTypeNegative" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.28"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryStringInt" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.421"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryStringInt_NullDBConnectionFactory" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.3"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryStringInt_NullConnName" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.311"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryStringInt_UnknownConnName" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryStringInt_ForumTypeNegative" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.721"></testcase>
+  <testcase name="testRetrieveProjects_LongArray" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.481"></testcase>
+  <testcase name="testRetrieveProjects_LongArray_NullIds" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.26"></testcase>
+  <testcase name="testRetrieveProjects_LongArray_NotPositiveEntry" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.36"></testcase>
+  <testcase name="testRetrieveProjects_LongArray_NoDefaultConnectionAndConnName" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.281"></testcase>
+  <testcase name="testRetrieveProject_Long1" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.661"></testcase>
+  <testcase name="testRetrieveProject_Long2" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.731"></testcase>
+  <testcase name="testRetrieveProject_Long_NotPositive" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testRetrieveProjects_StringArrayStringArray" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.471"></testcase>
+  <testcase name="testRetrieveProjects_StringArrayStringArray_NullArray" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.39"></testcase>
+  <testcase name="testRetrieveProjects_StringArrayStringArray_NullEntry" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.251"></testcase>
+  <testcase name="testRetrieveProjects_StringArrayStringArray_EmptyEntry" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.24"></testcase>
+  <testcase name="testRetrieveProjects_StringArrayStringArray_NotSameSize" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.271"></testcase>
+  <testcase name="testRetrieveProjects_StringArrayStringArray_NoDefaultConnectionAndConnName" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.27"></testcase>
+  <testcase name="testRetrieveProjects_StringString" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.481"></testcase>
+  <testcase name="testRetrieveProject_StringString_Null" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testRetrieveProject_StringString_Empty" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testCreateObject_ResultSet" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalUnitTest" time="0.251"></testcase>
+  <testcase name="testCtor_String" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testCtor_String_NullNamespace" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.321"></testcase>
+  <testcase name="testCtor_String_EmptyNamespace" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.26"></testcase>
+  <testcase name="testCtor_String_ConnNameNotInclude" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.33"></testcase>
+  <testcase name="testCtor_String_ConnNameEmpty" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.361"></testcase>
+  <testcase name="testCtor_String_UnknowNamespace" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.471"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString_NullDBConnectionFactory" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.26"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString_NullConnName" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.311"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString_UnknownConnName" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.28"></testcase>
+  <testcase name="testCreateObject_ResultSet" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.281"></testcase>
+  <testcase name="testRetrieveUsers_LongArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="1.031"></testcase>
+  <testcase name="testRetrieveUsers_LongArray_NullIds" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.28"></testcase>
+  <testcase name="testRetrieveUsers_LongArray_NotPositiveEntry" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.241"></testcase>
+  <testcase name="testRetrieveUsers_LongArray_NoDefaultConnectionAndConnName" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.27"></testcase>
+  <testcase name="testRetrieveUser_Long" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="1.012"></testcase>
+  <testcase name="testRetrieveUser_Long_NotPositive" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.26"></testcase>
+  <testcase name="testRetrieveUsers_StringArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.941"></testcase>
+  <testcase name="testRetrieveUsers_StringArray_NullArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.271"></testcase>
+  <testcase name="testRetrieveUsers_StringArray_NullEntry" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testRetrieveUsers_StringArrayStringArray_EmptyEntry" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.24"></testcase>
+  <testcase name="testRetrieveUser_String" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.952"></testcase>
+  <testcase name="testRetrieveUser_String_NullHandle" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.24"></testcase>
+  <testcase name="testRetrieveUsers_String_EmptyHandle" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.281"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_StringArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="1.011"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCaseStringArray_NullArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.25"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCaseStringArray_NullEntry" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.241"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCaseStringArrayStringArray_EmptyEntry" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.24"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString1" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="1.042"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString2" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.991"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString3" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.961"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString_NullFirstName" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.311"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString_AllNameEmpty" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalUnitTest" time="0.26"></testcase>
+  <testcase name="testRetrieveUsersByHandle" classname="com.cronos.onlinereview.external.Demo" time="3.926"></testcase>
+  <testcase name="testRetrieveUsersById" classname="com.cronos.onlinereview.external.Demo" time="2.534"></testcase>
+  <testcase name="testRetrieveUsersByNames" classname="com.cronos.onlinereview.external.Demo" time="1.612"></testcase>
+  <testcase name="testRetrieveProjectsById" classname="com.cronos.onlinereview.external.Demo" time="1.031"></testcase>
+  <testcase name="testRetrieveProjectsByNameAndVersion" classname="com.cronos.onlinereview.external.Demo" time="0.731"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntInt_NullArg" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntInt_NegativeArg_1" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntInt_NegativeArg_2" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntInt_NegativeArg_3" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntIntDouble_NullArg" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_1" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_2" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_3" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_4" classname="com.cronos.onlinereview.external.failuretests.RatingInfoFailureTest" time="0.0"></testcase>
+  <testcase name="testGetRatingTypeString_NullArg" classname="com.cronos.onlinereview.external.failuretests.RatingTypeFailureTest" time="0.0"></testcase>
+  <testcase name="testGetRatingTypeString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.RatingTypeFailureTest" time="0.0"></testcase>
+  <testcase name="testGetRatingTypeString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.RatingTypeFailureTest" time="0.0"></testcase>
+  <testcase name="testGetRatingTypeString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.RatingTypeFailureTest" time="0.0"></testcase>
+  <testcase name="testGetRatingTypeString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.RatingTypeFailureTest" time="0.0"></testcase>
+  <testcase name="testGetRatingTypeInt_NegativeId" classname="com.cronos.onlinereview.external.failuretests.RatingTypeFailureTest" time="0.0"></testcase>
+  <testcase name="testGetRatingTypeInt_ZeroId" classname="com.cronos.onlinereview.external.failuretests.RatingTypeFailureTest" time="0.0"></testcase>
+  <testcase name="testBaseDBRetrievalDBConnectionFactoryString_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.01"></testcase>
+  <testcase name="testBaseDBRetrievalDBConnectionFactoryString_NullArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.071"></testcase>
+  <testcase name="testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testBaseDBRetrievalDBConnectionFactoryString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testBaseDBRetrievalDBConnectionFactoryString_UnknownConnName" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.01"></testcase>
+  <testcase name="testBaseDBRetrievalString_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.01"></testcase>
+  <testcase name="testBaseDBRetrievalString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testBaseDBRetrievalString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.01"></testcase>
+  <testcase name="testBaseDBRetrievalString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testBaseDBRetrievalString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testBaseDBRetrievalString_UnknownNamespace_1" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.01"></testcase>
+  <testcase name="testBaseDBRetrievalString_UnknownNamespace_2" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.01"></testcase>
+  <testcase name="testBaseDBRetrievalString_InvalidConfig_1" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.11"></testcase>
+  <testcase name="testBaseDBRetrievalString_InvalidConfig_2" classname="com.cronos.onlinereview.external.failuretests.impl.BaseDBRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.24"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_NullArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.06"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_NegativeForumType" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.031"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testDBProjectRetrievalDBConnectionFactoryStringInt_UnknownConnName" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testDBProjectRetrievalString_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testDBProjectRetrievalString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.09"></testcase>
+  <testcase name="testDBProjectRetrievalString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBProjectRetrievalString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testDBProjectRetrievalString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBProjectRetrievalString_UnknownNamespace_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testDBProjectRetrievalString_UnknownNamespace_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBProjectRetrievalString_InvalidConfig_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testDBProjectRetrievalString_InvalidConfig_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.08"></testcase>
+  <testcase name="testDBProjectRetrievalString_InvalidConfig_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testDBProjectRetrievalString_InvalidConfig_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.06"></testcase>
+  <testcase name="testRetrieveProjectLong_NegativeId" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveProjectLong_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.041"></testcase>
+  <testcase name="testRetrieveProjectStringString_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectStringString_NullArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.08"></testcase>
+  <testcase name="testRetrieveProjectStringString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectStringString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testRetrieveProjectStringString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveProjectStringString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectStringString_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveProjectsLongArray_NullIds" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveProjectsLongArray_IdsWithNegativeElement" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectsLongArray_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_NullArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_ArrayWithNullElement_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_ArrayWithNullElement_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.08"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_ArrayWithDifferentSize" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.041"></testcase>
+  <testcase name="testRetrieveProjectsStringArrayStringArray_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBProjectRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testDBUserRetrievalDBConnectionFactoryString_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testDBUserRetrievalDBConnectionFactoryString_NullArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.07"></testcase>
+  <testcase name="testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBUserRetrievalDBConnectionFactoryString_UnknownConnName" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBUserRetrievalString_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testDBUserRetrievalString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testDBUserRetrievalString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBUserRetrievalString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.09"></testcase>
+  <testcase name="testDBUserRetrievalString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testDBUserRetrievalString_UnknownNamespace_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testDBUserRetrievalString_UnknownNamespace_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testDBUserRetrievalString_InvalidConfig_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testDBUserRetrievalString_InvalidConfig_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveUserLong_NegativeId" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.091"></testcase>
+  <testcase name="testRetrieveUserString_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUserString_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveUserString_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUserString_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.06"></testcase>
+  <testcase name="testRetrieveUserString_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveUserString_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveUsersLongArray_NullIds" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveUsersLongArray_IdsWithNegativeElement" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveUsersLongArray_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveUsersStringArray_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUsersStringArray_ArrayWithNullElement" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveUsersStringArray_ArrayWithEmptyStringElement_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.08"></testcase>
+  <testcase name="testRetrieveUsersStringArray_ArrayWithEmptyStringElement_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveUsersStringArray_ArrayWithEmptyStringElement_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUsersStringArray_ArrayWithEmptyStringElement_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveUsersStringArray_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_ArrayWithNullElement" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.051"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_3" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_4" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUsersByName_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.02"></testcase>
+  <testcase name="testRetrieveUsersByName_NullArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.08"></testcase>
+  <testcase name="testRetrieveUsersByName_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.04"></testcase>
+  <testcase name="testRetrieveUsersByName_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.03"></testcase>
+  <testcase name="testRetrieveUsersByName_WithRetrievalError" classname="com.cronos.onlinereview.external.failuretests.impl.DBUserRetrievalFailureTest" time="0.05"></testcase>
+  <testcase name="testExternalObjectImpl_NegativeId" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalObjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalProjectImpl_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalProjectImpl_NegativeArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalProjectImpl_NegativeArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetCatalogId_NegativeId" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetCatalogId_IdAlreadySet" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetComments_NullComments" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetComments_CommentsAlreadySet" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetComponentId_NegativeId" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetComponentId_IdAlreadySet" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetDescription_NullDescription" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetDescription_DescriptionAlreadySet" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetForumId_NegativeId" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetForumId_IdAlreadySet" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetName_NullName" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testSetName_NameAlreadySet" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalProjectImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_NegativeId" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_NullArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_NullArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_NullArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_NullArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testExternalUserImpl_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testAddRatingInfo_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_NullArg" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_EmptyStringArg_1" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_EmptyStringArg_2" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_EmptyStringArg_3" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_EmptyStringArg_4" classname="com.cronos.onlinereview.external.failuretests.impl.ExternalUserImplFailureTest" time="0.0"></testcase>
+  <testcase name="testConstructor1_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.01"></testcase>
+  <testcase name="testConstructor2_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetRating" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetReliability" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.01"></testcase>
+  <testcase name="testHasReliability" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetNumRatings" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetVolatility" classname="com.cronos.onlinereview.external.accuracytests.RatingInfoAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetRatingType_String_Configured" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetter_GetName" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetId" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testToString" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.02"></testcase>
+  <testcase name="testHashCode" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.02"></testcase>
+  <testcase name="testGetRatingType_String_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_String_NoConfigured" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_Int_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetRatingType_Int_Configured" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetRatingType_Int_Unknown" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.02"></testcase>
+  <testcase name="testEquals_Accuracy1" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testEquals_Accuracy2" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.0"></testcase>
+  <testcase name="testEquals_Accuracy3" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testEquals_Accuracy4" classname="com.cronos.onlinereview.external.accuracytests.RatingTypeAccuracyTest" time="0.01"></testcase>
+  <testcase name="testRetrieveProjects_LongArray" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.541"></testcase>
+  <testcase name="testCreateObject_ResultSet" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.561"></testcase>
+  <testcase name="testConstructor1_Accuracy" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.461"></testcase>
+  <testcase name="testConstructor2_Accuracy" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.45"></testcase>
+  <testcase name="testConstructor1_NoForumType" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.511"></testcase>
+  <testcase name="testRetrieveProjectLong_Accuracy1" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.731"></testcase>
+  <testcase name="testRetrieveProjectLong_Accuracy2" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.711"></testcase>
+  <testcase name="testRetrieveProjectLong_Accuracy3" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.751"></testcase>
+  <testcase name="testRetrieveProjects_Duplicate" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.701"></testcase>
+  <testcase name="testRetrieveProjects_NotFound" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.741"></testcase>
+  <testcase name="testRetrieveProjectsStrings_Accuracy1" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="1.052"></testcase>
+  <testcase name="testRetrieveProjectsStrings_Accuracy4" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.691"></testcase>
+  <testcase name="testRetrieveProjectsStrings_Accuracy5" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.771"></testcase>
+  <testcase name="testRetrieveProjectsStrings_Accuracy2" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.751"></testcase>
+  <testcase name="testRetrieveProjectsStrings_Accuracy3" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.721"></testcase>
+  <testcase name="testConstructor_String" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.471"></testcase>
+  <testcase name="testConstructor_DBConnectionFactoryString_Accuracy" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.51"></testcase>
+  <testcase name="testGetConnection_Accuracy" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.721"></testcase>
+  <testcase name="testClose_Accuracy" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.751"></testcase>
+  <testcase name="testClose_ConnAlreadyClosed" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.722"></testcase>
+  <testcase name="testClose_AllowNull" classname="com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest" time="0.61"></testcase>
+  <testcase name="testConstructor_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetId_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetVersionId_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetVersion_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testSetCatalogId_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testSetComments_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testSetComponentId_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testSetDescription_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testSetForumId_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testSetName_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetCatalogId" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetCatalogId_NoCatalogIdSet" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetComments" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetComments_NoCommentsSet" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetComponentId" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetComponentId_NoComponentIdSet" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDescription" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDescription_NoDescriptionSet" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetForumId_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetName_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetId" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testConstructor_Long" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testAddAlternativeEmail_String" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDesignRating" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDesignRating_NA" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevRating_NA" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDesignVolatility" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDesignVolatility_NA" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevVolatility" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevVolatility_NA" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDesignNumRatings" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDesignNumRatings_Zero" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevNumRatings" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevNumRatings_Zero" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.011"></testcase>
+  <testcase name="testGetDesignReliability_NoDesignRating" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.02"></testcase>
+  <testcase name="testGetDesignReliability_NoReliability" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_NoDevRating" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_NoReliability" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy1" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy2" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy3" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy4" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy5" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy6" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy7" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy8" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy9" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy10" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy11" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy12" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy13" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy14" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testConstructor_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.02"></testcase>
+  <testcase name="testAddRatingInfo_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.02"></testcase>
+  <testcase name="testGetRatingInfo_Accuracy1" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetRatingInfo_Accuracy2" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="test_GetId" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="test_GetHandle" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="test_GetFirstName" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="test_GetLastName" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="test_GetEmail" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetAlternativeEmails_Accuracy1" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetAlternativeEmails_Accuracy2" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevRating_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDesignReliability_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetDevReliability_Accuracy" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy0" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testGetDevReliability_Accuracy15" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testGetter_GetId" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.01"></testcase>
+  <testcase name="testConstructor_Long" classname="com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testCreateObject_ResultSet" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.481"></testcase>
+  <testcase name="testRetrieveUsers_LongArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.221"></testcase>
+  <testcase name="testRetrieveUser_Long" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.242"></testcase>
+  <testcase name="testRetrieveUsers_StringArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.172"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_StringArray" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.232"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString1" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.121"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString2" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.282"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString3" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.502"></testcase>
+  <testcase name="testConstructor2_Accuracy" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.561"></testcase>
+  <testcase name="testConstructor1_String" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.551"></testcase>
+  <testcase name="testRetrieveUser_Long_NotFound" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.292"></testcase>
+  <testcase name="testRetrieveUsers_LongArray_NotFound" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.442"></testcase>
+  <testcase name="testRetrieveUsers_LongArray_Duplicate" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.101"></testcase>
+  <testcase name="testRetrieveUser_String_Accuracy" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.452"></testcase>
+  <testcase name="testRetrieveUser_String_NotFound" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.312"></testcase>
+  <testcase name="testRetrieveUsers_StringArray_NotFound" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.332"></testcase>
+  <testcase name="testRetrieveUsers_StringArray_Duplicate" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.322"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_StringArray2" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.232"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase_StringArray3" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.162"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString4" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.211"></testcase>
+  <testcase name="testRetrieveUsersByName_StringString5" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="1.212"></testcase>
+  <testcase name="testConstructor_String" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.461"></testcase>
+  <testcase name="testConstructor_DBConnectionFactoryString_Accuracy" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.53"></testcase>
+  <testcase name="testGetConnection_Accuracy" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.731"></testcase>
+  <testcase name="testClose_Accuracy" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.852"></testcase>
+  <testcase name="testClose_ConnAlreadyClosed" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.871"></testcase>
+  <testcase name="testClose_AllowNull" classname="com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest" time="0.501"></testcase>
+  <testcase name="testCtor_namespace" classname="com.cronos.onlinereview.external.stresstests.BaseDBRetrievalStressTest" time="0.08"></testcase>
+  <testcase name="testCtor_connFactory_connName" classname="com.cronos.onlinereview.external.stresstests.BaseDBRetrievalStressTest" time="1.191"></testcase>
+  <testcase name="testRetrieveObjects" classname="com.cronos.onlinereview.external.stresstests.BaseDBRetrievalStressTest" time="1.172"></testcase>
+  <testcase name="testCtor" classname="com.cronos.onlinereview.external.stresstests.DBProjectRetrievalStressTest" time="0.881"></testcase>
+  <testcase name="testRetrieveProjectsByID" classname="com.cronos.onlinereview.external.stresstests.DBProjectRetrievalStressTest" time="24.496"></testcase>
+  <testcase name="testRetrieveProjectsByIDs" classname="com.cronos.onlinereview.external.stresstests.DBProjectRetrievalStressTest" time="0.871"></testcase>
+  <testcase name="testRetrieveProjectByNameAndVerision" classname="com.cronos.onlinereview.external.stresstests.DBProjectRetrievalStressTest" time="5.428"></testcase>
+  <testcase name="testRetrieveProjectsByNameAndVerision" classname="com.cronos.onlinereview.external.stresstests.DBProjectRetrievalStressTest" time="0.841"></testcase>
+  <testcase name="testRetrieveUserById" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="6.78"></testcase>
+  <testcase name="testRetrieveUserByIdNotFound" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="7.731"></testcase>
+  <testcase name="testRetrieveUserByHandle" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="7.691"></testcase>
+  <testcase name="testRetrieveUserByHandleNotFound" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="8.192"></testcase>
+  <testcase name="testRetrieveUsers" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="1.412"></testcase>
+  <testcase name="testRetrieveUsersIgnoreCase" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="7.33"></testcase>
+  <testcase name="testRetrieveUsersByFirstName" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="7.731"></testcase>
+  <testcase name="testRetriveUsersByLastName" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="7.241"></testcase>
+  <testcase name="testRetriveUsersByFirstAndLastName" classname="com.cronos.onlinereview.external.stresstests.DBUserRetrievalStressTest" time="7.611"></testcase>
+  <system-out><![CDATA[Demo 1: Retrieves the users by handle.
+1002
+Handle B
+First B
+Last B
+N/A
+N/A
+0
+N/A
+2
+User2@yahoo.com
+User2@hotmail.com
+2108
+131
+76.54 %
+3
+null
+1
+Handle A
+2
+
+Demo 2: Retrieves the users by id.
+1002
+null
+2
+
+Demo 3: Retrieves the users by names.
+1
+1
+User1@163.com
+10
+1563
+1.00 %
+431
+0
+N/A
+N/A
+N/A
+User1@gmail.com
+First A
+Last A
+Handle A
+1001
+3
+
+Demo 4: Retrieves the projects by id.
+2
+1002
+100002
+Project B
+Version 2           
+2
+Second Project B
+Average
+null
+1
+Project A
+
+Demo 5: Retrieves the projects by name and version.
+1
+Project A
+Version 1           
+1
+100001
+1
+Project A
+
+Testing BaseDBRetrieval(String) for 50 times costs 70ms
+Testing BaseDBRetrieval(DBConnectionFactory, String) for 5 times costs 1191ms
+Testing BaseDBRetrieval#retrieveObjects(PreparedStatement) for 50 times costs 651ms
+Testing DBProjectRetrieval(String) for 100 times costs 140ms
+Testing retrieveProject(String, String) for 20 times costs 4807ms
+Testing DBUserRetrieval#retrieveUser(long) for 10 times costs 6400ms
+Testing DBUserRetrieval#retrieveUser(long) for 10 times costs 7321ms when no user is found.
+Testing DBUserRetrieval#retrieveUser(String) for 10 times costs 7291ms.
+Testing DBUserRetrieval#retrieveUser(String) for 10 times costs 7772ms when no user is found.
+Testing DBUserRetrieval#retrieveUsersIgnoreCase(String[]) for 10 times costs 6880ms.
+Testing DBUserRetrieval#retrieveUsersByName(String, String) for 10 times costs 7290ms when lastName is empty.
+Testing DBUserRetrieval#retrieveUsersByName(String, String) for 10 times costs 6830ms when firstName is empty.
+Testing DBUserRetrieval#retrieveUsersByName(String, String) for 10 times costs 7171ms.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
