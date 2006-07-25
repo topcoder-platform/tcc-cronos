@@ -1,0 +1,1 @@
+Please, use mock for ScoreManagementData provided here.
