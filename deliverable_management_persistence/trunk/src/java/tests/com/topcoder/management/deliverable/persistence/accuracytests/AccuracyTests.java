@@ -4,6 +4,9 @@
  */
 package com.topcoder.management.deliverable.persistence.accuracytests;
 
+import com.topcoder.management.deliverable.persistence.sql.accuracytests.SqlDeliverablePersistenceAccuracyTest;
+import com.topcoder.management.deliverable.persistence.sql.accuracytests.SqlUploadPersistenceAccuracyTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -19,7 +22,10 @@ public class AccuracyTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(SqlDeliverablePersistenceAccuracyTest.class);
+        suite.addTestSuite(SqlUploadPersistenceAccuracyTest.class);
+        
         return suite;
     }
 
