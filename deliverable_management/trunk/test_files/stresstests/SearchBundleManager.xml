@@ -1,0 +1,85 @@
+<CMConfig>
+  <Config name="com.topcoder.search.builder.SearchBundleManager">
+      <Property name="searchBundles">
+         <Property name="Deliverable Search Bundle">
+      		<Property name="type">
+                <Value>Database</Value>
+            </Property>
+      		<Property name="name">
+                <Value>Deliverable Search Bundle</Value>
+            </Property>
+      		<Property name="context">
+                <Value>SELECT deliverable_id
+                             FROM deliverable
+                             CROSS JOIN project
+                             WHERE
+				</Value>
+            </Property>
+            <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="connectionProducerName">
+                    <Value>dbconnection</Value>
+            </Property>
+			<Property name="alias">
+				<Property name="deliverable_id">
+					<Value>deliverable_id</Value>
+				</Property>
+           </Property>
+        </Property>
+
+        <Property name="Submission Search Bundle">
+      		<Property name="type">
+                <Value>Database</Value>
+            </Property>
+      		<Property name="name">
+                <Value>Submission Search Bundle</Value>
+            </Property>
+      		<Property name="context">
+                <Value>SELECT submission_id
+                        FROM submission
+                        INNER JOIN upload
+	                    ON submission.upload_id = upload.upload_id
+                        WHERE
+                </Value>
+            </Property>
+           <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="connectionProducerName">
+                    <Value>dbconnection</Value>
+            </Property>
+            <Property name="alias">
+                   <Property name="submission_id">
+					    <Value>submission_id</Value>
+			       </Property>
+           </Property>
+        </Property>
+
+        <Property name="Upload Search Bundle">
+      		<Property name="type">
+                <Value>Database</Value>
+            </Property>
+      		<Property name="name">
+                <Value>Upload Search Bundle</Value>
+            </Property>
+      		<Property name="context">
+                <Value>SELECT upload_id FROM upload WHERE
+                </Value>
+            </Property>
+           <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="connectionProducerName">
+                    <Value>dbconnection</Value>
+            </Property>
+            <Property name="alias">
+                   <Property name="upload_id">
+					    <Value>upload_id</Value>
+			       </Property>
+           </Property>
+        </Property>
+
+        </Property>
+  </Config>
+</CMConfig>

@@ -1,0 +1,49 @@
+<CMConfig>
+	<!-- configuration for db connection factory -->
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <Property name="default">
+                <Value>dbconnection</Value>
+            </Property>
+            <Property name="dbconnection">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>org.gjt.mm.mysql.Driver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:mysql://localhost:3306/test</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>root</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>topcoder</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="Upload Id Generator">
+            <Value>Upload Id Generator</Value>
+        </Property>
+				<Property name="Upload Type Id Generator">
+            <Value>Upload Type Id Generator</Value>
+       	</Property>
+
+				<Property name="Upload Status Id Generator">
+            <Value>Upload Status Id Generator</Value>
+        </Property>
+
+				<Property name="Submission Id Generator">
+            <Value>Submission Id Generator</Value>
+        </Property>
+
+				<Property name="Submission Status Id Generator">
+            <Value>Submission Status Id Generator</Value>
+        </Property>
+
+    </Config>
+</CMConfig>

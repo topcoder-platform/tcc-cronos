@@ -1,0 +1,64 @@
+<CMConfig>
+  <Config name="com.topcoder.search.builder.SearchBundleManager">
+      <Property name="searchBundles">
+         <Property name="Deliverable Search Bundle">
+      		<Property name="type">
+                <Value>Database</Value>
+            </Property>
+      		<Property name="name">
+                <Value>Deliverable Search Bundle</Value>
+            </Property>
+      		<Property name="context">
+                <Value>SELECT deliverable_id
+                             FROM deliverable_lu
+                             CROSS JOIN project
+                             WHERE
+				</Value>
+            </Property>
+            <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="connectionProducerName">
+                    <Value>dbconnection</Value>
+            </Property>
+			<Property name="alias">
+				<Property name="deliverable_id">
+					<Value>deliverable_id</Value>
+				</Property>
+           </Property>
+        </Property>
+
+        <Property name="Deliverable With Submission Search Bundle">
+      		<Property name="type">
+                <Value>Database</Value>
+            </Property>
+      		<Property name="name">
+                <Value>Deliverable With Submission Search Bundle</Value>
+            </Property>
+      		<Property name="context">
+                <Value>SELECT deliverable_id, submission_id
+                         FROM deliverable_lu
+                         CROSS JOIN project
+                         CROSS JOIN submission
+                         INNER JOIN submission_status_lu
+                         	ON submission.submission_status_id =
+                            submission_status_lu.submission_status_id
+WHERE
+                </Value>
+            </Property>
+           <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="connectionProducerName">
+                    <Value>dbconnection</Value>
+            </Property>
+            <Property name="alias">
+                   <Property name="submission_id">
+					    <Value>submission_id</Value>
+			       </Property>
+           </Property>
+         </Property>
+         
+         </Property>
+  </Config>
+</CMConfig>

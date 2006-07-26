@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <!-- Namespace for DBConnectionFactory component -->
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <Property name="default">
+                <Value>dbconnection</Value>
+            </Property>
+            <Property name="dbconnection">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://222.205.9.52:1526/deliverablemanagement:informixserver=informix</Value>
+                    </Property>
+                    <Property name="SelectMethod">
+                        <Value>cursor</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>123456</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Namespace for SearchBuilder component -->
+    <Config name="com.topcoder.searchbuilder.DeliverableManager">
+        <Property name="searchBundles">
+            <Property name="Submission Search Bundle">
+                <Property name="type">
+                    <Value>Database</Value>
+                </Property>
+                <Property name="name">
+                    <Value>Submission Search Bundle</Value>
+                </Property>
+                <Property name="context">
+                    <Value>SELECT submission_id
+                        FROM submission
+                        INNER JOIN upload
+                        ON submission.upload_id = upload.upload_id
+                        WHERE
+                    </Value>
+                </Property>
+                <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                </Property>
+                <Property name="connectionProducerName">
+                    <Value>dbconnection</Value>
+                </Property>
+                <Property name="alias">
+                    <Property name="submission_id">
+                        <Value>submission.submission_id</Value>
+                    </Property>
+                    <Property name="upload_id">
+                        <Value>submission.upload_id</Value>
+                    </Property>
+                    <Property name="submission_status_id">
+                        <Value>submission.submission_status_id</Value>
+                    </Property>
+                    <Property name="project_id">
+                        <Value>upload.project_id</Value>
+                    </Property>
+                    <Property name="resource_id">
+                        <Value>upload.resource_id</Value>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="Upload Search Bundle">
+                <Property name="type">
+                    <Value>Database</Value>
+                </Property>
+                <Property name="name">
+                    <Value>Upload Search Bundle</Value>
+                </Property>
+                <Property name="context">
+                    <Value>SELECT upload_id
+                        FROM upload
+                        WHERE
+                    </Value>
+                </Property>
+                <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                </Property>
+                <Property name="connectionProducerName">
+                    <Value>dbconnection</Value>
+                </Property>
+                <Property name="alias">
+                    <Property name="upload_id">
+                        <Value>upload.upload_id</Value>
+                    </Property>
+                    <Property name="upload_type_id">
+                        <Value>upload.upload_type_id</Value>
+                    </Property>
+                    <Property name="upload_status_id">
+                        <Value>upload.upload_status_id</Value>
+                    </Property>
+                    <Property name="project_id">
+                        <Value>upload.project_id</Value>
+                    </Property>
+                    <Property name="resource_id">
+                        <Value>upload.resource_id</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>
