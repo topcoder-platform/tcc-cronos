@@ -1,0 +1,3 @@
+
+run table.sql
+

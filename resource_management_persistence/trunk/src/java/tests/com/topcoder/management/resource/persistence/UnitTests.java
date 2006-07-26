@@ -4,6 +4,11 @@
  */
 package com.topcoder.management.resource.persistence;
 
+import com.topcoder.management.resource.persistence.sql.BenchmarkTest;
+import com.topcoder.management.resource.persistence.sql.DemoTest;
+import com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence;
+import com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -16,10 +21,18 @@ import junit.framework.TestSuite;
  */
 public class UnitTests extends TestCase {
 
+    /**
+     * Aggregates all Unit test cases.
+     * @return Test
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(TestSqlResourcePersistenceArgumentFailure.class);
+        suite.addTestSuite(TestSqlResourcePersistence.class);
+        suite.addTestSuite(DemoTest.class);
+        suite.addTestSuite(BenchmarkTest.class);
+
         return suite;
     }
-
 }
