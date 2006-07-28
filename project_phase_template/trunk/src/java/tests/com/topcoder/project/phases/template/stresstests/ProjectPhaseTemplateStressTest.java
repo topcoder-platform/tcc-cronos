@@ -293,7 +293,7 @@ public class ProjectPhaseTemplateStressTest extends TestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testGeneratePhasesInHugeScale() throws Exception {
+    /*public void testGeneratePhasesInHugeScale() throws Exception {
         DefaultPhaseTemplate template = new DefaultPhaseTemplate(
                 "com.topcoder.project.phases.template.DefaultPhaseTemplate");
         assertNotNull("Fail to create DefaultPhaseTemplate instance", template);
@@ -311,7 +311,7 @@ public class ProjectPhaseTemplateStressTest extends TestCase {
         }
 
         printResult("generatePhases(Date, Workdays)", HUGE);
-    }
+    }*/
 
     /**
      * <p>

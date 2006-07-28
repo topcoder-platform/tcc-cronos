@@ -307,6 +307,9 @@ public class XmlPhaseTemplatePersistence implements PhaseTemplatePersistence {
                 Phase phase = new Phase(project, length);
                 // retrieve the cached phase type and set it to the phase
                 PhaseType type = (PhaseType) phaseTypes.get(phaseElement.getAttribute(ATTRIBUTE_TYPE));
+		if (type == null) {
+                    throw new PhaseGenerationException("The requested phase type does not exist.");
+		}
                 phase.setPhaseType(type);
                 // cache the phase
                 phases.put(phaseElement.getAttribute(ATTRIBUTE_ID), phase);
