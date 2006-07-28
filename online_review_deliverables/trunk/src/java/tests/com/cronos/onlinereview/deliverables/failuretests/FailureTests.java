@@ -1,25 +1,41 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
- package com.cronos.onlinereview.deliverables.failuretests;
+package com.cronos.onlinereview.deliverables.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
+ * <p>
+ * This test case aggregates all Failure test cases.
+ * </p>
  *
- * @author TopCoder
+ * @author kinfkong
  * @version 1.0
  */
 public class FailureTests extends TestCase {
 
+    /**
+     * Returns the test cases.
+     *
+     * @return the test cases
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(AggregationDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(AggregationReviewDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(AppealResponsesDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(CommittedReviewDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(FinalFixesDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(FinalReviewDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(SingleQuerySqlDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(SubmissionDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(SubmitterCommentDeliverableCheckerFailureTest.class);
+        suite.addTestSuite(TestCasesDeliverableCheckerFailureTest.class);
+
         return suite;
     }
 

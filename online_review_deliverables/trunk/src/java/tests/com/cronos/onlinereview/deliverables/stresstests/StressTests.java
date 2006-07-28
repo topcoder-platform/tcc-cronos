@@ -1,25 +1,29 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.deliverables.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
+
 
 /**
  * <p>This test case aggregates all Stress test cases.</p>
  *
- * @author TopCoder
+ * @author magicpig
  * @version 1.0
  */
 public class StressTests extends TestCase {
-
+    /**
+     * Aggregates all the stress tests.
+     *
+     * @return the test suite
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(CheckMethodsStressTest.class);
+
         return suite;
     }
 }
