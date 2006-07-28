@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.cronos.onlinereview.deliverables.AllTests" tests="265" failures="0" errors="0" time="204.113">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="package" value="com"></property>
+    <property name="docpackage.jar" value="online_review_deliverables_docs.jar"></property>
+    <property name="typesafe_enum.version" value="1.0"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\j2re1.4.2_08\lib\rt.jar;C:\Program Files\Java\j2re1.4.2_08\lib\i18n.jar;C:\Program Files\Java\j2re1.4.2_08\lib\sunrsasign.jar;C:\Program Files\Java\j2re1.4.2_08\lib\jsse.jar;C:\Program Files\Java\j2re1.4.2_08\lib\jce.jar;C:\Program Files\Java\j2re1.4.2_08\lib\charsets.jar;C:\Program Files\Java\j2re1.4.2_08\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="Online_Review_Deliverables_1.0_design_submission.jar"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/online_review_deliverables_tests.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="ant.home" value="i:\eclipse-SDK-3.1.2-win32\eclipse\plugins\org.apache.ant_1.6.5"></property>
+    <property name="java.runtime.version" value="1.4.2_08-b03"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="component_path" value="online_review_deliverables/1.0"></property>
+    <property name="database_abstraction.path" value="database_abstraction/1.0"></property>
+    <property name="user.name" value="BigFish"></property>
+    <property name="debug" value="off"></property>
+    <property name="database_abstraction.jar.name" value="database_abstraction.jar"></property>
+    <property name="reports" value="reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dist_conf" value="build/dist/online_review_deliverables-1.0/conf"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.4"></property>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\j2re1.4.2_08\bin"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="Online Review Deliverables"></property>
+    <property name="java.version" value="1.4.2_08"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="Online_Review_Deliverables_1.0_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="webdir" value="web"></property>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\j2re1.4.2_08\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="packagedir" value="com"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dev_submission.jar" value="Online_Review_Deliverables_1.0_dev_submission.jar"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="java.home" value="C:\Program Files\Java\j2re1.4.2_08"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="ant.file" value="F:\component\review\online\22855932_final\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="database_abstraction.version" value="1.0"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="ifxjdbc.jar" value="C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxjdbc.jar"></property>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"></property>
+    <property name="build_tcsdistdir" value="build/dist/online_review_deliverables-1.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.4.2_08-b03"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="database_abstraction.jar" value="lib/tcs/database_abstraction/1.0/database_abstraction.jar"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.file.Online Review Deliverables" value="F:\component\review\online\22855932_final\build.xml"></property>
+    <property name="ant.library.dir" value="i:\eclipse-SDK-3.1.2-win32\eclipse\plugins\org.apache.ant_1.6.5\lib"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="dist_javadocs" value="build/dist/online_review_deliverables-1.0/docs/javadocs"></property>
+    <property name="dist_testfiles" value="build/dist/online_review_deliverables-1.0/test_files"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="component" value="Online_Review_Deliverables"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="component.war" value="${dist_examples}/online_review_deliverables.war"></property>
+    <property name="user.home" value="C:\Documents and Settings\BigFish.ZSU-69738998C65"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.library.path" value="C:\Program Files\Java\j2re1.4.2_08\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\IBM\Informix\Client-SDK\bin;C:\Program Files\Microsoft Visual Studio\Common\Tools\WinNT;C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin;C:\Program Files\Microsoft Visual Studio\Common\Tools;C:\Program Files\Microsoft Visual Studio\VC98\bin;G:\Component\apache-ant-1.6.1\bin;C:\j2sdk1.4.2_08\bin;"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="java.class.path" value="F:\component\review\online\22855932_final\build\testClasses;F:\component\review\online\22855932_final\build\classes;F:\component\review\online\22855932_final\lib\tcs\configuration_manager\2.1.4\configuration_manager.jar;F:\component\review\online\22855932_final\lib\tcs\db_connection_factory\1.0\db_connection_factory.jar;F:\component\review\online\22855932_final\lib\tcs\base_exception\1.0\base_exception.jar;F:\component\review\online\22855932_final\lib\tcs\database_abstraction\1.0\database_abstraction.jar;C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxjdbc.jar;F:\component\review\online\22855932_final\conf;F:\component\review\online\22855932_final\test_files;F:\component\review\online\22855932_final;C:\j2sdk1.4.2_08\lib\tools.jar;G:\Component\junit3.8.1\junit3.8.1\junit.jar;I:\eclipse-SDK-3.1.2-win32\eclipse\plugins\org.apache.ant_1.6.5\lib\ant-launcher.jar;I:\eclipse-SDK-3.1.2-win32\eclipse\plugins\org.apache.ant_1.6.5\lib\ant.jar;I:\eclipse-SDK-3.1.2-win32\eclipse\plugins\org.apache.ant_1.6.5\lib\ant-junit.jar"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="typesafe_enum.path" value="typesafe_enum/1.0"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/online_review_deliverables-1.0.jar"></property>
+    <property name="junit.jar" value="lib/junit/3.8.2/junit.jar"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\BIGFIS~1.ZSU\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.4/configuration_manager.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\j2re1.4.2_08\lib\ext"></property>
+    <property name="typesafe_enum.jar" value="lib/tcs/typesafe_enum/1.0/typesafe_enum.jar"></property>
+    <property name="dist_src" value="build/dist/online_review_deliverables-1.0/src"></property>
+    <property name="user.dir" value="F:\component\review\online\22855932_final"></property>
+    <property name="design_dist.jar" value="Online_Review_Deliverables_1.0_design_dist.jar"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="java_1_3_bootclasspath" value="C:\j2sdk1.4.2_08\jre\lib\rt.jar"></property>
+    <property name="distfilename" value="online_review_deliverables"></property>
+    <property name="basedir" value="F:\component\review\online\22855932_final"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="configmanager.version" value="2.1.4"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="dist_docs" value="build/dist/online_review_deliverables-1.0/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/online_review_deliverables/1.0/online_review_deliverables.jar"></property>
+    <property name="java.specification.version" value="1.4"></property>
+  </properties>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="2.944"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.541"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.971"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.591"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.531"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.551"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.55"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.511"></testcase>
+  <testcase name="testCheck_Commited" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.741"></testcase>
+  <testcase name="testCheck_Unommited" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.581"></testcase>
+  <testcase name="testCheck_ReviewForResourceNotExists" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.611"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.AggregationDeliverableCheckerTest" time="0.491"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.51"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.401"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.361"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.44"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.351"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testCheck_Approved" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.701"></testcase>
+  <testcase name="testCheck_Rejected" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.581"></testcase>
+  <testcase name="testCheck_EmptyExtraComment" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.631"></testcase>
+  <testcase name="testCheck_NoResource" classname="com.cronos.onlinereview.deliverables.AggregationReviewDeliverableCheckerTest" time="0.61"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.371"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.371"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.511"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.551"></testcase>
+  <testcase name="testCheck_Response" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.721"></testcase>
+  <testcase name="testCheck_NoResponse" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.631"></testcase>
+  <testcase name="testCheck_NoAppeal" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.651"></testcase>
+  <testcase name="testCheck_Response2" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.641"></testcase>
+  <testcase name="testCheck_NoResponse2" classname="com.cronos.onlinereview.deliverables.AppealResponsesDeliverableCheckerTest" time="0.721"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.48"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.411"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.391"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.38"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.391"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.36"></testcase>
+  <testcase name="testCheck_Commited" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.641"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.361"></testcase>
+  <testcase name="testCheck_NoResource" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.6"></testcase>
+  <testcase name="testCheck_NotPerSubmission" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testCheck_Uncommited" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.611"></testcase>
+  <testcase name="testCheck_NoSubmission" classname="com.cronos.onlinereview.deliverables.CommittedReviewDeliverableCheckerTest" time="0.561"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.491"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.36"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.38"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.361"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.391"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.411"></testcase>
+  <testcase name="testCheck_NoResource" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.551"></testcase>
+  <testcase name="testCheck_Active" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.581"></testcase>
+  <testcase name="testCheck_Inactive" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.61"></testcase>
+  <testcase name="testCheck_NoProject" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.741"></testcase>
+  <testcase name="testCheck_NoFinalFixUpload" classname="com.cronos.onlinereview.deliverables.FinalFixesDeliverableCheckerTest" time="0.621"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.471"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.411"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.35"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.421"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.38"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.351"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testCheck_Approved" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.762"></testcase>
+  <testcase name="testCheck_Rejected" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.64"></testcase>
+  <testcase name="testCheck_NoResource" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.732"></testcase>
+  <testcase name="testCheck_NotPerSubmission" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.55"></testcase>
+  <testcase name="testCheck_NoSubmission" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.791"></testcase>
+  <testcase name="testCheck_NoSubmitterComment" classname="com.cronos.onlinereview.deliverables.FinalReviewDeliverableCheckerTest" time="0.732"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.SingleQuerySqlDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.SingleQuerySqlDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.SingleQuerySqlDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.SingleQuerySqlDeliverableCheckerTest" time="0.371"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.SingleQuerySqlDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.SingleQuerySqlDeliverableCheckerTest" time="0.441"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.SingleQuerySqlDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.SqlDeliverableCheckerTest" time="0.45"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.SqlDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.SqlDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.SqlDeliverableCheckerTest" time="0.391"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.SqlDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.SqlDeliverableCheckerTest" time="0.43"></testcase>
+  <testcase name="testCreateConnection" classname="com.cronos.onlinereview.deliverables.SqlDeliverableCheckerTest" time="0.521"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.561"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.481"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.401"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.44"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.491"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.371"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.411"></testcase>
+  <testcase name="testCheck_NoResource" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.811"></testcase>
+  <testcase name="testCheck_Active" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.671"></testcase>
+  <testcase name="testCheck_Inactive" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.861"></testcase>
+  <testcase name="testCheck_NoProject" classname="com.cronos.onlinereview.deliverables.SubmissionDeliverableCheckerTest" time="0.701"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.571"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.631"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.361"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.38"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.431"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.361"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.34"></testcase>
+  <testcase name="testCheck_Approved" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.561"></testcase>
+  <testcase name="testCheck_Rejected" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.551"></testcase>
+  <testcase name="testCheck_NoResource" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.571"></testcase>
+  <testcase name="testCheck_NotPerSubmission" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.471"></testcase>
+  <testcase name="testCheck_NoSubmission" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.61"></testcase>
+  <testcase name="testCheck_NoSubmitterComment" classname="com.cronos.onlinereview.deliverables.SubmitterCommentDeliverableCheckerTest" time="0.611"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.38"></testcase>
+  <testcase name="testConstructor_Factory" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.391"></testcase>
+  <testcase name="testConstructor_Factory_Null" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.351"></testcase>
+  <testcase name="testConstructor_FactoryString" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testConstructor_FactoryString_NullName" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.371"></testcase>
+  <testcase name="testConstructor_FactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testConstructor_FactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.361"></testcase>
+  <testcase name="testCheck_Null" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.36"></testcase>
+  <testcase name="testCheck_NoProject" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.591"></testcase>
+  <testcase name="testCheck" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.561"></testcase>
+  <testcase name="testCheck_UploadInactive" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.611"></testcase>
+  <testcase name="testCheck_NoTestCase" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.541"></testcase>
+  <testcase name="testCheck_UploadNoResource" classname="com.cronos.onlinereview.deliverables.TestCasesDeliverableCheckerTest" time="0.54"></testcase>
+  <testcase name="testDemo" classname="com.cronos.onlinereview.deliverables.Demo" time="0.641"></testcase>
+  <testcase name="testSqlDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SqlDeliverableCheckerTest" time="0.07"></testcase>
+  <testcase name="testSqlDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SqlDeliverableCheckerTest" time="0.01"></testcase>
+  <testcase name="testSqlDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SqlDeliverableCheckerTest" time="0.02"></testcase>
+  <testcase name="testSqlDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SqlDeliverableCheckerTest" time="0.01"></testcase>
+  <testcase name="testCreateDatabaseConnection" classname="com.cronos.onlinereview.deliverables.accuracytests.SqlDeliverableCheckerTest" time="0.091"></testcase>
+  <testcase name="testCreateDatabaseConnection" classname="com.cronos.onlinereview.deliverables.accuracytests.SingleQuerySqlDeliverableCheckerTest" time="0.09"></testcase>
+  <testcase name="testSingleQuerySqlDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SingleQuerySqlDeliverableCheckerTest" time="0.03"></testcase>
+  <testcase name="testSingleQuerySqlDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SingleQuerySqlDeliverableCheckerTest" time="0.01"></testcase>
+  <testcase name="testSingleQuerySqlDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SingleQuerySqlDeliverableCheckerTest" time="0.02"></testcase>
+  <testcase name="testSingleQuerySqlDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SingleQuerySqlDeliverableCheckerTest" time="0.01"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.33"></testcase>
+  <testcase name="testSubmissionDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.361"></testcase>
+  <testcase name="testSubmissionDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.34"></testcase>
+  <testcase name="testSubmissionDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.331"></testcase>
+  <testcase name="testSubmissionDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testFillInQueryParameters1" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.421"></testcase>
+  <testcase name="testFillInQueryParameters2" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.47"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmissionDeliverableCheckerTest" time="0.421"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.38"></testcase>
+  <testcase name="testFillInQueryParameters1" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.401"></testcase>
+  <testcase name="testFillInQueryParameters2" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.461"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.43"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testCommittedReviewDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.34"></testcase>
+  <testcase name="testCommittedReviewDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.331"></testcase>
+  <testcase name="testCommittedReviewDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testCommittedReviewDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.CommittedReviewDeliverableCheckerTest" time="0.371"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.441"></testcase>
+  <testcase name="testFillInQueryParameters1" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.43"></testcase>
+  <testcase name="testFillInQueryParameters2" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.421"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.49"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.431"></testcase>
+  <testcase name="testTestCasesDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.391"></testcase>
+  <testcase name="testTestCasesDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.35"></testcase>
+  <testcase name="testTestCasesDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.341"></testcase>
+  <testcase name="testTestCasesDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.TestCasesDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.341"></testcase>
+  <testcase name="testFillInQueryParameters1" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testFillInQueryParameters2" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.441"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.441"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.48"></testcase>
+  <testcase name="testAggregationDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.401"></testcase>
+  <testcase name="testAggregationDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.32"></testcase>
+  <testcase name="testAggregationDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.411"></testcase>
+  <testcase name="testAggregationDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationDeliverableCheckerTest" time="0.34"></testcase>
+  <testcase name="testFillInQueryParameters" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.33"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.441"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.431"></testcase>
+  <testcase name="testAggregationReviewDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.33"></testcase>
+  <testcase name="testAggregationReviewDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.381"></testcase>
+  <testcase name="testAggregationReviewDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.34"></testcase>
+  <testcase name="testAggregationReviewDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.AggregationReviewDeliverableCheckerTest" time="0.321"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.37"></testcase>
+  <testcase name="testFillInQueryParameters1" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.411"></testcase>
+  <testcase name="testFillInQueryParameters2" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.41"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.531"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.431"></testcase>
+  <testcase name="testFinalFixesDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.4"></testcase>
+  <testcase name="testFinalFixesDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.331"></testcase>
+  <testcase name="testFinalFixesDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.39"></testcase>
+  <testcase name="testFinalFixesDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalFixesDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.421"></testcase>
+  <testcase name="testFillInQueryParameters1" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.55"></testcase>
+  <testcase name="testFillInQueryParameters2" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.491"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="1.092"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.601"></testcase>
+  <testcase name="testSubmitterCommentDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.38"></testcase>
+  <testcase name="testSubmitterCommentDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.451"></testcase>
+  <testcase name="testSubmitterCommentDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.46"></testcase>
+  <testcase name="testSubmitterCommentDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.SubmitterCommentDeliverableCheckerTest" time="0.461"></testcase>
+  <testcase name="testGetSqlQuery" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.421"></testcase>
+  <testcase name="testFillInQueryParameters1" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.601"></testcase>
+  <testcase name="testFillInQueryParameters2" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.41"></testcase>
+  <testcase name="testCheckCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.481"></testcase>
+  <testcase name="testCheckNotCompleted" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.471"></testcase>
+  <testcase name="testFinalReviewDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.54"></testcase>
+  <testcase name="testFinalReviewDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.401"></testcase>
+  <testcase name="testFinalReviewDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.461"></testcase>
+  <testcase name="testFinalReviewDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.FinalReviewDeliverableCheckerTest" time="0.42"></testcase>
+  <testcase name="testAppealResponsesDeliverableCheckerDBConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.AppealResponsesDeliverableCheckerTest" time="0.02"></testcase>
+  <testcase name="testAppealResponsesDeliverableCheckerDBConnectionFactoryNullConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.AppealResponsesDeliverableCheckerTest" time="0.02"></testcase>
+  <testcase name="testAppealResponsesDeliverableCheckerDBConnectionFactoryStringConnectionFactory" classname="com.cronos.onlinereview.deliverables.accuracytests.AppealResponsesDeliverableCheckerTest" time="0.02"></testcase>
+  <testcase name="testAppealResponsesDeliverableCheckerDBConnectionFactoryStringConnectionName" classname="com.cronos.onlinereview.deliverables.accuracytests.AppealResponsesDeliverableCheckerTest" time="0.01"></testcase>
+  <testcase name="testAggregationDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.AggregationDeliverableCheckerFailureTest" time="0.09"></testcase>
+  <testcase name="testAggregationDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.AggregationDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testAggregationDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.AggregationDeliverableCheckerFailureTest" time="0.03"></testcase>
+  <testcase name="testAggregationReviewDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.AggregationReviewDeliverableCheckerFailureTest" time="0.031"></testcase>
+  <testcase name="testAggregationReviewDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.AggregationReviewDeliverableCheckerFailureTest" time="0.03"></testcase>
+  <testcase name="testAggregationReviewDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.AggregationReviewDeliverableCheckerFailureTest" time="0.04"></testcase>
+  <testcase name="testAppealResponsesDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.AppealResponsesDeliverableCheckerFailureTest" time="0.03"></testcase>
+  <testcase name="testAppealResponsesDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.AppealResponsesDeliverableCheckerFailureTest" time="0.04"></testcase>
+  <testcase name="testAppealResponsesDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.AppealResponsesDeliverableCheckerFailureTest" time="0.05"></testcase>
+  <testcase name="testCheck_NullDeliverable" classname="com.cronos.onlinereview.deliverables.failuretests.AppealResponsesDeliverableCheckerFailureTest" time="0.07"></testcase>
+  <testcase name="testCheck_FailConnect" classname="com.cronos.onlinereview.deliverables.failuretests.AppealResponsesDeliverableCheckerFailureTest" time="4.667"></testcase>
+  <testcase name="testCommittedReviewDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.CommittedReviewDeliverableCheckerFailureTest" time="0.01"></testcase>
+  <testcase name="testCommittedReviewDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.CommittedReviewDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testCommittedReviewDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.CommittedReviewDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testFinalFixesDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.FinalFixesDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testFinalFixesDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.FinalFixesDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testFinalFixesDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.FinalFixesDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testFinalReviewDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.FinalReviewDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testFinalReviewDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.FinalReviewDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testFinalReviewDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.FinalReviewDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testCheck_NullDeliverable" classname="com.cronos.onlinereview.deliverables.failuretests.SingleQuerySqlDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testCheck_FailConnection" classname="com.cronos.onlinereview.deliverables.failuretests.SingleQuerySqlDeliverableCheckerFailureTest" time="4.536"></testcase>
+  <testcase name="testCheck_With_CommittedReviewDeliverableChecker" classname="com.cronos.onlinereview.deliverables.failuretests.SingleQuerySqlDeliverableCheckerFailureTest" time="0.121"></testcase>
+  <testcase name="testCheck_With_FinalReviewDeliverableChecker" classname="com.cronos.onlinereview.deliverables.failuretests.SingleQuerySqlDeliverableCheckerFailureTest" time="0.12"></testcase>
+  <testcase name="testCheck_With_SubmitterCommentDeliverableChecker" classname="com.cronos.onlinereview.deliverables.failuretests.SingleQuerySqlDeliverableCheckerFailureTest" time="0.12"></testcase>
+  <testcase name="testSubmissionDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.SubmissionDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testSubmissionDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.SubmissionDeliverableCheckerFailureTest" time="0.03"></testcase>
+  <testcase name="testSubmissionDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.SubmissionDeliverableCheckerFailureTest" time="0.03"></testcase>
+  <testcase name="testSubmitterCommentDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.SubmitterCommentDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testSubmitterCommentDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.SubmitterCommentDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testSubmitterCommentDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.SubmitterCommentDeliverableCheckerFailureTest" time="0.03"></testcase>
+  <testcase name="testTestCasesDeliverableCheckerDBConnectionFactory_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.TestCasesDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testTestCasesDeliverableCheckerDBConnectionFactoryString_NullFactory" classname="com.cronos.onlinereview.deliverables.failuretests.TestCasesDeliverableCheckerFailureTest" time="0.07"></testcase>
+  <testcase name="testTestCasesDeliverableCheckerDBConnectionFactoryString_EmptyName" classname="com.cronos.onlinereview.deliverables.failuretests.TestCasesDeliverableCheckerFailureTest" time="0.02"></testcase>
+  <testcase name="testAggregationDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="10.525"></testcase>
+  <testcase name="testAggregationReviewDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="10.205"></testcase>
+  <testcase name="testAppealResponsesDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="10.625"></testcase>
+  <testcase name="testCommittedReviewDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="9.574"></testcase>
+  <testcase name="testFinalFixesDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="10.645"></testcase>
+  <testcase name="testFinalReviewDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="11.036"></testcase>
+  <testcase name="testSubmissionDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="10.756"></testcase>
+  <testcase name="testSubmitterCommentDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="9.884"></testcase>
+  <testcase name="testTestCasesDeliverableChecker_Check" classname="com.cronos.onlinereview.deliverables.stresstests.CheckMethodsStressTest" time="9.954"></testcase>
+  <system-out><![CDATA[Invoking AggregationDeliverableChecker#check 100 times costs: 10465 ms.
+Invoking AggregationReviewDeliverableChecker#check 100 times costs: 10195 ms.
+Invoking AppealResponsesDeliverableChecker#check 100 times costs: 10605 ms.
+Invoking CommittedReviewDeliverableChecker#check 100 times costs: 9564 ms.
+Invoking FinalFixesDeliverableChecker#check 100 times costs: 10625 ms.
+Invoking FinalReviewDeliverableChecker#check 100 times costs: 11016 ms.
+Invoking SubmissionDeliverableChecker#check 100 times costs: 10736 ms.
+Invoking SubmitterCommentDeliverableChecker#check 100 times costs: 9864 ms.
+Invoking TestCasesDeliverableChecker#check 100 times costs: 9934 ms.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
