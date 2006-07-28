@@ -3,7 +3,7 @@
  */
 package com.topcoder.management.review.data;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -50,7 +50,7 @@ public class DemoTests extends TestCase {
         review.setCommitted(true);
         review.setScore(new Float(75.0));
         review.setModificationUser("Santa");
-        review.setModificationTimestamp(DateFormat.getDateInstance().parse("2000-1-1"));
+        review.setModificationTimestamp(new SimpleDateFormat("yyyy-MM-dd").parse("2000-1-1"));
 
         // Set the scorecard and then demonstrate how to reset it to the unassigned value
         review.setScorecard(1);
