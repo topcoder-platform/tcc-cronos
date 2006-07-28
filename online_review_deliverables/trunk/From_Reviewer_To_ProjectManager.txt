@@ -1,0 +1,63 @@
+Due to the developer and the reviewers use different test datas (fixed once they are inserted into the database), 
+in order to run all the test cases together via ant, I created 4 databases for developer and the 3 reviewers' tests
+respectively.
+
+Step 1. Build developer's database - create a database named: developer, run the or.sql then Lookups.sql
+        You can change the config by modifying the /test_files/db_conf.xml
+
+Step 2. Build failure reviewer's database - create a database named: failuretest, run the or.sql.
+        You can change the config by modifying the /test_files/failuretest/dbconfig.xml
+        
+Step 3. Build stress reviewer's database - create a database named: stresstest, run the test_files/stress/tables.sql then the data.sql.
+        You can change the config by modifying the /test_files/stress/dbconfig.xml
+        
+Step 4. Build accuracy reviewer's database - create a database named: accuracytest, run the test_files/or.sql.
+        You can change the config by modifying the /test_files/accuracytests/configurations.xml
+        
+
+Note,
+
+In the submitted test cases of the accuracy reviewer, some serious issues exists, but have been modified by the primary reviewer.
+
+Here is my e-mail to PM for reference what have been changed:
+
+===========================================================================================================================
+Some serious issues still exist in the accuracy tests.
+
+1. The sql file: /test_files/accuracytests/preconditions.sql, some constraints are violated:
+    His first two statements are:
+   insert into project_status_lu values (1,"name","description","creation_user",CURRENT,"modify_user",CURRENT);
+   insert into project values (1,1,1,"creation_user",CURRENT,"modify_user",CURRENT);
+
+  However, id "1" of the project_category_lu is not set.. so, must modify to be:
+  INSERT INTO project_type_lu(project_type_id, name, description, create_user, create_date, modify_user, modify_date) 
+     VALUES(1, 'Component', 'Component', 'System', CURRENT, 'System', CURRENT);
+  INSERT INTO project_category_lu(project_category_id, project_type_id, name, description, create_user, create_date, modify_user, modify_date)
+     VALUES(1, 1, 'Design', 'Design', 'System', CURRENT, 'System', CURRENT);
+  insert into project_status_lu values (1,"name","description","creation_user",CURRENT,"modify_user",CURRENT);
+  insert into project values (1,1,1,"creation_user",CURRENT,"modify_user",CURRENT);
+
+  and some corresponding modifications in the AccuracyTestHelper#clearTables() are needed.
+
+2. In the test cases, for example, in SubmissionDeliverableCheckerTest, the follow test:
+
+    public final void testFillInQueryParameters1() throws Exception {
+        assertEquals(deliverable.getProject(), ((IfxInteger) getParametersVector().get(0)).toLong());
+    }
+
+   The accuracy reviewer use a 3rd component (the ifx jdbc driver)  and use reflection to do the assert.
+   However, a class cast exception is thrown (mainly due to the version issue of the jdbc driver).
+
+   Both the winner of the component and I encountered this problem.
+
+  I don't think the accuracy reviewer should use the jdbc driver to do the assert.  But it is a hard work for him to rewrite all these test cases, so I just 
+  fix some version problems. (IfxInteger --> IfxInt8 in my version of jdbc driver).
+
+Actually, the winner's final fix is ok.. but it seems that the accuracy tests have more bug than the developer. ^_^.
+
+I don't want the project to delay, so for the above two problems, I fixed it myselft. And the modified test cases are in the attached file.
+Please send this file to the accuracy reviewer to confirm.. 
+
+Thanks a lot.
+
+=================================================================================================================================
