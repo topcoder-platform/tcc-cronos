@@ -15,6 +15,7 @@ import com.topcoder.management.review.scoreaggregator.impl.AveragingAggregationA
 import com.topcoder.management.review.scoreaggregator.impl.StandardPlaceAssignment;
 import com.topcoder.management.review.scoreaggregator.impl.StandardTieBreaker;
 import com.topcoder.management.review.scoreaggregator.impl.StandardTieDetector;
+import com.topcoder.util.config.ConfigManager;
 
 import junit.framework.TestCase;
 
@@ -45,11 +46,25 @@ public class ReviewScoreAggregatorAccuracyTests extends TestCase {
 
     /**
      * Sets up the testing environment.
+     *
+     * @throws Exception from configuration manager.
      */
-    protected void setUp() {
+    protected void setUp() throws Exception {
         // creates ReviewScoreAggregator
+        ConfigManager cm = ConfigManager.getInstance();
+        cm.add("com/topcoder/management/review/scoreaggregator/config_accuracy.xml");
         reviewScoreAggregator = new ReviewScoreAggregator(aggregator, tieDetector, tieBreaker,
                 placeAssignmentAlgorithm);
+    }
+
+    /**
+     * Tears down the testing environment.
+     *
+     * @throws Exception from configuration manager.
+     */
+    protected void tearDown() throws Exception {
+        ConfigManager cm = ConfigManager.getInstance();
+        cm.removeNamespace("com.topcoder.management.review.scoreaggregator");
     }
 
     /**
