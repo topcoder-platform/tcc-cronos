@@ -1,0 +1,1 @@
+To run the test just setup the connection in db_conf.xml, create the database and run the lookups.sql script.
