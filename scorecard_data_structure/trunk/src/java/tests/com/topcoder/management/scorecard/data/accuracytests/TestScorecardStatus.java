@@ -24,15 +24,7 @@ public class TestScorecardStatus extends TestCase {
     public void testScorecardStatusAccuracy1() {
         ScorecardStatus status = new ScorecardStatus();
         assertNull("constructor is wrong.", status.getName());
-
-        try {
-            status.getId();
-            fail("constructor is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor is wrong.");
-        }
+        assertEquals("constructor is wrong.", -1, status.getId());
     }
 
     /**

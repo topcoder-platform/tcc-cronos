@@ -278,12 +278,7 @@ public class ScorecardEditorTest extends TestCase {
         editor.setId(1);
         editor.resetId();
 
-        try {
-            scorecard.getId();
-            fail("An IllegalStateException is expected when getId is called without an id set.");
-        } catch (IllegalStateException ex) {
-            // Good!
-        }
+        assertEquals("Id should be reset.", NamedScorecardStructure.SENTINEL_ID, scorecard.getId());
     }
 
     /**

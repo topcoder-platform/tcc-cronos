@@ -66,15 +66,7 @@ public class TestGroup extends TestCase {
     public void testGroupAccuracy1() {
         Group g = new Group();
         assertNull("constructor is wrong.", g.getName());
-
-        try {
-            g.getId();
-            fail("constructor is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor is wrong.");
-        }
+        assertEquals("constructor is wrong.", -1, g.getId());
     }
 
     /**

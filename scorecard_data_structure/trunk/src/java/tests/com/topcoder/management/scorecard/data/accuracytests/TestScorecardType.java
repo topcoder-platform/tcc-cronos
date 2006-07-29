@@ -24,15 +24,7 @@ public class TestScorecardType extends TestCase {
     public void testScorecardTypeAccuracy1() {
         ScorecardType type = new ScorecardType();
         assertNull("constructor is wrong.", type.getName());
-
-        try {
-            type.getId();
-            fail("constructor is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor is wrong.");
-        }
+        assertEquals("constructor is wrong.", -1, type.getId());
     }
 
     /**

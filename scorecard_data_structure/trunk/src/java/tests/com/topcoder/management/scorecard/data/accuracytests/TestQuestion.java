@@ -53,15 +53,7 @@ public class TestQuestion extends TestCase {
     public void testQuestionAccuracy1() {
         Question q = new Question();
         assertNull("constructor is wrong.", q.getName());
-
-        try {
-            q.getId();
-            fail("constructor is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor is wrong.");
-        }
+        assertEquals("constructor is wrong.", -1, q.getId());
     }
 
     /**

@@ -56,15 +56,7 @@ public class TestSection extends TestCase {
     public void testSectionAccuracy1() {
         Section s = new Section();
         assertNull("constructor is wrong.", s.getName());
-
-        try {
-            s.getId();
-            fail("constructor is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor is wrong.");
-        }
+        assertEquals("constructor is wrong.", -1, s.getId());
     }
 
     /**

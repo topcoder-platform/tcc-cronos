@@ -33,7 +33,7 @@ public abstract class NamedScorecardStructure implements Serializable {
      * The sentinel identifier, used to indicate that the identifier has not yet been set through the constructor or
      * the setId method (or has been reset by the resetId method).
      */
-    private static final long SENTINEL_ID = -1;
+    public static final long SENTINEL_ID = -1;
 
     /**
      * The sentinel name, used to indicate that the name has not yet been set through the constructor or the
@@ -136,18 +136,12 @@ public abstract class NamedScorecardStructure implements Serializable {
     }
 
     /**
-     * Gets the scorecard structure's unique identifier.
+     * Gets the scorecard structure's unique identifier. If it hasn't been set yet, the
+     * {@link #SENTINEL_ID SENTINEL_ID} will be returned.
      *
      * @return  The scorecard structure's unique identifier.
-     *
-     * @throws  IllegalStateException
-     *          The scorecard structure's unique identifier is not set yet.
      */
     public long getId() {
-        if (id == SENTINEL_ID) {
-            throw new IllegalStateException("The id has not been set yet.");
-        }
-
         return id;
     }
 

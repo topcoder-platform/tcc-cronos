@@ -48,14 +48,7 @@ public class TestNamedScorecardStructure extends TestCase {
     public void testNamedScorecardStructureAccuracy1() {
         NamedScorecardStructure structure = new NamedScorecardStructureImpl();
         assertNull("constructor is wrong.", structure.getName());
-        try {
-            structure.getId();
-            fail("constructor is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor is wrong.");
-        } 
+        assertEquals("constructor is wrong.", -1, structure.getId()); 
     }
     
     /**
@@ -82,14 +75,7 @@ public class TestNamedScorecardStructure extends TestCase {
      */
     public void testResetIdAccuracy() {
         scorecard.resetId();
-        try {
-            scorecard.getId();
-            fail("resetId is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("resetId is wrong.");
-        }
+        assertEquals("resetId is wrong.", -1, scorecard.getId());
     }
 
     /**

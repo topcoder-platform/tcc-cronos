@@ -177,40 +177,6 @@ public class NamedScorecardStructureFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests NamedScorecardStructure#getId() for failure.
-     * It tests the case that when id has not been set and expects IllegalStateException.
-     * </p>
-     */
-    public void testGetId_IdNotSet() {
-        try {
-            structure.getId();
-            fail("IllegalStateException expected.");
-        } catch (IllegalStateException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests NamedScorecardStructure#getId() for failure.
-     * It tests the case that when id has not been set and expects IllegalStateException.
-     * </p>
-     */
-    public void testGetId_IdNotSet2() {
-        // id is set and then reset
-        structure.setId(ID);
-        structure.resetId();
-
-        try {
-            structure.getId();
-            fail("IllegalStateException expected.");
-        } catch (IllegalStateException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
      * This class extends NamedScorecardStructure and is used for testing.
      * </p>
      *

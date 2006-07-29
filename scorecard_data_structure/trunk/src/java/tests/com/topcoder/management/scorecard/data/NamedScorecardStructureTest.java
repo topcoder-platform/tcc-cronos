@@ -163,12 +163,7 @@ public abstract class NamedScorecardStructureTest extends TestCase {
      *          The NamedScorecardStructure instance to check.
      */
     private void checkDefaultId(NamedScorecardStructure structure) {
-        try {
-            structure.getId();
-            fail("An IllegalStateException is expected when the id has not yet been initialized.");
-        } catch (IllegalStateException ex) {
-            // Good!
-        }
+        assertEquals("Incorrect default value.", NamedScorecardStructure.SENTINEL_ID, structure.getId());
     }
 
     /**

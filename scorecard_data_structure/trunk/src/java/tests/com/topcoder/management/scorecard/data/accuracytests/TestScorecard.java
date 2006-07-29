@@ -83,15 +83,7 @@ public class TestScorecard extends TestCase {
     public void testScorecardAccuracy1() {
         Scorecard s = new Scorecard();
         assertNull("constructor1 is wrong.", s.getName());
-
-        try {
-            s.getId();
-            fail("constructor2 is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor3 is wrong.");
-        }
+        assertEquals("constructor is wrong.", -1, s.getId());
     }
 
     /**

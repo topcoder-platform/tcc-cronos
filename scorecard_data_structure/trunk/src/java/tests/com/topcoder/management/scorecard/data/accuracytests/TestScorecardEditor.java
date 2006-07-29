@@ -114,15 +114,7 @@ public class TestScorecardEditor extends TestCase {
         assertEquals("setId is wrong.", 1234, editor.getScorecard().getId());
 
         editor.resetId();
-
-        try {
-            editor.getScorecard().getId();
-            fail("constructor2 is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor3 is wrong.");
-        }
+        assertEquals("resetId is wrong.", -1, editor.getScorecard().getId());
     }
 
     /**

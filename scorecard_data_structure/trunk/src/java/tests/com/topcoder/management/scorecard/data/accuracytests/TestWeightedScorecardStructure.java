@@ -50,15 +50,7 @@ public class TestWeightedScorecardStructure extends TestCase {
     public void testWeightedScorecardStructureAccuracy1() {
         WeightedScorecardStructure structure = new WeightedScorecardStructureImpl();
         assertNull("constructor is wrong.", structure.getName());
-
-        try {
-            structure.getId();
-            fail("constructor is wrong.");
-        } catch (IllegalStateException ise) {
-            // ignore
-        } catch (Exception e) {
-            fail("constructor is wrong.");
-        }
+        assertEquals("constructor is wrong.", -1, structure.getId());
     }
 
     /**
