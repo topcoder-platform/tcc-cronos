@@ -4,12 +4,13 @@
  */
 package com.topcoder.management.phase;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import com.topcoder.management.phase.accuracytests.AccuracyTests;
 import com.topcoder.management.phase.failuretests.FailureTests;
 import com.topcoder.management.phase.stresstests.StressTests;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * <p>This test case aggregates all test cases.</p>
