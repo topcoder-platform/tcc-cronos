@@ -1,0 +1,5 @@
+1. the doc has been updated with cambridge blue.
+include a little error of sql script of algorithm section, demo section
+
+2. to run my testcase, you should add the tables(/test_files/createTable.sql) to your test database first.
+And the test data don't need to be inserted manually.

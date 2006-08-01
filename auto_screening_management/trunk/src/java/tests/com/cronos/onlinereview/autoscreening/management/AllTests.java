@@ -7,6 +7,7 @@ package com.cronos.onlinereview.autoscreening.management;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import com.cronos.onlinereview.autoscreening.management.accuracytests.AccuracyTests;
 import com.cronos.onlinereview.autoscreening.management.failuretests.FailureTests;
 import com.cronos.onlinereview.autoscreening.management.stresstests.StressTests;

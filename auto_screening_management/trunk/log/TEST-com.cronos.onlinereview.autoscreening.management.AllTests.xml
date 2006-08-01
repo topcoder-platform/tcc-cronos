@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.cronos.onlinereview.autoscreening.management.AllTests" tests="202" failures="0" errors="0" time="8.844">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="package" value="com.cronos.onlinereview.autoscreening.management"></property>
+    <property name="docpackage.jar" value="auto_screening_management_docs.jar"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="id_generator.jar.name" value="id_generator.jar"></property>
+    <property name="sun.boot.class.path" value="C:\j2sdk4\jre\lib\rt.jar;C:\j2sdk4\jre\lib\i18n.jar;C:\j2sdk4\jre\lib\sunrsasign.jar;C:\j2sdk4\jre\lib\jsse.jar;C:\j2sdk4\jre\lib\jce.jar;C:\j2sdk4\jre\lib\charsets.jar;C:\j2sdk4\jre\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="Auto_Screening_Management_1.0_design_submission.jar"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/auto_screening_management_tests.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="ant.home" value="C:\ant"></property>
+    <property name="java.runtime.version" value="1.4.2_11-b06"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="component_path" value="auto_screening_management/1.0"></property>
+    <property name="user.name" value="chcow"></property>
+    <property name="id_generator.version" value="3.0"></property>
+    <property name="debug" value="off"></property>
+    <property name="reports" value="reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dist_conf" value="build/dist/auto_screening_management-1.0/conf"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.4"></property>
+    <property name="sun.boot.library.path" value="C:\j2sdk4\jre\bin"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="Auto Screening Management"></property>
+    <property name="java.version" value="1.4.2_11"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="Auto_Screening_Management_1.0_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="webdir" value="web"></property>
+    <property name="object_factory.jar.name" value="object_factory.jar"></property>
+    <property name="java.endorsed.dirs" value="C:\j2sdk4\jre\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="packagedir" value="com/cronos/onlinereview/autoscreening/management"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dev_submission.jar" value="Auto_Screening_Management_1.0_dev_submission.jar"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="java.home" value="C:\j2sdk4\jre"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="ant.file" value="D:\workspace\Auto_Screening_Management\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="ifxjdbc.jar" value="lib/ifxjdbc.jar"></property>
+    <property name="build_tcsdistdir" value="build/dist/auto_screening_management-1.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.4.2_11-b06"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.library.dir" value="C:\ant\lib"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="dist_testfiles" value="build/dist/auto_screening_management-1.0/test_files"></property>
+    <property name="dist_javadocs" value="build/dist/auto_screening_management-1.0/docs/javadocs"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="component" value="Auto_Screening_Management"></property>
+    <property name="component.war" value="${dist_examples}/auto_screening_management.war"></property>
+    <property name="user.home" value="C:\Documents and Settings\kwok chu"></property>
+    <property name="object_factory.jar" value="lib/tcs/object_factory/2.0/object_factory.jar"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.library.path" value="C:\j2sdk4\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\IBM ThinkVantage\Client Security Solution;C:\Program Files\Diskeeper Corporation\Diskeeper\;C:\Program Files\ThinkPad\ConnectUtilities;c:\ant\bin;C:\j2sdk4\bin"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="java.class.path" value="D:\workspace\Auto_Screening_Management\lib\ifxjdbc.jar;D:\workspace\Auto_Screening_Management\build\testClasses;D:\workspace\Auto_Screening_Management\build\classes;D:\workspace\Auto_Screening_Management\lib\tcs\configuration_manager\2.1.4\configuration_manager.jar;D:\workspace\Auto_Screening_Management\lib\tcs\object_factory\2.0\object_factory.jar;D:\workspace\Auto_Screening_Management\lib\tcs\id_generator\3.0\id_generator.jar;D:\workspace\Auto_Screening_Management\lib\tcs\db_connection_factory\1.0\db_connection_factory.jar;D:\workspace\Auto_Screening_Management\lib\tcs\base_exception\1.0\base_exception.jar;D:\workspace\Auto_Screening_Management\conf;D:\workspace\Auto_Screening_Management\test_files;C:\ant\lib\junit-3.8.1.jar;C:\ant\lib\ant-launcher.jar;C:\ant\lib\ant.jar;C:\ant\lib\ant-junit.jar"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="object_factory.version" value="2.0"></property>
+    <property name="ant.file.Auto Screening Management" value="D:\workspace\Auto_Screening_Management\build.xml"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/auto_screening_management-1.0.jar"></property>
+    <property name="junit.jar" value="lib/junit/3.8.2/junit.jar"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\KWOKCH~1\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.4/configuration_manager.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="id_generator.jar" value="lib/tcs/id_generator/3.0/id_generator.jar"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="java.ext.dirs" value="C:\j2sdk4\jre\lib\ext"></property>
+    <property name="dist_src" value="build/dist/auto_screening_management-1.0/src"></property>
+    <property name="user.dir" value="D:\workspace\Auto_Screening_Management"></property>
+    <property name="design_dist.jar" value="Auto_Screening_Management_1.0_design_dist.jar"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"></property>
+    <property name="distfilename" value="auto_screening_management"></property>
+    <property name="basedir" value="D:\workspace\Auto_Screening_Management"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="object_factory.path" value="object_factory/2.0"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="id_generator.path" value="id_generator/3.0"></property>
+    <property name="configmanager.version" value="2.1.4"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="dist_docs" value="build/dist/auto_screening_management-1.0/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/auto_screening_management/1.0/auto_screening_management.jar"></property>
+    <property name="java.specification.version" value="1.4"></property>
+  </properties>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.016"></testcase>
+  <testcase name="testCreate_String_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_4_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_5_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ConfigurationExceptionTests" time="0.0"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_4_accuracy" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_5_accuracy" classname="com.cronos.onlinereview.autoscreening.management.PersistenceExceptionTests" time="0.0"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_4_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_String_Throwable_5_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagementExceptionTests" time="0.0"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskAlreadyExistsExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_Long_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskAlreadyExistsExceptionTests" time="0.0"></testcase>
+  <testcase name="testGetUpload" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskAlreadyExistsExceptionTests" time="0.0"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_Long_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_LongArray_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_LongArray_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_LongArray_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testGetUploads" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreateDBConnectionFactory_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbScreeningManagerTests" time="0.093"></testcase>
+  <testcase name="testCreateDBConnectionFactory_failure" classname="com.cronos.onlinereview.autoscreening.management.DbScreeningManagerTests" time="0.032"></testcase>
+  <testcase name="testCreateDBConnectionFactoryString_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbScreeningManagerTests" time="0.016"></testcase>
+  <testcase name="testCreateDBConnectionFactoryString_1_failure" classname="com.cronos.onlinereview.autoscreening.management.DbScreeningManagerTests" time="0.0"></testcase>
+  <testcase name="testCreateDBConnectionFactoryString_2_failure" classname="com.cronos.onlinereview.autoscreening.management.DbScreeningManagerTests" time="0.031"></testcase>
+  <testcase name="testCreateDBConnectionFactoryString_3_failure" classname="com.cronos.onlinereview.autoscreening.management.DbScreeningManagerTests" time="0.016"></testcase>
+  <testcase name="testCreateConnection_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbScreeningManagerTests" time="0.172"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.218"></testcase>
+  <testcase name="testCreateDBConnectionFactoryIDGenerator_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.157"></testcase>
+  <testcase name="testCreateDBConnectionFactoryIDGenerator_1_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.172"></testcase>
+  <testcase name="testCreateDBConnectionFactoryIDGenerator_2_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.14"></testcase>
+  <testcase name="testCreateDBConnectionFactoryStringIDGenerator_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.141"></testcase>
+  <testcase name="testCreateDBConnectionFactoryStringIDGenerator_1_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.14"></testcase>
+  <testcase name="testCreateDBConnectionFactoryStringIDGenerator_2_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.157"></testcase>
+  <testcase name="testCreateDBConnectionFactoryStringIDGenerator_3_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.187"></testcase>
+  <testcase name="testCreateDBConnectionFactoryStringIDGenerator_4_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.125"></testcase>
+  <testcase name="testInitiateScreening_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.235"></testcase>
+  <testcase name="testInitiateScreening_1_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.125"></testcase>
+  <testcase name="testInitiateScreening_2_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.14"></testcase>
+  <testcase name="testInitiateScreening_3_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.156"></testcase>
+  <testcase name="testInitiateScreening_4_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.125"></testcase>
+  <testcase name="testInitiateScreening_5_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.188"></testcase>
+  <testcase name="testGetScreeningDetails_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.203"></testcase>
+  <testcase name="testGetScreeningDetails_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.172"></testcase>
+  <testcase name="testGetScreeningDetails_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.187"></testcase>
+  <testcase name="testGetScreeningDetails_4_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.172"></testcase>
+  <testcase name="testGetScreeningDetails_1_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.141"></testcase>
+  <testcase name="testGetScreeningDetails_2_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.141"></testcase>
+  <testcase name="testGetScreeningDetails_3_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.156"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.812"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_1_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.157"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_2_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.156"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_3_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.14"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_4_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.141"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_5_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.156"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_6_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.125"></testcase>
+  <testcase name="testgetScreeningTasksLongArray_7_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.141"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.187"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.204"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.187"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_4_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.156"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_5_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.157"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_1_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.125"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_2_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.156"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_3_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.156"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_4_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.141"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_5_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.125"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_6_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.14"></testcase>
+  <testcase name="testgetScreeningTasksLongArrayBoolean_7_failure" classname="com.cronos.onlinereview.autoscreening.management.DefaultDbScreeningManagerTests" time="0.172"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testCreate_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testSetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testSetId_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testSetId_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testGetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testSetName_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testSetName_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testSetName_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testGetName_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ResponseSeverityTests" time="0.0"></testcase>
+  <testcase name="testCreateScreeningManagerString_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagerFactoryTests" time="0.203"></testcase>
+  <testcase name="testCreateScreeningManagerString_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagerFactoryTests" time="0.141"></testcase>
+  <testcase name="testCreateScreeningManagerString_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningManagerFactoryTests" time="0.125"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testCreate_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetId_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetId_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testGetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseSeverity_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseSeverity_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testGetResponseSeverity_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseCode_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseCode_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseCode_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testGetResponseCode_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseText_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseText_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testSetResponseText_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.0"></testcase>
+  <testcase name="testGetResponseText_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResponseTests" time="0.016"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testCreate_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetId_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetId_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testGetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetScreeningResponse_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetScreeningResponse_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testGetScreeningResponse_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetDynamicText_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetDynamicText_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testSetDynamicText_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testGetDynamicText_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningResultTests" time="0.0"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testCreate_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testSetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testSetId_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testSetId_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testGetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testSetName_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testSetName_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testSetName_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testGetName_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testSetName_3_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningStatusTests" time="0.0"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testCreate_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetId_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetId_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetId_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetScreeningStatus_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetScreeningStatus_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetScreeningStatus_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testUpload_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetUpload_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetUpload_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetUpload_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetScreener_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetScreener_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetScreener_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetScreener_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetStartTimestamp_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetStartTimestamp_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetStartTimestamp_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testAddScreeningResult_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testAddScreeningResult_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testAddScreeningResult_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testRemoveScreeningResult_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testRemoveScreeningResult_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetAllScreeningResults_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testClearAllScreeningResults_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetCreationUser_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetCreationUser_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetCreationUser_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetCreationUser_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetCreationTimestamp_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetCreationTimestamp_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetCreationTimestamp_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetModificationUser_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetModificationUser_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetModificationUser_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetModificationUser_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetModificationTimestamp_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testSetModificationTimestamp_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testGetModificationTimestamp_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskTests" time="0.0"></testcase>
+  <testcase name="testInheritance" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_Long_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_LongArray_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_LongArray_1_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCreate_LongArray_2_failure" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testGetUploads" classname="com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistExceptionTests" time="0.0"></testcase>
+  <testcase name="testCheckNull_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckNull_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckPositive_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckPositive_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckPositive_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckString_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckString_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckString_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.ManagementHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckNull_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckNull_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckPositive_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckPositive_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckPositive_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckString_1_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckString_2_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testCheckString_3_accuracy" classname="com.cronos.onlinereview.autoscreening.management.DbHelperTests" time="0.0"></testcase>
+  <testcase name="testInitiatingScreeningTask" classname="com.cronos.onlinereview.autoscreening.management.Demo" time="0.25"></testcase>
+  <testcase name="testQueryingWithoutDetails" classname="com.cronos.onlinereview.autoscreening.management.Demo" time="0.187"></testcase>
+  <testcase name="testQueryingWithDetails" classname="com.cronos.onlinereview.autoscreening.management.Demo" time="0.219"></testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

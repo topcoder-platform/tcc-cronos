@@ -1,0 +1,10 @@
+Starting audit...
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\ScreeningManager.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\ScreeningManagerFactory.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\ScreeningTask.java:373:35: ')' is followed by whitespace.
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\ScreeningTaskDoesNotExistException.java:63:32: ')' is followed by whitespace.
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\ScreeningTaskDoesNotExistException.java:76:24: ')' is followed by whitespace.
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\db\DbScreeningManager.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\db\DefaultDbScreeningManager.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+D:\workspace\Auto_Screening_Management\src\java\main\com\cronos\onlinereview\autoscreening\management\db\DefaultDbScreeningManager.java:67: Line is longer than 120 characters.
+Audit done.

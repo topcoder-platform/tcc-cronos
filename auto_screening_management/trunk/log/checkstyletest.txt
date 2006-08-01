@@ -1,0 +1,10 @@
+Starting audit...
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\DefaultDbScreeningManagerTests.java:80:40: ')' is followed by whitespace.
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\DefaultDbScreeningManagerTests.java:656: array initialization child at indentation level 16 not at correct indentation, [12, 69]
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\MockDbScreeningManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'PersistenceException'.
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\ScreeningManagerFactoryTests.java:57:49: ')' is followed by whitespace.
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\TestHelper.java:205:40: ')' is followed by whitespace.
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\TestHelper.java:217:5: Executable statement count is 111 (max allowed is 30).
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\TestHelper.java:217:5: Method length is 152 lines (max allowed is 150).
+D:\workspace\Auto_Screening_Management\src\java\tests\com\cronos\onlinereview\autoscreening\management\TestHelper.java:378:5: Executable statement count is 38 (max allowed is 30).
+Audit done.
