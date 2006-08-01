@@ -14,58 +14,42 @@ import junit.framework.TestCase;
 public class StressTestLoginActionsLogout extends TestCase {
 
     /**
-     * Stress test for running 100 users to logout.
+     * Stress test for running 10 users to logout.
      *
      * @throws Exception
      *             ot junit.
      */
-    public void testLogout_with100Threads() throws Exception {
-        Thread[] logoutThreads = new Thread[100];
+    public void testLogout_with10Threads() throws Exception {
+        Thread[] logoutThreads = new Thread[10];
 
-        long total = 0;
+        long start = System.currentTimeMillis();
 
         for (int i = 0; i < logoutThreads.length; i++) {
             logoutThreads[i] = new LogoutThread();
 
-            long start = System.currentTimeMillis();
-
             logoutThreads[i].start();
-            total += System.currentTimeMillis() - start;
         }
 
-        for (int i = 0; i < logoutThreads.length; i++) {
-            logoutThreads[i].join();
-        }
-
-        System.out.println("Running 100 user for logout cost " + total / 1000.0 + " seconds.");
+        long end = System.currentTimeMillis();
+        System.out.println("Running 20 user for logout cost " + (end - start) / 1000.0 + " seconds.");
     }
 
     /**
-     * Stress test for running 1000 users to logout.
+     * Stress test for running 100 users to logout.
      *
      * @throws Exception
      *             to junit.
      */
-    public void testLogout_with1000Threads() throws Exception {
-        Thread[] logoutThreads = new Thread[1000];
-
-        long total = 0;
-
+    public void testLogout_with100Threads() throws Exception {
+        Thread[] logoutThreads = new Thread[100];
+        long start = System.currentTimeMillis();
         for (int i = 0; i < logoutThreads.length; i++) {
+            Thread.sleep(300);
             logoutThreads[i] = new LogoutThread();
-
-            long start = System.currentTimeMillis();
-
             logoutThreads[i].start();
-            total += System.currentTimeMillis() - start;
         }
-
-        for (int i = 0; i < logoutThreads.length; i++) {
-            logoutThreads[i].join();
-        }
-
-        System.out.println("Running 1000 user for logout cost " + total / 1000.0 + " seconds.");
-
+        long end = System.currentTimeMillis();
+        System.out.println("Running 100 user for logout cost " + (end - start - 30000) / 1000.0 + " seconds.");
     }
 
     /**

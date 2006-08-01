@@ -12,6 +12,23 @@ import junit.framework.TestCase;
  * @version 1.0
  */
 public class StressTestLoginActionsLogin extends TestCase {
+    /**
+     * Stress test for login for 10 users.
+     *
+     * @throws Exception
+     *             to junit.
+     *
+     */
+    public void testLogin_With10User() throws Exception {
+        Thread[] thread = new Thread[10];
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < thread.length; i++) {
+            thread[i] = new LoginThread();
+            thread[i].start();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Running login for 10 user, cost " + (end - start) / 1000.0 + " seconds.");
+    }
 
     /**
      * Stress test for login for 100 threads.
@@ -20,53 +37,19 @@ public class StressTestLoginActionsLogin extends TestCase {
      *             to junit.
      *
      */
-    public void testLogin_With100Thread() throws Exception {
+    public void testLogin_With100User() throws Exception {
         Thread[] thread = new Thread[100];
-
-        long total = 0;
+        long start = System.currentTimeMillis();
         for (int i = 0; i < thread.length; i++) {
+            Thread.sleep(300);
             thread[i] = new LoginThread();
-
-            long start = System.currentTimeMillis();
 
             thread[i].start();
 
-            total += System.currentTimeMillis() - start;
         }
 
-        for (int i = 0; i < thread.length; i++) {
-            thread[i].join();
-        }
-
-        System.out.println("Running login for 100 user, cost " + total / 1000.0 + " seconds.");
-    }
-
-    /**
-     * Stress test for login for 1000 thread.
-     *
-     * @throws Exception
-     *             to junit.
-     *
-     */
-    public void testLogin_With1000Thread() throws Exception {
-        Thread[] thread = new Thread[1000];
-
-        long total = 0;
-
-        for (int i = 0; i < thread.length; i++) {
-            thread[i] = new LoginThread();
-
-            long start = System.currentTimeMillis();
-            thread[i].start();
-
-            total += System.currentTimeMillis() - start;
-        }
-
-        for (int i = 0; i < thread.length; i++) {
-            thread[i].join();
-        }
-
-        System.out.println("Running login for 1000 user, cost " + total / 1000.0 + " seconds.");
+        long end = System.currentTimeMillis();
+        System.out.println("Running login for 100 user, cost " + (end - start - 30000) / 1000.0 + " seconds.");
     }
 
     /**

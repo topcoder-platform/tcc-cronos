@@ -24,6 +24,7 @@ public class LogoutTest extends MockStrutsTestCase {
      *             to junit.
      */
     public LogoutTest() throws Exception {
+        super.setUp();
         ConfigManager cm = ConfigManager.getInstance();
         for (Iterator iter = cm.getAllNamespaces(); iter.hasNext();) {
             cm.removeNamespace((String) iter.next());

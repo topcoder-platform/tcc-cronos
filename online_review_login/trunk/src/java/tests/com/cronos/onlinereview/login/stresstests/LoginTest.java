@@ -16,19 +16,22 @@ import servletunit.struts.MockStrutsTestCase;
  * @version 1.0
  */
 public class LoginTest extends MockStrutsTestCase {
+
     /**
-     * Create Login test instance.
+     * Create LoginTest instance for test.
      *
      * @throws Exception
      *             to junit.
      */
     public LoginTest() throws Exception {
+        super.setUp();
+
         ConfigManager cm = ConfigManager.getInstance();
         for (Iterator iter = cm.getAllNamespaces(); iter.hasNext();) {
             cm.removeNamespace((String) iter.next());
         }
-
         cm.add("stresstests/OnlineReviewLogin.xml");
+
     }
 
     /**
@@ -52,7 +55,6 @@ public class LoginTest extends MockStrutsTestCase {
 
         setRequestPathInfo("/login");
         actionPerform();
-
         if (id > 0 && id < 1000) {
             verifyForward("success");
         } else {
