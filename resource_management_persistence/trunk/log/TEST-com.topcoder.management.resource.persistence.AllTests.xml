@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite name="com.topcoder.management.resource.persistence.AllTests" tests="303" failures="0" errors="0" time="652.672">
+<testsuite name="com.topcoder.management.resource.persistence.AllTests" tests="303" failures="0" errors="0" time="726.047">
   <properties>
     <property name="java.vendor" value="Sun Microsystems Inc."></property>
     <property name="package" value="com.topcoder.management.resource.persistence"></property>
@@ -136,58 +136,58 @@
     <property name="component.jar" value="build/dist/lib/tcs/resource_management/1.0/resource_management.jar"></property>
     <property name="java.specification.version" value="1.4"></property>
   </properties>
-  <testcase name="testSqlResourcePersistenceDBConnectionFactory" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.219"></testcase>
+  <testcase name="testSqlResourcePersistenceDBConnectionFactory" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.266"></testcase>
   <testcase name="testSqlResourcePersistenceDBConnectionFactoryString" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.047"></testcase>
   <testcase name="testAddResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testAddResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testAddResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.032"></testcase>
-  <testcase name="testAddResource_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testAddResource_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testAddResource_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testAddResource_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.032"></testcase>
+  <testcase name="testAddResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.047"></testcase>
+  <testcase name="testAddResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
+  <testcase name="testAddResource_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.047"></testcase>
+  <testcase name="testAddResource_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testAddResource_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.047"></testcase>
+  <testcase name="testAddResource_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.11"></testcase>
   <testcase name="testDeleteResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testDeleteResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testDeleteResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.062"></testcase>
+  <testcase name="testDeleteResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
+  <testcase name="testDeleteResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.078"></testcase>
   <testcase name="testUpdateResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testUpdateResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testUpdateResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testUpdateResource_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testUpdateResource_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testUpdateResource_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testUpdateResource_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.032"></testcase>
+  <testcase name="testUpdateResource_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testUpdateResource_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testLoadResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testLoadResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testAddNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testAddNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testAddNotification_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testAddNotification_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.032"></testcase>
-  <testcase name="testAddNotification_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testAddNotification_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testAddNotification_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testRemoveNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testRemoveNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testRemoveNotification_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testRemoveNotification_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testLoadResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testAddNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testAddNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
+  <testcase name="testAddNotification_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testAddNotification_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testAddNotification_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
+  <testcase name="testAddNotification_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testAddNotification_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testRemoveNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
+  <testcase name="testRemoveNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.032"></testcase>
+  <testcase name="testRemoveNotification_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testRemoveNotification_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testRemoveNotification_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testRemoveNotification_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testRemoveNotification_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testLoadNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testRemoveNotification_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testRemoveNotification_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testLoadNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testLoadNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testLoadNotification_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testLoadNotification_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testLoadNotification_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testLoadNotification_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testLoadNotification_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testAddNotificationType_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testAddNotificationType_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testAddNotificationType_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testAddNotificationType_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testAddNotificationType_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testAddNotificationType_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testAddNotificationType_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testAddNotificationType_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testAddNotificationType_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
+  <testcase name="testAddNotificationType_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testAddNotificationType_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testAddNotificationType_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testAddNotificationType_8" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testDeleteNotificationType_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
-  <testcase name="testDeleteNotificationType_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testUpdateNotificationType_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testDeleteNotificationType_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testUpdateNotificationType_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testUpdateNotificationType_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testUpdateNotificationType_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testUpdateNotificationType_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
@@ -202,268 +202,268 @@
   <testcase name="testAddResourceRole_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testAddResourceRole_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testAddResourceRole_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testAddResourceRole_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testAddResourceRole_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testAddResourceRole_8" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testDeleteResourceRole_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testDeleteResourceRole_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testDeleteResourceRole_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testDeleteResourceRole_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testUpdateResourceRole_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRole_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRole_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testUpdateResourceRole_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRole_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testUpdateResourceRole_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testUpdateResourceRole_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testUpdateResourceRole_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testUpdateResourceRole_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testUpdateResourceRole_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRole_8" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRole_9" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testLoadResourceRole_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testUpdateResourceRole_8" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testUpdateResourceRole_9" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testLoadResourceRole_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testLoadResourceRole_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testLoadResources_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testLoadResources_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testLoadNotificationTypes_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
-  <testcase name="testLoadNotificationTypes_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testLoadNotificationTypes_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
+  <testcase name="testLoadNotificationTypes_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.031"></testcase>
   <testcase name="testLoadResourceRoles_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testLoadResourceRoles_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testLoadNotifications_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testLoadNotifications_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testLoadNotifications_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testLoadNotifications_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
+  <testcase name="testLoadNotifications_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testLoadNotifications_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testLoadNotifications_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.015"></testcase>
   <testcase name="testLoadNotifications_6" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
   <testcase name="testLoadNotifications_7" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistenceArgumentFailure" time="0.016"></testcase>
-  <testcase name="testSqlResourcePersistenceDBConnectionFactory" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.75"></testcase>
-  <testcase name="testAddResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.25"></testcase>
-  <testcase name="testAddResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.218"></testcase>
-  <testcase name="testAddResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.5"></testcase>
-  <testcase name="testAddResource_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.0"></testcase>
-  <testcase name="testAddResource_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.766"></testcase>
-  <testcase name="testDeleteResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.625"></testcase>
-  <testcase name="testDeleteResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.766"></testcase>
-  <testcase name="testUpdateResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.64"></testcase>
-  <testcase name="testUpdateResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.61"></testcase>
-  <testcase name="testUpdateResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="3.39"></testcase>
-  <testcase name="testUpdateResource_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="3.641"></testcase>
-  <testcase name="testLoadResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.922"></testcase>
-  <testcase name="testLoadResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.781"></testcase>
-  <testcase name="testRemoveNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.188"></testcase>
-  <testcase name="testRemoveNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.375"></testcase>
-  <testcase name="testLoadNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.781"></testcase>
-  <testcase name="testLoadNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.172"></testcase>
-  <testcase name="testDeleteResourceRole_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.765"></testcase>
-  <testcase name="testDeleteResourceRole_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.266"></testcase>
-  <testcase name="testLoadResources_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.625"></testcase>
-  <testcase name="testLoadResources_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.687"></testcase>
-  <testcase name="testSqlResourcePersistenceDBConnectionFactoryString_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.407"></testcase>
-  <testcase name="testSqlResourcePersistenceDBConnectionFactoryString_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.422"></testcase>
-  <testcase name="testAddNotification" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.968"></testcase>
-  <testcase name="testAddNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.969"></testcase>
-  <testcase name="testDeleteNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="8.078"></testcase>
-  <testcase name="testUpdateNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.375"></testcase>
-  <testcase name="testLoadNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.844"></testcase>
-  <testcase name="testAddResourceRole" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.062"></testcase>
-  <testcase name="testUpdateResourceRole" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.219"></testcase>
-  <testcase name="testLoadResourceRole" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.063"></testcase>
-  <testcase name="testLoadResourcesNone" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.64"></testcase>
-  <testcase name="testLoadNotificationTypes" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.594"></testcase>
-  <testcase name="testLoadNotificationTypesNone" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.594"></testcase>
-  <testcase name="testLoadResourceRoles" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.297"></testcase>
-  <testcase name="testLoadResourceRolesWith0ArrayArgumnet" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.125"></testcase>
-  <testcase name="testLoadResourceRolesWith0ArrayArguments" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.156"></testcase>
-  <testcase name="testLoadNotifications" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.234"></testcase>
-  <testcase name="testLoadNotificationsWithAll0ArrayArguments" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.907"></testcase>
-  <testcase name="testLoadNotificationsNone" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.562"></testcase>
-  <testcase name="testLoadNotificationsWithLength0Array" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.438"></testcase>
-  <testcase name="testResourceOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="1.765"></testcase>
-  <testcase name="testLoadResourcesDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="2.672"></testcase>
-  <testcase name="testResourceRoleOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="1.328"></testcase>
-  <testcase name="testNotificationOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="1.36"></testcase>
-  <testcase name="testNotificationTypeOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="1.453"></testcase>
-  <testcase name="testAddResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="4.281"></testcase>
-  <testcase name="testGetResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="9.219"></testcase>
-  <testcase name="testUpdateResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="7.437"></testcase>
-  <testcase name="testDeleteResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="5.031"></testcase>
-  <testcase name="testAddNotificationBenchmark" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="4.407"></testcase>
-  <testcase name="testLoadNotificationBenchmark" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="4.609"></testcase>
+  <testcase name="testSqlResourcePersistenceDBConnectionFactory" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="3.39"></testcase>
+  <testcase name="testAddResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.578"></testcase>
+  <testcase name="testAddResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.532"></testcase>
+  <testcase name="testAddResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.687"></testcase>
+  <testcase name="testAddResource_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.109"></testcase>
+  <testcase name="testAddResource_5" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.047"></testcase>
+  <testcase name="testDeleteResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.657"></testcase>
+  <testcase name="testDeleteResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.718"></testcase>
+  <testcase name="testUpdateResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.75"></testcase>
+  <testcase name="testUpdateResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.0"></testcase>
+  <testcase name="testUpdateResource_3" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="4.141"></testcase>
+  <testcase name="testUpdateResource_4" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="4.344"></testcase>
+  <testcase name="testLoadResource_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.734"></testcase>
+  <testcase name="testLoadResource_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.813"></testcase>
+  <testcase name="testRemoveNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.843"></testcase>
+  <testcase name="testRemoveNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.578"></testcase>
+  <testcase name="testLoadNotification_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.657"></testcase>
+  <testcase name="testLoadNotification_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.14"></testcase>
+  <testcase name="testDeleteResourceRole_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.828"></testcase>
+  <testcase name="testDeleteResourceRole_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.454"></testcase>
+  <testcase name="testLoadResources_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.843"></testcase>
+  <testcase name="testLoadResources_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="2.875"></testcase>
+  <testcase name="testSqlResourcePersistenceDBConnectionFactoryString_1" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.469"></testcase>
+  <testcase name="testSqlResourcePersistenceDBConnectionFactoryString_2" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.484"></testcase>
+  <testcase name="testAddNotification" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.11"></testcase>
+  <testcase name="testAddNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.297"></testcase>
+  <testcase name="testDeleteNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="4.609"></testcase>
+  <testcase name="testUpdateNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.516"></testcase>
+  <testcase name="testLoadNotificationType" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.906"></testcase>
+  <testcase name="testAddResourceRole" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.125"></testcase>
+  <testcase name="testUpdateResourceRole" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.266"></testcase>
+  <testcase name="testLoadResourceRole" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.078"></testcase>
+  <testcase name="testLoadResourcesNone" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.656"></testcase>
+  <testcase name="testLoadNotificationTypes" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.75"></testcase>
+  <testcase name="testLoadNotificationTypesNone" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.687"></testcase>
+  <testcase name="testLoadResourceRoles" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.422"></testcase>
+  <testcase name="testLoadResourceRolesWith0ArrayArgumnet" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.297"></testcase>
+  <testcase name="testLoadResourceRolesWith0ArrayArguments" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.328"></testcase>
+  <testcase name="testLoadNotifications" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.328"></testcase>
+  <testcase name="testLoadNotificationsWithAll0ArrayArguments" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="1.047"></testcase>
+  <testcase name="testLoadNotificationsNone" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.672"></testcase>
+  <testcase name="testLoadNotificationsWithLength0Array" classname="com.topcoder.management.resource.persistence.sql.TestSqlResourcePersistence" time="0.469"></testcase>
+  <testcase name="testResourceOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="2.156"></testcase>
+  <testcase name="testLoadResourcesDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="3.047"></testcase>
+  <testcase name="testResourceRoleOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="1.531"></testcase>
+  <testcase name="testNotificationOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="1.547"></testcase>
+  <testcase name="testNotificationTypeOperationsDemo" classname="com.topcoder.management.resource.persistence.sql.DemoTest" time="1.531"></testcase>
+  <testcase name="testAddResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="5.079"></testcase>
+  <testcase name="testGetResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="9.531"></testcase>
+  <testcase name="testUpdateResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="6.047"></testcase>
+  <testcase name="testDeleteResource" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="5.125"></testcase>
+  <testcase name="testAddNotificationBenchmark" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="4.718"></testcase>
+  <testcase name="testLoadNotificationBenchmark" classname="com.topcoder.management.resource.persistence.sql.BenchmarkTest" time="5.188"></testcase>
   <testcase name="testAddNotification" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.547"></testcase>
-  <testcase name="testAddNotificationType" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.234"></testcase>
-  <testcase name="testUpdateNotificationType" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.36"></testcase>
-  <testcase name="testAddResourceRole" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.187"></testcase>
-  <testcase name="testUpdateResourceRole" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.344"></testcase>
-  <testcase name="testInheritance" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.344"></testcase>
-  <testcase name="testCtor_DBConnectionFactory" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.328"></testcase>
-  <testcase name="testCtor_DBConnectionFactoryString" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.469"></testcase>
-  <testcase name="testAddResource_WithoutSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="2.218"></testcase>
-  <testcase name="testAddResource_WithSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.532"></testcase>
-  <testcase name="testAddResource_InexistantInfoType" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.468"></testcase>
-  <testcase name="testUpdateResource_AddingSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.703"></testcase>
-  <testcase name="testUpdateResource_DeletingSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.813"></testcase>
-  <testcase name="testUpdateResource_UpdatingSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.719"></testcase>
-  <testcase name="testLoadResource_WithourSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.562"></testcase>
-  <testcase name="testLoadResource_WithSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.625"></testcase>
-  <testcase name="testLoadResource_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.969"></testcase>
-  <testcase name="testLoadResources_WithSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="2.75"></testcase>
-  <testcase name="testLoadResources_WithoutSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="2.719"></testcase>
-  <testcase name="testLoadResources_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.937"></testcase>
-  <testcase name="testLoadResources_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.797"></testcase>
-  <testcase name="testDeleteResource_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.5"></testcase>
-  <testcase name="testDeleteResource_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.141"></testcase>
-  <testcase name="testLoadResourceRole_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.062"></testcase>
-  <testcase name="testLoadResourceRole_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.953"></testcase>
-  <testcase name="testLoadResourceRoles_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.047"></testcase>
-  <testcase name="testLoadResourceRoles_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.922"></testcase>
-  <testcase name="testLoadResourceRoles_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.781"></testcase>
-  <testcase name="testDeleteResourceRole_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.282"></testcase>
-  <testcase name="testDeleteResourceRole_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.093"></testcase>
-  <testcase name="testLoadNotificationType_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.11"></testcase>
-  <testcase name="testLoadNotificationType_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.906"></testcase>
-  <testcase name="testLoadNotificationTypes_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.125"></testcase>
-  <testcase name="testLoadNotificationTypes_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.891"></testcase>
-  <testcase name="testLoadNotificationTypes_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.718"></testcase>
-  <testcase name="testDeleteNotificationType_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.375"></testcase>
-  <testcase name="testDeleteNotificationType_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.094"></testcase>
-  <testcase name="testLoadNotification_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.328"></testcase>
-  <testcase name="testLoadNotification_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.141"></testcase>
-  <testcase name="testLoadNotifications_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.359"></testcase>
-  <testcase name="testLoadNotifications_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.406"></testcase>
-  <testcase name="testLoadNotifications_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.782"></testcase>
-  <testcase name="testRemoveNotification_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.437"></testcase>
-  <testcase name="testRemoveNotification_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.281"></testcase>
-  <testcase name="testSqlResourcePersistenceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.047"></testcase>
+  <testcase name="testAddNotificationType" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.25"></testcase>
+  <testcase name="testUpdateNotificationType" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.453"></testcase>
+  <testcase name="testAddResourceRole" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.203"></testcase>
+  <testcase name="testUpdateResourceRole" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.828"></testcase>
+  <testcase name="testInheritance" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.75"></testcase>
+  <testcase name="testCtor_DBConnectionFactory" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.875"></testcase>
+  <testcase name="testCtor_DBConnectionFactoryString" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.781"></testcase>
+  <testcase name="testAddResource_WithoutSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.579"></testcase>
+  <testcase name="testAddResource_WithSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.546"></testcase>
+  <testcase name="testAddResource_InexistantInfoType" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.594"></testcase>
+  <testcase name="testUpdateResource_AddingSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.86"></testcase>
+  <testcase name="testUpdateResource_DeletingSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.89"></testcase>
+  <testcase name="testUpdateResource_UpdatingSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.906"></testcase>
+  <testcase name="testLoadResource_WithourSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.657"></testcase>
+  <testcase name="testLoadResource_WithSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.64"></testcase>
+  <testcase name="testLoadResource_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.0"></testcase>
+  <testcase name="testLoadResources_WithSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="3.016"></testcase>
+  <testcase name="testLoadResources_WithoutSubmissionAndProperties" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="2.781"></testcase>
+  <testcase name="testLoadResources_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.016"></testcase>
+  <testcase name="testLoadResources_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.734"></testcase>
+  <testcase name="testDeleteResource_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.656"></testcase>
+  <testcase name="testDeleteResource_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.125"></testcase>
+  <testcase name="testLoadResourceRole_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.157"></testcase>
+  <testcase name="testLoadResourceRole_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.984"></testcase>
+  <testcase name="testLoadResourceRoles_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.172"></testcase>
+  <testcase name="testLoadResourceRoles_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.031"></testcase>
+  <testcase name="testLoadResourceRoles_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.938"></testcase>
+  <testcase name="testDeleteResourceRole_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.359"></testcase>
+  <testcase name="testDeleteResourceRole_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.203"></testcase>
+  <testcase name="testLoadNotificationType_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.25"></testcase>
+  <testcase name="testLoadNotificationType_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.0"></testcase>
+  <testcase name="testLoadNotificationTypes_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.203"></testcase>
+  <testcase name="testLoadNotificationTypes_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.032"></testcase>
+  <testcase name="testLoadNotificationTypes_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.812"></testcase>
+  <testcase name="testDeleteNotificationType_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.469"></testcase>
+  <testcase name="testDeleteNotificationType_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.156"></testcase>
+  <testcase name="testLoadNotification_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.453"></testcase>
+  <testcase name="testLoadNotification_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.125"></testcase>
+  <testcase name="testLoadNotifications_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.406"></testcase>
+  <testcase name="testLoadNotifications_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.157"></testcase>
+  <testcase name="testLoadNotifications_None" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="0.781"></testcase>
+  <testcase name="testRemoveNotification_Existant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.547"></testcase>
+  <testcase name="testRemoveNotification_Inexistant" classname="com.topcoder.management.resource.persistence.accuracytests.SqlResourcePersistenceTests" time="1.344"></testcase>
+  <testcase name="testSqlResourcePersistenceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.046"></testcase>
   <testcase name="testSqlResourcePersistenceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testAddResourceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddResourceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testAddResourceFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddResourceFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testAddResourceFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testAddResourceFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddResourceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testAddResourceFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testAddResourceFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddResourceFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddResourceFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testAddResourceFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testDeleteResourceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testDeleteResourceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testDeleteResourceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testDeleteResourceFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateResourceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateResourceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testUpdateResourceFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testUpdateResourceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testUpdateResourceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testUpdateResourceFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.032"></testcase>
   <testcase name="testUpdateResourceFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testUpdateResourceFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testLoadResourceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testUpdateResourceFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testLoadResourceFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testLoadResourceFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddNotificationFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testAddNotificationFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testAddNotificationFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddNotificationFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testAddNotificationFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testAddNotificationFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testAddNotificationFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddNotificationFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testRemoveNotificationFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testRemoveNotificationFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testRemoveNotificationFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testRemoveNotificationFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testRemoveNotificationFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testRemoveNotificationFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testRemoveNotificationFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testRemoveNotificationFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testRemoveNotificationFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testLoadNotificationFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadNotificationFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testLoadNotificationFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testLoadNotificationFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testLoadNotificationFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
   <testcase name="testLoadNotificationFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testLoadNotificationFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testLoadNotificationFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testAddNotificationTypeFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddNotificationTypeFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testAddNotificationTypeFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddNotificationTypeFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testAddNotificationTypeFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddNotificationTypeFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testAddNotificationTypeFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testAddNotificationTypeFailure8" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationTypeFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationTypeFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testAddNotificationTypeFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationTypeFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testAddNotificationTypeFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationTypeFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddNotificationTypeFailure8" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testDeleteNotificationTypeFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testDeleteNotificationTypeFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testUpdateNotificationTypeFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateNotificationTypeFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateNotificationTypeFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testDeleteNotificationTypeFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testUpdateNotificationTypeFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testUpdateNotificationTypeFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testUpdateNotificationTypeFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testUpdateNotificationTypeFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testUpdateNotificationTypeFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateNotificationTypeFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testLoadNotificationTypeFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testUpdateNotificationTypeFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testLoadNotificationTypeFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testLoadNotificationTypeFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testAddResourceRoleFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testAddResourceRoleFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.032"></testcase>
-  <testcase name="testAddResourceRoleFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testAddResourceRoleFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testAddResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testAddResourceRoleFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testAddResourceRoleFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.063"></testcase>
+  <testcase name="testAddResourceRoleFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testAddResourceRoleFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testAddResourceRoleFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testAddResourceRoleFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testAddResourceRoleFailure8" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testDeleteResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testDeleteResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testDeleteResourceRoleFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testUpdateResourceRoleFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRoleFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testUpdateResourceRoleFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testUpdateResourceRoleFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testUpdateResourceRoleFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testLoadResourceRoleFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testUpdateResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testUpdateResourceRoleFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testUpdateResourceRoleFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testUpdateResourceRoleFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testUpdateResourceRoleFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testUpdateResourceRoleFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testLoadResourceRoleFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testLoadResourceRoleFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testLoadResourcesFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadResourcesFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testLoadResourcesFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
-  <testcase name="testLoadNotificationTypesFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testLoadResourcesFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testLoadResourcesFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testLoadNotificationTypesFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testLoadNotificationTypesFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadNotificationTypesFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testLoadNotificationTypesFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.031"></testcase>
   <testcase name="testLoadResourceRolesFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testLoadResourceRolesFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testLoadResourceRolesFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testLoadResourceRolesFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testLoadNotificationsFailure1" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadNotificationsFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadNotificationsFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testLoadNotificationsFailure2" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testLoadNotificationsFailure3" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testLoadNotificationsFailure4" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadNotificationsFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadNotificationsFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.0"></testcase>
+  <testcase name="testLoadNotificationsFailure5" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testLoadNotificationsFailure6" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
   <testcase name="testLoadNotificationsFailure7" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
   <testcase name="testLoadNotificationsFailure8" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testLoadNotificationsFailure9" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
-  <testcase name="testLoadNotificationsFailure10" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
-  <testcase name="testAddNotification" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="24.313"></testcase>
-  <testcase name="testAddNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="25.343"></testcase>
-  <testcase name="testDeleteNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.094"></testcase>
-  <testcase name="testUpdateNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.031"></testcase>
-  <testcase name="testLoadNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="22.328"></testcase>
-  <testcase name="testAddResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="24.985"></testcase>
-  <testcase name="testUpdateResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.281"></testcase>
-  <testcase name="testLoadResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="22.109"></testcase>
-  <testcase name="testLoadNotificationTypes" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="22.391"></testcase>
-  <testcase name="testLoadResourceRoles" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="22.203"></testcase>
-  <testcase name="testLoadNotifications" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="23.641"></testcase>
-  <testcase name="testAddResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="24.359"></testcase>
-  <testcase name="testUpdateResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.36"></testcase>
-  <testcase name="testDeleteResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.406"></testcase>
-  <testcase name="testLoadResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="24.015"></testcase>
-  <testcase name="testRemoveNotification" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="27.032"></testcase>
-  <testcase name="testLoadNotification" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="22.437"></testcase>
-  <testcase name="testDeleteResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.188"></testcase>
-  <testcase name="testLoadResources" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="42.25"></testcase>
-  <system-out><![CDATA[Calling addResource method 20 times, cost time: 3.64s.
-Calling loadResource method 20 times, cost time: 8.453s.
-Calling updateResource method 20 times, cost time: 5.734s.
-Calling deleteResource method 20 times, cost time: 4.0s.
-Calling addNotificationType method 20 times, cost time: 3.813s.
-Calling loadNotification method 20 times, cost time: 3.75s.
-Running addNotification(long, long, long, String) for 10 times: 3609 ms.
-Running addNotificationType(NotificationType) for 10 times: 3782 ms.
-Running deleteNotificationType(NotificationType) for 10 times: 5532 ms.
-Running updateNotificationType(NotificationType) for 10 times: 5469 ms.
-Running loadNotificationType(long) for 10 times: 1797 ms.
-Running addResourceRole(ResourceRole) for 10 times: 4250 ms.
-Running updateResourceRole(ResourceRole) for 10 times: 5609 ms.
-Running loadResourceRole(long) for 10 times: 1813 ms.
-Running loadNotificationTypes for 10 times: 1687 ms.
-Running loadResourceRoles for 10 times: 1813 ms.
-Running loadNotifications for 10 times: 2469 ms.
-Running addResource(Resource) for 10 times: 3735 ms.
-Running updateResource(Resource) for 10 times: 5593 ms.
-Running deleteResource(Resource) for 10 times: 5797 ms.
-Running loadResource(long) for 10 times: 3704 ms.
-Running removeNotification(long, long, long, String) for 10 times: 5703 ms.
-Running loadNotification(long) for 10 times: 1859 ms.
-Running deleteResourceRole(ResourceRole) for 10 times: 5735 ms.
-Running loadResources for 10 times: 18000 ms.
+  <testcase name="testLoadNotificationsFailure9" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.016"></testcase>
+  <testcase name="testLoadNotificationsFailure10" classname="com.topcoder.management.resource.persistence.failuretests.SqlResourcePersistenceTest" time="0.015"></testcase>
+  <testcase name="testAddNotification" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="29.719"></testcase>
+  <testcase name="testAddNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.516"></testcase>
+  <testcase name="testDeleteNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="28.531"></testcase>
+  <testcase name="testUpdateNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="28.484"></testcase>
+  <testcase name="testLoadNotificationType" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="25.063"></testcase>
+  <testcase name="testAddResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.234"></testcase>
+  <testcase name="testUpdateResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="28.016"></testcase>
+  <testcase name="testLoadResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="24.375"></testcase>
+  <testcase name="testLoadNotificationTypes" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="24.89"></testcase>
+  <testcase name="testLoadResourceRoles" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="25.172"></testcase>
+  <testcase name="testLoadNotifications" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="25.016"></testcase>
+  <testcase name="testAddResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="26.5"></testcase>
+  <testcase name="testUpdateResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="28.531"></testcase>
+  <testcase name="testDeleteResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="28.235"></testcase>
+  <testcase name="testLoadResource" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="27.109"></testcase>
+  <testcase name="testRemoveNotification" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="31.812"></testcase>
+  <testcase name="testLoadNotification" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="24.61"></testcase>
+  <testcase name="testDeleteResourceRole" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="48.922"></testcase>
+  <testcase name="testLoadResources" classname="com.topcoder.management.resource.persistence.stresstests.SqlResourcePersistenceTest" time="43.484"></testcase>
+  <system-out><![CDATA[Calling addResource method 20 times, cost time: 4.422s.
+Calling loadResource method 20 times, cost time: 8.641s.
+Calling updateResource method 20 times, cost time: 4.844s.
+Calling deleteResource method 20 times, cost time: 4.094s.
+Calling addNotificationType method 20 times, cost time: 4.046s.
+Calling loadNotification method 20 times, cost time: 4.188s.
+Running addNotification(long, long, long, String) for 10 times: 4313 ms.
+Running addNotificationType(NotificationType) for 10 times: 4031 ms.
+Running deleteNotificationType(NotificationType) for 10 times: 6188 ms.
+Running updateNotificationType(NotificationType) for 10 times: 6187 ms.
+Running loadNotificationType(long) for 10 times: 2171 ms.
+Running addResourceRole(ResourceRole) for 10 times: 4000 ms.
+Running updateResourceRole(ResourceRole) for 10 times: 5812 ms.
+Running loadResourceRole(long) for 10 times: 1921 ms.
+Running loadNotificationTypes for 10 times: 2031 ms.
+Running loadResourceRoles for 10 times: 2125 ms.
+Running loadNotifications for 10 times: 2203 ms.
+Running addResource(Resource) for 10 times: 3906 ms.
+Running updateResource(Resource) for 10 times: 6250 ms.
+Running deleteResource(Resource) for 10 times: 6250 ms.
+Running loadResource(long) for 10 times: 4375 ms.
+Running removeNotification(long, long, long, String) for 10 times: 6172 ms.
+Running loadNotification(long) for 10 times: 2140 ms.
+Running deleteResourceRole(ResourceRole) for 10 times: 7844 ms.
+Running loadResources for 10 times: 19812 ms.
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

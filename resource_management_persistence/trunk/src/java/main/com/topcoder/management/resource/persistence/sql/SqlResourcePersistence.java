@@ -151,7 +151,6 @@ public class SqlResourcePersistence implements ResourcePersistence {
 
         Connection conn = createConnection();
         try {
-            conn.setAutoCommit(false);
             insertResource(conn, resource);
 
             // if the submission is not null, persist the submission.
@@ -174,13 +173,10 @@ public class SqlResourcePersistence implements ResourcePersistence {
                             .intValue(), entry.getValue().toString());
                 }
             }
-            conn.commit();
         } catch (SQLException ex) {
-            Util.rollback(conn);
             throw new ResourcePersistenceException(
                     "Unable to insert resource.", ex);
         } finally {
-            Util.setAutocommit(conn, true);
             Util.closeConnection(conn);
         }
     }
@@ -359,19 +355,13 @@ public class SqlResourcePersistence implements ResourcePersistence {
 
         Connection connection = createConnection();
         try {
-            connection.setAutoCommit(false);
-
             deleteResourceInfos(connection, resource.getId());
             deleteFromResourceSubmission(connection, resource.getId());
             deleteFromResource(connection, resource.getId());
-
-            connection.commit();
         } catch (SQLException ex) {
-            Util.rollback(connection);
             throw new ResourcePersistenceException("Fail to delete resource",
                     ex);
         } finally {
-            Util.setAutocommit(connection, true);
             Util.closeConnection(connection);
         }
     }
@@ -471,8 +461,6 @@ public class SqlResourcePersistence implements ResourcePersistence {
 
         Connection connection = createConnection();
         try {
-            connection.setAutoCommit(false);
-
             // Update the resource table.
             updateResourceTable(connection, resource);
 
@@ -546,14 +534,10 @@ public class SqlResourcePersistence implements ResourcePersistence {
                             resourceInfoTypeId.intValue());
                 }
             }
-
-            connection.commit();
         } catch (SQLException ex) {
-            Util.rollback(connection);
             throw new ResourcePersistenceException("Fail to update resource",
                     ex);
         } finally {
-            Util.setAutocommit(connection, true);
             Util.closeConnection(connection);
         }
     }
@@ -1669,7 +1653,6 @@ public class SqlResourcePersistence implements ResourcePersistence {
             Util.closeResultSet(rs);
             Util.closeConnection(connection);
         }
-
     }
 
     /**

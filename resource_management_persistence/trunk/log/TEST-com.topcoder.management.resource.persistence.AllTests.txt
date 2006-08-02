@@ -1,83 +1,83 @@
 Testsuite: com.topcoder.management.resource.persistence.AllTests
-Tests run: 303, Failures: 0, Errors: 0, Time elapsed: 652.672 sec
+Tests run: 303, Failures: 0, Errors: 0, Time elapsed: 687.296 sec
 ------------- Standard Output ---------------
-Calling addResource method 20 times, cost time: 3.64s.
-Calling loadResource method 20 times, cost time: 8.453s.
-Calling updateResource method 20 times, cost time: 5.734s.
-Calling deleteResource method 20 times, cost time: 4.0s.
-Calling addNotificationType method 20 times, cost time: 3.813s.
-Calling loadNotification method 20 times, cost time: 3.75s.
-Running addNotification(long, long, long, String) for 10 times: 3609 ms.
-Running addNotificationType(NotificationType) for 10 times: 3782 ms.
-Running deleteNotificationType(NotificationType) for 10 times: 5532 ms.
-Running updateNotificationType(NotificationType) for 10 times: 5469 ms.
-Running loadNotificationType(long) for 10 times: 1797 ms.
-Running addResourceRole(ResourceRole) for 10 times: 4250 ms.
-Running updateResourceRole(ResourceRole) for 10 times: 5609 ms.
-Running loadResourceRole(long) for 10 times: 1813 ms.
-Running loadNotificationTypes for 10 times: 1687 ms.
-Running loadResourceRoles for 10 times: 1813 ms.
-Running loadNotifications for 10 times: 2469 ms.
-Running addResource(Resource) for 10 times: 3735 ms.
-Running updateResource(Resource) for 10 times: 5593 ms.
-Running deleteResource(Resource) for 10 times: 5797 ms.
-Running loadResource(long) for 10 times: 3704 ms.
-Running removeNotification(long, long, long, String) for 10 times: 5703 ms.
-Running loadNotification(long) for 10 times: 1859 ms.
-Running deleteResourceRole(ResourceRole) for 10 times: 5735 ms.
-Running loadResources for 10 times: 18000 ms.
+Calling addResource method 20 times, cost time: 3.969s.
+Calling loadResource method 20 times, cost time: 7.75s.
+Calling updateResource method 20 times, cost time: 4.703s.
+Calling deleteResource method 20 times, cost time: 4.187s.
+Calling addNotificationType method 20 times, cost time: 3.828s.
+Calling loadNotification method 20 times, cost time: 3.891s.
+Running addNotification(long, long, long, String) for 10 times: 4312 ms.
+Running addNotificationType(NotificationType) for 10 times: 3828 ms.
+Running deleteNotificationType(NotificationType) for 10 times: 6204 ms.
+Running updateNotificationType(NotificationType) for 10 times: 6078 ms.
+Running loadNotificationType(long) for 10 times: 1828 ms.
+Running addResourceRole(ResourceRole) for 10 times: 4188 ms.
+Running updateResourceRole(ResourceRole) for 10 times: 5891 ms.
+Running loadResourceRole(long) for 10 times: 1859 ms.
+Running loadNotificationTypes for 10 times: 1843 ms.
+Running loadResourceRoles for 10 times: 1906 ms.
+Running loadNotifications for 10 times: 2344 ms.
+Running addResource(Resource) for 10 times: 3907 ms.
+Running updateResource(Resource) for 10 times: 5937 ms.
+Running deleteResource(Resource) for 10 times: 6203 ms.
+Running loadResource(long) for 10 times: 4015 ms.
+Running removeNotification(long, long, long, String) for 10 times: 6031 ms.
+Running loadNotification(long) for 10 times: 1984 ms.
+Running deleteResourceRole(ResourceRole) for 10 times: 6031 ms.
+Running loadResources for 10 times: 19468 ms.
 ------------- ---------------- ---------------
 
-Testcase: testSqlResourcePersistenceDBConnectionFactory took 0.219 sec
+Testcase: testSqlResourcePersistenceDBConnectionFactory took 0.25 sec
 Testcase: testSqlResourcePersistenceDBConnectionFactoryString took 0.047 sec
-Testcase: testAddResource_1 took 0.031 sec
+Testcase: testAddResource_1 took 0.032 sec
 Testcase: testAddResource_2 took 0.031 sec
-Testcase: testAddResource_3 took 0.032 sec
+Testcase: testAddResource_3 took 0.031 sec
 Testcase: testAddResource_4 took 0.031 sec
-Testcase: testAddResource_5 took 0.031 sec
+Testcase: testAddResource_5 took 0.032 sec
 Testcase: testAddResource_6 took 0.031 sec
-Testcase: testAddResource_7 took 0.032 sec
+Testcase: testAddResource_7 took 0.031 sec
 Testcase: testDeleteResource_1 took 0.031 sec
 Testcase: testDeleteResource_2 took 0.016 sec
 Testcase: testDeleteResource_3 took 0.062 sec
-Testcase: testUpdateResource_1 took 0.016 sec
-Testcase: testUpdateResource_2 took 0.031 sec
+Testcase: testUpdateResource_1 took 0.032 sec
+Testcase: testUpdateResource_2 took 0.015 sec
 Testcase: testUpdateResource_3 took 0.016 sec
-Testcase: testUpdateResource_4 took 0.015 sec
+Testcase: testUpdateResource_4 took 0.016 sec
 Testcase: testUpdateResource_5 took 0.031 sec
-Testcase: testUpdateResource_6 took 0.016 sec
-Testcase: testUpdateResource_7 took 0.031 sec
-Testcase: testLoadResource_1 took 0.016 sec
-Testcase: testLoadResource_2 took 0.016 sec
-Testcase: testAddNotification_1 took 0.015 sec
-Testcase: testAddNotification_2 took 0.016 sec
-Testcase: testAddNotification_3 took 0.015 sec
-Testcase: testAddNotification_4 took 0.032 sec
-Testcase: testAddNotification_5 took 0.015 sec
-Testcase: testAddNotification_6 took 0.016 sec
-Testcase: testAddNotification_7 took 0.031 sec
-Testcase: testRemoveNotification_1 took 0.016 sec
-Testcase: testRemoveNotification_2 took 0.031 sec
-Testcase: testRemoveNotification_3 took 0.016 sec
-Testcase: testRemoveNotification_4 took 0.016 sec
-Testcase: testRemoveNotification_5 took 0.016 sec
-Testcase: testRemoveNotification_6 took 0.015 sec
+Testcase: testUpdateResource_6 took 0.031 sec
+Testcase: testUpdateResource_7 took 0.016 sec
+Testcase: testLoadResource_1 took 0.015 sec
+Testcase: testLoadResource_2 took 0.032 sec
+Testcase: testAddNotification_1 took 0.062 sec
+Testcase: testAddNotification_2 took 0.063 sec
+Testcase: testAddNotification_3 took 0.031 sec
+Testcase: testAddNotification_4 took 0.015 sec
+Testcase: testAddNotification_5 took 0.032 sec
+Testcase: testAddNotification_6 took 0.015 sec
+Testcase: testAddNotification_7 took 0.016 sec
+Testcase: testRemoveNotification_1 took 0.031 sec
+Testcase: testRemoveNotification_2 took 0.063 sec
+Testcase: testRemoveNotification_3 took 0.093 sec
+Testcase: testRemoveNotification_4 took 0.032 sec
+Testcase: testRemoveNotification_5 took 0.015 sec
+Testcase: testRemoveNotification_6 took 0.016 sec
 Testcase: testRemoveNotification_7 took 0.016 sec
 Testcase: testLoadNotification_1 took 0.015 sec
 Testcase: testLoadNotification_2 took 0.016 sec
-Testcase: testLoadNotification_3 took 0.016 sec
-Testcase: testLoadNotification_4 took 0.015 sec
-Testcase: testLoadNotification_5 took 0.016 sec
+Testcase: testLoadNotification_3 took 0.015 sec
+Testcase: testLoadNotification_4 took 0.032 sec
+Testcase: testLoadNotification_5 took 0.015 sec
 Testcase: testLoadNotification_6 took 0.016 sec
-Testcase: testAddNotificationType_1 took 0.015 sec
-Testcase: testAddNotificationType_2 took 0.016 sec
-Testcase: testAddNotificationType_3 took 0.015 sec
+Testcase: testAddNotificationType_1 took 0.016 sec
+Testcase: testAddNotificationType_2 took 0.015 sec
+Testcase: testAddNotificationType_3 took 0.016 sec
 Testcase: testAddNotificationType_4 took 0.016 sec
 Testcase: testAddNotificationType_5 took 0.016 sec
-Testcase: testAddNotificationType_6 took 0.015 sec
+Testcase: testAddNotificationType_6 took 0.031 sec
 Testcase: testAddNotificationType_7 took 0.016 sec
-Testcase: testAddNotificationType_8 took 0.016 sec
-Testcase: testDeleteNotificationType_1 took 0.031 sec
+Testcase: testAddNotificationType_8 took 0.015 sec
+Testcase: testDeleteNotificationType_1 took 0.016 sec
 Testcase: testDeleteNotificationType_2 took 0.015 sec
 Testcase: testUpdateNotificationType_1 took 0.016 sec
 Testcase: testUpdateNotificationType_2 took 0.016 sec
@@ -101,208 +101,208 @@ Testcase: testDeleteResourceRole_2 took 0.015 sec
 Testcase: testUpdateResourceRole_1 took 0.016 sec
 Testcase: testUpdateResourceRole_2 took 0.016 sec
 Testcase: testUpdateResourceRole_4 took 0.015 sec
-Testcase: testUpdateResourceRole_5 took 0.016 sec
-Testcase: testUpdateResourceRole_6 took 0.015 sec
-Testcase: testUpdateResourceRole_7 took 0.016 sec
-Testcase: testUpdateResourceRole_8 took 0.016 sec
+Testcase: testUpdateResourceRole_5 took 0 sec
+Testcase: testUpdateResourceRole_6 took 0.031 sec
+Testcase: testUpdateResourceRole_7 took 0 sec
+Testcase: testUpdateResourceRole_8 took 0 sec
 Testcase: testUpdateResourceRole_9 took 0.015 sec
 Testcase: testLoadResourceRole_1 took 0.016 sec
-Testcase: testLoadResourceRole_2 took 0.016 sec
-Testcase: testLoadResources_1 took 0.015 sec
-Testcase: testLoadResources_2 took 0.016 sec
-Testcase: testLoadNotificationTypes_1 took 0.015 sec
+Testcase: testLoadResourceRole_2 took 0.031 sec
+Testcase: testLoadResources_1 took 0.016 sec
+Testcase: testLoadResources_2 took 0.015 sec
+Testcase: testLoadNotificationTypes_1 took 0.016 sec
 Testcase: testLoadNotificationTypes_2 took 0.016 sec
-Testcase: testLoadResourceRoles_1 took 0.016 sec
-Testcase: testLoadResourceRoles_2 took 0.015 sec
+Testcase: testLoadResourceRoles_1 took 0.015 sec
+Testcase: testLoadResourceRoles_2 took 0.016 sec
 Testcase: testLoadNotifications_1 took 0.016 sec
-Testcase: testLoadNotifications_2 took 0.016 sec
-Testcase: testLoadNotifications_3 took 0.015 sec
-Testcase: testLoadNotifications_4 took 0.016 sec
-Testcase: testLoadNotifications_5 took 0.015 sec
+Testcase: testLoadNotifications_2 took 0.015 sec
+Testcase: testLoadNotifications_3 took 0.016 sec
+Testcase: testLoadNotifications_4 took 0.015 sec
+Testcase: testLoadNotifications_5 took 0.016 sec
 Testcase: testLoadNotifications_6 took 0.016 sec
-Testcase: testLoadNotifications_7 took 0.016 sec
-Testcase: testSqlResourcePersistenceDBConnectionFactory took 0.75 sec
-Testcase: testAddResource_1 took 1.25 sec
-Testcase: testAddResource_2 took 1.218 sec
-Testcase: testAddResource_3 took 1.5 sec
-Testcase: testAddResource_4 took 2 sec
-Testcase: testAddResource_5 took 1.766 sec
-Testcase: testDeleteResource_1 took 0.625 sec
-Testcase: testDeleteResource_2 took 1.766 sec
-Testcase: testUpdateResource_1 took 1.64 sec
-Testcase: testUpdateResource_2 took 1.61 sec
-Testcase: testUpdateResource_3 took 3.39 sec
-Testcase: testUpdateResource_4 took 3.641 sec
-Testcase: testLoadResource_1 took 0.922 sec
-Testcase: testLoadResource_2 took 2.781 sec
-Testcase: testRemoveNotification_1 took 1.188 sec
-Testcase: testRemoveNotification_2 took 2.375 sec
-Testcase: testLoadNotification_1 took 0.781 sec
-Testcase: testLoadNotification_2 took 1.172 sec
-Testcase: testDeleteResourceRole_1 took 0.765 sec
-Testcase: testDeleteResourceRole_2 took 1.266 sec
-Testcase: testLoadResources_1 took 1.625 sec
+Testcase: testLoadNotifications_7 took 0.015 sec
+Testcase: testSqlResourcePersistenceDBConnectionFactory took 4.594 sec
+Testcase: testAddResource_1 took 1.844 sec
+Testcase: testAddResource_2 took 1.406 sec
+Testcase: testAddResource_3 took 1.922 sec
+Testcase: testAddResource_4 took 2.046 sec
+Testcase: testAddResource_5 took 1.922 sec
+Testcase: testDeleteResource_1 took 0.719 sec
+Testcase: testDeleteResource_2 took 1.984 sec
+Testcase: testUpdateResource_1 took 2.235 sec
+Testcase: testUpdateResource_2 took 2.859 sec
+Testcase: testUpdateResource_3 took 5.094 sec
+Testcase: testUpdateResource_4 took 4.578 sec
+Testcase: testLoadResource_1 took 0.656 sec
+Testcase: testLoadResource_2 took 2.141 sec
+Testcase: testRemoveNotification_1 took 0.937 sec
+Testcase: testRemoveNotification_2 took 1.532 sec
+Testcase: testLoadNotification_1 took 0.672 sec
+Testcase: testLoadNotification_2 took 1.109 sec
+Testcase: testDeleteResourceRole_1 took 0.781 sec
+Testcase: testDeleteResourceRole_2 took 1.422 sec
+Testcase: testLoadResources_1 took 1.938 sec
 Testcase: testLoadResources_2 took 2.687 sec
-Testcase: testSqlResourcePersistenceDBConnectionFactoryString_1 took 0.407 sec
-Testcase: testSqlResourcePersistenceDBConnectionFactoryString_2 took 0.422 sec
-Testcase: testAddNotification took 0.968 sec
-Testcase: testAddNotificationType took 0.969 sec
-Testcase: testDeleteNotificationType took 8.078 sec
-Testcase: testUpdateNotificationType took 1.375 sec
-Testcase: testLoadNotificationType took 0.844 sec
-Testcase: testAddResourceRole took 1.062 sec
-Testcase: testUpdateResourceRole took 1.219 sec
-Testcase: testLoadResourceRole took 1.063 sec
-Testcase: testLoadResourcesNone took 0.625 sec
-Testcase: testLoadNotificationTypes took 1.594 sec
+Testcase: testSqlResourcePersistenceDBConnectionFactoryString_1 took 0.438 sec
+Testcase: testSqlResourcePersistenceDBConnectionFactoryString_2 took 0.437 sec
+Testcase: testAddNotification took 1.047 sec
+Testcase: testAddNotificationType took 0.891 sec
+Testcase: testDeleteNotificationType took 4.453 sec
+Testcase: testUpdateNotificationType took 2.062 sec
+Testcase: testLoadNotificationType took 0.875 sec
+Testcase: testAddResourceRole took 1.125 sec
+Testcase: testUpdateResourceRole took 1.266 sec
+Testcase: testLoadResourceRole took 1.078 sec
+Testcase: testLoadResourcesNone took 0.609 sec
+Testcase: testLoadNotificationTypes took 1.625 sec
 Testcase: testLoadNotificationTypesNone took 0.594 sec
-Testcase: testLoadResourceRoles took 1.297 sec
-Testcase: testLoadResourceRolesWith0ArrayArgumnet took 1.125 sec
-Testcase: testLoadResourceRolesWith0ArrayArguments took 1.156 sec
-Testcase: testLoadNotifications took 1.234 sec
-Testcase: testLoadNotificationsWithAll0ArrayArguments took 0.907 sec
-Testcase: testLoadNotificationsNone took 0.562 sec
-Testcase: testLoadNotificationsWithLength0Array took 0.422 sec
-Testcase: testResourceOperationsDemo took 1.765 sec
-Testcase: testLoadResourcesDemo took 2.672 sec
-Testcase: testResourceRoleOperationsDemo took 1.328 sec
-Testcase: testNotificationOperationsDemo took 1.36 sec
-Testcase: testNotificationTypeOperationsDemo took 1.453 sec
-Testcase: testAddResource took 4.265 sec
-Testcase: testGetResource took 9.219 sec
-Testcase: testUpdateResource took 7.437 sec
-Testcase: testDeleteResource took 5.031 sec
-Testcase: testAddNotificationBenchmark took 4.407 sec
-Testcase: testLoadNotificationBenchmark took 4.609 sec
-Testcase: testAddNotification took 1.547 sec
-Testcase: testAddNotificationType took 1.234 sec
-Testcase: testUpdateNotificationType took 1.36 sec
-Testcase: testAddResourceRole took 1.187 sec
-Testcase: testUpdateResourceRole took 1.344 sec
-Testcase: testInheritance took 1.344 sec
-Testcase: testCtor_DBConnectionFactory took 1.328 sec
-Testcase: testCtor_DBConnectionFactoryString took 1.469 sec
-Testcase: testAddResource_WithoutSubmissionAndProperties took 2.218 sec
-Testcase: testAddResource_WithSubmissionAndProperties took 1.532 sec
-Testcase: testAddResource_InexistantInfoType took 1.468 sec
-Testcase: testUpdateResource_AddingSubmissionAndProperties took 1.703 sec
-Testcase: testUpdateResource_DeletingSubmissionAndProperties took 1.813 sec
-Testcase: testUpdateResource_UpdatingSubmissionAndProperties took 1.719 sec
-Testcase: testLoadResource_WithourSubmissionAndProperties took 1.562 sec
-Testcase: testLoadResource_WithSubmissionAndProperties took 1.625 sec
-Testcase: testLoadResource_Inexistant took 0.969 sec
-Testcase: testLoadResources_WithSubmissionAndProperties took 2.75 sec
-Testcase: testLoadResources_WithoutSubmissionAndProperties took 2.719 sec
-Testcase: testLoadResources_Inexistant took 0.937 sec
-Testcase: testLoadResources_None took 0.797 sec
-Testcase: testDeleteResource_Existant took 1.5 sec
-Testcase: testDeleteResource_Inexistant took 1.141 sec
-Testcase: testLoadResourceRole_Existant took 1.062 sec
-Testcase: testLoadResourceRole_Inexistant took 0.953 sec
-Testcase: testLoadResourceRoles_Existant took 1.047 sec
-Testcase: testLoadResourceRoles_Inexistant took 0.922 sec
-Testcase: testLoadResourceRoles_None took 0.781 sec
-Testcase: testDeleteResourceRole_Existant took 1.282 sec
-Testcase: testDeleteResourceRole_Inexistant took 1.093 sec
-Testcase: testLoadNotificationType_Existant took 1.11 sec
-Testcase: testLoadNotificationType_Inexistant took 0.906 sec
-Testcase: testLoadNotificationTypes_Existant took 1.125 sec
-Testcase: testLoadNotificationTypes_Inexistant took 0.891 sec
-Testcase: testLoadNotificationTypes_None took 0.718 sec
-Testcase: testDeleteNotificationType_Existant took 1.375 sec
-Testcase: testDeleteNotificationType_Inexistant took 1.094 sec
-Testcase: testLoadNotification_Existant took 1.328 sec
-Testcase: testLoadNotification_Inexistant took 1.141 sec
-Testcase: testLoadNotifications_Existant took 1.359 sec
-Testcase: testLoadNotifications_Inexistant took 1.406 sec
-Testcase: testLoadNotifications_None took 0.782 sec
-Testcase: testRemoveNotification_Existant took 1.437 sec
-Testcase: testRemoveNotification_Inexistant took 1.281 sec
-Testcase: testSqlResourcePersistenceFailure1 took 0.047 sec
-Testcase: testSqlResourcePersistenceFailure2 took 0.016 sec
+Testcase: testLoadResourceRoles took 1.375 sec
+Testcase: testLoadResourceRolesWith0ArrayArgumnet took 1.141 sec
+Testcase: testLoadResourceRolesWith0ArrayArguments took 1.25 sec
+Testcase: testLoadNotifications took 1.593 sec
+Testcase: testLoadNotificationsWithAll0ArrayArguments took 1.032 sec
+Testcase: testLoadNotificationsNone took 0.64 sec
+Testcase: testLoadNotificationsWithLength0Array took 0.453 sec
+Testcase: testResourceOperationsDemo took 1.875 sec
+Testcase: testLoadResourcesDemo took 2.86 sec
+Testcase: testResourceRoleOperationsDemo took 1.484 sec
+Testcase: testNotificationOperationsDemo took 1.469 sec
+Testcase: testNotificationTypeOperationsDemo took 1.641 sec
+Testcase: testAddResource took 4.656 sec
+Testcase: testGetResource took 8.578 sec
+Testcase: testUpdateResource took 5.797 sec
+Testcase: testDeleteResource took 5.265 sec
+Testcase: testAddNotificationBenchmark took 4.438 sec
+Testcase: testLoadNotificationBenchmark took 4.719 sec
+Testcase: testAddNotification took 1.468 sec
+Testcase: testAddNotificationType took 1.204 sec
+Testcase: testUpdateNotificationType took 1.375 sec
+Testcase: testAddResourceRole took 1.218 sec
+Testcase: testUpdateResourceRole took 1.438 sec
+Testcase: testInheritance took 0.781 sec
+Testcase: testCtor_DBConnectionFactory took 0.844 sec
+Testcase: testCtor_DBConnectionFactoryString took 0.781 sec
+Testcase: testAddResource_WithoutSubmissionAndProperties took 1.641 sec
+Testcase: testAddResource_WithSubmissionAndProperties took 1.64 sec
+Testcase: testAddResource_InexistantInfoType took 1.594 sec
+Testcase: testUpdateResource_AddingSubmissionAndProperties took 1.75 sec
+Testcase: testUpdateResource_DeletingSubmissionAndProperties took 1.797 sec
+Testcase: testUpdateResource_UpdatingSubmissionAndProperties took 1.828 sec
+Testcase: testLoadResource_WithourSubmissionAndProperties took 1.531 sec
+Testcase: testLoadResource_WithSubmissionAndProperties took 1.61 sec
+Testcase: testLoadResource_Inexistant took 0.968 sec
+Testcase: testLoadResources_WithSubmissionAndProperties took 2.922 sec
+Testcase: testLoadResources_WithoutSubmissionAndProperties took 2.75 sec
+Testcase: testLoadResources_Inexistant took 1.032 sec
+Testcase: testLoadResources_None took 0.812 sec
+Testcase: testDeleteResource_Existant took 1.688 sec
+Testcase: testDeleteResource_Inexistant took 1.203 sec
+Testcase: testLoadResourceRole_Existant took 1.187 sec
+Testcase: testLoadResourceRole_Inexistant took 1.047 sec
+Testcase: testLoadResourceRoles_Existant took 1.125 sec
+Testcase: testLoadResourceRoles_Inexistant took 1 sec
+Testcase: testLoadResourceRoles_None took 0.734 sec
+Testcase: testDeleteResourceRole_Existant took 1.266 sec
+Testcase: testDeleteResourceRole_Inexistant took 1.172 sec
+Testcase: testLoadNotificationType_Existant took 1.5 sec
+Testcase: testLoadNotificationType_Inexistant took 1 sec
+Testcase: testLoadNotificationTypes_Existant took 1.172 sec
+Testcase: testLoadNotificationTypes_Inexistant took 0.937 sec
+Testcase: testLoadNotificationTypes_None took 0.813 sec
+Testcase: testDeleteNotificationType_Existant took 1.5 sec
+Testcase: testDeleteNotificationType_Inexistant took 1.172 sec
+Testcase: testLoadNotification_Existant took 1.437 sec
+Testcase: testLoadNotification_Inexistant took 1.188 sec
+Testcase: testLoadNotifications_Existant took 1.437 sec
+Testcase: testLoadNotifications_Inexistant took 1.188 sec
+Testcase: testLoadNotifications_None took 0.812 sec
+Testcase: testRemoveNotification_Existant took 1.938 sec
+Testcase: testRemoveNotification_Inexistant took 1.39 sec
+Testcase: testSqlResourcePersistenceFailure1 took 0.032 sec
+Testcase: testSqlResourcePersistenceFailure2 took 0.015 sec
 Testcase: testAddResourceFailure1 took 0.016 sec
 Testcase: testAddResourceFailure2 took 0.015 sec
 Testcase: testAddResourceFailure3 took 0.016 sec
-Testcase: testAddResourceFailure4 took 0 sec
+Testcase: testAddResourceFailure4 took 0.016 sec
 Testcase: testAddResourceFailure5 took 0.015 sec
-Testcase: testAddResourceFailure6 took 0.016 sec
+Testcase: testAddResourceFailure6 took 0 sec
 Testcase: testAddResourceFailure7 took 0.016 sec
-Testcase: testDeleteResourceFailure1 took 0.015 sec
-Testcase: testDeleteResourceFailure2 took 0 sec
+Testcase: testDeleteResourceFailure1 took 0.016 sec
+Testcase: testDeleteResourceFailure2 took 0.015 sec
 Testcase: testDeleteResourceFailure3 took 0.016 sec
-Testcase: testUpdateResourceFailure1 took 0.016 sec
-Testcase: testUpdateResourceFailure2 took 0.015 sec
+Testcase: testUpdateResourceFailure1 took 0.015 sec
+Testcase: testUpdateResourceFailure2 took 0.016 sec
 Testcase: testUpdateResourceFailure3 took 0.016 sec
-Testcase: testUpdateResourceFailure4 took 0.015 sec
-Testcase: testUpdateResourceFailure5 took 0 sec
+Testcase: testUpdateResourceFailure4 took 0 sec
+Testcase: testUpdateResourceFailure5 took 0.015 sec
 Testcase: testLoadResourceFailure1 took 0.016 sec
 Testcase: testLoadResourceFailure2 took 0.016 sec
 Testcase: testAddNotificationFailure1 took 0.015 sec
 Testcase: testAddNotificationFailure2 took 0.016 sec
-Testcase: testAddNotificationFailure3 took 0.016 sec
+Testcase: testAddNotificationFailure3 took 0.015 sec
 Testcase: testAddNotificationFailure4 took 0 sec
-Testcase: testAddNotificationFailure5 took 0.015 sec
+Testcase: testAddNotificationFailure5 took 0.016 sec
 Testcase: testAddNotificationFailure6 took 0.016 sec
 Testcase: testAddNotificationFailure7 took 0.015 sec
 Testcase: testRemoveNotificationFailure1 took 0.016 sec
 Testcase: testRemoveNotificationFailure2 took 0.016 sec
-Testcase: testRemoveNotificationFailure3 took 0 sec
-Testcase: testRemoveNotificationFailure4 took 0.015 sec
-Testcase: testRemoveNotificationFailure5 took 0.016 sec
-Testcase: testRemoveNotificationFailure6 took 0.016 sec
-Testcase: testRemoveNotificationFailure7 took 0.015 sec
+Testcase: testRemoveNotificationFailure3 took 0.015 sec
+Testcase: testRemoveNotificationFailure4 took 0.016 sec
+Testcase: testRemoveNotificationFailure5 took 0.015 sec
+Testcase: testRemoveNotificationFailure6 took 0 sec
+Testcase: testRemoveNotificationFailure7 took 0.016 sec
 Testcase: testLoadNotificationFailure1 took 0.016 sec
-Testcase: testLoadNotificationFailure2 took 0 sec
-Testcase: testLoadNotificationFailure3 took 0.015 sec
+Testcase: testLoadNotificationFailure2 took 0.015 sec
+Testcase: testLoadNotificationFailure3 took 0.016 sec
 Testcase: testLoadNotificationFailure4 took 0.016 sec
-Testcase: testLoadNotificationFailure5 took 0.016 sec
-Testcase: testLoadNotificationFailure6 took 0.015 sec
+Testcase: testLoadNotificationFailure5 took 0.015 sec
+Testcase: testLoadNotificationFailure6 took 0.016 sec
 Testcase: testAddNotificationTypeFailure1 took 0 sec
-Testcase: testAddNotificationTypeFailure2 took 0 sec
+Testcase: testAddNotificationTypeFailure2 took 0.015 sec
 Testcase: testAddNotificationTypeFailure3 took 0.016 sec
-Testcase: testAddNotificationTypeFailure4 took 0.015 sec
-Testcase: testAddNotificationTypeFailure5 took 0.016 sec
-Testcase: testAddNotificationTypeFailure6 took 0.015 sec
-Testcase: testAddNotificationTypeFailure7 took 0 sec
-Testcase: testAddNotificationTypeFailure8 took 0.016 sec
-Testcase: testDeleteNotificationTypeFailure1 took 0.016 sec
-Testcase: testDeleteNotificationTypeFailure2 took 0.015 sec
-Testcase: testUpdateNotificationTypeFailure1 took 0.016 sec
+Testcase: testAddNotificationTypeFailure4 took 0.016 sec
+Testcase: testAddNotificationTypeFailure5 took 0.015 sec
+Testcase: testAddNotificationTypeFailure6 took 0.016 sec
+Testcase: testAddNotificationTypeFailure7 took 0.016 sec
+Testcase: testAddNotificationTypeFailure8 took 0 sec
+Testcase: testDeleteNotificationTypeFailure1 took 0.015 sec
+Testcase: testDeleteNotificationTypeFailure2 took 0.016 sec
+Testcase: testUpdateNotificationTypeFailure1 took 0.015 sec
 Testcase: testUpdateNotificationTypeFailure2 took 0.016 sec
-Testcase: testUpdateNotificationTypeFailure3 took 0 sec
+Testcase: testUpdateNotificationTypeFailure3 took 0.016 sec
 Testcase: testUpdateNotificationTypeFailure4 took 0.015 sec
-Testcase: testUpdateNotificationTypeFailure5 took 0.016 sec
-Testcase: testUpdateNotificationTypeFailure6 took 0.015 sec
+Testcase: testUpdateNotificationTypeFailure5 took 0 sec
+Testcase: testUpdateNotificationTypeFailure6 took 0.016 sec
 Testcase: testLoadNotificationTypeFailure1 took 0.016 sec
-Testcase: testLoadNotificationTypeFailure2 took 0.016 sec
-Testcase: testAddResourceRoleFailure1 took 0.015 sec
-Testcase: testAddResourceRoleFailure2 took 0 sec
-Testcase: testAddResourceRoleFailure3 took 0.032 sec
+Testcase: testLoadNotificationTypeFailure2 took 0.015 sec
+Testcase: testAddResourceRoleFailure1 took 0.016 sec
+Testcase: testAddResourceRoleFailure2 took 0.015 sec
+Testcase: testAddResourceRoleFailure3 took 0.016 sec
 Testcase: testAddResourceRoleFailure4 took 0 sec
-Testcase: testAddResourceRoleFailure5 took 0.015 sec
-Testcase: testAddResourceRoleFailure6 took 0.016 sec
-Testcase: testAddResourceRoleFailure7 took 0.015 sec
+Testcase: testAddResourceRoleFailure5 took 0.016 sec
+Testcase: testAddResourceRoleFailure6 took 0.015 sec
+Testcase: testAddResourceRoleFailure7 took 0.016 sec
 Testcase: testAddResourceRoleFailure8 took 0.016 sec
-Testcase: testDeleteResourceRoleFailure1 took 0 sec
+Testcase: testDeleteResourceRoleFailure1 took 0.015 sec
 Testcase: testDeleteResourceRoleFailure2 took 0.016 sec
-Testcase: testUpdateResourceRoleFailure1 took 0.015 sec
-Testcase: testUpdateResourceRoleFailure2 took 0.016 sec
+Testcase: testUpdateResourceRoleFailure1 took 0 sec
+Testcase: testUpdateResourceRoleFailure2 took 0.015 sec
 Testcase: testUpdateResourceRoleFailure3 took 0.016 sec
-Testcase: testUpdateResourceRoleFailure4 took 0.015 sec
-Testcase: testUpdateResourceRoleFailure5 took 0 sec
+Testcase: testUpdateResourceRoleFailure4 took 0.016 sec
+Testcase: testUpdateResourceRoleFailure5 took 0.015 sec
 Testcase: testUpdateResourceRoleFailure6 took 0.016 sec
-Testcase: testLoadResourceRoleFailure1 took 0.015 sec
-Testcase: testLoadResourceRoleFailure2 took 0.016 sec
-Testcase: testLoadResourcesFailure1 took 0.016 sec
-Testcase: testLoadResourcesFailure2 took 0.015 sec
-Testcase: testLoadResourcesFailure3 took 0 sec
+Testcase: testLoadResourceRoleFailure1 took 0.016 sec
+Testcase: testLoadResourceRoleFailure2 took 0 sec
+Testcase: testLoadResourcesFailure1 took 0.015 sec
+Testcase: testLoadResourcesFailure2 took 0.016 sec
+Testcase: testLoadResourcesFailure3 took 0.015 sec
 Testcase: testLoadNotificationTypesFailure1 took 0.016 sec
 Testcase: testLoadNotificationTypesFailure2 took 0.016 sec
 Testcase: testLoadNotificationTypesFailure3 took 0.015 sec
-Testcase: testLoadResourceRolesFailure1 took 0.016 sec
-Testcase: testLoadResourceRolesFailure2 took 0.015 sec
-Testcase: testLoadResourceRolesFailure3 took 0 sec
-Testcase: testLoadNotificationsFailure1 took 0.016 sec
+Testcase: testLoadResourceRolesFailure1 took 0 sec
+Testcase: testLoadResourceRolesFailure2 took 0.016 sec
+Testcase: testLoadResourceRolesFailure3 took 0.016 sec
+Testcase: testLoadNotificationsFailure1 took 0.015 sec
 Testcase: testLoadNotificationsFailure2 took 0.016 sec
 Testcase: testLoadNotificationsFailure3 took 0.015 sec
 Testcase: testLoadNotificationsFailure4 took 0.016 sec
@@ -310,24 +310,24 @@ Testcase: testLoadNotificationsFailure5 took 0.016 sec
 Testcase: testLoadNotificationsFailure6 took 0 sec
 Testcase: testLoadNotificationsFailure7 took 0.015 sec
 Testcase: testLoadNotificationsFailure8 took 0.016 sec
-Testcase: testLoadNotificationsFailure9 took 0.015 sec
-Testcase: testLoadNotificationsFailure10 took 0.016 sec
-Testcase: testAddNotification took 24.313 sec
-Testcase: testAddNotificationType took 25.343 sec
-Testcase: testDeleteNotificationType took 26.094 sec
-Testcase: testUpdateNotificationType took 26.031 sec
-Testcase: testLoadNotificationType took 22.328 sec
-Testcase: testAddResourceRole took 24.985 sec
-Testcase: testUpdateResourceRole took 26.281 sec
-Testcase: testLoadResourceRole took 22.109 sec
-Testcase: testLoadNotificationTypes took 22.391 sec
-Testcase: testLoadResourceRoles took 22.203 sec
-Testcase: testLoadNotifications took 23.641 sec
-Testcase: testAddResource took 24.359 sec
-Testcase: testUpdateResource took 26.36 sec
-Testcase: testDeleteResource took 26.406 sec
-Testcase: testLoadResource took 24.015 sec
-Testcase: testRemoveNotification took 27.032 sec
-Testcase: testLoadNotification took 22.437 sec
-Testcase: testDeleteResourceRole took 26.188 sec
-Testcase: testLoadResources took 42.25 sec
+Testcase: testLoadNotificationsFailure9 took 0.016 sec
+Testcase: testLoadNotificationsFailure10 took 0.015 sec
+Testcase: testAddNotification took 26.563 sec
+Testcase: testAddNotificationType took 25.922 sec
+Testcase: testDeleteNotificationType took 28.171 sec
+Testcase: testUpdateNotificationType took 28.204 sec
+Testcase: testLoadNotificationType took 23.765 sec
+Testcase: testAddResourceRole took 26.844 sec
+Testcase: testUpdateResourceRole took 27.984 sec
+Testcase: testLoadResourceRole took 23.719 sec
+Testcase: testLoadNotificationTypes took 23.922 sec
+Testcase: testLoadResourceRoles took 23.75 sec
+Testcase: testLoadNotifications took 24.984 sec
+Testcase: testAddResource took 25.782 sec
+Testcase: testUpdateResource took 27.625 sec
+Testcase: testDeleteResource took 28.031 sec
+Testcase: testLoadResource took 25.953 sec
+Testcase: testRemoveNotification took 28.687 sec
+Testcase: testLoadNotification took 24.032 sec
+Testcase: testDeleteResourceRole took 27.812 sec
+Testcase: testLoadResources took 41.156 sec

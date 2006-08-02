@@ -16,13 +16,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://home:1526/resource_unit:INFORMIXSERVER=ol_home</Value>
+						<Value>jdbc:informix-sqli://laptop:1526/test:informixserver=ol_laptop</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>tc</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 			</Property>

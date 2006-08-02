@@ -157,8 +157,6 @@ public class DbStressTest extends TestCase {
         // do the update
         ps.executeUpdate();
 
-        // commit
-        con.commit();
 
         // close the resources
         closeStatement(ps);
@@ -179,7 +177,6 @@ public class DbStressTest extends TestCase {
 
         // returns the default connection (that is set to be non-auto commit).
         Connection con = factory.createConnection();
-        con.setAutoCommit(false);
         return con;
     }
 
@@ -573,7 +570,6 @@ public class DbStressTest extends TestCase {
 
         doSQLUpdate(sql, new Object[] {new Long(3), new Long(3), new Long(3)});
 
-        con.commit();
         closeConnection(con);
 
     }
