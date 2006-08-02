@@ -84,6 +84,13 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 
+    <property name="xmi_parser.version" value="1.1"/>
+    <property name="xmi_parser.jar.name" value="xmi_parser.jar"/>
+    <property name="xmi_parser.path" value="xmi_parser/${xmi_parser.version}"/>
+    <!-- property name="xmi_parser.jar" value="${tcs_libdir}/${xmi_parser.path}/${xmi_parser.jar.name}" -->
+    <property name="xmi_parser.jar" value="C:/svn/tcs/catalog/java/xmi_parser_1_1/build/dist/lib/tcs/xmi_parser/1.1/xmi_parser.jar"/>
+
+
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="xml-apis.jar" value="${ext_libdir}/xerces/2.6.2/xml-apis.jar"/>
@@ -99,7 +106,8 @@
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${base_exception.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
-        <pathelement location="${testfiles}/xmiparsermock.jar" />
+        <pathelement location="${xmi_parser.jar}" />
+        <!-- pathelement location="${testfiles}/xmiparsermock.jar" -->
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
