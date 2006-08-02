@@ -18,7 +18,9 @@ public class UnitTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(Demo.class);
+        suite.addTestSuite(InformixPhasePersistenceTest.class);
         return suite;
     }
 
