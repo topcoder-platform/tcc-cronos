@@ -74,7 +74,7 @@ public abstract class UseCaseDiagramValidator extends SubmissionValidator {
         UMLUseCaseDiagram []useCaseDiagrams = submission.getUseCaseDiagrams();
         if (useCaseDiagrams.length == 0) {
             ValidationOutput error = new ValidationOutput(ValidationOutputType.ERROR,
-                    "submission is missing an use case diagram");
+                    "Submission does not contain any use cases");
             return new ValidationOutput[]{error};
         }
 
