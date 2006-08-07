@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- ************ -->
+    <!-- AutoPilotJob -->
+    <Config name="com.topcoder.management.phase.autopilot.AutoPilotJob">
+        <!-- operator name for auditing (optional) -->
+        <Property name="Operator">
+            <Value>TCSOperator</Value>
+        </Property>
+
+        <!-- AutoPilot instance to use (Object Factory) -->
+        <Property name="com.topcoder.management.phase.autopilot.AutoPilot">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.autopilot.AutoPilot</Value>
+            </Property>
+            <!-- more parameters -->
+        </Property>
+    </Config>
+
+    <!-- ********* -->
+    <!-- AutoPilot -->
+    <Config name="com.topcoder.management.phase.autopilot.AutoPilot">
+        <!-- AutoPilotSource instance to use (object factory) -->
+        <Property name="com.topcoder.management.phase.autopilot.AutoPilotSource">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSource</Value>
+            </Property>
+            <!-- more parameters -->
+        </Property>
+
+        <!-- ProjectPilot instance to use (object factory) -->
+        <Property name="com.topcoder.management.phase.autopilot.ProjectPilot">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.autopilot.impl.DefaultProjectPilot</Value>
+            </Property>
+            <!-- more parameters -->
+        </Property>
+    </Config>
+
+    <!-- ********************* -->
+    <!-- ActiveAutoPilotSource -->
+    <Config name="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSource">
+        <!-- ProjectManager instance to use (object factory) -->
+        <Property name="com.topcoder.managementproject.ProjectManager">
+            <Property name="type">
+                <Value>com.topcoder.management.project.XXXX</Value>
+            </Property>
+            <!-- more parameters -->
+        </Property>
+    </Config>
+
+    <!-- ******************* -->
+    <!-- DefaultProjectPilot -->
+    <Config name="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilot">
+        <!-- PhaseManager instance to use (object factory) -->
+        <Property name="com.topcoder.management.phase.PhaseManager">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.XXXX</Value>
+            </Property>
+            <!-- more parameters -->
+        </Property>
+    </Config>
+</CMConfig>
