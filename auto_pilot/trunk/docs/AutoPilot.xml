@@ -7,9 +7,19 @@
         <Property name="Operator">
             <Value>TCSOperator</Value>
         </Property>
-
+        <!-- topcoder scheduling component may add job here (?) -->
+        <Property name = "AutoPilotJob">
+            <Value>StartDTG: Jan 31, 2007 01:02:03 AM </Value>
+            <Value>EndDTG:  Jan 1, 2008 01:00:00 AM</Value>
+            <Value>IntervalValue: 10</Value>
+            <Value>IntervalUnit: YEAR</Value>
+            <Value>JobType: JOB_TYPE_JAVA_CLASS</Value>
+            <Value>JobCmd: com.topcoder.management.phase.autopilot.AutoPilotJob</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.management.phase.autopilot.AutoPilotJob.factory">
         <!-- AutoPilot instance to use (Object Factory) -->
-        <Property name="com.topcoder.management.phase.autopilot.AutoPilot">
+        <Property name="com/topcoder/management/phase/autopilot/AutoPilot">
             <Property name="type">
                 <Value>com.topcoder.management.phase.autopilot.AutoPilot</Value>
             </Property>
@@ -21,7 +31,7 @@
     <!-- AutoPilot -->
     <Config name="com.topcoder.management.phase.autopilot.AutoPilot">
         <!-- AutoPilotSource instance to use (object factory) -->
-        <Property name="com.topcoder.management.phase.autopilot.AutoPilotSource">
+        <Property name="com/topcoder/management/phase/autopilot/AutoPilotSource">
             <Property name="type">
                 <Value>com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSource</Value>
             </Property>
@@ -29,7 +39,7 @@
         </Property>
 
         <!-- ProjectPilot instance to use (object factory) -->
-        <Property name="com.topcoder.management.phase.autopilot.ProjectPilot">
+        <Property name="com/topcoder/management/phase/autopilot/ProjectPilot">
             <Property name="type">
                 <Value>com.topcoder.management.phase.autopilot.impl.DefaultProjectPilot</Value>
             </Property>
@@ -41,7 +51,7 @@
     <!-- ActiveAutoPilotSource -->
     <Config name="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSource">
         <!-- ProjectManager instance to use (object factory) -->
-        <Property name="com.topcoder.managementproject.ProjectManager">
+        <Property name="com/topcoder/management/project/ProjectManager">
             <Property name="type">
                 <Value>com.topcoder.management.project.XXXX</Value>
             </Property>
@@ -53,7 +63,7 @@
     <!-- DefaultProjectPilot -->
     <Config name="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilot">
         <!-- PhaseManager instance to use (object factory) -->
-        <Property name="com.topcoder.management.phase.PhaseManager">
+        <Property name="com/topcoder/management/phase/PhaseManager">
             <Property name="type">
                 <Value>com.topcoder.management.phase.XXXX</Value>
             </Property>

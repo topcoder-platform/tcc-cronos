@@ -1,0 +1,1828 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" name="com.topcoder.management.phase.autopilot.AllTests" tests="385" time="18.891">
+  <properties>
+    <property name="object_factory.path" value="object_factory/2.0"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="dist_testfiles" value="build/dist/auto_pilot-1.0/test_files"></property>
+    <property name="java.home" value="C:\Program Files\Java\j2sdk1.4.2\jre"></property>
+    <property name="data_validation.path" value="data_validation/1.0"></property>
+    <property name="job_scheduling.path" value="job_scheduling/1.0"></property>
+    <property name="dist_javadocs" value="build/dist/auto_pilot-1.0/docs/javadocs"></property>
+    <property name="debug" value="off"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="distfilename" value="auto_pilot"></property>
+    <property name="component.dist.jar" value="build/dist/auto_pilot-1.0.jar"></property>
+    <property name="command_line_utility.jar.name" value="command_line_utility.jar"></property>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\j2sdk1.4.2\jre\lib\endorsed"></property>
+    <property name="object_factory.jar" value="lib/tcs/object_factory/2.0/object_factory.jar"></property>
+    <property name="executable_wrapper.path" value="executable_wrapper/1.0"></property>
+    <property name="database_abstraction.version" value="1.0"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="design_dist.jar" value="Auto_Pilot_1.0_design_dist.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="id_generator.jar.name" value="id_generator.jar"></property>
+    <property name="java.version" value="1.4.2"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="dist_src" value="build/dist/auto_pilot-1.0/src"></property>
+    <property name="workdays.jar.name" value="workdays.jar"></property>
+    <property name="user.name" value="Administrator"></property>
+    <property name="packagedir" value="com/topcoder/management"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="executable_wrapper.jar.name" value="executable_wrapper.jar"></property>
+    <property name="command_line_utility.path" value="command_line_utility/1.0"></property>
+    <property name="reports" value="reports"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="search_builder.path" value="search_builder/1.2"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/auto_pilot/1.0/auto_pilot.jar"></property>
+    <property name="data_validation.jar.name" value="data_validation.jar"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="path.separator" value=";"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="command_line_utility.version" value="1.0"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="typesafe_enum.version" value="1.0"></property>
+    <property name="command_line_utility.jar" value="lib/tcs/command_line_utility/1.0/command_line_utility.jar"></property>
+    <property name="ant.file" value="C:\final\build.xml"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="search_builder.jar" value="lib/tcs/search_builder/1.2/search_builder.jar"></property>
+    <property name="id_generator.version" value="3.0"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/auto_pilot_tests.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="executable_wrapper.jar" value="lib/tcs/executable_wrapper/1.0/executable_wrapper.jar"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="verbose" value="no"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="xerces.jar" value="lib/xerces/1.4.4/xerces.jar"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="component_path" value="auto_pilot/1.0"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="dist_conf" value="build/dist/auto_pilot-1.0/conf"></property>
+    <property name="id_generator.jar" value="lib/tcs/id_generator/3.0/id_generator.jar"></property>
+    <property name="object_factory.version" value="2.0"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.4"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="junit.jar" value="lib/junit/3.8.1/junit.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="build_tcsdistdir" value="build/dist/auto_pilot-1.0"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.2beta1 compiled on July 2 2004"></property>
+    <property name="dist_docs" value="build/dist/auto_pilot-1.0/docs"></property>
+    <property name="database_abstraction.path" value="database_abstraction/1.0"></property>
+    <property name="workdays.jar" value="lib/tcs/workdays/1.0/workdays.jar"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.4/configuration_manager.jar"></property>
+    <property name="job_scheduling.jar.name" value="job_scheduling.jar"></property>
+    <property name="java.library.path" value="C:\Program Files\Java\j2sdk1.4.2\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\ATI Technologies\ATI Control Panel;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\Microsoft SQL Server\80\Tools\BINN;C:\Program Files\Informix\bin;C:\Program Files\IBM\Informix\bin;D:\bin;C:\Program Files\FPC\2.0.0\bin\i386-Win32;C:\Program Files\MinGW\bin;C:\Program Files\ant1.6.2\bin;C:\Program Files\nant-0.85-rc3\bin;C:\Program Files\Java\j2sdk1.4.2\bin;C:\;C:\IBMWORK;C:\IBMWORK\TOOLS"></property>
+    <property name="docpackage.jar" value="auto_pilot_docs.jar"></property>
+    <property name="logging_wrapper.version" value="1.2"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="basedir" value="C:\final"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="ant.home" value="C:\Program Files\ant1.6.2"></property>
+    <property name="logging_wrapper.path" value="logging_wrapper/1.2"></property>
+    <property name="component.war" value="${dist_examples}/auto_pilot.war"></property>
+    <property name="workdays.path" value="workdays/1.0"></property>
+    <property name="job_scheduling.jar" value="lib/tcs/job_scheduling/1.0/job_scheduling.jar"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="ant.file.Auto Pilot" value="C:\final\build.xml"></property>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\j2sdk1.4.2\jre\bin"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="user.variant" value=""></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="id_generator.path" value="id_generator/3.0"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="dev_dist.jar" value="Auto_Pilot_1.0_dev_dist.jar"></property>
+    <property name="ant.project.name" value="Auto Pilot"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="webdir" value="web"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\j2sdk1.4.2\jre\lib\ext"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="executable_wrapper.version" value="1.0"></property>
+    <property name="user.home" value="C:\Documents and Settings\Administrator"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="object_factory.jar.name" value="object_factory.jar"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="job_scheduling.version" value="1.0"></property>
+    <property name="typesafe_enum.path" value="typesafe_enum/1.0"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="workdays.version" value="1.0"></property>
+    <property name="package" value="com.topcoder.management"></property>
+    <property name="typesafe_enum.jar" value="lib/tcs/typesafe_enum/1.0/typesafe_enum.jar"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="user.dir" value="C:\final"></property>
+    <property name="configmanager.version" value="2.1.4"></property>
+    <property name="data_validation.version" value="1.0"></property>
+    <property name="data_validation.jar" value="lib/tcs/data_validation/1.0/data_validation.jar"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="java.vm.version" value="1.4.2-b28"></property>
+    <property name="search_builder.jar.name" value="search_builder.jar"></property>
+    <property name="java.class.path" value="C:\final\build\testClasses;C:\final\build\classes;C:\final\lib\tcs\base_exception\1.0\base_exception.jar;C:\final\lib\tcs\configuration_manager\2.1.4\configuration_manager.jar;C:\final\lib\tcs\object_factory\2.0\object_factory.jar;C:\final\lib\tcs\id_generator\3.0\id_generator.jar;C:\final\lib\tcs\command_line_utility\1.0\command_line_utility.jar;C:\final\lib\tcs\job_scheduling\1.0\job_scheduling.jar;C:\final\lib\tcs\search_builder\1.2\search_builder.jar;C:\final\lib\tcs\logging_wrapper\1.2\logging_wrapper.jar;C:\final\lib\tcs\db_connection_factory\1.0\db_connection_factory.jar;C:\final\lib\tcs\workdays\1.0\workdays.jar;C:\final\lib\tcs\typesafe_enum\1.0\typesafe_enum.jar;C:\final\lib\xerces\1.4.4\xerces.jar;C:\final\conf;C:\final\test_files;C:\final;D:\classpath;C:\Program Files\ant1.6.2\lib\junit.jar;C:\Program Files\ant1.6.2\lib\ant-launcher.jar;C:\Program Files\ant1.6.2\lib\ant.jar;C:\Program Files\ant1.6.2\lib\ant-junit.jar"></property>
+    <property name="dev_submission.jar" value="Auto_Pilot_1.0_dev_submission.jar"></property>
+    <property name="database_abstraction.jar" value="lib/tcs/database_abstraction/1.0/database_abstraction.jar"></property>
+    <property name="ant.library.dir" value="C:\Program Files\ant1.6.2\lib"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="search_builder.version" value="1.2"></property>
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.runtime.version" value="1.4.2-b28"></property>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\j2sdk1.4.2\jre\lib\rt.jar;C:\Program Files\Java\j2sdk1.4.2\jre\lib\i18n.jar;C:\Program Files\Java\j2sdk1.4.2\jre\lib\sunrsasign.jar;C:\Program Files\Java\j2sdk1.4.2\jre\lib\jsse.jar;C:\Program Files\Java\j2sdk1.4.2\jre\lib\jce.jar;C:\Program Files\Java\j2sdk1.4.2\jre\lib\charsets.jar;C:\Program Files\Java\j2sdk1.4.2\jre\classes"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="database_abstraction.jar.name" value="database_abstraction.jar"></property>
+    <property name="design_submission.jar" value="Auto_Pilot_1.0_design_submission.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="user.country" value="CN"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="component" value="Auto_Pilot"></property>
+    <property name="logging_wrapper.jar" value="lib/tcs/logging_wrapper/1.2/logging_wrapper.jar"></property>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"></property>
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"></property>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="java.specification.version" value="1.4"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="javatests" value="src/java/tests"></property>
+  </properties>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAutoPilot" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAutoPilotStringStringString" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAutoPilotAutoPilotSourceProjectPilot" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testGetAutoPilotSource" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testGetProjectPilot" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAdvanceProjectsString" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAdvanceProjectsString2" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAdvanceProjectsLongArrayStringEmptyProjectId" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAdvanceProjectsLongArrayString" time="0.032"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAdvanceProjectsLongArrayString2" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAdvanceProject" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotTest" name="testAdvanceProject2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testAutoPilotJob" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testAutoPilotJobStringString" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testAutoPilotJobStringStringOperator" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testAutoPilotJobAutoPilotString" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testGetAutoPilot" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testGetOperator" time="0.046"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testRun" time="0.032"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testRunLongArray" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testIsDone" time="0.046"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testClose" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testGetStatus" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testMain" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testMainPoll" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testMainProject" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testCreateJob" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testSchedule" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobTest" name="testGetScheduler" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultTest" name="testAutoPilotResult" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultTest" name="testGetProjectId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultTest" name="testGetPhaseEndedCount" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultTest" name="testGetPhaseStartedCount" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultTest" name="testAggregate" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testActiveAutoPilotSource" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testActiveAutoPilotSourceStringStringStringStringString" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testActiveAutoPilotSourceProjectManagerStringStringString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testGetProjectManager" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testGetActiveStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testGetExtPropAutoPilotSwitch" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testGetExtPropAutoPilotSwitchValue" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testGetProjectIds" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testBuildFilter" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceTest" name="testProcessProject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testDefaultProjectPilot" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testDefaultProjectPilotStringStringStringStringString" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testDefaultProjectPilotPhaseManagerStringStringLog" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testGetPhaseManager" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testGetLogger" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testGetScheduledStatusName" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testGetOpenStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testAdvancePhases" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testAdvancePhases2" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testAdvancePhasesNullPhases" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testAdvancePhasesEmptyPhases" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testProcessPhase" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testDoPhaseOperation" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testDoPhaseOperationNullStatus" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testDoAudit" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotTest" name="testDoAuditNullType" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotExceptionTest" name="testAutoPilotSourceExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotExceptionTest" name="testAutoPilotSourceExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotExceptionTest" name="testThrowing" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotSourceExceptionTest" name="testAutoPilotSourceExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotSourceExceptionTest" name="testAutoPilotSourceExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotSourceExceptionTest" name="testThrowing" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotSourceExceptionTest" name="testAutoPilotSourceException" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.ConfigurationExceptionTest" name="testThrowing" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.ConfigurationExceptionTest" name="testConfigurationException" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.ConfigurationExceptionTest" name="testConfigurationExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.ConfigurationExceptionTest" name="testConfigurationExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.PhaseOperationExceptionTest" name="testGetProjectId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.PhaseOperationExceptionTest" name="testThrowing" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.PhaseOperationExceptionTest" name="testPhaseOperationException" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.PhaseOperationExceptionTest" name="testPhaseOperationExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.PhaseOperationExceptionTest" name="testPhaseOperationExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.PhaseOperationExceptionTest" name="testGetPhase" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJob" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testRunLongArray" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJobStringStringNullNs" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJobStringStringEmptyNs" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJobStringStringNullApkey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJobStringStringEmptyApkey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJobAutoPilotStringNullAutoPilot" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJobAutoPilotStringNullOperator" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testAutoPilotJobAutoPilotStringEmptyOperator" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testRunVoidAutoPilotSourceException" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testRunVoidPhaseOperationException" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadConfig" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainNoNs" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadNs" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainNoPollProject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBothPollProject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadPollA" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadPollB" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadProjectA" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadProjectB" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadProjectC" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainBadProjectD" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testMainProjectJobName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testCreateJobNullJobName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testCreateJobEmptyJobName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testCreateJobNonPositive" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testScheduleNullNs" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testScheduleEmptyNs" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testScheduleNullJobName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testScheduleEmptyJobName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotJobFailure" name="testScheduleNonPositiveInterval" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilot" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotStringStringStringNullNamespace" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotStringStringStringEmptyNamespace" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotStringStringStringNullSource" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotStringStringStringEmptySource" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotStringStringStringNullProject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotStringStringStringEmptyProject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotAutoPilotSourceProjectPilotNullSource" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAutoPilotAutoPilotSourceProjectPilotNullProject" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAdvanceProjectsStringNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAdvanceProjectsStringEmpty" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAdvanceProjectsLongArrayStringNullId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAdvanceProjectsLongArrayStringNullOperator" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAdvanceProjectsLongArrayStringEmptyOperator" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAdvanceProjectNull" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotFailure" name="testAdvanceProjectEmpty" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultFailure" name="testAggregate" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultFailure" name="testAutoPilotResultNegativeEnded" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultFailure" name="testAutoPilotResultNegativeStarted" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.AutoPilotResultFailure" name="testAggregateDifferentProjectId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSource" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringNullNamespace" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringEmptyNamespace" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringNullPmkey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringEmptyPmkey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringNullAsname" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringEmptyAsname" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringNullExtProp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringEmptyExtProp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringNullExtPropVal" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceStringStringStringStringStringEmptyExtPropVal" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceProjectManagerStringStringStringNullPm" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceProjectManagerStringStringStringNullAsname" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceProjectManagerStringStringStringEmptyAsname" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceProjectManagerStringStringStringNullExtProp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceProjectManagerStringStringStringEmptyExtProp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceProjectManagerStringStringStringNullExtPropVal" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testActiveAutoPilotSourceProjectManagerStringStringStringEmptyExtPropVal" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSourceFailure" name="testGetProjectIdsException" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilot" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringNullNamespace" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringEmptyName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringNullPmkey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringEmptyPmkey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringNullScheduledStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringEmptyScheduledStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringNullOpenStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringEmptyOpenStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringNullLogName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotStringStringStringStringStringEmptyLogName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotPhaseManagerStringStringLogNullPhaseManager" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotPhaseManagerStringStringLogNullScheduledStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotPhaseManagerStringStringLogEmptyScheduledStatusName" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotPhaseManagerStringStringLogNullOpenStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotPhaseManagerStringStringLogEmptyOpenStatusName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testDefaultProjectPilotPhaseManagerStringStringLogNullLog" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testAdvancePhasesNullOperator" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testAdvancePhasesNullProject" time="0.032"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.impl.DefaultProjectPilotFailure" name="testAdvancePhasesEmptyOperator" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.DemoTest" name="testProgramatically" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.DemoTest" name="testConfig" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.DemoTest" name="testCustomPilot" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotExceptionAccuracyTest" name="testConstructor_AutoPilotException" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotExceptionAccuracyTest" name="testConstructor_AutoPilotException_String" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotExceptionAccuracyTest" name="testConstructor_AutoPilotException_String_Throwable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotSourceExceptionAccuracyTest" name="testConstructor_AutoPilotSourceException" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotSourceExceptionAccuracyTest" name="testConstructor_AutoPilotSourceException_String" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotSourceExceptionAccuracyTest" name="testConstructor_AutoPilotSourceException_String_Throwable_" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.ConfigurationExceptionAccuracyTest" name="testConstructor_ConfigurationException_" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.ConfigurationExceptionAccuracyTest" name="testConstructor_ConfigurationException_String_" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.ConfigurationExceptionAccuracyTest" name="testConstructor_ConfigurationException_String_Throwable_" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.PhaseOperationExceptionAccuracyTest" name="testConstructor_PhaseOperationException_" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.PhaseOperationExceptionAccuracyTest" name="testConstructor_PhaseOperationException_long_phase_String_" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.PhaseOperationExceptionAccuracyTest" name="testConstructor_PhaseOperationException_long_phase_String_Throwable_" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.ActiveAutoPilotSourceAccuracyTest" name="testGetProjectIds" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.ActiveAutoPilotSourceAccuracyTest" name="testBuildFilter" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.ActiveAutoPilotSourceAccuracyTest" name="testConstructor" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.ActiveAutoPilotSourceAccuracyTest" name="testConstructor_ActiveAutoPilotSource_String_String_String_String_String_" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.ActiveAutoPilotSourceAccuracyTest" name="testConstructor_ActiveAutoPilotSource_ProjectManager_String_String_String_" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.ActiveAutoPilotSourceAccuracyTest" name="testProcessProject_ProjectArray" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testConstructor_DefaultProjectPilot_" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testConstructor_DefaultProjectPilot_String_String_String_String_String_" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testConstructor_DefaultProjectPilot_PhaseManager_String_String_Log_" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoAudit_Phase_boolean_String_PhaseEnded_NonNullType" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoAudit_Phase_boolean_String_PhaseNotEnded_NonNullType" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoAudit_Phase_boolean_String_PhaseEnded_NullType" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoAudit_Phase_boolean_String_PhaseNotEnded_NullType" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoPhaseOperation_Phase_Operator_NoChange" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoPhaseOperation_Phase_Operator_NoChange_NullStatus" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoPhaseOperation_Phase_Operator_PhaseEnded" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoPhaseOperation_Phase_Operator_PhaseNotEnded" time="0.032"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoPhaseOperation_Phase_Operator_PhaseStarted" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testDoPhaseOperation_Phase_Operator_PhaseNotStarted" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_NullPhase" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseAlreadyProcessed" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseEnded" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseNotEnded" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseStarted" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseNotStarted" time="0.031"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseAlreadyProcessed_WithDependencies" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseEnded_WithDependencies" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseNotEnded_WithDependencies" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseStarted_WithDependencies" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.impl.DefaultProjectPilotAccuracyTest" name="testProcessPhase_Phase_Set_String_PhaseNotStarted_WithDependencies" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotResultAccuracyTest" name="testConstructor_long_int_int" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotResultAccuracyTest" name="testAggregate_AutoPilotResult" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotAccuracyTest" name="testConstructor_AutoPilot" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotAccuracyTest" name="testConstructor_AutoPilot_String_String_String_" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotAccuracyTest" name="testConstructor_AutoPilot_AutoPilotSource_ProjectPilot_" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotAccuracyTest" name="testAdvanceProjects_String_ProjectsAdvanced" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotAccuracyTest" name="testAdvanceProjects_String_ProjectsNotAdvanced" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotAccuracyTest" name="testAdvanceProjects_longArray_String_ProjectsAdvanced" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotAccuracyTest" name="testAdvanceProjects_longArray_String_ProjectsNotAdvanced" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotJobAccuracyTest" name="testConstructor_AutoPilotJob" time="0.015"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotJobAccuracyTest" name="testConstructor_AutoPilotJob_String_String" time="0.047"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotJobAccuracyTest" name="testConstructor_AutoPilotJob_AutoPilot_String" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.accuracytests.AutoPilotJobAccuracyTest" name="testCreateJob_String_int" time="0.016"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor1NoConfig" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2Null1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2Null2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2Null3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2Null4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2Null5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString7" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString8" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString9" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2EmptyString10" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2ConfigNoNamespace" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2ConfigNoProjectManagerKey" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2ConfigLoop" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor2ConfigWrongType" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3Null1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3Null2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3Null3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3Null4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3EmptyString1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3EmptyString2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3EmptyString3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3EmptyString4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3EmptyString5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testConstructor3EmptyString6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.ActiveAutoPilotSourceFailureTests" name="testGetProjectIdsFailure" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor1NoConfig" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2Null1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2Null2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2Null3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2Null4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2Null5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString7" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString8" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString9" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2EmptyString10" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2ConfigNoNamespace" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2ConfigNoProjectManagerKey" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2ConfigLoop" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2ConfigWrongType" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3Null1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3Null2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3Null3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3Null4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3EmptyString1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3EmptyString2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3EmptyString3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor3EmptyString4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor1ConfigNoLogger" time="0.109"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testConstructor2ConfigNoLogger" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testAdvancePhasesNull" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testAdvancePhasesEmptyString1" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testAdvancePhasesEmptyString2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testAdvancePhasesGetPhasesException" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testProcessPhaseCanEndException" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testProcessPhaseEndException" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testProcessPhaseCanStartException" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testProcessPhaseStartException" time="0.093"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testDoPhaseOperationCanEndException" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testDoPhaseOperationEndException" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testDoPhaseOperationCanStartException" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.impl.DefaultProjectPilotFailureTests" name="testDoPhaseOperationStartException" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotResultFailureTests" name="testAggregateDifferentProjectId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotResultFailureTests" name="testConstructorNegativeEndedCount" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotResultFailureTests" name="testConstructorNegativeStartedCount" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotResultFailureTests" name="testAggregateNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjectNull" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor1NoConfig" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2Null1" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2Null2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2Null3" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2EmptyString1" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2EmptyString2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2EmptyString3" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2EmptyString4" time="0.141"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2EmptyString5" time="0.093"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2EmptyString6" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2ConfigNoNamespace" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2ConfigLoop" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2ConfigWrongType" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor3Null1" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor3Null2" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2ConfigNoAutoPilotSource" time="0.125"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testConstructor2ConfigNoProjectPilot" time="0.093"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects1Null" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects1EmptyString1" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects1EmptyString2" time="0.109"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects1AutoPilotSourceFail" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects1ProjectPilotFail" time="0.109"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects2Null1" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects2Null2" time="0.093"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects2EmptyString1" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects2EmptyString2" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjects2ProjectPilotFail" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjectEmptyString1" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjectEmptyString2" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotFailureTests" name="testAdvanceProjectProjectPilotFail" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor1NoConfig" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2Null1" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2Null2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2EmptyString1" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2EmptyString2" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2EmptyString3" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2EmptyString4" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2ConfigNoNamespace" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2ConfigLoop" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2ConfigWrongType" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor3Null1" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor3Null2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor3EmptyString1" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor3EmptyString2" time="0.109"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testConstructor2ConfigNoAutoPilot" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testCreateJobNull" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testCreateJobEmptyString1" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testCreateJobEmptyString2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testCreateJobNegativeInterval" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testCreateJobZeroInterval" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleNull1" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleNull2" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleEmptyString1" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleEmptyString2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleEmptyString3" time="0.109"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleEmptyString4" time="0.079"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleNegativeInterval" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleZeroInterval" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testScheduleBadNamespace" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainNull" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainPollValidationFailure" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainPollTooManyValues" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainPollNegativeValue" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainProjectValidationFailure" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainConfigTooManyValues" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainNamespaceTooManyValues" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainAutopilotTooManyValues" time="0.063"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainJobnameTooManyValues" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainConfigFileNotExist" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainPollAndProject" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainNoPollAndProject" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainWithNamespaceNoAutoPilotProjectMode" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testMainWithAutoPilotNoNamespace" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testRun1AutoPilotSourceFail" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testRun1ProjectPilotFail" time="0.094"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testRun2Null" time="0.078"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests" name="testRun2ProjectPilotFail" time="0.062"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.stresstests.AutoPilotStressTests" name="testAdvanceProjectsString" time="2.11"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.stresstests.AutoPilotStressTests" name="testAdvanceProjectsLongArrayString" time="1.687"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.stresstests.AutoPilotStressTests" name="testAdvanceProject" time="0.297"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.stresstests.AutoPilotStressTests" name="testRun" time="1.781"></testcase>
+  <testcase classname="com.topcoder.management.phase.autopilot.stresstests.AutoPilotStressTests" name="testSchedule" time="1.829"></testcase>
+  <system-out><![CDATA[|      ProjectId      |    Ended    |    Started    |
+|          2          |      0      |       0       |
+|          4          |      0      |       0       |
+|          1          |      0      |       0       |
+|          3          |      0      |       0       |
+|          5          |      0      |       0       |
+Projects processed: 5
+  ID: 2 –  ended: 0 started: 0
+  ID: 4 –  ended: 0 started: 0
+  ID: 1 –  ended: 0 started: 0
+  ID: 3 –  ended: 0 started: 0
+  ID: 5 –  ended: 0 started: 0
+Test AutoPilot#advanceProjects(String) for 100000 times.
+It took 2047 ms.
+
+Test AutoPilot#advanceProjects(long[], String) for 100000 times.
+It took 1672 ms.
+
+Test AutoPilot#advanceProject(long, String) for 100000 times.
+It took 281 ms.
+
+Test AutoPilotJob#run() for 100000 times.
+It took 1765 ms.
+
+Test AutoPilotJob#schedule(String, String, int) for 100000 times.
+It took 1813 ms.
+
+]]></system-out>
+  <system-err><![CDATA[Sun Aug 06 15:17:22 CST 2006 - 1 - 2:PhaseType#2 - END - Checker
+Sun Aug 06 15:17:22 CST 2006 - 1 - 3:PhaseType#3 - START - Checker
+Sun Aug 06 15:17:22 CST 2006 - 1 - 2:PhaseType#2 - END - Check
+Sun Aug 06 15:17:22 CST 2006 - 1 - 3:PhaseType#3 - START - Check
+Sun Aug 06 15:17:22 CST 2006 - 1 - 2:PhaseType#2 - END - Check
+Sun Aug 06 15:17:22 CST 2006 - 1 - 3:PhaseType#3 - START - Check
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+Sun Aug 06 15:17:23 CST 2006 - 1 - 2:PhaseType#2 - END - Check
+Sun Aug 06 15:17:23 CST 2006 - 1 - 3:PhaseType#3 - START - Check
+Sun Aug 06 15:17:23 CST 2006 - 1 - 6:PhaseType#1 - END - Check
+Sun Aug 06 15:17:23 CST 2006 - 2 - 11:PhaseType#1 - START - Check
+Sun Aug 06 15:17:23 CST 2006 - 1 - 0:Null Phase Type - END - Check
+com.topcoder.management.phase.autopilot.AutoPilotSourceException: test
+	at com.topcoder.management.phase.autopilot.AutoPilotJobFailure$1.advanceProjects(AutoPilotJobFailure.java:206)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.execute(AutoPilotJob.java:300)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.run(AutoPilotJob.java:274)
+	at com.topcoder.management.phase.autopilot.AutoPilotJobFailure.testRunVoidAutoPilotSourceException(AutoPilotJobFailure.java:212)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+com.topcoder.management.phase.autopilot.PhaseOperationException: test
+	at com.topcoder.management.phase.autopilot.AutoPilotJobFailure$2.advanceProjects(AutoPilotJobFailure.java:231)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.execute(AutoPilotJob.java:300)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.run(AutoPilotJob.java:274)
+	at com.topcoder.management.phase.autopilot.AutoPilotJobFailure.testRunVoidPhaseOperationException(AutoPilotJobFailure.java:237)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+This command line provides 2 functionalites:
+ - run once (given a list of project ids or retrieve ids from AutoPilotSource)
+ - poll mode (scheduled in background to run Auto Pilot every some intervals)
+
+ The command line syntax is:
+ java AutoPilotJob [-config configFile] [-namespace ns [-autopilot apKey]]
+	(-poll [interval] [-jobname jobname] | -project [Id[, ...]])
+
+    - configFile specifies the path to config files to be loaded into
+        configuration manager. if not specified it's assumed the config file
+        is preloaded.
+
+    - ns and apKey are optional, it's used to instantiate AutoPilotJob for
+    	project mode. ns is also used to instantiate the Scheduler. The
+    	default	values are AutoPilotJob's full name & AutoPilot's full name
+    	respectively.
+
+    - poll and project These next options are mutually exclusive (to indicate
+        two kinds of run-mode): It is an error if both poll/projects are
+        specified or none are specified.
+
+    A) Poll-mode - poll is used to define the interval in minutes, if interval
+        is not specified, a default of 5 minutes is used. The autopilot job will
+        be executed every this interval starting from midnight.
+        - jobname is the job name, Job Scheduling will use this job name. The
+            default value is 'AutoPilotJob'. It is optional and can only be
+            specified if poll is specified. It is an error to specify this
+            option without specifying -poll.
+        - ns is used to instantiate the Scheduler. Optional. The default value
+        	is AutoPilotJob's full name.
+        - apKey is ignored.
+
+    B) - project can be specified to process projects with the given ids. The
+        project ids will be processed once and the application terminates, it
+        doesn't go into poll mode. If no ids are given, AutoPilotSource is
+        used instead.
+	   - ns and apKey, must be specified or not at the same time, default to
+		   AutoPilotJob's full name and AutoPilot's full name respectively.
+com.topcoder.management.phase.autopilot.AutoPilotSourceException: fail to search projects cause of persistence exception, caused by 
+	at com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSource.getProjectIds(ActiveAutoPilotSource.java:325)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProjects(AutoPilot.java:239)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.execute(AutoPilotJob.java:300)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.run(AutoPilotJob.java:274)
+	at com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests.testRun1AutoPilotSourceFail(AutoPilotJobFailureTests.java:653)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+Caused by: com.topcoder.management.project.PersistenceException: 
+	at com.topcoder.management.phase.autopilot.failuretests.MockProjectManager.searchProjects(MockProjectManager.java:107)
+	at com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSource.getProjectIds(ActiveAutoPilotSource.java:321)
+	... 23 more
+Caused by:com.topcoder.management.project.PersistenceException: 
+	at com.topcoder.management.phase.autopilot.failuretests.MockProjectManager.searchProjects(MockProjectManager.java:107)
+	at com.topcoder.management.phase.autopilot.impl.ActiveAutoPilotSource.getProjectIds(ActiveAutoPilotSource.java:321)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProjects(AutoPilot.java:239)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.execute(AutoPilotJob.java:300)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.run(AutoPilotJob.java:274)
+	at com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests.testRun1AutoPilotSourceFail(AutoPilotJobFailureTests.java:653)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+com.topcoder.management.phase.autopilot.PhaseOperationException: fail to get phases cause of phase manager exception, caused by 
+	at com.topcoder.management.phase.autopilot.impl.DefaultProjectPilot.advancePhases(DefaultProjectPilot.java:363)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProject(AutoPilot.java:314)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProjects(AutoPilot.java:280)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProjects(AutoPilot.java:240)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.execute(AutoPilotJob.java:300)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.run(AutoPilotJob.java:274)
+	at com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests.testRun1ProjectPilotFail(AutoPilotJobFailureTests.java:670)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+Caused by: com.topcoder.management.phase.PhaseManagementException: 
+	at com.topcoder.management.phase.autopilot.failuretests.MockPhaseManager.getPhases(MockPhaseManager.java:135)
+	at com.topcoder.management.phase.autopilot.impl.DefaultProjectPilot.advancePhases(DefaultProjectPilot.java:358)
+	... 25 more
+Caused by:com.topcoder.management.phase.PhaseManagementException: 
+	at com.topcoder.management.phase.autopilot.failuretests.MockPhaseManager.getPhases(MockPhaseManager.java:135)
+	at com.topcoder.management.phase.autopilot.impl.DefaultProjectPilot.advancePhases(DefaultProjectPilot.java:358)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProject(AutoPilot.java:314)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProjects(AutoPilot.java:280)
+	at com.topcoder.management.phase.autopilot.AutoPilot.advanceProjects(AutoPilot.java:240)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.execute(AutoPilotJob.java:300)
+	at com.topcoder.management.phase.autopilot.AutoPilotJob.run(AutoPilotJob.java:274)
+	at com.topcoder.management.phase.autopilot.failuretests.AutoPilotJobFailureTests.testRun1ProjectPilotFail(AutoPilotJobFailureTests.java:670)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+]]></system-err>
+</testsuite>
