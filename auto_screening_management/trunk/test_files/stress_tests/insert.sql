@@ -57,4 +57,3 @@ insert into screening_result(screening_result_id, screening_task_id, screening_r
 insert into screening_result(screening_result_id, screening_task_id, screening_response_id, dynamic_response_text, create_user, create_date, modify_user, modify_date) values(114, 100071, 104, 'dynamic_response_text', 'create_user', DATE('2006-11-10'), 'modify_user', DATE('2006-11-10'));
 insert into screening_result(screening_result_id, screening_task_id, screening_response_id, dynamic_response_text, create_user, create_date, modify_user, modify_date) values(115, 100071, 105, 'dynamic_response_text', 'create_user', DATE('2006-11-10'), 'modify_user', DATE('2006-11-10'));
 
-insert into id_sequences(name, next_block_start, block_size, exhausted) values ('screening_task_id_seq', 1, 2000, 0);

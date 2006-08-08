@@ -1,4 +1,3 @@
-delete from id_sequences;
 delete from screening_result;
 delete from screening_response_lu;
 delete from response_severity_lu;

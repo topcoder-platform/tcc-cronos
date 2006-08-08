@@ -257,17 +257,6 @@ public class AccuracyTestHelper {
             stmt.executeUpdate();
         }
         stmt.close();
-        
-        // id_sequences table
-        stmt = conn.prepareStatement(
-        		"insert into id_sequences("
-                + "name, next_block_start, block_size, exhausted) values (?, ?, ?, ?)");
-        stmt.setString(1, "screening_task_id_seq");
-        stmt.setLong(2, 1);
-        stmt.setLong(3, 20);
-        stmt.setLong(4, 0);
-        stmt.executeUpdate();
-        stmt.close();
 
         conn.close();
     }
@@ -279,11 +268,7 @@ public class AccuracyTestHelper {
         Connection conn = new DBConnectionFactoryImpl("com.cronos.onlinereview.autoscreening.management.db")
                 .createConnection();
 
-        PreparedStatement stmt = conn.prepareStatement("delete from id_sequences");
-        stmt.executeUpdate();
-        stmt.close();
-
-        stmt = conn.prepareStatement("delete from screening_result");
+        PreparedStatement stmt = conn.prepareStatement("delete from screening_result");
         stmt.executeUpdate();
         stmt.close();
 

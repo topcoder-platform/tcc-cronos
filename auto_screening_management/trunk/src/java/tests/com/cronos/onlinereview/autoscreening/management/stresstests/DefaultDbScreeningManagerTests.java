@@ -33,17 +33,17 @@ public class DefaultDbScreeningManagerTests extends TestCase {
     /**
      * Represents the load of stress test.
      */
-    private static final int LOAD2 = 200;
+    private static final int LOAD2 = 100;
 
     /**
      * Represents the load of stress test.
      */
-    private static final int LOAD1 = 50;
+    private static final int LOAD1 = 25;
 
     /**
      * Represents the upload base used int the tests.
      */
-    private static final long UPLOAD = 100;
+    private static final long UPLOAD = 50;
 
     /**
      * Represent the file name of insert data sql scripts.

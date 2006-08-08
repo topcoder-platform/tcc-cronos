@@ -69,16 +69,16 @@
             </Property>
             <Property name="parameters">
                 <Property name="jdbc_driver">
-                    <Value>com.mysql.jdbc.Driver</Value>
+                    <Value>com.informix.jdbc.IfxDriver</Value>
                 </Property>
                 <Property name="jdbc_url">
-                    <Value>jdbc:mysql://localhost:3306/auto_screening</Value>
+                    <Value>jdbc:informix-sqli://172.30.114.230:1526/or:INFORMIXSERVER=or</Value>
                 </Property>
                 <Property name="user">
-                    <Value></Value>
+                    <Value>informix</Value>
                 </Property>
                 <Property name="password">
-                    <Value></Value>
+                    <Value>google</Value>
                 </Property>
             </Property>
         </Property>
@@ -97,16 +97,16 @@
             </Property>
             <Property name="parameters">
                 <Property name="jdbc_driver">
-                    <Value>com.mysql.jdbc.Driver</Value>
+                    <Value>com.informix.jdbc.IfxDriver</Value>
                 </Property>
                 <Property name="jdbc_url">
-                    <Value>jdbc:mysql://localhost:3306/auto_screening</Value>
+                    <Value>jdbc:informix-sqli://172.30.114.230:1526/or:INFORMIXSERVER=or</Value>
                 </Property>
                 <Property name="user">
-                    <Value></Value>
+                    <Value>informix</Value>
                 </Property>
                 <Property name="password">
-                    <Value></Value>
+                    <Value>google</Value>
                 </Property>
             </Property>
         </Property>

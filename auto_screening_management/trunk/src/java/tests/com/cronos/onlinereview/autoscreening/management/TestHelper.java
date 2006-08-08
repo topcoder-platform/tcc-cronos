@@ -82,11 +82,6 @@ final class TestHelper {
     private static final String DELETE11 = "delete from screening_result";
 
     /**
-     * A SQL statement to delete id_sequences table.
-     */
-    private static final String DELETE12 = "delete from id_sequences";
-
-    /**
      * A SQL statement insert records into project_category_lu table.
      */
     private static final String INSERT_SQL_1 = "insert into project_category_lu("
@@ -354,15 +349,6 @@ final class TestHelper {
             stmt.executeUpdate();
         }
         stmt.close();
-        // id_sequences table
-        stmt = conn.prepareStatement("insert into id_sequences("
-                + "name, next_block_start, block_size, exhausted) values (?, ?, ?, ?)");
-        stmt.setString(1, "screening_task_id_seq");
-        stmt.setLong(2, 1);
-        stmt.setLong(3, 20);
-        stmt.setLong(4, 0);
-        stmt.executeUpdate();
-        stmt.close();
 
         conn.close();
     }
@@ -382,11 +368,7 @@ final class TestHelper {
         /*
          * The following code will remove all records from test tables.
          */
-        PreparedStatement stmt = conn.prepareStatement(DELETE12);
-        stmt.executeUpdate();
-        stmt.close();
-
-        stmt = conn.prepareStatement(DELETE11);
+        PreparedStatement stmt = conn.prepareStatement(DELETE11);
         stmt.executeUpdate();
         stmt.close();
 
