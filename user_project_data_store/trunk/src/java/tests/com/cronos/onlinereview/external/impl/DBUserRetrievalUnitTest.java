@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the DBUserRetrieval class.</p>
  *
- * @author TCSDEVELOPER
+ * @author oodinary
  * @version 1.0
  */
 public class DBUserRetrievalUnitTest extends TestCase {

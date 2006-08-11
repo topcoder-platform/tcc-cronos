@@ -8,7 +8,7 @@ package com.cronos.onlinereview.external.impl;
 /**
  * <p>The mock class of the ExternalObjectImpl class.</p>
  *
- * @author TCSDEVELOPER
+ * @author oodinary
  * @version 1.0
  */
 public class MockExternalObjectImpl extends ExternalObjectImpl {

@@ -12,7 +12,7 @@ package com.cronos.onlinereview.external;
  * sets of projects in bulk.</p>
  * <p>Implementations of this interface should be implemented in a thread-safe manner.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public interface ProjectRetrieval {

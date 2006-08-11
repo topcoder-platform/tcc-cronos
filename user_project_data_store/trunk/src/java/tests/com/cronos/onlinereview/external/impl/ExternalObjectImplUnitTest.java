@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the ExternalObjectImpl class.</p>
  *
- * @author TCSDEVELOPER
+ * @author oodinary
  * @version 1.0
  */
 public class ExternalObjectImplUnitTest extends TestCase {

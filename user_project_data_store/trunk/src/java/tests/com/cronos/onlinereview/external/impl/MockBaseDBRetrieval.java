@@ -19,7 +19,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 /**
  * <p>The mock class of the BaseDBRetrieval class.</p>
  *
- * @author TCSDEVELOPER
+ * @author oodinary
  * @version 1.0
  */
 public class MockBaseDBRetrieval extends BaseDBRetrieval {

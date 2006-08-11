@@ -65,7 +65,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * The default handle string of the userImpl.
      * </p>
      */
-    private static final String HANDLE = "TCSDEVELOPER";
+    private static final String HANDLE = "oodinary";
 
     /**
      * <p>
@@ -86,14 +86,14 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * The default email name string of the userImpl.
      * </p>
      */
-    private static final String EMIAL = "TCSDEVELOPER@gmail.com";
+    private static final String EMIAL = "oodinary@gmail.com";
 
     /**
      * <p>
      * The default alternativeEmail name string of the userImpl.
      * </p>
      */
-    private static final String DEFAULT_ALTER_EMAIL = "Alter_TCSDEVELOPER@gmail.com";
+    private static final String DEFAULT_ALTER_EMAIL = "Alter_oodinary@gmail.com";
 
     /**
      * <p>

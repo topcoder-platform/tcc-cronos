@@ -12,7 +12,7 @@ package com.cronos.onlinereview.external;
  * the super interface.</p>
  * <p>Implementations of this interface are not required to be thread-safe.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public interface ExternalProject extends ExternalObject {

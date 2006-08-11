@@ -13,7 +13,7 @@ import com.cronos.onlinereview.external.UserProjectDataStoreHelper;
  * long.</p>
  * <p>This class is thread-safe, but subclasses are not guaranteed to be.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public abstract class ExternalObjectImpl implements ExternalObject {

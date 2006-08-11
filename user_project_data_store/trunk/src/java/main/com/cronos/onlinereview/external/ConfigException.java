@@ -11,7 +11,7 @@ package com.cronos.onlinereview.external;
  * <p>It is thrown by the UserRetrieval and ProjectRetrieval interfaces (and their implementing
  * and base classes.) It can be used with a message, and with or without an underlying cause.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public class ConfigException extends UserProjectDataStoreException {

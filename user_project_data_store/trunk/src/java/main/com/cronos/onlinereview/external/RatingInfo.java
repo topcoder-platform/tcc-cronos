@@ -13,7 +13,7 @@ import java.io.Serializable;
  * user (not maintained in this class) for a specific rating type (design or development.)</p>
  * <p>This class is immutable and thread-safe.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public class RatingInfo implements Serializable {

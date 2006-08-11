@@ -31,7 +31,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * <p>All SQLExceptions in all methods should be wrapped in RetrievalException.</p>
  * <p>This class is immutable and therefore thread-safe.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrieval {

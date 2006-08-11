@@ -11,7 +11,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * <p>This is the base exception for all exceptions in the User Project Data Store component.</p>
  * <p>It can be used with or without a message, and with or without an underlying cause.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public class UserProjectDataStoreException extends BaseException {

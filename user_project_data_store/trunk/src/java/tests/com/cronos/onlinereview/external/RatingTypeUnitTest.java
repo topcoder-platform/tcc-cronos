@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the RatingType class.</p>
  *
- * @author TCSDEVELOPER
+ * @author oodinary
  * @version 1.0
  */
 public class RatingTypeUnitTest extends TestCase {

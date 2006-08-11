@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * <p>The helper class of this component.</p>
  * <p>This class provides some useful methods.</p>
  *
- * @author TCSDEVELOPER
+ * @author oodinary
  * @version 1.0
  */
 public final class UserProjectDataStoreHelper {

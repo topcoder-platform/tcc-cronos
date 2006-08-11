@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the ExternalUserImpl class.</p>
  *
- * @author TCSDEVELOPER
+ * @author oodinary
  * @version 1.0
  */
 public class ExternalUserImplUnitTest extends TestCase {
@@ -60,7 +60,7 @@ public class ExternalUserImplUnitTest extends TestCase {
     /**
      * <p>The default handle string of the userImpl.</p>
      */
-    private static final String defaultHandleString = "TCSDEVELOPER";
+    private static final String defaultHandleString = "oodinary";
 
     /**
      * <p>The default first name string of the userImpl.</p>
@@ -75,12 +75,12 @@ public class ExternalUserImplUnitTest extends TestCase {
     /**
      * <p>The default email name string of the userImpl.</p>
      */
-    private static final String defaultEmailString = "TCSDEVELOPER@gmail.com";
+    private static final String defaultEmailString = "oodinary@gmail.com";
 
     /**
      * <p>The default alternativeEmail name string of the userImpl.</p>
      */
-    private static final String defaultAlterEmailString = "Alter_TCSDEVELOPER@gmail.com";
+    private static final String defaultAlterEmailString = "Alter_oodinary@gmail.com";
 
     /**
      * <p>An ExternalUserImpl instance for testing.</p>

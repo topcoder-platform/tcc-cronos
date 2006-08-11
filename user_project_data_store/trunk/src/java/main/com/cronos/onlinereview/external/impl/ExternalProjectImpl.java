@@ -14,7 +14,7 @@ import com.cronos.onlinereview.external.UserProjectDataStoreHelper;
  * The unique id (project id) is described by the super class.</p>
  * <p>This class is not thread-safe.</p>
  *
- * @author dplass, TCSDEVELOPER
+ * @author dplass, oodinary
  * @version 1.0
  */
 public class ExternalProjectImpl extends ExternalObjectImpl implements ExternalProject {
