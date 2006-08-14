@@ -41,7 +41,7 @@ CREATE TABLE review (
   resource_id INTEGER NOT NULL,
   submission_id INTEGER NOT NULL,
   scorecard_id INTEGER NOT NULL,
-  committed DECIMAL(1,0)  NOT NULL,
+  committed DECIMAL(1, 0) NOT NULL,
   score FLOAT,
   create_user VARCHAR(64) NOT NULL,
   create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
@@ -61,6 +61,7 @@ CREATE TABLE review_item (
   scorecard_question_id INTEGER NOT NULL,
   upload_id INTEGER,
   answer VARCHAR(254) NOT NULL,
+  sort DECIMAL(3, 0) NOT NULL,
   create_user VARCHAR(64) NOT NULL,
   create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
   modify_user VARCHAR(64) NOT NULL,
@@ -80,6 +81,7 @@ CREATE TABLE review_comment (
   comment_type_id INTEGER NOT NULL,
   content LVARCHAR(4096) NOT NULL,
   extra_info VARCHAR(254),
+  sort DECIMAL(3, 0) NOT NULL,
   create_user VARCHAR(64) NOT NULL,
   create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
   modify_user VARCHAR(64) NOT NULL,
@@ -99,6 +101,7 @@ CREATE TABLE review_item_comment (
   comment_type_id INTEGER NOT NULL,
   content LVARCHAR(4096) NOT NULL,
   extra_info VARCHAR(254),
+  sort DECIMAL(3, 0) NOT NULL,
   create_user VARCHAR(64) NOT NULL,
   create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
   modify_user VARCHAR(64) NOT NULL,
@@ -128,4 +131,4 @@ INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
 INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
   VALUES('review_comment_id_seq', 1, 20, 0);
 INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
-  VALUES('review_item_comment_id_seq', 1, 20, 0); 
+  VALUES('review_item_comment_id_seq', 1, 20, 0);

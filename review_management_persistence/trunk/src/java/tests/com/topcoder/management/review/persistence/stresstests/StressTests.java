@@ -2,7 +2,7 @@
  *
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
-package com.topcoder.<<<PACKAGE>>>.stresstests;
+package com.topcoder.management.review.persistence.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -19,7 +19,7 @@ public class StressTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(InformixReviewPersistenceStressTests.class);
         return suite;
     }
 }

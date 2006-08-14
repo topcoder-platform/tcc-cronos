@@ -2,7 +2,7 @@
  *
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
- package com.topcoder.<<<PACKAGE>>>.failuretests;
+package com.topcoder.management.review.persistence.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -19,7 +19,8 @@ public class FailureTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(InformixReviewPersistenceFailureTest.class);
         return suite;
     }
 

@@ -1,0 +1,100 @@
+<CMConfig>
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+    <Property name="connections">
+        <!--
+            The "default" property refers to a configured connection.
+        -->
+        <Property name="default">
+            <Value>informixConnection</Value>
+        </Property>
+        <!--
+            The following property configures the ConnectionProducer obtaining the Connections
+            from a JDBC URL
+        -->
+        <Property name="informixConnection">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+			<Property name="parameters">
+				<Property name="jdbc_driver">
+					<Value>com.informix.jdbc.IfxDriver</Value>
+				</Property>
+				<Property name="jdbc_url">
+					<Value>jdbc:informix-sqli://chenqiang:1526/review:informixserver=ol_chenqiang</Value>
+				</Property>
+				<Property name="user">
+					<Value>informix</Value>
+				</Property>
+				<Property name="password">
+					<Value>informix</Value>
+				</Property>
+			</Property>
+		</Property>
+</Property>
+  </Config>
+    <Config name="com.topcoder.searchbuilder.stress">
+    		<Property name="searchBundles">
+
+        	<Property name="DatabaseSearchBundle">
+						<Property name="type">
+              		<Value>Database</Value>
+          	</Property>
+						<Property name="name">
+              		<Value>InformixSearchBundle</Value>
+          	</Property>
+						<Property name="context">
+			             <Value>select review_id from review, scorecard, resource where review.scorecard_id=scorecard.scorecard_id and review.resource_id=resource.resource_id and</Value>
+  		      </Property>
+
+            <Property name="DBNamcespace">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value> 
+            </Property>
+            <Property name="connectionProducerName">
+                    <Value>informixConnection</Value> 
+            </Property>
+            	<Property name="alias">
+            	      <Property name="scorecardType">
+											<Value>scorecard.scorecard_type_id</Value>
+										</Property>
+										<Property name="submission">
+											<Value>review.submission_id</Value>
+										</Property>
+										<Property name="reviewer">
+											<Value>review.resource_id</Value>
+										</Property>
+										<Property name="project">
+											<Value>resource.project_id</Value>
+										</Property>
+										<Property name="reviewcommitted">
+											<Value>committed</Value>
+										</Property>
+            	</Property>
+        	</Property>
+   </Property>
+  </Config>
+    <Config name="com.topcoder.management.review.persistence.InformixReviewPersistence">
+
+        <Property name="connection">
+            <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+            <Property name="name">
+                <Value>informixConnection</Value>
+            </Property>
+            <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+            <Property name="factory_namespace">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="factory_class">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+        </Property>
+
+        <Property name="search_bundle_manager_namespace">
+            <Value>com.topcoder.searchbuilder.stress</Value>
+        </Property>
+        <Property name="search_bundle_name">
+            <Value>InformixSearchBundle</Value>
+        </Property>
+
+    </Config>
+
+</CMConfig>

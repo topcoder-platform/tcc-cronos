@@ -1,0 +1,64 @@
+<CMConfig>  
+	<Config name="com.topcoder.search.builder.SearchBundleManager">
+		<Property name="searchBundles">
+			<Property name="DatabaseSearchBundle">
+				<Property name="type">
+					<Value>Database</Value>
+				</Property>
+				<Property name="name">
+					<Value>ReviewSearchBundle</Value>
+				</Property>
+				<Property name="context">
+					<Value>select review_id from review, scorecard, resource where review.scorecard_id=scorecard.scorecard_id and review.resource_id=resource.resource_id and</Value>
+				</Property>            
+				<Property name="DBNamcespace">
+					<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value> 
+				</Property>
+				<Property name="connectionProducerName">
+					<Value>failureTest</Value> 
+				</Property>
+				<Property name="alias">
+					<Property name="scorecardType">
+						<Value>scorecard.scorecard_type_id</Value>
+					</Property>
+					<Property name="submission">
+						<Value>review.submission_id</Value>
+					</Property>
+					<Property name="reviewer">
+						<Value>review.resource_id</Value>
+					</Property>
+					<Property name="project">
+						<Value>resource.project_id</Value>
+					</Property>
+					<Property name="commited">
+						<Value>review.committed</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.search.builder.SearchBundleManager.invalid">
+		<Property name="searchBundles">
+			<Property name="DatabaseSearchBundle">
+				<Property name="alias">
+					<Property name="scorecardType">
+						<Value>scorecard.scorecard_type_id</Value>
+					</Property>
+					<Property name="submission">
+						<Value>review.submission_id</Value>
+					</Property>
+					<Property name="reviewer">
+						<Value>review.resource_id</Value>
+					</Property>
+					<Property name="project">
+						<Value>resource.project_id</Value>
+					</Property>
+					<Property name="commited">
+						<Value>review.committed</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig> 
