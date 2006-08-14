@@ -255,6 +255,9 @@
                 <include name="${component}_Component_Specification*"/>
                 <include name="${component}.zargo"/>
                 <include name="${component}.zuml"/>
+                <include name="*.xml"/>
+                <include name="*.sql"/>
+                <include name="*.zip"/>
             </fileset>
         </copy>
 
