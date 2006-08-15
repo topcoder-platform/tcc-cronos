@@ -8,7 +8,7 @@ import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
-import com.topcoder.management.scorecard.persistence.PersistenceException;
+import com.topcoder.management.scorecard.PersistenceException;
 
 /**
  * This mock ScorecardPersistence is used in the test.

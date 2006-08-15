@@ -7,7 +7,6 @@ import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
-import com.topcoder.management.scorecard.persistence.PersistenceException;
 import com.topcoder.management.scorecard.validation.ValidationException;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
@@ -325,6 +324,11 @@ public class ScorecardManagerImpl implements ScorecardManager {
         try {
             // Use the SearchBundle instance to search for ids
             CustomResultSet result = (CustomResultSet) searchBundle.search(filter);
+
+            // If no search result found
+            if (result.getRecordCount() == 0) {
+                return new Scorecard[] {};
+            }
 
             // Create an array of ids with the number of results found.
             long[] ids = new long[result.getRecordCount()];

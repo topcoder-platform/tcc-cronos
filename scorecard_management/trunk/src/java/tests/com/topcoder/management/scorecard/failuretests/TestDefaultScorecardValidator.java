@@ -108,7 +108,7 @@ public class TestDefaultScorecardValidator extends TestCase {
     /**
      * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
      * scorecard, invalid ScorecardStatus id ValidationException should be thrown.
-     */
+     *
     public void testValidateScorecard_InvalidScorecardStatusId() {
         try {
             scorecard.setScorecardStatus(new ScorecardStatus());
@@ -141,7 +141,7 @@ public class TestDefaultScorecardValidator extends TestCase {
     /**
      * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
      * scorecard, invalid ScorecardType id ValidationException should be thrown.
-     */
+     *
     public void testValidateScorecard_InvalidScorecardTypeId() {
         try {
             scorecard.setScorecardType(new ScorecardType());
@@ -329,77 +329,6 @@ public class TestDefaultScorecardValidator extends TestCase {
 
     /**
      * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, negative MaxScore ValidationException should be thrown.
-     */
-    /*
-    public void testValidateScorecard_NegativeMaxScore() {
-        try {
-            scorecard.setMaxScore(-0.1f);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_NegativeMaxScore is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknow exception occurs in testValidateScorecard_NegativeMaxScore.");
-        }
-    }
-    */
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, zero MaxScore
-     *
-     * @throws ValidationException to Junit
-     */
-    /*
-    public void testValidateScorecard_MaxScoreCorrect()
-        throws ValidationException {
-        scorecard.setMaxScore(0);
-        validator.validateScorecard(scorecard);
-    }
-    */
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, MaxScore is smaller than minScore. ValidationException should be
-     * thrown.
-     */
-    /*
-    public void testValidateScorecard_InvalidMaxScore1() {
-        try {
-            scorecard.setMinScore(10);
-            scorecard.setMaxScore(9);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_InvalidMaxScore1 is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknow exception occurs in testValidateScorecard_InvalidMaxScore1.");
-        }
-    }
-    */
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, MaxScore is equals minScore. ValidationException should be thrown.
-     */
-    /*
-    public void testValidateScorecard_InvalidMaxScore2() {
-        try {
-            scorecard.setMinScore(9);
-            scorecard.setMaxScore(9);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_InvalidMaxScore2 is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknow exception occurs in testValidateScorecard_InvalidMaxScore2.");
-        }
-    }
-    */
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
      * scorecard, group is missing. ValidationException should be thrown.
      */
     public void testValidateScorecard_MissingGroup() {
@@ -438,7 +367,7 @@ public class TestDefaultScorecardValidator extends TestCase {
     /**
      * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
      * scorecard, id of group is invalid. ValidationException should be thrown.
-     */
+     *
     public void testValidateScorecard_InvalidIdOfGroup() {
         try {
             scorecard.clearGroups();
@@ -509,7 +438,7 @@ public class TestDefaultScorecardValidator extends TestCase {
     /**
      * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
      * scorecard, id of section is invalid. ValidationException should be thrown.
-     */
+     *
     public void testValidateScorecard_InvalidIdOfSection() {
         try {
             scorecard.getGroup(0).clearSections();
@@ -564,44 +493,6 @@ public class TestDefaultScorecardValidator extends TestCase {
 
     /**
      * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, invalid weight of section ValidationException should be thrown.
-     */
-    /*
-    public void testValidateScorecard_InvalidWeightOfSection1() {
-        try {
-            scorecard.getGroup(0).getSection(0).setWeight(-1);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_InvalidWeightOfSection1 is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail(
-                "Unknow exception occurs in testValidateScorecard_InvalidWeightOfSection1.");
-        }
-    }
-    */
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, invalid weight of section ValidationException should be thrown.
-     */
-    /*
-    public void testValidateScorecard_InvalidWeightOfSection2() {
-        try {
-            scorecard.getGroup(0).getSection(0).setWeight(102);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_InvalidWeightOfSection2 is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail(
-                "Unknow exception occurs in testValidateScorecard_InvalidWeightOfSection2.");
-        }
-    }
-    */
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
      * scorecard, missing question in section ValidationException should be thrown.
      */
     public void testValidateScorecard_MissingQuestionInSection() {
@@ -614,61 +505,6 @@ public class TestDefaultScorecardValidator extends TestCase {
         } catch (Exception e) {
             fail(
                 "Unknow exception occurs in testValidateScorecard_MissingQuestionInSection.");
-        }
-    }
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, invalid question in section ValidationException should be thrown.
-     */
-    public void testValidateScorecard_InvalidQuestionInSection() {
-        try {
-            scorecard.getGroup(0).getSection(0).clearQuestions();
-
-            Question q = new Question();
-            q.setDescription("des");
-            q.setWeight(100.0f);
-
-            scorecard.getGroup(0).getSection(0).addQuestion(q);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_InvalidQuestionInSection is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail(
-                "Unknow exception occurs in testValidateScorecard_InvalidQuestionInSection.");
-        }
-    }
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, null name in question ValidationException should be thrown.
-     */
-    public void testValidateScorecard_NullNameInQuestion() {
-        try {
-            scorecard.getGroup(0).getSection(0).getQuestion(0).resetName();
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_NullNameInQuestion is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknow exception occurs in testValidateScorecard_NullNameInQuestion.");
-        }
-    }
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, empty name in question ValidationException should be thrown.
-     */
-    public void testValidateScorecard_EmptyNameInQuestion() {
-        try {
-            scorecard.getGroup(0).getSection(0).getQuestion(0).setName(" ");
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_EmptyNameInQuestion is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknow exception occurs in testValidateScorecard_EmptyNameInQuestion.");
         }
     }
 
@@ -705,42 +541,4 @@ public class TestDefaultScorecardValidator extends TestCase {
                 "Unknow exception occurs in testValidateScorecard_EmptyDescriptionInQuestion.");
         }
     }
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, invalid weight in question ValidationException should be thrown.
-     */
-    /*
-    public void testValidateScorecard_InvalidWeightInQuestion1() {
-        try {
-            scorecard.getGroup(0).getSection(0).getQuestion(0).setWeight(-1);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_InvalidWeightInQuestion1 is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail(
-                "Unknow exception occurs in testValidateScorecard_InvalidWeightInQuestion1.");
-        }
-    }
-    */
-
-    /**
-     * Tests validateScorecard(Scorecard scorecard) method with invalid Scorecard
-     * scorecard, invalid weight in question ValidationException should be thrown.
-     */
-    /*
-    public void testValidateScorecard_InvalidWeightInQuestion2() {
-        try {
-            scorecard.getGroup(0).getSection(0).getQuestion(0).setWeight(124);
-            validator.validateScorecard(scorecard);
-            fail("testValidateScorecard_InvalidWeightInQuestion2 is failure.");
-        } catch (ValidationException iae) {
-            // pass
-        } catch (Exception e) {
-            fail(
-                "Unknow exception occurs in testValidateScorecard_InvalidWeightInQuestion2.");
-        }
-    }
-    */
 }

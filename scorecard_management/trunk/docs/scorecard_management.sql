@@ -101,9 +101,9 @@ CREATE TABLE scorecard_question (
   FOREIGN KEY(scorecard_question_type_id)
     REFERENCES scorecard_question_type_lu(scorecard_question_type_id)
 );
-CREATE TABLE phase (
-  phase_id                      INTEGER                         NOT NULL,
-  PRIMARY KEY(phase_id)
+CREATE TABLE project_phase (
+  project_phase_id              INTEGER                         NOT NULL,
+  PRIMARY KEY(project_phase_id)
 );
 CREATE TABLE phase_criteria_type_lu (
   phase_criteria_type_id        INTEGER                         NOT NULL,
@@ -116,12 +116,12 @@ CREATE TABLE phase_criteria_type_lu (
   PRIMARY KEY(phase_criteria_type_id)
 );
 CREATE TABLE phase_criteria (
-  phase_id                      INTEGER                         NOT NULL,
+  project_phase_id              INTEGER                         NOT NULL,
   phase_criteria_type_id        INTEGER                         NOT NULL,
   parameter                     VARCHAR(254)                    NOT NULL,
-  PRIMARY KEY(phase_id, phase_criteria_type_id),
-  FOREIGN KEY(phase_id)
-    REFERENCES phase(phase_id),
+  PRIMARY KEY(project_phase_id, phase_criteria_type_id),
+  FOREIGN KEY(project_phase_id)
+    REFERENCES project_phase(project_phase_id),
   FOREIGN KEY(phase_criteria_type_id)
     REFERENCES phase_criteria_type_lu(phase_criteria_type_id)
 );

@@ -245,7 +245,7 @@ public class DefaultScorecardValidatorTest extends TestCase {
      * </p>
      * @throws Exception
      *             throw exception to JUnit.
-     */
+     *
     public void testValidateScorecardFailure_ScorecardInWrong3() throws Exception {
         try {
             scorecard.setScorecardStatus(new ScorecardStatus());
@@ -254,7 +254,7 @@ public class DefaultScorecardValidatorTest extends TestCase {
         } catch (ValidationException e) {
             // expect
         }
-    }
+    }*/
 
     /**
      * Failure test of <code>validateScorecard(Scorecard scorecard)</code> method.
@@ -287,7 +287,7 @@ public class DefaultScorecardValidatorTest extends TestCase {
      * </p>
      * @throws Exception
      *             throw exception to JUnit.
-     */
+     *
     public void testValidateScorecardFailure_ScorecardInWrong5() throws Exception {
         try {
             scorecard.setScorecardType(new ScorecardType());

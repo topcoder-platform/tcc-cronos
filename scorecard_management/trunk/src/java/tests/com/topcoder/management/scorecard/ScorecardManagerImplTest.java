@@ -3,6 +3,8 @@
  */
 package com.topcoder.management.scorecard;
 
+import java.util.Iterator;
+
 import com.topcoder.management.scorecard.data.Group;
 import com.topcoder.management.scorecard.data.Question;
 import com.topcoder.management.scorecard.data.QuestionType;
@@ -65,11 +67,6 @@ public class ScorecardManagerImplTest extends TestCase {
      * Store the namespace to retrieve property from the Configuration Manager.
      */
     private static final String MANAGEMENT_IMPL = "com.topcoder.management.scorecard";
-
-    /**
-     * Store the namespace to retrieve property from the Configuration Manager.
-     */
-    private static final String DB_FACTORY = "Dbconnection.factory";
 
     /**
      * Store the namespace to retrieve property from the Configuration Manager.
@@ -213,14 +210,8 @@ public class ScorecardManagerImplTest extends TestCase {
      */
     protected void tearDown() throws Exception {
         // Remove all the potentially added properties.
-        if (config.existsNamespace(MANAGEMENT_IMPL)) {
-            config.removeNamespace(MANAGEMENT_IMPL);
-        }
-        if (config.existsNamespace(DB_FACTORY)) {
-            config.removeNamespace(DB_FACTORY);
-        }
-        if (config.existsNamespace(SEACH_BUILDER)) {
-            config.removeNamespace(SEACH_BUILDER);
+        for (Iterator itr = config.getAllNamespaces(); itr.hasNext();) {
+            config.removeNamespace((String) itr.next());
         }
     }
 
@@ -626,17 +617,9 @@ public class ScorecardManagerImplTest extends TestCase {
      *             throw exception to JUnit.
      */
     public void testSearchScorecardsAccuracy() throws Exception {
-        // Since we cannot deal with the persistence at this time, we have to pass empty id array to the persistence.
-        // IllegalArgumentException will be thrown by it.
         Filter filter = ScorecardSearchBundle.buildTypeIdEqualFilter(1);
-        try {
-            manager.searchScorecards(filter, true);
-            fail("Expect IllegalArgumentException.");
-        } catch (IllegalArgumentException e) {
-            // expect
-        }
-        assertTrue("persistence must be called with complete=true", complete);
-        assertTrue("persistence must be called with correct ids", ids != null && ids.length == 0);
+        Scorecard[] scorecards = manager.searchScorecards(filter, true);
+        assertEquals("No scorecard can be retrieved.", 0, scorecards.length);
     }
 
     /**

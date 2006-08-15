@@ -8,7 +8,6 @@ import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
-import com.topcoder.management.scorecard.persistence.PersistenceException;
 
 /**
  * This interface defines the contract that any scorecard persistence must implement. The implementation classes will

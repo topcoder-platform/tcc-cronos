@@ -44,9 +44,13 @@ public class AccuracyTestHelper {
     private static final String INSERT_PROJECT_SQL = "INSERT INTO project_category_lu "
         + "(project_category_id) VALUES (?) ";
 
-    /** The SQL statement to insert a record into project_scorecard table. */
-    private static final String INSERT_PROJECT_SCORECARD_SQL = "INSERT INTO project_scorecard "
-        + "(scorecard_id) VALUES (?) ";
+    /** The SQL statement to insert a record into project_phase table. */
+    private static final String INSERT_PROJECT_PHASE_SQL = "INSERT INTO project_phase "
+        + "(project_phase_id) VALUES (?) ";
+    
+    /** The SQL statement to insert a record into phase_criteria table. */
+    private static final String INSERT_PHASE_CRITERIA_SQL = "INSERT INTO phase_criteria "
+        + "(project_phase_id, phase_criteria_type_id, parameter) VALUES (?, 1, ?) ";
 
     /** The SQL statement to insert a record into scorecard_status_lu table. */
     private static final String INSERT_STATUS_SQL = "INSERT INTO scorecard_status_lu "
@@ -70,8 +74,11 @@ public class AccuracyTestHelper {
     /** The SQL statement to delete all record from scorecard_type_lu table. */
     private static final String DELETE_TYPE_SQL = "DELETE FROM scorecard_type_lu";
 
-    /** The SQL statement to delete all record from project_scorecard table. */
-    private static final String DELETE_PROJECT_SCORECARD_SQL = "DELETE FROM project_scorecard";
+    /** The SQL statement to delete all record from project_phase table. */
+    private static final String DELETE_PROJECT_PHASE_SQL = "DELETE FROM project_phase";
+    
+    /** The SQL statement to delete all record from phase_criteria table. */
+    private static final String DELETE_PHASE_CRITERIA_SQL = "DELETE FROM phase_criteria";
 
     /**
      * The constructor of AccuracyTestHelper.
@@ -275,7 +282,8 @@ public class AccuracyTestHelper {
         stmt.executeUpdate(DELETE_PROJECT_SQL);
         stmt.executeUpdate(DELETE_STATUS_SQL);
         stmt.executeUpdate(DELETE_TYPE_SQL);
-        stmt.executeUpdate(DELETE_PROJECT_SCORECARD_SQL);
+        stmt.executeUpdate(DELETE_PHASE_CRITERIA_SQL);
+        stmt.executeUpdate(DELETE_PROJECT_PHASE_SQL);
 
         stmt.close();
         conn.close();
@@ -373,9 +381,17 @@ public class AccuracyTestHelper {
 
         try {
             conn = getConnection();
-            ps = conn.prepareStatement(INSERT_PROJECT_SCORECARD_SQL);
+            ps = conn.prepareStatement(INSERT_PROJECT_PHASE_SQL);
 
             ps.setLong(1, id);
+
+            ps.executeUpdate();
+            ps.close();
+            
+            ps = conn.prepareStatement(INSERT_PHASE_CRITERIA_SQL);
+
+            ps.setLong(1, id);
+            ps.setLong(2, id);
 
             ps.executeUpdate();
         } finally {

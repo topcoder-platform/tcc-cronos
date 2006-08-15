@@ -7,7 +7,6 @@ import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
-import com.topcoder.management.scorecard.persistence.PersistenceException;
 import com.topcoder.management.scorecard.validation.ValidationException;
 import com.topcoder.search.builder.filter.Filter;
 

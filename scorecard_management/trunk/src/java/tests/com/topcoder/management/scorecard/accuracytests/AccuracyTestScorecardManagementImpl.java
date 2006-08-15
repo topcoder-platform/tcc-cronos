@@ -165,11 +165,73 @@ public class AccuracyTestScorecardManagementImpl extends TestCase {
     }
 
     /**
+     * Tests searchScorecards(Filter filter, boolean complete) with false complete flag.
+     * @throws Exception
+     *             to JUnit.
+     */
+    public void testSearchScorecards1() throws Exception {
+        Scorecard card1 = AccuracyTestHelper.createScorecard(new ScorecardStatus(3, "status1"), new ScorecardType(1,
+            "type1"), "test card 1", "1.0", 1, 0.0f, 100.0f);
+        Scorecard card2 = AccuracyTestHelper.createScorecard(new ScorecardStatus(2, "status2"), new ScorecardType(2,
+            "type2"), "test card 2", "1.0", 2, 0.0f, 100.0f);
+        Scorecard card3 = AccuracyTestHelper.createScorecard(new ScorecardStatus(1, "status3"), new ScorecardType(3,
+            "type3"), "test card 3", "1.0", 3, 0.0f, 100.0f);
+
+        card1.setId(1);
+        card2.setId(2);
+        card3.setId(3);
+
+        AccuracyTestHelper.insertScorecard(card1, USER_NAME);
+        AccuracyTestHelper.insertScorecard(card2, USER_NAME);
+        AccuracyTestHelper.insertScorecard(card3, USER_NAME);
+
+        Filter filter = ScorecardSearchBundle.buildStatusIdEqualFilter(1);
+
+        manager.searchScorecards(filter, true);
+
+        assertTrue("invalid id array", parameters.getIds().length == 1);
+        assertTrue("invalid id array", parameters.getIds()[0] == 3);
+        assertTrue("invalid complete flag", parameters.isComplete());
+        assertTrue("invalid method name", parameters.getMethodName().equals("getScorecards"));
+    }
+
+    /**
+     * Tests searchScorecards(Filter filter, boolean complete) with true complete flag.
+     * @throws Exception
+     *             to JUnit.
+     */
+    public void testSearchScorecards2() throws Exception {
+        Scorecard card1 = AccuracyTestHelper.createScorecard(new ScorecardStatus(3, "status1"), new ScorecardType(1,
+            "type1"), "test card 1", "1.0", 1, 0.0f, 100.0f);
+        Scorecard card2 = AccuracyTestHelper.createScorecard(new ScorecardStatus(2, "status2"), new ScorecardType(2,
+            "type2"), "test card 2", "1.0", 2, 0.0f, 100.0f);
+        Scorecard card3 = AccuracyTestHelper.createScorecard(new ScorecardStatus(1, "status3"), new ScorecardType(3,
+            "type3"), "test card 3", "1.0", 3, 0.0f, 100.0f);
+
+        Filter filter = ScorecardSearchBundle.buildNameEqualFilter("test card 2");
+
+        card1.setId(1);
+        card2.setId(2);
+        card3.setId(3);
+
+        AccuracyTestHelper.insertScorecard(card1, USER_NAME);
+        AccuracyTestHelper.insertScorecard(card2, USER_NAME);
+        AccuracyTestHelper.insertScorecard(card3, USER_NAME);
+
+        manager.searchScorecards(filter, false);
+
+        assertTrue("invalid id array", parameters.getIds().length == 1);
+        assertTrue("invalid id array", parameters.getIds()[0] == 2);
+        assertFalse("invalid complete flag", parameters.isComplete());
+        assertTrue("invalid method name", parameters.getMethodName().equals("getScorecards"));
+    }
+
+    /**
      * Tests searchScorecards(Filter filter, boolean complete).
      * @throws Exception
      *             to JUnit.
      */
-    public void testSearchScorecards() throws Exception {
+    public void testSearchScorecards3() throws Exception {
         Scorecard card1 = AccuracyTestHelper.createScorecard(new ScorecardStatus(3, "status1"), new ScorecardType(1,
             "type1"), "test card 1", "1.0", 1, 0.0f, 100.0f);
         Scorecard card2 = AccuracyTestHelper.createScorecard(new ScorecardStatus(2, "status2"), new ScorecardType(2,
@@ -187,13 +249,10 @@ public class AccuracyTestScorecardManagementImpl extends TestCase {
         AccuracyTestHelper.insertScorecard(card2, USER_NAME);
         AccuracyTestHelper.insertScorecard(card3, USER_NAME);
 
-        try {
-            Scorecard[] cards = manager.searchScorecards(filter, false);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            // expected;
-        }
-    } 
+        Scorecard[] cards = manager.searchScorecards(filter, false);
+
+        assertEquals("No scorecard should be retrieved", 0, cards.length);
+    }
 
     /**
      * Tests getAllScorecardTypes().

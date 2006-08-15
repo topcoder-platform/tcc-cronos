@@ -86,7 +86,7 @@ public class AccuracyTestDefaultScorecardValidator extends TestCase {
      * Tests the method validateScorecard(Scorecard scorecard) with invalid status id.
      *
      * @throws Exception to JUnit.
-     */
+     *
     public void testValidateScorecardInvalidStatusID()
         throws Exception {
         scorecard.setScorecardStatus(new ScorecardStatus());
@@ -97,13 +97,13 @@ public class AccuracyTestDefaultScorecardValidator extends TestCase {
         } catch (ValidationException e) {
             // expected
         }
-    }
+    }*/
 
     /**
      * Tests the method validateScorecard(Scorecard scorecard) with invalid scorecard type id.
      *
      * @throws Exception to JUnit.
-     */
+     *
     public void testValidateScorecardInvalidTypeID() throws Exception {
         scorecard.setScorecardType(new ScorecardType());
 

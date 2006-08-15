@@ -140,7 +140,6 @@ public class DefaultScorecardValidator implements com.topcoder.management.scorec
         try {
             // To validate the property fields for the group itself.
             checkNameString(group.getName(), "group_name");
-            group.getId();
             assertFloatBetween0And100(group.getWeight(), "group_weight");
 
             // Fectch all the sections from this group, and validate one by one.
@@ -153,7 +152,6 @@ public class DefaultScorecardValidator implements com.topcoder.management.scorec
                 // To validate the property fields for the section itself.
                 checkNameString(sections[j].getName(), "section_name");
                 assertFloatBetween0And100(sections[j].getWeight(), "section_weight");
-                sections[j].getId();
 
                 // Fectch all the questions from this section, and validate one by one.
                 Question[] questions = sections[j].getAllQuestions();
@@ -162,9 +160,7 @@ public class DefaultScorecardValidator implements com.topcoder.management.scorec
                 for (int k = 0; k < questions.length; k++) {
                     // To validate the property fields for this question itself.
                     assertObjectNotNull(questions[k], "question");
-                    checkNameString(questions[k].getName(), "question_name");
                     assertObjectNotNull(questions[k].getDescription(), "question_description");
-                    questions[k].getId();
 
                     if (questions[k].getDescription().trim().length() == 0) {
                         throw new ValidationException("description must not be empty.");
@@ -197,9 +193,7 @@ public class DefaultScorecardValidator implements com.topcoder.management.scorec
         try {
             // To validate the property fields for the scorecard itself.
             assertObjectNotNull(scorecard.getScorecardStatus(), "scorecard_status");
-            scorecard.getScorecardStatus().getId();
             assertObjectNotNull(scorecard.getScorecardType(), "scorecard_type");
-            scorecard.getScorecardType().getId();
             scorecard.getCategory();
             checkNameString(scorecard.getName(), "name");
             checkVersion(scorecard.getVersion());
