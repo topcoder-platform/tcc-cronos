@@ -1,7 +1,3 @@
-CREATE TABLE project_scorecard (
-  scorecard_id                  int8                            NOT NULL,
-  PRIMARY KEY(scorecard_id)
-);
 CREATE TABLE project_category_lu (
   project_category_id           INTEGER                         NOT NULL,
   PRIMARY KEY(project_category_id)
@@ -52,6 +48,7 @@ CREATE TABLE scorecard_group (
   scorecard_id                  INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   weight                        FLOAT                           NOT NULL,
+  sort                          DECIMAL(3, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -65,6 +62,7 @@ CREATE TABLE scorecard_section (
   scorecard_group_id            INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   weight                        FLOAT                           NOT NULL,
+  sort                          DECIMAL(3, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -90,8 +88,9 @@ CREATE TABLE scorecard_question (
   description                   LVARCHAR(4096)                  NOT NULL,
   guideline                     LVARCHAR(4096),
   weight                        FLOAT                           NOT NULL,
-  upload_document               BOOLEAN                         NOT NULL,
-  upload_document_required      BOOLEAN                         NOT NULL,
+  sort                          DECIMAL(3, 0)                   NOT NULL,
+  upload_document               DECIMAL(1, 0)                   NOT NULL,
+  upload_document_required      DECIMAL(1, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
