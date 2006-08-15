@@ -3,6 +3,7 @@
  */
 package com.topcoder.management.scorecard.persistence;
 
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.data.Question;
 import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;

@@ -20,6 +20,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.management.scorecard.ConfigurationException;
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardPersistence;
 import com.topcoder.management.scorecard.data.Group;
 import com.topcoder.management.scorecard.data.NamedScorecardStructure;

@@ -12,6 +12,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.data.Question;
 import com.topcoder.management.scorecard.data.QuestionType;
 

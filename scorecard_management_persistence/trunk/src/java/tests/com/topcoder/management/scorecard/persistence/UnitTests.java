@@ -24,7 +24,6 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(InformixQuestionPersistenceTest.class);
         suite.addTestSuite(InformixScorecardPersistenceTest.class);
         suite.addTestSuite(InformixSectionPersistenceTest.class);
-        suite.addTestSuite(PersistenceExceptionTest.class);
 
         suite.addTestSuite(Demo.class);
         return suite;

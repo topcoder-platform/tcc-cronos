@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.data.Group;
 import com.topcoder.management.scorecard.data.NamedScorecardStructure;
 import com.topcoder.management.scorecard.data.Scorecard;
