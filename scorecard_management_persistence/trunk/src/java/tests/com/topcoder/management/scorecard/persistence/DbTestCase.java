@@ -608,7 +608,7 @@ public class DbTestCase extends TestCase {
         PreparedStatement pstmt = null;
         try {
             pstmt = getConnection().prepareStatement(
-                    "INSERT INTO phase_criteria(phase_id, "
+                    "INSERT INTO phase_criteria(project_phase_id, "
                             + "phase_criteria_type_id, parameter) VALUES (1, 1, ?)");
 
             pstmt.setLong(1, scorecard.getId());

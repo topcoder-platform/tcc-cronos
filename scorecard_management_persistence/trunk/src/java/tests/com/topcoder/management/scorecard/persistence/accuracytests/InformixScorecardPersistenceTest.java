@@ -70,7 +70,7 @@ public class InformixScorecardPersistenceTest extends TestCase {
      */
     protected void setUp() throws Exception {
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration(new File("test_files/accuracy/config.xml"));
+        ConfigHelper.loadConfiguration(new File("accuracy/config.xml"));
         this.testedInstance = new InformixScorecardPersistence(NAMESPACE);
 
         // Clear the database tables and populate them with sample data
@@ -343,7 +343,7 @@ public class InformixScorecardPersistenceTest extends TestCase {
      */
     private void clearDatabaseTables() throws SQLException {
         String[] tables = new String[] {"scorecard_question", "scorecard_section", "scorecard_group", "scorecard",
-            "scorecard_question_type_lu", "scorecard_type_lu", "scorecard_status_lu", "project_category_lu", "phase",
+            "scorecard_question_type_lu", "scorecard_type_lu", "scorecard_status_lu", "project_category_lu", "project_phase",
             "phase_criteria_type_lu"};
 
         PreparedStatement stmt = null;
@@ -605,8 +605,8 @@ public class InformixScorecardPersistenceTest extends TestCase {
         PreparedStatement stmt = null;
         long[] phases = getExistingPhases();
         try {
-            stmt = this.connection.prepareStatement("INSERT INTO phase "
-                                                    + "(phase_id) "
+            stmt = this.connection.prepareStatement("INSERT INTO project_phase "
+                                                    + "(project_phase_id) "
                                                     + "VALUES (?)");
             for (int i = 0; i < phases.length; i++) {
                 stmt.setLong(1, phases[i]);

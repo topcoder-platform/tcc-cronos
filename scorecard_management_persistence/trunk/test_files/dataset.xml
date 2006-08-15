@@ -31,6 +31,6 @@
 	<phase_criteria_type_lu phase_criteria_type_id="1" name="'Scorecard ID'" description="'Scorecard ID'" create_user="'x'"
 		create_date="current" modify_user="'x'" modify_date="current"/>
 
-	<phase phase_id="1" />
+	<project_phase project_phase_id="1" />
 
 </dataset>

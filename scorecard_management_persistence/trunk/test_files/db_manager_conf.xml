@@ -12,7 +12,7 @@
 
 		<Property name="tableNames">
 			<Value>phase_criteria</Value>
-			<Value>phase</Value>
+			<Value>project_phase</Value>
 			<Value>scorecard_question</Value>
 			<Value>scorecard_question_type_lu</Value>
 			<Value>scorecard_section</Value>
