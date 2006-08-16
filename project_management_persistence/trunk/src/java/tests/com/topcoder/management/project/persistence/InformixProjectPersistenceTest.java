@@ -25,7 +25,7 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * Accuracy and failure tests for <code>InformixProjectPersistence</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class InformixProjectPersistenceTest extends TestCase {

@@ -18,7 +18,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
 
 /**
  * Helper class for this component.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 class Helper {
@@ -63,7 +63,7 @@ class Helper {
      * Instances are provided to users via constants declared in
      * <code>Helper</code> - so this class defines some kind of 'pseudo-enum'
      * which cannot be instantiated externally.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     abstract static class DataType {
@@ -99,7 +99,7 @@ class Helper {
      * <code>DataType</code> are assured to be of type <code>String</code>
      * or to be <tt>null</tt> in case the <code>ResultSet</code> value was
      * <tt>null</tt>.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class StringType extends DataType {
@@ -133,7 +133,7 @@ class Helper {
      * <code>DataType</code> are assured to be of type <code>Long</code> or
      * to be <tt>null</tt> in case the <code>ResultSet</code> value was
      * <tt>null</tt>.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class LongType extends DataType {
@@ -168,7 +168,7 @@ class Helper {
      * <code>DataType</code> are assured to be of type <code>Date</code> or
      * to be <tt>null</tt> in case the <code>ResultSet</code> value was
      * <tt>null</tt>.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class DateType extends DataType {

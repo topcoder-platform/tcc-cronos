@@ -51,7 +51,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * running the same method will use the same statement and could overwrite each
  * other's work.
  * </p>
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, urtks
  * @version 1.0
  */
 public class InformixProjectPersistence implements ProjectPersistence {
