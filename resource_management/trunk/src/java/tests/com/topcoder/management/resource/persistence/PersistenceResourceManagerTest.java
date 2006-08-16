@@ -120,6 +120,7 @@ public class PersistenceResourceManagerTest extends TestCase {
         loadNamespaces();
 
         // insert records
+        removeTables();
         insertRecords();
 
         // set the persistence
@@ -442,90 +443,6 @@ public class PersistenceResourceManagerTest extends TestCase {
         try {
             new PersistenceResourceManager(persistence, searchBundleManager);
             fail("notificationTypeSearchBundle is not available.");
-        } catch (IllegalArgumentException e) {
-            // success
-        }
-    }
-
-    /**
-     * Tests constructor PersistenceResourceManager(ResourcePersistence, SearchBundleManager).
-     *
-     * With resourceIdGenerator is not available, IllegalArgumentException should be thrown.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testPersistenceResourceManager_TwoArgs_resourceIdGenerator_Unavailable() throws Exception {
-        String idGeneratorName = PersistenceResourceManager.RESOURCE_ID_GENERATOR_NAME;
-        // remove the resourceIdGenerator to let it be unavailable
-        Connection con  = getConnection();
-        String sql = "DELETE FROM id_sequences WHERE name = ?";
-        doSQLUpdate(con, sql, new Object[] {idGeneratorName});
-        SearchBundleManager searchBundleManager = new SearchBundleManager(
-                "com.topcoder.search.builder.SearchBundleManager");
-        con.commit();
-
-        // use reflection to force to remove the original IDGenerator in the IDGeneratorFactory
-        removeIdGenerator(idGeneratorName);
-
-        try {
-            new PersistenceResourceManager(persistence, searchBundleManager);
-            fail("resourceIdGenerator is not available.");
-        } catch (IllegalArgumentException e) {
-            // success
-        }
-    }
-
-    /**
-     * Tests constructor PersistenceResourceManager(ResourcePersistence, SearchBundleManager).
-     *
-     * With resourceRoleIdGenerator is not available, IllegalArgumentException should be thrown.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testPersistenceResourceManager_TwoArgs_resourceRoleIdGenerator_Unavailable() throws Exception {
-        String idGeneratorName = PersistenceResourceManager.RESOURCE_ROLE_ID_GENERATOR_NAME;
-        // remove the resourceRoleIdGenerator to let it be unavailable
-        Connection con  = getConnection();
-        String sql = "DELETE FROM id_sequences WHERE name = ?";
-        doSQLUpdate(con, sql, new Object[] {idGeneratorName});
-        SearchBundleManager searchBundleManager = new SearchBundleManager(
-                "com.topcoder.search.builder.SearchBundleManager");
-        con.commit();
-
-        // use reflection to force to remove the original IDGenerator in the IDGeneratorFactory
-        removeIdGenerator(idGeneratorName);
-
-        try {
-            new PersistenceResourceManager(persistence, searchBundleManager);
-            fail("resourceRoleIdGenerator is not available.");
-        } catch (IllegalArgumentException e) {
-            // success
-        }
-    }
-
-    /**
-     * Tests constructor PersistenceResourceManager(ResourcePersistence, SearchBundleManager).
-     *
-     * With notificationTypeIdGenerator is not available, IllegalArgumentException should be thrown.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testPersistenceResourceManager_TwoArgs_notificationTypeIdGenerator_Unavailable() throws Exception {
-        String idGeneratorName = PersistenceResourceManager.RESOURCE_ROLE_ID_GENERATOR_NAME;
-        // remove the notificationTypeIdGenerator to let it be unavailable
-        Connection con  = getConnection();
-        String sql = "DELETE FROM id_sequences WHERE name = ?";
-        doSQLUpdate(con, sql, new Object[] {idGeneratorName});
-        SearchBundleManager searchBundleManager = new SearchBundleManager(
-                "com.topcoder.search.builder.SearchBundleManager");
-        con.commit();
-
-        // use reflection to force to remove the original IDGenerator in the IDGeneratorFactory
-        removeIdGenerator(idGeneratorName);
-
-        try {
-            new PersistenceResourceManager(persistence, searchBundleManager);
-            fail("notificationTypeIdGenerator is not available.");
         } catch (IllegalArgumentException e) {
             // success
         }
@@ -2550,15 +2467,6 @@ public class PersistenceResourceManagerTest extends TestCase {
 
         String sql = null;
 
-        // insert the records for the IDGenerators
-        sql = "INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES(?, 30, 20, 0)";
-
-        doSQLUpdate(con, sql, new Object[] {PersistenceResourceManager.NOTIFICATION_TYPE_ID_GENERATOR_NAME});
-
-        doSQLUpdate(con, sql, new Object[] {PersistenceResourceManager.RESOURCE_ID_GENERATOR_NAME});
-
-        doSQLUpdate(con, sql, new Object[] {PersistenceResourceManager.RESOURCE_ROLE_ID_GENERATOR_NAME});
-
         // insert records to the table: project
         sql = "INSERT INTO project(project_id) VALUES(?)";
 
@@ -2885,7 +2793,7 @@ public class PersistenceResourceManagerTest extends TestCase {
      * @throws Exception to JUnit
      */
     private void removeTables() throws Exception {
-        String[] tables = new String[] {"id_sequences", "notification", "notification_type_lu", "resource_submission",
+        String[] tables = new String[] {"notification", "notification_type_lu", "resource_submission",
             "resource_info", "resource_info_type_lu", "resource", "resource_role_lu", "submission", "phase",
             "phase_type_lu", "project"};
         Connection con = getConnection();

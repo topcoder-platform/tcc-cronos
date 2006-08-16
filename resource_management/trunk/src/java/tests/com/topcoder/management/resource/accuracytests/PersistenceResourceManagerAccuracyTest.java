@@ -78,7 +78,7 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
     private String[] tables = new String[] {
         "notification", "notification_type_lu", "resource_submission", "resource_info",
         "resource_info_type_lu", "resource", "resource_role_lu", "submission", "phase",
-        "phase_type_lu", "project", "id_sequences"
+        "phase_type_lu", "project"
     };
 
     /**
@@ -428,7 +428,7 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
         assertEquals("The modificationUser should be updated to 'tc1'", "tc1",
             ret.getModificationUser());
         assertTrue("The modificationTimestamp should be updated.",
-            ret.getModificationTimestamp().compareTo(creationTimestamp) >= 0);
+            ret.getModificationTimestamp().getTime() > creationTimestamp.getTime());
 
         assertEquals("The creationUser should be updated to '1'", 1, ret.getProject().longValue());
         assertEquals("The creationUser should be updated to '2'", 2, ret.getPhase().longValue());
@@ -476,7 +476,7 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
         assertEquals("The modificationUser should be updated to 'tc9'", "tc9",
             ret.getModificationUser());
         assertTrue("The modificationTimestamp should be updated.",
-            ret.getModificationTimestamp().compareTo(creationTimestamp) > 0);
+            ret.getModificationTimestamp().getTime() > creationTimestamp.getTime());
 
         assertEquals("The creationUser should be updated to '1'", 1, ret.getProject().longValue());
         assertEquals("The creationUser should be updated to '2'", 2, ret.getPhase().longValue());
@@ -591,7 +591,7 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
 
         // check the role.
         assertTrue("The role should be updated.", role.getId() > 0);
-        assertEquals("One role should be added into persistence.", 4,
+        assertEquals("One role should be added into persistence.", 5,
             AccuracyTestHelper.getTableSize(conn, "resource_role_lu"));
 
         // check the role here.
@@ -635,7 +635,7 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
 
         // check the role.
         assertEquals("The role id should not be changed.", roleId, role.getId());
-        assertEquals("Only One role should be added into persistence.", 4,
+        assertEquals("Only One role should be added into persistence.", 5,
             AccuracyTestHelper.getTableSize(conn, "resource_role_lu"));
 
         // check the role here.
@@ -679,21 +679,21 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
 
         // remove one role here.
         manager.removeResourceRole(role1, "remove1");
-        assertEquals("Only 4 role should be added into persistence.", 3,
+        assertEquals("Only 4 role should be added into persistence.", 5,
             AccuracyTestHelper.getTableSize(conn, "resource_role_lu"));
         assertEquals("The modificationUser should be updated to 'remove1'", "remove1",
             role1.getModificationUser());
 
         // remove it again.
         manager.removeResourceRole(role1, "remove2");
-        assertEquals("Only 4 role should be added into persistence.", 3,
+        assertEquals("Only 4 role should be added into persistence.", 5,
             AccuracyTestHelper.getTableSize(conn, "resource_role_lu"));
         assertEquals("The modificationUser should be updated to 'remove2'", "remove2",
             role1.getModificationUser());
 
         // remove all roles here.
         manager.removeResourceRole(role2, "remove2");
-        assertEquals("Only 4 role should be added into persistence.", 2,
+        assertEquals("Only 4 role should be added into persistence.", 4,
             AccuracyTestHelper.getTableSize(conn, "resource_role_lu"));
         assertEquals("The modificationUser should be updated to 'remove2'", "remove2",
             role2.getModificationUser());
@@ -821,7 +821,7 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
 
         // check the type.
         assertTrue("The type should be updated.", type.getId() > 0);
-        assertEquals("One type should be added into persistence.", 3,
+        assertEquals("One type should be added into persistence.", 4,
             AccuracyTestHelper.getTableSize(conn, "notification_type_lu"));
 
         // check the role here.
@@ -858,7 +858,7 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
 
         // check the type.
         assertEquals("The type id should not be changed.", typeId, type.getId());
-        assertEquals("One type should be added into persistence.", 3,
+        assertEquals("One type should be added into persistence.", 4,
             AccuracyTestHelper.getTableSize(conn, "notification_type_lu"));
 
         // check the role here.
@@ -893,19 +893,19 @@ public class PersistenceResourceManagerAccuracyTest extends TestCase {
 
         // remove one type.
         manager.removeNotificationType(type1, "remover1");
-        assertEquals("Only 2 type should be in persistence.", 3,
+        assertEquals("Only 2 type should be in persistence.", 4,
             AccuracyTestHelper.getTableSize(conn, "notification_type_lu"));
         assertEquals("The modificationUser should be updated to 'remover1'", "remover1",
             type1.getModificationUser());
 
         manager.removeNotificationType(type1, "remover2");
-        assertEquals("Only 2 type should be in persistence.", 3,
+        assertEquals("Only 2 type should be in persistence.", 4,
             AccuracyTestHelper.getTableSize(conn, "notification_type_lu"));
         assertEquals("The modificationUser should be updated to 'remover2'", "remover2",
             type1.getModificationUser());
 
         manager.removeNotificationType(type2, "remover2");
-        assertEquals("Only 2 type should be in persistence.", 2,
+        assertEquals("Only 2 type should be in persistence.", 3,
             AccuracyTestHelper.getTableSize(conn, "notification_type_lu"));
         assertEquals("The modificationUser should be updated to 'remover2'", "remover2",
             type2.getModificationUser());

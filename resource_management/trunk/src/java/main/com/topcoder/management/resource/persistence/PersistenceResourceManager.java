@@ -157,7 +157,7 @@ public class PersistenceResourceManager implements ResourceManager {
      * This field is public, static, and final.
      * </p>
      */
-    public static final String RESOURCE_ID_GENERATOR_NAME = "Resource Id Generator";
+    public static final String RESOURCE_ID_GENERATOR_NAME = "resource_id_seq";
 
     /**
      * <p>
@@ -169,7 +169,7 @@ public class PersistenceResourceManager implements ResourceManager {
      * This field is public, static, and final.
      * </p>
      */
-    public static final String RESOURCE_ROLE_ID_GENERATOR_NAME = "Resource Role Id Generator";
+    public static final String RESOURCE_ROLE_ID_GENERATOR_NAME = "resource_role_id_seq";
 
     /**
      * <p>
@@ -181,7 +181,7 @@ public class PersistenceResourceManager implements ResourceManager {
      * This field is public, static, and final.
      * </p>
      */
-    public static final String NOTIFICATION_TYPE_ID_GENERATOR_NAME = "Notification Type Id Generator";
+    public static final String NOTIFICATION_TYPE_ID_GENERATOR_NAME = "notification_type_id_seq";
 
     /**
      * <p>

@@ -38,11 +38,3 @@ insert into resource_role_lu(resource_role_id, phase_type_id, name, description,
 create_user, create_date, modify_user, modify_date) values 
 (4, 4, 'role#4', 'accuracytest', 'tc', CURRENT, 'tc', CURRENT);
 
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
-  VALUES('Resource Id Generator', 1, 20, 0); 
-
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
-  VALUES('Resource Role Id Generator', 1, 20, 0); 
-
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
-  VALUES('Notification Type Id Generator', 1, 20, 0);

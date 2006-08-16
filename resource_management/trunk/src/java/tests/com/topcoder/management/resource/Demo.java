@@ -415,7 +415,7 @@ public class Demo extends TestCase {
      * @throws Exception to JUnit
      */
     private void removeTables() throws Exception {
-        String[] tables = new String[] {"id_sequences", "notification", "notification_type_lu", "resource_submission",
+        String[] tables = new String[] {"notification", "notification_type_lu", "resource_submission",
             "resource_info", "resource_info_type_lu", "resource", "resource_role_lu", "submission", "phase",
             "phase_type_lu", "project"};
         Connection con = getConnection();
@@ -528,15 +528,6 @@ public class Demo extends TestCase {
         Connection con = getConnection();
 
         String sql = null;
-
-        // insert the records for the IDGenerators
-        sql = "INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES(?, 30, 20, 0)";
-
-        doSQLUpdate(con, sql, new Object[] {PersistenceResourceManager.NOTIFICATION_TYPE_ID_GENERATOR_NAME});
-
-        doSQLUpdate(con, sql, new Object[] {PersistenceResourceManager.RESOURCE_ID_GENERATOR_NAME});
-
-        doSQLUpdate(con, sql, new Object[] {PersistenceResourceManager.RESOURCE_ROLE_ID_GENERATOR_NAME});
 
         // insert records to the table: project
         sql = "INSERT INTO project(project_id) VALUES(?)";

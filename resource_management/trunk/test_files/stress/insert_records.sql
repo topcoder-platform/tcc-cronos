@@ -1,8 +1,3 @@
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) values("Resource Id Generator", 1, 20, 0); 
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) values("Resource Role Id Generator", 1, 20, 0); 
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) values("Notification Type Id Generator", 1, 20, 0);
-
-
 INSERT INTO project (project_id) values (1);
 INSERT INTO project (project_id) values (2);
 INSERT INTO project (project_id) values (3);

@@ -9,4 +9,3 @@ DELETE FROM resource_role_lu WHERE resource_role_id IN (1, 2, 3, 4, 5);
 
 DELETE FROM submission WHERE submission_id IN (1, 2, 3, 4, 5);
 DELETE FROM project WHERE project_id IN (1, 2, 3, 4, 5);
-DELETE FROM id_sequences WHERE name IN ('Resource Id Generator', 'Resource Role Id Generator', 'Notification Type Id Generator');

@@ -223,20 +223,6 @@ public class PersistenceResourceManagerFailureTest extends PersistenceResourceMa
     }
 
     /**
-     * Test <code>PersistenceResourceManager(ResourcePersistence, SearchBundleManager)</code>
-     * when id generator cannot be found.
-     * <p>IllegalArgumentException should be thrown.</p>
-     */
-    public void testPersistenceResourceManager2_MissIdGenerator() {
-        try {
-            new PersistenceResourceManager(persistence, searchBundleManager);
-            fail("Should throw IllegalArgumentException for missing idgenerator.");
-        } catch (IllegalArgumentException e) {
-            // pass
-        }
-    }
-
-    /**
      * Test <code>updateResource(Resource, String)</code> with null resource.
      * <p>It should throw IllegalArgumentException.</p>
      *
