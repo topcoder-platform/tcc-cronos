@@ -1,44 +1,44 @@
 CREATE TABLE project_type_lu (
-  project_type_id INTEGER NOT NULL,
-  name VARCHAR(64) NOT NULL,
-  description VARCHAR(254) NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  project_type_id               INTEGER                         NOT NULL,
+  name                          VARCHAR(64)                     NOT NULL,
+  description                   VARCHAR(254)                    NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(project_type_id)
 );
 CREATE TABLE project_category_lu (
-  project_category_id INTEGER NOT NULL,
-  project_type_id INTEGER NOT NULL,
-  name VARCHAR(64) NOT NULL,
-  description VARCHAR(254) NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  project_category_id           INTEGER                         NOT NULL,
+  project_type_id               INTEGER                         NOT NULL,
+  name                          VARCHAR(64)                     NOT NULL,
+  description                   VARCHAR(254)                    NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(project_category_id),
   FOREIGN KEY(project_type_id)
     REFERENCES project_type_lu(project_type_id)
 );
 CREATE TABLE project_status_lu (
-  project_status_id INTEGER NOT NULL,
-  name VARCHAR(64) NOT NULL,
-  description VARCHAR(254) NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  project_status_id             INTEGER                         NOT NULL,
+  name                          VARCHAR(64)                     NOT NULL,
+  description                   VARCHAR(254)                    NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(project_status_id)
 );
 CREATE TABLE project (
-  project_id INTEGER NOT NULL,
-  project_status_id INTEGER NOT NULL,
-  project_category_id INTEGER NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  project_id                    INTEGER                         NOT NULL,
+  project_status_id             INTEGER                         NOT NULL,
+  project_category_id           INTEGER                         NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(project_id),
   FOREIGN KEY(project_category_id)
     REFERENCES project_category_lu(project_category_id),
@@ -46,23 +46,23 @@ CREATE TABLE project (
     REFERENCES project_status_lu(project_status_id)
 );
 CREATE TABLE project_info_type_lu (
-  project_info_type_id INTEGER NOT NULL,
-  name VARCHAR(64) NOT NULL,
-  description VARCHAR(25) NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  project_info_type_id          INTEGER                         NOT NULL,
+  name                          VARCHAR(64)                     NOT NULL,
+  description                   VARCHAR(25)                     NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(project_info_type_id)
 );
 CREATE TABLE project_info (
-  project_id INTEGER NOT NULL,
-  project_info_type_id INTEGER NOT NULL,
-  value LVARCHAR(4096) NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  project_id                    INTEGER                         NOT NULL,
+  project_info_type_id          INTEGER                         NOT NULL,
+  value                         LVARCHAR(4096)                  NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(project_id, project_info_type_id),
   FOREIGN KEY(project_info_type_id)
     REFERENCES project_info_type_lu(project_info_type_id),
@@ -70,38 +70,38 @@ CREATE TABLE project_info (
     REFERENCES project(project_id)
 );
 CREATE TABLE project_audit (
-  project_audit_id INTEGER NOT NULL,
-  project_id INTEGER NOT NULL,
-  update_reason VARCHAR(254) NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  project_audit_id              INTEGER                         NOT NULL,
+  project_id                    INTEGER                         NOT NULL,
+  update_reason                 VARCHAR(254)                    NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(project_audit_id),
   FOREIGN KEY(project_id)
     REFERENCES project(project_id)
 );
 CREATE TABLE resource (
-  resource_id INTEGER NOT NULL,
-  project_id INTEGER,
+  resource_id                   INTEGER                         NOT NULL,
+  project_id                    INTEGER,
   PRIMARY KEY(resource_id),
   FOREIGN KEY(project_id)
     REFERENCES project(project_id)
 );
 CREATE TABLE resource_info_type_lu (
-  resource_info_type_id INTEGER NOT NULL,
-  name VARCHAR(64) NOT NULL,
-  description VARCHAR(254) NOT NULL,
-  create_user VARCHAR(64) NOT NULL,
-  create_date DATETIME YEAR TO FRACTION(3) NOT NULL,
-  modify_user VARCHAR(64) NOT NULL,
-  modify_date DATETIME YEAR TO FRACTION(3) NOT NULL,
+  resource_info_type_id         INTEGER                         NOT NULL,
+  name                          VARCHAR(64)                     NOT NULL,
+  description                   VARCHAR(254)                    NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(resource_info_type_id)
 );
 CREATE TABLE resource_info (
-  resource_id INTEGER NOT NULL,
-  resource_info_type_id INTEGER NOT NULL,
-  value LVARCHAR(4096) NOT NULL,
+  resource_id                   INTEGER                         NOT NULL,
+  resource_info_type_id         INTEGER                         NOT NULL,
+  value                         LVARCHAR(4096)                  NOT NULL,
   PRIMARY KEY(resource_id, resource_info_type_id)
 );
 
