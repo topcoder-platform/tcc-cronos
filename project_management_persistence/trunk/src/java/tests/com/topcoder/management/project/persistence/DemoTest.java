@@ -143,13 +143,6 @@ public class DemoTest extends TestCase {
         Helper.doDMLQuery(conn, "DELETE FROM project_status_lu", new Object[] {});
         Helper.doDMLQuery(conn, "DELETE FROM project_category_lu", new Object[] {});
         Helper.doDMLQuery(conn, "DELETE FROM project_type_lu", new Object[] {});
-        Helper.doDMLQuery(conn, "DELETE FROM id_sequences", new Object[] {});
-
-        // insert data into id_sequences table
-        Helper.doDMLQuery(conn, "INSERT INTO id_sequences (name, next_block_start, "
-            + "block_size, exhausted) VALUES('project_id_seq', 1, 1, 0)", new Object[] {});
-        Helper.doDMLQuery(conn, "INSERT INTO id_sequences (name, next_block_start, "
-            + "block_size, exhausted) VALUES('project_audit_id_seq', 1, 1, 0);", new Object[] {});
 
         // insert data into project_status_lu table
         Helper.doDMLQuery(conn,

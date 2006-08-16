@@ -975,13 +975,8 @@ public class InformixProjectPersistenceAccuracyTest extends TestCase {
         // get the connection
         Connection con = getConnection();
 
-        // insert to the id_sequences
-        String sql = "INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES(?, ?, ?, ?)";
-        doUpdate(con, sql, new Object[] {"project_id_seq", new Integer(1), new Integer(20), new Integer(0)});
-        doUpdate(con, sql, new Object[] {"project_audit_id_seq", new Integer(1), new Integer(20), new Integer(0)});
-
         // insert to project_type_lu
-        sql = "INSERT INTO project_type_lu (project_type_id, name, description, "
+        String sql = "INSERT INTO project_type_lu (project_type_id, name, description, "
             + "create_user, create_date, modify_user, modify_date) "
             + "VALUES (?, ?, ?, 'topcoder', CURRENT, 'topcoder', CURRENT)";
         doUpdate(con, sql, new Object[] {new Integer(1), "topoder", "topcoder component"});
@@ -1040,7 +1035,6 @@ public class InformixProjectPersistenceAccuracyTest extends TestCase {
         doUpdate(con, "DELETE FROM project_status_lu", new Object[] {});
         doUpdate(con, "DELETE FROM project_category_lu", new Object[] {});
         doUpdate(con, "DELETE FROM project_type_lu", new Object[] {});
-        doUpdate(con, "DELETE FROM id_sequences", new Object[] {});
         con.commit();
         con.close();
     }

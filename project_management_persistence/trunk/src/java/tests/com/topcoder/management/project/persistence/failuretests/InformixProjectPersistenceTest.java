@@ -58,7 +58,7 @@ public class InformixProjectPersistenceTest extends TestCase {
      */
     protected void setUp() throws Exception {
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration(new File("test_files/failure/config.xml"));
+        ConfigHelper.loadConfiguration(new File("failure/config.xml"));
 
         DBConnectionFactory connectionFactory
             = new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");

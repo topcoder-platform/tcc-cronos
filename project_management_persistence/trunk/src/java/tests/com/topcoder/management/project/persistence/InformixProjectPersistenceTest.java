@@ -199,13 +199,6 @@ public class InformixProjectPersistenceTest extends TestCase {
         Helper.doDMLQuery(conn, "DELETE FROM project_status_lu", new Object[] {});
         Helper.doDMLQuery(conn, "DELETE FROM project_category_lu", new Object[] {});
         Helper.doDMLQuery(conn, "DELETE FROM project_type_lu", new Object[] {});
-        Helper.doDMLQuery(conn, "DELETE FROM id_sequences", new Object[] {});
-
-        // insert data into id_sequences table
-        Helper.doDMLQuery(conn, "INSERT INTO id_sequences (name, next_block_start, "
-            + "block_size, exhausted) VALUES('project_id_seq', 1, 1, 0)", new Object[] {});
-        Helper.doDMLQuery(conn, "INSERT INTO id_sequences (name, next_block_start, "
-            + "block_size, exhausted) VALUES('project_audit_id_seq', 1, 1, 0);", new Object[] {});
 
         // insert data into project_status_lu table
         Helper.doDMLQuery(conn,
@@ -810,7 +803,6 @@ public class InformixProjectPersistenceTest extends TestCase {
         persistence.createProject(project, "user");
 
         // first check if the project's properties are updated.
-        assertEquals("check project id", 1, project.getId());
         assertEquals("check project creation user", "user", project.getCreationUser());
         assertTrue("check creation date is near current time", (new Date().getTime() - project
             .getCreationTimestamp().getTime()) <= 10 * 60 * 1000);
@@ -1050,38 +1042,6 @@ public class InformixProjectPersistenceTest extends TestCase {
      * <code>createProject(Project project, String operator)</code>.
      * </p>
      * <p>
-     * unable to generator id for project. PersistenceException is expected.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testFailureCreateProject6() throws Exception {
-        ProjectPersistence persistence = new InformixProjectPersistence(
-            "InformixProjectPersistence.CustomNamespace");
-
-        Project project = getSampleProject1();
-
-        // create the connection
-        Connection conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
-            .createConnection();
-        Helper.doDMLQuery(conn, "UPDATE id_sequences SET exhausted=1 WHERE name='project_id_seq'",
-            new Object[] {});
-        conn.close();
-
-        try {
-            persistence.createProject(project, "user");
-        } catch (PersistenceException e) {
-            assertEquals("Unable to generate id for the project., "
-                + "caused by The ids of specified IDName are exausted yet.", e.getMessage());
-        }
-    }
-
-    /**
-     * <p>
-     * Failure test of the method
-     * <code>createProject(Project project, String operator)</code>.
-     * </p>
-     * <p>
      * duplicate project info type names. PersistenceException is expected.
      * </p>
      * @throws Exception
@@ -1209,7 +1169,7 @@ public class InformixProjectPersistenceTest extends TestCase {
         persistence.createProject(project2, "user");
 
         // get the project
-        Project project3 = persistence.getProject(2);
+        Project project3 = persistence.getProject(project2.getId());
 
         // first check if the project's properties are correct.
         assertEquals("check project id", project2.getId(), project3.getId());
@@ -1327,7 +1287,8 @@ public class InformixProjectPersistenceTest extends TestCase {
         persistence.createProject(project2, "user");
 
         // get the project
-        Project[] projects = persistence.getProjects(new long[] {1, 2});
+        Project[] projects = persistence.getProjects(
+            new long[] {project1.getId(), project2.getId()});
 
         // first check if the project's properties are correct.
         assertEquals("check project id", project2.getId(), projects[1].getId());
@@ -1404,7 +1365,8 @@ public class InformixProjectPersistenceTest extends TestCase {
         persistence.createProject(project2, "user");
 
         // get the project
-        Project[] projects = persistence.getProjects(new long[] {1, 2, 3, 4, 5, 6, 7});
+        Project[] projects = persistence.getProjects(
+            new long[] {project1.getId(), project2.getId(), 3, 4, 5, 6, 7});
 
         // first check if the project's properties are correct.
         assertEquals("check project id", project2.getId(), projects[1].getId());
@@ -1460,7 +1422,8 @@ public class InformixProjectPersistenceTest extends TestCase {
         persistence.createProject(project2, "user");
 
         // get the project
-        Project[] projects = persistence.getProjects(new long[] {1, 1, 1, 1, 2, 2, 2, 2});
+        Project[] projects = persistence.getProjects(
+            new long[] {project1.getId(), project1.getId(), project2.getId(), project2.getId()});
 
         // first check if the project's properties are correct.
         assertEquals("check project id", project2.getId(), projects[1].getId());
@@ -1599,10 +1562,10 @@ public class InformixProjectPersistenceTest extends TestCase {
 
         // get another project object
         Project project2 = getSampleProject2();
-        project2.setId(1);
+        project2.setId(project1.getId());
         persistence.updateProject(project2, "some reason", "user2");
 
-        Project project3 = persistence.getProject(1);
+        Project project3 = persistence.getProject(project2.getId());
 
         // first check if the project's properties are correct.
         assertEquals("check project id", project2.getId(), project3.getId());
@@ -1858,39 +1821,6 @@ public class InformixProjectPersistenceTest extends TestCase {
         } catch (PersistenceException e) {
             assertEquals("Unable to find ProjectPropertyType name "
                 + "[do_not_exist] in project_info_type_lu table.", e.getMessage());
-        }
-    }
-
-    /**
-     * <p>
-     * Failure test of the method
-     * <code>updateProject(Project project, String reason, String operator)</code>.
-     * </p>
-     * <p>
-     * unable to generator id for project. PersistenceException is expected.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testFailureUpdateProject10() throws Exception {
-        ProjectPersistence persistence = new InformixProjectPersistence(
-            "InformixProjectPersistence.CustomNamespace");
-
-        Project project = getSampleProject1();
-        persistence.createProject(project, "user1");
-
-        // create the connection
-        Connection conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
-            .createConnection();
-        Helper.doDMLQuery(conn, "UPDATE id_sequences SET exhausted=1 WHERE name='project_id_seq'",
-            new Object[] {});
-        conn.close();
-
-        try {
-            persistence.updateProject(project, "some reason", "user2");
-        } catch (PersistenceException e) {
-            assertEquals("Unable to generate id for the project., "
-                + "caused by The ids of specified IDName are exausted yet.", e.getMessage());
         }
     }
 

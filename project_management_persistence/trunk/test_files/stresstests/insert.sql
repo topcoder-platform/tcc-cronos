@@ -1,6 +1,3 @@
-INSERT INTO id_sequences VALUES ('project_id_seq', 100, 20, 0);
-INSERT INTO id_sequences VALUES ('project_audit_id_seq', 100, 20, 0);
-
 INSERT INTO project_info_type_lu (project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
 VALUES (1, 'property 1', 'project property 1', 'topcoder', CURRENT, 'topcoder', CURRENT);
 INSERT INTO project_info_type_lu (project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
