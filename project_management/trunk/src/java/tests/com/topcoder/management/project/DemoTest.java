@@ -17,7 +17,7 @@ import junit.framework.TestSuite;
 /**
  * This the demo of this component.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class DemoTest extends TestCase {

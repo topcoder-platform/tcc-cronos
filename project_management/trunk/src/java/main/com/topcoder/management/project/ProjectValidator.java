@@ -18,7 +18,7 @@ package com.topcoder.management.project;
  * safe.
  * </p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, iamajia
  * @version 1.0
  */
 public interface ProjectValidator {

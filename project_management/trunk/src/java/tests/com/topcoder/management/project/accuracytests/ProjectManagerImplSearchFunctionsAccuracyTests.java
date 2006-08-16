@@ -273,7 +273,7 @@ public class ProjectManagerImplSearchFunctionsAccuracyTests extends ProjectManag
     public void testSearchProjectsByPropertyValue() throws Exception {
         try {
             Project[] projects = manager.searchProjects(ProjectFilterUtility.buildProjectPropertyValueEqualFilter(
-                        "TCSDEVELOPER"));
+                        "iamajia"));
             assertEquals(2, projects[0].getId());
         } finally {
             executeSQL(CLEAR_DB_SQL);
@@ -288,7 +288,7 @@ public class ProjectManagerImplSearchFunctionsAccuracyTests extends ProjectManag
     public void testSearchProjectsByProperty() throws Exception {
         try {
             Project[] projects = manager.searchProjects(ProjectFilterUtility.buildProjectPropertyEqualFilter(
-                        "developer", "TCSDEVELOPER"));
+                        "developer", "iamajia"));
             assertEquals(2, projects[0].getId());
         } finally {
             executeSQL(CLEAR_DB_SQL);

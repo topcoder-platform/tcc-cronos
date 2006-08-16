@@ -23,7 +23,7 @@ import com.topcoder.search.builder.filter.Filter;
  * safe.
  * </p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, iamajia
  * @version 1.0
  */
 public interface ProjectManager {

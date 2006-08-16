@@ -11,7 +11,7 @@ import java.util.Date;
  * class extends this class to inherit these properties. Future classes that
  * need audit properties also can extends from this.
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, iamajia
  * @version 1.0
  */
 public abstract class AuditableObject {

@@ -34,7 +34,7 @@ import java.util.List;
  * <p>
  * Thread safety: This class is immutable and thread safe.
  * </p>
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, iamajia
  * @version 1.0
  */
 public class ProjectFilterUtility {

@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for ProjectType class.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class ProjectTypeTest extends TestCase {

@@ -12,7 +12,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for AuditableObject class.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class AuditableObjectTest extends TestCase {

@@ -14,7 +14,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for DefaultProjectValidator class.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class DefaultProjectValidatorTest extends TestCase {

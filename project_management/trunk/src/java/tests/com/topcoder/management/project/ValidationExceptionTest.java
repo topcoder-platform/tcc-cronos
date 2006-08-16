@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for ValidationException class.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class ValidationExceptionTest extends TestCase {

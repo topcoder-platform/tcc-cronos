@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 /**
  * <p>This test case aggregates all Unit test cases.</p>
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class UnitTests extends TestCase {

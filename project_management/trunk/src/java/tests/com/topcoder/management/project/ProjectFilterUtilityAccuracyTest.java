@@ -20,7 +20,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for ProjectFilterUtility class.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class ProjectFilterUtilityAccuracyTest extends TestCase {

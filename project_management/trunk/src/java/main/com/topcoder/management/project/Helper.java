@@ -6,7 +6,7 @@ package com.topcoder.management.project;
 /**
  * Helper class for the component.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 final class Helper {

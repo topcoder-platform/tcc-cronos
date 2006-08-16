@@ -25,7 +25,7 @@ import java.util.Map.Entry;
  * Thread safety: This class is not thread safe.
  * </p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, iamajia
  * @version 1.0
  */
 public class Project extends AuditableObject implements Serializable {

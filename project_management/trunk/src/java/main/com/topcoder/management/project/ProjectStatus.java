@@ -17,7 +17,7 @@ import java.io.Serializable;
  * Thread safety: This class is not thread safe.
  * </p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, iamajia
  * @version 1.0
  */
 public class ProjectStatus implements Serializable {

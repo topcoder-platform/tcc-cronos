@@ -13,7 +13,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for Project class.
  *
- * @author TCSDEVELOPER
+ * @author iamajia
  * @version 1.0
  */
 public class ProjectTest extends TestCase {
