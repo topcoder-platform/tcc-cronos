@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * Unit tests for the class: AuditableResourceStructure.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class AuditableResourceStructureTest extends TestCase {
@@ -54,8 +54,8 @@ public class AuditableResourceStructureTest extends TestCase {
      * Checks if it works properly.
      */
     public void testSetCreationUser() {
-        ars.setCreationUser("TCSDEVELOPER");
-        assertEquals("This method does not work properly.", "TCSDEVELOPER", ars.getCreationUser());
+        ars.setCreationUser("kinfkong");
+        assertEquals("This method does not work properly.", "kinfkong", ars.getCreationUser());
     }
 
     /**
@@ -74,8 +74,8 @@ public class AuditableResourceStructureTest extends TestCase {
      * Checks if it works properly.
      */
     public void testGetCreationUser() {
-        ars.setCreationUser("TCSDEVELOPER");
-        assertEquals("This method does not work properly.", "TCSDEVELOPER", ars.getCreationUser());
+        ars.setCreationUser("kinfkong");
+        assertEquals("This method does not work properly.", "kinfkong", ars.getCreationUser());
     }
 
     /**
@@ -142,8 +142,8 @@ public class AuditableResourceStructureTest extends TestCase {
      * Checks if it works properly.
      */
     public void testSetModificationUser() {
-        ars.setModificationUser("TCSDEVELOPER");
-        assertEquals("This method does not work properly.", "TCSDEVELOPER", ars.getModificationUser());
+        ars.setModificationUser("kinfkong");
+        assertEquals("This method does not work properly.", "kinfkong", ars.getModificationUser());
     }
 
     /**
@@ -162,8 +162,8 @@ public class AuditableResourceStructureTest extends TestCase {
      * Checks if it works properly.
      */
     public void testGetModificationUser() {
-        ars.setModificationUser("TCSDEVELOPER");
-        assertEquals("This method does not work properly.", "TCSDEVELOPER", ars.getModificationUser());
+        ars.setModificationUser("kinfkong");
+        assertEquals("This method does not work properly.", "kinfkong", ars.getModificationUser());
     }
 
     /**

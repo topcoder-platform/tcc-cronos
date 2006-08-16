@@ -23,7 +23,7 @@ import java.util.Date;
  * changed.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public abstract class AuditableResourceStructure implements Serializable {

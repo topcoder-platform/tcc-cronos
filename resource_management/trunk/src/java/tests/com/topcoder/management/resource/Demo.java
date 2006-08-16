@@ -44,7 +44,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  *
  * retrieve and search resources, add and remove notifications and retrieve notifications, etc.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class Demo extends TestCase {

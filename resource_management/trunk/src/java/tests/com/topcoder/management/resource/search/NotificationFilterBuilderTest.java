@@ -11,7 +11,7 @@ import com.topcoder.search.builder.filter.Filter;
 /**
  * Unit tests for the class: NotificationFilterBuilder.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class NotificationFilterBuilderTest extends TestCase {

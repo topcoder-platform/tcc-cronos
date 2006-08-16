@@ -24,7 +24,7 @@ import com.topcoder.search.builder.filter.Filter;
  * Implementations of this interface are not required to be thread safe.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public interface ResourceManager {

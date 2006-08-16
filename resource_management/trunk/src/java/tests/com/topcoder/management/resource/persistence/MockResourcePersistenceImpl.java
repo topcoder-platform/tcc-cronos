@@ -23,7 +23,7 @@ import com.topcoder.management.resource.ResourceRole;
  *
  * This class is for unit tests only.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class MockResourcePersistenceImpl implements ResourcePersistence {

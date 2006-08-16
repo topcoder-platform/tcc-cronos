@@ -10,7 +10,7 @@ import com.topcoder.util.errorhandling.BaseException;
 /**
  * Unit tests for the class: ResourcePersistenceException.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class ResourcePersistenceExceptionTest extends TestCase {

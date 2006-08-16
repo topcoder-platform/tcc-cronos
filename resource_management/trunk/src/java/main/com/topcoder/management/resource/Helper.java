@@ -9,7 +9,7 @@ package com.topcoder.management.resource;
  * 1. checkLongPostivie(), to check if a given long value is positive.
  * 2. checkNull(), to check if a given object is null.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public final class Helper {

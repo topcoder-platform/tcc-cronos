@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * Unit tests for the class: NotificationTypeFilterBuilder.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class NotificationTypeFilterBuilderTest extends TestCase {

@@ -41,7 +41,7 @@ import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 /**
  * Unit tests for the class PersistenceResourceMnager.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class PersistenceResourceManagerTest extends TestCase {

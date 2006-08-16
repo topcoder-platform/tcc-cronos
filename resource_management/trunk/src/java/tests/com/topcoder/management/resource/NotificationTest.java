@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 /**
  * Unit tests for the class: Notification.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class NotificationTest extends TestCase {

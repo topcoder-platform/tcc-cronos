@@ -19,7 +19,7 @@ import java.util.Map;
  * thread-safe.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public class Resource extends AuditableResourceStructure {

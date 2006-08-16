@@ -92,7 +92,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * This class is immutable and hence thread-safe.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public class PersistenceResourceManager implements ResourceManager {

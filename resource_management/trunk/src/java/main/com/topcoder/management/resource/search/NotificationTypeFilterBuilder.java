@@ -24,7 +24,7 @@ import com.topcoder.search.builder.filter.Filter;
  * This class has only final static fields/methods, so mutability is not an issue. This class is thread-safe.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public class NotificationTypeFilterBuilder {

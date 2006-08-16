@@ -15,7 +15,7 @@ package com.topcoder.management.resource;
  * modeling classes.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  *
  */

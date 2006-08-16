@@ -26,7 +26,7 @@ import com.topcoder.search.builder.filter.Filter;
  * issue. This class is thread-safe.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public class ResourceRoleFilterBuilder {

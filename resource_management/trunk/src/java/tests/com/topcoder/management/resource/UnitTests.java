@@ -17,7 +17,7 @@ import com.topcoder.management.resource.search.ResourceRoleFilterBuilderTest;
 /**
  * This test case aggregates all Unit test cases.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class UnitTests extends TestCase {

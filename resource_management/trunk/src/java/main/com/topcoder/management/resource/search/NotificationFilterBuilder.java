@@ -25,7 +25,7 @@ import com.topcoder.search.builder.filter.Filter;
  * issue.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public class NotificationFilterBuilder {

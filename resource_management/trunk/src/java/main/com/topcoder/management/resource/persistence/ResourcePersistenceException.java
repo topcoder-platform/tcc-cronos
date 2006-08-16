@@ -20,7 +20,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * caller. It is also thrown directly by some ResourceManager implementations.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public class ResourcePersistenceException extends BaseException {

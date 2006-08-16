@@ -33,7 +33,7 @@ import com.topcoder.management.resource.ResourceRole;
  * immutable.
  * </p>
  *
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, kinfkong
  * @version 1.0
  */
 public interface ResourcePersistence {

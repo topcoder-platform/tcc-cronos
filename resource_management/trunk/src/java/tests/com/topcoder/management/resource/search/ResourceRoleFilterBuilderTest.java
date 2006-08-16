@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * Unit tests for the class: ResourceRoleFilterBuilder.
  *
- * @author TCSDEVELOPER
+ * @author kinfkong
  * @version 1.0
  */
 public class ResourceRoleFilterBuilderTest extends TestCase {
