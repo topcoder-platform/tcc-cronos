@@ -265,4 +265,38 @@ final class Util {
             // Ignore
         }
     }
+
+    /**
+     * Roll backs the transaction.
+     *
+     * @param conn
+     *            connection.
+     */
+    static void rollback(Connection conn) {
+        try {
+            if (conn != null) {
+                conn.rollback();
+            }
+        } catch (SQLException ex) {
+            // ignore
+        }
+    }
+
+    /**
+     * Set auto commit property.
+     *
+     * @param conn
+     *            connection
+     * @param autoCommit
+     *            autoCommit flag
+     */
+    static void setAutocommit(Connection conn, boolean autoCommit) {
+        try {
+            if (conn != null) {
+                conn.setAutoCommit(autoCommit);
+            }
+        } catch (SQLException ex) {
+            // Ignore.
+        }
+    }
 }
