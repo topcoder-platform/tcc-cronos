@@ -279,7 +279,7 @@ public class InformixReviewPersistenceTest extends TestCase {
     public void testAccuracyConstructorA1() throws Exception {
         ReviewPersistence persistence = new InformixReviewPersistence(
             new DBConnectionFactoryImpl(), "InformixConnection", new SearchBundle("bundle",
-                new HashMap()));
+                new HashMap(), "context"));
 
         assertNotNull("Unable to create InformixReviewPersistence.", persistence);
     }
@@ -299,7 +299,7 @@ public class InformixReviewPersistenceTest extends TestCase {
     public void testFailureConstructorA1() throws Exception {
         try {
             new InformixReviewPersistence(null, "InformixConnection", new SearchBundle("bundle",
-                new HashMap()));
+                new HashMap(), "context"));
         } catch (IllegalArgumentException e) {
             assertEquals("dbFactory should not be null.", e.getMessage());
         }
@@ -320,7 +320,7 @@ public class InformixReviewPersistenceTest extends TestCase {
     public void testFailureConstructorA2() throws Exception {
         try {
             new InformixReviewPersistence(new DBConnectionFactoryImpl(), null, new SearchBundle(
-                "bundle", new HashMap()));
+                "bundle", new HashMap(), "context"));
         } catch (IllegalArgumentException e) {
             assertEquals("connectionName should not be null.", e.getMessage());
         }
@@ -341,7 +341,7 @@ public class InformixReviewPersistenceTest extends TestCase {
     public void testFailureConstructorA3() throws Exception {
         try {
             new InformixReviewPersistence(new DBConnectionFactoryImpl(), "    ", new SearchBundle(
-                "bundle", new HashMap()));
+                "bundle", new HashMap(), "context"));
         } catch (IllegalArgumentException e) {
             assertEquals("connectionName should not be empty (trimmed).", e.getMessage());
         }
@@ -666,28 +666,6 @@ public class InformixReviewPersistenceTest extends TestCase {
      * <code>InformixReviewPersistence(String namespace)</code>.
      * </p>
      * <p>
-     * the class specified by factory_class is not of DBConnectionFactory type.
-     * ConfigurationException is expected.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testFailureConstructorC12() throws Exception {
-        try {
-            new InformixReviewPersistence(
-                "InformixReviewPersistence.CustomNamespace.InvalidFactoryClass");
-        } catch (ConfigurationException e) {
-            assertEquals("class [java.lang.Exception] is not of"
-                + " DBConnectionFactory type., caused by null", e.getMessage());
-        }
-    }
-
-    /**
-     * <p>
-     * Failure test of the constructor
-     * <code>InformixReviewPersistence(String namespace)</code>.
-     * </p>
-     * <p>
      * the class specified by factory_class does not have a constructor with one
      * String parameter. ConfigurationException is expected.
      * </p>
@@ -771,8 +749,8 @@ public class InformixReviewPersistenceTest extends TestCase {
         } catch (ConfigurationException e) {
             assertEquals("Unable to create a new instance of SearchBundleManager"
                 + " class from namespace [do_not_exist], caused by "
-                + "UnknownNamespaceException occurs while construct" + " SearchBundleManager.", e
-                .getMessage());
+                + "The namespace 'do_not_exist' is missing in configuration., "
+                + "caused by do_not_exist is unknown", e.getMessage());
         }
     }
 

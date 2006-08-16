@@ -266,7 +266,7 @@ public class InformixReviewPersistenceTests extends TestCase {
      */
     public void testCtor3() throws Exception {
         assertNotNull("Creation failed.", new InformixReviewPersistence(new DBConnectionFactoryImpl(),
-            "InformixConnection", new SearchBundle("bundle", new HashMap())));
+            "InformixConnection", new SearchBundle("bundle", new HashMap(), "context")));
     }
 
     /**

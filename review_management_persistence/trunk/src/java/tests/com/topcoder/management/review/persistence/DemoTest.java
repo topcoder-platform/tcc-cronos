@@ -302,7 +302,7 @@ public class DemoTest extends TestCase {
         DBConnectionFactory factory = new DBConnectionFactoryImpl(
             "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
         // then create a search bundle
-        SearchBundle searchBundle = new SearchBundle("empty_search_bundle", new HashMap());
+        SearchBundle searchBundle = new SearchBundle("empty_search_bundle", new HashMap(), "context");
         // finally create the InformixReviewPersistence
         new InformixReviewPersistence(factory, "informix_connection", searchBundle);
     }
