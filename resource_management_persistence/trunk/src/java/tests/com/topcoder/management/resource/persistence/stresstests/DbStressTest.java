@@ -46,7 +46,6 @@ public class DbStressTest extends TestCase {
      * The table names in this component.
      */
     public  String[] tableNames = {
-        "id_sequences",
         "notification",
         "notification_type_lu",
         "resource_submission",
@@ -340,12 +339,6 @@ public class DbStressTest extends TestCase {
         Connection con = getConnection();
 
         String sql = null;
-
-        // insert the records for the IDGenerators
-        sql = "INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES(?, 30, 20, 0)";
-
-        doSQLUpdate(sql, new Object[] {"resource_id_seq"});
-
 
         // insert records to the table: project
         sql = "INSERT INTO project(project_id) VALUES(?)";

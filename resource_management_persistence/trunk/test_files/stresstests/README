@@ -1,3 +1,0 @@
-1. Run the schema.sql
-2. change dbconfig.xml to your own configuration
-3. Stress tests are slow (database operations ^_^), drink a cup of coffee and be patient to wait..
