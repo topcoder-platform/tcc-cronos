@@ -1,0 +1,298 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033\deflangfe1033\deftab420{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier;}{\f3\fnil\fprq2\fcharset2 Wingdings;}{\f4\fnil\fprq2\fcharset0 Wingdings;}{\f5\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue127;\red0\green0\blue255;\red255\green0\blue0;\red51\green51\blue153;\red127\green127\blue127;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx720\ul\b\f0\fs32 Review Management Component Specification\par
+\pard\nowidctlpar\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1\fs24 1.\tab Design\f0\fs20\par
+\pard\nowidctlpar\li720\sa120\b0\f1 Reviews are produced based on scorecards. A review holds a collection of items which address each of the questions on the scorecard. It also consists of the author that produced the review, the submission it addresses and the scorecard template it is based on. Various types of comments can be attached to the review or to each review item. A committed review must address all questions on the corresponding scorecard, and will have its overall score available.\par
+\pard\nowidctlpar\li720\f0\fs24\par
+\pard\nowidctlpar\li720\sa120\f1\fs20 The component provides the management functionalities to create, update or search reviews. The review persistence logic is pluggable.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li701\sa120\b0 DefaultReviewManager and ReviewPersistence implement the strategy pattern.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 JDBC\f0\par
+\f1 Informix\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.3\tab Required Algorithms\par
+\b0\i 1.3.1\f0\tab\f1 Transaction of InformixReviewPersistence\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\i0\f1 All the methods of InformixReviewPersistence that involve in the database operations, should put the database queries in one transaction. Take the createReview(Review,String) method for instance, in order to create Review, this method will also be responsible for creating the associated Item and Comment. All these database operations should be put in one transaction. The connection is retrieved from DBConnectionFactory, and it should be closed after operation to release to connection pool.\par
+Note that searchReview method will fall into two transactions. One transaction is used to retrieve an array of review ids, and the other to initialize the review array.\f0\par
+\pard\nowidctlpar\li720\sa120\cf0\fs24\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\i\f1\fs20 1.3.2\f0\tab\f1 Create the Review in the persistence\f0\par
+\pard\nowidctlpar\li720\sa120\cf1\i0\f1 This algorithm is also responsible for creating the associated Comment, and Item, but not for CommentType. Please note that the comment_type_lu table is simply a look-up table.\par
+This method is responsible for setting the creation user and modification user for the review instance. The creation user and modification user is identical to the passed in operation.\par
+Before creating the review instance in the database, all the associated review properties should be validated.\par
+Please see the Review Data Structure component about which properties should be validated, and the corresponding valid values. Review class in the Review Data Structure component might add validate() method to perform the data validation. If that, the validate() method will be called before inserting the instance into the database.\par
+\cf2\f2\fs18 Impl note:\par
+1. Get the review id and check that if it exists in the database. If exist, throw DuplicateReviewEntityException.\par
+2. get id from reviewIDGenerator, set it on review, and insert the review properties into the review table\par
+3. get all comments from review, generate id for each comment(using reviewCommentIDGenerator), and insert the comment into the table.\par
+4. get all the items from review, generate id for each item(using reviewItemIDGenerator), and insert the item into the table.\par
+5. for each item in the step 4, get all the item comments, and generate the id for them(using reviewItemCommentIDGenerator), and insert them into the item_comment table.\par
+6. if any exception occurred, reset the review properties to  their initial values, and roll back.\par
+Note that: the source_id field represents the author id\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.3\f0\tab\f1 Update Review in the persistence\f0\par
+\pard\nowidctlpar\li710\sa120\cf1\i0\f1 This algorithm is also responsible for creating, deleting, updating the associated Items, Comments, and Item Comments. The algorithm is also responsible for set operator on Review#modifictionUser.\par
+Before updating the review instance in the database, all the associated review properties should be validated.\f0\par
+\f1 Please see the Review Data Structure component about which properties should be validated, and the corresponding valid values. Review class in the Review Data Structure component might add validate() method to perform the data validation. If that, the validate() method will be called before inserting the instance into the database.\par
+\pard\nowidctlpar\fi-300\li1020\sa120\cf2\f2\fs18 Impl note:\par
+1. get the review id, and check that it exists in the database. otherwise, throw ReviewEntityNotFoundException.\par
+2. get the Review bean properties, and update them on "review" table.\par
+3. select all the comment id from review_comment table which belong to the given review. Assume that idSet keeps the comment ids retrieved in this step.\par
+4. get the review comments, for each comment, get the comment id,\par
+if the id exists in idSet, update the comment, and remove the id from idSet.\par
+if not exists, get the id(using reviewCommentIDGenerator), set the id on comment, and create the comment.\par
+5. If idSet is not empty, iterate through the set, and remove the comment from review_comment table for each comment id\par
+7. select all the review item ids from review_item table which belong to the given review.. Assume that itemIdSet keeps the items ids retrieved in this step.\par
+8. get the review items, for each item id:\par
+if the id exists in the itemIdSet, update the item, and remove the id from itemIdSet. Note that update the item involve creating, updating and deleting the item comments. t\par
+If the id not exists, get the id from reviewItemIDGenerator, and create the item. Note that creating item will involve creating all the associated item comments.\par
+9. if itemIdSet is not empty, iterate through the set, for each id, remove it from review_item table.\par
+10. If any error occurred, roll back, and reset the review properties to their initial statuses.\f1\fs20 .\f0\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1 1.3.3\f0\tab\f1 Get Review from the persistence\f0\par
+\pard\nowidctlpar\fi600\sa120\sl240\slmult0\cf1\i0\f1 Get the Review instance from the persistence with given id\par
+\pard\nowidctlpar\fi400\li240\sa120\sl240\slmult0\cf2\f2\fs18 Impl note:\par
+\pard\nowidctlpar\li641\sa120\sl240\slmult0 1. if id is not positive, throw IllegalArgumentException\par
+2. check that id exists in the database, if not exists, throw ReviewEntityNotFoundException\par
+3. get all comment types from comment_type_lu table.\par
+4. create a Review isntance, select all the Review properties  and Comments from the review, review_comment  and set them on the instance.\par
+Notice that the source_id represents Review#author.\par
+The step 4 must be done in one SQL query\par
+5. select all the review item and item comments from review_item and review_item_comment tables where review_id is equal to given id,\par
+and create the Item instance for each row,\par
+Note that the Item#getDocument() is identical review_item.upload_id\par
+The step 5 must also be done in one SQL query.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.4\f0\tab\f1 Search for the review in the persistence\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\i0\f1 Search the persistence with given filter. If complete is false, the associated items and comments of the matching review will not be retrieved.\par
+In the version 1.0, the filter supports at most five fields:\par
+scorecardType --- the score card type, must be java.Long type\par
+submission --- the review submission id, must be java.Long type\par
+reviewer --- the author of the review, must be java.Long type\par
+project --- the project id of the review, must be java.Long type\par
+committed --- indicate if the review has been committed, must be java.lang.Integer type.\par
+Either new Integer(1), representing committed, or new Integer(0), represent not committed\par
+\cf2\f2\fs18 Impl note:\par
+1. get an array of review ids by calling this.searchBundle.search(filter). If the returned CustomResultSet is empty, simply return empty array.\par
+2. if complete is false, select all the review properties from review table:\par
+select * from review where review_id IN (,,,,,) // the (,,,) is an array of review ids retrieved in step 1\par
+Initialize an array of review with data retrieved in the above sql and return it.\par
+Review#getAhtor() is identical to review.resource_id\par
+2. if complete is true get all comment types  from comment_type_lu table\par
+2.1 retrieve review properties and review comments from review , review_comment tables\par
+where review.review_id=review_comment.review_id and\par
+review_id IN (....) order by review_id, review_comments.review_comment_id\par
+Initialize the array of review with the data retrieved in the above sql and the comment types retrieved in step 2\par
+2.2 retrieve review items and item comments from review_item:\par
+select review_id, item properties(document, question, etc), item comment properties from review_item, reiview_item_comment where\par
+review_item.review_id IN (.....) and\par
+review_item.review_item_id=review_item_comment.review_item_id\par
+order by review_id, reivew_item_id, review_item_comment_id\par
+Initiliaze the reviews with items retrieved in the above sql and the comment types retrieved in step 2.\par
+\pard\nowidctlpar\fi-300\li1020\sa120\f0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1 1.4\tab Component Class Overview\f0\par
+\pard\nowidctlpar\li720\sa120\f1 ReviewManagement\b0 : \par
+This interface defines the contract of managing the review entities the datastore. It provides the management functionalities to create, update and search reviews. Additionally, application users can also add comment for review and item, and get all the comment types from the manager.\f0\par
+\f1 The implementation of this interface is not required to be thread safe.\par
+\b DefaultReviewManagement\b0 : \par
+This class is the default implementation of ReviewManager. It actually delegates the work to the pluggable persistence to create, update and search reviews. Additionally, application users can also add comment for review and item, and get all the comment types from the manager.\f0\par
+\f1 This class is not thread safe.\par
+\b ReviewPersistence\b0 : \par
+This interface defines the contract of managing the review entities in the persistence. It provides the persistence functionalities to create, update and search reviews. Additionally, application users can also add comment for review and item, and get all the comment types from the persistence.\f0\par
+\f1 This class is not thread safe since it\rquote s mutable.\par
+\b InformixReviewPersistence\b0 : \par
+This class is responsible for creating, updating, searching the review entities stored in the Informix database. Additionally, application users can also add comment for review and item, and get all the comment types from the persistence.\f0\par
+\f1 This class is not thread safe.\f0\par
+\b\f1 ChainFilter\b0 : \par
+The ChainFilter class provides the convenient methods to constructor composite filter with "chain" operation.\par
+For instance, if the search condition is that " search for the reviews which have been committed, reviewer id is 10000, or project id is greater than 10001",\par
+we can construct the filter in this way\par
+ChainFilter cf = new ChainFilter(new EqualToFilter("committed", \cf3 new Integer(1)\cf0 ));\par
+cf.and(new EqualToFilter("reviewer", new Long(10000))).or(new GreaterThanFilter("project", new Long(10001)));\par
+\par
+This class does not implement the Filter interface from Search Builder since DatabaseSearchStringBuilder hardcodes all the filter types, which \par
+make it impossible to add new Filter without modifying the source code of DatabaseSearchStringBuilder.\par
+\par
+\cf3 This class is thread safe since it's immutable.\f0\par
+\cf0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.5\tab Component Exception Definitions\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IllegalArgumentException\par
+\b0 This exception is thrown in various methods if null object is not allowed, or the given string argument is empty. Refer to the documentation in Poseidon for more details.\f0\par
+\cf4\b\f1 NOTE: Empty string means string of zero length or string full of whitespaces.\par
+\cf0 ConfigurationException\f0\par
+\b0\f1 This exception is thrown from the constructor taking a namespace argument, if failed to load configuration values from the ConfigManager or the configuration values are invalid.\par
+\b ReviewManagementException\f0\par
+\b0\f1 This exception will be thrown by ReviewManager, ReviewPersistence and their implementations if any error occurs during the management of review entities\par
+\b ReviewPersistenceException\f0\par
+\b0\f1 This exception will be thrown by ReviewPersistence and its implementation if any error occurred during persisting the review entity.\par
+\f0\par
+\b\f1 ReviewEntitiyNotFoundException\f0\par
+\b0\f1 This exception will be thrown by InformixReviewPersistence if application tries to get or update a non-existing review entity\b\f0\par
+\cf3\f1 DuplicateReviewEntityException\cf0\f0\par
+\b0\f1 This exception will be thrown by InformixReviewPersistence if application tries to create a duplicated review entity.\f0\par
+\par
+\pard\nowidctlpar\sa120\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Thread safety is not required, and this component is not thread safe.\f0\par
+\f1 The ReviewPersistence and its implementation are not thread safe. InformixReviewPersistence are not thread safe since its inner states like DBConnectionFactory makes no guarantee of thread safety. ReviewManager and its implementation also not thread safe. DefaultReviewManger is simply a wrapper of ReviewPersistence. \cf3 ChainFilter is thread safe since it\rquote s immutable\cf0 .\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\nowidctlpar\li720\sa120\b0 Java 1.4 or higher.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Base Exception 1.0\par
+\pard\nowidctlpar\fi-2\li722\sa120\b0 The custom exception extends BaseException in this component. \f0\par
+\pard\nowidctlpar\li360\sa120\f1        \b Configuration Manager 2.1.4\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It will be used by InformixReviewPersistence to load the configuration values.\par
+       \tab\b DB Connection Factory 1.0\f0\par
+\b0\f1               It will be used by InformixReviewPersistence to get named connection.\f0\par
+\pard\nowidctlpar\fi-10\li711\sa120\b\f1 Search Builder 1.3\f0\par
+\pard\nowidctlpar\fi-1420\li1420\sa120\b0\f1               It\rquote s used by InformixReviewPersistence to generate the complicated search conditions..\par
+\pard\nowidctlpar\fi-10\li711\sa120\b ID Generator 3.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It is used by InformixReviewPersistence to get the long id for review entities\f0\par
+\pard\nowidctlpar\fs24\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1\fs20 2.3\tab Third Party Components\par
+\pard\nowidctlpar\fi800\sa120\qj\b0 None.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 com.topcoder.management.review\f0\par
+\f1 com.topcoder.management.review.persistence\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f0\par
+\pard\nowidctlpar\li720\b0\fs24 Configuration values for \f1\fs20 InformixReviewPersistence\f0\fs24\par
+\pard\nowidctlpar\sa120\fs20\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b\f1 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\f0 connection.name\cell\b0\f1 The connection name to retrieve connection from DB Connection Factory . \b Required\b0 .\cell review_manager_connection.\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b connection.factory_namespace\cell\b0 The namespace used in DB Connection Factory component, \b Required\b0 . \cell com.topcoder.db.connectionfactory.DBConnectionFactoryImpl\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b connection.factory_class\cell\b0 The DBConnectionFactory class name used to create DB Connection Factory , \b  Required\b0 .\cell com.topcoder.db.connectionfactory.DBConnectionFactoryImpl\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b search_bundle_manager_namespace\cell\b0 The namespace of SearchBundleManager\cell com.topcoder.management.review.persistence.InformixReviewPersistence.SearchBundleManager\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b Search_bundle_name\cell\b0 The name of the SearchBundle. \b Required\b0\cell databaseName\cell\row\pard\nowidctlpar\sa120\f0\par
+       Configureation values for DefaultReviewManager\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b\f1 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\cf3 persistence_class\cf0\f0\cell\b0\f1 The persistence class name. \b Required\b0 .\cell com.topcoder.management.review.persistence.InformixReviewPersistence\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\cf3\b persistence_namespace\cf0\cell\b0 The namespace used to create the persistence via reflection, \cf3\b Optional\cf0\b0 . \cell com.topcoder.management.review.persistence.InformixReviewPersistence\cell\row\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Here is an example of the configuration file.\f0\par
+\cf2\f1  \f0\par
+\f1\fs16 <?xml version="1.0" ?>  \par
+<?xml version="1.0" encoding="UTF-8"?>\par
+<CMConfig>\par
+    <Config name="com.topcoder.management.review">\par
+\par
+        <Property name="connection">\par
+            <!-- the connection name to retrieve connection in DB Connection Factory, required -->\par
+            <Property name="name">\par
+                <Value>asset_manager_connection</Value>\par
+            </Property>\par
+            <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->\par
+            <Property name="factory_namespace">\par
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>\par
+            </Property>\par
+            <Property name="factory_class">\par
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>\par
+            </Property>\par
+        </Property>\par
+\par
+        <Property name="search_bundle_manager_namespace">\par
+            <Value> com.topcoder.management.review.persistence.InformixReviewPersistence.SearchBundleManager </Value>\par
+        </Property>\par
+        <Property name="search_bundle_name">\par
+            <Value>databaseName</Value>\par
+        </Property>\par
+\f0\par
+\pard\nowidctlpar\fi315\li720\sa120\f1 </Config>\par
+\pard\nowidctlpar\li720\sa120     <Config name="com.topcoder.management.review.DefaultReviewManager">\par
+        <Property name="persistence">\par
+            <Property name="persistence_namespace">\par
+                <Value>com.topcoder.management.review.persistence.InformixReviewPersistence</Value>\par
+            </Property>\par
+           <Property name="persistence_class">\par
+                <Value> com.topcoder.management.review.persistence.InformixReviewPersistence</Value>\par
+            </Property>\par
+        </Property>\f0\par
+\f1     </Config>\par
+\pard\nowidctlpar\fi315\li720\sa120\par
+\pard\nowidctlpar\li720\sa120 </CMConfig>\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\fs20 3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 ConfigurationManager,DBConnectionFactory and IDGenerator should be properly configured to make this component work.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-420\li1140\sa120\tx1140\lang2052\b0\f3\'d8\lang1033\f4\tab\f1 Extract the component distribution.\par
+\pard\nowidctlpar\fi-420\li1140\sa120\lang2052\f3\'d8\lang1033\f4\tab\f1 Follow \cf3\ul Dependencies Configuration\cf0\ulnone .\par
+\lang2052\f3\'d8\lang1033\f4\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Preload the configuration file into Configuration Manager. Follow demo.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.3\tab Demo\par
+\cf4\b0\f0\fs24        The configuration file is here:\cf0\b\f1\fs20\par
+\pard\keepn\nowidctlpar\li568\sb120\sa120\sl240\slmult0\tx0\cf3\f5\fs18 <CMConfig>\par
+    <Config name="com.topcoder.management.review.DefaultReviewManager">\par
+        <Property name="persistence">\par
+            <Property name="persistence_namespace">\par
+                <Value>com.topcoder.management.review.MockReviewPersistence</Value>\par
+            </Property>\par
+            <Property name="persistence_class">\par
+                <Value>com.topcoder.management.review.MockReviewPersistence</Value>\par
+            </Property>\par
+        </Property>\par
+    </Config>\par
+</CMConfig>\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\b0\i\f1\fs20 4.3.1\tab Create instance of ReviewManagement\f0\par
+\pard\nowidctlpar\fi-360\li1080\cf5\i0\f5\fs18 // create a manager instance from default namespace.\par
+manager = new DefaultReviewManager();\par
+\par
+// create a manager instance from specified namespace.\par
+manager = new DefaultReviewManager(NAMESPACE);\par
+\par
+// create a manager instance from given persistence.\par
+\pard\nowidctlpar\fi480\li240 manager = new DefaultReviewManager(persistence);\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.2\tab Manage Review\f0\par
+\pard\nowidctlpar\fi-360\li1080\cf5\i0\f5\fs18    \par
+ // create a review into the manager.\par
+ manager.createReview(review, "createReviewer");\par
+\par
+ // create another review into the manager.\par
+ manager.createReview(new Review(2), "createReviewer");\par
+\par
+\pard\nowidctlpar\fi-358\li358         // update the review with id = 2 in the manager.\par
+        Review updatedReview = new Review(2);\par
+        updatedReview.addItem(new Item(1));\par
+        manager.updateReview(updatedReview, "updateReviewer");\par
+\par
+        // update this review again in the manager.\par
+        updatedReview.addItem(new Item(2));\par
+        manager.updateReview(updatedReview, "updateReviewer");\par
+\par
+        // get the review from manager with its id.\par
+        Review getReview = manager.getReview(1);\par
+\par
+        // get all comment types from manager.\par
+        CommentType[] commentTypes = manager.getAllCommentTypes();\par
+\par
+        // add comment for review in manager.\par
+        Comment reviewComment = new Comment(1, 10001, "good");\par
+        manager.addReviewComment(review.getId(), reviewComment, "someReviewer");\par
+\par
+        // add comment for item in manager.\par
+        Comment itemComment = new Comment(1, 10001, "ok");\par
+        manager.addReviewComment(1, itemComment, "someReviewer");\par
+\par
+        // search the review from manager with simple filter.\par
+\par
+        // search for the reviews which have been committed.\par
+        Review[] reviews = manager.searchReviews(equalFilter, true);\par
+\par
+        // search the review from manager with 'chain' filter.\par
+\par
+        // search for the reviews which have been committed and\par
+        // project is greater than 10001, or reviewer id is less than 10000.\par
+        ChainFilter cf = new ChainFilter(equalFilter);\par
+        cf = cf.and(greaterThanFilter).or(lessThanFilter);\par
+\par
+        reviews = manager.searchReviews(cf.getFilter(), true);\cf6\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li701\sa120\b0 More ReviewPersistence implementations could be added.\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\par
+\pard\nowidctlpar\fs24\par
+}
+ 
