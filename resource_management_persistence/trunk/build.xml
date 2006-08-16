@@ -74,7 +74,7 @@
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
     
-    <property name="search_builder.version" value="1.1"/>
+    <property name="search_builder.version" value="1.3"/>
     <property name="search_builder.jar.name" value="search_builder.jar"/>
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
@@ -93,6 +93,11 @@
     <property name="object_factory.jar.name" value="object_factory.jar"/>
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
+    
+    <property name="resource_management.version" value="1.0"/>
+    <property name="resource_management.jar.name" value="resource_management.jar"/>
+    <property name="resource_management.path" value="resource_management/${resource_management.version}"/>
+    <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.path}/${resource_management.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -107,6 +112,7 @@
         <pathelement location="${db_connection_factory.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${object_factory.jar}" />
+        <pathelement location="${resource_management.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
@@ -255,6 +261,7 @@
                 <include name="${component}_Component_Specification*"/>
                 <include name="${component}.zargo"/>
                 <include name="${component}.zuml"/>
+                <include name="*.sql"/>
             </fileset>
         </copy>
 
@@ -265,12 +272,11 @@
 
         <antcall target="package_docs" />
 
-<!-- uncomment if test files exist.
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
--->
+
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
