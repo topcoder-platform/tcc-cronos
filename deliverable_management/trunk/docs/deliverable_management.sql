@@ -85,8 +85,8 @@ CREATE TABLE deliverable_lu (
   resource_role_id              INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   description                   VARCHAR(64)                     NOT NULL,
-  per_submission                BOOLEAN                         NOT NULL,
-  required                      BOOLEAN                         NOT NULL,
+  per_submission                DECIMAL(1, 0)                   NOT NULL,
+  required                      DECIMAL(1, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
@@ -110,6 +110,12 @@ INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
   VALUES('upload_id_seq', 1, 20, 0);
 INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
   VALUES('submission_id_seq', 1, 20, 0);
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('upload_type_id_seq', 1, 20, 0);
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('upload_status_id_seq', 1, 20, 0);
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('submission_status_id_seq', 1, 20, 0);
 
 INSERT INTO upload_type_lu(upload_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'Submission', 'Submission', 'System', CURRENT, 'System', CURRENT);

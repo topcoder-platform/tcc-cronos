@@ -41,8 +41,8 @@ public class PersistenceDeliverableManagerTest extends TestCase {
                 new SqlDeliverablePersistence(
                     new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
                     new HashMap(),
-                    new SearchBundle("deliverable", new HashMap()),
-                    new SearchBundle("submission", new HashMap()));
+                    new SearchBundle("deliverable", new HashMap(), "context"),
+                    new SearchBundle("submission", new HashMap(), "context"));
     }
 
     /**
@@ -67,8 +67,8 @@ public class PersistenceDeliverableManagerTest extends TestCase {
             new PersistenceDeliverableManager(
                         null,
                         new HashMap(),
-                        new SearchBundle("deliverable", new HashMap()),
-                        new SearchBundle("submission", new HashMap()));
+                        new SearchBundle("deliverable", new HashMap(), "context"),
+                        new SearchBundle("submission", new HashMap(), "context"));
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -86,8 +86,8 @@ public class PersistenceDeliverableManagerTest extends TestCase {
                     new SqlDeliverablePersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
                         null,
-                        new SearchBundle("deliverable", new HashMap()),
-                        new SearchBundle("submission", new HashMap()));
+                        new SearchBundle("deliverable", new HashMap(), "context"),
+                        new SearchBundle("submission", new HashMap(), "context"));
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -108,8 +108,8 @@ public class PersistenceDeliverableManagerTest extends TestCase {
                     new SqlDeliverablePersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
                         map,
-                        new SearchBundle("deliverable", new HashMap()),
-                        new SearchBundle("submission", new HashMap()));
+                        new SearchBundle("deliverable", new HashMap(), "context"),
+                        new SearchBundle("submission", new HashMap(), "context"));
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -130,8 +130,8 @@ public class PersistenceDeliverableManagerTest extends TestCase {
                     new SqlDeliverablePersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
                         map,
-                        new SearchBundle("deliverable", new HashMap()),
-                        new SearchBundle("submission", new HashMap()));
+                        new SearchBundle("deliverable", new HashMap(), "context"),
+                        new SearchBundle("submission", new HashMap(), "context"));
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -152,7 +152,7 @@ public class PersistenceDeliverableManagerTest extends TestCase {
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
                         map,
                         null,
-                        new SearchBundle("submission", new HashMap()));
+                        new SearchBundle("submission", new HashMap(), "context"));
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -172,7 +172,7 @@ public class PersistenceDeliverableManagerTest extends TestCase {
                     new SqlDeliverablePersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
                         map,
-                        new SearchBundle("submission", new HashMap()),
+                        new SearchBundle("submission", new HashMap(), "context"),
                         null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {

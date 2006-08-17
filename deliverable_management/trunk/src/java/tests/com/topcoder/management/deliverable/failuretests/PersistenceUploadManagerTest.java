@@ -48,13 +48,13 @@ public class PersistenceUploadManagerTest extends TestCase {
         manager = new PersistenceUploadManager(
                 new SqlUploadPersistence(
                         new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
-                new SearchBundle("name", new HashMap()),
-                new SearchBundle("name", new HashMap()),
-                IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                new SearchBundle("name", new HashMap(), "context"),
+                new SearchBundle("name", new HashMap(), "context"),
+                IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
 
     }
 
@@ -88,13 +88,13 @@ public class PersistenceUploadManagerTest extends TestCase {
         try {
             new PersistenceUploadManager(
                     null,
-                    new SearchBundle("name", new HashMap()),
-                    new SearchBundle("name", new HashMap()),
-                    IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    new SearchBundle("name", new HashMap(), "context"),
+                    new SearchBundle("name", new HashMap(), "context"),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
         } catch (IllegalArgumentException e) {
             // should land here
         }
@@ -118,12 +118,12 @@ public class PersistenceUploadManagerTest extends TestCase {
                     new SqlUploadPersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
                     null,
-                    new SearchBundle("name", new HashMap()),
-                    IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    new SearchBundle("name", new HashMap(), "context"),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
         } catch (IllegalArgumentException e) {
             // should land here
         }
@@ -146,13 +146,13 @@ public class PersistenceUploadManagerTest extends TestCase {
             new PersistenceUploadManager(
                     new SqlUploadPersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
-                    new SearchBundle("name", new HashMap()),
+                    new SearchBundle("name", new HashMap(), "context"),
                     null,
-                    IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
         } catch (IllegalArgumentException e) {
             // should land here
         }
@@ -175,13 +175,13 @@ public class PersistenceUploadManagerTest extends TestCase {
             new PersistenceUploadManager(
                     new SqlUploadPersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
-                    new SearchBundle("name", new HashMap()),
-                    new SearchBundle("name", new HashMap()),
-                    null, //IDGeneratorFactory.getIDGenerator("upload"),
-                    IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    new SearchBundle("name", new HashMap(), "context"),
+                    new SearchBundle("name", new HashMap(), "context"),
+                    null, //IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
         } catch (IllegalArgumentException e) {
             // should land here
         }
@@ -204,13 +204,13 @@ public class PersistenceUploadManagerTest extends TestCase {
             new PersistenceUploadManager(
                     new SqlUploadPersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
-                    new SearchBundle("name", new HashMap()),
-                    new SearchBundle("name", new HashMap()),
-                    IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                    null, //IDGeneratorFactory.getIDGenerator("uploadType"),
-                    IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    new SearchBundle("name", new HashMap(), "context"),
+                    new SearchBundle("name", new HashMap(), "context"),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    null, //IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
         } catch (IllegalArgumentException e) {
             // should land here
         }
@@ -233,13 +233,13 @@ public class PersistenceUploadManagerTest extends TestCase {
             new PersistenceUploadManager(
                     new SqlUploadPersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
-                    new SearchBundle("name", new HashMap()),
-                    new SearchBundle("name", new HashMap()),
-                    IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                    null, //IDGeneratorFactory.getIDGenerator("uploadStatus"),
-                    IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    new SearchBundle("name", new HashMap(), "context"),
+                    new SearchBundle("name", new HashMap(), "context"),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    null, //IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
         } catch (IllegalArgumentException e) {
             // should land here
         }
@@ -262,13 +262,13 @@ public class PersistenceUploadManagerTest extends TestCase {
             new PersistenceUploadManager(
                     new SqlUploadPersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
-                    new SearchBundle("name", new HashMap()),
-                    new SearchBundle("name", new HashMap()),
-                    IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                    null, //IDGeneratorFactory.getIDGenerator("submission"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    new SearchBundle("name", new HashMap(), "context"),
+                    new SearchBundle("name", new HashMap(), "context"),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    null, //IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
         } catch (IllegalArgumentException e) {
             // should land here
         }
@@ -291,13 +291,14 @@ public class PersistenceUploadManagerTest extends TestCase {
             new PersistenceUploadManager(
                     new SqlUploadPersistence(
                             new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")),
-                    new SearchBundle("name", new HashMap()),
-                    new SearchBundle("name", new HashMap()),
-                    IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                    IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                    null, //IDGeneratorFactory.getIDGenerator("submission"),
-                    IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                    new SearchBundle("name", new HashMap(), "context"),
+                    new SearchBundle("name", new HashMap(), "context"),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                    IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                    null //IDGeneratorFactory.getIDGenerator(PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME)
+                    );
         } catch (IllegalArgumentException e) {
             // should land here
         }

@@ -14,35 +14,35 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://10.214.13.157:1526/deliverable_management:informixserver=singlewood_topcoder_informix</Value>
+                        <Value>jdbc:informix-sqli://172.30.114.230:1526/or:INFORMIXSERVER=or</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>topcoder</Value>
+                        <Value>google</Value>
                     </Property>
                 </Property>
             </Property>
         </Property>
 
         <Property name="Upload Id Generator">
-            <Value>Upload Id Generator</Value>
+            <Value>upload_id_seq</Value>
         </Property>
 				<Property name="Upload Type Id Generator">
-            <Value>Upload Type Id Generator</Value>
+            <Value>upload_type_id_seq</Value>
        	</Property>
 
 				<Property name="Upload Status Id Generator">
-            <Value>Upload Status Id Generator</Value>
+            <Value>upload_status_id_seq</Value>
         </Property>
 
 				<Property name="Submission Id Generator">
-            <Value>Submission Id Generator</Value>
+            <Value>submission_id_seq</Value>
         </Property>
 
 				<Property name="Submission Status Id Generator">
-            <Value>Submission Status Id Generator</Value>
+            <Value>submission_status_id_seq</Value>
         </Property>
 
     </Config>

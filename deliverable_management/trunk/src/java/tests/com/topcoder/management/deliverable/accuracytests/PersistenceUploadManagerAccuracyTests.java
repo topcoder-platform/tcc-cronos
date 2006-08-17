@@ -67,26 +67,6 @@ public class PersistenceUploadManagerAccuracyTests extends AccuracyTestsHelper {
     }
 
     /**
-     * Verifies public fields are set correctly.
-     */
-    public void testPublicFields() {
-        assertEquals("UPLOAD_SEARCH_BUNDLE_NAME not set correctly", "Upload Search Bundle",
-            PersistenceUploadManager.UPLOAD_SEARCH_BUNDLE_NAME);
-        assertEquals("SUBMISSION_SEARCH_BUNDLE_NAME not set correctly", "Submission Search Bundle",
-            PersistenceUploadManager.SUBMISSION_SEARCH_BUNDLE_NAME);
-        assertEquals("UPLOAD_ID_GENERATOR_NAME not set correctly", "Upload Id Generator",
-            PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME);
-        assertEquals("UPLOAD_TYPE_ID_GENERATOR_NAME not set correctly", "Upload Type Id Generator",
-            PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME);
-        assertEquals("UPLOAD_STATUS_ID_GENERATOR_NAME not set correctly", "Upload Status Id Generator",
-            PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME);
-        assertEquals("SUBMISSION_ID_GENERATOR_NAME not set correctly", "Submission Id Generator",
-            PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME);
-        assertEquals("SUBMISSION_STATUS_ID_GENERATOR_NAME not set correctly", "Submission Status Id Generator",
-            PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME);
-    }
-
-    /**
      * Tests constructor with search bundles and id generator factory.
      *
      * @throws Exception pass to JUnit.

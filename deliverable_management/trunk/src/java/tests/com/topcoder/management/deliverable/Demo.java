@@ -96,13 +96,20 @@ public class Demo extends TestCase {
         }
 
         UploadManager manager = new PersistenceUploadManager(uploadPersistence,
-                searchBundleManager.getSearchBundle("Upload Search Bundle"),
-                searchBundleManager.getSearchBundle("Submission Search Bundle"),
-                IDGeneratorFactory.getIDGenerator("Upload Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Upload Type Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Upload Status Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Submission Id Generator"),
-                IDGeneratorFactory.getIDGenerator("Submission Status Id Generator"));
+                searchBundleManager.getSearchBundle(
+                    PersistenceUploadManager.UPLOAD_SEARCH_BUNDLE_NAME),
+                searchBundleManager.getSearchBundle(
+                    PersistenceUploadManager.SUBMISSION_SEARCH_BUNDLE_NAME),
+                IDGeneratorFactory.getIDGenerator(
+                    PersistenceUploadManager.UPLOAD_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(
+                    PersistenceUploadManager.UPLOAD_TYPE_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(
+                    PersistenceUploadManager.UPLOAD_STATUS_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(
+                    PersistenceUploadManager.SUBMISSION_ID_GENERATOR_NAME),
+                IDGeneratorFactory.getIDGenerator(
+                    PersistenceUploadManager.SUBMISSION_STATUS_ID_GENERATOR_NAME));
 
         /*
          * 4.3.2 Create an Upload and Submission (with supporting classes).

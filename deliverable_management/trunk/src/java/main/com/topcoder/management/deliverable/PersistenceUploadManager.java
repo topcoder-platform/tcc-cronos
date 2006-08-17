@@ -52,33 +52,33 @@ public class PersistenceUploadManager implements UploadManager {
      * The name under which the id generator for uploads should appear in the IDGeneratorFactory if
      * the IDGeneratorFactory constructor is used.
      */
-    public static final String UPLOAD_ID_GENERATOR_NAME = "Upload Id Generator";
+    public static final String UPLOAD_ID_GENERATOR_NAME = "upload_id_seq";
 
     /**
      * The name under which the id generator for upload types should appear in the
      * IDGeneratorFactory if the IDGeneratorFactory constructor is used. This field is public,
      * static, and final.
      */
-    public static final String UPLOAD_TYPE_ID_GENERATOR_NAME = "Upload Type Id Generator";
+    public static final String UPLOAD_TYPE_ID_GENERATOR_NAME = "upload_type_id_seq";
 
     /**
      * The name under which the id generator for upload statuses should appear in the
      * IDGeneratorFactory if the IDGeneratorFactory constructor is used. This field is public,
      * static, and final.
      */
-    public static final String UPLOAD_STATUS_ID_GENERATOR_NAME = "Upload Status Id Generator";
+    public static final String UPLOAD_STATUS_ID_GENERATOR_NAME = "upload_status_id_seq";
 
     /**
      * The name under which the id generator for submissions should appear in the IDGeneratorFactory
      * if the IDGeneratorFactory constructor is used.
      */
-    public static final String SUBMISSION_ID_GENERATOR_NAME = "Submission Id Generator";
+    public static final String SUBMISSION_ID_GENERATOR_NAME = "submission_id_seq";
 
     /**
      * The name under which the id generator for submission statuses should appear in the
      * IDGeneratorFactory if the IDGeneratorFactory constructor is used.
      */
-    public static final String SUBMISSION_STATUS_ID_GENERATOR_NAME = "Submission Status Id Generator";
+    public static final String SUBMISSION_STATUS_ID_GENERATOR_NAME = "submission_status_id_seq";
 
     /**
      * The flag which indicate the caller of persistenceUploadManagerHelper.

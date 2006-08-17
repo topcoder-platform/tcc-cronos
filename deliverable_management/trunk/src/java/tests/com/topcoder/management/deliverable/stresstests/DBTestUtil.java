@@ -57,53 +57,6 @@ public final class DBTestUtil {
 
             statement = connection.createStatement();
 
-            // add upload_type
-            statement.addBatch("INSERT INTO upload_type_lu(upload_type_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (1, 'Submission', 'Submission', 'System', now(), 'System', now())");
-
-            statement.addBatch("INSERT INTO upload_type_lu(upload_type_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (2, 'Test Case', 'Test Case', 'System', now(), 'System', now())");
-            statement.addBatch("INSERT INTO upload_type_lu(upload_type_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (3, 'Final Fixes', 'Final Fixes', 'System', now(), 'System', now())");
-            statement.addBatch("INSERT INTO upload_type_lu(upload_type_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (4, 'Review Document', 'Review Document', " + "'System', now(), 'System', now())");
-
-            // add upload_status
-            statement.addBatch("INSERT INTO upload_status_lu(upload_status_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (1, 'Active', 'Active', 'System', now(), 'System', now())");
-
-            statement.addBatch("INSERT INTO upload_status_lu(upload_status_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (2, 'Deleted', 'Deleted', 'System', now(), 'System', now())");
-
-            // add submission status
-            statement.addBatch("INSERT INTO submission_status_lu" + "(submission_status_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (1, 'Active', 'Active', 'System', now(), 'System', now())");
-
-            statement.addBatch("INSERT INTO submission_status_lu" + "(submission_status_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (2, 'Failed Screening', 'Failed Manual Screening', "
-                    + "'System', now(), 'System', now())");
-
-            statement.addBatch("INSERT INTO submission_status_lu" + "(submission_status_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (3, 'Failed Review', 'Failed Review', " + "'System', now(), 'System', now())");
-
-            statement.addBatch("INSERT INTO submission_status_lu" + "(submission_status_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (4, 'Completed Without Win', 'Completed Without Win', "
-                    + "'System', now(), 'System', now())");
-
-            statement.addBatch("INSERT INTO submission_status_lu" + "(submission_status_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (5, 'Deleted', 'Deleted', 'System', now(), 'System', now())");
-
             statement.addBatch("INSERT INTO project (project_id) VALUES (1)");
             statement.addBatch("INSERT INTO project (project_id) VALUES (2)");
             statement.addBatch("INSERT INTO project (project_id) VALUES (3)");
@@ -116,33 +69,33 @@ public final class DBTestUtil {
                     + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
                     + "create_user, create_date, modify_user, modify_date) "
                     // upload_id =1 , project_id = 2, resource_i = 1, uploadType_id = 1;
-                    + "VALUES (1, 2, 1, 2, 2, 'p_1', 'System', now(), 'System', now())");
+                    + "VALUES (1, 2, 1, 2, 2, 'p_1', 'System', CURRENT, 'System', CURRENT)");
 
             statement.addBatch("INSERT INTO upload"
                     + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
                     + "create_user, create_date, modify_user, modify_date) "
                     // upload_id = 2, project_id = 1, resource_id = 3, uploadType_id = 2;
-                    + "VALUES (2, 1, 3, 2, 2, 'p_2', 'System', now(), 'System', now())");
+                    + "VALUES (2, 1, 3, 2, 2, 'p_2', 'System', CURRENT, 'System', CURRENT)");
 
             statement.addBatch("INSERT INTO upload"
                     + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
                     + "create_user, create_date, modify_user, modify_date) "
                     // upload_id = 3, project_id = 3, resource_id = 2, uploadType_id = 2
-                    + "VALUES (3, 3, 2, 2, 2, 'p_3', 'System', now(), 'System', now())");
+                    + "VALUES (3, 3, 2, 2, 2, 'p_3', 'System', CURRENT, 'System', CURRENT)");
 
             statement.addBatch("INSERT INTO upload"
                     + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
                     + "create_user, create_date, modify_user, modify_date) "
                     // upload_id = 4, project_id = 1, resource_id = 3, uploadType_id = 2
-                    + "VALUES (4, 1, 3, 2, 2, 'p_3', 'System', now(), 'System', now())");
+                    + "VALUES (4, 1, 3, 2, 2, 'p_3', 'System', CURRENT, 'System', CURRENT)");
 
             statement.addBatch("INSERT INTO submission" + "(submission_id, upload_id, submission_status_id, "
                     + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (1, 1, 3, 'System', now(), 'System', now())");
+                    + "VALUES (1, 1, 3, 'System', CURRENT, 'System', CURRENT)");
 
             statement.addBatch("INSERT INTO submission" + "(submission_id, upload_id, submission_status_id, "
                     + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (2, 2, 1, 'System', now(), 'System', now())");
+                    + "VALUES (2, 2, 1, 'System', CURRENT, 'System', CURRENT)");
 
             statement.executeBatch();
             statement.clearBatch();
@@ -176,13 +129,7 @@ public final class DBTestUtil {
 
             statement = connection.createStatement();
             statement.addBatch("DELETE FROM submission");
-            statement.addBatch("DELETE FROM submission_status_lu");
-
             statement.addBatch("DELETE FROM upload");
-            statement.addBatch("DELETE FROM upload_type_lu");
-            statement.addBatch("DELETE FROM upload_status_lu");
-
-            statement.addBatch("DELETE FROM upload_status_lu");
 
             statement.addBatch("DELETE FROM deliverable_lu");
             statement.addBatch("DELETE FROM phase_type_lu");
@@ -242,7 +189,7 @@ public final class DBTestUtil {
                     + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
                     + "name, description, create_user, create_date, modify_user, modify_date) "
                     + "VALUES (1, 1, 1, 1, 1, 'stress', 'submission deliverable', "
-                    + "'System', now(), 'System', now())");
+                    + "'System', CURRENT, 'System', CURRENT)");
 
             statement.executeBatch();
 
