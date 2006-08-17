@@ -275,15 +275,25 @@ public class DemoTest extends TestCase {
         Upload[] uploads = persistence.loadUploads(new long[] {1, 2, 3});
 
         // add a new Upload object to the persistence
-        upload.setId(4);
-        persistence.addUpload(upload);
+        Upload upload2 = new Upload();
+        upload2.setId(4);
+        upload2.setProject(upload.getProject());
+        upload2.setOwner(upload.getOwner());
+        upload2.setUploadType(upload.getUploadType());
+        upload2.setUploadStatus(upload.getUploadStatus());
+        upload2.setParameter(upload.getParameter());
+        upload2.setCreationUser(upload.getCreationUser());
+        upload2.setCreationTimestamp(upload.getCreationTimestamp());
+        upload2.setModificationUser(upload.getModificationUser());
+        upload2.setModificationTimestamp(upload.getModificationTimestamp());
+        persistence.addUpload(upload2);
 
         // update the Upload object to the persistence
-        upload.setParameter("new param");
-        persistence.updateUpload(upload);
+        upload2.setParameter("new param");
+        persistence.updateUpload(upload2);
 
         // finally the Upload object can be removed from the persistence
-        persistence.removeUpload(upload);
+        persistence.removeUpload(upload2);
 
         // ////////
         // load the UploadType object from the persistence
@@ -292,15 +302,22 @@ public class DemoTest extends TestCase {
         UploadType[] uploadTypes = persistence.loadUploadTypes(new long[] {1, 2, 3});
 
         // add a new UploadType object to the persistence
-        uploadType.setId(10);
-        persistence.addUploadType(uploadType);
+        UploadType uploadType2 = new UploadType();
+        uploadType2.setId(10);
+        uploadType2.setName(uploadType.getName());
+        uploadType2.setDescription(uploadType.getDescription());
+        uploadType2.setCreationUser(uploadType.getCreationUser());
+        uploadType2.setCreationTimestamp(uploadType.getCreationTimestamp());
+        uploadType2.setModificationUser(uploadType.getModificationUser());
+        uploadType2.setModificationTimestamp(uploadType.getModificationTimestamp());
+        persistence.addUploadType(uploadType2);
 
         // update the UploadType object to the persistence
-        uploadType.setDescription("new description");
-        persistence.updateUploadType(uploadType);
+        uploadType2.setDescription("new description");
+        persistence.updateUploadType(uploadType2);
 
         // finally the UploadType object can be removed from the persistence
-        persistence.removeUploadType(uploadType);
+        persistence.removeUploadType(uploadType2);
 
         // ////////
         // load the UploadStatus object from the persistence
@@ -309,15 +326,22 @@ public class DemoTest extends TestCase {
         UploadStatus[] uploadStatuses = persistence.loadUploadStatuses(new long[] {1, 2, 3});
 
         // add a new UploadStatus object to the persistence
-        uploadStatus.setId(10);
-        persistence.addUploadStatus(uploadStatus);
+        UploadStatus uploadStatus2 = new UploadStatus();
+        uploadStatus2.setId(10);
+        uploadStatus2.setName(uploadStatus.getName());
+        uploadStatus2.setDescription(uploadStatus.getDescription());
+        uploadStatus2.setCreationUser(uploadStatus.getCreationUser());
+        uploadStatus2.setCreationTimestamp(uploadStatus.getCreationTimestamp());
+        uploadStatus2.setModificationUser(uploadStatus.getModificationUser());
+        uploadStatus2.setModificationTimestamp(uploadStatus.getModificationTimestamp());
+        persistence.addUploadStatus(uploadStatus2);
 
         // update the UploadStatus object to the persistence
-        uploadStatus.setDescription("new description");
-        persistence.updateUploadStatus(uploadStatus);
+        uploadStatus2.setDescription("new description");
+        persistence.updateUploadStatus(uploadStatus2);
 
         // finally the UploadStatus object can be removed from the persistence
-        persistence.removeUploadStatus(uploadStatus);
+        persistence.removeUploadStatus(uploadStatus2);
 
         // ////////
         // load the SubmissionStatus object from the persistence
@@ -327,16 +351,23 @@ public class DemoTest extends TestCase {
             2, 3});
 
         // add a new SubmissionStatus object to the persistence
-        submissionStatus.setId(10);
-        persistence.addSubmissionStatus(submissionStatus);
+        SubmissionStatus submissionStatus2 = new SubmissionStatus();
+        submissionStatus2.setId(10);
+        submissionStatus2.setName(submissionStatus.getName());
+        submissionStatus2.setDescription(submissionStatus.getDescription());
+        submissionStatus2.setCreationUser(submissionStatus.getCreationUser());
+        submissionStatus2.setCreationTimestamp(submissionStatus.getCreationTimestamp());
+        submissionStatus2.setModificationUser(submissionStatus.getModificationUser());
+        submissionStatus2.setModificationTimestamp(submissionStatus.getModificationTimestamp());
+        persistence.addSubmissionStatus(submissionStatus2);
 
         // update the SubmissionStatus object to the persistence
-        submissionStatus.setDescription("new description");
-        persistence.updateSubmissionStatus(submissionStatus);
+        submissionStatus2.setDescription("new description");
+        persistence.updateSubmissionStatus(submissionStatus2);
 
         // finally the SubmissionStatus object can be removed from the
         // persistence
-        persistence.removeSubmissionStatus(submissionStatus);
+        persistence.removeSubmissionStatus(submissionStatus2);
 
         // for UploadType, UploadStatus SubmissionStatus, we can get all their
         // ids in the database

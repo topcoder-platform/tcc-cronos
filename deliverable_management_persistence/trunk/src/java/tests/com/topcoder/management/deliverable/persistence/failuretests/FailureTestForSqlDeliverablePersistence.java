@@ -123,23 +123,6 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
     }
 
     /**
-     * Test Deliverable[] loadDeliverables(long).
-     * The tables for deliverable do not exist, the SQLException should be wrapped to
-     * DeliverablePersistenceException and throw.
-     *
-     * @throws Exception
-     *             to junit.
-     */
-    public void testLoadDeliverableslong_3() throws Exception {
-        try {
-            persistence.loadDeliverables(1);
-            fail("DeliverablePersistenceException should be thrown.");
-        } catch (DeliverablePersistenceException e) {
-            // ok.
-        }
-    }
-
-    /**
      * Test method <code>Deliverable loadDeliverable(long deliverableId, long submissionId) </code>.
      * If deliverableId or submissionId is <= 0 , IllegalArgumentException should be thrown.
      *
@@ -204,23 +187,6 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
     }
 
     /**
-     * Test method <code>Deliverable loadDeliverable(long deliverableId, long submissionId) </code>.
-     * The tables for deliverable do not exist, the SQLException should be wrapped to
-     * DeliverablePersistenceException and throw.
-     *
-     * @throws Exception
-     *             to junit.
-     */
-    public void testLoadDeliverable_5() throws Exception {
-        try {
-            persistence.loadDeliverable(1, 1);
-            fail("DeliverablePersistenceException should be thrown.");
-        } catch (DeliverablePersistenceException e) {
-            // ok.
-        }
-    }
-
-    /**
      * Test for Deliverable[] loadDeliverables(long[]).
      * If deliverableIds is null or any id is <= 0, IllegalArgumentException should be thrown.
      *
@@ -247,23 +213,6 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
             persistence.loadDeliverables(new long[] { 1, 0, -1, 1 });
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test for Deliverable[] loadDeliverables(long[]).
-     * The tables for deliverable do not exist,
-     * the SQLException should be wrapped to DeliverablePersistenceException and throw.
-     *
-     * @throws Exception
-     *             to junit.
-     */
-    public void testLoadDeliverableslongArray_3() throws Exception {
-        try {
-            persistence.loadDeliverables(new long[] { 1 });
-            fail("DeliverablePersistenceException should be thrown.");
-        } catch (DeliverablePersistenceException e) {
             // ok.
         }
     }
@@ -354,23 +303,6 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
             persistence.loadDeliverables(new long[] { 1, 2 }, new long[] { 1, 2, 3 });
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test for Deliverable[] loadDeliverables(long[], long[]).
-     * The tables for deliverable do not exist, the SQLException should be wrapped to
-     * DeliverablePersistenceException and throw.
-     *
-     * @throws Exception
-     *             to junit.
-     */
-    public void testLoadDeliverableslongArraylongArray_6() throws Exception {
-        try {
-            persistence.loadDeliverables(new long[] { 1, 2 }, new long[] { 1, 3 });
-            fail("DeliverablePersistenceException should be thrown.");
-        } catch (DeliverablePersistenceException e) {
             // ok.
         }
     }
