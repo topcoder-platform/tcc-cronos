@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
-<project name="Phase Management" default="dist" basedir=".">
+<project name="Phase Management Persistence" default="dist" basedir=".">
 
     <property file="../topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
-    <property name="component" value="Phase_Management" />
+    <property name="component" value="Phase_Management_Persistence" />
     <property name="package" value="com.topcoder.management.phase.db" />
     <property name="packagedir" value="com/topcoder/management/phase/db" />
-    <property name="distfilename" value="phase_management" />
+    <property name="distfilename" value="phase_management_persistence" />
     <property name="component_version" value="1.0" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
