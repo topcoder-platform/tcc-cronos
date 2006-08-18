@@ -26,7 +26,7 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * Unit tests for <code>SqlUploadPersistence</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class SqlUploadPersistenceTest extends TestCase {

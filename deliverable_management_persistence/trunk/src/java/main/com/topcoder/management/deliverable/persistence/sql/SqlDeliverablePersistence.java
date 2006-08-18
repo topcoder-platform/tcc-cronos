@@ -31,7 +31,7 @@ import com.topcoder.management.deliverable.persistence.sql.Helper.DataType;
  * component is used on multiple machines or multiple instances are used, so
  * this is not a thread-safety concern.
  * </p>
- * @author aubergineanode, TCSDEVELOPER
+ * @author aubergineanode, urtks
  * @version 1.0
  */
 public class SqlDeliverablePersistence implements DeliverablePersistence {

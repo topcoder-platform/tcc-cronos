@@ -19,7 +19,7 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * Unit tests for <code>SqlDeliverablePersistenceTest</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class SqlDeliverablePersistenceTest extends TestCase {

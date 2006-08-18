@@ -23,7 +23,7 @@ import junit.framework.TestCase;
  * Accuracy test for <code>SqlDeliverablePersistence</code>
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class SqlDeliverablePersistenceAccuracyTest extends TestCase {

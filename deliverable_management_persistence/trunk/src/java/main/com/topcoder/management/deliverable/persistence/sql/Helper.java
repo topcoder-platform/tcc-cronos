@@ -23,7 +23,7 @@ import com.topcoder.management.deliverable.persistence.PersistenceException;
  * Helper class for the package
  * com.topcoder.management.deliverable.persistence.sql., including the methods
  * to validate arguments and the methods to access database.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 class Helper {
@@ -83,7 +83,7 @@ class Helper {
      * defines some kind of 'pseudo-enum' which cannot be instantiated
      * externally.
      * </p>
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     abstract static class DataType {
@@ -139,7 +139,7 @@ class Helper {
      * assured to be of type String or to be null in case the ResultSet value
      * was null. PreparedStatement#setString() will be used to set the value,
      * which should be of String type.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class StringType extends DataType {
@@ -197,7 +197,7 @@ class Helper {
      * assured to be of type Long or to be null in case the ResultSet value was
      * null. PreparedStatement#setLong() will be used to set the value, which
      * should be of Long type.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class LongType extends DataType {
@@ -255,7 +255,7 @@ class Helper {
      * assured to be of type Boolean or to be null in case the ResultSet value
      * was null. PreparedStatement#setBoolean() will be used to set the value,
      * which should be of Boolean type.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class BooleanType extends DataType {
@@ -313,7 +313,7 @@ class Helper {
      * assured to be of type java.util.Date or to be null in case the ResultSet
      * value was null. PreparedStatement#setTimestamp() will be used to set the
      * value, which should be of java.util.Date type.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class DateType extends DataType {

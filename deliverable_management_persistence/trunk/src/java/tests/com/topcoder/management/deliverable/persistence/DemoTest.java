@@ -24,7 +24,7 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * This TestCase demonstrates the usage of this component.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class DemoTest extends TestCase {
