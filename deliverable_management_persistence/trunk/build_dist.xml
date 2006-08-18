@@ -94,6 +94,16 @@
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
 
+    <property name="deliverable_management.version" value="1.0"/>
+    <property name="deliverable_management.jar.name" value="deliverable_management.jar"/>
+    <property name="deliverable_management.path" value="deliverable_management/${deliverable_management.version}"/>
+    <property name="deliverable_management.jar" value="${tcs_libdir}/${deliverable_management.path}/${deliverable_management.jar.name}"/>
+    
+    <property name="base_exception.version" value="1.0"/>
+    <property name="base_exception.jar.name" value="base_exception.jar"/>
+    <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
+    
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
 
@@ -107,6 +117,8 @@
         <pathelement location="${db_connection_factory.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${object_factory.jar}" />
+        <pathelement location="${deliverable_management.jar}" />
+        <pathelement location="${base_exception.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
