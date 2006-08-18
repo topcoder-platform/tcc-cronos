@@ -4,8 +4,6 @@
 
 package com.cronos.onlinereview.ajax.failuretests.mock;
 
-import org.apache.cactus.server.ServletContextWrapper;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
@@ -75,7 +73,6 @@ public class MockServletConfig implements ServletConfig {
             MockServletConfig.methodArguments.put(methodName, args);
         }
         args.add(arguments);
-        System.out.println("CALLED getServletName() : " + arguments);
 
         return (String) MockServletConfig.methodResults.get(methodName);
 
@@ -108,7 +105,6 @@ public class MockServletConfig implements ServletConfig {
             MockServletConfig.methodArguments.put(methodName, args);
         }
         args.add(arguments);
-        System.out.println("CALLED getServletContext() : " + arguments);
 
         return (ServletContext) MockServletConfig.methodResults.get(methodName);
 
@@ -142,7 +138,6 @@ public class MockServletConfig implements ServletConfig {
             MockServletConfig.methodArguments.put(methodName, args);
         }
         args.add(arguments);
-        System.out.println("CALLED getInitParameter() : " + arguments);
 
         return (String) MockServletConfig.methodResults.get(methodName);
 
@@ -171,10 +166,10 @@ public class MockServletConfig implements ServletConfig {
         List args = (List) MockServletConfig.methodArguments.get(methodName);
         if (args == null) {
             args = new ArrayList();
+            args = new ArrayList();
             MockServletConfig.methodArguments.put(methodName, args);
         }
         args.add(arguments);
-        System.out.println("CALLED getInitParameterNames() : " + arguments);
 
         return (Enumeration) MockServletConfig.methodResults.get(methodName);
 
@@ -269,6 +264,6 @@ public class MockServletConfig implements ServletConfig {
      * <p>Initializes the initial state for all created instances of <code>MockServletConfig</code> class.</p>
      */
     public static void init() {
-        MockServletConfig.setMethodResult("getServletName", "AjaxServlet");
     }
+
 }

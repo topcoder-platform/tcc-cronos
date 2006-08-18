@@ -175,7 +175,7 @@ public class SetScorecardStatusHandler extends CommonHandler {
                 return AjaxSupportHelper.createAndLogError(request.getType(), ROLE_ERROR,
                         "The user should have global manager role.", "SetScorecardStatus. " + "User id : " + userId);
             }
-        } catch (RoleResolutionException e) {
+        } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
                     "Error when check user has gloable manager role.", "SetScorecardStatus. " + "User id : " + userId);
         }

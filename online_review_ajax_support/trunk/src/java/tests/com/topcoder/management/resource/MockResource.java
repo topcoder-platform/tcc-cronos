@@ -94,4 +94,9 @@ public class MockResource extends Resource {
     public void setPhase(Long phase) {
         this.phase = phase;
     }
+
+    public Object getProperty(String name) {
+        return new Long(2);
+    }
+
 }

@@ -272,6 +272,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "PlaceAppeal. User id : " + userId + "\treview id : " + reviewId);
         }
 
+
         // Get the submission id
         long submissionId = review.getSubmission();
 
@@ -298,32 +299,76 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId);
         }
 
-        // check the user has submitter role
+
+        // get the submission resource
+        Resource submitterResource = null;
         try {
-            if (!checkUserHasRole(userId.longValue(), "Submitter")) {
+            submitterResource = getResourceManager().getResource(upload.getOwner());
+        } catch (Exception e) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Error when finding the resource.",
+                    "User id : " + userId + "\tsubmission id : " + submissionId);
+        }
+        if (submitterResource == null) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Error when finding the resource.",
+                    "User id : " + userId + "\tsubmission id : " + submissionId);
+        }
+
+        try {
+            if (!checkResourceAssignedToUser(submitterResource, userId.longValue())) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
                         ROLE_ERROR, "The user should be a submitter.",
                         "User id : " + userId + "\tsubmission id : " + submissionId);
             }
-        } catch (RoleResolutionException e) {
+        } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't check the user role.",
                     "User id : " + userId + "\tsubmission id : " + submissionId);
         }
 
+        // check the user has submitter role
+        try {
+            if (!checkResourceHasRole(submitterResource, "Submitter")) {
+                return AjaxSupportHelper.createAndLogError(request.getType(),
+                        ROLE_ERROR, "The user should be a submitter.",
+                        "User id : " + userId + "\tsubmission id : " + submissionId);
+            }
+        } catch (ResourceException e) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Can't check the user role.",
+                    "User id : " + userId + "\tsubmission id : " + submissionId);
+        }
+
+        // get the reviewer resource
+        Resource reviewerResource = null;
+        try {
+            reviewerResource = getResourceManager().getResource(review.getAuthor());
+        } catch (Exception e) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Error when finding the resource.",
+                    "User id : " + userId + "\tsubmission id : " + submissionId);
+        }
+        if (reviewerResource == null) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Error when finding the resource.",
+                    "User id : " + userId + "\tsubmission id : " + submissionId);
+        }
+
         // check the review's author has reviewer role
         try {
-            if (!checkUserHasRole(review.getAuthor(), "Reviewer")) {
+            if (!checkResourceHasRole(reviewerResource, "Reviewer")) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
                         ROLE_ERROR, "The author should be a reviewer.",
                         "User id : " + userId + "\tsubmission id : " + submissionId
                         + "\treviewer : " + review.getAuthor());
             }
-        } catch (RoleResolutionException e) {
+        } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't check the user role.",
                     "User id : " + userId + "\tsubmission id : " + submissionId);
         }
+
 
         // get all the phases
         Phase[] phases = null;
@@ -349,17 +394,6 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId + "\tupload id :" + upload.getId());
         }
 
-        // get the reviewer resource
-        Resource reviewerResource = null;
-        try {
-            reviewerResource = getResourceManager().getResource(review.getAuthor());
-        } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't get reviewer resource.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId
-                    + "\treviwer id :" + review.getAuthor());
-        }
-
         // validate the review resource
         if (reviewerResource.getPhase() == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
@@ -373,6 +407,9 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId
                     + "\texpected phase id :" + reviewPhase.getId() + "\tactual id : " + reviewerResource.getPhase());
         }
+
+        System.out.println("4");
+
 
         // get the appeal phase
         Phase appealPhase = null;

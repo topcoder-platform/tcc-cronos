@@ -8,7 +8,8 @@ import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.cronos.onlinereview.ajax.handlers.CommonHandler;
-import com.cronos.onlinereview.ajax.handlers.RoleResolutionException;
+import com.cronos.onlinereview.ajax.handlers.ResourceException;
+import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 
 /**
@@ -34,25 +35,14 @@ class CommonHandlerSubclass extends CommonHandler {
     /**
      * <p>Calls corresponding method of a super class providing the specified argument. Nothing special occurs
      * here.</p>
-     *
-     * @param userId the id of the user to get its role name
-     * @throws RoleResolutionException if the resource manager has thrown an exception
-     */
-    public String getUserRoleName(long userId) throws RoleResolutionException {
-        return super.getUserRoleName(userId);
-    }
-
-    /**
-     * <p>Calls corresponding method of a super class providing the specified argument. Nothing special occurs
-     * here.</p>
-     *
-     * @param userId the id of the user to check its role
+     * @param resource TODO
      * @param role the role to check for
-     * @throws RoleResolutionException if the resource manager has thrown an exception
+     *
+     * @throws ResourceException if the resource manager has thrown an exception
      * @throws IllegalArgumentException if role parameter is null or empty String
      */
-    public boolean checkUserHasRole(long userId, String role) throws RoleResolutionException {
-        return super.checkUserHasRole(userId, role);
+    public boolean checkUserHasRole(Resource resource, String role) throws ResourceException {
+        return super.checkResourceHasRole(resource, role);
     }
 
     /**
@@ -60,9 +50,9 @@ class CommonHandlerSubclass extends CommonHandler {
      * here.</p>
      *
      * @param userId the id of the user to check its role
-     * @throws RoleResolutionException if the resource manager has thrown an exception
+     * @throws ResourceException if the resource manager has thrown an exception
      */
-    public boolean checkUserHasGlobalManagerRole(long userId) throws RoleResolutionException {
+    public boolean checkUserHasGlobalManagerRole(long userId) throws ResourceException {
         return super.checkUserHasGlobalManagerRole(userId);
     }
 

@@ -7,7 +7,7 @@ import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.cronos.onlinereview.ajax.handlers.CommonHandler;
-import com.cronos.onlinereview.ajax.handlers.RoleResolutionException;
+import com.cronos.onlinereview.ajax.handlers.ResourceException;
 
 import com.topcoder.management.resource.ResourceManager;
 
@@ -56,62 +56,24 @@ public class TestCommonHandler extends TestCase {
             handler.getResourceManager() instanceof MockResourceManager);
     }
 
-    /**
-     * Test getUserRoleName method with accuracy state.
-     *
-     * @throws RoleResolutionException to JUnit
-     */
-    public void testGetUserRoleNameAccuracy1() throws RoleResolutionException {
-        assertEquals("getUserRoleName fails", "Manager", handler.getUserRoleName(11));
-    }
-
-    /**
-     * Test getUserRoleName method with accuracy state. The Resource is null, so null is returned.
-     *
-     * @throws RoleResolutionException to JUnit.
-     */
-    public void testGetUserRoleNameAccuracy2() throws RoleResolutionException {
-        assertNull("getUserRoleName fails", handler.getUserRoleName(-1));
-    }
-
-    /**
-     * Test checkUserHasRole method with accuracy state. The Resource is null, so false is
-     * returned.
-     *
-     * @throws RoleResolutionException to JUnit.
-     */
-    public void testCheckUserHasRoleAccuracy1() throws RoleResolutionException {
-        assertFalse("getUserRoleName fails", handler.checkUserHasRole(-1, "name"));
-    }
-
-    /**
-     * Test checkUserHasRole method with accuracy state. The role matches with the name, so true is
-     * returned.
-     *
-     * @throws RoleResolutionException to JUnit.
-     */
-    public void testCheckUserHasRoleAccuracy2() throws RoleResolutionException {
-        assertTrue("getUserRoleName fails", handler.checkUserHasRole(1, "Manager"));
-    }
-
-    /**
-     * Test checkUserHasRole method with accuracy state. The role does not match with the name, so
-     * true is returned.
-     *
-     * @throws RoleResolutionException to JUnit.
-     */
-    public void testCheckUserHasRoleAccuracy3() throws RoleResolutionException {
-        assertFalse("getUserRoleName fails", handler.checkUserHasRole(1, "name2"));
-    }
+//    /**
+//     * Test checkUserHasRole method with accuracy state. The role does not match with the name, so
+//     * true is returned.
+//     *
+//     * @throws ResourceException to JUnit.
+//     */
+//    public void testCheckUserHasRoleAccuracy3() throws ResourceException {
+//        assertFalse("getUserRoleName fails", handler.checkUserHasRole(1, "name2"));
+//    }
 
     /**
      * Test checkUserHasGlobalManagerRole method with accuracy state. The Resource is null, so
      * false is returned.
      *
-     * @throws RoleResolutionException to JUnit.
+     * @throws ResourceException to JUnit.
      */
     public void testCheckUserHasGlobalManagerRoleAccuracy()
-        throws RoleResolutionException {
+        throws ResourceException {
         assertFalse("getUserRoleName fails", handler.checkUserHasGlobalManagerRole(-1));
     }
 
@@ -143,38 +105,38 @@ public class TestCommonHandler extends TestCase {
             return null;
         }
 
-        /**
-         * <p>
-         * Returns the role name for the user having userId as its ID.
-         * </p>
-         *
-         * @param userId the id of the user to get its role name
-         *
-         * @return the role name or null if it is not found
-         *
-         * @throws RoleResolutionException if the resource manager has thrown an exception
-         */
-        public String getUserRoleName(long userId) throws RoleResolutionException {
-            return super.getUserRoleName(userId);
-        }
-
-        /**
-         * <p>
-         * Check if a user has the specified role or not.
-         * </p>
-         *
-         * @param userId the id of the user to check its role
-         * @param role the role to check for
-         *
-         * @return true if the user has the role
-         *
-         * @throws RoleResolutionException if the resource manager has thrown an exception
-         * @throws IllegalArgumentException if role parameter is null or empty String
-         */
-        public boolean checkUserHasRole(long userId, String role)
-            throws RoleResolutionException {
-            return super.checkUserHasRole(userId, role);
-        }
+//        /**
+//         * <p>
+//         * Returns the role name for the user having userId as its ID.
+//         * </p>
+//         *
+//         * @param userId the id of the user to get its role name
+//         *
+//         * @return the role name or null if it is not found
+//         *
+//         * @throws ResourceException if the resource manager has thrown an exception
+//         */
+//        public String getUserRoleName(long userId) throws ResourceException {
+//            return super.getUserRoleName(userId);
+//        }
+//
+//        /**
+//         * <p>
+//         * Check if a user has the specified role or not.
+//         * </p>
+//         *
+//         * @param userId the id of the user to check its role
+//         * @param role the role to check for
+//         *
+//         * @return true if the user has the role
+//         *
+//         * @throws ResourceException if the resource manager has thrown an exception
+//         * @throws IllegalArgumentException if role parameter is null or empty String
+//         */
+//        public boolean checkUserHasRole(long userId, String role)
+//            throws ResourceException {
+//            return super.checkResourceHasRole(userId, role);
+//        }
 
         /**
          * <p>
@@ -185,10 +147,10 @@ public class TestCommonHandler extends TestCase {
          *
          * @return true if the user has the global manager role
          *
-         * @throws RoleResolutionException if the resource manager has thrown an exception
+         * @throws ResourceException if the resource manager has thrown an exception
          */
         public boolean checkUserHasGlobalManagerRole(long userId)
-            throws RoleResolutionException {
+            throws ResourceException {
             return super.checkUserHasGlobalManagerRole(userId);
         }
 

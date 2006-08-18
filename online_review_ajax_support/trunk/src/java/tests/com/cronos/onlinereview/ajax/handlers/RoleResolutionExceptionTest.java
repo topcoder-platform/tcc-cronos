@@ -27,14 +27,14 @@ public class RoleResolutionExceptionTest extends TestCase {
      * Test method for ConfigurationException().
      */
     public void testConfigurationException() {
-        assertNotNull("The constructor doesn't work.", new RoleResolutionException());
+        assertNotNull("The constructor doesn't work.", new ResourceException());
     }
 
     /**
      * Test method for RoleResolutionException(java.lang.String).
      */
     public void testConfigurationExceptionString() {
-        RoleResolutionException e = new RoleResolutionException(MESSAGE);
+        ResourceException e = new ResourceException(MESSAGE);
         assertEquals("The message is not right.", MESSAGE, e.getMessage());
     }
 
@@ -42,7 +42,7 @@ public class RoleResolutionExceptionTest extends TestCase {
      * Test method for RoleResolutionException(java.lang.Throwable).
      */
     public void testConfigurationExceptionThrowable() {
-        RoleResolutionException e = new RoleResolutionException(CAUSE);
+        ResourceException e = new ResourceException(CAUSE);
         assertEquals("The cause is not right.", CAUSE, e.getCause());
     }
 
@@ -50,7 +50,7 @@ public class RoleResolutionExceptionTest extends TestCase {
      * Test method for RoleResolutionException(java.lang.String, java.lang.Throwable).
      */
     public void testConfigurationExceptionStringThrowable() {
-        RoleResolutionException e = new RoleResolutionException(MESSAGE, CAUSE);
+        ResourceException e = new ResourceException(MESSAGE, CAUSE);
         assertEquals("The message is not right.", MESSAGE + ", caused by null", e.getMessage());
         assertEquals("The cause is not right.", CAUSE, e.getCause());
     }

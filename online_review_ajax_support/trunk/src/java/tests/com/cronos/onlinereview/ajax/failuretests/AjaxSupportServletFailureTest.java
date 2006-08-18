@@ -4,26 +4,12 @@
 package com.cronos.onlinereview.ajax.failuretests;
 
 import com.cronos.onlinereview.ajax.AjaxSupportServlet;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockResourceManager;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockProjectManager;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockServletConfig;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockCalculationManager;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockPhaseManager;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockUploadManager;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockReader;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockPhaseTemplate;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockScorecardManager;
-import com.cronos.onlinereview.ajax.failuretests.mock.MockReviewManager;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-
-import org.apache.cactus.ServletTestCase;
-
-import java.io.File;
 
 /**
  * <p>A failure test for {@link AjaxSupportServlet} class. Tests the proper handling of invalid input data by the
@@ -32,7 +18,7 @@ import java.io.File;
  * @author isv
  * @version 1.0
  */
-public class AjaxSupportServletFailureTest extends ServletTestCase {
+public class AjaxSupportServletFailureTest extends AbstractTestCase {
 
     /**
      * <p>The instances of {@link AjaxSupportServlet} which are tested. These instances are initialized in {@link
@@ -57,33 +43,6 @@ public class AjaxSupportServletFailureTest extends ServletTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration(new File("failure/OnlineReview.xml"));
-        ConfigHelper.loadConfiguration(new File("failure/ObjectFactory.xml"));
-
-        // Init the states of Mock classes
-        MockCalculationManager.releaseState();
-        MockPhaseManager.releaseState();
-        MockPhaseTemplate.releaseState();
-        MockProjectManager.releaseState();
-        MockReader.releaseState();
-        MockResourceManager.releaseState();
-        MockReviewManager.releaseState();
-        MockScorecardManager.releaseState();
-        MockServletConfig.releaseState();
-        MockUploadManager.releaseState();
-
-        MockCalculationManager.init();
-        MockPhaseManager.init();
-        MockPhaseTemplate.init();
-        MockProjectManager.init();
-        MockReader.init();
-        MockResourceManager.init();
-        MockReviewManager.init();
-        MockScorecardManager.init();
-        MockServletConfig.init();
-        MockUploadManager.init();
-
         this.testedInstances = new AjaxSupportServlet[1];
         this.testedInstances[0] = new AjaxSupportServlet();
     }
@@ -95,19 +54,26 @@ public class AjaxSupportServletFailureTest extends ServletTestCase {
      */
     protected void tearDown() throws Exception {
         this.testedInstances = null;
-        ConfigHelper.releaseNamespaces();
-        // Release the states of the Mock classes
-        MockCalculationManager.releaseState();
-        MockPhaseManager.releaseState();
-        MockPhaseTemplate.releaseState();
-        MockProjectManager.releaseState();
-        MockReader.releaseState();
-        MockResourceManager.releaseState();
-        MockReviewManager.releaseState();
-        MockScorecardManager.releaseState();
-        MockServletConfig.releaseState();
-        MockUploadManager.releaseState();
         super.tearDown();
+    }
+
+    /**
+     * <p>Failure test. Tests the {@link AjaxSupportServlet#init(ServletConfig)} method for proper handling the invalid
+     * input arguments.</p>
+     *
+     * <p>Passes {@link null} as <code>config</code> and expects the <code>ServletException</code> to be thrown.</p>
+     */
+    public void testInit_ServletConfig_config_null() {
+        for (int i = 0; i < this.testedInstances.length; i++) {
+            try {
+                this.testedInstances[i].init(null);
+                Assert.fail("ServletException should have been thrown");
+            } catch (ServletException e) {
+                // expected behavior
+            } catch (Exception e) {
+                Assert.fail("ServletException was expected but the original exception is : " + e);
+            }
+        }
     }
 
     /**
@@ -126,7 +92,6 @@ public class AjaxSupportServletFailureTest extends ServletTestCase {
             } catch (ServletException e) {
                 // expected behavior
             } catch (Exception e) {
-                e.printStackTrace();
                 fail("ServletException was expected but the original exception is : " + e);
             }
         }
@@ -495,7 +460,6 @@ public class AjaxSupportServletFailureTest extends ServletTestCase {
             } catch (ServletException e) {
                 // expected behavior
             } catch (Exception e) {
-                e.printStackTrace();
                 fail("ServletException was expected but the original exception is : " + e);
             } finally {
                 ConfigHelper.restoreProperty("com.cronos.onlinereview.ajax.factory",

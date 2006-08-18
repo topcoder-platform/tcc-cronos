@@ -199,7 +199,7 @@ public class SetTimelineNotificationHandler extends CommonHandler {
                 if (checkUserHasGlobalManagerRole(userId.longValue())) {
                     accessible = true;
                 }
-            } catch (RoleResolutionException e) {
+            } catch (ResourceException e) {
                 return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
                         "Can't check the user's role : " + e, "SetTimelineNotification. User id : " + userId);
             }

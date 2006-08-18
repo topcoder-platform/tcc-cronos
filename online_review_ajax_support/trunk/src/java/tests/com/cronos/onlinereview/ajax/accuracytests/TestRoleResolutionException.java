@@ -3,7 +3,7 @@
  */
 package com.cronos.onlinereview.ajax.accuracytests;
 
-import com.cronos.onlinereview.ajax.handlers.RoleResolutionException;
+import com.cronos.onlinereview.ajax.handlers.ResourceException;
 
 import com.topcoder.util.errorhandling.BaseException;
 
@@ -21,7 +21,7 @@ public class TestRoleResolutionException extends TestCase {
      * Tests RoleResolutionException() method with accuracy state.
      */
     public void testRoleResolutionException1Accuracy() {
-        RoleResolutionException ce = new RoleResolutionException();
+        ResourceException ce = new ResourceException();
         assertNotNull("creting RoleResolutionException fails.", ce);
         assertTrue(ce instanceof BaseException);
     }
@@ -30,7 +30,7 @@ public class TestRoleResolutionException extends TestCase {
      * Tests RoleResolutionException(String message) method with accuracy state.
      */
     public void testRoleResolutionException2Accuracy() {
-        RoleResolutionException ce = new RoleResolutionException("msg");
+        ResourceException ce = new ResourceException("msg");
         assertNotNull("creting RoleResolutionException fails.", ce);
         assertTrue("creting RoleResolutionException fails.", ce instanceof BaseException);
         assertEquals("creting RoleResolutionException fails.", "msg", ce.getMessage());
@@ -41,7 +41,7 @@ public class TestRoleResolutionException extends TestCase {
      */
     public void testRoleResolutionException3Accuracy() {
         Exception e = new IllegalArgumentException("msg");
-        RoleResolutionException ce = new RoleResolutionException(e);
+        ResourceException ce = new ResourceException(e);
         assertNotNull("creting RoleResolutionException fails.", ce);
         assertTrue("creting RoleResolutionException fails.", ce instanceof BaseException);
         assertEquals("creting RoleResolutionException fails.", e, ce.getCause());
@@ -52,7 +52,7 @@ public class TestRoleResolutionException extends TestCase {
      */
     public void testRoleResolutionException4Accuracy() {
         Exception e = new IllegalArgumentException("msg2");
-        RoleResolutionException ce = new RoleResolutionException("msg", e);
+        ResourceException ce = new ResourceException("msg", e);
         assertNotNull("creting RoleResolutionException fails.", ce);
         assertTrue("creting RoleResolutionException fails.", ce instanceof BaseException);
         assertEquals("creting RoleResolutionException fails.", "msg" + ", caused by " + "msg2",

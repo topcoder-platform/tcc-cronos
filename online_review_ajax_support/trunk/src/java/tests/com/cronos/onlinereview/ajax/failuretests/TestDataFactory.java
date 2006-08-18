@@ -237,7 +237,7 @@ public class TestDataFactory {
         result[0].setName("Review");
         result[1] = new PhaseType();
         result[1].setId(2);
-        result[1].setName("Appeals Response");
+        result[1].setName("Appeal Response");
         result[2] = new PhaseType();
         result[2].setId(2);
         result[2].setName("Appeals");

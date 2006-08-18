@@ -12,13 +12,13 @@
         <servlet-class>com.cronos.onlinereview.ajax.DemoServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>AjaxServlet</servlet-name>
-        <servlet-class>com.cronos.onlinereview.ajax.AjaxSupportServlet</servlet-class>
-    </servlet>
 
     <servlet-mapping>
       <servlet-name>DemoServlet</servlet-name>
       <url-pattern>/servlet/DemoServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AjaxServlet</servlet-name>
+        <servlet-class>com.cronos.onlinereview.ajax.AjaxSupportServlet</servlet-class>
+    </servlet>
 </web-app>

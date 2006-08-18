@@ -289,24 +289,6 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
                     "Can't get the review",
                     "User id : " + userId + "\treview id : " + reviewId);
         }
-        if (review.getAuthor() != userId.longValue()) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    ROLE_ERROR, "The user should be the author of the review.",
-                    "User id : " + userId + "\treview id : " + reviewId);
-        }
-
-        // check the user has the role of "Reviewer"
-        try {
-            if (!checkUserHasRole(userId.longValue(), "Reviewer")) {
-                return AjaxSupportHelper.createAndLogError(request.getType(),
-                        ROLE_ERROR, "The user should be a reviewer.",
-                        "User id : " + userId + "\treview id : " + reviewId);
-            }
-        } catch (RoleResolutionException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't check the user role.",
-                    "User id : " + userId + "\tsubmission id : " + reviewId);
-        }
 
         // get the reviewer resource
         Resource reviewerResource = null;
@@ -325,6 +307,20 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\treview id : " + reviewId
                     + "\treviwer id :" + review.getAuthor());
         }
+
+        // check the user has the role of "Reviewer"
+        try {
+            if (!checkResourceHasRole(reviewerResource, "Reviewer")) {
+                return AjaxSupportHelper.createAndLogError(request.getType(),
+                        ROLE_ERROR, "The user should be a reviewer.",
+                        "User id : " + userId + "\treview id : " + reviewId);
+            }
+        } catch (ResourceException e) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Can't check the user role.",
+                    "User id : " + userId + "\tsubmission id : " + reviewId);
+        }
+
 
         Phase[] phases = null;
         try {

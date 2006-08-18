@@ -98,7 +98,7 @@ public class MockResourceManager implements ResourceManager {
      * @return the resources found
      */
     public Resource[] searchResource(Filter filter) {
-        return null;
+        return new Resource[1];
     }
 
     /**

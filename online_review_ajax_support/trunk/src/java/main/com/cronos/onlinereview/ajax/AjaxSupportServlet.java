@@ -190,7 +190,7 @@ public final class AjaxSupportServlet extends HttpServlet {
 
             // if the handler is null, response it with status "request error"
             if (handler == null) {
-                AjaxSupportHelper.responseAndLogError(ajaxRequest.getType(), "request error",
+                AjaxSupportHelper.responseAndLogError(ajaxRequest.getType(), "Request error",
                         "There is no corresponding handler : " + ajaxRequest.getType(), response);
                 return;
             }
@@ -200,7 +200,7 @@ public final class AjaxSupportServlet extends HttpServlet {
 
             if (resp == null) {
                 AjaxSupportHelper.responseAndLogError(ajaxRequest.getType(),
-                        "server error", "Server can't satisfy this request", response);
+                        "Server error", "Server can't satisfy this request", response);
                 return;
             }
 

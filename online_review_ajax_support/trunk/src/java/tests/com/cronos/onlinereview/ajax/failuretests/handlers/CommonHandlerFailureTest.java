@@ -9,7 +9,7 @@ import com.cronos.onlinereview.ajax.failuretests.TestDataFactory;
 import com.cronos.onlinereview.ajax.failuretests.AbstractTestCase;
 import com.cronos.onlinereview.ajax.failuretests.mock.MockResourceManager;
 import com.cronos.onlinereview.ajax.handlers.CommonHandler;
-import com.cronos.onlinereview.ajax.handlers.RoleResolutionException;
+import com.cronos.onlinereview.ajax.handlers.ResourceException;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -60,7 +60,7 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link CommonHandler#checkUserHasRole(long,String)} method for proper handling the
+     * <p>Failure test. Tests the {@link CommonHandler#checkResourceHasRole(long,String)} method for proper handling the
      * invalid input arguments.</p>
      *
      * <p>Passes {@link null} as <code>role</code> and expects the <code>IllegalArgumentException</code> to be
@@ -69,7 +69,7 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
     public void testCheckUserHasRole_long_String_role_null() {
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].checkUserHasRole(1, null);
+                this.testedInstances[i].checkUserHasRole(null, null);
                 Assert.fail("IllegalArgumentException should have been thrown");
             } catch (IllegalArgumentException e) {
                 // expected behavior
@@ -80,7 +80,7 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link CommonHandler#checkUserHasRole(long,String)} method for proper handling the
+     * <p>Failure test. Tests the {@link CommonHandler#checkResourceHasRole(long,String)} method for proper handling the
      * invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>role</code> and expects the
@@ -89,7 +89,7 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
     public void testCheckUserHasRole_long_String_role_ZERO_LENGTH_STRING() {
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].checkUserHasRole(1, TestDataFactory.ZERO_LENGTH_STRING);
+                this.testedInstances[i].checkUserHasRole(null, TestDataFactory.ZERO_LENGTH_STRING);
                 Assert.fail("IllegalArgumentException should have been thrown");
             } catch (IllegalArgumentException e) {
                 // expected behavior
@@ -100,7 +100,7 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link CommonHandler#checkUserHasRole(long,String)} method for proper handling the
+     * <p>Failure test. Tests the {@link CommonHandler#checkResourceHasRole(long,String)} method for proper handling the
      * invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>role</code> and expects the
@@ -109,7 +109,7 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
     public void testCheckUserHasRole_long_String_role_WHITESPACE_ONLY_STRING() {
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].checkUserHasRole(1, TestDataFactory.WHITESPACE_ONLY_STRING);
+                this.testedInstances[i].checkUserHasRole(null, TestDataFactory.WHITESPACE_ONLY_STRING);
                 Assert.fail("IllegalArgumentException should have been thrown");
             } catch (IllegalArgumentException e) {
                 // expected behavior
@@ -248,27 +248,6 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link CommonHandler#getUserRoleName,long} for proper behavior if the underlying
-     * service throws an unexpected exception.</p>
-     *
-     * <p>Configures the mock implementation <code>MockResourceManager</code> to throw an exception from any method and
-     * expects the <code>RoleResolutionException</code> to be thrown.</p>
-     */
-    public void testGetUserRoleName_long_ResourceManagerError() {
-        MockResourceManager.throwGlobalException(new IllegalStateException());
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].getUserRoleName(1);
-                Assert.fail("RoleResolutionException should have been thrown");
-            } catch (RoleResolutionException e) {
-                // expected behavior
-            } catch (Exception e) {
-                fail("RoleResolutionException was expected but the original exception is : " + e);
-            }
-        }
-    }
-
-    /**
      * <p>Failure test. Tests the {@link CommonHandler#checkUserHasRole,long,String} for proper behavior if the
      * underlying service throws an unexpected exception.</p>
      *
@@ -279,9 +258,9 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new IllegalStateException());
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].checkUserHasRole(1, TestDataFactory.MANAGER_ROLE);
+                this.testedInstances[i].checkUserHasRole(null, TestDataFactory.MANAGER_ROLE);
                 Assert.fail("RoleResolutionException should have been thrown");
-            } catch (RoleResolutionException e) {
+            } catch (ResourceException e) {
                 // expected behavior
             } catch (Exception e) {
                 fail("RoleResolutionException was expected but the original exception is : " + e);
@@ -302,7 +281,7 @@ public class CommonHandlerFailureTest extends AbstractTestCase {
             try {
                 this.testedInstances[i].checkUserHasGlobalManagerRole(1);
                 Assert.fail("RoleResolutionException should have been thrown");
-            } catch (RoleResolutionException e) {
+            } catch (ResourceException e) {
                 // expected behavior
             } catch (Exception e) {
                 fail("RoleResolutionException was expected but the original exception is : " + e);

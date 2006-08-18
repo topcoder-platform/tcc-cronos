@@ -8,6 +8,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import com.cronos.onlinereview.ajax.TestHelper;
+import com.topcoder.management.resource.MockResource;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -71,38 +72,6 @@ public class CommonHandlerTest extends TestCase {
     }
 
     /**
-     * Test method for getUserRoleName(long).
-     * @throws Exception to JUnit
-     */
-    public void testGetUserRoleNameAccuracy1() throws Exception {
-        assertEquals("The id-1 should get the role name manager.", "Manager", handler.getUserRoleName(1));
-    }
-
-    /**
-     * Test method for checkUserHasRole(long, java.lang.String).
-     * @throws Exception to JUnit
-     */
-    public void testCheckUserHasRoleAccuracy1() throws Exception {
-        assertTrue("The user 1 should have the role Manager.", handler.checkUserHasRole(1, "Manager"));
-    }
-
-    /**
-     * Test method for checkUserHasRole(long, java.lang.String).
-     * @throws Exception to JUnit
-     */
-    public void testCheckUserHasRoleAccuracy2() throws Exception {
-        assertTrue("The user 100 should have the role Manager.", handler.checkUserHasRole(100, "Manager"));
-    }
-
-    /**
-     * Test method for checkUserHasRole(long, java.lang.String).
-     * @throws Exception to JUnit
-     */
-    public void testCheckUserHasRoleAccuracy3() throws Exception {
-        assertFalse("The user 1 should not have the role Reviewer.", handler.checkUserHasRole(1, "Submitter"));
-    }
-
-    /**
      * Test method for checkUserHasRole(long, java.lang.String).
      * In this case, the name is null.
      * Expected exception : {@link IllegalArgumentException}.
@@ -110,7 +79,7 @@ public class CommonHandlerTest extends TestCase {
      */
     public void testCheckUserHasRoleNullName() throws Exception {
         try {
-            handler.checkUserHasRole(1, null);
+            handler.checkResourceHasRole(new MockResource(), null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -125,7 +94,7 @@ public class CommonHandlerTest extends TestCase {
      */
     public void testCheckUserHasRoleEmptyName() throws Exception {
         try {
-            handler.checkUserHasRole(1, " ");
+            handler.checkResourceHasRole(new MockResource(), " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -138,14 +107,6 @@ public class CommonHandlerTest extends TestCase {
      */
     public void testCheckUserHasGlobalManagerRoleAccuracy1() throws Exception {
         assertTrue("The user 1 should have the role Manager.", handler.checkUserHasGlobalManagerRole(1));
-    }
-
-    /**
-     * Test method for checkUserHasGlobalManagerRole(long).
-     * @throws Exception to JUnit
-     */
-    public void testCheckUserHasGlobalManagerRoleAccuracy2() throws Exception {
-        assertFalse("The user 100 should not have the role Manager.", handler.checkUserHasGlobalManagerRole(100));
     }
 
     /**

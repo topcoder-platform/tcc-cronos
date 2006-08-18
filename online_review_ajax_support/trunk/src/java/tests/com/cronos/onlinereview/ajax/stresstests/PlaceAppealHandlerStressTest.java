@@ -59,8 +59,7 @@ public class PlaceAppealHandlerStressTest extends TestCase {
 
         AjaxResponse response = null;
 
-//        for (int i = 0; i < StressTestHelper.TIMES; i++) {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < StressTestHelper.TIMES; i++) {
             response = handler.service(request, new Long(2));
         }
 

@@ -131,7 +131,7 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
                 return AjaxSupportHelper.createAndLogError(request.getType(), ROLE_ERROR,
                         "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId);
             }
-        } catch (RoleResolutionException e) {
+        } catch (ResourceException e) {
             // if exception raised, return a business error response
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
                     "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId);

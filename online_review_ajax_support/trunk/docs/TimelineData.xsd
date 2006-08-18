@@ -6,7 +6,7 @@
         	<xs:documentation>The timeline Element Type</xs:documentation>
         </xs:annotation>
         <xs:sequence maxOccurs="1" minOccurs="1">
-			<xs:element name="phases" type="PhasesType">
+					<xs:element name="phases" type="PhasesType">
 				<xs:annotation>
 					<xs:documentation>The phases of this timeline</xs:documentation>
 				</xs:annotation>

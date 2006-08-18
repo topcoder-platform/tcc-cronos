@@ -6,8 +6,11 @@ import com.cronos.onlinereview.ajax.AjaxRequestHandler;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
 import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceFilterBuilder;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
 /**
@@ -85,31 +88,52 @@ public abstract class CommonHandler implements AjaxRequestHandler {
     }
 
     /**
-     * <p>
-     * Returns the role name for the user having userId as its ID.
-     * </p>
+     * Check whether the resource has been assigned to some user.
      *
-     * @return the role name or null if it is not found
-     * @param userId the id of the user to get its role name
-     * @throws RoleResolutionException if the resource manager has thrown an exception
+     * @param resource the resource to check
+     * @return true if the resource is assigned to the user
+     * @param userId the id of the user to check
+     * @throws ResourceException if the resource manager has thrown an exception
+     * @throws IllegalArgumentException if resource parameter is null
      */
-    protected String getUserRoleName(long userId) throws RoleResolutionException {
-        // get the resource using the resource manager
-        Resource resource = null;
-        try {
-            resource = resourceManager.getResource(userId);
-        } catch (Exception e) {
-            throw new RoleResolutionException("Error when get the resource.", e);
-        }
-
+    protected boolean checkResourceAssignedToUser(Resource resource, long userId) throws ResourceException {
         if (resource == null) {
-            return null;
+            throw new IllegalArgumentException("The resource can't be null.");
         }
-
-        // get the resource role from the resource and return it's name
-        ResourceRole role = resource.getResourceRole();
-        return role.getName();
+        // check if "External Reference ID" property exists or not
+        Object value = resource.getProperty("External Reference ID");
+        if (value == null) {
+            return false;
+        }
+        return value.toString().equals(Long.toString(userId));
     }
+
+//    /**
+//     * <p>
+//     * Returns the role name for the user having userId as its ID.
+//     * </p>
+//     *
+//     * @return the role name or null if it is not found
+//     * @param userId the id of the user to get its role name
+//     * @throws ResourceException if the resource manager has thrown an exception
+//     */
+//    protected String getUserRoleName(long userId) throws ResourceException {
+//        // get the resource using the resource manager
+//        Resource resource = null;
+//        try {
+//            resource = resourceManager.getResource(userId);
+//        } catch (Exception e) {
+//            throw new ResourceException("Error when get the resource.", e);
+//        }
+//
+//        if (resource == null) {
+//            return null;
+//        }
+//
+//        // get the resource role from the resource and return it's name
+//        ResourceRole role = resource.getResourceRole();
+//        return role.getName();
+//    }
 
     /**
      * <p>
@@ -117,12 +141,15 @@ public abstract class CommonHandler implements AjaxRequestHandler {
      * </p>
      *
      * @return true if the user has the role
-     * @param userId the id of the user to check its role
+     * @param resource the resource of the user to check its role
      * @param role the role to check for
-     * @throws RoleResolutionException if the resource manager has thrown an exception
+     * @throws ResourceException if the resource manager has thrown an exception
      * @throws IllegalArgumentException if role parameter is null or empty String
      */
-    protected boolean checkUserHasRole(long userId, String role) throws RoleResolutionException {
+    protected boolean checkResourceHasRole(Resource resource, String role) throws ResourceException {
+        if (resource == null) {
+            throw new IllegalArgumentException("The resource can't be null");
+        }
         if (role == null) {
             throw new IllegalArgumentException("The role should not be null.");
         }
@@ -130,8 +157,12 @@ public abstract class CommonHandler implements AjaxRequestHandler {
             throw new IllegalArgumentException("The role should not be empty.");
         }
 
+        ResourceRole rr = resource.getResourceRole();
+        if (rr == null) {
+            return false;
+        }
         // get the user role name
-        String roleName = getUserRoleName(userId);
+        String roleName = rr.getName();
         if (roleName == null) {
             return false;
         }
@@ -145,30 +176,31 @@ public abstract class CommonHandler implements AjaxRequestHandler {
      *
      * @return true if the user has the global manager role
      * @param userId the id of the user to check its role
-     * @throws RoleResolutionException if the resource manager has thrown an exception
+     * @throws ResourceException if the resource manager has thrown an exception
      */
-    protected boolean checkUserHasGlobalManagerRole(long userId) throws RoleResolutionException {
-        // get the resource using the resource manager
-        Resource resource = null;
+    protected boolean checkUserHasGlobalManagerRole(long userId) throws ResourceException {
+        // build the search filter
+        Filter noProjectFilter = ResourceFilterBuilder.createNoProjectFilter();
+        Filter resourceRoleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(managerRoleId);
+        Filter extensionPropertyNameFilter
+            = ResourceFilterBuilder.createExtensionPropertyNameFilter("External Reference ID");
+        Filter extensionPropertyValueFilter
+            = ResourceFilterBuilder.createExtensionPropertyValueFilter(Long.toString(userId));
+
+        Filter bundle1 = SearchBundle.buildAndFilter(noProjectFilter, resourceRoleIdFilter);
+        Filter bundle2 = SearchBundle.buildAndFilter(extensionPropertyNameFilter, extensionPropertyValueFilter);
+        Filter bundle = SearchBundle.buildAndFilter(bundle1, bundle2);
+
+        // find the resources using the bundle
         try {
-            resource = resourceManager.getResource(userId);
+            Resource[] resources = resourceManager.searchResource(bundle);
+            if (resources == null || resources.length == 0) {
+                return false;
+            }
         } catch (Exception e) {
-            throw new RoleResolutionException("Error when get the resource.", e);
+            throw new ResourceException("Error happens in Resource Manager.", e);
         }
-
-        if (resource == null) {
-            return false;
-        }
-
-        // get the resource project
-        Long project = resource.getProject();
-        if (project == null) {
-            return false;
-        }
-
-        // get the resource role
-        ResourceRole role = resource.getResourceRole();
-        return role.getId() == managerRoleId;
+        return true;
     }
 
     /**
