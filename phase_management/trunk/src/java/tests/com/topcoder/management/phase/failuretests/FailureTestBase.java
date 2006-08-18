@@ -30,7 +30,7 @@ public class FailureTestBase extends TestCase {
 
         // add the namespaces
         ConfigManager cm = ConfigManager.getInstance();
-        cm.add("test_files/failure/failure.xml");
+        cm.add("failure/failure.xml");
     }
 
     /**

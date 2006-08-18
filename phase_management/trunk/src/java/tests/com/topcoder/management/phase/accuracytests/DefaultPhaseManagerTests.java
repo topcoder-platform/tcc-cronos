@@ -194,7 +194,7 @@ public class DefaultPhaseManagerTests extends TestCase {
         Date date = new Date(0);
         phase.setActualEndDate(date);
         manager.end(phase, "user");
-        assertEquals("Phase status shoud be CLOSE", PhaseStatus.CLOSE.getId(), phase.getPhaseStatus().getId());
+        assertEquals("Phase status shoud be CLOSE", PhaseStatus.CLOSED.getId(), phase.getPhaseStatus().getId());
         assertTrue("The actual end date should be updated.", phase.getActualEndDate().after(date));
     }
 
@@ -207,7 +207,7 @@ public class DefaultPhaseManagerTests extends TestCase {
         Date date = new Date(0);
         phase.setActualEndDate(date);
         manager.cancel(phase, "user");
-        assertEquals("Phase status shoud be CLOSE", PhaseStatus.CLOSE.getId(), phase.getPhaseStatus().getId());
+        assertEquals("Phase status shoud be CLOSE", PhaseStatus.CLOSED.getId(), phase.getPhaseStatus().getId());
         assertTrue("The actual end date should be updated.", phase.getActualEndDate().after(date));
     }
 

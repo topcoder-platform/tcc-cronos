@@ -57,7 +57,7 @@ public class DefaultPhaseManagerTest extends FailureTestBase {
         super.setUp();
 
         manager = new DefaultPhaseManager(new MockPhasePersistenceForFailure("failure"),
-                IDGeneratorFactory.getIDGenerator("phaseManager"));
+                IDGeneratorFactory.getIDGenerator("phase_id_seq"));
     }
 
     /**
@@ -166,7 +166,7 @@ public class DefaultPhaseManagerTest extends FailureTestBase {
      */
     public void testDefaultPhaseManager2NullPersistence() throws Exception {
         try {
-            new DefaultPhaseManager(null, IDGeneratorFactory.getIDGenerator("phaseManager"));
+            new DefaultPhaseManager(null, IDGeneratorFactory.getIDGenerator("phase_id_seq"));
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here

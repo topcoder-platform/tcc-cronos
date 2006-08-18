@@ -36,7 +36,7 @@ final class StressMockPhase extends Phase {
      * Empty constructor.
      */
     public StressMockPhase() {
-        super(null, 0);
+        super(new StressMockProject(), 0);
     }
 
     /**
@@ -45,7 +45,7 @@ final class StressMockPhase extends Phase {
      * @param id the id to be set.
      */
     public StressMockPhase(int id) {
-        super(null, id);
+        super(new StressMockProject(), id);
         this.id = id;
     }
 

@@ -653,7 +653,7 @@ public class DefaultPhaseManagerTests extends PhaseManagementTestCase {
 
         manager.end(phase, "yo");
         assertEquals("end should have set phase status to close",
-                     phase.getPhaseStatus().getId(), PhaseStatus.CLOSE.getId());
+                     phase.getPhaseStatus().getId(), PhaseStatus.CLOSED.getId());
     }
 
     /**
@@ -785,7 +785,7 @@ public class DefaultPhaseManagerTests extends PhaseManagementTestCase {
 
         manager.cancel(phase, "yo");
         assertEquals("cancel should have set phase status to close",
-                     phase.getPhaseStatus().getId(), PhaseStatus.CLOSE.getId());
+                     phase.getPhaseStatus().getId(), PhaseStatus.CLOSED.getId());
     }
 
     /**
@@ -842,7 +842,7 @@ public class DefaultPhaseManagerTests extends PhaseManagementTestCase {
      */
     public void testgetAllPhaseStatuses() throws Exception {
         final PhaseStatus[] statuses =
-            new PhaseStatus[] {PhaseStatus.SCHEDULED, PhaseStatus.OPEN, PhaseStatus.CLOSE};
+            new PhaseStatus[] {PhaseStatus.SCHEDULED, PhaseStatus.OPEN, PhaseStatus.CLOSED};
 
         final NullPhasePersistence persistence = new NullPhasePersistence() {
                 public PhaseStatus[] getAllPhaseStatuses() {
@@ -1011,30 +1011,6 @@ public class DefaultPhaseManagerTests extends PhaseManagementTestCase {
     }
 
     /**
-     * Tests that updatePhases uses the phase validator appropriately.
-     *
-     * @throws Exception if an unexpected exception occurs
-     */
-    public void testupdatePhasesValidation() throws Exception {
-        DefaultPhaseManager manager = new DefaultPhaseManager("test.default");
-        manager.setPhaseValidator(new PhaseValidator() {
-                public void validate(Phase phase) throws PhaseValidationException {
-                    throw new PhaseValidationException("failure");
-                }
-            });
-
-        try {
-            Project project = new Project(new Date(), new DefaultWorkdaysFactory().createWorkdaysInstance());
-            project.addPhase(PHASE_ONE);
-            manager.updatePhases(project, "test");
-            fail("should have thrown PhaseManagementException");
-        } catch (PhaseManagementException ex) {
-            assertEquals("wrapped exception should be PhaseValidationException",
-                         PhaseValidationException.class, ex.getCause().getClass());
-        }
-    }
-
-    /**
      * Tests that updatePhases performs the appropriate persistence operations and sets the phase IDs.
      *
      * @throws Exception if an unexpected exception occurs
@@ -1188,29 +1164,6 @@ public class DefaultPhaseManagerTests extends PhaseManagementTestCase {
             }
             methodCalls[2] = true;
         }
-    }
-
-    /**
-     * Tests that updatePhases can correctly distinguish among phases being created, update and deleted.
-     *
-     * @throws Exception if an unexpected exception occurs
-     */
-    public void testupdatePhases2() throws Exception {
-        final UpdatePhasePersistence persistence = new UpdatePhasePersistence();
-        persistence.project.addPhase(persistence.createMe);
-        persistence.project.addPhase(persistence.updateMe);
-
-        final IDGenerator idgen = new NullIdGenerator() {
-                public long getNextID() { return getNext(); }
-            };
-
-        DefaultPhaseManager manager = new DefaultPhaseManager(persistence, idgen);
-        manager.setPhaseValidator(simpleValidator);
-        manager.updatePhases(persistence.project, persistence.operator);
-
-        assertTrue("createPhases should have been called", persistence.methodCalls[0]);
-        assertTrue("updatePhases should have been called", persistence.methodCalls[1]);
-        assertTrue("deletePhases should have been called", persistence.methodCalls[2]);
     }
 
     /**

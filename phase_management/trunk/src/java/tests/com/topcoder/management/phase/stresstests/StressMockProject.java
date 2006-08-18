@@ -6,6 +6,7 @@ package com.topcoder.management.phase.stresstests;
 import java.util.Date;
 
 
+import com.topcoder.date.workdays.DefaultWorkdaysFactory;
 import com.topcoder.date.workdays.Workdays;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.Project;
@@ -24,7 +25,7 @@ final class StressMockProject extends Project {
      * Constructor.
      */
     public StressMockProject() {
-        super(null, null);
+        super(null, new DefaultWorkdaysFactory().createWorkdaysInstance());
     }
 
     /** the number of phases when getting all phases. */

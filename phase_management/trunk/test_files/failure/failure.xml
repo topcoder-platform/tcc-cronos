@@ -4,7 +4,7 @@
 
 		<Property name="Idgenerator">
             <Property name="sequenceName">
-                <Value>phaseManager</Value>
+                <Value>phase_id_seq</Value>
             </Property>
 						<Property name="className"> 
                 <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
@@ -30,7 +30,7 @@
 
 		<Property name="Idgenerator">
             <Property name="sequenceName">
-                <Value>phaseManager</Value>
+                <Value>phase_id_seq</Value>
             </Property>
 			<Property name="className"> 
                 <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
@@ -114,7 +114,7 @@
 				<!--required.-->
 				<Property name="Idgenerator">
             <Property name="sequenceName">
-                <Value>phaseManager</Value>
+                <Value>phase_id_seq</Value>
             </Property>
 						<Property name="className"> 
                 <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
@@ -153,7 +153,7 @@
 				<!--required.-->
 				<Property name="Idgenerator">
             <Property name="sequenceName">
-                <Value>phaseManager</Value>
+                <Value>phase_id_seq</Value>
             </Property>
 						<Property name="className"> 
                 <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
@@ -188,16 +188,16 @@
                 </Property>
                 <Property name="parameters">
                     <Property name="jdbc_driver">
-                        <Value>com.mysql.jdbc.Driver</Value>
+                        <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:mysql://localhost:3306/test</Value>
+                        <Value>jdbc:informix-sqli://172.30.114.230:1526/or:INFORMIXSERVER=or</Value>
                     </Property>
                     <Property name="user">
-                        <Value>root</Value>
+                        <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value></Value>
+                        <Value>google</Value>
                     </Property>
                 </Property>
             </Property>
