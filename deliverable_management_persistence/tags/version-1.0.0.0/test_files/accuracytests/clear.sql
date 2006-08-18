@@ -1,0 +1,10 @@
+delete from deliverable_lu;
+delete from submission;
+delete from submission_status_lu;
+delete from upload;
+delete from upload_status_lu;
+delete from upload_type_lu;
+delete from resource_role_lu;
+delete from phase_type_lu;
+delete from project;
+delete from resource;
