@@ -1694,16 +1694,20 @@ public class InformixPhasePersistence implements PhasePersistence {
      * @param dependency Dependency to check for being new.
      * @return true if new; false otherswise.
      * @throws IllegalArgumentException if dependency is null.
-     * @throws PhasePersistenceException if any error occurs during database call.
      */
-    public boolean isNewDependency(Dependency dependency) throws PhasePersistenceException {
+    public boolean isNewDependency(Dependency dependency) {
         if (dependency == null) {
             throw new IllegalArgumentException("dependency cannot be null.");
         }
 
+        Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        Connection conn = createConnection(true);
+        try {
+            conn = createConnection(true);
+        } catch (PhasePersistenceException e) {
+            return false;
+        }
 
         try {
             // create the statement
@@ -1716,7 +1720,7 @@ public class InformixPhasePersistence implements PhasePersistence {
             // if has any result - phase is not new
             return !rs.next();
         } catch (SQLException ex) {
-            throw new PhasePersistenceException("Error occurs while checking the dependency.", ex);
+            return false;
         } finally {
             close(rs);
             close(pstmt);

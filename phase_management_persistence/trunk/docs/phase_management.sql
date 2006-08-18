@@ -1,10 +1,8 @@
- CREATE TABLE project (
+CREATE TABLE project (
   project_id                    INTEGER                         NOT NULL,
-  primary key (project_id)
+  PRIMARY KEY(project_id)
 );
-
-
- CREATE TABLE phase_status_lu (
+CREATE TABLE phase_status_lu (
   phase_status_id               INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   description                   VARCHAR(254)                    NOT NULL,
@@ -89,10 +87,10 @@ CREATE TABLE phase_criteria (
 );
 
 CREATE TABLE id_sequences (
-  name VARCHAR(255) NOT NULL,
-  next_block_start INTEGER NOT NULL,
-  block_size INTEGER NOT NULL,
-  exhausted INTEGER NOT NULL,
+  name                  VARCHAR(255)    NOT NULL,
+  next_block_start      INTEGER         NOT NULL,
+  block_size            INTEGER         NOT NULL,
+  exhausted             INTEGER         NOT NULL,
   PRIMARY KEY (name)
 );
 
