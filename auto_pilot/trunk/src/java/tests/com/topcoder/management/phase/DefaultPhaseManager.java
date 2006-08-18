@@ -148,7 +148,7 @@ public class DefaultPhaseManager implements PhaseManager {
             Phase phase = new Phase(proj, 24 * 3600 * 1000);
             phase.setId(5 * i + 1);
             phase.setPhaseType(new PhaseType(1, "PhaseType#1"));
-            phase.setPhaseStatus(PhaseStatus.CLOSE);
+            phase.setPhaseStatus(PhaseStatus.CLOSED);
             proj.addPhase(phase);
 
             phase = new Phase(proj, 8 * 3600 * 1000);
@@ -267,7 +267,7 @@ public class DefaultPhaseManager implements PhaseManager {
      */
     public PhaseStatus[] getAllPhaseStatuses() throws PhaseManagementException {
         // your code here
-        return new PhaseStatus[] {PhaseStatus.CLOSE, PhaseStatus.OPEN, PhaseStatus.SCHEDULED};
+        return new PhaseStatus[] {PhaseStatus.CLOSED, PhaseStatus.OPEN, PhaseStatus.SCHEDULED};
     }
 
     /**
@@ -460,7 +460,7 @@ public class DefaultPhaseManager implements PhaseManager {
      * @param handler handler of interest
      * @return registry info under which this was stored.
      */
-    public HandlerRegistryInfo getHandlerRegistrationInfo(PhaseHandler handler) {
+    public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler handler) {
         // your code here
         return null;
     }

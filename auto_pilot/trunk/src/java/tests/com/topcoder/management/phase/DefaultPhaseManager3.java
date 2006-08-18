@@ -144,12 +144,12 @@ public class DefaultPhaseManager3 implements PhaseManager {
         projects = new Project[2];
 
         // Project 1 has empty phases array.
-        Project proj = new Project();
+        Project proj = new Project(null, null);
         proj.setId(1);
         projects[0] = proj;
 
         // Project 2 has null phases array.
-        proj = new Project() {
+        proj = new Project(null, null) {
             public Phase[] getAllPhases() {
                 return null;
             }
@@ -258,7 +258,7 @@ public class DefaultPhaseManager3 implements PhaseManager {
      */
     public PhaseStatus[] getAllPhaseStatuses() throws PhaseManagementException {
         // your code here
-        return new PhaseStatus[] {PhaseStatus.CLOSE, PhaseStatus.OPEN, PhaseStatus.SCHEDULED};
+        return new PhaseStatus[] {PhaseStatus.CLOSED, PhaseStatus.OPEN, PhaseStatus.SCHEDULED};
     }
 
     /**
@@ -451,7 +451,7 @@ public class DefaultPhaseManager3 implements PhaseManager {
      * @param handler handler of interest
      * @return registry info under which this was stored.
      */
-    public HandlerRegistryInfo getHandlerRegistrationInfo(PhaseHandler handler) {
+    public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler handler) {
         // your code here
         return null;
     }

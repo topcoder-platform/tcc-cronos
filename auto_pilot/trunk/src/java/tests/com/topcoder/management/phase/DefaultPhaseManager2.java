@@ -141,7 +141,7 @@ public class DefaultPhaseManager2 implements PhaseManager {
         Phase phase1 = new Phase(proj, 24 * 3600 * 1000);
         phase1.setId(1);
         phase1.setPhaseType(new PhaseType(1, "PhaseType#1"));
-        phase1.setPhaseStatus(PhaseStatus.CLOSE);
+        phase1.setPhaseStatus(PhaseStatus.CLOSED);
         proj.addPhase(phase1);
         phases[0] = phase1;
 
@@ -266,7 +266,7 @@ public class DefaultPhaseManager2 implements PhaseManager {
      */
     public PhaseStatus[] getAllPhaseStatuses() throws PhaseManagementException {
         // your code here
-        return new PhaseStatus[] {PhaseStatus.CLOSE, PhaseStatus.OPEN, PhaseStatus.SCHEDULED};
+        return new PhaseStatus[] {PhaseStatus.CLOSED, PhaseStatus.OPEN, PhaseStatus.SCHEDULED};
     }
 
     /**
@@ -292,7 +292,7 @@ public class DefaultPhaseManager2 implements PhaseManager {
         } else if (phase.getId() == 2) {
             return false;
         } else if (phase.getId() == 3) {
-            return (phases[1].getPhaseStatus().equals(PhaseStatus.CLOSE));
+            return (phases[1].getPhaseStatus().equals(PhaseStatus.CLOSED));
         }
         return false;
     }
@@ -355,7 +355,7 @@ public class DefaultPhaseManager2 implements PhaseManager {
      */
     public void end(Phase phase, String operator) {
         // your code here
-        phase.setPhaseStatus(PhaseStatus.CLOSE);
+        phase.setPhaseStatus(PhaseStatus.CLOSED);
     }
 
     /**
@@ -474,7 +474,7 @@ public class DefaultPhaseManager2 implements PhaseManager {
      * @param handler handler of interest
      * @return registry info under which this was stored.
      */
-    public HandlerRegistryInfo getHandlerRegistrationInfo(PhaseHandler handler) {
+    public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler handler) {
         // your code here
         return null;
     }

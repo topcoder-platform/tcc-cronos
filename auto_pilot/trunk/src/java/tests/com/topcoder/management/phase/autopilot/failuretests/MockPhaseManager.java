@@ -9,6 +9,7 @@ import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.phase.PhaseOperationEnum;
 import com.topcoder.management.phase.PhaseValidationException;
+import com.topcoder.management.phase.PhaseValidator;
 
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
@@ -115,10 +116,9 @@ public class MockPhaseManager implements PhaseManager {
      * @param operator ignore.
      *
      * @throws PhaseManagementException never.
-     * @throws PhaseValidationException never.
      */
     public void updatePhases(Project project, String operator)
-        throws PhaseManagementException, PhaseValidationException {
+        throws PhaseManagementException {
     }
 
     /**
@@ -297,7 +297,14 @@ public class MockPhaseManager implements PhaseManager {
      *
      * @return null.
      */
-    public HandlerRegistryInfo getHandlerRegistrationInfo(PhaseHandler handler) {
+    public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler handler) {
         return null;
+    }
+
+    public PhaseValidator getPhaseValidator() {
+      return null;
+    }
+
+    public void setPhaseValidator(PhaseValidator arg0) {
     }
 }

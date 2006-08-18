@@ -8,6 +8,7 @@ import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.phase.PhaseHandler;
 import com.topcoder.management.phase.PhaseOperationEnum;
 import com.topcoder.management.phase.HandlerRegistryInfo;
+import com.topcoder.management.phase.PhaseValidator;
 import com.topcoder.management.phase.autopilot.accuracytests.TestDataFactory;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
@@ -563,7 +564,14 @@ public class MockPhaseManager implements PhaseManager {
      * @return handler registry info.
      * @throws IllegalArgumentException if any input parameter is null.
      */
-    public HandlerRegistryInfo getHandlerRegistrationInfo(PhaseHandler handler) {
+    public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler handler) {
         return null;
+    }
+
+    public PhaseValidator getPhaseValidator() {
+      return null;
+    }
+
+    public void setPhaseValidator(PhaseValidator arg0) {
     }
 }
