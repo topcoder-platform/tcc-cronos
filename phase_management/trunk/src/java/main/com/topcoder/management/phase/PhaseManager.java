@@ -90,11 +90,12 @@ public interface PhaseManager {
      * equal to the current date.
      *
      * @throws IllegalArgumentException if phase is <code>null</code>
+     * @throws PhaseManagementException if an error occurs while accessing persistent storage
      *
      * @param phase phase to test for starting
      * @return <code>true</code> if the specified phase can be started; <code>false</code> otherwise
      */
-    boolean canStart(Phase phase);
+    boolean canStart(Phase phase) throws PhaseManagementException;
 
     /**
      * Starts the specified phase. If a {@link PhaseHandler phase handler} is set for the start operation of the
