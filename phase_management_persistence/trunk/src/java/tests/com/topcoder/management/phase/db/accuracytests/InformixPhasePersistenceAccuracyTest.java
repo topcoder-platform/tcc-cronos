@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.management.phase.accuracytests;
+package com.topcoder.management.phase.db.accuracytests;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

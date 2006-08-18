@@ -8,7 +8,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.topcoder.management.phase.accuracytests.AccuracyTests;
+import com.topcoder.management.phase.db.accuracytests.AccuracyTests;
 import com.topcoder.management.phase.db.failuretests.FailureTests;
 import com.topcoder.management.phase.db.stress.StressTests;
 
