@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 
 import com.topcoder.management.phase.db.accuracytests.AccuracyTests;
 import com.topcoder.management.phase.db.failuretests.FailureTests;
-import com.topcoder.management.phase.db.stress.StressTests;
+import com.topcoder.management.phase.db.stresstests.StressTests;
 
 /**
  * <p>This test case aggregates all test cases.</p>

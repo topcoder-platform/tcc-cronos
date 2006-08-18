@@ -19,7 +19,8 @@ public class StressTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(InformixPhasePersistenceStressTest.class);
         return suite;
     }
 }

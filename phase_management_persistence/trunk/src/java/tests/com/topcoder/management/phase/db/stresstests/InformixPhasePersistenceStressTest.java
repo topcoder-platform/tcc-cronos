@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
-package com.topcoder.management.phase.db.stress;
+package com.topcoder.management.phase.db.stresstests;
 
 import java.sql.Connection;
 import java.sql.Statement;
