@@ -4,11 +4,14 @@
 
 package com.cronos.onlinereview.ajax.failuretests.mock;
 
+import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectStatus;
-import com.topcoder.management.project.ScorecardAssignment;
+import com.topcoder.management.project.ProjectType;
+import com.topcoder.management.project.ValidationException;
 import com.topcoder.search.builder.filter.Filter;
 
 import java.util.ArrayList;
@@ -277,37 +280,37 @@ public class MockProjectManager implements ProjectManager {
 
     }
 
-    /**
-     * <p>A mock implementation of the method. The method either throws an exception which might have been specified
-     * through {@link #throwException(String, Throwable)} method or return a result specified through {@link
-     * #setMethodResult(String, Object)} method.</p>
-     *
-     * @see ProjectManager#getAllScorecardAssignments()
-     */
-    public ScorecardAssignment[] getAllScorecardAssignments() {
-        if (MockProjectManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly", MockProjectManager.globalException);
-        }
-
-        String methodName = "getAllScorecardAssignments";
-
-        Throwable exception = (Throwable) MockProjectManager.throwExceptions.get(methodName);
-        if (exception != null) {
-            throw new RuntimeException("The test may not be configured properly", exception);
-        }
-
-        HashMap arguments = new HashMap();
-        List args = (List) MockProjectManager.methodArguments.get(methodName);
-        if (args == null) {
-            args = new ArrayList();
-            args = new ArrayList();
-            MockProjectManager.methodArguments.put(methodName, args);
-        }
-        args.add(arguments);
-
-        return (ScorecardAssignment[]) MockProjectManager.methodResults.get(methodName);
-
-    }
+//    /**
+//     * <p>A mock implementation of the method. The method either throws an exception which might have been specified
+//     * through {@link #throwException(String, Throwable)} method or return a result specified through {@link
+//     * #setMethodResult(String, Object)} method.</p>
+//     *
+//     * @see ProjectManager#getAllScorecardAssignments()
+//     */
+//    public ScorecardAssignment[] getAllScorecardAssignments() {
+//        if (MockProjectManager.globalException != null) {
+//            throw new RuntimeException("The test may not be configured properly", MockProjectManager.globalException);
+//        }
+//
+//        String methodName = "getAllScorecardAssignments";
+//
+//        Throwable exception = (Throwable) MockProjectManager.throwExceptions.get(methodName);
+//        if (exception != null) {
+//            throw new RuntimeException("The test may not be configured properly", exception);
+//        }
+//
+//        HashMap arguments = new HashMap();
+//        List args = (List) MockProjectManager.methodArguments.get(methodName);
+//        if (args == null) {
+//            args = new ArrayList();
+//            args = new ArrayList();
+//            MockProjectManager.methodArguments.put(methodName, args);
+//        }
+//        args.add(arguments);
+//
+//        return (ScorecardAssignment[]) MockProjectManager.methodResults.get(methodName);
+//
+//    }
 
     /**
      * <p>Sets the result to be returned by the specified method.</p>
@@ -398,6 +401,26 @@ public class MockProjectManager implements ProjectManager {
      * <p>Initializes the initial state for all created instances of <code>MockProjectManager</code> class.</p>
      */
     public static void init() {
+    }
+
+    public ProjectPropertyType[] getAllProjectPropertyTypes() throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ProjectType[] getAllProjectTypes() throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Project[] getProjects(long[] arg0) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void updateProject(Project arg0, String arg1, String arg2) throws PersistenceException, ValidationException {
+        // TODO Auto-generated method stub
+        
     }
 
 }

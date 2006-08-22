@@ -6,7 +6,7 @@ import com.cronos.onlinereview.ajax.AjaxRequestHandler;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
 import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.topcoder.management.resource.Resource;
-import com.topcoder.management.resource.ResourceFilterBuilder;
+import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.search.builder.SearchBundle;
@@ -108,33 +108,6 @@ public abstract class CommonHandler implements AjaxRequestHandler {
         return value.toString().equals(Long.toString(userId));
     }
 
-//    /**
-//     * <p>
-//     * Returns the role name for the user having userId as its ID.
-//     * </p>
-//     *
-//     * @return the role name or null if it is not found
-//     * @param userId the id of the user to get its role name
-//     * @throws ResourceException if the resource manager has thrown an exception
-//     */
-//    protected String getUserRoleName(long userId) throws ResourceException {
-//        // get the resource using the resource manager
-//        Resource resource = null;
-//        try {
-//            resource = resourceManager.getResource(userId);
-//        } catch (Exception e) {
-//            throw new ResourceException("Error when get the resource.", e);
-//        }
-//
-//        if (resource == null) {
-//            return null;
-//        }
-//
-//        // get the resource role from the resource and return it's name
-//        ResourceRole role = resource.getResourceRole();
-//        return role.getName();
-//    }
-
     /**
      * <p>
      * Check if a user has the specified role or not.
@@ -193,7 +166,7 @@ public abstract class CommonHandler implements AjaxRequestHandler {
 
         // find the resources using the bundle
         try {
-            Resource[] resources = resourceManager.searchResource(bundle);
+            Resource[] resources = resourceManager.searchResources(bundle);
             if (resources == null || resources.length == 0) {
                 return false;
             }

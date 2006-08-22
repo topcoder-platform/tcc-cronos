@@ -4,7 +4,11 @@
  */
 package com.cronos.onlinereview.ajax.accuracytests;
 
+import com.topcoder.management.phase.HandlerRegistryInfo;
+import com.topcoder.management.phase.PhaseHandler;
 import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.phase.PhaseOperationEnum;
+import com.topcoder.management.phase.PhaseValidator;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
@@ -35,7 +39,7 @@ public class MockPhaseManager implements PhaseManager {
     }
 
     public PhaseStatus[] getAllPhaseStatuses() {
-        return new PhaseStatus[]{new MockPhaseStatus()};
+        return new PhaseStatus[]{new MockPhaseStatus(1, "name")};
     }
 
     public boolean canStart(Phase phase) {
@@ -57,5 +61,35 @@ public class MockPhaseManager implements PhaseManager {
     }
 
     public void cancel(Phase phase, String operator) {
+    }
+
+    public PhaseHandler[] getAllHandlers() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PhaseValidator getPhaseValidator() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void registerHandler(PhaseHandler arg0, PhaseType arg1, PhaseOperationEnum arg2) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void setPhaseValidator(PhaseValidator arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public PhaseHandler unregisterHandler(PhaseType arg0, PhaseOperationEnum arg1) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.cronos.onlinereview.ajax.TestHelper;
+import com.topcoder.date.workdays.Workdays;
 
 /**
  * A mock subclass for <code>Project</code>.
@@ -15,6 +16,10 @@ import com.cronos.onlinereview.ajax.TestHelper;
  * @version 1.0
  */
 public class MockProject extends Project {
+
+    public MockProject(Date arg0, Workdays arg1) {
+        super(arg0, arg1);
+    }
 
     /**
      * The phases.

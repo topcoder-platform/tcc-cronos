@@ -5,6 +5,7 @@
 package com.cronos.onlinereview.ajax.failuretests.mock;
 
 import com.topcoder.management.review.scorecalculator.CalculationManager;
+import com.topcoder.management.review.scorecalculator.ConfigurationException;
 //import com.topcoder.management.review.scorecalculator.ScoreCalculator;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -50,16 +51,18 @@ public class MockCalculationManager extends CalculationManager {
 
     /**
      * <p>Constructs new <code>MockCalculationManager</code> instance. Nothing special occurs here.</p>
+     * @throws ConfigurationException 
      */
-    public MockCalculationManager() {
+    public MockCalculationManager() throws ConfigurationException {
         super();
         MockCalculationManager.init();
     }
 
     /**
      * <p>Constructs new <code>MockCalculationManager</code> instance. Nothing special occurs here.</p>
+     * @throws ConfigurationException 
      */
-    public MockCalculationManager(String string0) {
+    public MockCalculationManager(String string0) throws ConfigurationException {
         super(string0);
         MockCalculationManager.init();
     }

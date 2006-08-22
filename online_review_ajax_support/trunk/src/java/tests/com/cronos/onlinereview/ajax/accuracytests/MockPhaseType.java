@@ -17,10 +17,12 @@ public class MockPhaseType extends PhaseType {
 
     private int identifier = 0;
     public MockPhaseType(int identifier) {
+        super(identifier, "name");
         this.identifier = identifier;
     }
     
     public MockPhaseType() {
+        super(1, "name");
     }
     
     public String getName() {

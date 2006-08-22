@@ -4,7 +4,9 @@
 package com.topcoder.management.phase;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.project.phases.MockPhase;
 import com.topcoder.project.phases.MockPhaseStatus;
 import com.topcoder.project.phases.MockPhaseType;
@@ -37,20 +39,20 @@ public class MockPhaseManager implements PhaseManager {
      *
      */
     public MockPhaseManager() {
-        PhaseStatus open = new MockPhaseStatus();
+        PhaseStatus open = new MockPhaseStatus(1, "Open");
         open.setId(1);
         open.setName("Open");
         statuses.add(open);
 
-        PhaseType review = new MockPhaseType();
+        PhaseType review = new MockPhaseType(1, "Review");
         review.setId(1);
         review.setName("Review");
 
-        PhaseType appeal = new MockPhaseType();
+        PhaseType appeal = new MockPhaseType(2, "Appeals");
         appeal.setId(2);
         appeal.setName("Appeals");
 
-        PhaseType response = new MockPhaseType();
+        PhaseType response = new MockPhaseType(3, "Appeals Response");
         response.setId(3);
         response.setName("Appeals Response");
 
@@ -125,14 +127,14 @@ public class MockPhaseManager implements PhaseManager {
      * @return the project
      */
     public Project getPhases(long p) {
-        Project project = new MockProject();
+        Project project = new MockProject(new Date(), new DefaultWorkdays());
         project.setId(1);
 
         // review
         MockPhase phase = new MockPhase();
         phase.setId(1);
 
-        PhaseType type = new MockPhaseType();
+        PhaseType type = new MockPhaseType(1, "Review");
         type.setId(1);
         type.setName("Review");
 
@@ -142,7 +144,7 @@ public class MockPhaseManager implements PhaseManager {
         MockPhase appeal = new MockPhase();
         appeal.setId(2);
 
-        PhaseType appealType = new MockPhaseType();
+        PhaseType appealType = new MockPhaseType(2, "Appeals");
         appealType.setId(2);
         appealType.setName("Appeals");
 
@@ -152,7 +154,7 @@ public class MockPhaseManager implements PhaseManager {
         MockPhase response = new MockPhase();
         response.setId(3);
 
-        PhaseType responseType = new MockPhaseType();
+        PhaseType responseType = new MockPhaseType(3, "Appeals Response");
         responseType.setId(3);
         responseType.setName("Appeals Response");
 
@@ -201,5 +203,29 @@ public class MockPhaseManager implements PhaseManager {
      */
     public void removeStatuses() {
         this.statuses.clear();
+    }
+    public PhaseHandler[] getAllHandlers() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public PhaseValidator getPhaseValidator() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public void registerHandler(PhaseHandler arg0, PhaseType arg1, PhaseOperationEnum arg2) {
+        // TODO Auto-generated method stub
+        
+    }
+    public void setPhaseValidator(PhaseValidator arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+    public PhaseHandler unregisterHandler(PhaseType arg0, PhaseOperationEnum arg1) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

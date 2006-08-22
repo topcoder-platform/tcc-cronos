@@ -4,6 +4,7 @@
 
 package com.cronos.onlinereview.ajax.failuretests.mock;
 
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -368,6 +369,11 @@ public class MockScorecardManager implements ScorecardManager {
      */
     public static void init() {
         setMethodResult("getAllScorecardStatuses", TestDataFactory.getScorecardStatuses());
+    }
+
+    public Scorecard[] getScorecards(long[] arg0, boolean arg1) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

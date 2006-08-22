@@ -6,6 +6,7 @@ package com.topcoder.project.phases.template;
 import java.util.Date;
 
 import com.cronos.onlinereview.ajax.TestHelper;
+import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.project.phases.MockPhase;
 import com.topcoder.project.phases.MockPhaseType;
 import com.topcoder.project.phases.MockProject;
@@ -26,7 +27,7 @@ public class MockPhaseTemplate implements PhaseTemplate {
      * @return the project
      */
     public Project applyTemplate(String template, Date startDate) {
-        Project project = new MockProject();
+        Project project = new MockProject(new Date(), new DefaultWorkdays());
         project.setId(4);
         project.setStartDate(startDate);
 
@@ -37,7 +38,7 @@ public class MockPhaseTemplate implements PhaseTemplate {
         phase.setLength(1000);
         phase.setId(33);
 
-        phase.setPhaseType(new MockPhaseType());
+        phase.setPhaseType(new MockPhaseType(0, "name"));
 
         project.addPhase(phase);
 
@@ -50,7 +51,7 @@ public class MockPhaseTemplate implements PhaseTemplate {
      * @return the project
      */
     public Project applyTemplate(String template) {
-        Project project = new MockProject();
+        Project project = new MockProject(new Date(), new DefaultWorkdays());
         project.setId(4);
 
         MockPhase phase = new MockPhase();
@@ -60,7 +61,7 @@ public class MockPhaseTemplate implements PhaseTemplate {
         phase.setLength(1000);
         phase.setId(33);
 
-        phase.setPhaseType(new MockPhaseType());
+        phase.setPhaseType(new MockPhaseType(1, "name"));
 
         project.addPhase(phase);
 

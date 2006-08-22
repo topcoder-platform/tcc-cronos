@@ -184,10 +184,10 @@ public class TestDataFactory {
      */
     public static PhaseType[] getPhaseTypesWithoutReview() {
         PhaseType[] result = new PhaseType[2];
-        result[0] = new PhaseType();
+        result[0] = new PhaseType(1, "Appeal");
         result[0].setId(1);
         result[0].setName("Appeal");
-        result[1] = new PhaseType();
+        result[1] = new PhaseType(2, "Appeal Response");
         result[1].setId(2);
         result[1].setName("Appeal Response");
         return result;
@@ -200,10 +200,10 @@ public class TestDataFactory {
      */
     public static PhaseType[] getPhaseTypesWithoutAppeal() {
         PhaseType[] result = new PhaseType[2];
-        result[0] = new PhaseType();
+        result[0] = new PhaseType(1, "Review");
         result[0].setId(1);
         result[0].setName("Review");
-        result[1] = new PhaseType();
+        result[1] = new PhaseType(2, "Appeal Response");
         result[1].setId(2);
         result[1].setName("Appeal Response");
         return result;
@@ -216,10 +216,10 @@ public class TestDataFactory {
      */
     public static PhaseType[] getPhaseTypesWithoutAppealResponse() {
         PhaseType[] result = new PhaseType[2];
-        result[0] = new PhaseType();
+        result[0] = new PhaseType(1, "Review");
         result[0].setId(1);
         result[0].setName("Review");
-        result[1] = new PhaseType();
+        result[1] = new PhaseType(2, "Appeal");
         result[1].setId(2);
         result[1].setName("Appeal");
         return result;
@@ -232,13 +232,13 @@ public class TestDataFactory {
      */
     public static PhaseType[] getPhaseTypes() {
         PhaseType[] result = new PhaseType[3];
-        result[0] = new PhaseType();
+        result[0] = new PhaseType(1, "Review");
         result[0].setId(1);
         result[0].setName("Review");
-        result[1] = new PhaseType();
+        result[1] = new PhaseType(2, "Appeal Response");
         result[1].setId(2);
         result[1].setName("Appeal Response");
-        result[2] = new PhaseType();
+        result[2] = new PhaseType(3, "Appeals");
         result[2].setId(2);
         result[2].setName("Appeals");
         return result;
@@ -251,10 +251,10 @@ public class TestDataFactory {
      */
     public static PhaseStatus[] getPhaseStatusesWithoutOpen() {
         PhaseStatus[] result = new PhaseStatus[2];
-        result[0] = new PhaseStatus();
+        result[0] = new PhaseStatus(1, "Closed");
         result[0].setId(1);
         result[0].setName("Closed");
-        result[1] = new PhaseStatus();
+        result[1] = new PhaseStatus(2, "Cancelled");
         result[1].setId(2);
         result[1].setName("Cancelled");
         return result;
@@ -267,10 +267,10 @@ public class TestDataFactory {
      */
     public static PhaseStatus[] getPhaseStatuses() {
         PhaseStatus[] result = new PhaseStatus[2];
-        result[0] = new PhaseStatus();
+        result[0] = new PhaseStatus(1, "Open");
         result[0].setId(1);
         result[0].setName("Open");
-        result[1] = new PhaseStatus();
+        result[1] = new PhaseStatus(2, "Cancelled");
         result[1].setId(2);
         result[1].setName("Cancelled");
         return result;

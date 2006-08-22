@@ -6,6 +6,7 @@ import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
 import com.cronos.onlinereview.ajax.ConfigurationException;
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
@@ -181,7 +182,14 @@ public class SetScorecardStatusHandler extends CommonHandler {
         }
 
         // get the scorecard from the manager
-        Scorecard card = this.scorecardManager.getScorecard(scorecardId);
+        Scorecard card = null;
+        try {
+            card = this.scorecardManager.getScorecard(scorecardId);
+        } catch (PersistenceException e1) {
+            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
+                    "Error when get scorecard.", "SetScorecardStatus. " + "User id : " + userId
+                    + "\tscorecard : " + scorecardId);
+        }
         if (card == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_SCORECARD_ERROR,
                     "Can't find the scorecard.", "SetScorecardStatus. " + "User id : " + userId

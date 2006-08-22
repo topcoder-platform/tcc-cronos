@@ -5,6 +5,9 @@ package com.topcoder.project.phases;
 
 import java.util.Date;
 
+import com.topcoder.date.workdays.DefaultWorkdays;
+import com.topcoder.date.workdays.Workdays;
+
 /**
  * A mock subclass for <code>Phase</code>.
  *
@@ -53,7 +56,8 @@ public class MockPhase extends Phase {
      * The constructor.
      */
     public MockPhase() {
-        this.phaseStatus = new MockPhaseStatus();
+        super(new Project(new Date(), new DefaultWorkdays()), 1);
+        this.phaseStatus = new MockPhaseStatus(1, "Appeal");
         this.phaseStatus.setId(1);
     }
 
@@ -120,17 +124,15 @@ public class MockPhase extends Phase {
      * @return all dependencies.
      */
     public Dependency[] getAllDependencies() {
-
-        Dependency dep = new MockDependency();
-
         Phase dependency = new MockPhase();
         dependency.setId(31);
-        dep.setDependency(dependency);
 
         Phase dependent = new MockPhase();
         dependent.setId(32);
-        dep.setDependent(dependent);
 
+        Dependency dep = new MockDependency(dependency, dependent, false, false, 100);
+        dep.setDependency(dependency);
+        dep.setDependent(dependent);
         dep.setLagTime(100);
 
         return new Dependency[] {dep};

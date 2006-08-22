@@ -12,6 +12,10 @@ package com.topcoder.project.phases;
 public class MockPhaseType extends PhaseType {
 
 
+    public MockPhaseType(long id, String name) {
+        super(id, name);
+    }
+
     /**
      * Represents the id.
      */

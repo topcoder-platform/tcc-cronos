@@ -3,6 +3,7 @@
  */
 package com.topcoder.management.deliverable;
 
+import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.search.builder.filter.Filter;
 
 /**
@@ -111,6 +112,61 @@ public class MockUploadManager implements UploadManager {
      */
     public void updateUpload(Upload upload, String operator) {
 
+    }
+
+    public void createSubmissionStatus(SubmissionStatus arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void createUploadStatus(UploadStatus arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void createUploadType(UploadType arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void removeSubmission(Submission arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void removeSubmissionStatus(SubmissionStatus arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void removeUpload(Upload arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void removeUploadStatus(UploadStatus arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void removeUploadType(UploadType arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void updateSubmissionStatus(SubmissionStatus arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void updateUploadStatus(UploadStatus arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void updateUploadType(UploadType arg0, String arg1) throws UploadPersistenceException {
+        // TODO Auto-generated method stub
+        
     }
 
 }

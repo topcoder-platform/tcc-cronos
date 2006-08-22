@@ -4,6 +4,7 @@
  */
 package com.cronos.onlinereview.ajax.accuracytests;
 
+import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -47,5 +48,10 @@ public class MockScorecardManager implements ScorecardManager {
 
     public ScorecardStatus[] getAllScorecardStatuses() {
         return new ScorecardStatus[]{new MockScorecardStatus(1), new MockScorecardStatus(2)};
+    }
+
+    public Scorecard[] getScorecards(long[] arg0, boolean arg1) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -38,20 +38,14 @@ public class MockProjectManager implements ProjectManager {
     }
 
     /**
-     * Get all scorecard assignment.
-     * @return all scorecard assignment.
-     */
-    public ScorecardAssignment[] getAllScorecardAssignments() {
-        return null;
-    }
-
-    /**
      * Get project by id.
      * @param id the id
      * @return the project
      */
     public Project getProject(long id) {
-        Project project = new MockProject();
+        Project project = new MockProject(
+                new ProjectCategory(1, "name", new ProjectType(1, "Java")),
+                new ProjectStatus(1, "Open"));
         project.setProperty("Public", "Yes");
         return project;
     }
@@ -80,6 +74,26 @@ public class MockProjectManager implements ProjectManager {
      * @param operator the operator
      */
     public void updateProject(Project project, String operator) {
+    }
+
+    public ProjectPropertyType[] getAllProjectPropertyTypes() throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ProjectType[] getAllProjectTypes() throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Project[] getProjects(long[] arg0) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void updateProject(Project arg0, String arg1, String arg2) throws PersistenceException, ValidationException {
+        // TODO Auto-generated method stub
+        
     }
 
 }

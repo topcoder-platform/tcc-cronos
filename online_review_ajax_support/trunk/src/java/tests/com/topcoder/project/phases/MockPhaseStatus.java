@@ -26,10 +26,11 @@ public class MockPhaseStatus extends PhaseStatus {
     /**
      * Default Constructor.
      *
-     * @param id
-     * @param name
+     * @param id id
+     * @param name name
      */
-    public MockPhaseStatus() {
+    public MockPhaseStatus(long id, String name) {
+        super(id, name);
     }
 
     /**

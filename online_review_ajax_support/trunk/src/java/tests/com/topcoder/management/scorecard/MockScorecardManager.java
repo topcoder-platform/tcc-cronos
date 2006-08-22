@@ -90,4 +90,9 @@ public class MockScorecardManager implements ScorecardManager {
     public void updateScorecard(Scorecard scorecard, String operator) {
     }
 
+    public Scorecard[] getScorecards(long[] arg0, boolean arg1) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

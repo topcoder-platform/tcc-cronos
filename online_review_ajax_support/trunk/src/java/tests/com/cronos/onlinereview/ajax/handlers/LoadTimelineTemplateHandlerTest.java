@@ -4,6 +4,7 @@
 package com.cronos.onlinereview.ajax.handlers;
 
 import java.io.ByteArrayInputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,6 +23,7 @@ import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
 import com.cronos.onlinereview.ajax.TestHelper;
+import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.project.phases.MockPhase;
 import com.topcoder.project.phases.MockPhaseType;
 import com.topcoder.project.phases.MockProject;
@@ -204,7 +206,7 @@ public class LoadTimelineTemplateHandlerTest extends TestCase {
      */
     public void testTimelineToXmlAccuracy1() throws Exception {
         // this will return one phases
-        Project prj = new MockProject();
+        Project prj = new MockProject(new Date(), new DefaultWorkdays());
 
         prj.setId(1);
         prj.setStartDate(TestHelper.DATE_1);
@@ -215,7 +217,7 @@ public class LoadTimelineTemplateHandlerTest extends TestCase {
         phase.calcEndDate = TestHelper.DATE_2;
         phase.setLength(1000);
         phase.setId(33);
-        phase.setPhaseType(new MockPhaseType());
+        phase.setPhaseType(new MockPhaseType(1, "Appeal"));
         prj.addPhase(phase);
 
         String xml = LoadTimelineTemplateHandler.timelineToXml(prj);
@@ -254,7 +256,7 @@ public class LoadTimelineTemplateHandlerTest extends TestCase {
      */
     public void testTimelineToXmlAccuracy2() throws Exception {
         // this will return one phases
-        Project prj = new MockProject();
+        Project prj = new MockProject(new Date(), new DefaultWorkdays());
 
         prj.setId(1);
         prj.setStartDate(TestHelper.DATE_1);
@@ -265,7 +267,7 @@ public class LoadTimelineTemplateHandlerTest extends TestCase {
         phase.calcEndDate = TestHelper.DATE_2;
         phase.setLength(1000);
         phase.setId(33);
-        phase.setPhaseType(new MockPhaseType());
+        phase.setPhaseType(new MockPhaseType(1, "Appeal"));
         prj.addPhase(phase);
 
         String xml = LoadTimelineTemplateHandler.timelineToXml(prj);

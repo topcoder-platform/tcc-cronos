@@ -4,11 +4,14 @@
  */
 package com.cronos.onlinereview.ajax.accuracytests;
 
+import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectStatus;
-import com.topcoder.management.project.ScorecardAssignment;
+import com.topcoder.management.project.ProjectType;
+import com.topcoder.management.project.ValidationException;
 import com.topcoder.search.builder.filter.Filter;
 
 
@@ -31,7 +34,8 @@ public class MockProjectManager implements ProjectManager {
         if (id == -1) {
             return null;
         } else {
-            return new MockProject();
+            return new MockProject(new ProjectCategory(1, "name", new ProjectType(1, "Java")),
+                    new ProjectStatus(1, "Open"));
         }
         
     }
@@ -52,7 +56,23 @@ public class MockProjectManager implements ProjectManager {
         return null;
     }
 
-    public ScorecardAssignment[] getAllScorecardAssignments() {
+    public ProjectPropertyType[] getAllProjectPropertyTypes() throws PersistenceException {
+        // TODO Auto-generated method stub
         return null;
+    }
+
+    public ProjectType[] getAllProjectTypes() throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Project[] getProjects(long[] arg0) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void updateProject(Project arg0, String arg1, String arg2) throws PersistenceException, ValidationException {
+        // TODO Auto-generated method stub
+        
     }
 }

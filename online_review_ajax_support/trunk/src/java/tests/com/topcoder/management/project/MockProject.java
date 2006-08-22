@@ -14,6 +14,10 @@ import java.util.Map;
  */
 public class MockProject extends Project {
 
+    public MockProject(ProjectCategory arg0, ProjectStatus arg1) {
+        super(arg0, arg1);
+    }
+
     /**
      * The properties.
      */
