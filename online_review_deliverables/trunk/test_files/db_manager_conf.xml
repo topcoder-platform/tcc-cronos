@@ -23,7 +23,7 @@
 			<Value>submission</Value>
 			<Value>upload</Value>
 			<Value>resource</Value>
-			<Value>phase</Value>
+			<Value>project_phase</Value>
 			<Value>project</Value>
 
 		</Property>

@@ -15,12 +15,12 @@
 	<project project_id="3" project_status_id="1" project_category_id="1" create_user="'x'" create_date="CURRENT" modify_user="'x'" modify_date="CURRENT"  />
 	<project project_id="4" project_status_id="1" project_category_id="1" create_user="'x'" create_date="CURRENT" modify_user="'x'" modify_date="CURRENT"  />
 
-	<phase phase_id="1" project_id="1" phase_type_id="1" phase_status_id="1" scheduled_start_time="CURRENT"
-		scheduled_end_time="CURRENT" duration="CURRENT-CURRENT" create_user="'x'" create_date="CURRENT" modify_user="'x'" modify_date="CURRENT"  />
+	<project_phase project_phase_id="1" project_id="1" phase_type_id="1" phase_status_id="1" scheduled_start_time="CURRENT"
+		scheduled_end_time="CURRENT" duration="0" create_user="'x'" create_date="CURRENT" modify_user="'x'" modify_date="CURRENT"  />
 
-	<resource resource_id="1" resource_role_id="1" project_id="1" phase_id="1"
+	<resource resource_id="1" resource_role_id="1" project_id="1" project_phase_id="1"
 		create_user="'x'" create_date="CURRENT" modify_user="'x'" modify_date="CURRENT"  />
-	<resource resource_id="2" resource_role_id="1" project_id="1" phase_id="1"
+	<resource resource_id="2" resource_role_id="1" project_id="1" project_phase_id="1"
 		create_user="'x'" create_date="CURRENT" modify_user="'x'" modify_date="CURRENT"  />
 
 

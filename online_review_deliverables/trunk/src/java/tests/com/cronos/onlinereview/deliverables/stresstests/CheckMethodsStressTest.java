@@ -3,6 +3,11 @@
  */
 package com.cronos.onlinereview.deliverables.stresstests;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.Statement;
+
 import com.cronos.onlinereview.deliverables.AggregationDeliverableChecker;
 import com.cronos.onlinereview.deliverables.AggregationReviewDeliverableChecker;
 import com.cronos.onlinereview.deliverables.AppealResponsesDeliverableChecker;
@@ -42,6 +47,12 @@ public class CheckMethodsStressTest extends TestCase {
     private static final String NAMESPACE = "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
 
     /**
+     * Storage for sql statements for inserting values in defaultusers table.
+     */
+    private static final String PRECONDITIONS_SQL_FILE =
+        "test_files/stress/data.sql";
+    
+    /**
      * Connection name.
      */
     private static final String CNAME = "online";
@@ -49,7 +60,7 @@ public class CheckMethodsStressTest extends TestCase {
     /**
      * The number of times for stress testing.
      */
-    private static int stressNum = 100;
+    private static int stressNum = 20;
 
     /**
      * DBConnectionFactory instance used for testing.
@@ -72,6 +83,11 @@ public class CheckMethodsStressTest extends TestCase {
         configManager.add(CONFIGFILE);
 
         dbfactory = new DBConnectionFactoryImpl(NAMESPACE);
+
+        Connection conn = dbfactory.createConnection();
+        clearTables(conn);
+        addTestData(conn);
+        conn.close();
     }
 
     /**
@@ -80,13 +96,50 @@ public class CheckMethodsStressTest extends TestCase {
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
-        ConfigManager configManager = ConfigManager.getInstance();
+      Connection conn = dbfactory.createConnection();
+      clearTables(conn);
+      conn.close();
+      
+      ConfigManager configManager = ConfigManager.getInstance();
 
         if (configManager.existsNamespace(NAMESPACE)) {
             configManager.removeNamespace(NAMESPACE);
         }
     }
 
+    /**
+     * Adding data from sql file for testing purposes.
+     * @param connection connection to database
+     * @throws Exception wrap all exceptions
+     */
+    public static void addTestData(Connection connection) throws Exception {
+        BufferedReader reader = new BufferedReader(new FileReader(PRECONDITIONS_SQL_FILE));
+        String sql;
+        while ((sql = reader.readLine()) != null) {
+            // ececute each sql insert statement,
+            if (sql.length() > 2) {
+                connection.createStatement().executeUpdate(sql);
+            }
+        }
+    }
+    
+    /**
+     * Deleting all data from specified table.
+     * @param connection connection to database
+     * @throws Exception wrap all exceptions
+     */
+    public static void clearTables(Connection connection) throws Exception {
+        String[] tables =
+            new String[] {"review_item_comment", "review_comment", "review_item", "review", "submission",
+                "upload", "resource", "project_phase", "project", "scorecard_question", "scorecard_section",
+                "scorecard_group", "scorecard"};
+        for (int i = 0; i < tables.length; i++) {
+            String query = "DELETE FROM " + tables[i];
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        }
+    }
+    
     /**
      * Test of AggregationDeliverableChecker#check.
      *
@@ -201,8 +254,6 @@ public class CheckMethodsStressTest extends TestCase {
 
         for (int i = 0; i < stressNum; i++) {
             Deliverable deliverable = new Deliverable(1, 1, 1, new Long(1), true);
-
-            deliverable.setCompletionDate(null);
 
             tester.check(deliverable);
 

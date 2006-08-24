@@ -60,10 +60,8 @@ public class AccuracyTestHelper {
      */
     public static void clearTables(Connection connection) throws Exception {
         String[] tables =
-            new String[] {"review_comment", "review", "submission", "upload", "resource", "phase",
-                "project", "scorecard", "resource_role_lu", "phase_status_lu", "upload_type_lu",
-                "upload_status_lu", "phase_type_lu", "project_status_lu", "submission_status_lu",
-                "scorecard_type_lu", "scorecard_status_lu", "comment_type_lu", "project_category_lu", "project_type_lu"};
+            new String[] {"review_comment", "review", "submission", "upload", "resource", "project_phase",
+                "project", "scorecard"};
         for (int i = 0; i < tables.length; i++) {
             String query = "DELETE FROM " + tables[i];
             Statement statement = connection.createStatement();
