@@ -4,9 +4,11 @@
 
 package com.topcoder.management.phase;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.topcoder.management.phase.autopilot.MockWorkdays;
 import com.topcoder.management.phase.validation.DefaultPhaseValidator;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
@@ -144,12 +146,12 @@ public class DefaultPhaseManager3 implements PhaseManager {
         projects = new Project[2];
 
         // Project 1 has empty phases array.
-        Project proj = new Project(null, null);
+        Project proj = new Project(new Date(), new MockWorkdays());
         proj.setId(1);
         projects[0] = proj;
 
         // Project 2 has null phases array.
-        proj = new Project(null, null) {
+        proj = new Project(new Date(), new MockWorkdays()) {
             public Phase[] getAllPhases() {
                 return null;
             }

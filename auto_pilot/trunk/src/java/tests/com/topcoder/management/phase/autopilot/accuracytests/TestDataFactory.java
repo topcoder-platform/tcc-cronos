@@ -249,8 +249,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getPhaseWithNonNullType() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getPhaseWithNonNullType(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(MockPhaseType.REVIEW);
         return result;
     }
@@ -260,8 +260,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getPhaseWithNullType() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getPhaseWithNullType(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(null);
         return result;
     }
@@ -271,8 +271,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getClosedPhase() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getClosedPhase(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(MockPhaseType.REVIEW);
         result.setPhaseStatus(MockPhaseStatus.CLOSED);
         return result;
@@ -283,8 +283,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getOpenPhase() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getOpenPhase(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(MockPhaseType.REVIEW);
         result.setPhaseStatus(MockPhaseStatus.OPEN);
         return result;
@@ -295,8 +295,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getScheduledPhase() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getScheduledPhase(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(MockPhaseType.REVIEW);
         result.setPhaseStatus(MockPhaseStatus.SCHEDULED);
         return result;
@@ -307,8 +307,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getPhaseWithNullStatus() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getPhaseWithNullStatus(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(MockPhaseType.REVIEW);
         result.setPhaseStatus(null);
         return result;
@@ -319,8 +319,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getPhaseWithoutDependencies() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getPhaseWithoutDependencies(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(MockPhaseType.REVIEW);
         result.setPhaseStatus(MockPhaseStatus.OPEN);
         return result;
@@ -331,8 +331,8 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getProcessedPhase() {
-        MockPhase result = new MockPhase(1, getPhaseProject());
+    public static Phase getProcessedPhase(com.topcoder.project.phases.Project project) {
+        MockPhase result = new MockPhase(1, project);
         result.setPhaseType(MockPhaseType.REVIEW);
         result.setPhaseStatus(MockPhaseStatus.CLOSED);
         return result;

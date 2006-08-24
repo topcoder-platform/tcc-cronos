@@ -503,9 +503,9 @@ public class MockPhaseManager implements PhaseManager {
      */
     public static void init() {
         Project project = new Project(new Date(), new DefaultWorkdays());
-        project.addPhase(TestDataFactory.getOpenPhase());
-        project.addPhase(TestDataFactory.getScheduledPhase());
-        project.addPhase(TestDataFactory.getClosedPhase());
+        project.addPhase(TestDataFactory.getOpenPhase(project));
+        project.addPhase(TestDataFactory.getScheduledPhase(project));
+        project.addPhase(TestDataFactory.getClosedPhase(project));
         setMethodResult("getPhases_long", project);
         setMethodResult("getPhases_long[]", new Project[] {project});
     }

@@ -18,10 +18,10 @@ import java.util.Iterator;
  */
 public class FailureTestsHelper extends TestCase {
     /** File that contains configurations for basic logger. */
-    protected static final String BASIC_LOGGER_CONFIG = "test_files/failuretests/BasicLogger.xml";
+    protected static final String BASIC_LOGGER_CONFIG = "failuretests/BasicLogger.xml";
 
     /** File that contains configurations for AutoPilot component. */
-    protected static final String CONFIG = "test_files/failuretests/AutoPilot.xml";
+    protected static final String CONFIG = "failuretests/AutoPilot.xml";
 
     /**
      * Sets up the test environment. Unloads all configuration namespaces.

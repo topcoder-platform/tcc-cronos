@@ -58,6 +58,9 @@ public class MockPhase extends Phase {
      * @see Phase#getProject()
      */
     public Project getProject() {
+        if (this.project == null) {
+           return super.getProject();
+        }
         return this.project;
     }
 
