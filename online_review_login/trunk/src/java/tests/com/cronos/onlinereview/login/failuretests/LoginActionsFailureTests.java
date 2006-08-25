@@ -32,7 +32,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
-    private static final String INVALID_CONFIG3 = "test_files/failure/LoginActions_InvalidParsernamespace.xml";
+    private static final String INVALID_CONFIG3 = "test_files/failure/LoginActions_InvalidParserNamespace.xml";
     
     /**
      * Represents the invalid configuration for constructing LoginActions.
@@ -275,8 +275,6 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
         addRequestParameter("method", "login");
         actionPerform();
         verifyForward("failure");
-        verifyActionErrors(new String[]{
-                "exception.com.cronos.onlinereview.login.LoginActions.login.InvalidPrincipalException"});
     }
 
     /**

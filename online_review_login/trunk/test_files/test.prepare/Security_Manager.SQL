@@ -1,148 +1,148 @@
 --==============================================================
--- Component:  Security Manager
+-- component:  security manager
 --==============================================================
 
-drop table if exists GROUP_ROLE_XREF;
+drop table if exists group_role_xref;
 
-drop table if exists KEY_GENERATION;
+drop table if exists key_generation;
 
-drop table if exists SECURITY_GROUPS;
+drop table if exists security_groups;
 
-drop table if exists SECURITY_PERMS;
+drop table if exists security_perms;
 
-drop table if exists SECURITY_ROLES;
+drop table if exists security_roles;
 
-drop table if exists SECURITY_USER;
+drop table if exists security_user;
 
-drop table if exists USER_GROUP_XREF;
+drop table if exists user_group_xref;
 
-drop table if exists USER_ROLE_XREF;
+drop table if exists user_role_xref;
 
 --==============================================================
--- Table: GROUP_ROLE_XREF
+-- table: group_role_xref
 --==============================================================
-create table GROUP_ROLE_XREF  (
-  GROUP_ROLE_ID        DECIMAL(18,0) NOT NULL,
-  GROUP_ID             DECIMAL(18,0),
-  ROLE_ID              DECIMAL(18,0),
-  constraint PK_GROUP_ROLE_XREF primary key (GROUP_ROLE_ID)
+create table group_role_xref  (
+  group_role_id        decimal(18,0) not null,
+  group_id             decimal(18,0),
+  role_id              decimal(18,0),
+  constraint pk_group_role_xref primary key (group_role_id)
 );
 
 --==============================================================
--- Index: GROUP_ROLE_XREF_I2
+-- index: group_role_xref_i2
 --==============================================================
--- isv: Seems that MySQL does not support the cluster indexes
-create unique index GROUP_ROLE_XREF_I2 on GROUP_ROLE_XREF (
-        GROUP_ID asc, ROLE_ID asc
+-- isv: seems that mysql does not support the cluster indexes
+create unique index group_role_xref_i2 on group_role_xref (
+        group_id asc, role_id asc
 );
 
 --==============================================================
--- Table: KEY_GENERATION
+-- table: key_generation
 --==============================================================
-create table KEY_GENERATION  (
-  USER_DEF             CHAR(18) not null,
-  HIGH_VALUE           DECIMAL(13,0)  not null,
-  constraint PK_KEY_GENERATION primary key (USER_DEF)      
+create table key_generation  (
+  user_def             char(18) not null,
+  high_value           decimal(13,0)  not null,
+  constraint pk_key_generation primary key (user_def)      
 );
 
 --==============================================================
--- Table: SECURITY_GROUPS
+-- table: security_groups
 --==============================================================
-create table SECURITY_GROUPS  (
-  GROUP_ID             DECIMAL(18,0) not null,
-  DESCRIPTION          VARCHAR(254)  not null,
-  constraint PK_SECURITY_GROUPS primary key (GROUP_ID)      
+create table security_groups  (
+  group_id             decimal(18,0) not null,
+  description          varchar(254)  not null,
+  constraint pk_security_groups primary key (group_id)      
 );
 
 --==============================================================
--- Table: SECURITY_PERMS
+-- table: security_perms
 --==============================================================
-create table SECURITY_PERMS  (
-  ROLE_ID              DECIMAL(18,0) not null,
-  PERMISSION           VARCHAR(254)  not null,
-  constraint PK_SECURITY_PERMS primary key (ROLE_ID, PERMISSION)
+create table security_perms  (
+  role_id              decimal(18,0) not null,
+  permission           varchar(254)  not null,
+  constraint pk_security_perms primary key (role_id, permission)
 );
 
 --==============================================================
--- Table: SECURITY_ROLES
+-- table: security_roles
 --==============================================================
-create table SECURITY_ROLES  (
-  ROLE_ID              DECIMAL(18,0) not null,
-  DESCRIPTION          VARCHAR(254) not null,
-  constraint PK_SECURITY_ROLES primary key (ROLE_ID)
+create table security_roles  (
+  role_id              decimal(18,0) not null,
+  description          varchar(254) not null,
+  constraint pk_security_roles primary key (role_id)
 );
 
 --==============================================================
--- Table: SECURITY_USER
+-- table: security_user
 --==============================================================
-create table SECURITY_USER  (
-  LOGIN_ID             DECIMAL(18,0) not null,
-  USER_ID              VARCHAR(50)   not null,
-  PASSWORD             VARCHAR(50)   not null,
-  constraint PK_SECURITY_USER primary key (LOGIN_ID)
+create table security_user  (
+  login_id             decimal(18,0) not null,
+  user_id              varchar(50)   not null,
+  password             varchar(50)   not null,
+  constraint pk_security_user primary key (login_id)
 );
 
 --==============================================================
--- Index: SECURITY_USER_I2
+-- index: security_user_i2
 --==============================================================
-create unique index SECURITY_USER_I2 on SECURITY_USER (
-        USER_ID asc
+create unique index security_user_i2 on security_user (
+        user_id asc
 );
 
 --==============================================================
--- Table: USER_GROUP_XREF
+-- table: user_group_xref
 --==============================================================
-create table USER_GROUP_XREF  (
-  USER_GROUP_ID        DECIMAL(18,0) not null,
-  LOGIN_ID             DECIMAL(18,0),
-  GROUP_ID             DECIMAL(18,0),
-  constraint PK_USER_GROUP_XREF primary key (USER_GROUP_ID)
+create table user_group_xref  (
+  user_group_id        decimal(18,0) not null,
+  login_id             decimal(18,0),
+  group_id             decimal(18,0),
+  constraint pk_user_group_xref primary key (user_group_id)
 );
 
 --==============================================================
--- Index: USER_GRP_XREF_I2
+-- index: user_grp_xref_i2
 --==============================================================
--- isv: Seems that MySQL does not support the cluster indexes
-create unique index USER_GRP_XREF_I2 on USER_GROUP_XREF (
-        LOGIN_ID asc,
-        GROUP_ID asc
+-- isv: seems that mysql does not support the cluster indexes
+create unique index user_grp_xref_i2 on user_group_xref (
+        login_id asc,
+        group_id asc
 );
 
 --==============================================================
--- Table: USER_ROLE_XREF
+-- table: user_role_xref
 --==============================================================
-create table USER_ROLE_XREF  (
-  USER_ROLE_ID         DECIMAL(18,0) not null,
-  LOGIN_ID             DECIMAL(18,0),
-  ROLE_ID              DECIMAL(18,0),
-  constraint PK_USER_ROLE_XREF primary key (USER_ROLE_ID)
+create table user_role_xref  (
+  user_role_id         decimal(18,0) not null,
+  login_id             decimal(18,0),
+  role_id              decimal(18,0),
+  constraint pk_user_role_xref primary key (user_role_id)
 );
 
 --==============================================================
--- Index: USER_ROLE_XREF_I2
+-- index: user_role_xref_i2
 --==============================================================
--- isv: Seems that MySQL does not support the cluster indexes
-create unique index USER_ROLE_XREF_I2 on USER_ROLE_XREF (
-        LOGIN_ID asc,
-        ROLE_ID  asc
+-- isv: seems that mysql does not support the cluster indexes
+create unique index user_role_xref_i2 on user_role_xref (
+        login_id asc,
+        role_id  asc
 );
 
-alter table SECURITY_PERMS
-   add constraint FK_SECURITY_PERM foreign key (ROLE_ID)
-      references SECURITY_ROLES (ROLE_ID) on delete cascade;
+alter table security_perms
+   add constraint fk_security_perm foreign key (role_id)
+      references security_roles (role_id) on delete cascade;
 
-alter table USER_GROUP_XREF
-   add constraint FK_USER_GRP_XREF1 foreign key (LOGIN_ID)
-      references SECURITY_USER (LOGIN_ID) on delete cascade;
+alter table user_group_xref
+   add constraint fk_user_grp_xref1 foreign key (login_id)
+      references security_user (login_id) on delete cascade;
 
-alter table USER_GROUP_XREF
-   add constraint FK_USER_GRP_XREF2 foreign key (GROUP_ID)
-      references SECURITY_GROUPS (GROUP_ID) on delete cascade;
+alter table user_group_xref
+   add constraint fk_user_grp_xref2 foreign key (group_id)
+      references security_groups (group_id) on delete cascade;
 
-alter table USER_ROLE_XREF
-   add constraint FK_USER_ROLE_XREF1 foreign key (LOGIN_ID)
-      references SECURITY_USER (LOGIN_ID) on delete cascade;
+alter table user_role_xref
+   add constraint fk_user_role_xref1 foreign key (login_id)
+      references security_user (login_id) on delete cascade;
 
-alter table USER_ROLE_XREF
-   add constraint FK_USER_ROLE_XREF2 foreign key (ROLE_ID)
-      references SECURITY_ROLES (ROLE_ID) on delete cascade;
+alter table user_role_xref
+   add constraint fk_user_role_xref2 foreign key (role_id)
+      references security_roles (role_id) on delete cascade;
