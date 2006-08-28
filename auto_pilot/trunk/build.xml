@@ -346,6 +346,12 @@
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
+        
+        <copy todir="${build_tcsdistdir}">
+            <fileset dir=".">
+                <include name="autojob.*"/>
+            </fileset>
+        </copy>
 
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
