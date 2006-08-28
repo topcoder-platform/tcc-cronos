@@ -9,9 +9,18 @@ CREATE TABLE project (
   FOREIGN KEY(project_category_id)
     REFERENCES project_category_lu(project_category_id)
 );
+CREATE TABLE resource (
+  resource_id                   INTEGER                         NOT NULL,
+  PRIMARY KEY(resource_id)
+);
 CREATE TABLE resource_info_type_lu (
   resource_info_type_id         INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
+  description                   VARCHAR(254)                    NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(resource_info_type_id)
 );
 CREATE TABLE resource_info (
@@ -24,14 +33,11 @@ CREATE TABLE resource_info (
   FOREIGN KEY(resource_id)
     REFERENCES resource(resource_id)
 );
-CREATE TABLE resource (
-  resource_id                   INTEGER                         NOT NULL,
-  PRIMARY KEY(resource_id)
-);
 CREATE TABLE upload (
   upload_id                     INTEGER                         NOT NULL,
   project_id                    INTEGER                         NOT NULL,
   resource_id                   INTEGER                         NOT NULL,
+  parameter 			VARCHAR(254)			NOT NULL,
   PRIMARY KEY(upload_id),
   FOREIGN KEY(resource_id)
     REFERENCES resource(resource_id),

@@ -1,8 +1,7 @@
-/**
- *
+/*
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
-package com.cronos.onlinereview.auoscreening.tool.stresstests;
+package com.cronos.onlinereview.autoscreening.tool.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -19,7 +18,7 @@ public class StressTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(ScreenerStressTests.class);
         return suite;
     }
 }

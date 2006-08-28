@@ -1,40 +1,39 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006 TopCoder Inc., All rights reserved
  */
-package com.cronos.onlinereview.auoscreening.tool;
+package com.cronos.onlinereview.autoscreening.tool;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import com.cronos.onlinereview.auoscreening.tool.accuracytests.AccuracyTests;
-import com.cronos.onlinereview.auoscreening.tool.failuretests.FailureTests;
-import com.cronos.onlinereview.auoscreening.tool.stresstests.StressTests;
+
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.AccuracyTests;
+import com.cronos.onlinereview.autoscreening.tool.failuretests.FailureTests;
+import com.cronos.onlinereview.autoscreening.tool.stresstests.StressTests;
 
 /**
- * <p>This test case aggregates all test cases.</p>
- *
+ * <p>
+ * This test case aggregates all test cases.
+ * </p>
  * @author TopCoder
  * @version 1.0
  */
 public class AllTests extends TestCase {
-
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        
-        //unit tests
+
+        // unit tests
         suite.addTest(UnitTests.suite());
-        
-        //accuracy tests
+
+        // accuracy tests
         suite.addTest(AccuracyTests.suite());
-        
-        //failure tests
+
+        // failure tests
         suite.addTest(FailureTests.suite());
-        
-        //stress tests
+
+        // stress tests
         suite.addTest(StressTests.suite());
-        
+
         return suite;
     }
-
 }
