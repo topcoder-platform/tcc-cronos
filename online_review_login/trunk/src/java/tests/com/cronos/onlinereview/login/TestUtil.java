@@ -23,7 +23,7 @@ import com.topcoder.util.config.ConfigManager;
  * to clear configurations, to create user via EJB and get private field value via reflection.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author maone
  * @version 1.0
  */
 public class TestUtil {

@@ -29,7 +29,7 @@ import com.topcoder.security.authenticationfactory.Response;
  * This class is thread safe since it does not contain any mutable state.
  * </p>
  *
- * @author woodjohn, TCSDEVELOPER
+ * @author woodjohn, maone
  * @version 1.0
  */
 public class SecurityManagerAuthResponseParser implements AuthResponseParser {

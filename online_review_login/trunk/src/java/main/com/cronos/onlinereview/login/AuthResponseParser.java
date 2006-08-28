@@ -26,7 +26,7 @@ import com.topcoder.security.authenticationfactory.Response;
  * that <code>LoginActions</code> can create it via reflection at the construction time.
  * </p>
  *
- * @author woodjohn, TCSDEVELOPER
+ * @author woodjohn, maone
  * @version 1.0
  */
 public interface AuthResponseParser {

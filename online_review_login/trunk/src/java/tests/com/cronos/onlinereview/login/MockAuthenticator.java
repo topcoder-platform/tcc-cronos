@@ -28,7 +28,7 @@ import com.topcoder.security.authenticationfactory.Response;
  * return success response, otherwise return false response.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author maone
  * @version 1.0
  */
 public class MockAuthenticator extends AbstractAuthenticator {

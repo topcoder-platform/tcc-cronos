@@ -39,7 +39,7 @@ import com.topcoder.util.log.LogFactory;
  * This class is thread safe since it does not contain any mutable inner states.
  * </p>
  *
- * @author woodjhon, TCSDEVELOPER
+ * @author woodjhon, maone
  * @version 1.0
  */
 public class LoginActions extends DispatchAction {

@@ -41,7 +41,7 @@ import com.topcoder.util.config.ConfigManagerException;
  * This class is thread safe since it does not contain any mutable inner state.
  * </p>
  *
- * @author woodjohn, TCSDEVELOPER
+ * @author woodjohn, maone
  * @version 1.0
  */
 public class SecurityManagerAuthenticator extends AbstractAuthenticator {

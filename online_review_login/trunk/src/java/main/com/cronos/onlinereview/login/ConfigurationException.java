@@ -15,7 +15,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * <code>SecurityManagerAuthResponseParser</code>.
  * </p>
  *
- * @author woodjohn, TCSDEVELOPER
+ * @author woodjohn, maone
  * @version 1.0
  */
 public class ConfigurationException extends BaseException {

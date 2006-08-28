@@ -14,7 +14,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * parameters.
  * </p>
  *
- * @author woodjohn, TCSDEVELOPER
+ * @author woodjohn, maone
  * @version 1.0
  */
 public final class Util {

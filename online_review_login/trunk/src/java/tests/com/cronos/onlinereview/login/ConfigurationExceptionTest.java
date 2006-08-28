@@ -18,7 +18,7 @@ import junit.framework.TestCase;
  * and cause properly propagated, and that it comes with correct inheritance.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author maone
  * @version 1.0
  */
 public class ConfigurationExceptionTest extends TestCase {

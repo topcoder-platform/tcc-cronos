@@ -17,7 +17,7 @@ import com.topcoder.security.authenticationfactory.Response;
 /**
  * Unit tests for <code>SecurityManagerAuthResponseParser</code>.
  *
- * @author TCSDEVELOPER
+ * @author maone
  * @version 1.0
  */
 public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {

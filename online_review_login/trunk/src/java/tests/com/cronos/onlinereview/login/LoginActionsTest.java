@@ -15,7 +15,7 @@ import servletunit.struts.MockStrutsTestCase;
 /**
  * Unit tests for <code>LoginActions</code>.
  *
- * @author TCSDEVELOPER
+ * @author maone
  * @version 1.0
  */
 public class LoginActionsTest extends MockStrutsTestCase {

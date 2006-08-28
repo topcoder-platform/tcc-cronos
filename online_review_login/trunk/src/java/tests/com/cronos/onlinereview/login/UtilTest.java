@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 /**
  * Unit tests for <code>Util</code> class.
  *
- * @author TCSDEVELOPER
+ * @author maone
  * @version 1.0
  */
 public class UtilTest extends TestCase {

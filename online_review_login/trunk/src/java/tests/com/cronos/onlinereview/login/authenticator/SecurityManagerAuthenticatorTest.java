@@ -16,7 +16,7 @@ import servletunit.struts.MockStrutsTestCase;
 /**
  * Unit tests for <code>SecurityManagerAuthenticator</code>.
  *
- * @author TCSDEVELOPER
+ * @author maone
  * @version 1.0
  */
 public class SecurityManagerAuthenticatorTest extends MockStrutsTestCase {
