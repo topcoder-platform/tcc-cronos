@@ -201,7 +201,7 @@ public class SqlResourcePersistence implements ResourcePersistence {
     private void insertResource(Connection connection, Resource resource)
             throws SQLException, ResourcePersistenceException {
         PreparedStatement statement = null;
-        String query = "INSERT INTO resource (resource_id, resource_role_id, project_id, phase_id, create_user,"
+        String query = "INSERT INTO resource (resource_id, resource_role_id, project_id, project_phase_id, create_user,"
                 + " create_date, modify_user, modify_date)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -573,7 +573,7 @@ public class SqlResourcePersistence implements ResourcePersistence {
     private void updateResourceTable(Connection connection, Resource resource)
             throws SQLException, ResourcePersistenceException {
 
-        String query = "UPDATE resource SET resource_role_id = ?, project_id = ?, phase_id = ?,"
+        String query = "UPDATE resource SET resource_role_id = ?, project_id = ?, project_phase_id = ?,"
                 + " modify_user = ?, modify_date = ? WHERE resource_id = ?";
         PreparedStatement statement = null;
 
@@ -741,7 +741,7 @@ public class SqlResourcePersistence implements ResourcePersistence {
 
         Connection connection = createConnection();
 
-        String query = "SELECT resource.resource_id, resource_role_id, project_id, phase_id, submission_id,"
+        String query = "SELECT resource.resource_id, resource_role_id, project_id, project_phase_id, submission_id,"
                 + " resource.create_user, resource.create_date, resource.modify_user, resource.modify_date"
                 + " FROM resource LEFT OUTER JOIN resource_submission"
                 + " ON  resource.resource_id = resource_submission.resource_id WHERE resource.resource_id = ?";
@@ -1427,7 +1427,7 @@ public class SqlResourcePersistence implements ResourcePersistence {
         }
 
         // select all resource once.
-        String query = "SELECT resource.resource_id, resource_role_id, project_id, phase_id, submission_id,"
+        String query = "SELECT resource.resource_id, resource_role_id, project_id, project_phase_id, submission_id,"
                 + " resource.create_user, resource.create_date, resource.modify_user, resource.modify_date"
                 + " FROM resource LEFT OUTER JOIN resource_submission"
                 + " ON resource.resource_id = resource_submission.resource_id WHERE resource.resource_id IN (";

@@ -54,7 +54,7 @@ public class DbStressTest extends TestCase {
         "resource",
         "resource_role_lu",
         "submission",
-        "phase",
+        "project_phase",
         "phase_type_lu",
         "project"
     };
@@ -360,7 +360,7 @@ public class DbStressTest extends TestCase {
 
         // insert records to the table: phase
 
-        sql = "INSERT INTO phase(phase_id, project_id, phase_type_id) VALUES(?, ?, ?)";
+        sql = "INSERT INTO project_phase(project_phase_id, project_id, phase_type_id) VALUES(?, ?, ?)";
 
         doSQLUpdate(sql, new Object[] {new Long(1), new Long(1), new Long(1)});
 
@@ -404,7 +404,7 @@ public class DbStressTest extends TestCase {
 
         // insert records to the table: resource.
 
-        sql = "INSERT INTO resource(resource_id, resource_role_id, project_id, phase_id, "
+        sql = "INSERT INTO resource(resource_id, resource_role_id, project_id, project_phase_id, "
             + "create_user, create_date, modify_user, modify_date)"
             + " VALUES (?, ?, ?, ?, 'developer', CURRENT, 'developer', CURRENT)";
 

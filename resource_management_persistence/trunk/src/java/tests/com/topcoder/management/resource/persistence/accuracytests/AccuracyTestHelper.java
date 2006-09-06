@@ -116,7 +116,7 @@ final class AccuracyTestHelper {
             execute(conn, "DELETE FROM notification", args);
             execute(conn, "DELETE FROM notification_type_lu", args);
             execute(conn, "DELETE FROM resource_info_type_lu", args);
-            execute(conn, "DELETE FROM phase", args);
+            execute(conn, "DELETE FROM project_phase", args);
             execute(conn, "DELETE FROM phase_type_lu", args);
             execute(conn, "DELETE FROM project", args);
             execute(conn, "DELETE FROM submission", args);
@@ -146,7 +146,7 @@ final class AccuracyTestHelper {
                 execute(conn, "INSERT INTO project (project_id) VALUES (?)", new Object[] {id});
                 execute(conn, "INSERT INTO phase_type_lu (phase_type_id) VALUES (?)", new Object[] {new Long(
                     i)});
-                execute(conn, "INSERT INTO phase (phase_id, project_id, phase_type_id) VALUES (?, ?, ?)",
+                execute(conn, "INSERT INTO project_phase (project_phase_id, project_id, phase_type_id) VALUES (?, ?, ?)",
                     new Object[] {id, id, id});
                 execute(conn, "INSERT INTO resource_info_type_lu (resource_info_type_id, name, description, "
                     + "create_user, create_date, modify_user, modify_date) VALUES (?, ?, ?, "

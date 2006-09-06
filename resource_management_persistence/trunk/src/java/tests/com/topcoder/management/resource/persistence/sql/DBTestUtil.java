@@ -50,7 +50,7 @@ final class DBTestUtil {
     private static String[] tableNames = { "notification",
             "notification_type_lu", "resource_submission", "resource_info",
             "resource_info_type_lu", "resource", "resource_role_lu",
-            "submission", "phase", "phase_type_lu", "project" };
+            "submission", "project_phase", "phase_type_lu", "project" };
 
     /**
      * Private constructor.
@@ -202,13 +202,13 @@ final class DBTestUtil {
                 .addBatch("insert into phase_type_lu (phase_type_id) values(4)");
 
         statement
-                .addBatch("insert into phase (phase_id, project_id, phase_type_id) values(1,1,1)");
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(1,1,1)");
         statement
-                .addBatch("insert into phase (phase_id, project_id, phase_type_id) values(2,2,2)");
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(2,2,2)");
         statement
-                .addBatch("insert into phase (phase_id, project_id, phase_type_id) values(3,3,3)");
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(3,3,3)");
         statement
-                .addBatch("insert into phase (phase_id, project_id, phase_type_id) values(4,4,4)");
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(4,4,4)");
 
         statement
                 .addBatch("insert into submission (submission_id) values(121);");
