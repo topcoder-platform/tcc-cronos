@@ -14,14 +14,14 @@ import com.topcoder.util.errorhandling.BaseException;
  * @author topgear, TCSDEVELOPER
  * @version 1.0
  */
-public class RoleResolutionException extends BaseException {
+public class ResourceException extends BaseException {
 
     /**
      * <p>
      * Creates a new instance of this exception class.
      * </p>
      */
-    public RoleResolutionException() {
+    public ResourceException() {
         // do nothing
     }
 
@@ -32,7 +32,7 @@ public class RoleResolutionException extends BaseException {
      *
      * @param message a descriptive message about the exception
      */
-    public RoleResolutionException(String message) {
+    public ResourceException(String message) {
         super(message);
     }
 
@@ -43,7 +43,7 @@ public class RoleResolutionException extends BaseException {
      *
      * @param cause the cause of this exception
      */
-    public RoleResolutionException(Throwable cause) {
+    public ResourceException(Throwable cause) {
         super(cause);
     }
 
@@ -55,7 +55,7 @@ public class RoleResolutionException extends BaseException {
      * @param message a descriptive message about the exception
      * @param cause the cause of this exception
      */
-    public RoleResolutionException(String message, Throwable cause) {
+    public ResourceException(String message, Throwable cause) {
         super(message, cause);
     }
 }
