@@ -40,6 +40,24 @@ public class ConfigHelper {
     }
 
     /**
+     * <p>A helper method to be used to initialize the specified configuration namespace with the configuration
+     * properties provided by specified file. If specified namespace is already loaded to <code>ConfigurationManager
+     * </code> then it is re-loaded with new configuration properties.</p>
+     *
+     * @param file a <code>File</code> providing the name of the file to load configuration file from.
+     */
+    public static final void loadConfiguration(String file) {
+        ConfigManager configManager = ConfigManager.getInstance();
+
+        try {
+            configManager.add(file);
+        } catch (ConfigManagerException e) {
+            System.err.println("An error occurred while loading the configuration file '"
+                + file + "\n\n" + e);
+        }
+    }
+
+    /**
      * <p>A helper method which releases all existing configuration namespaces from <code>Configuration Manager</code>.
      * </p>
      */

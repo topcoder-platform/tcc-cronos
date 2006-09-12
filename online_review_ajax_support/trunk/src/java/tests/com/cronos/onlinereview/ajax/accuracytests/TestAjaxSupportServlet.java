@@ -52,6 +52,7 @@ public class TestAjaxSupportServlet extends ServletTestCase {
         super.setUp();
         TestHelper.clearNamespaces();
         TestHelper.loadFile("test_files/accuracy/accuracy.xml");
+        TestHelper.loadFile("test_files/accuracy/scorecalculator.xml");
         servlet = new AjaxSupportServlet();
     }
 

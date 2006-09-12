@@ -65,6 +65,7 @@ public final class StressTestHelper {
         clearConfig();
 
         ConfigManager configManager = ConfigManager.getInstance();
+        configManager.add("stresstest/scorecalculator.xml");
         configManager.add("stresstest/Object_Factory_Config.xml");
         configManager.add("stresstest/Logging_Wrapper_Config.xml");
         configManager.add("stresstest/Online_Review_Ajax_Support_Config.xml");

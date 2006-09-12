@@ -33,8 +33,8 @@ public abstract class AbstractTestCase extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration(new File("test_files/failure/OnlineReview.xml"));
-        ConfigHelper.loadConfiguration(new File("test_files/failure/ObjectFactory.xml"));
+        ConfigHelper.loadConfiguration("test_files/failure/OnlineReview.xml");
+        ConfigHelper.loadConfiguration("test_files/failure/ObjectFactory.xml");
 
         // Init the states of Mock classes
         MockCalculationManager.releaseState();

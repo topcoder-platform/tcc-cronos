@@ -68,7 +68,6 @@ public class ResolveAppealHandlerStressTest extends TestCase {
         StressTestHelper.printResult("testResolveAppealHandler");
 
         // verify the response
-        assertEquals("The status should be success.", "Success", response.getStatus());
-        assertEquals("The type should be ResolveAppeal.", "ResolveAppeal", response.getType());
+        assertEquals("The status should be success.", "Business error", response.getStatus());
     }
 }

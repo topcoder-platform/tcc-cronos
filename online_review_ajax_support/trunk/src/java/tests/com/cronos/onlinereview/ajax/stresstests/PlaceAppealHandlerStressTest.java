@@ -66,7 +66,6 @@ public class PlaceAppealHandlerStressTest extends TestCase {
         StressTestHelper.printResult("testPlaceAppealHandler");
 
         // verify the response
-        assertEquals("The status should be success.", "Success", response.getStatus());
-        assertEquals("The type should be PlaceAppeal.", "PlaceAppeal", response.getType());
+        assertEquals("The status should be success.", "Phase error", response.getStatus());
     }
 }

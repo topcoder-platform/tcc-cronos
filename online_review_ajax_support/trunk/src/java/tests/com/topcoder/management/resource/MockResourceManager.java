@@ -147,23 +147,17 @@ public class MockResourceManager implements ResourceManager {
     }
 
     public ResourceRole[] searchResourceRoles(Filter arg0) throws ResourcePersistenceException, SearchBuilderException, SearchBuilderConfigurationException {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public Resource[] searchResources(Filter arg0) throws ResourcePersistenceException, SearchBuilderException, SearchBuilderConfigurationException {
-        // TODO Auto-generated method stub
-        return null;
+        return new Resource[1];
     }
 
     public void updateNotificationType(NotificationType arg0, String arg1) throws ResourcePersistenceException {
-        // TODO Auto-generated method stub
-        
     }
 
     public void updateResourceRole(ResourceRole arg0, String arg1) throws ResourcePersistenceException {
-        // TODO Auto-generated method stub
-        
     }
 
 }

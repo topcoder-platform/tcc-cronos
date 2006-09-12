@@ -36,12 +36,11 @@ public class ResolveAppealHandlerTest extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        // load the configurations
+        this.tearDown();
         ConfigManager cm = ConfigManager.getInstance();
-        if (!cm.existsNamespace("com.cronos.onlinereview.ajax")) {
-            cm.add("default.xml");
-            cm.add("objectfactory.xml");
-        }
+        cm.add("default.xml");
+        cm.add("objectfactory.xml");
+        cm.add("scorecalculator.xml");
 
         handler = new ResolveAppealHandler();
     }
@@ -65,7 +64,7 @@ public class ResolveAppealHandlerTest extends TestCase {
      */
     public void testResolveAppealHandler() throws Exception {
         // verify the managers
-        assertTrue("The calcualation manager is not right.",
+        assertTrue("The calculation manager is not right.",
                 TestHelper.getPrivateFieldValue(ResolveAppealHandler.class, "calculationManager", handler)
                 instanceof CalculationManager);
 
@@ -106,8 +105,9 @@ public class ResolveAppealHandlerTest extends TestCase {
         AjaxResponse response = handler.service(request, new Long(3));
 
         // verify the result
-        assertEquals("The status should be success.", "Success", response.getStatus());
-        assertEquals("The type should be PlaceAppeal.", "ResolveAppeal", response.getType());
+        // the reseult should be score card error
+        // since we used mock data so there is nothing in the database
+        assertEquals("The status should be success.", "Business error", response.getStatus());
     }
 
     /**

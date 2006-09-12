@@ -134,7 +134,7 @@ public final class AjaxSupportServlet extends HttpServlet {
         } catch (UnknownNamespaceException e) {
             throw new ServletException("The namespace can't be found.", e);
         } catch (InvalidClassSpecificationException e) {
-            throw new ServletException("Can't create handler.", e);
+            throw new ServletException("Can't create handler : " + e.getMessage() + ", " + e.getCause().getMessage(), e);
         } catch (ConfigurationException e) {
             throw new ServletException("Can't create factory.", e);
         }

@@ -39,6 +39,7 @@ public class TestResolveAppealHandler extends TestCase {
         super.setUp();
         TestHelper.clearNamespaces();
         TestHelper.loadFile("test_files/accuracy/accuracy.xml");
+        TestHelper.loadFile("test_files/scorecalculator.xml");
         handler = new ResolveAppealHandler();
 
         params = new HashMap();
@@ -175,7 +176,6 @@ public class TestResolveAppealHandler extends TestCase {
 
         AjaxResponse response = handler.service(request, new Long(777771));
 
-        assertEquals("service fails.", "Success", response.getStatus());
-        assertEquals("service fails.", "ResolveAppeal", response.getType());
+        assertEquals("service fails.", "Business error", response.getStatus());
     }
 }

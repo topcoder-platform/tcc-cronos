@@ -224,7 +224,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
      * <p>
      * Performs the "Resolve Appeal" operation and returns the score of the review
      * if the operation is successful wrapped in an AjaxResponse,
-     * if the operation failse this method returns a failure Ajax response.
+     * if the operation fails this method returns a failure Ajax response.
      * </p>
      *
      * @return the response to the request
@@ -363,7 +363,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             }
         }
 
-        // valiate the phase
+        // validate the phase
         if (appealResponsePhase == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't get appeal response phase.",

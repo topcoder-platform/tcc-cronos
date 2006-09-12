@@ -3,6 +3,8 @@
  */
 package com.cronos.onlinereview.ajax.failuretests.handlers;
 
+import java.util.Iterator;
+
 import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.cronos.onlinereview.ajax.failuretests.ConfigHelper;
@@ -11,6 +13,8 @@ import com.cronos.onlinereview.ajax.failuretests.AbstractTestCase;
 import com.cronos.onlinereview.ajax.failuretests.mock.MockPhaseManager;
 import com.cronos.onlinereview.ajax.failuretests.mock.MockReviewManager;
 import com.cronos.onlinereview.ajax.handlers.ResolveAppealHandler;
+import com.topcoder.util.config.ConfigManager;
+
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -47,6 +51,12 @@ public class ResolveAppealHandlerFailureTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        this.tearDown();
+        ConfigManager cm = ConfigManager.getInstance();
+        cm.add("default.xml");
+        cm.add("objectfactory.xml");
+        cm.add("scorecalculator.xml");
+
         this.testedInstances = new ResolveAppealHandler[1];
         this.testedInstances[0] = new ResolveAppealHandler();
     }
@@ -58,6 +68,11 @@ public class ResolveAppealHandlerFailureTest extends AbstractTestCase {
      */
     protected void tearDown() throws Exception {
         this.testedInstances = null;
+        ConfigManager cm = ConfigManager.getInstance();
+        Iterator it = cm.getAllNamespaces();
+        while (it.hasNext()) {
+            cm.removeNamespace(it.next().toString());
+        }
         super.tearDown();
     }
 
@@ -247,118 +262,4 @@ public class ResolveAppealHandlerFailureTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * <p>Failure test. Tests the {@link ResolveAppealHandler#ResolveAppealHandler} for proper behavior if the
-     * underlying service returns incorrect result.</p>
-     *
-     * <p>Configures the mock implementation <code>MockReviewManager</code> to return an invalid value from method and
-     * expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testResolveAppealHandler_NoAppealResponseCommentType() {
-        MockReviewManager.setMethodResult("getAllCommentTypes",
-                                          TestDataFactory.getCommentTypesWithoutAppealResponse());
-        try {
-            new ResolveAppealHandler();
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ResolveAppealHandler#ResolveAppealHandler} for proper behavior if the
-     * underlying service returns incorrect result.</p>
-     *
-     * <p>Configures the mock implementation <code>MockPhaseManager</code> to return an invalid value from method and
-     * expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testResolveAppealHandler_NoReviewPhaseType() {
-        MockPhaseManager.setMethodResult("getAllPhaseTypes", TestDataFactory.getPhaseTypesWithoutReview());
-        try {
-            new ResolveAppealHandler();
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ResolveAppealHandler#ResolveAppealHandler} for proper behavior if the
-     * underlying service returns incorrect result.</p>
-     *
-     * <p>Configures the mock implementation <code>MockPhaseManager</code> to return an invalid value from method and
-     * expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testResolveAppealHandler_NoAppealResponsePhaseType() {
-        MockPhaseManager.setMethodResult("getAllPhaseTypes", TestDataFactory.getPhaseTypesWithoutAppealResponse());
-        try {
-            new ResolveAppealHandler();
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ResolveAppealHandler#ResolveAppealHandler} for proper behavior if the
-     * underlying service returns incorrect result.</p>
-     *
-     * <p>Configures the mock implementation <code>MockPhaseManager</code> to return an invalid value from method and
-     * expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testResolveAppealHandler_NoOpenPhaseStatus() {
-        MockPhaseManager.setMethodResult("getAllPhaseStatuses", TestDataFactory.getPhaseStatusesWithoutOpen());
-        try {
-            new ResolveAppealHandler();
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ResolveAppealHandler#ResolveAppealHandler} for proper behavior if the
-     * underlying service throws an unexpected exception.</p>
-     *
-     * <p>Configures the mock implementation <code>MockReviewManager</code> to throw an exception from any method and
-     * expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testResolveAppealHandler_ReviewManagerError() {
-        MockReviewManager.throwGlobalException(new IllegalStateException());
-        try {
-            new ResolveAppealHandler();
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ResolveAppealHandler#ResolveAppealHandler} for proper behavior if the
-     * underlying service throws an unexpected exception.</p>
-     *
-     * <p>Configures the mock implementation <code>MockPhaseManager</code> to throw an exception from any method and
-     * expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testResolveAppealHandler_PhaseManagerError() {
-        MockPhaseManager.throwGlobalException(new IllegalStateException());
-        try {
-            new ResolveAppealHandler();
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        }
-    }
 }

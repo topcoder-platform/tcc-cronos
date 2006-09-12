@@ -49,9 +49,11 @@ public class AjaxSupportServletTest extends ServletTestCase {
         if (!cm.existsNamespace("com.cronos.onlinereview.ajax")) {
             cm.add("default.xml");
             cm.add("objectfactory.xml");
+            cm.add("scorecalculator.xml");
         }
 
         servlet = new AjaxSupportServlet();
+        request.setCharacterEncoding("iso-8859-1");
     }
 
     /**
@@ -119,7 +121,7 @@ public class AjaxSupportServletTest extends ServletTestCase {
      */
     public void testInitNoAttributeNameId() throws Exception {
         try {
-            // first remove the orginal configuration
+            // first remove the original configuration
             ConfigManager cm = ConfigManager.getInstance();
             cm.removeNamespace("com.cronos.onlinereview.ajax");
 
@@ -169,7 +171,8 @@ public class AjaxSupportServletTest extends ServletTestCase {
                     + "</parameters>"
                     + "</request>";
 
-        request.setUserData(new ByteArrayInputStream(xml.getBytes()));
+        request.setContentType("text/html; charset=iso-8859-1");
+        request.setUserData(new ByteArrayInputStream(xml.getBytes("iso-8859-1")));
     }
 
     /**
@@ -190,6 +193,8 @@ public class AjaxSupportServletTest extends ServletTestCase {
     public void endDoPostAccuracy(WebResponse response) throws Exception {
         String xml = response.getText();
 
+        System.out.println(xml);
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
@@ -197,6 +202,7 @@ public class AjaxSupportServletTest extends ServletTestCase {
         // verify the result
         Element root = doc.getDocumentElement();
         assertEquals("The name should be response.", "response", root.getNodeName());
+
         assertEquals("The type should be SetScorecardStatus.", "SetScorecardStatus", root.getAttribute("type"));
 
         NodeList children = root.getElementsByTagName("result");
@@ -293,7 +299,7 @@ public class AjaxSupportServletTest extends ServletTestCase {
 
         Node result = children.item(0);
         assertEquals("The name should be result.", "result", result.getNodeName());
-        assertEquals("The status should be request error.", "request error", ((Element) result).getAttribute("status"));
+        assertEquals("The status should be request error.", "Request error", ((Element) result).getAttribute("status"));
     }
 
     /**

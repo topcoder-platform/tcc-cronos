@@ -40,6 +40,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         if (!cm.existsNamespace("com.cronos.onlinereview.ajax")) {
             cm.add("default.xml");
             cm.add("objectfactory.xml");
+            cm.add("scorecalculator.xml");
         }
 
         handler = new PlaceAppealHandler();

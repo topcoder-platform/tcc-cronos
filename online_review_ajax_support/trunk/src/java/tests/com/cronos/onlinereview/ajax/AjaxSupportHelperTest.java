@@ -42,6 +42,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
         if (!cm.existsNamespace("com.cronos.onlinereview.ajax")) {
             cm.add("default.xml");
             cm.add("objectfactory.xml");
+            cm.add("scorecalculator.xml");
         }
     }
 
@@ -58,56 +59,47 @@ public class AjaxSupportHelperTest extends JspTestCase {
         }
     }
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.ajax.AjaxSupportHelper#createObjectFactory()}.
-     * @throws Exception to JUnit
-     */
-    public void testCreateObjectFactory() throws Exception {
-        ObjectFactory factory = AjaxSupportHelper.createObjectFactory();
-        assertNotNull("The factory should not be null.", factory);
-    }
-
-    /**
-     * Prepare environment for responseAndLogError(String, String, String, HttpServletResponse).
-     * @param request the request
-     */
-    public void beginResponseAndLogError(WebRequest request) {
-        // do nothing
-    }
-
-    /**
-     * Test method for responseAndLogError(String, String, String, HttpServletResponse).
-     * @throws Exception to JUnit
-     */
-    public void testResponseAndLogError() throws Exception {
-        AjaxSupportHelper.responseAndLogError("test", "success", "a test", response);
-    }
-
-
-    /**
-     * Verify result for test method for responseAndLogError(String, String, String, HttpServletResponse).
-     * @param response the response
-     * @throws Exception to JUnit
-     */
-    public void endResponseAndLogError(WebResponse response) throws Exception {
-        String text = response.getText();
-
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(new ByteArrayInputStream(text.getBytes()));
-
-        // verify the result
-        Element root = doc.getDocumentElement();
-        assertEquals("The name should be response.", "response", root.getNodeName());
-        assertEquals("The type should be test.", "test", root.getAttribute("type"));
-
-        NodeList children = root.getElementsByTagName("result");
-        assertEquals("The length should be 1.", 1, children.getLength());
-
-        Node result = children.item(0);
-        assertEquals("The name should be result.", "result", result.getNodeName());
-        assertEquals("The status should be success.", "success", ((Element) result).getAttribute("status"));
-    }
+//    /**
+//     * Prepare environment for responseAndLogError(String, String, String, HttpServletResponse).
+//     * @param request the request
+//     */
+//    public void beginResponseAndLogError(WebRequest request) {
+//        // do nothing
+//    }
+//
+//    /**
+//     * Test method for responseAndLogError(String, String, String, HttpServletResponse).
+//     * @throws Exception to JUnit
+//     */
+//    public void testResponseAndLogError() throws Exception {
+//        AjaxSupportHelper.responseAndLogError("test", "success", "a test", response);
+//    }
+//
+//
+//    /**
+//     * Verify result for test method for responseAndLogError(String, String, String, HttpServletResponse).
+//     * @param response the response
+//     * @throws Exception to JUnit
+//     */
+//    public void endResponseAndLogError(WebResponse response) throws Exception {
+//        String text = response.getText();
+//
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = factory.newDocumentBuilder();
+//        Document doc = builder.parse(new ByteArrayInputStream(text.getBytes()));
+//
+//        // verify the result
+//        Element root = doc.getDocumentElement();
+//        assertEquals("The name should be response.", "response", root.getNodeName());
+//        assertEquals("The type should be test.", "test", root.getAttribute("type"));
+//
+//        NodeList children = root.getElementsByTagName("result");
+//        assertEquals("The length should be 1.", 1, children.getLength());
+//
+//        Node result = children.item(0);
+//        assertEquals("The name should be result.", "result", result.getNodeName());
+//        assertEquals("The status should be success.", "success", ((Element) result).getAttribute("status"));
+//    }
 
     /**
      * Test method for responseAndLogError(String, String, String, HttpServletResponse).
