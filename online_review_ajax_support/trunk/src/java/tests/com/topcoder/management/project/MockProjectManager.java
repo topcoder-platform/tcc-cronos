@@ -8,7 +8,7 @@ import com.topcoder.search.builder.filter.Filter;
 /**
  * Mock implementation of ProjectManager.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockProjectManager implements ProjectManager {

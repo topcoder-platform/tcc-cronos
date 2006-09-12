@@ -18,7 +18,7 @@ import java.util.Iterator;
 /**
  * Helpful class used in tests.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 final class TestHelper {

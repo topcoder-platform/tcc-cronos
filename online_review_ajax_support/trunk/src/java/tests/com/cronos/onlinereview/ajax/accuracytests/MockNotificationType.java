@@ -10,7 +10,7 @@ import com.topcoder.management.resource.NotificationType;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockNotificationType extends NotificationType {

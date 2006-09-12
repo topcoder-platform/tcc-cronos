@@ -13,7 +13,7 @@ import com.topcoder.search.builder.filter.Filter;
 /**
  * A mock implementation for <code>ScorecardManager</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockScorecardManager implements ScorecardManager {

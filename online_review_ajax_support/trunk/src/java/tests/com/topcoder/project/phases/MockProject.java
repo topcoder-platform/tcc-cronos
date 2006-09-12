@@ -12,7 +12,7 @@ import com.topcoder.date.workdays.Workdays;
 /**
  * A mock subclass for <code>Project</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockProject extends Project {

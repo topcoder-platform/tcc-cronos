@@ -9,7 +9,7 @@ import com.topcoder.search.builder.filter.Filter;
 /**
  * Mock implementation of UploadManager.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockUploadManager implements UploadManager {

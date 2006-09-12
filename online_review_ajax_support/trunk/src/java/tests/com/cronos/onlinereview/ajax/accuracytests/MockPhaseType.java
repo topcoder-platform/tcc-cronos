@@ -10,7 +10,7 @@ import com.topcoder.project.phases.PhaseType;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockPhaseType extends PhaseType {

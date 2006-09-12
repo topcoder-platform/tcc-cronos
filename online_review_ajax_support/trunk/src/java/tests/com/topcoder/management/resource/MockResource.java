@@ -6,7 +6,7 @@ package com.topcoder.management.resource;
 /**
  * A mock subclass for <code>Resource</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockResource extends Resource {

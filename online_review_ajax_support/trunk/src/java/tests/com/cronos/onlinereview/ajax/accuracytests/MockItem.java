@@ -11,7 +11,7 @@ import com.topcoder.management.review.data.Item;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockItem extends Item {

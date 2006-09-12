@@ -6,7 +6,7 @@ package com.topcoder.management.deliverable;
 /**
  * Mock subclass of Upload.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockUpload extends Upload {

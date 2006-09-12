@@ -11,7 +11,7 @@ import com.topcoder.date.workdays.Workdays;
 /**
  * A mock subclass for <code>Phase</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockPhase extends Phase {

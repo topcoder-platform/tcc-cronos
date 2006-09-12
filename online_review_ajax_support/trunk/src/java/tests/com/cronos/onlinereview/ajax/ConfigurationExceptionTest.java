@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 /**
  * Test the class <code>ConfigurationException</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class ConfigurationExceptionTest extends TestCase {

@@ -35,7 +35,7 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * <strong>Thread safe : </strong>
  * This class has no state, so it is thread safe.
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public final class AjaxSupportHelper {

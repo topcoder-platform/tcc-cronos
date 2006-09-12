@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Tests for SetScorecardStatusHandler class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestSetScorecardStatusHandler extends TestCase {

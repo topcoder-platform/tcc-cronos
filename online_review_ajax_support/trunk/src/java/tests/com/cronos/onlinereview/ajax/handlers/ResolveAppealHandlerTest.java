@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 /**
  * Test the class <code>ResolveAppealHandler</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class ResolveAppealHandlerTest extends TestCase {

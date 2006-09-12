@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Tests for ResolveAppealHandler class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestResolveAppealHandler extends TestCase {

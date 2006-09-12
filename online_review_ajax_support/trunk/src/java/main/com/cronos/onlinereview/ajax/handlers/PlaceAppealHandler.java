@@ -34,7 +34,7 @@ import com.topcoder.project.phases.PhaseType;
  * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public class PlaceAppealHandler extends ReviewCommonHandler {

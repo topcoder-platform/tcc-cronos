@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 /**
  * Test the class <code>AjaxResponse</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class AjaxResponseTest extends TestCase {

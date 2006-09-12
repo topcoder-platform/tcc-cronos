@@ -22,7 +22,7 @@ package com.cronos.onlinereview.ajax;
  * This class is immutable and thread safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public final class AjaxResponse {

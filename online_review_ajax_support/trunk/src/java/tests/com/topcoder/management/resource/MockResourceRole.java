@@ -7,7 +7,7 @@ package com.topcoder.management.resource;
 /**
  * A mock subclass for <code>ResourceRole</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockResourceRole extends ResourceRole {

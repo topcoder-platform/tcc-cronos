@@ -6,7 +6,7 @@ package com.topcoder.management.review.data;
 /**
  * A mock subclass for <code>Comment</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockComment extends Comment {

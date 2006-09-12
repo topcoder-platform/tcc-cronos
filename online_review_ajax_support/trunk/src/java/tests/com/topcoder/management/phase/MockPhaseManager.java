@@ -19,7 +19,7 @@ import com.topcoder.project.phases.Project;
 /**
  * Mock implementation of <code>PhaseManager</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockPhaseManager implements PhaseManager {

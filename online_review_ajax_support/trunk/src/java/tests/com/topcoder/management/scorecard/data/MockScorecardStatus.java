@@ -6,7 +6,7 @@ package com.topcoder.management.scorecard.data;
 /**
  * Mock subclass of ScorecardStatus.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockScorecardStatus extends ScorecardStatus {

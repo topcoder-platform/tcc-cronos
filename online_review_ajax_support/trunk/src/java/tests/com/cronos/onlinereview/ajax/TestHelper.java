@@ -10,7 +10,7 @@ import java.util.Date;
  * The helper class for test.
  *
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public final class TestHelper {

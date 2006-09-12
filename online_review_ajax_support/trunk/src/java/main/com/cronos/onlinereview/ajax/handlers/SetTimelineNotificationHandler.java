@@ -24,7 +24,7 @@ import com.topcoder.management.resource.NotificationType;
  * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public class SetTimelineNotificationHandler extends CommonHandler {

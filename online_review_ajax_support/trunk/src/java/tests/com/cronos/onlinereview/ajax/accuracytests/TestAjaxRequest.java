@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Tests for AjaxRequest class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestAjaxRequest extends TestCase {

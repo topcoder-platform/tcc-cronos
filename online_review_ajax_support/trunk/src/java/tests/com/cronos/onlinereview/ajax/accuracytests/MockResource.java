@@ -10,7 +10,7 @@ import com.topcoder.management.resource.ResourceRole;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockResource extends Resource {

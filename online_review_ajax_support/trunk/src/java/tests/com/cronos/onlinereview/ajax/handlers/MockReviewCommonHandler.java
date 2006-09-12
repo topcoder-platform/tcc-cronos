@@ -10,7 +10,7 @@ import com.cronos.onlinereview.ajax.ConfigurationException;
 /**
  * Mock implementation of <code>ReviewCommonHandler</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockReviewCommonHandler extends ReviewCommonHandler {

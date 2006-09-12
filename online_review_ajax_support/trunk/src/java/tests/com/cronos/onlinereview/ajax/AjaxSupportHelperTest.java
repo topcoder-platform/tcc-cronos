@@ -25,7 +25,7 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 /**
  * Test the class <code>AjaxSupportHelper</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class AjaxSupportHelperTest extends JspTestCase {

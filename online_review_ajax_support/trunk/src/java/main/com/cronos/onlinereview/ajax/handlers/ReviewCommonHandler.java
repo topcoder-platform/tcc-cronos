@@ -19,7 +19,7 @@ import com.topcoder.management.review.ReviewManager;
  * This class is immutable an thread safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public abstract class ReviewCommonHandler extends CommonHandler {

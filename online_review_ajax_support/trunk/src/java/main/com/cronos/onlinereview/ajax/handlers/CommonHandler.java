@@ -28,7 +28,7 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * This class is immutable an thread safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public abstract class CommonHandler implements AjaxRequestHandler {

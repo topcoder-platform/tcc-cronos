@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 /**
  * Tests for ReviewCommonHandler class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestReviewCommonHandler extends TestCase {
@@ -77,7 +77,7 @@ public class TestReviewCommonHandler extends TestCase {
     /**
      * Mock class.
      *
-     * @author TCSDEVELOPER
+     * @author assistant
      * @version 1.0
      */
     final class MockReviewCommonHandler extends ReviewCommonHandler {

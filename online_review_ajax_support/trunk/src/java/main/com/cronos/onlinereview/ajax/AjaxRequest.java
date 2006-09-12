@@ -49,7 +49,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * This class is immutable and thread safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public final class AjaxRequest {
@@ -206,7 +206,7 @@ public final class AjaxRequest {
     /**
      * This parser parses the ajax request from the client.
      *
-     * @author topgear, TCSDEVELOPER
+     * @author topgear, assistant
      * @version 1.0
      */
     static class AjaxRequestParser extends DefaultHandler {

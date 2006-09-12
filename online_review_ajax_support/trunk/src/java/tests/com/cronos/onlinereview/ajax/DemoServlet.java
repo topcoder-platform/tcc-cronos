@@ -19,7 +19,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * This is a demo helper. Because before working, the servelet should read
  * Configuration first, so , I use this servlet to wrap the AjaxSupportServelet.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class DemoServlet extends HttpServlet {

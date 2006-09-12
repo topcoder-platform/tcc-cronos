@@ -16,7 +16,7 @@ import com.topcoder.project.phases.Project;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockPhase extends Phase {

@@ -18,7 +18,7 @@ import com.topcoder.search.builder.filter.Filter;
 /**
  * Mock class implements ResourceManager.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockResourceManager implements ResourceManager {

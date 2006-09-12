@@ -17,7 +17,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * </ul>
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public class ConfigurationException extends BaseException {

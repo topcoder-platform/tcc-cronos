@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 /**
  * Tests for RoleResolutionException class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestRoleResolutionException extends TestCase {

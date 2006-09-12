@@ -10,7 +10,7 @@ import com.topcoder.management.review.data.CommentType;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockCommentType extends CommentType {

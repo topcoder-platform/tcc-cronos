@@ -25,7 +25,7 @@ package com.cronos.onlinereview.ajax;
  * Any Ajax request handler implementation must be thread-safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public interface AjaxRequestHandler {

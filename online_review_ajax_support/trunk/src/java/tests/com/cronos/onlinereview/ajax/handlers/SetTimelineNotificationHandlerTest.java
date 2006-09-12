@@ -18,7 +18,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * Test the class <code>SetTimelineNotificationHandler</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class SetTimelineNotificationHandlerTest extends TestCase {

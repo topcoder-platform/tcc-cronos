@@ -26,7 +26,7 @@ import com.topcoder.management.scorecard.data.ScorecardStatus;
  * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public class SetScorecardStatusHandler extends CommonHandler {

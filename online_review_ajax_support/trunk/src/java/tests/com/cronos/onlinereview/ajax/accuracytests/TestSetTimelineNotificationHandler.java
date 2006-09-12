@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Tests for SetTimelineNotificationHandler class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestSetTimelineNotificationHandler extends TestCase {

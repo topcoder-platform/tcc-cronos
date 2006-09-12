@@ -11,7 +11,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * This exception is thrown by  many methods in the CommonHandler class.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public class ResourceException extends BaseException {

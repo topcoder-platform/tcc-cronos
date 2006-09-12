@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 /**
  * Test the class <code>ReviewCommonHandler</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class ReviewCommonHandlerTest extends TestCase {

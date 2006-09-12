@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 /**
  * <p></p>
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockServletContext {

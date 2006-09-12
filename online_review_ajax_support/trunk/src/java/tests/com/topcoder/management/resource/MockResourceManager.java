@@ -12,7 +12,7 @@ import com.topcoder.search.builder.filter.Filter;
  * Mock implementation of <code>ResourceManager</code>.
  *
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockResourceManager implements ResourceManager {

@@ -14,7 +14,7 @@ import junit.framework.TestSuite;
  * This test case aggregates all accuracy test cases.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class AccuracyTests extends TestCase {

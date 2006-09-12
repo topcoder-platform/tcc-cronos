@@ -6,7 +6,7 @@ package com.topcoder.management.deliverable;
 /**
  * Mock subclass of Submission.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockSubmission extends Submission {

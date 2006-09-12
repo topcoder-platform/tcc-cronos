@@ -12,7 +12,7 @@ import com.topcoder.management.project.ProjectStatus;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockProject extends Project {

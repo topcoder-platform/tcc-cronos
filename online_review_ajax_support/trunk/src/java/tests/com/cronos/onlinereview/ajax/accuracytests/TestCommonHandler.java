@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 /**
  * Tests for CommonHandler class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestCommonHandler extends TestCase {
@@ -80,7 +80,7 @@ public class TestCommonHandler extends TestCase {
     /**
      * This class extends from CommonHandler used for test.
      *
-     * @author TCSDEVELOPER
+     * @author assistant
      * @version 1.0
      */
     final class MockCommonHandlerImpl extends CommonHandler {

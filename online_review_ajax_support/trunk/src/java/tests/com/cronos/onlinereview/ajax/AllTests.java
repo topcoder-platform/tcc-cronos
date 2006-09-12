@@ -14,7 +14,7 @@ import com.cronos.onlinereview.ajax.stresstests.StressTests;
 /**
  * <p>This test case aggregates all test cases.</p>
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class AllTests extends TestCase {

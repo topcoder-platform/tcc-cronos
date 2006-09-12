@@ -6,7 +6,7 @@ package com.topcoder.management.review.data;
 /**
  * A mock subclass for <code>Item</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockItem extends Item {

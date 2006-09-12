@@ -27,7 +27,7 @@ import com.topcoder.util.config.ConfigManager;
  * The configuration files used in this case are :
  * test_files/default.xml, test_files/objectfactory.xml.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class AjaxSupportServletTest extends ServletTestCase {

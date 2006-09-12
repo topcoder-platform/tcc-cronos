@@ -36,7 +36,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /**
  * Tests for AjaxSupportServlet class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestAjaxSupportServlet extends ServletTestCase {

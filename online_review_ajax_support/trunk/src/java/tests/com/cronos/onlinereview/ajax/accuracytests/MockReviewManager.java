@@ -14,7 +14,7 @@ import com.topcoder.search.builder.filter.Filter;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockReviewManager implements ReviewManager {

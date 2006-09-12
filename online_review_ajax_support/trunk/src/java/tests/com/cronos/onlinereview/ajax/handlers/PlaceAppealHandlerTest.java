@@ -19,7 +19,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * Test the class <code>PlaceAppealHandler</code>.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class PlaceAppealHandlerTest extends TestCase {

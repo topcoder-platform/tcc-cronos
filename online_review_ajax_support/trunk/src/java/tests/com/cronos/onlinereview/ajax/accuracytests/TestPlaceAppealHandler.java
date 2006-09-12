@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Tests for PlaceAppealHandler class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestPlaceAppealHandler extends TestCase {

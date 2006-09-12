@@ -43,7 +43,7 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * This class is immutable and thread safe. all accesses to its internal state are read only once.
  * </p>
  *
- * @author topgear, TCSDEVELOPER
+ * @author topgear, assistant
  * @version 1.0
  */
 public final class AjaxSupportServlet extends HttpServlet {

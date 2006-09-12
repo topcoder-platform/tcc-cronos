@@ -11,7 +11,7 @@ import com.topcoder.management.deliverable.Upload;
 /**
  * Mock class.
  * 
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockSubmission extends Submission {

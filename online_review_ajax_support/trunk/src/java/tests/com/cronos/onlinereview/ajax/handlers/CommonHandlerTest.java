@@ -15,7 +15,7 @@ import com.topcoder.util.config.ConfigManager;
  * Test the class <code>CommonHandler</code>.
  * In this case, a mock implementation will be used to test.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class CommonHandlerTest extends TestCase {

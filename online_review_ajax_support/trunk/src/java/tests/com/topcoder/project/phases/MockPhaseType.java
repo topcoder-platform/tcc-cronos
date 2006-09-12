@@ -6,7 +6,7 @@ package com.topcoder.project.phases;
 /**
  * Mock subclass of PhaseType.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class MockPhaseType extends PhaseType {

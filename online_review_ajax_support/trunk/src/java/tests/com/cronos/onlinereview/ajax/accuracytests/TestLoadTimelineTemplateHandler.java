@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Tests for LoadTimelineTemplateHandler class.
  *
- * @author TCSDEVELOPER
+ * @author assistant
  * @version 1.0
  */
 public class TestLoadTimelineTemplateHandler extends TestCase {
