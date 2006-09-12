@@ -84,6 +84,11 @@
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
     
+    <property name="simple_cache.version" value="2.0"/>
+    <property name="simple_cache.jar.name" value="simple_cache.jar"/>
+    <property name="simple_cache.path" value="simple_cache/${simple_cache.version}"/>
+    <property name="simple_cache.jar" value="${tcs_libdir}/${simple_cache.path}/${simple_cache.jar.name}"/>
+    
     <property name="logging_wrapper.version" value="1.2"/>
     <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"/>
     <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
@@ -94,30 +99,35 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 
-    <property name="search_builder.version" value="1.1"/>
+    <property name="search_builder.version" value="1.3"/>
     <property name="search_builder.jar.name" value="search_builder.jar"/>
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
 
-    <property name="deliverable_management.version" value="1.0"/>
-    <property name="deliverable_management.jar.name" value="deliverable_management.jar"/>
-    <property name="deliverable_management.path" value="deliverable_management/${deliverable_management.version}"/>
-    <property name="deliverable_management.jar" value="${tcs_libdir}/${deliverable_management.path}/${deliverable_management.jar.name}"/>
+    <property name="review_management.version" value="1.0"/>
+    <property name="review_management.jar.name" value="review_management.jar"/>
+    <property name="review_management.path" value="review_management/${review_management.version}"/>
+    <property name="review_management.jar" value="${tcs_libdir}/${review_management.path}/${review_management.jar.name}"/>
 
-    <property name="phase_management.version" value="1.0"/>
-    <property name="phase_management.jar.name" value="phase_management.jar"/>
-    <property name="phase_management.path" value="phase_management/${phase_management.version}"/>
-    <property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}"/>
+    <property name="review_data_structure.version" value="1.0"/>
+    <property name="review_data_structure.jar.name" value="review_data_structure.jar"/>
+    <property name="review_data_structure.path" value="review_data_structure/${review_data_structure.version}"/>
+    <property name="review_data_structure.jar" value="${tcs_libdir}/${review_data_structure.path}/${review_data_structure.jar.name}"/>
+
+    <property name="scorecard_management.version" value="1.0"/>
+    <property name="scorecard_management.jar.name" value="scorecard_management.jar"/>
+    <property name="scorecard_management.path" value="scorecard_management/${scorecard_management.version}"/>
+    <property name="scorecard_management.jar" value="${tcs_libdir}/${scorecard_management.path}/${scorecard_management.jar.name}"/>
+
+    <property name="scorecard_data_structure.version" value="1.0"/>
+    <property name="scorecard_data_structure.jar.name" value="scorecard_data_structure.jar"/>
+    <property name="scorecard_data_structure.path" value="scorecard_data_structure/${scorecard_data_structure.version}"/>
+    <property name="scorecard_data_structure.jar" value="${tcs_libdir}/${scorecard_data_structure.path}/${scorecard_data_structure.jar.name}"/>
 
     <property name="project_management.version" value="1.0"/>
     <property name="project_management.jar.name" value="project_management.jar"/>
     <property name="project_management.path" value="project_management/${project_management.version}"/>
     <property name="project_management.jar" value="${tcs_libdir}/${project_management.path}/${project_management.jar.name}"/>
-
-    <property name="project_phase_template.version" value="1.0"/>
-    <property name="project_phase_template.jar.name" value="project_phase_template.jar"/>
-    <property name="project_phase_template.path" value="project_phase_template/${project_phase_template.version}"/>
-    <property name="project_phase_template.jar" value="${tcs_libdir}/${project_phase_template.path}/${project_phase_template.jar.name}"/>
 
     <property name="project_phases.version" value="2.0"/>
     <property name="project_phases.jar.name" value="project_phases.jar"/>
@@ -129,44 +139,51 @@
     <property name="resource_management.path" value="resource_management/${resource_management.version}"/>
     <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.path}/${resource_management.jar.name}"/>
 
-    <property name="review_data_structure.version" value="1.0"/>
-    <property name="review_data_structure.jar.name" value="review_data_structure.jar"/>
-    <property name="review_data_structure.path" value="review_data_structure/${review_data_structure.version}"/>
-    <property name="review_data_structure.jar" value="${tcs_libdir}/${review_data_structure.path}/${review_data_structure.jar.name}"/>
+    <property name="deliverable_management.version" value="1.0"/>
+    <property name="deliverable_management.jar.name" value="deliverable_management.jar"/>
+    <property name="deliverable_management.path" value="deliverable_management/${deliverable_management.version}"/>
+    <property name="deliverable_management.jar" value="${tcs_libdir}/${deliverable_management.path}/${deliverable_management.jar.name}"/>
 
-    <property name="review_management.version" value="1.0"/>
-    <property name="review_management.jar.name" value="review_management.jar"/>
-    <property name="review_management.path" value="review_management/${review_management.version}"/>
-    <property name="review_management.jar" value="${tcs_libdir}/${review_management.path}/${review_management.jar.name}"/>
+    <property name="phase_management.version" value="1.0"/>
+    <property name="phase_management.jar.name" value="phase_management.jar"/>
+    <property name="phase_management.path" value="phase_management/${phase_management.version}"/>
+    <property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}"/>
 
     <property name="review_score_calculator.version" value="1.0"/>
     <property name="review_score_calculator.jar.name" value="review_score_calculator.jar"/>
     <property name="review_score_calculator.path" value="review_score_calculator/${review_score_calculator.version}"/>
     <property name="review_score_calculator.jar" value="${tcs_libdir}/${review_score_calculator.path}/${review_score_calculator.jar.name}"/>
 
-    <property name="scorecard_data_structure.version" value="1.0"/>
-    <property name="scorecard_data_structure.jar.name" value="scorecard_data_structure.jar"/>
-    <property name="scorecard_data_structure.path" value="scorecard_data_structure/${scorecard_data_structure.version}"/>
-    <property name="scorecard_data_structure.jar" value="${tcs_libdir}/${scorecard_data_structure.path}/${scorecard_data_structure.jar.name}"/>
+    <property name="review_score_aggregator.version" value="1.0"/>
+    <property name="review_score_aggregator.jar.name" value="review_score_aggregator.jar"/>
+    <property name="review_score_aggregator.path" value="review_score_aggregator/${review_score_aggregator.version}"/>
+    <property name="review_score_aggregator.jar" value="${tcs_libdir}/${review_score_aggregator.path}/${review_score_aggregator.jar.name}"/>
 
-    <property name="scorecard_management.version" value="1.0"/>
-    <property name="scorecard_management.jar.name" value="scorecard_management.jar"/>
-    <property name="scorecard_management.path" value="scorecard_management/${scorecard_management.version}"/>
-    <property name="scorecard_management.jar" value="${tcs_libdir}/${scorecard_management.path}/${scorecard_management.jar.name}"/>
+    <property name="project_phase_template.version" value="1.0"/>
+    <property name="project_phase_template.jar.name" value="project_phase_template.jar"/>
+    <property name="project_phase_template.path" value="project_phase_template/${project_phase_template.version}"/>
+    <property name="project_phase_template.jar" value="${tcs_libdir}/${project_phase_template.path}/${project_phase_template.jar.name}"/>
 
-    <property name="workdays.jar" value="${ext_libdir}/workdays.jar"/>
-    <property name="simple_cache.jar" value="${ext_libdir}/simple_cache.jar" />
-    <property name="weighted_calculator.jar" value="${ext_libdir}/weighted_calculator.jar" />
+    <property name="workdays.version" value="1.0"/>
+    <property name="workdays.jar.name" value="workdays.jar"/>
+    <property name="workdays.path" value="workdays/${workdays.version}"/>
+    <property name="workdays.jar" value="${tcs_libdir}/${workdays.path}/${workdays.jar.name}"/>
 
+    <property name="weighted_calculator.version" value="1.0"/>
+    <property name="weighted_calculator.jar.name" value="weighted_calculator.jar"/>
+    <property name="weighted_calculator.path" value="weighted_calculator/${weighted_calculator.version}"/>
+    <property name="weighted_calculator.jar" value="${tcs_libdir}/${weighted_calculator.path}/${weighted_calculator.jar.name}"/>
+
+
+
+
+    <!-- 3rd Party Dependencies  -->
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="jsp.jar" value="${ext_libdir}/tomcat/5.0/jsp-api.jar"/>
-		<property name="servlet.jar" value="${ext_libdir}/servlet.jar"/>
+		<property name="servlet.jar" value="${ext_libdir}/tomcat/5.0/servlet-api.jar"/>
 
-    <property name="xercesImpl.jar" value="${ext_libdir}/xercesImpl.jar"/>
-    <property name="xml-api.jar" value="${ext_libdir}/xml-api.jar"/>
-    <property name="log4j-1.2.13.jar" value="${ext_libdir}/log4j-1.2.13.jar"/>
-    <property name="mysql-connector-java-3.1.12-bin.jar" value="${ext_libdir}/mysql-connector-java-3.1.12-bin.jar"/>
+    <property name="log4j-1.2.13.jar" value="${ext_libdir}/log4j/1.2.13/log4j-1.2.13.jar"/>
 
     <!-- Properties required for the Cactus tests -->    
     <property name="cactus.home.tomcat5x" value="C:/Program Files/Apache Software Foundation/Tomcat 5.0" />
@@ -174,13 +191,12 @@
 		<property name="target.testreports.dir" value="${testlogdir}" />
 		<property name="cactus.jar" location="${ext_libdir}/cactus/1.7.1/j2ee1.3/cactus-1.7.1.jar" />
 
-
     <path id="cactusdeps">
       <pathelement location="${ext_libdir}/cactus/1.7.1/j2ee1.3/aspectjrt-1.2.1.jar"/>
 	    <pathelement location="${ext_libdir}/cactus/1.7.1/j2ee1.3/cargo-0.5.jar"/>
 	    <pathelement location="${ext_libdir}/cactus/1.7.1/j2ee1.3/commons-httpclient-2.0.2.jar"/>
 	    <pathelement location="${ext_libdir}/cactus/1.7.1/j2ee1.3/commons-logging-1.0.4.jar"/>
-	    <pathelement location="${ext_libdir}/cactus/1.7.1/j2ee1.3/junit-3.8.1.jar"/>
+	    <pathelement location="${ext_libdir}/junit/3.8.1/junit-3.8.1.jar"/>
     </path>
 
     <!-- Define the Cactus tasks -->
@@ -200,43 +216,35 @@
         <pathelement location="${search_builder.jar}" />
         <pathelement location="${servlet.jar}" />
         <pathelement location="${cactus.jar}" />
-        <pathelement location="${xercesImpl.jar}" />
-        <pathelement location="${xml-api.jar}" />
         <pathelement location="${log4j-1.2.13.jar}" />
-        <pathelement location="${mysql-connector-java-3.1.12-bin.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${junit.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${object_factory.jar}" />
+        <pathelement location="${simple_cache.jar}" />
         <pathelement location="${base_exception.jar}" />
         <pathelement location="${logging_wrapper.jar}" />
-        <pathelement location="${configdir}" />
-        <pathelement location="${testfiles}" />
-
-        <pathelement location="${workdays.jar}" />
-        <pathelement location="${simple_cache.jar}" />
-
-        <pathelement location="${deliverable_management.jar}" />
-        <pathelement location="${phase_management.jar}" />
+        <pathelement location="${review_management.jar}" />
+        <pathelement location="${scorecard_management.jar}" />
         <pathelement location="${project_management.jar}" />
-        <pathelement location="${project_phase_template.jar}" />
+        <pathelement location="${phase_management.jar}" />
+        <pathelement location="${review_data_structure.jar}" />
+        <pathelement location="${scorecard_data_structure.jar}" />
         <pathelement location="${project_phases.jar}" />
         <pathelement location="${resource_management.jar}" />
-
-        <pathelement location="${review_data_structure.jar}" />
-        <pathelement location="${review_management.jar}" />
+        <pathelement location="${deliverable_management.jar}" />
         <pathelement location="${review_score_calculator.jar}" />
-        <pathelement location="${scorecard_data_structure.jar}" />
-        <pathelement location="${scorecard_management.jar}" />
-
+        <pathelement location="${review_score_aggregator.jar}" />
+        <pathelement location="${project_phase_template.jar}" />
+        <pathelement location="${workdays.jar}" />
+        <pathelement location="${weighted_calculator.jar}" />
+        <pathelement location="${configdir}" />
+        <pathelement location="${testfiles}" />
     </path>
 
     <path id="test.build.classpath">
         <pathelement location="${build_testclassdir}"/>
         <pathelement location="${build_classdir}"/>
-<!--
-        <pathelement location="${ext_libdir}/mocklib.jar" />
--->
         <path refid="buildlibs"/>
     </path>
 
@@ -244,10 +252,10 @@
         <pathelement location="${build_classdir}"/>
         <path refid="buildlibs"/>
     </path>
-    
+
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" debug="true" verbose="${verbose}">
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}">
             <classpath refid="buildlibs" />
         </javac>
     </target>
@@ -286,8 +294,7 @@
     <target name="compile_tests" depends="compile">
         <mkdir dir="${build_testclassdir}"/>
         <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="com/**" debug="true" verbose="${verbose}">
-            <classpath refid="test.build.classpath">
-		        </classpath>
+            <classpath refid="test.build.classpath" />
         </javac>
     </target>
 
@@ -304,29 +311,23 @@
         		<lib file="${base_exception.jar}" />
         		<lib file="${logging_wrapper.jar}" />
         		<lib file="${typesafe_enum.jar}" />
-        		<lib file="${xercesImpl.jar}" />
-        		<lib file="${xml-api.jar}" />
+        		<lib file="${review_management.jar}" />
+        		<lib file="${simple_cache.jar}" />
+        		<lib file="${project_management.jar}" />
+        		<lib file="${phase_management.jar}" />
+        		<lib file="${scorecard_management.jar}" />
+        		<lib file="${review_data_structure.jar}" />
+        		<lib file="${scorecard_data_structure.jar}" />
+        		<lib file="${project_phases.jar}" />
+        		<lib file="${resource_management.jar}" />
+        		<lib file="${deliverable_management.jar}" />
+        		<lib file="${review_score_calculator.jar}" />
+        		<lib file="${review_score_aggregator.jar}" />
+        		<lib file="${project_phase_template.jar}" />
+        		<lib file="${workdays.jar}" />
+        		<lib file="${weighted_calculator.jar}" />
         		<lib file="${log4j-1.2.13.jar}" />
-			<lib file="${deliverable_management.jar}" />
-			<lib file="${phase_management.jar}" />
-			<lib file="${project_management.jar}" />
-			<lib file="${project_phase_template.jar}" />
-			<lib file="${project_phases.jar}" />
-			<lib file="${resource_management.jar}" />
-			<lib file="${review_data_structure.jar}" />
-			<lib file="${review_management.jar}" />
-			<lib file="${review_score_calculator.jar}" />
-			<lib file="${scorecard_data_structure.jar}" />
-			<lib file="${scorecard_management.jar}" />
-			<lib file="${search_builder.jar}" />
-			<lib file="${workdays.jar}" />
-			<lib file="${simple_cache.jar}" />
-			<lib file="${weighted_calculator.jar}" />
-			<!--
-			<lib file="${simple_cache.jar}" />
-			-->
-
-		</war>
+        </war>
     </target>
     
     <target name="test.prepare" depends="war">
@@ -341,7 +342,7 @@
                 <path refid="test.build.classpath" />        
                 <path refid="cactusdeps"/>
             </classpath>
-            <containerset timeout="2000">
+            <containerset timeout="20000">
                 <tomcat5x if="cactus.home.tomcat5x"
                     dir="${cactus.home.tomcat5x}"
                     output="${testlogdir}/tomcat5x/tomcat5x.out"
@@ -351,7 +352,7 @@
             <formatter type="brief" usefile="false"/>
             <formatter type="plain"/>
             <formatter type="xml"/>
-            <test name="${package}.accuracytests.AccuracyTests" todir="${testlogdir}"/>
+            <test name="${package}.AllTests" todir="${testlogdir}"/>
         </cactus>
     </target>
 
@@ -484,7 +485,9 @@
     <target name="dev_submission" depends="test">
         <jar jarfile="${dev_submission.jar}"
              basedir="."
-             includes="${basedir}/TO-Final-Reviwer.txt, ${configdir}/**,${javamain}/**/*.java,${javatests}/**,${testlogdir}/**,${testfiles}/**,${docsdir}/**"
+             includes="${configdir}/**,${javamain}/**/*.java,${javatests}/${packagedir}/**,${testlogdir}/**,${testfiles}/**,${docsdir}/**"
+             excludes="${javatests}/${packagedir}/AllTests.java,${javatests}/${packagedir}/stresstests/*,${javatests}/${packagedir}/failuretests/*,
+                       ${javatests}/${packagedir}/accuracytests/*"
         />
     </target>
 
