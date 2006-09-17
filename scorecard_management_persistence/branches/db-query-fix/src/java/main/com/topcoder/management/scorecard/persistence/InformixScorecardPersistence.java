@@ -673,7 +673,7 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                result.add(new Long(rs.getLong(1)));
+                result.add(new Long(rs.getString(1)));
             }
             return result;
         } catch (SQLException ex) {
