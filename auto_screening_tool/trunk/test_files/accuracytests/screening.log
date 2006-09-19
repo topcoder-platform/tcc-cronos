@@ -1,0 +1,801 @@
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs].
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule WARN - Failure: No component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs], or they are not of rtf type.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule WARN - Failure: File or directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\.\log] failed to pass the validation: The directory does not exist
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule WARN - Failure: No files with extension [.cs] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [base_exception.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [Job_Scheduler.zuml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stylesheet.css] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.pdf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's email address [@topcoder.com].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [chn.doc] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [MANIFEST.MF] contains submitter's alternative email address [sun].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Sequence_Diagram_Upload_File_To_Remote_File_System.gif] contains submitter's alternative email address [sun].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule WARN - Failure: The number of sequence diagrams [5] is less than required [100].
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.jar.contents].
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents] was deleted successfully.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [1].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents].
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [1].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [1].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents\docs].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [1].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [1].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [1].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonExtractRule INFO - Cleanup screening task with id [1] by screener with id [1].
+PoseidonExtractRule INFO - OK. The temporary unzipped zuml directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\File_Upload.zuml.contents] was deleted successfully.
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [1].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents] was deleted successfully.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [1].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents].
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [1].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [1].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents\docs].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [1].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [1].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [1].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonExtractRule INFO - Cleanup screening task with id [1] by screener with id [1].
+PoseidonExtractRule INFO - OK. The temporary unzipped zuml directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\File_Upload.zuml.contents] was deleted successfully.
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [1].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents] was deleted successfully.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs].
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule WARN - Failure: No component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs], or they are not of rtf type.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule WARN - Failure: File or directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.jar.contents\.\log] failed to pass the validation: The directory does not exist
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule WARN - Failure: No files with extension [.cs] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [base_exception.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [Job_Scheduler.zuml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stylesheet.css] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.pdf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's email address [@topcoder.com].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [chn.doc] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [MANIFEST.MF] contains submitter's alternative email address [sun].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Sequence_Diagram_Upload_File_To_Remote_File_System.gif] contains submitter's alternative email address [sun].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule WARN - Failure: The number of sequence diagrams [5] is less than required [100].
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.jar.contents].
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents] was deleted successfully.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [1].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents].
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [1].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [1].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents\docs].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [1].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [1].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [1].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonExtractRule INFO - Cleanup screening task with id [1] by screener with id [1].
+PoseidonExtractRule INFO - OK. The temporary unzipped zuml directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\File_Upload.zuml.contents] was deleted successfully.
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [1].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.JAR.contents] was deleted successfully.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs].
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule WARN - Failure: No component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs], or they are not of rtf type.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.jar.contents].
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents] was deleted successfully.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs].
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule WARN - Failure: No component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs], or they are not of rtf type.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule WARN - Failure: File or directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.jar.contents\.\log] failed to pass the validation: The directory does not exist
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule WARN - Failure: No files with extension [.cs] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [base_exception.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [Job_Scheduler.zuml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stylesheet.css] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.pdf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's email address [@topcoder.com].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [chn.doc] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [MANIFEST.MF] contains submitter's alternative email address [sun].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Sequence_Diagram_Upload_File_To_Remote_File_System.gif] contains submitter's alternative email address [sun].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule WARN - Failure: The number of sequence diagrams [5] is less than required [100].
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+ArchiveFileRule INFO - Perform screening task with id [4] by screener with id [1].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents].
+DirectoryStructureRule INFO - Perform screening task with id [4] by screener with id [1].
+DirectoryStructureRule WARN - Failure: File or directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\.\log] failed to pass the validation: The directory does not exist
+FileExtensionRule INFO - Perform screening task with id [4] by screener with id [1].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\main].
+FileExtensionRule INFO - Perform screening task with id [4] by screener with id [1].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+CheckStyleRule INFO - Perform screening task with id [4] by screener with id [1].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+FileExtensionRule INFO - Perform screening task with id [4] by screener with id [1].
+FileExtensionRule WARN - Failure: No files with extension [.log] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\log].
+ComponentSpecificationRule INFO - Perform screening task with id [4] by screener with id [1].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs].
+PersonalInfoRule INFO - Perform screening task with id [4] by screener with id [1].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+ArchiveFileRule INFO - Cleanup screening task with id [4] by screener with id [1].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents] was deleted successfully.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs].
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule WARN - Failure: No component specification files are found in directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\docs], or they are not of rtf type.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule WARN - Failure: File or directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.jar.contents\.\log] failed to pass the validation: The directory does not exist
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule WARN - Failure: No files with extension [.cs] are found under directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [base_exception.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [Job_Scheduler.zuml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stylesheet.css] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.pdf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's email address [@topcoder.com].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [chn.doc] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [MANIFEST.MF] contains submitter's alternative email address [sun].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Sequence_Diagram_Upload_File_To_Remote_File_System.gif] contains submitter's alternative email address [sun].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule WARN - Failure: The number of sequence diagrams [5] is less than required [100].
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission.jar.contents].
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\eclipse\workspace\Autotests\test_files\accuracytests\temp\submission1.jar.contents] was deleted successfully.
+ArchiveFileRule INFO - Perform screening task with id [4] by screener with id [1].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents].
+DirectoryStructureRule INFO - Perform screening task with id [4] by screener with id [1].
+DirectoryStructureRule WARN - Failure: File or directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\.\log] failed to pass the validation: The directory does not exist
+FileExtensionRule INFO - Perform screening task with id [4] by screener with id [1].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\src\java\main].
+FileExtensionRule INFO - Perform screening task with id [4] by screener with id [1].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+CheckStyleRule INFO - Perform screening task with id [4] by screener with id [1].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+FileExtensionRule INFO - Perform screening task with id [4] by screener with id [1].
+FileExtensionRule WARN - Failure: No files with extension [.log] are found under directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\log].
+ComponentSpecificationRule INFO - Perform screening task with id [4] by screener with id [1].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\docs].
+PersonalInfoRule INFO - Perform screening task with id [4] by screener with id [1].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+ArchiveFileRule INFO - Cleanup screening task with id [4] by screener with id [1].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents] was deleted successfully.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+CheckStyleRule INFO - Perform screening task with id [1] by screener with id [2].
+CheckStyleRule WARN - Failure: The format of CheckStyle output is invalid.
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule INFO - Success: OK. Component specification files are found in directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\docs].
+ComponentSpecificationRule INFO - Perform screening task with id [1] by screener with id [2].
+ComponentSpecificationRule WARN - Failure: No component specification files are found in directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\docs], or they are not of rtf type.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule WARN - Failure: File or directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission.jar.contents\.\log] failed to pass the validation: The directory does not exist
+DirectoryStructureRule INFO - Perform screening task with id [1] by screener with id [2].
+DirectoryStructureRule INFO - Success: OK. The directory structure of the submission is as expected.
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule INFO - Success: OK. Files with extension [.java] are found under directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+FileExtensionRule INFO - Perform screening task with id [1] by screener with id [2].
+FileExtensionRule WARN - Failure: No files with extension [.cs] are found under directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents\src\java\tests].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule INFO - Success: OK. There are no personal info in the submission.
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [base_exception.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [Job_Scheduler.zuml] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [stylesheet.css] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.pdf] contains submitter's handle [topcoder].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's handle [topcoder].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [AllTests.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's first name [servlet].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [hudge.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [stress_tests_config.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [test_files.txt] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfiguration.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MemoryFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [DBConnectionFactoryImpl.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [FileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [IPServerManager.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [LocalFileUploadConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [MessageFactory.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [RemoteFileUpload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [demoConfig.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [configuration_manager.jar] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationException.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [ConfigurationExceptionUnitTest.java] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [file_upload.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [logging_wrapper.xml] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's last name [config].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [text.txt] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4684] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4688] contains submitter's email address [@topcoder.com].
+PersonalInfoRule WARN - Failure: File [4691] contains submitter's email address [@topcoder.com].
+PersonalInfoRule INFO - Perform screening task with id [1] by screener with id [2].
+PersonalInfoRule WARN - Failure: File [chn.doc] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [MANIFEST.MF] contains submitter's alternative email address [sun].
+PersonalInfoRule WARN - Failure: File [File_Upload_Component_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Requirements_Specification.rtf] contains submitter's alternative email address [microsoft].
+PersonalInfoRule WARN - Failure: File [File_Upload_Sequence_Diagram_Upload_File_To_Remote_File_System.gif] contains submitter's alternative email address [sun].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule INFO - Success: Ok. The numbers of use case diagram, class diagram and sequence diagram [1, 2, 5] all meet the expected counts [1, 1, 1].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonDiagramRule WARN - Failure: The number of use case diagrams [1] is less than required [100].
+PoseidonDiagramRule WARN - Failure: The number of sequence diagrams [5] is less than required [100].
+PoseidonExtractRule INFO - Perform screening task with id [1] by screener with id [2].
+PoseidonExtractRule INFO - Success: OK. The 'zuml' or 'zargo' file is unzipped successfully.
+ArchiveFileRule INFO - Perform screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - Success: OK. The submission archive was successfully unzipped to [D:\review\Autoscreening\test_files\accuracytests\temp\submission.jar.contents].
+ArchiveFileRule INFO - Cleanup screening task with id [1] by screener with id [2].
+ArchiveFileRule INFO - OK. The temporary unzipped submission directory [D:\review\Autoscreening\test_files\accuracytests\temp\submission1.jar.contents] was deleted successfully.

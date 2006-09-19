@@ -42,7 +42,7 @@
         </Property>
 
         <Property name="projectRules">
-            <Property name="Java Designer">
+            <Property name="Java Design">
                 <Property name="id">
                     <Value>1</Value>
                 </Property>
@@ -232,7 +232,7 @@
                     </Property>
                 </Property>
             </Property>
-            <Property name="dotNet Designer">
+            <Property name="dotNet Design">
                 <Property name="id">
                     <Value>2</Value>
                 </Property>

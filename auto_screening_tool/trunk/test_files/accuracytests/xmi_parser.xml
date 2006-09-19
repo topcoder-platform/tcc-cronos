@@ -1,0 +1,43 @@
+<CMConfig>
+	<Config name="com.topcoder.util.xmi.parser.default.handler">
+	<Property name="UseCaseDiagram">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="UseCase">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="Actor">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="ClassDiagram">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="SequenceDiagram">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="ActivityDiagram">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="DeploymentDiagram">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="CollaborationDiagram">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="StateDiagram">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="StateMachine.top">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="StateMachine.transitions">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+		<Property name="StateMachine_top">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	<Property name="StateMachine_transitions">
+		<Value>com.topcoder.util.xmi.parser.handler.DefaultXMIHandler</Value>
+	</Property>
+	</Config>
+</CMConfig>
