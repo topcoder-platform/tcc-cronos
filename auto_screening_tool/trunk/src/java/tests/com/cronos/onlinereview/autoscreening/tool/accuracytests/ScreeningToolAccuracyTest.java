@@ -3,22 +3,21 @@
  */
 package com.cronos.onlinereview.autoscreening.tool.accuracytests;
 
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
+import com.cronos.onlinereview.autoscreening.tool.ScreeningTool;
+
+import com.topcoder.util.config.ConfigManager;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
-import com.cronos.onlinereview.autoscreening.tool.ScreeningTool;
-import com.topcoder.util.config.ConfigManager;
-
 /**
- * <p>
- * Accuracy test cases for <code>ScreeningTool</code> class.
- * </p>
+ * <p>Accuracy test cases for <code>ScreeningTool</code> class.</p>
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
 public class ScreeningToolAccuracyTest extends BaseTestCase {
-
     /**
      * Represents the path of the screener config file.
      */
@@ -49,7 +48,6 @@ public class ScreeningToolAccuracyTest extends BaseTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-
         ConfigManager.getInstance().add(OBJECT_FACTORY_CONFIG_FILE);
         ConfigManager.getInstance().add(SCREENER_CONFIG_FILE);
     }
@@ -88,8 +86,9 @@ public class ScreeningToolAccuracyTest extends BaseTestCase {
      *             throw any exception to JUnit
      */
     public void testAccuracyMain2() throws Exception {
-        ScreeningTool.main(new String[] {"-screenerId 23", "- Interval 2000a",
-            "-configNamespace com.topcoder"});
+        ScreeningTool.main(new String[] {"-screenerId 23",
+                "- Interval 2000a",
+                "-configNamespace com.topcoder"});
     }
 
     /**
@@ -97,15 +96,18 @@ public class ScreeningToolAccuracyTest extends BaseTestCase {
      * Accuracy test of the method <code>static void main(String[] args)</code>.
      * </p>
      * <p>
-     * screener id is -1. Expected IllegalArgumentException.
+     * perform screening just every 1 second, test the concurrency.
      * </p>
      * @throws Exception
      *             throw any exception to JUnit
      */
     public void testAccuracyMain3() throws Exception {
-        ScreeningTool.main(new String[] {"-screenerId=0", "-configNamespace=" + SCREENER_NAMESPACE,
-            "-interval=300000"});
 
+        ScreeningTool.main(new String[] {"-screenerId=2", "-configNamespace=" + SCREENER_NAMESPACE,
+            "-interval=1000000"});
+
+        // sleep 30 seconds for the screener to run.
+        Thread.sleep(3000 * 10);
     }
 
     /**
@@ -113,28 +115,17 @@ public class ScreeningToolAccuracyTest extends BaseTestCase {
      * Accuracy test of the method <code>static void main(String[] args)</code>.
      * </p>
      * <p>
-     * interval should be at least 1 second. Expected ScreeningException.
+     * perform screening
      * </p>
      * @throws Exception
      *             throw any exception to JUnit
      */
     public void testAccuracyMain4() throws Exception {
-        ScreeningTool.main(new String[] {"-screenerId=1", "-configNamespace=" + SCREENER_NAMESPACE,
-            "-interval=300"});
-    }
 
-    /**
-     * <p>
-     * Accuracy test of the method <code>static void main(String[] args)</code>.
-     * </p>
-     * <p>
-     * namespace does not exist.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyMain5() throws Exception {
-        ScreeningTool.main(new String[] {"-screenerId=1", "-configNamespace=" + "do_not_exist",
-            "-interval=3000"});
+        ScreeningTool.main(new String[] {"-screenerId=2", "-configNamespace=" + SCREENER_NAMESPACE,
+            "-interval=1000000"});
+
+        // sleep 30 seconds for the screener to run.
+        Thread.sleep(3000 * 10);
     }
 }

@@ -7,11 +7,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.RuleResult;
 import com.cronos.onlinereview.autoscreening.tool.Screener;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningRule;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningTask;
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.accuracytests.TestHelper;
 import com.cronos.onlinereview.autoscreening.tool.rules.ArchiveFileRule;
 import com.topcoder.servlet.request.FileUpload;

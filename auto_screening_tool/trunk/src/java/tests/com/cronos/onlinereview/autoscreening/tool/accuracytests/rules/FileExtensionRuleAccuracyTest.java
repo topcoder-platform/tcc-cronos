@@ -10,7 +10,7 @@ import java.util.Map;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.RuleResult;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningRule;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningTask;

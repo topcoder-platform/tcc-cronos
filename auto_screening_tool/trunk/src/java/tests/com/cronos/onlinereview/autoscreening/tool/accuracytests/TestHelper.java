@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+
+import com.topcoder.util.config.ConfigManager;
 
 /**
  * <p>Helper class for the accuracy test.</p>
@@ -77,5 +80,26 @@ public class TestHelper {
         }
 
         return (File[]) fileList.toArray(new File[0]);
+    }
+
+    /**
+     * Clears all the namespaces in the ConfigManager.
+     * @throws Exception
+     *             to JUnit
+     */
+    public static void clearNamespaces() throws Exception {
+        ConfigManager cm = ConfigManager.getInstance();
+
+        // iterator through to clear the namespace
+        for (Iterator it = cm.getAllNamespaces(); it.hasNext();) {
+
+            String namespace = (String) it.next();
+
+            if (cm.existsNamespace(namespace)) {
+
+                // removes the namespace that exists
+                cm.removeNamespace(namespace);
+            }
+        }
     }
 }

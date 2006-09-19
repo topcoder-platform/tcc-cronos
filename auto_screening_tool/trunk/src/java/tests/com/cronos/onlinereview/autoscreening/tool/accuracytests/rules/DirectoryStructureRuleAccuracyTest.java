@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.RuleResult;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningRule;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningTask;
@@ -33,17 +33,17 @@ public class DirectoryStructureRuleAccuracyTest extends BaseTestCase {
     /**
      * Represents the path of the directory validation config file.
      */
-    private static final String DIRECTORY_VALIDATION_CONFIG_FILE = "directory_validation.xml";
+    private static final String DIRECTORY_VALIDATION_CONFIG_FILE = "accuracytests/directory_validation.xml";
 
     /**
      * Represents the path of the directory validation config file.
      */
-    private static final String DIRECTORY_VALIDATION_CONFIG_FILE_DEV = "directory_validation_dev.xml";
+    private static final String DIRECTORY_VALIDATION_CONFIG_FILE_DEV = "accuracytests/directory_validation_dev.xml";
 
     /**
      * Represents the path of the directory validation config file.
      */
-    private static final String DIRECTORY_VALIDATION_CONFIG_FILE_DES = "directory_validation_design.xml";
+    private static final String DIRECTORY_VALIDATION_CONFIG_FILE_DES = "accuracytests/directory_validation_design.xml";
 
     /**
      * Aggregates all tests in this class.
@@ -66,7 +66,7 @@ public class DirectoryStructureRuleAccuracyTest extends BaseTestCase {
         tmpDir.mkdir();
 
         // create the contents directory for the unzip the submission file
-        File contentsDir = new File(TMP_DIR, "submission1.jar.contents");
+        File contentsDir = new File(TMP_DIR, "submission.jar.contents");
         contentsDir.mkdir();
 
         // unzip the submission file into the contents directory.
@@ -127,7 +127,7 @@ public class DirectoryStructureRuleAccuracyTest extends BaseTestCase {
         Map context = new HashMap();
 
         context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, new File(TMP_DIR,
-            "submission1.jar.contents"));
+            "submission.jar.contents"));
 
         RuleResult[] results = rule.screen(task, context);
         assertEquals("check # of results", 1, results.length);
@@ -159,7 +159,7 @@ public class DirectoryStructureRuleAccuracyTest extends BaseTestCase {
         Map context = new HashMap();
 
         context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, new File(TMP_DIR,
-            "submission1.jar.contents"));
+            "submission.jar.contents"));
 
         RuleResult[] results = rule.screen(task, context);
         assertEquals("check # of results", 1, results.length);
@@ -188,7 +188,7 @@ public class DirectoryStructureRuleAccuracyTest extends BaseTestCase {
         Map context = new HashMap();
 
         context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, new File(TMP_DIR,
-            "submission1.jar.contents"));
+            "submission.jar.contents"));
 
         RuleResult[] results = rule.screen(task, context);
         assertEquals("check # of results", 1, results.length);

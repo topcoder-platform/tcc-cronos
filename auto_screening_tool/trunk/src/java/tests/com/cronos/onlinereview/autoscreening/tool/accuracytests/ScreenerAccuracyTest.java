@@ -6,7 +6,6 @@ package com.cronos.onlinereview.autoscreening.tool.accuracytests;
 import java.sql.ResultSet;
 
 import com.cronos.onlinereview.autoscreening.tool.Screener;
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
 
 import com.topcoder.util.config.ConfigManager;
 
@@ -22,26 +21,10 @@ import junit.framework.TestSuite;
  * @version 1.0
  */
 public class ScreenerAccuracyTest extends BaseTestCase {
-
     /**
      * Represents the path of the screener config file.
      */
     protected static final String DEFAULT_SCREENER_CONFIG_FILE = "accuracytests/screener.xml";
-
-    /**
-     * Represents the path of the screener config file.
-     */
-    protected static final String SCREENER_CONFIG_FILE_ONE = "accuracytests/screener1.xml";
-
-    /**
-     * Represents the path of the screener config file.
-     */
-    protected static final String SCREENER_CONFIG_FILE_TWO = "accuracytests/screener2.xml";
-
-    /**
-     * Represents the path of the screener config file.
-     */
-    protected static final String SCREENER_CONFIG_FILE_THREE = "accuracytests/screener3.xml";
 
     /**
      * Represents the path of the object factory config file.
@@ -73,7 +56,6 @@ public class ScreenerAccuracyTest extends BaseTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-
         ConfigManager.getInstance().add(OBJECT_FACTORY_CONFIG_FILE);
         ConfigManager.getInstance().add(DEFAULT_SCREENER_CONFIG_FILE);
     }
@@ -98,49 +80,7 @@ public class ScreenerAccuracyTest extends BaseTestCase {
      * @throws Exception
      *             throw any exception to JUnit
      */
-    public void testAccuracyCtor1() throws Exception {
-        screener = new Screener(222, SCREENER_NAMESPACE);
-
-        assertNotNull("Screener's constructor failed.", screener);
-    }
-
-    /**
-     * <p>
-     * Accuracy test of the constructor
-     * <code>Screener(long screenerId, String namespace)</code>.
-     * </p>
-     * <p>
-     * An instance of Screener should be created successfully.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyCtor2() throws Exception {
-        // add another config file
-        ConfigManager.getInstance().removeNamespace(SCREENER_NAMESPACE);
-        ConfigManager.getInstance().add(SCREENER_CONFIG_FILE_ONE);
-
-        screener = new Screener(222, SCREENER_NAMESPACE);
-
-        assertNotNull("Screener's constructor failed.", screener);
-    }
-
-    /**
-     * <p>
-     * Accuracy test of the constructor
-     * <code>Screener(long screenerId, String namespace)</code>.
-     * </p>
-     * <p>
-     * An instance of Screener should be created successfully.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyCtor3() throws Exception {
-        // add another config file
-        ConfigManager.getInstance().removeNamespace(SCREENER_NAMESPACE);
-        ConfigManager.getInstance().add(SCREENER_CONFIG_FILE_TWO);
-
+    public void testAccuracyCtor() throws Exception {
         screener = new Screener(222, SCREENER_NAMESPACE);
 
         assertNotNull("Screener's constructor failed.", screener);
@@ -181,45 +121,13 @@ public class ScreenerAccuracyTest extends BaseTestCase {
      * Accuracy test of the method <code>void screen()</code>.
      * </p>
      * <p>
-     * perform the screening. The tester should check the console output.
+     * perform the screening.
      * </p>
      * @throws Exception
      *             throw any exception to JUnit
      */
-    public void testAccuracyScreen1() throws Exception {
-        Screener screener = new Screener(123, SCREENER_NAMESPACE);
-
-        screener.screen();
-
-        // have a look at the database
-        ResultSet resultSet = doSQLQuery("SELECT * FROM screening_result", new Object[] {});
-        int count = resultSet.getMetaData().getColumnCount();
-        while (resultSet.next()) {
-            for (int i = 1; i < count; ++i) {
-                System.out.print(resultSet.getObject(i));
-                System.out.print('\t');
-            }
-            System.out.println();
-        }
-        resultSet.close();
-    }
-
-    /**
-     * <p>
-     * Accuracy test of the method <code>void screen()</code>.
-     * </p>
-     * <p>
-     * perform the screening. The tester should check the console output.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyScreen2() throws Exception {
-        // add another config file
-        ConfigManager.getInstance().removeNamespace(SCREENER_NAMESPACE);
-        ConfigManager.getInstance().add(SCREENER_CONFIG_FILE_THREE);
-
-        Screener screener = new Screener(123, SCREENER_NAMESPACE);
+    public void testAccuracyScreen() throws Exception {
+        Screener screener = new Screener(1, SCREENER_NAMESPACE);
 
         screener.screen();
 

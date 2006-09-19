@@ -11,7 +11,7 @@ import java.util.Map;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.RuleResult;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningRule;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningTask;
@@ -98,8 +98,7 @@ public class ComponentSpecificationRuleAccuracyTest extends BaseTestCase {
      * <code>RuleResult[] screen(ScreeningTask screeningTask, Map context)</code>.
      * </p>
      * <p>
-     * the component specification is found. The tester should also check the
-     * console output.
+     * the component specification is found.
      * </p>
      * @throws Exception
      *             throw any exception to JUnit

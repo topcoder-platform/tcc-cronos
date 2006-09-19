@@ -10,7 +10,7 @@ import java.util.Map;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.RuleResult;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningData;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningRule;
@@ -159,7 +159,7 @@ public class PersonalInfoRuleAccuracyTest extends BaseTestCase {
         context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, contentsDir);
 
         RuleResult[] results = rule.screen(task, context);
-        assertEquals("check # of results", 43, results.length);
+        assertEquals("check # of results", 42, results.length);
         for (int i = 0; i < results.length; ++i) {
             assertEquals("check result status", false, results[0].isSuccessful());
         }

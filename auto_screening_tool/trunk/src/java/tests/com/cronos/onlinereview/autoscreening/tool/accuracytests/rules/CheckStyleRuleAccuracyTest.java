@@ -10,7 +10,7 @@ import java.util.Map;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.RuleResult;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningRule;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningTask;
@@ -34,17 +34,17 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
     /**
      * Represents the command to check style.
      */
-    private static final String CHECK_STYLE_COMMAND = "java -jar test_files/checkstyle-all-4.2.jar "
-        + "-c test_files/tc_checks.xml -r";
+    private static final String CHECK_STYLE_COMMAND = "java -jar test_files/accuracytests/checkstyle-all-4.2.jar "
+        + "-c test_files/accuracytests/tc_checks.xml -r";
 
     /**
      * Represents the command to check style.
      */
-    private static final String CHECK_STYLE_COMMAND_TEST = "java -jar test_files/checkstyle-all-4.2.jar "
-        + "-c test_files/tc_test_checks.xml -r";
+    private static final String CHECK_STYLE_COMMAND_TEST = "java -jar test_files/accuracytests/checkstyle-all-4.2.jar "
+        + "-c test_files/accuracytests/tc_test_checks.xml -r";
 
     /**
-     * Represents the start path to check the style of tests source.
+     * Represents the start path to check the style of main source.
      */
     private static final String MAIN_SOURCE_DIRECTORY = "src/java/main";
 
@@ -74,12 +74,12 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
         tmpDir.mkdir();
 
         // create the contents directory for the unzip the submission file
-        File contentsDir = new File(TMP_DIR, "submission1.jar.contents");
+        File contentsDir = new File(TMP_DIR, "accuracy.jar.contents");
         contentsDir.mkdir();
 
         // unzip the submission file into the contents directory.
         ArchiveUtility archiveUtility = new ArchiveUtility(new File(FILES_DIR,
-            "accuracytest_submission.jar"), new ZipArchiver());
+            "accuracytest_submission.JAR"), new ZipArchiver());
         archiveUtility.extractContents(contentsDir);
     }
 
@@ -119,8 +119,7 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
      * <code>RuleResult[] screen(ScreeningTask screeningTask, Map context)</code>.
      * </p>
      * <p>
-     * the main source is checked. The tester should also check the console
-     * output.
+     * the main source is checked.
      * </p>
      * @throws Exception
      *             throw any exception to JUnit
@@ -135,7 +134,7 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
         Map context = new HashMap();
 
         context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, new File(TMP_DIR,
-            "submission1.jar.contents"));
+            "accuracy.jar.contents"));
 
         RuleResult[] results = rule.screen(task, context);
         assertEquals("check # of results", 1, results.length);
@@ -150,41 +149,12 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
      * <code>RuleResult[] screen(ScreeningTask screeningTask, Map context)</code>.
      * </p>
      * <p>
-     * check style of Simple.java. Successful result should be returned.
+     * the test source is checked.
      * </p>
      * @throws Exception
      *             throw any exception to JUnit
      */
     public void testAccuracyScreen2() throws Exception {
-        ScreeningRule rule = new CheckStyleRule(CHECK_STYLE_COMMAND_TEST, TESTS_SOURCE_DIRECTORY);
-
-        ScreeningTask task = new ScreeningTask();
-        task.setId(1);
-        task.setScreenerId(2);
-
-        Map context = new HashMap();
-
-        context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, new File(TMP_DIR,
-            "submission1.jar.contents"));
-
-        RuleResult[] results = rule.screen(task, context);
-        assertEquals("check # of results", 1, results.length);
-        assertEquals("check result status", true, results[0].isSuccessful());
-    }
-
-    /**
-     * <p>
-     * Accuracy test of the method
-     * <code>RuleResult[] screen(ScreeningTask screeningTask, Map context)</code>.
-     * </p>
-     * <p>
-     * the tests source is checked. The tester should also check the console
-     * output.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyScreen3() throws Exception {
         ScreeningRule rule = new CheckStyleRule(CHECK_STYLE_COMMAND, TESTS_SOURCE_DIRECTORY);
 
         ScreeningTask task = new ScreeningTask();
@@ -194,10 +164,10 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
         Map context = new HashMap();
 
         context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, new File(TMP_DIR,
-            "submission1.jar.contents"));
+            "accuracy.jar.contents"));
 
         RuleResult[] results = rule.screen(task, context);
-        assertEquals("check # of results", 2, results.length);
+        assertEquals("check # of results", 1, results.length);
         for (int i = 0; i < results.length; ++i) {
             assertEquals("check result status", false, results[i].isSuccessful());
         }

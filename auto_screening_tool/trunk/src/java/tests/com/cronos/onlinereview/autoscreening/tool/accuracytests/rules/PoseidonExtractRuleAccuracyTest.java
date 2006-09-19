@@ -4,16 +4,13 @@
 package com.cronos.onlinereview.autoscreening.tool.accuracytests.rules;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.cronos.onlinereview.autoscreening.tool.BaseTestCase;
+import com.cronos.onlinereview.autoscreening.tool.accuracytests.BaseTestCase;
 import com.cronos.onlinereview.autoscreening.tool.RuleResult;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningRule;
 import com.cronos.onlinereview.autoscreening.tool.ScreeningTask;
@@ -56,7 +53,7 @@ public class PoseidonExtractRuleAccuracyTest extends BaseTestCase {
         tmpDir.mkdir();
 
         // create the contents directory for the unzip the submission file
-        File contentsDir = new File(TMP_DIR, "submission1.jar.contents");
+        File contentsDir = new File(TMP_DIR, "submission.jar.contents");
         contentsDir.mkdir();
 
         // unzip the submission file into the contents directory.
@@ -137,14 +134,10 @@ public class PoseidonExtractRuleAccuracyTest extends BaseTestCase {
      * Accuracy test of the method
      * <code>RuleResult[] screen(ScreeningTask screeningTask, Map context)</code>.
      * </p>
-     * <p>
-     * the zuml was unzipped successfully. The tester should also check the
-     * console output.
-     * </p>
      * @throws Exception
      *             throw any exception to JUnit
      */
-    public void testAccuracyScreen1() throws Exception {
+    public void testAccuracyScreen() throws Exception {
         ScreeningRule rule = new PoseidonExtractRule(TMP_DIR);
 
         ScreeningTask task = new ScreeningTask();
@@ -154,46 +147,13 @@ public class PoseidonExtractRuleAccuracyTest extends BaseTestCase {
         Map context = new HashMap();
 
         context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, new File(TMP_DIR,
-            "submission1.jar.contents/conf"));
+            "submission.jar.contents"));
 
         RuleResult[] results = rule.screen(task, context);
         assertEquals("check # of results", 1, results.length);
-        assertEquals("check result status", false, results[0].isSuccessful());
+        assertEquals("check result status", true, results[0].isSuccessful());
+        assertEquals("check result message",
+            "OK. The 'zuml' or 'zargo' file is unzipped successfully.", results[0].getMessage());
     }
 
-    /**
-     * <p>
-     * Accuracy test of the method
-     * <code>RuleResult[] screen(ScreeningTask screeningTask, Map context)</code>.
-     * </p>
-     * <p>
-     * no xmi or proj3 file. The tester should also check the console output.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyScreen2() throws Exception {
-        ScreeningRule rule = new PoseidonExtractRule(TMP_DIR);
-
-        ScreeningTask task = new ScreeningTask();
-        task.setId(1);
-        task.setScreenerId(2);
-
-        Map context = new HashMap();
-
-        File contentsDir = new File(TMP_DIR, "submission1.jar.contents");
-        context.put(ArchiveFileRule.SUBMISSION_DIRECTORY_KEY, contentsDir);
-
-        FileChannel in = new FileInputStream(new File(FILES_DIR, "accuracytest_submission.jar"))
-            .getChannel();
-        FileChannel out = new FileOutputStream(new File(contentsDir, "conf/Job_Scheduler.zuml"))
-            .getChannel();
-        in.transferTo(0, in.size(), out);
-
-        RuleResult[] results = rule.screen(task, context);
-        assertEquals("check # of results", 1, results.length);
-        assertEquals("check result status", false, results[0].isSuccessful());
-        assertTrue("check result message", results[0].getMessage().startsWith(
-            "No or duplicate 'zuml' or 'zargo' files are found under directory ["));
-    }
 }
