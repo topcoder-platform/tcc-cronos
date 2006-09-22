@@ -1536,6 +1536,8 @@ public class InformixPhasePersistence implements PhasePersistence {
                     updateStatement.setString(1, (String) entry.getValue());
                     updateStatement.setLong(5, ((Long) lookUp.get(entry.getKey())).longValue());
                     updateStatement.executeUpdate();
+                }
+                if (oldValue != null) {
                     // remove the criteria from list
                     it.remove();
                 }
