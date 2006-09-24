@@ -41,11 +41,9 @@ public class UnitTests extends TestCase {
         suite.addTest(ScreenerTest.suite());
         suite.addTest(ScreeningDataTest.suite());
         suite.addTest(ScreeningExceptionTest.suite());
-        suite.addTest(ScreeningJobTest.suite());
         suite.addTest(ScreeningLogicTest.suite());
         suite.addTest(ScreeningStatusTest.suite());
         suite.addTest(ScreeningTaskTest.suite());
-        suite.addTest(ScreeningToolTest.suite());
         suite.addTest(UpdateFailedExceptionTest.suite());
 
         suite.addTest(ArchiveFileRuleTest.suite());
@@ -57,6 +55,8 @@ public class UnitTests extends TestCase {
         suite.addTest(PoseidonDiagramRuleTest.suite());
         suite.addTest(PoseidonExtractRuleTest.suite());
 
+        suite.addTest(ScreeningJobTest.suite());
+        suite.addTest(ScreeningToolTest.suite());
         suite.addTest(DemoTest.suite());
         return suite;
     }

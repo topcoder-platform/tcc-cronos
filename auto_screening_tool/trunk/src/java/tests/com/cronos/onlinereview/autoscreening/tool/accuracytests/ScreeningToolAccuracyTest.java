@@ -90,42 +90,4 @@ public class ScreeningToolAccuracyTest extends BaseTestCase {
                 "- Interval 2000a",
                 "-configNamespace com.topcoder"});
     }
-
-    /**
-     * <p>
-     * Accuracy test of the method <code>static void main(String[] args)</code>.
-     * </p>
-     * <p>
-     * perform screening just every 1 second, test the concurrency.
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyMain3() throws Exception {
-
-        ScreeningTool.main(new String[] {"-screenerId=2", "-configNamespace=" + SCREENER_NAMESPACE,
-            "-interval=1000000"});
-
-        // sleep 30 seconds for the screener to run.
-        Thread.sleep(3000 * 10);
-    }
-
-    /**
-     * <p>
-     * Accuracy test of the method <code>static void main(String[] args)</code>.
-     * </p>
-     * <p>
-     * perform screening
-     * </p>
-     * @throws Exception
-     *             throw any exception to JUnit
-     */
-    public void testAccuracyMain4() throws Exception {
-
-        ScreeningTool.main(new String[] {"-screenerId=2", "-configNamespace=" + SCREENER_NAMESPACE,
-            "-interval=1000000"});
-
-        // sleep 30 seconds for the screener to run.
-        Thread.sleep(3000 * 10);
-    }
 }

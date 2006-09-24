@@ -369,8 +369,7 @@
                         <Value>String</Value>
                     </Property>
                     <Property name="value">
-                        <Value>java -jar test_files/accuracytests/checkstyle-all-4.2.jar -c
-                            test_files/accuracytests/tc_checks.xml -r</Value>
+                        <Value>test_files\checkstyle.bat</Value>
                     </Property>
                 </Property>
                 <Property name="param2">
@@ -393,8 +392,7 @@
                         <Value>String</Value>
                     </Property>
                     <Property name="value">
-                        <Value>java -jar test_files/accuracytests/checkstyle-all-4.2.jar -c
-                            test_files/accuracytests/tc_test_checks.xml -r</Value>
+                        <Value>test_files\checkstyle.bat</Value>
                     </Property>
                 </Property>
                 <Property name="param2">

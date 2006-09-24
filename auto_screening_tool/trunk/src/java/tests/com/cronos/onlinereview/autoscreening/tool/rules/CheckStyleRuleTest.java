@@ -27,8 +27,7 @@ public class CheckStyleRuleTest extends BaseTestCase {
     /**
      * Represents the command to check style.
      */
-    private static final String CHECK_STYLE_COMMAND = "java -jar test_files/checkstyle-all-4.2.jar "
-        + "-c test_files/tc_checks.xml -r";
+    private static final String CHECK_STYLE_COMMAND = "test_files\\checkstyle.bat";
 
     /**
      * Represents the start path to check the style of tests source.

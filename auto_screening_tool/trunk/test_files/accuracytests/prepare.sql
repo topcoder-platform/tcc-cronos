@@ -1,4 +1,3 @@
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('screening_result_id_seq', 1, 1, 0);
 
 INSERT INTO project_category_lu (project_category_id) VALUES (1);
 INSERT INTO project_category_lu (project_category_id) VALUES (2);

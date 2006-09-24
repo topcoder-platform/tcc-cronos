@@ -34,14 +34,7 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
     /**
      * Represents the command to check style.
      */
-    private static final String CHECK_STYLE_COMMAND = "java -jar test_files/accuracytests/checkstyle-all-4.2.jar "
-        + "-c test_files/accuracytests/tc_checks.xml -r";
-
-    /**
-     * Represents the command to check style.
-     */
-    private static final String CHECK_STYLE_COMMAND_TEST = "java -jar test_files/accuracytests/checkstyle-all-4.2.jar "
-        + "-c test_files/accuracytests/tc_test_checks.xml -r";
+    private static final String CHECK_STYLE_COMMAND = "test_files\\checkstyle.bat";
 
     /**
      * Represents the start path to check the style of main source.
@@ -167,7 +160,7 @@ public class CheckStyleRuleAccuracyTest extends BaseTestCase {
             "accuracy.jar.contents"));
 
         RuleResult[] results = rule.screen(task, context);
-        assertEquals("check # of results", 1, results.length);
+        assertEquals("check # of results", 2, results.length);
         for (int i = 0; i < results.length; ++i) {
             assertEquals("check result status", false, results[i].isSuccessful());
         }

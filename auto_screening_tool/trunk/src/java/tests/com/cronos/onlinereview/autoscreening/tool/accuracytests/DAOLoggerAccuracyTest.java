@@ -149,7 +149,7 @@ public class DAOLoggerAccuracyTest extends BaseTestCase {
 
         logger.logResponse(screeningTask, screeningLogic, new RuleResult[] {ruleResult});
 
-        assertEquals("check result", 1, doScalarQuery("SELECT * FROM screening_result",
+        assertEquals("check result", 2, doScalarQuery("SELECT * FROM screening_result",
             new Object[] {}));
 
         printResult("SELECT * FROM screening_result");
@@ -182,7 +182,7 @@ public class DAOLoggerAccuracyTest extends BaseTestCase {
 
         logger.logResponse(screeningTask, screeningLogic, new RuleResult[] {ruleResult});
 
-        assertEquals("check result", 1, doScalarQuery("SELECT * FROM screening_result",
+        assertEquals("check result", 3, doScalarQuery("SELECT * FROM screening_result",
             new Object[] {}));
 
         printResult("SELECT * FROM screening_result");

@@ -19,6 +19,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import com.cronos.onlinereview.autoscreening.tool.ResponseLevel;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
@@ -102,6 +103,7 @@ public class BaseTestCase extends TestCase {
      *             to JUnit
      */
     protected void setUp() throws Exception {
+        assertNotNull(ResponseLevel.PASS);
         // load the configuration
         loadConfig();
         conn = getConnection();

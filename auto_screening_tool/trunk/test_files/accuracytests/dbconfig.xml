@@ -1,29 +1,30 @@
 <CMConfig>
-    <!-- Namespace for DBConnectionFactory component -->
-    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
-        <Property name="connections">
-            <Property name="default">
-                <Value>informix_connection</Value>
-            </Property>
-            <Property name="informix_connection">
-                <Property name="producer">
-                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
-                </Property>
-                <Property name="parameters">
-                    <Property name="jdbc_driver">
-                        <Value>com.informix.jdbc.IfxDriver</Value>
-                    </Property>
-                    <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://10.0.22.254:1526/autoscreening:INFORMIXSERVER=keven</Value>
-                    </Property>
-                    <Property name="user">
-                        <Value>informix</Value>
-                    </Property>
-                    <Property name="password">
-                        <Value>123456</Value>
-                    </Property>
-                </Property>
-            </Property>
-        </Property>
-    </Config>
+	<!-- Namespace for DBConnectionFactory component -->
+	<Config
+		name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix_connection</Value>
+			</Property>
+			<Property name="informix_connection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://wb-x505:1526/ast:INFORMIXSERVER=tcs</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>informix</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
 </CMConfig>

@@ -48,7 +48,7 @@
         </Property>
         <Property name="ScreeningTaskDAO:default">
             <Property name="type">
-                <Value>com.cronos.onlinereview.autoscreening.tool.persistence.informix.InformixTaskDAO</Value>
+                <Value>com.cronos.onlinereview.autoscreening.tool.failuretests.MockTaskDAO</Value>
             </Property>
             <Property name="params">
                 <Property name="param1">
@@ -65,7 +65,7 @@
         </Property>
         <Property name="ScreeningResponseDAO:default">
             <Property name="type">
-                <Value>com.cronos.onlinereview.autoscreening.tool.persistence.informix.InformixResponseDAO</Value>
+                <Value>com.cronos.onlinereview.autoscreening.tool.failuretests.MockResponseDAO</Value>
             </Property>
             <Property name="params">
                 <Property name="param1">
@@ -369,8 +369,7 @@
                         <Value>String</Value>
                     </Property>
                     <Property name="value">
-                        <Value>java -jar test_files/checkstyle-all-4.2.jar -c
-                            test_files/tc_checks.xml -r</Value>
+                        <Value>test_files\checkstyle.bat</Value>
                     </Property>
                 </Property>
                 <Property name="param2">
