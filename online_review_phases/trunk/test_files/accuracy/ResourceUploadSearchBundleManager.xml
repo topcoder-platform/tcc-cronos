@@ -1,13 +1,40 @@
 <CMConfig> 
   <Config name="com.topcoder.search.builder.UploadAndResourceSearchBundleManager"> 
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.topcoder.search.builder.strategy.factory</Value>
+        </Property>
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.topcoder.search.builder.validator.factory</Value>
+        </Property>
+  
       <Property name="searchBundles"> 
-         <Property name="resource_bundle1"> 
-      		<Property name="type"> 
-                <Value>Database</Value> 
-            </Property> 
-      		<Property name="name"> 
-                <Value>Resource Search Bundle</Value> 
-            </Property> 
+         <Property name="Resource Search Bundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="type">
+                <Value>Database</Value>
+            </Property>
+            <Property name="name">
+                <Value>Resource Search Bundle</Value>
+            </Property>
+            
       		<Property name="context"> 
                 <Value>SELECT resource.resource_id
 						FROM resource
@@ -33,7 +60,26 @@
 				</Property>
            </Property> 
         </Property>     
-        <Property name="resource_bundle2"> 
+        <Property name="Resource Role Search Bundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
@@ -56,7 +102,26 @@
            </Property> 
         </Property> 
         
-        <Property name="resource_bundle3"> 
+        <Property name="Notification Search Bundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
@@ -79,7 +144,26 @@
            </Property> 
         </Property> 
         
-        <Property name="resource_bundle4"> 
+        <Property name="Notification Type Search Bundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
@@ -103,7 +187,26 @@
         </Property> 
         
                 
-        <Property name="upload_bundle1"> 
+        <Property name="Upload Search Bundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
@@ -130,7 +233,26 @@
            </Property> 
         </Property> 
         
-        <Property name="upload_bundle2"> 
+        <Property name="Submission Search Bundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 

@@ -27,7 +27,6 @@ import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
-import com.topcoder.management.scorecard.data.Question;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
@@ -75,7 +74,8 @@ public class BaseTest extends TestCase {
         "config/Screening_Management.xml",
         "config/Upload_Resource_Search.xml",
         "config/User_Project_Data_Store.xml",
-        "config/Review_Score_Aggregator.xml"
+        "config/Review_Score_Aggregator.xml",
+        "config/SearchBuilderCommon.xml"
     };
 
     /** constant for namespace to phase manager to be used during demo.*/

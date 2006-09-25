@@ -23,6 +23,18 @@ public class AccuracyTests {
         suite.addTestSuite(UploadTypeLookupUtilityAccTest.class);
         suite.addTestSuite(ManagerHelperAccuracyTest.class);
 
+        suite.addTestSuite(RegistrationPhaseHandlerAccTest.class);
+        suite.addTestSuite(SubmissionPhaseHandlerAccTest.class);
+        suite.addTestSuite(ScreeningPhaseHandlerAccTest.class);
+        suite.addTestSuite(ReviewPhaseHandlerAccTest.class);
+        suite.addTestSuite(AppealsPhaseHandlerAccTest.class);
+        suite.addTestSuite(AppealsResponsePhaseHandlerAccTest.class);
+        suite.addTestSuite(AggregationPhaseHandlerAccTest.class);
+        suite.addTestSuite(AggregationReviewPhaseHandlerAccTest.class);
+        suite.addTestSuite(FinalFixPhaseHandlerAccTest.class);
+        suite.addTestSuite(FinalReviewPhaseHandlerAccTest.class);
+        suite.addTestSuite(ApprovalPhaseHandlerAccTest.class);
+
         return suite;
     }
 }

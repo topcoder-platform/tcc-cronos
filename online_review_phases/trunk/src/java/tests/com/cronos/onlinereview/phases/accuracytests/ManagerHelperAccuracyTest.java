@@ -1,24 +1,17 @@
 package com.cronos.onlinereview.phases.accuracytests;
 
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.idgenerator.IDGeneratorFactory;
-
-import com.topcoder.management.phase.PhaseManager;
-import com.topcoder.management.project.ProjectManager;
-import com.topcoder.management.scorecard.ScorecardManager;
-import com.topcoder.management.review.ReviewManager;
-import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
-import com.topcoder.management.resource.ResourceManager;
-import com.topcoder.management.deliverable.UploadManager;
-import com.cronos.onlinereview.phases.ManagerHelper;
 import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.cronos.onlinereview.external.UserRetrieval;
-
-import java.sql.Connection;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
+import com.cronos.onlinereview.phases.ManagerHelper;
+import com.topcoder.management.deliverable.UploadManager;
+import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.resource.ResourceManager;
+import com.topcoder.management.review.ReviewManager;
+import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
+import com.topcoder.management.scorecard.ScorecardManager;
+import com.topcoder.util.idgenerator.IDGeneratorFactory;
 
 /**
  * Accuracy test for ManagerHelper class.
@@ -26,12 +19,7 @@ import java.util.HashMap;
  * @author tuenm
  * @version 1.0
  */
-public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
-    /**
-     * The configuration file for ManagerHelper
-     */
-    public static final String MANAGER_HELPER_CONFIG_FILE = "accuracy/ManagerHelperConfig.xml";
-
+public class ManagerHelperAccuracyTest extends BaseAccuracyTest {
 
     /**
      * <p/>
@@ -43,21 +31,9 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
     protected void setUp() throws Exception {
         super.setUp();
 
-        releaseSingletonInstance(IDGeneratorFactory.class, "generators");
+        AccuracyTestHelper.releaseSingletonInstance(IDGeneratorFactory.class, "generators");
 
-        ConfigManager configManager = ConfigManager.getInstance();
-
-        configManager.add(MANAGER_HELPER_CONFIG_FILE);
-
-        // load the configuration file of the managers
-        configManager.add("accuracy/ProjectManagement.xml");
-        configManager.add("accuracy/PhaseManagement.xml");
-        configManager.add("accuracy/ScorecardManagement.xml");
-        configManager.add("accuracy/ResourceUploadSearchBundleManager.xml");
-        configManager.add("accuracy/AutoScreeningManagement.xml");
-        configManager.add("accuracy/UserProjectDataStore.xml");
-        configManager.add("accuracy/ReviewScorecardAggregator.xml");
-        configManager.add("accuracy/Review_Management.xml");
+        AccuracyTestHelper.loadTestConfiguration();
     }
 
     /**
@@ -69,6 +45,7 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
      */
     protected void tearDown() throws Exception {
         super.tearDown();
+        AccuracyTestHelper.clearAllConfigNS();
     }
 
     /**
@@ -89,6 +66,10 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
         ManagerHelper helper = new ManagerHelper();
         PhaseManager manager = helper.getPhaseManager();
         assertNotNull("Cannot get PhaseManager using ManagerHelper.", manager);
+
+        assertEquals("Hanlders array should be empty.", 0, manager.getAllHandlers().length);
+        assertTrue("Phase statuses should be initialized.", manager.getAllPhaseStatuses().length > 0);
+        assertTrue("Phase types should be initialized.", manager.getAllPhaseTypes().length > 0);
     }
 
     /**
@@ -100,6 +81,10 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
         ManagerHelper helper = new ManagerHelper();
         ProjectManager manager = helper.getProjectManager();
         assertNotNull("Cannot get ProjectManager using ManagerHelper.", manager);
+
+        assertTrue("Project types should be initialized.", manager.getAllProjectTypes().length > 0);
+        assertTrue("Project statuses should be initialized.", manager.getAllProjectStatuses().length > 0);
+        assertTrue("Project categories should be initialized.", manager.getAllProjectCategories().length > 0);
     }
 
     /**
@@ -111,6 +96,10 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
         ManagerHelper helper = new ManagerHelper();
         ScorecardManager manager = helper.getScorecardManager();
         assertNotNull("Cannot get ScorecardManager using ManagerHelper.", manager);
+
+        assertTrue("Scorecard types should be initialized.", manager.getAllScorecardTypes().length > 0);
+        assertTrue("Scorecard statuses should be initialized.", manager.getAllScorecardStatuses().length > 0);
+        assertTrue("Question types should be initialized.", manager.getAllQuestionTypes().length > 0);
     }
 
     /**
@@ -144,6 +133,9 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
         ManagerHelper helper = new ManagerHelper();
         ResourceManager manager = helper.getResourceManager();
         assertNotNull("Cannot get ResourceManager using ManagerHelper.", manager);
+
+        assertTrue("Notification types should be initialized.", manager.getAllNotificationTypes().length > 0);
+        assertTrue("Resource roles should be initialized.", manager.getAllResourceRoles().length > 0);
     }
 
     /**
@@ -155,6 +147,10 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
         ManagerHelper helper = new ManagerHelper();
         UploadManager manager = helper.getUploadManager();
         assertNotNull("Cannot get UploadManager using ManagerHelper.", manager);
+
+        assertTrue("Upload types should be initialized.", manager.getAllUploadTypes().length > 0);
+        assertTrue("Upload statuses should be initialized.", manager.getAllUploadStatuses().length > 0);
+
     }
 
     /**
@@ -188,33 +184,10 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest{
         ManagerHelper helper = new ManagerHelper();
         ReviewScoreAggregator agg = helper.getScorecardAggregator();
         assertNotNull("Cannot get ReviewScoreAggregator using ManagerHelper.", agg);
-    }
 
-    /**
-     * <p>A helper method to be used to <code>nullify</code> the singleton instance. The method uses a <code>Java
-     * Reflection API</code> to access the field and initialize the field with <code>null</code> value. The operation
-     * may fail if a <code>SecurityManager</code> prohibits such sort of accessing.</p>
-     *
-     * @param clazz a <code>Class</code> representing the class of the <code>Singleton</code> instance.
-     * @param instanceName a <code>String</code> providing the name of the static field holding the reference to the
-     * singleton instance.
-     */
-    public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
-        try {
-            Field instanceField = clazz.getDeclaredField(instanceName);
-            boolean accessibility = instanceField.isAccessible();
-            instanceField.setAccessible(true);
-
-            if (Modifier.isStatic(instanceField.getModifiers())) {
-                instanceField.set(null, null);
-            } else {
-                System.out.println("An error occurred while trying to release the singleton instance - the "
-                                   + " '" + instanceName + "' field is not static");
-            }
-
-            instanceField.setAccessible(accessibility);
-        } catch (Exception e) {
-            System.out.println("An error occurred while trying to release the singleton instance : " + e);
-        }
+        assertNotNull("Score aggregation algorithm should be initialized.", agg.getScoreAggregationAlgorithm());
+        assertNotNull("Placement algorithm should be initialized.", agg.getPlaceAssignmentAlgorithm());
+        assertNotNull("Tie breaker should be initialized.", agg.getTieBreaker());
+        assertNotNull("Tie detector should be initialized.", agg.getTieDetector());
     }
 }

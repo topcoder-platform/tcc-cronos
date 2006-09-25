@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <CMConfig>
         <!-- Namespace for all handler classes -->
     <Config name="com.cronos.onlinereview.phases.failuretests">
@@ -175,7 +176,7 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.0.101:1526/online_review:INFORMIXSERVER=ol_informix_server</Value>
+                        <Value>jdbc:informix-sqli://wb-x505:1526/or:INFORMIXSERVER=tcs</Value>
                     </Property>
                     <Property name="SelectMethod">
                         <Value>cursor</Value>
@@ -184,7 +185,7 @@
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>ibm</Value>
+                        <Value>informix</Value>
                     </Property>
                 </Property>
             </Property>
@@ -205,7 +206,7 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.0.101:1526/online_review:INFORMIXSERVER=ol_informix_server</Value>
+                        <Value>jdbc:informix-sqli://wb-x505:1526/or:INFORMIXSERVER=tcs</Value>
                     </Property>
                     <Property name="SelectMethod">
                         <Value>cursor</Value>
@@ -214,7 +215,7 @@
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>ibm</Value>
+                        <Value>informix</Value>
                     </Property>
                 </Property>
             </Property>
@@ -223,7 +224,7 @@
         <!-- Namespace for Email Engine component -->
     <Config name="com.topcoder.message.email.EmailEngine">
         <Property name="smtp_host_addr">
-            <Value>195.161.178.3</Value>
+            <Value>localhost</Value>
         </Property>
         <Property name="smtp_host_port">
             <Value>25</Value>
@@ -684,32 +685,55 @@
         </Property>
     </Config>
     <Config name="com.topcoder.search.builder.Upload_Resource_Search">
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.topcoder.search.builder.strategy.factory</Value>
+        </Property>
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.topcoder.search.builder.validator.factory</Value>
+        </Property>
         <Property name="searchBundles">
             <Property name="ResourceSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="dummy">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
                 <Property name="type">
                     <Value>Database</Value>
                 </Property>
                 <Property name="name">
-                    <Value>ResourceSearchBundle</Value>
+                    <Value>Resource Search Bundle</Value>
                 </Property>
                 <Property name="context">
                     <Value>SELECT resource.resource_id
-                          FROM resource
-                          LEFT OUTER JOIN resource_submission
-                          ON resource.resource_id = resource_submission.resource_id
-                          LEFT OUTER JOIN resource_info
-                          ON resource.resource_id = resource_info.resource_id
-                          LEFT OUTER JOIN resource_info_type_lu
-                          ON resource_info.resource_info_type_id =
-                          resource_info_type_lu.resource_info_type_id
-                          WHERE
-                  </Value>
+						FROM resource
+						LEFT OUTER JOIN resource_submission
+						ON resource.resource_id = resource_submission.resource_id
+						LEFT OUTER JOIN resource_info
+						ON resource.resource_id = resource_info.resource_id
+						LEFT OUTER JOIN resource_info_type_lu
+						ON resource_info.resource_info_type_id =
+						resource_info_type_lu.resource_info_type_id
+						WHERE
+				</Value>
                 </Property>
                 <Property name="DBNamcespace">
-                    <Value>Dbconnection.factory</Value>
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="resource_id">
@@ -718,20 +742,37 @@
                 </Property>
             </Property>
             <Property name="ResourceRoleSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="dummy">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
                 <Property name="type">
                     <Value>Database</Value>
                 </Property>
                 <Property name="name">
-                    <Value>ResourceRoleSearchBundle</Value>
+                    <Value>Resource Role Search Bundle</Value>
                 </Property>
                 <Property name="context">
                     <Value>SELECT resource_role_id FROM resource_role_lu WHERE</Value>
                 </Property>
                 <Property name="DBNamcespace">
-                    <Value>Dbconnection.factory</Value>
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -740,20 +781,37 @@
                 </Property>
             </Property>
             <Property name="NotificationSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="dummy">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
                 <Property name="type">
                     <Value>Database</Value>
                 </Property>
                 <Property name="name">
-                    <Value>NotificationSearchBundle</Value>
+                    <Value>Notification Search Bundle</Value>
                 </Property>
                 <Property name="context">
                     <Value>SELECT external_ref_id, project_id, notification_type_id FROM notification WHERE</Value>
                 </Property>
                 <Property name="DBNamcespace">
-                    <Value>Dbconnection.factory</Value>
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -762,20 +820,37 @@
                 </Property>
             </Property>
             <Property name="NotificationTypeSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="dummy">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
                 <Property name="type">
                     <Value>Database</Value>
                 </Property>
                 <Property name="name">
-                    <Value>NotificationTypeSearchBundle</Value>
+                    <Value>Notification Type Search Bundle</Value>
                 </Property>
                 <Property name="context">
                     <Value>SELECT notification_type_id FROM notification_type_lu WHERE</Value>
                 </Property>
                 <Property name="DBNamcespace">
-                    <Value>Dbconnection.factory</Value>
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -784,20 +859,40 @@
                 </Property>
             </Property>
             <Property name="UploadSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="dummy">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
                 <Property name="type">
                     <Value>Database</Value>
                 </Property>
                 <Property name="name">
-                    <Value>UploadSearchBundle</Value>
+                    <Value>Upload Search Bundle</Value>
                 </Property>
                 <Property name="context">
-                    <Value>SELECT upload_id FROM upload WHERE</Value>
+                    <Value>SELECT upload_id
+                    FROM upload
+                    WHERE 
+                </Value>
                 </Property>
                 <Property name="DBNamcespace">
-                    <Value>Dbconnection.factory</Value>
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -806,21 +901,43 @@
                 </Property>
             </Property>
             <Property name="SubmissionSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="dummy">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
                 <Property name="type">
                     <Value>Database</Value>
                 </Property>
                 <Property name="name">
-                    <Value>SubmissionSearchBundle</Value>
+                    <Value>Submission Search Bundle</Value>
                 </Property>
                 <Property name="context">
-                    <Value>SELECT submission_id FROM submission
-                  INNER JOIN upload ON submission.upload_id = upload.upload_id WHERE</Value>
+                    <Value>
+                SELECT submission_id
+                    FROM submission
+                    INNER JOIN upload 
+                    	ON submission.upload_id = upload.upload_id
+                    WHERE 
+                </Value>
                 </Property>
                 <Property name="DBNamcespace">
-                    <Value>Dbconnection.factory</Value>
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -829,5 +946,150 @@
                 </Property>
             </Property>
         </Property>
+    </Config>
+    <Config name="com.topcoder.search.builder.strategy.factory">
+        <Property name="dbStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder.database.DBSearchStrategy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+        <!-- Object Factory configuration for validator -->
+    <Config name="com.topcoder.search.builder.validator.factory">
+        <Property name="validator:default">
+            <Property name="type">
+                <Value>com.topcoder.util.datavalidator.NullValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+        <!-- Configuration for DBSearchStrategy -->
+    <Config name="com.topcoder.search.builder.database.DBSearchStrategy">
+        <!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
+        <Property name="connectionFactory">
+        <!-- The namespace of the ConnectionFactory -->
+            <Property name="name">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+        </Property>
+        <!--
+            The name to request from the connection factory when acquiring a connection.
+            If not present, then the default connection is used.
+        -->
+        <Property name="connectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="searchFragmentFactoryNamespace">
+            <Value>com.topcoder.search.builder.database.factory</Value>
+        </Property>
+        <Property name="searchFragmentBuilders">
+            <Property name="first">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.AndFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="second">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.OrFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="third">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="fourth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NotFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="fifth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="sixth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.InFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="eighth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NullFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="ninth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="tenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="eleventh">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="twelvth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+            <Property name="thirteenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.search.builder.database.factory">
     </Config>
 </CMConfig>

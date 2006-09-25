@@ -72,6 +72,7 @@ public class StressBaseTest extends TestCase {
         // load configurations
         ConfigManager cm = ConfigManager.getInstance();
 
+        cm.add("stress/SearchBuilderCommon.xml");
         cm.add("stress/DB_Factory.xml");
         cm.add("stress/Document_Manager.xml");
         cm.add("stress/Manager_Helper.xml");

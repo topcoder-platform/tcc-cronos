@@ -23,13 +23,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.0.101:1526/online_review:INFORMIXSERVER=ol_informix_server</Value>
+                        <Value>jdbc:informix-sqli://wb-x505:1526/or:INFORMIXSERVER=tcs</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>ibm</Value>
+                        <Value>informix</Value>
                     </Property>
                 </Property>
             </Property>

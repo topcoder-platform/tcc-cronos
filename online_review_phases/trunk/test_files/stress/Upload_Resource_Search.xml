@@ -1,13 +1,40 @@
 <CMConfig> 
   <Config name="com.topcoder.search.builder.Upload_Resource_Search"> 
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.topcoder.search.builder.strategy.factory</Value>
+        </Property>
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.topcoder.search.builder.validator.factory</Value>
+        </Property>
+  
       <Property name="searchBundles"> 
          <Property name="ResourceSearchBundle"> 
-      		<Property name="type"> 
-                <Value>Database</Value> 
-            </Property> 
-      		<Property name="name"> 
-                <Value>ResourceSearchBundle</Value> 
-            </Property> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="type">
+                <Value>Database</Value>
+            </Property>
+            <Property name="name">
+                <Value>Resource Search Bundle</Value>
+            </Property>
+            
       		<Property name="context"> 
                 <Value>SELECT resource.resource_id
 						FROM resource
@@ -34,11 +61,30 @@
            </Property> 
         </Property>     
         <Property name="ResourceRoleSearchBundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
       		<Property name="name"> 
-                <Value>ResourceRoleSearchBundle</Value> 
+                <Value>Resource Role Search Bundle</Value> 
             </Property> 
       		<Property name="context"> 
                 <Value>SELECT resource_role_id FROM resource_role_lu WHERE</Value> 
@@ -57,16 +103,35 @@
         </Property> 
         
         <Property name="NotificationSearchBundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
       		<Property name="name"> 
-                <Value>NotificationSearchBundle</Value> 
+                <Value>Notification Search Bundle</Value> 
             </Property> 
       		<Property name="context"> 
                 <Value>SELECT external_ref_id, project_id, notification_type_id FROM notification WHERE</Value> 
             </Property> 
-			<Property name="DBNamcespace"> 
+<Property name="DBNamcespace"> 
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
             </Property> 
             <Property name="connectionProducerName"> 
@@ -80,16 +145,35 @@
         </Property> 
         
         <Property name="NotificationTypeSearchBundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
       		<Property name="name"> 
-                <Value>NotificationTypeSearchBundle</Value> 
+                <Value>Notification Type Search Bundle</Value> 
             </Property> 
       		<Property name="context"> 
                 <Value>SELECT notification_type_id FROM notification_type_lu WHERE</Value> 
             </Property> 
-			<Property name="DBNamcespace"> 
+<Property name="DBNamcespace"> 
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
             </Property> 
             <Property name="connectionProducerName"> 
@@ -102,17 +186,41 @@
            </Property> 
         </Property> 
         
+                
         <Property name="UploadSearchBundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
       		<Property name="name"> 
-                <Value>UploadSearchBundle</Value> 
+                <Value>Upload Search Bundle</Value> 
             </Property> 
       		<Property name="context"> 
-                <Value>SELECT upload_id FROM upload WHERE</Value> 
+                <Value>SELECT upload_id
+                    FROM upload
+                    WHERE 
+                </Value> 
             </Property> 
-			<Property name="DBNamcespace"> 
+            
+            <Property name="DBNamcespace"> 
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
             </Property> 
             <Property name="connectionProducerName"> 
@@ -126,17 +234,41 @@
         </Property> 
         
         <Property name="SubmissionSearchBundle"> 
+            <Property name="searchStrategy">
+                <Property name="class">
+                    <Value>dbStrategy</Value>
+                </Property>
+            </Property>
+        
+            <Property name="searchableFields">
+                <Property name="dummy">
+                    <Property name="validator">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        
       		<Property name="type"> 
                 <Value>Database</Value> 
             </Property> 
       		<Property name="name"> 
-                <Value>SubmissionSearchBundle</Value> 
+                <Value>Submission Search Bundle</Value> 
             </Property> 
       		<Property name="context"> 
-                <Value>SELECT submission_id FROM submission
-                INNER JOIN upload ON submission.upload_id = upload.upload_id WHERE</Value> 
+                <Value>
+                SELECT submission_id
+                    FROM submission
+                    INNER JOIN upload 
+                    	ON submission.upload_id = upload.upload_id
+                    WHERE 
+                </Value> 
             </Property> 
-			<Property name="DBNamcespace"> 
+            <Property name="DBNamcespace"> 
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
             </Property> 
             <Property name="connectionProducerName"> 

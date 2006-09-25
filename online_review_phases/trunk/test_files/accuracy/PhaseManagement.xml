@@ -3,7 +3,7 @@
   <Config name="com.topcoder.management.phase.DefaultPhaseManager">
     <Property name="PhasePersistence">
       <Property name="className">
-        <Value>com.topcoder.management.phase.NullPhasePersistence</Value>
+        <Value>com.topcoder.management.phase.db.InformixPhasePersistence</Value>
       </Property>
     </Property>
     <Property name="Idgenerator">
@@ -11,8 +11,18 @@
         <Value>phase_id_seq</Value>
       </Property>
       <Property name="className">
-        <Value>com.topcoder.management.phase.NullIdGenerator</Value>
+        <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
       </Property>
+    </Property>
+    
+    <Property name="ConnectionFactory">
+        <Property name="className">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+
+        <Property name="namespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
     </Property>
   </Config>
 </CMConfig>

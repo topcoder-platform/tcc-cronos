@@ -33,7 +33,7 @@ public class UploadStatusLookupUtilityAccTest extends BaseAccuracyTest {
         assertEquals("Not the expected value from lookUpId()", id, 2);
     }
 
-        /**
+    /**
      * Tests PhaseTypeLookupUtility.lookUpId(Connection, String) on the caching ability.
      *
      * @throws Exception not under test.

@@ -3,15 +3,13 @@
  */
 package com.cronos.onlinereview.phases.accuracytests;
 
-import java.sql.Connection;
-import java.util.Iterator;
-
-import junit.framework.TestCase;
-
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.ConfigManagerException;
+import junit.framework.TestCase;
+
+import java.sql.Connection;
+import java.util.Iterator;
 
 /**
  * This is a base class for all accuracy test cases. It loads configuration settings, database connection
@@ -24,7 +22,12 @@ public class BaseAccuracyTest extends TestCase {
     /**
      * The accuracy test configuration file.
      */
-    public static final String ACCURACY_CONFIG_FILE = "accuracy/AccuracyConfig.xml";
+    public static final String CONNECTION_FACTORY_NS = "accuracy/ConnectionFactory.xml";
+
+    /**
+     * The configuration namespace for phase handlers
+     */
+    public static final String PHASE_HANDLER_NS = "com.cronos.onlinereview.phases.Handler";
 
     /**
      * Represents the DBConnectionFactory instance.
@@ -50,7 +53,7 @@ public class BaseAccuracyTest extends TestCase {
         clearAllNamespace();
 
         // load the configuration file
-        configManager.add(ACCURACY_CONFIG_FILE);
+        configManager.add(CONNECTION_FACTORY_NS);
 
         // initialize DBConnectionFactory
         this.dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
