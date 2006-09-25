@@ -69,7 +69,7 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
     
     <!-- TCS Dependencies -->
-    <property name="configmanager.version" value="2.1.4"/>
+    <property name="configmanager.version" value="2.1.5"/>
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
@@ -84,7 +84,7 @@
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
     
-    <property name="object_factory.version" value="2.0"/>
+    <property name="object_factory.version" value="2.0.1"/>
     <property name="object_factory.jar.name" value="object_factory.jar"/>
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
@@ -133,6 +133,11 @@
     <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
+    
+    <property name="auto_screening_tool.version" value="1.0"/>
+    <property name="auto_screening_tool.jar.name" value="auto_screening_tool.jar"/>
+    <property name="auto_screening_tool.path" value="auto_screening_tool/${auto_screening_tool.version}"/>
+    <property name="auto_screening_tool.jar" value="${tcs_libdir}/${auto_screening_tool.path}/${auto_screening_tool.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -155,6 +160,7 @@
         <pathelement location="${job_scheduler.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
+        <pathelement location="${auto_screening_tool.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
@@ -282,12 +288,10 @@
 
     <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
-<!-- uncomment if configuration files exist.
         <mkdir dir="${dist_conf}"/>
         <copy todir="${dist_conf}">
             <fileset dir="${configdir}" />
         </copy>
--->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
@@ -303,6 +307,8 @@
                 <include name="${component}_Component_Specification*"/>
                 <include name="${component}.zargo"/>
                 <include name="${component}.zuml"/>
+                <include name="*.sql"/>
+                <include name="*.zip"/>
             </fileset>
         </copy>
 
@@ -313,12 +319,11 @@
 
         <antcall target="package_docs" />
 
-<!-- uncomment if test files exist.
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
--->
+
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
