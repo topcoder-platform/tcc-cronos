@@ -9,7 +9,7 @@ import com.topcoder.util.errorhandling.BaseRuntimeException;
  * <p>
  * This exception is thrown if a problem occurs during the screening process.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ScreeningException extends BaseRuntimeException {

@@ -16,7 +16,7 @@ package com.cronos.onlinereview.autoscreening.tool;
  * <p>
  * Thread Safety: This class is immutable, and therefore thread-safe.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class RuleResult {

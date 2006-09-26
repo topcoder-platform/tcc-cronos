@@ -11,7 +11,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * This class contains utility methods to retrieved property values from the
  * configuration manager. This class is package-visible so that all the methods
  * are solely used from this package.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 final class ConfigUtils {

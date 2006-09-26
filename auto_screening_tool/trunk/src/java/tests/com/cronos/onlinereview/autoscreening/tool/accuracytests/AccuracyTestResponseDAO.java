@@ -21,7 +21,7 @@ import com.topcoder.util.idgenerator.IDGenerator;
  * connection is closed after. Unlike InformixTaskDAO, the threading issues here
  * are less, because this is only involved in creating new instances.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class AccuracyTestResponseDAO implements ScreeningResponseDAO {

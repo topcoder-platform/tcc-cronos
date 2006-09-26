@@ -25,7 +25,7 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * after. Multiple concurrent reads and writes are expected on the datastore.
  * </p>
  * 
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class MockTaskDAO implements ScreeningTaskDAO {

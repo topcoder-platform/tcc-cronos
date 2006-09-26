@@ -21,7 +21,7 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * This rule checks if a component specification exists.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ComponentSpecificationRule implements ScreeningRule {
@@ -29,7 +29,7 @@ public class ComponentSpecificationRule implements ScreeningRule {
     /**
      * An implementation of FileFilter that checks if a file is a component
      * specification.
-     * @author ShindouHikaru, TCSDEVELOPER
+     * @author ShindouHikaru, urtks
      * @version 1.0
      */
     private static class ComponentSpecificationFileFilter implements FileFilter {

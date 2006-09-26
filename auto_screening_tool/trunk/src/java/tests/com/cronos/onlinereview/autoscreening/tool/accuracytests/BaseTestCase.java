@@ -27,7 +27,7 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * This is a base (helper) class for test cases in this component.
  * </p>
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class BaseTestCase extends TestCase {

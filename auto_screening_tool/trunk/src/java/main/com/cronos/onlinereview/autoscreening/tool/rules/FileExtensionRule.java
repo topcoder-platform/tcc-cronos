@@ -24,7 +24,7 @@ import com.topcoder.util.log.LogFactory;
  * It is used to encapsulate JavaSourceCodeRule and CSharpSourceCodeRule from
  * the previous version.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class FileExtensionRule implements ScreeningRule {

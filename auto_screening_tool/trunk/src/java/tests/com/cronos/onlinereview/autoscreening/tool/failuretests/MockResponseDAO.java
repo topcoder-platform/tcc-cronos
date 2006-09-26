@@ -22,7 +22,7 @@ import com.topcoder.util.idgenerator.IDGenerator;
  * are less, because this is only involved in creating new instances.
  * </p>
  * 
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class MockResponseDAO implements ScreeningResponseDAO {

@@ -9,7 +9,7 @@ package com.cronos.onlinereview.autoscreening.tool;
  * Screening Task because it has already been modified by another concurrently
  * running Screening Task.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class UpdateFailedException extends DAOException {

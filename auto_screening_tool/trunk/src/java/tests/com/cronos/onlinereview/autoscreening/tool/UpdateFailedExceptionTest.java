@@ -9,7 +9,7 @@ import junit.framework.TestSuite;
 
 /**
  * The unit test cases for class UpdateFailedException.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class UpdateFailedExceptionTest extends TestCase {

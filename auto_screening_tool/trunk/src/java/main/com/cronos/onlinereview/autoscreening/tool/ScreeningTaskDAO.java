@@ -17,7 +17,7 @@ package com.cronos.onlinereview.autoscreening.tool;
  * <p>
  * Thread Safety: Implementations are not required to be thread-safe.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public interface ScreeningTaskDAO {

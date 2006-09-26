@@ -14,7 +14,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
 /**
  * * The unit test cases for class DAOLogger.
  * 
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class DAOLoggerTest extends BaseTestCase {

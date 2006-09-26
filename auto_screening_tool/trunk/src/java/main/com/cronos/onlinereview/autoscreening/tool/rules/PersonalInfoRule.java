@@ -25,7 +25,7 @@ import com.topcoder.util.log.LogFactory;
  * submitter information is retrieved from the ScreeningData, and the submission
  * is checked for any references to the submitter info.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class PersonalInfoRule implements ScreeningRule {

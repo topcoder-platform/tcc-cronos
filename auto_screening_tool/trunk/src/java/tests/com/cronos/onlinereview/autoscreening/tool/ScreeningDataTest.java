@@ -9,7 +9,7 @@ import junit.framework.TestSuite;
 
 /**
  * The unit test cases for class ScreeningData.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ScreeningDataTest extends TestCase {

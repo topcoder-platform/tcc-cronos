@@ -17,7 +17,7 @@ package com.cronos.onlinereview.autoscreening.tool;
  * Thread Safety: - Implementations are not required to be thread safe, as they
  * will be accessed by a single thread.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public interface ScreeningResponseLogger {

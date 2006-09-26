@@ -19,7 +19,7 @@ import com.cronos.onlinereview.autoscreening.tool.ScreeningTaskChooser;
  * <p>
  * Thread Safety: This class is thread safe, because it doesn't have any state.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class EarliestTaskChooser implements ScreeningTaskChooser {

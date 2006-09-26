@@ -25,7 +25,7 @@ import com.topcoder.util.archiving.ZipArchiver;
  * Accuracy test cases for <code>FileExtensionRule</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class FileExtensionRuleAccuracyTest extends BaseTestCase {

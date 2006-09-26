@@ -32,7 +32,7 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * All other rules use this one for locating the unzipped submission.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ArchiveFileRule implements ScreeningRule {

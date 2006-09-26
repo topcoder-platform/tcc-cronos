@@ -14,7 +14,7 @@ import junit.framework.TestSuite;
 /**
  * <p>Accuracy test cases for <code>ScreeningTool</code> class.</p>
  *
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ScreeningToolAccuracyTest extends BaseTestCase {

@@ -10,7 +10,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * This exception is thrown by the DAOs to signify a problem with accessing the
  * data store.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class DAOException extends BaseException {

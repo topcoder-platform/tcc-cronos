@@ -22,7 +22,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
  * This class contains utility methods used only by the database package of this
  * component. This class is package-visible as all methods are solely used from
  * this package.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 class DatabaseUtils {
@@ -73,7 +73,7 @@ class DatabaseUtils {
      * defines some kind of 'pseudo-enum' which cannot be instantiated
      * externally.
      * </p>
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     abstract static class DataType {
@@ -129,7 +129,7 @@ class DatabaseUtils {
      * assured to be of type String or to be null in case the ResultSet value
      * was null. PreparedStatement#setString() will be used to set the value,
      * which should be of String type.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class StringType extends DataType {
@@ -194,7 +194,7 @@ class DatabaseUtils {
      * assured to be of type Long or to be null in case the ResultSet value was
      * null. PreparedStatement#setLong() will be used to set the value, which
      * should be of Long type.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class LongType extends DataType {
@@ -264,7 +264,7 @@ class DatabaseUtils {
      * assured to be of type java.util.Date or to be null in case the ResultSet
      * value was null. PreparedStatement#setTimestamp() will be used to set the
      * value, which should be of java.util.Date type.
-     * @author TCSDEVELOPER
+     * @author urtks
      * @version 1.0
      */
     private static class DateType extends DataType {

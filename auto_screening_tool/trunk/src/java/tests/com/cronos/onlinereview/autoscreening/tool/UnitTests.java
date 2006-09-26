@@ -20,7 +20,7 @@ import com.cronos.onlinereview.autoscreening.tool.rules.PoseidonExtractRuleTest;
  * <p>
  * This test case aggregates all Unit test cases.
  * </p>
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class UnitTests extends TestCase {

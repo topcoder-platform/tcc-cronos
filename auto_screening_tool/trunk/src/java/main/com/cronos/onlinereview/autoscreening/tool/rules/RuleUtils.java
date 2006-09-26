@@ -28,7 +28,7 @@ import com.topcoder.util.log.Log;
  * This class contains utility methods used only by the rules package of this
  * component. This class is package-visible so that all methods are solely used
  * from this package.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 final class RuleUtils {

@@ -24,7 +24,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * Accuracy test cases for <code>DAOLogger</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class DAOLoggerAccuracyTest extends BaseTestCase {

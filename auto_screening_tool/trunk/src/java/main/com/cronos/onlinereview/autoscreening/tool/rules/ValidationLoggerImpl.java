@@ -19,7 +19,7 @@ import com.topcoder.file.directoryvalidator.ValidationLogger;
  * encounters. It will create an invalid RuleResult for each call to the
  * validateFailed method.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 class ValidationLoggerImpl implements ValidationLogger {

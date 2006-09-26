@@ -12,7 +12,7 @@ import com.cronos.onlinereview.autoscreening.tool.chooser.EarliestTaskChooser;
 
 /**
  * The unit test cases for class EarliestTaskChooser.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class EarliestTaskChooserTest extends BaseTestCase {

@@ -37,7 +37,7 @@ import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
  * Thread Safety: A single thread is expected to access this, so thread safety
  * is not required.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class Screener {

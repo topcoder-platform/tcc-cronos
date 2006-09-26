@@ -12,7 +12,7 @@ import com.topcoder.util.scheduler.Scheduler;
 /**
  * The unit test cases for class ScreeningTool.
  * 
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ScreeningToolTest extends BaseTestCase {

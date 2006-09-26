@@ -12,7 +12,7 @@ package com.cronos.onlinereview.autoscreening.tool;
  * Thread Safety: This class is not thread-safe. It is expected to be utilized
  * by only a single thread.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ScreeningData {

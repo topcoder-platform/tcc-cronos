@@ -19,7 +19,7 @@ import com.topcoder.util.archiving.ZipArchiver;
 
 /**
  * Unit tests for <code>DirectoryStructureRule</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class DirectoryStructureRuleTest extends BaseTestCase {

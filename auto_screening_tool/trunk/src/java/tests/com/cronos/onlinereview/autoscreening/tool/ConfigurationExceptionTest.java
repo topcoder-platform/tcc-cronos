@@ -9,7 +9,7 @@ import junit.framework.TestSuite;
 
 /**
  * The unit test cases for class ConfigurationException.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ConfigurationExceptionTest extends TestCase {

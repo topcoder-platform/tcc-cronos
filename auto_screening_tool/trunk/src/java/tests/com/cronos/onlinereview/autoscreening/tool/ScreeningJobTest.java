@@ -12,7 +12,7 @@ import com.topcoder.util.scheduler.Schedulable;
 
 /**
  * The unit test cases for class ScreeningJob.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ScreeningJobTest extends BaseTestCase {

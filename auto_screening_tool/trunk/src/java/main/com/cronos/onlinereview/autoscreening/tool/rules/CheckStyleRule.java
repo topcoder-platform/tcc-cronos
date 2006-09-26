@@ -22,7 +22,7 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * This rule runs checkstyle on the Java source code.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class CheckStyleRule implements ScreeningRule {

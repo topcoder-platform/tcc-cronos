@@ -26,7 +26,7 @@ import junit.framework.TestSuite;
  * Accuracy test cases for <code>ComponentSpecificationRule</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class DirectoryStructureRuleAccuracyTest extends BaseTestCase {

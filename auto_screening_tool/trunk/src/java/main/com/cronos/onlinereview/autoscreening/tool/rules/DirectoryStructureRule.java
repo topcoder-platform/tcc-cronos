@@ -28,7 +28,7 @@ import com.topcoder.util.log.LogFactory;
  * scenarios that needed validation could be validated using the Directory
  * Validator component.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class DirectoryStructureRule implements ScreeningRule {

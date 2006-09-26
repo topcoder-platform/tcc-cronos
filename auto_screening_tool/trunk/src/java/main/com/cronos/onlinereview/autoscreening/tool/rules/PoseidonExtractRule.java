@@ -26,7 +26,7 @@ import com.topcoder.util.log.LogFactory;
  * Checks if a poseidon file exists. If it does, it will extract the xmi and
  * proj3 files and make them available to other rules for additional checking.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class PoseidonExtractRule implements ScreeningRule {

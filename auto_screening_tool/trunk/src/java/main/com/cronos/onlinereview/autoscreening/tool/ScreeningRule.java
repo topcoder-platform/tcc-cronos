@@ -15,7 +15,7 @@ import java.util.Map;
  * Thread-Safety: Implementations are not required to be thread-safe. This
  * component is expected to use the ScreeningRules in a thread-safe manner.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public interface ScreeningRule {

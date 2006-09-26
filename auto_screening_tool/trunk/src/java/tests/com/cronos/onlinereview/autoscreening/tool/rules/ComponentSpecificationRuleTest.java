@@ -22,7 +22,7 @@ import com.topcoder.util.archiving.ZipArchiver;
 
 /**
  * Unit tests for <code>ComponentSpecificationRule</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ComponentSpecificationRuleTest extends BaseTestCase {

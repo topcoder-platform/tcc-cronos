@@ -26,7 +26,7 @@ import com.topcoder.util.archiving.ZipArchiver;
  * Accuracy test cases for <code>CheckStyleRule</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class CheckStyleRuleAccuracyTest extends BaseTestCase {

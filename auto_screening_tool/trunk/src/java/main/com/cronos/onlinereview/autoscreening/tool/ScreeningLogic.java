@@ -27,7 +27,7 @@ import java.util.Map;
  * Thread Safety: This class is not required to be thread safe, because we
  * expect only a single thread to be working on it.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ScreeningLogic {

@@ -9,7 +9,7 @@ import junit.framework.TestSuite;
 
 /**
  * The unit test cases for class ScreeningException.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ScreeningExceptionTest extends TestCase {

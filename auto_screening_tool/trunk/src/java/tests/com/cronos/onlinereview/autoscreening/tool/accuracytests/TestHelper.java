@@ -14,7 +14,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * <p>Helper class for the accuracy test.</p>
  *
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class TestHelper {

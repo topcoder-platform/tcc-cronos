@@ -9,7 +9,7 @@ import junit.framework.TestSuite;
 
 /**
  * The unit test cases for class ResultRule.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ResultRuleTest extends TestCase {

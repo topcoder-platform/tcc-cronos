@@ -12,7 +12,7 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * The unit test cases for class ScreeningLogic.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ScreeningLogicTest extends TestCase {

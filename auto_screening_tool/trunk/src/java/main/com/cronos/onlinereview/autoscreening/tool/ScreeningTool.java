@@ -27,7 +27,7 @@ import com.topcoder.util.scheduler.Scheduler;
  * from the command line, and so there will only be one instance running on a
  * single thread.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ScreeningTool {
@@ -47,7 +47,7 @@ public class ScreeningTool {
      * job is started. As a result, the run method has be to synchronized on the
      * static screener field.
      * </p>
-     * @author ShindouHikaru, TCSDEVELOPER
+     * @author ShindouHikaru, urtks
      * @version 1.0
      */
     public static class ScreeningJob implements Runnable, Schedulable {

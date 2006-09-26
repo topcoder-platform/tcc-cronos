@@ -13,7 +13,7 @@ import junit.framework.TestSuite;
  * <p>
  * This test case aggregates all failure test cases.
  * </p>
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class FailureTests extends TestCase {

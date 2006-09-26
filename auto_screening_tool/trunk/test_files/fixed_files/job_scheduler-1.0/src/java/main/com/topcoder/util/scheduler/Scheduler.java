@@ -34,7 +34,7 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * The major class of job scheduler.
  * </p>
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class Scheduler implements ConfigManagerInterface {

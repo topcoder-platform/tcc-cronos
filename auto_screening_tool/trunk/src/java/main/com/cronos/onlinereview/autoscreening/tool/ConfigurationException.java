@@ -9,7 +9,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * <p>
  * This exception is thrown if a problem occurs during configuration.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ConfigurationException extends BaseException {

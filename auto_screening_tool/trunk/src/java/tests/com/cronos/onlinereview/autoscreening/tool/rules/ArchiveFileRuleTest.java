@@ -21,7 +21,7 @@ import com.topcoder.servlet.request.UploadedFile;
 
 /**
  * Unit tests for <code>ArchiveFileRule</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class ArchiveFileRuleTest extends BaseTestCase {

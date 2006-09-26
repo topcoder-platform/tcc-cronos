@@ -17,7 +17,7 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * <p>
  * Thread Safety: This class is immutable and therefore thread-safe.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class ResponseLevel extends Enum {

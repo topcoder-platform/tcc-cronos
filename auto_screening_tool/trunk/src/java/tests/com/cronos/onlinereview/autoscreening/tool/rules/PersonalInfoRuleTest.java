@@ -20,7 +20,7 @@ import com.topcoder.util.archiving.ZipArchiver;
 
 /**
  * Unit tests for <code>PersonalInfoRule</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class PersonalInfoRuleTest extends BaseTestCase {

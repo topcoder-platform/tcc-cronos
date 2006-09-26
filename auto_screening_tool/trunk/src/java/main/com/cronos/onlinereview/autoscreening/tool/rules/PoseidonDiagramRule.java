@@ -24,7 +24,7 @@ import com.topcoder.util.xmi.parser.handler.DefaultXMIHandler;
  * diagrams. The Topcoder XMI Parser is used to detect the presence of these
  * diagrams.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class PoseidonDiagramRule implements ScreeningRule {

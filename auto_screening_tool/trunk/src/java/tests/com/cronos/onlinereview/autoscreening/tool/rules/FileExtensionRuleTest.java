@@ -19,7 +19,7 @@ import com.topcoder.util.archiving.ZipArchiver;
 
 /**
  * Unit tests for <code>FileExtensionRuleRule</code>.
- * @author TCSDEVELOPER
+ * @author urtks
  * @version 1.0
  */
 public class FileExtensionRuleTest extends BaseTestCase {

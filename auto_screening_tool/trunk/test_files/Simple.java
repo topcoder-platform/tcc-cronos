@@ -7,7 +7,7 @@ package simple;
  * <p>
  * Simple class.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class Simple {

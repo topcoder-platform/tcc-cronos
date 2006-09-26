@@ -26,7 +26,7 @@ import com.cronos.onlinereview.autoscreening.tool.ScreeningTask;
  * <p>
  * Thread Safety: This class is not required to be thread safe.
  * </p>
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, urtks
  * @version 1.0
  */
 public class DAOLogger implements ScreeningResponseLogger {
