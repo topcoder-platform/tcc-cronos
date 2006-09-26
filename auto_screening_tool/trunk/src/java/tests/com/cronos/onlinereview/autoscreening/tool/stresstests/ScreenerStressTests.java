@@ -5,7 +5,6 @@ package com.cronos.onlinereview.autoscreening.tool.stresstests;
 
 import java.sql.Connection;
 
-import com.cronos.onlinereview.autoscreening.tool.ResponseLevel;
 import com.cronos.onlinereview.autoscreening.tool.Screener;
 
 import junit.framework.TestCase;
@@ -23,7 +22,7 @@ public class ScreenerStressTests extends TestCase {
     /**
      * Represents the iterations that the stress test benchmarks.
      */
-    private static final int ITERATION = 1;
+    private static final int ITERATION = 10;
 
     /**
      * Represents the path of the logging wrapper config file.
@@ -81,7 +80,6 @@ public class ScreenerStressTests extends TestCase {
         conn = DBHelper.getConnection(DB_NAMESPACE);
         DBHelper.removeData(conn);
         DBHelper.initData(conn);
-        assertNotNull(ResponseLevel.PASS);
     }
 
     /**
@@ -102,11 +100,11 @@ public class ScreenerStressTests extends TestCase {
     public void testCreatingScreeners() throws Exception {
         long start = System.currentTimeMillis();
 
-        for (int i = 0; i < ITERATION; ++i) {
+        for (int i = 0; i < ITERATION * 100; ++i) {
             assertNotNull("Failed to create Screener:",
                     new Screener(i + 1, SCREENER_NAMESPACE));
         }
-        System.out.println("Creating Screener instance for " + ITERATION
+        System.out.println("Creating Screener instance for " + ITERATION * 100
                 + " times takes " + (System.currentTimeMillis() - start) + "ms");
     }
 

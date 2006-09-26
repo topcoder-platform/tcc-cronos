@@ -16,21 +16,6 @@
                 </Property>
             </Property>
         </Property>
-        <Property name="UserRetrieval:default">
-            <Property name="type">
-                <Value>com.cronos.onlinereview.external.impl.DBUserRetrieval</Value>
-            </Property>
-            <Property name="params">
-                <Property name="param1">
-                    <Property name="type">
-                        <Value>String</Value>
-                    </Property>
-                    <Property name="value">
-                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-                    </Property>
-                </Property>
-            </Property>
-        </Property>
         <Property name="IDGenerator:default">
             <Property name="type">
                 <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
@@ -54,11 +39,6 @@
                 <Property name="param1">
                     <Property name="name">
                         <Value>ConnectionFactory:default</Value>
-                    </Property>
-                </Property>
-                <Property name="param2">
-                    <Property name="name">
-                        <Value>UserRetrieval:default</Value>
                     </Property>
                 </Property>
             </Property>
