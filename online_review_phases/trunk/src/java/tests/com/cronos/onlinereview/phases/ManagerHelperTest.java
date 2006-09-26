@@ -9,7 +9,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * Test cases for ManagerHelper class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class ManagerHelperTest extends BaseTest {

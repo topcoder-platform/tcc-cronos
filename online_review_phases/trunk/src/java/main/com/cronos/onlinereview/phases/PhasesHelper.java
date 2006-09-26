@@ -59,7 +59,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * <p>A class having helper methods to perform argument validation and other phase related methods used by the
  * PhaseHandler implementations.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 final class PhasesHelper {

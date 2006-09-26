@@ -38,7 +38,7 @@ import java.sql.SQLException;
  *  </ul>
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {

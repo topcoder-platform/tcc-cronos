@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for Helper class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class HelperTest extends TestCase {

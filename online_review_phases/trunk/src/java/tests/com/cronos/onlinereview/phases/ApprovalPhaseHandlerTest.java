@@ -14,7 +14,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * All tests for ApprovalPhaseHandler class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class ApprovalPhaseHandlerTest extends BaseTest {

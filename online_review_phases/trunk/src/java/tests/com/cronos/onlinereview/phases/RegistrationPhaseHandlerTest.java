@@ -16,7 +16,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * All test cases for RegistrationPhaseHandler class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class RegistrationPhaseHandlerTest extends BaseTest {

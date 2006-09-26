@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 /**
  * Accuracy tests for ConfigurationException class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class ConfigurationExceptionTest extends TestCase {

@@ -16,7 +16,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * Shows a demo of how to use this component.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class DemoTest extends BaseTest {

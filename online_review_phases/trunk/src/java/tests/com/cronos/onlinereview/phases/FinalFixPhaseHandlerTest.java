@@ -22,7 +22,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * All tests for FinalFixPhaseHandler class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class FinalFixPhaseHandlerTest extends BaseTest {

@@ -182,7 +182,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * &lt;/Config&gt;
  * </pre></p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class ManagerHelper {

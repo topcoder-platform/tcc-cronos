@@ -41,7 +41,7 @@ import com.topcoder.util.config.ConfigManagerException;
 /**
  * Defines setup() and tearDown() method to do usual configuration cleanup.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class BaseTest extends TestCase {

@@ -20,7 +20,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * All test cases for AbstractPhaseHandler class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class AbstractPhaseHandlerTest extends BaseTest {

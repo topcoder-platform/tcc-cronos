@@ -9,7 +9,7 @@ import java.math.BigInteger;
 /**
  * A sample implementation of IDGenerator used by some test cases.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 

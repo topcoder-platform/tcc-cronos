@@ -11,7 +11,7 @@ import com.cronos.onlinereview.phases.BaseTest;
 /**
  * Declares test cases for SubmissionStatusLookupUtility class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class SubmissionStatusLookupUtilityTest extends BaseTest {

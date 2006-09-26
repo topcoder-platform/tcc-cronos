@@ -15,7 +15,7 @@ import java.util.Map;
  * <p>A class having helper methods to perform argument validation. It also defines a lookup method which is used
  * by all the lookup utility classes in this package.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 final class LookupHelper {

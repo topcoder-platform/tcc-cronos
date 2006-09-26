@@ -51,7 +51,7 @@ import java.util.List;
  * automated screening must be set to the status &quot;Failed Screening&quot;.</p>
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class ReviewPhaseHandler extends AbstractPhaseHandler {

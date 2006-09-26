@@ -9,7 +9,7 @@ import com.topcoder.project.phases.Phase;
 /**
  * Dummy sub-class of AbstractPhaseHandler for testing purpose.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 class AbstractPhaseHandlerSubClass extends AbstractPhaseHandler {

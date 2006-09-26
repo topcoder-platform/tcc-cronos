@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 /**
  * Accuracy tests for PhaseNotSupportedException class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class PhaseNotSupportedExceptionTest extends TestCase {

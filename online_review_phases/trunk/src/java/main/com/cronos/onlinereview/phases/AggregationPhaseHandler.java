@@ -44,7 +44,7 @@ import java.sql.SQLException;
  *  <p>If the input phase status is Open, then it will do nothing.</p>
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class AggregationPhaseHandler extends AbstractPhaseHandler {

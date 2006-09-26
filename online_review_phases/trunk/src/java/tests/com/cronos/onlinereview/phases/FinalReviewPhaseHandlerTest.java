@@ -14,7 +14,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * All tests for FinalReviewPhaseHandler class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class FinalReviewPhaseHandlerTest extends BaseTest {

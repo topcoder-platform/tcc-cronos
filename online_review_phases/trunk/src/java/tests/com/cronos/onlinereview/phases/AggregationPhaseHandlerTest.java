@@ -22,7 +22,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * All tests for AggregationPhaseHandler class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class AggregationPhaseHandlerTest extends BaseTest {

@@ -12,7 +12,7 @@ import com.topcoder.management.phase.PhaseHandlingException;
  *  <p>It is used in phase handler classes.</p>
  *  <p>Thread safety: This class is immutable and thread safe.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class PhaseNotSupportedException extends PhaseHandlingException {

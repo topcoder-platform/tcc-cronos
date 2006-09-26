@@ -30,7 +30,7 @@ import java.sql.SQLException;
  * is rejected, another final fix/review cycle is inserted.</p>
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class FinalReviewPhaseHandler extends AbstractPhaseHandler {

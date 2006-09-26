@@ -16,7 +16,7 @@ import java.util.Map;
  * pairs to minimize queries to the database. This class is used in various methods of PhaseHandler implementations.</p>
  * <p>Thread safety: This class is thread safe because its static method is synchronized.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class UploadTypeLookupUtility {

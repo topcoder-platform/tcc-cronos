@@ -90,7 +90,7 @@ import com.topcoder.util.file.templatesource.TemplateSourceException;
  * </pre></p>
  * <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {

@@ -10,7 +10,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * more details about the error. It is used in PhaseHandler implementation classes.</p>
  *  <p>Thread safety: This class is immutable and thread safe.</p>
  *
- * @author tuenm, TCSDEVELOPER
+ * @author tuenm, bose_java
  * @version 1.0
  */
 public class ConfigurationException extends BaseException {

@@ -12,7 +12,7 @@ import com.cronos.onlinereview.phases.BaseTest;
 /**
  * Defines accuracy and failure test cases for LookupHelper class.
  *
- * @author TCSDEVELOPER
+ * @author bose_java
  * @version 1.0
  */
 public class LookupHelperTest extends BaseTest {
