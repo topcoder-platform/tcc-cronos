@@ -338,7 +338,10 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
      */
     private ExternalProject[] retrieveProjects(String queryAndClause, Object queryParameter, int paramLength)
         throws RetrievalException {
-
+        // added by fairytale to fix empty "in" statement bug
+        if (paramLength == 0) {
+            return new ExternalProject[0];
+        }
         // Opens the connection.
         Connection conn = super.getConnection();
 
