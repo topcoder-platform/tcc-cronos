@@ -312,7 +312,10 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
     private ExternalUser[] retrieveUsers(String queryAndClause, Object parameters, int parametersLength,
             boolean ignoreCase)
         throws RetrievalException {
-
+        // fairytale adds code here in order to fix the bug of empty 'in' statement
+        if (parametersLength == 0) {
+            return new ExternalUser[0];
+        }
         // Selects Users.
         Map objects = selectUsers(queryAndClause, parameters, parametersLength, ignoreCase);
 
