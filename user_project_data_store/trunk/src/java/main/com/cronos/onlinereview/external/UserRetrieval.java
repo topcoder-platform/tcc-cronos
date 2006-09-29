@@ -12,7 +12,7 @@ package com.cronos.onlinereview.external;
  * that retrieve sets of users in bulk.</p>
  * <p>Implementations of this interface should be implemented in a type-safe manner.</p>
  *
- * @author dplass, oodinary
+ * @author dplass, TCSDEVELOPER
  * @version 1.0
  */
 public interface UserRetrieval {

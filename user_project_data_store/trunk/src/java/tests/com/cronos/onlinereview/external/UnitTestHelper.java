@@ -17,7 +17,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * <p>Defines helper methods used in tests.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public final class UnitTestHelper {

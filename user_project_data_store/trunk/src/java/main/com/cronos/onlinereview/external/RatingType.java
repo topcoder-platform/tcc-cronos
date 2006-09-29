@@ -32,7 +32,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  *
  * <p>This class is immutable and thread-safe.</p>
  *
- * @author dplass, oodinary
+ * @author dplass, TCSDEVELOPER
  * @version 1.0
  */
 public class RatingType extends Enum implements Serializable {

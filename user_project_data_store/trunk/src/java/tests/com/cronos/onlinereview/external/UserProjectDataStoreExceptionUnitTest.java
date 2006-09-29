@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the UserProjectDataStoreException class.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class UserProjectDataStoreExceptionUnitTest extends TestCase {

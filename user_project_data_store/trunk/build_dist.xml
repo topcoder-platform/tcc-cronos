@@ -9,13 +9,14 @@
     <property name="package" value="com.cronos.onlinereview.external" />
     <property name="packagedir" value="com/cronos/onlinereview/external" />
     <property name="distfilename" value="user_project_data_store" />
-    <property name="component_version" value="1.0" />
+    <property name="component_version" value="1.0.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
     <property name="tcs_libdir" value="lib/tcs" />
     <property name="ext_libdir" value="lib" />
+    <property name="cronos_libdir" value="../lib" />
     <property name="jar_tcs_libdir" value="lib/tcs" />
     <property name="jar_ext_libdir" value="lib" />
     <property name="docsdir" value="docs" />

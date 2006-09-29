@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the RatingInfo class.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class RatingInfoUnitTest extends TestCase {

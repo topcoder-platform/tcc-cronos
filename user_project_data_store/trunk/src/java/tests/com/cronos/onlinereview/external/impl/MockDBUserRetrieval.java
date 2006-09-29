@@ -16,7 +16,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 /**
  * <p>The mock class of the DBUserRetrieval class.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockDBUserRetrieval extends DBUserRetrieval {

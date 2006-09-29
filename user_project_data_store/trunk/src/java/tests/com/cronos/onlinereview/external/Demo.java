@@ -15,7 +15,7 @@ import com.cronos.onlinereview.external.impl.MockDBUserRetrieval;
 /**
  * <p>The demo.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class Demo extends TestCase {

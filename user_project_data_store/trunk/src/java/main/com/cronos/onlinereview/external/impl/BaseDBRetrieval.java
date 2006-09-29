@@ -31,7 +31,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * result set (via a Prepared statement.)</p>
  * <p>This class is immutable and therefore thread-safe.</p>
  *
- * @author dplass, oodinary
+ * @author dplass, TCSDEVELOPER
  * @version 1.0
  */
 public abstract class BaseDBRetrieval {

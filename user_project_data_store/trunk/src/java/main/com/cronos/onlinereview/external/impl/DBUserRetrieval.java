@@ -34,7 +34,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
  * <p>All SQLExceptions in all methods should be wrapped in RetrievalException.</p>
  * <p>This class is immutable and therefore thread-safe.</p>
  *
- * @author dplass, oodinary
+ * @author dplass, TCSDEVELOPER
  * @version 1.0
  */
 public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
@@ -185,6 +185,10 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
 
         UserProjectDataStoreHelper.validateArray(ids, "ids");
 
+        if (ids.length == 0) {
+            return new ExternalUser[0];
+        }
+
         // Selects users by ids.
         String queryAndClause = " AND u.user_id in ";
 
@@ -211,6 +215,10 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
         throws RetrievalException {
 
         UserProjectDataStoreHelper.validateArray(handles, "handles");
+
+        if (handles.length == 0) {
+            return new ExternalUser[0];
+        }
 
         // Selects users by handles.
         String queryAndClause = " AND u.handle in ";
@@ -242,6 +250,10 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
         throws RetrievalException {
 
         UserProjectDataStoreHelper.validateArray(handles, "handles");
+
+        if (handles.length == 0) {
+            return new ExternalUser[0];
+        }
 
         // Selects users by handles.
         String queryAndClause = " AND u.handle_lower in ";

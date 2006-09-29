@@ -15,7 +15,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 /**
  * <p>The mock class of the DBProjectRetrieval class.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockDBProjectRetrieval extends DBProjectRetrieval {

@@ -21,7 +21,7 @@ import java.util.Set;
  * <p>The unique id (user id) is maintained by the super class.</p>
  * <p>This class is not thread-safe.</p>
  *
- * @author dplass, oodinary
+ * @author dplass, TCSDEVELOPER
  * @version 1.0
  */
 public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser {

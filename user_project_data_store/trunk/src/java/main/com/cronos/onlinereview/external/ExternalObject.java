@@ -14,7 +14,7 @@ import java.io.Serializable;
  * can be serialized for session replication.</p>
  * <p>Implementations of this interface would just be thread-safe.</p>
  *
- * @author dplass, oodinary
+ * @author dplass, TCSDEVELOPER
  * @version 1.0
  */
 public interface ExternalObject extends Serializable {

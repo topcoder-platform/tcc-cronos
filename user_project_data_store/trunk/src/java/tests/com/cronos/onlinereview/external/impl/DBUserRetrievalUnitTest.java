@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the DBUserRetrieval class.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class DBUserRetrievalUnitTest extends TestCase {
@@ -286,13 +286,28 @@ public class DBUserRetrievalUnitTest extends TestCase {
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_LongArray()
+    public void testRetrieveUsers_LongArray_1()
         throws RetrievalException {
 
         ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new long[] { 1001, 1002, 1005 });
 
         // Asserts.
         assertEquals("Two records would be got.", 2, users.length);
+    }
+
+    /**
+     * <p>Tests the accuracy of the retrieveUsers(long[]).</p>
+     * <p>If given an empty array as the parameter, empty array would be returned.</p>
+     *
+     * @throws RetrievalException this exception would never be thrown in this test case.
+     */
+    public void testRetrieveUsers_LongArray_2()
+        throws RetrievalException {
+
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new long[] { });
+
+        // Asserts.
+        assertEquals("Empty array would be returned.", 0, users.length);
     }
 
     /**
@@ -406,7 +421,7 @@ public class DBUserRetrievalUnitTest extends TestCase {
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_StringArray()
+    public void testRetrieveUsers_StringArray_1()
         throws RetrievalException {
 
         ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(
@@ -414,6 +429,22 @@ public class DBUserRetrievalUnitTest extends TestCase {
 
         // Asserts.
         assertEquals("Two records would be got.", 2, users.length);
+    }
+
+    /**
+     * <p>Tests the accuracy of the retrieveUsers(String[]).</p>
+     * <p>If given an empty array as the parameter, empty array would be returned.</p>
+     *
+     * @throws RetrievalException this exception would never be thrown in this test case.
+     */
+    public void testRetrieveUsers_StringArray_2()
+        throws RetrievalException {
+
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(
+                new String[] { });
+
+        // Asserts.
+        assertEquals("Empty array would be returned.", 0, users.length);
     }
 
     /**
@@ -533,7 +564,7 @@ public class DBUserRetrievalUnitTest extends TestCase {
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersIgnoreCase_StringArray()
+    public void testRetrieveUsersIgnoreCase_StringArray_1()
         throws RetrievalException {
 
         ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] { "hAndLe a" });
@@ -558,6 +589,21 @@ public class DBUserRetrievalUnitTest extends TestCase {
         assertEquals("The last name should be the same.", "Last A", user.getLastName());
         assertEquals("The handle should be the same.", "Handle A", user.getHandle());
         assertEquals("The user id should be the same.", 1001, user.getId());
+    }
+
+    /**
+     * <p>Tests the accuracy of the retrieveUsersIgnoreCase(String[]).</p>
+     * <p>If given an empty array as the parameter, empty array would be returned.</p>
+     *
+     * @throws RetrievalException this exception would never be thrown in this test case.
+     */
+    public void testRetrieveUsersIgnoreCase_StringArray_2()
+        throws RetrievalException {
+
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] { });
+
+        // Asserts.
+        assertEquals("Empty array would be returned.", 0, users.length);
     }
 
     /**

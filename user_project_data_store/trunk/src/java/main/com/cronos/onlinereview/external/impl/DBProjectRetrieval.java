@@ -31,7 +31,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * <p>All SQLExceptions in all methods should be wrapped in RetrievalException.</p>
  * <p>This class is immutable and therefore thread-safe.</p>
  *
- * @author dplass, oodinary
+ * @author dplass, TCSDEVELOPER
  * @version 1.0
  */
 public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrieval {
@@ -223,6 +223,10 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
 
         UserProjectDataStoreHelper.validateArray(ids, "ids");
 
+        if (ids.length == 0) {
+            return new ExternalProject[0];
+        }
+
         // Constructs the queryAndClause string.
         String queryAndClause = "and cv.comp_vers_id in ";
 
@@ -258,6 +262,10 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
         UserProjectDataStoreHelper.validateArray(versions, "versions");
         if (names.length != versions.length) {
             throw new IllegalArgumentException("The sizes of these two array are not the same.");
+        }
+
+        if (names.length == 0 && versions.length == 0) {
+            return new ExternalProject[0];
         }
 
         // Constructs the queryAndClause string.

@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 /**
  * <p>Tests the DBProjectRetrieval class.</p>
  *
- * @author oodinary
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class DBProjectRetrievalUnitTest extends TestCase {
@@ -357,13 +357,28 @@ public class DBProjectRetrievalUnitTest extends TestCase {
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveProjects_LongArray()
+    public void testRetrieveProjects_LongArray_1()
         throws RetrievalException {
 
         ExternalProject[] projects = defaultDBProjectRetrieval.retrieveProjects(new long[] { 1, 2, 4 });
 
         // Asserts.
         assertEquals("Three records would be got.", 3, projects.length);
+    }
+
+    /**
+     * <p>Tests the accuracy of the retrieveProjects(long[]).</p>
+     * <p>If given an empty array as the parameter, empty array would be returned.</p>
+     *
+     * @throws RetrievalException this exception would never be thrown in this test case.
+     */
+    public void testRetrieveProjects_LongArray_2()
+        throws RetrievalException {
+
+        ExternalProject[] projects = defaultDBProjectRetrieval.retrieveProjects(new long[] { });
+
+        // Asserts.
+        assertEquals("Empty array would be returned.", 0, projects.length);
     }
 
     /**
@@ -498,7 +513,7 @@ public class DBProjectRetrievalUnitTest extends TestCase {
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveProjects_StringArrayStringArray()
+    public void testRetrieveProjects_StringArrayStringArray_1()
         throws RetrievalException {
 
         ExternalProject[] projects = defaultDBProjectRetrieval.retrieveProjects(
@@ -507,6 +522,23 @@ public class DBProjectRetrievalUnitTest extends TestCase {
 
         // Asserts.
         assertEquals("One records would be got.", 1, projects.length);
+    }
+
+    /**
+     * <p>Tests the accuracy of the retrieveProjects(String[], String[]).</p>
+     * <p>If given two empty array as the parameters, empty array would be returned.</p>
+     *
+     * @throws RetrievalException this exception would never be thrown in this test case.
+     */
+    public void testRetrieveProjects_StringArrayStringArray_2()
+        throws RetrievalException {
+
+        ExternalProject[] projects = defaultDBProjectRetrieval.retrieveProjects(
+                new String[] { },
+                new String[] { });
+
+        // Asserts.
+        assertEquals("Empty array would be returned.", 0, projects.length);
     }
 
     /**
