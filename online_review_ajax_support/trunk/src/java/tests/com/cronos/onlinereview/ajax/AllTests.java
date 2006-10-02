@@ -6,7 +6,6 @@ package com.cronos.onlinereview.ajax;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import com.cronos.onlinereview.ajax.accuracytests.AccuracyTests;
 import com.cronos.onlinereview.ajax.failuretests.FailureTests;
 import com.cronos.onlinereview.ajax.stresstests.StressTests;

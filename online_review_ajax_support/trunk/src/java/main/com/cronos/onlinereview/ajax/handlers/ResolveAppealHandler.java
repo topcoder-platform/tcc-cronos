@@ -249,14 +249,14 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             reviewId = request.getParameterAsLong("ReviewId");
         } catch (NumberFormatException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", userId);
+                    "The review id should be a long value.", userId, e);
         }
         // ItemId
         try {
             itemId = request.getParameterAsLong("ItemId");
         } catch (NumberFormatException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", userId);
+                    "The review id should be a long value.", userId, e);
         }
 
         // status
@@ -267,7 +267,12 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         }
         // answer and text
         answer = request.getParameter("Answer");
-        text = request.getParameter("text");
+        // ISV : Appeal text is required and must be provided by "Text" parameter but not "text"
+        text = request.getParameter("Text");
+        if ((text == null) || (text.trim().length() == 0)) {
+            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
+                    "The appeal text must be provided.", "ResolveAppeal. " + "User id : " + userId);
+        }
 
         // check the userId for validation
         if (userId == null) {
@@ -282,7 +287,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't get the review : " + e.getMessage(),
-                    "User id : " + userId + "\treview id : " + reviewId);
+                    "User id : " + userId + "\treview id : " + reviewId, e);
         }
         if (review == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_REVIEW_ERROR,
@@ -298,7 +303,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't get reviewer resource.",
                     "User id : " + userId + "\treview id : " + reviewId
-                    + "\treviwer id :" + review.getAuthor());
+                    + "\treviwer id :" + review.getAuthor(), e);
         }
         // validate the review resource
         if (reviewerResource.getPhase() == null) {
@@ -318,7 +323,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't check the user role.",
-                    "User id : " + userId + "\tsubmission id : " + reviewId);
+                    "User id : " + userId + "\tsubmission id : " + reviewId, e);
         }
 
 
@@ -329,7 +334,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't get phases.",
                     "User id : " + userId + "\treview id : " + reviewId
-                    + "\tproject id :" + reviewerResource.getProject().longValue());
+                    + "\tproject id :" + reviewerResource.getProject().longValue(), e);
         }
 
         // get the review phase
@@ -412,7 +417,10 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             comment.setCommentType(appealResponseCommentType);
             comment.setComment(text);
             comment.setExtraInfo(item.getAnswer());
-            comment.setAuthor(userId.longValue());
+            // ISV : The appeal response comment must be associated with reviewer resource but not the external
+            // reference ID for the reviewer
+//            comment.setAuthor(userId.longValue());
+            comment.setAuthor(reviewerResource.getId());
             item.addComment(comment);
         } else {
             // just set the comment text
@@ -432,7 +440,6 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
                     PHASE_ERROR, "There should be an appeal comment.",
                     "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
         }
-
         appealComment.setExtraInfo(status);
 
         // update the item
@@ -451,7 +458,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Error in calculating score.",
-                    "User id : " + userId + "\treview id : " + reviewId);
+                    "User id : " + userId + "\treview id : " + reviewId, e);
         }
         // update the item
         try {
@@ -459,7 +466,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't update review.",
-                    "User id : " + userId + "\treview id : " + reviewId);
+                    "User id : " + userId + "\treview id : " + reviewId, e);
         }
 
         // succeed

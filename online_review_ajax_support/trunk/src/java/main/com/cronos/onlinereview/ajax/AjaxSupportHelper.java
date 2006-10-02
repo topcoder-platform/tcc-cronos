@@ -3,14 +3,6 @@
  */
 package com.cronos.onlinereview.ajax;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
@@ -20,6 +12,15 @@ import com.topcoder.util.objectfactory.SpecificationFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * <p>
@@ -108,11 +109,28 @@ public final class AjaxSupportHelper {
      */
     public static void responseAndLogError(String type, String status, String message, HttpServletResponse response)
         throws IOException {
+        responseAndLogError(type, status, message, response, null);
+    }
+
+    /**
+     * Response and log the error.
+     *
+     * @param type the response type
+     * @param status the response status
+     * @param message the error message
+     * @param response the http servlet response object
+     * @param error the original cause of error. May be null
+     * @throws IOException if error happens when writing the response
+     * @throws IllegalArgumentException if any parameter is null(except message) or type/status is empty
+     */
+    public static void responseAndLogError(String type, String status, String message, HttpServletResponse response,
+                                           Throwable error)
+        throws IOException {
         if (response == null) {
             throw new IllegalArgumentException("The response should not be null.");
         }
 
-        AjaxResponse resp = createAndLogError(type, status, message, null);
+        AjaxResponse resp = createAndLogError(type, status, message, null, error);
 
         // response it
         doResponse(response, resp);
@@ -129,6 +147,22 @@ public final class AjaxSupportHelper {
      * @throws IllegalArgumentException if type/status is null/empty
      */
     public static AjaxResponse createAndLogError(String type, String status, String message, Object misc) {
+        return createAndLogError(type, status, message, misc, null);
+    }
+
+    /**
+     * Create the response and log the error.
+     *
+     * @param type the response type
+     * @param status the response status
+     * @param message the error message
+     * @param misc misc message
+     * @param error the original cause or error. May be null
+     * @return The created ajax response object
+     * @throws IllegalArgumentException if type/status is null/empty
+     */
+    public static AjaxResponse createAndLogError(String type, String status, String message, Object misc,
+                                                 Throwable error) {
         if (type == null) {
             throw new IllegalArgumentException("The type should not be null.");
         }
@@ -152,7 +186,12 @@ public final class AjaxSupportHelper {
         if (misc != null) {
             log.log(Level.ERROR, type + " : " + misc);
         }
-
+        // ISV : Log the exception stack trace if it is provided
+        if (error != null) {
+            StringWriter sw = new StringWriter();
+            error.printStackTrace(new PrintWriter(sw));
+            log.log(Level.ERROR, type + " : Exception : \n" + sw.getBuffer().toString());
+        }
         return resp;
     }
 

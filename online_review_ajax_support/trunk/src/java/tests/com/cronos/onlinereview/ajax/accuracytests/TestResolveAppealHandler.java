@@ -138,6 +138,7 @@ public class TestResolveAppealHandler extends TestCase {
         params.put("ReviewId", "999990");
         params.put("ItemId", "999991");
         params.put("Status", "Failed");
+        params.put("Text", "Appeal Response");
 
         AjaxRequest request = new AjaxRequest("ResolveAppeal", params);
 
@@ -171,6 +172,7 @@ public class TestResolveAppealHandler extends TestCase {
         params.put("ReviewId", "999990");
         params.put("ItemId", "999991");
         params.put("Status", "Failed");
+        params.put("Text", "Appeal Response");
 
         AjaxRequest request = new AjaxRequest("ResolveAppeal", params);
 

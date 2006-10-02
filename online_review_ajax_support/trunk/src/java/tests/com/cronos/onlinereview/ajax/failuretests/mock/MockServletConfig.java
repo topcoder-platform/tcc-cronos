@@ -6,11 +6,18 @@ package com.cronos.onlinereview.ajax.failuretests.mock;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.io.InputStream;
 
 /**
  * <p>A mock implementation of {@link ServletConfig} class to be used for testing. Overrides the protected methods
@@ -74,7 +81,7 @@ public class MockServletConfig implements ServletConfig {
         }
         args.add(arguments);
 
-        return (String) MockServletConfig.methodResults.get(methodName);
+        return "Ajax";
 
     }
 
@@ -106,7 +113,98 @@ public class MockServletConfig implements ServletConfig {
         }
         args.add(arguments);
 
-        return (ServletContext) MockServletConfig.methodResults.get(methodName);
+        return new ServletContext() {
+            public ServletContext getContext(String message) {
+                return null;
+            }
+
+            public int getMajorVersion() {
+                return 0;
+            }
+
+            public int getMinorVersion() {
+                return 0;
+            }
+
+            public String getMimeType(String message) {
+                return null;
+            }
+
+            public Set getResourcePaths(String message) {
+                return null;
+            }
+
+            public URL getResource(String message) throws MalformedURLException {
+                return null;
+            }
+
+            public InputStream getResourceAsStream(String message) {
+                return null;
+            }
+
+            public RequestDispatcher getRequestDispatcher(String message) {
+                return null;
+            }
+
+            public RequestDispatcher getNamedDispatcher(String message) {
+                return null;
+            }
+
+            public Servlet getServlet(String message) throws ServletException {
+                return null;
+            }
+
+            public Enumeration getServlets() {
+                return null;
+            }
+
+            public Enumeration getServletNames() {
+                return null;
+            }
+
+            public void log(String message) {
+            }
+
+            public void log(Exception exception, String message) {
+            }
+
+            public void log(String message, Throwable throwable) {
+            }
+
+            public String getRealPath(String message) {
+                return null;
+            }
+
+            public String getServerInfo() {
+                return null;
+            }
+
+            public String getInitParameter(String message) {
+                return null;
+            }
+
+            public Enumeration getInitParameterNames() {
+                return null;
+            }
+
+            public Object getAttribute(String message) {
+                return null;
+            }
+
+            public Enumeration getAttributeNames() {
+                return null;
+            }
+
+            public void setAttribute(String message, Object tracedObject) {
+            }
+
+            public void removeAttribute(String message) {
+            }
+
+            public String getServletContextName() {
+                return null;
+            }
+        };
 
     }
 
@@ -222,6 +320,15 @@ public class MockServletConfig implements ServletConfig {
      */
     public static List getMethodArguments(String methodSignature) {
         return (List) MockServletConfig.methodArguments.get(methodSignature);
+    }
+    /**
+     * <p>Gets the values of the argumenta which have been passed to the specified method by the caller.</p>
+     *
+     * @return a <code>List</code> of <code>Map</code> providing the values of the arguments on each call. which has
+     *         been supplied by the caller of the specified method.
+     */
+    public static Map getMethodArguments() {
+        return MockServletConfig.methodArguments;
     }
 
     /**

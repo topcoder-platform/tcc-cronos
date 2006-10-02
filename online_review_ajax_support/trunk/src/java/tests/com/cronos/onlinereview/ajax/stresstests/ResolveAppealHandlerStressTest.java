@@ -3,14 +3,13 @@
  */
 package com.cronos.onlinereview.ajax.stresstests;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import junit.framework.TestCase;
-
 import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.handlers.ResolveAppealHandler;
+import junit.framework.TestCase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -68,6 +67,6 @@ public class ResolveAppealHandlerStressTest extends TestCase {
         StressTestHelper.printResult("testResolveAppealHandler");
 
         // verify the response
-        assertEquals("The status should be success.", "Business error", response.getStatus());
+        assertEquals("The status should be success.", "Success", response.getStatus());
     }
 }

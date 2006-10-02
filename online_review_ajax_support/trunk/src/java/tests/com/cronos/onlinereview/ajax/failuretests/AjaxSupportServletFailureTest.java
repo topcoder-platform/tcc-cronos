@@ -4,6 +4,7 @@
 package com.cronos.onlinereview.ajax.failuretests;
 
 import com.cronos.onlinereview.ajax.AjaxSupportServlet;
+import com.cronos.onlinereview.ajax.failuretests.mock.MockServletConfig;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -331,6 +332,8 @@ public class AjaxSupportServletFailureTest extends AbstractTestCase {
             } catch (ServletException e) {
                 // expected behavior
             } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("XXX" + MockServletConfig.getMethodArguments() + "YYY");
                 fail("ServletException was expected but the original exception is : " + e);
             } finally {
                 ConfigHelper.restoreProperty("com.cronos.onlinereview.ajax.factory",

@@ -4,18 +4,17 @@
  */
 package com.cronos.onlinereview.ajax;
 
-import com.cronos.onlinereview.ajax.handlers.CommonHandlerTest;
-import com.cronos.onlinereview.ajax.handlers.LoadTimelineTemplateHandlerTest;
-import com.cronos.onlinereview.ajax.handlers.PlaceAppealHandlerTest;
-import com.cronos.onlinereview.ajax.handlers.ResolveAppealHandlerTest;
-import com.cronos.onlinereview.ajax.handlers.ReviewCommonHandlerTest;
-import com.cronos.onlinereview.ajax.handlers.RoleResolutionExceptionTest;
-import com.cronos.onlinereview.ajax.handlers.SetScorecardStatusHandlerTest;
-import com.cronos.onlinereview.ajax.handlers.SetTimelineNotificationHandlerTest;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import com.cronos.onlinereview.ajax.handlers.RoleResolutionExceptionTest;
+import com.cronos.onlinereview.ajax.handlers.PlaceAppealHandlerTest;
+import com.cronos.onlinereview.ajax.handlers.ReviewCommonHandlerTest;
+import com.cronos.onlinereview.ajax.handlers.SetScorecardStatusHandlerTest;
+import com.cronos.onlinereview.ajax.handlers.ResolveAppealHandlerTest;
+import com.cronos.onlinereview.ajax.handlers.LoadTimelineTemplateHandlerTest;
+import com.cronos.onlinereview.ajax.handlers.CommonHandlerTest;
+import com.cronos.onlinereview.ajax.handlers.SetTimelineNotificationHandlerTest;
 
 /**
  * <p>This test case aggregates all Unit test cases.</p>
@@ -41,6 +40,7 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(RoleResolutionExceptionTest.class);
         suite.addTestSuite(SetScorecardStatusHandlerTest.class);
         suite.addTestSuite(SetTimelineNotificationHandlerTest.class);
+        suite.addTestSuite(BugResolutionTestCase.class);
         return suite;
     }
 

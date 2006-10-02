@@ -3,24 +3,20 @@
  */
 package com.cronos.onlinereview.ajax;
 
-import java.io.ByteArrayInputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.topcoder.util.config.ConfigManager;
 import org.apache.cactus.JspTestCase;
-import org.apache.cactus.WebRequest;
 import org.apache.cactus.WebResponse;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.objectfactory.ObjectFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Test the class <code>AjaxSupportHelper</code>.

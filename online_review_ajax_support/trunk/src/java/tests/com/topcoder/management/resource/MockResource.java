@@ -89,13 +89,14 @@ public class MockResource extends Resource {
 
     /**
      * Set the phase.
-     * @param the phase
+     * @param phase
      */
     public void setPhase(Long phase) {
         this.phase = phase;
     }
 
     public Object getProperty(String name) {
+//        return super.getProperty(name);
         return new Long(2);
     }
 

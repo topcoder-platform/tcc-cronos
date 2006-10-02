@@ -81,6 +81,7 @@ public class TestPlaceAppealHandler extends TestCase {
     public void testServiceAccuracy1() {
         params.put("ReviewId", "invalid");
         params.put("ItemId", "888881");
+        params.put("Text", "Appeal");
 
         AjaxRequest request = new AjaxRequest("PlaceAppeal", params);
 
@@ -97,6 +98,7 @@ public class TestPlaceAppealHandler extends TestCase {
     public void testServiceAccuracy2() {
         params.put("ReviewId", "888880");
         params.put("ItemId", "invalid");
+        params.put("Text", "Appeal");
 
         AjaxRequest request = new AjaxRequest("PlaceAppeal", params);
 
@@ -113,6 +115,7 @@ public class TestPlaceAppealHandler extends TestCase {
     public void testServiceAccuracy3() {
         params.put("ReviewId", "888880");
         params.put("ItemId", "888881");
+        params.put("Text", "Appeal");
 
         AjaxRequest request = new AjaxRequest("PlaceAppeal", params);
 
@@ -129,6 +132,7 @@ public class TestPlaceAppealHandler extends TestCase {
     public void testServiceAccuracy4() {
         params.put("ReviewId", "-1");
         params.put("ItemId", "888881");
+        params.put("Text", "Appeal");
 
         AjaxRequest request = new AjaxRequest("PlaceAppeal", params);
 
@@ -145,6 +149,7 @@ public class TestPlaceAppealHandler extends TestCase {
     public void testServiceAccuracy5() {
         params.put("ReviewId", "888880");
         params.put("ItemId", "888881");
+        params.put("Text", "Appeal");
 
         AjaxRequest request = new AjaxRequest("PlaceAppeal", params);
 

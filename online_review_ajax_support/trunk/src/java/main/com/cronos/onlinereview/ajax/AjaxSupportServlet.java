@@ -2,10 +2,10 @@
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
+import com.topcoder.util.objectfactory.ObjectFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,11 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.UnknownNamespaceException;
-import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
-import com.topcoder.util.objectfactory.ObjectFactory;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -210,7 +209,7 @@ public final class AjaxSupportServlet extends HttpServlet {
         } catch (RequestParsingException e) {
             // if there is a parsing error then create an AjaxResponse containing the error message,
             // use the status "invalid request error"
-            AjaxSupportHelper.responseAndLogError("Unknown", "invalid request error", e.getMessage(), response);
+            AjaxSupportHelper.responseAndLogError("Unknown", "invalid request error", e.getMessage(), response, e);
             return;
         }
     }

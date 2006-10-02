@@ -3,9 +3,6 @@
  */
 package com.topcoder.management.phase;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.project.phases.MockPhase;
 import com.topcoder.project.phases.MockPhaseStatus;
@@ -16,6 +13,9 @@ import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 /**
  * Mock implementation of <code>PhaseManager</code>.
  *
@@ -23,6 +23,11 @@ import com.topcoder.project.phases.Project;
  * @version 1.0
  */
 public class MockPhaseManager implements PhaseManager {
+
+    /**
+     * <p>A <code>Throwable</code> representing the exception to be thrown from any method of the mock class.</p>
+     */
+    private static Throwable globalException = null;
 
     /**
      * All the types.
@@ -126,7 +131,15 @@ public class MockPhaseManager implements PhaseManager {
      * @param p the project id
      * @return the project
      */
-    public Project getPhases(long p) {
+    public Project getPhases(long p) throws PhaseManagementException {
+        if (MockPhaseManager.globalException != null) {
+            if (MockPhaseManager.globalException instanceof PhaseManagementException) {
+                throw (PhaseManagementException) MockPhaseManager.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly",
+                                           MockPhaseManager.globalException);
+            }
+        }
         Project project = new MockProject(new Date(), new DefaultWorkdays());
         project.setId(1);
 
@@ -227,5 +240,29 @@ public class MockPhaseManager implements PhaseManager {
     public PhaseHandler unregisterHandler(PhaseType arg0, PhaseOperationEnum arg1) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /**
+     * <p>Sets the exception to be thrown when the specified method is called.</p>
+     *
+     * @param exception a <code>Throwable</code> representing the exception to be thrown whenever any method is called.
+     * If this argument is <code>null</code> then no exception will be thrown.
+     */
+    public static void throwGlobalException(Throwable exception) {
+        MockPhaseManager.globalException = exception;
+    }
+
+    /**
+     * <p>Releases the state of <code>MockLog</code> so all collected method arguments, configured method results and
+     * exceptions are lost.</p>
+     */
+    public static void releaseState() {
+        MockPhaseManager.globalException = null;
+    }
+
+    /**
+     * <p>Initializes the initial state for all created instances of <code>MockResourceManager</code> class.</p>
+     */
+    public static void init() {
     }
 }

@@ -2,9 +2,6 @@
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
-import java.text.ParseException;
-import java.util.Date;
-
 import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
@@ -13,6 +10,9 @@ import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.Project;
 import com.topcoder.project.phases.template.PhaseTemplate;
+
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * <p>
@@ -115,7 +115,7 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
             start = request.getParameterAsDate("StartDate");
         } catch (ParseException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The StartDate parameter can't be parsed.", "LoadTimelineTemplate. " + "User id : " + userId);
+                    "The StartDate parameter can't be parsed.", "LoadTimelineTemplate. " + "User id : " + userId, e);
         }
 
         // check the userId for validation
@@ -134,7 +134,7 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
         } catch (ResourceException e) {
             // if exception raised, return a business error response
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId);
+                    "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId, e);
         }
 
         // find the template, if not found, return an error response
@@ -162,7 +162,7 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
             }
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR, "Can't apply template",
-                    "LoadTimelineTemplate. " + "User id : " + userId);
+                    "LoadTimelineTemplate. " + "User id : " + userId, e);
         }
 
         // generate the xml

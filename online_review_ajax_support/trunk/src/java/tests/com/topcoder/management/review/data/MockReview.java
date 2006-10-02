@@ -81,9 +81,15 @@ public class MockReview extends Review {
     public Item[] getAllItems() {
         Item item = new MockItem();
         item.setId(1);
+        item.setQuestion(1);
+        item.setAnswer("Yes");
+        item.addComment(new Comment(1, 1, new CommentType(1, "Appeal"), "Appeal"));
 
         Item item2 = new MockItem();
         item2.setId(2);
+        item2.setQuestion(2);
+        item2.setAnswer("4/4");
+        item2.addComment(new Comment(1, 1, new CommentType(1, "Appeal"), "Appeal"));
 
         return new Item[] {item, item2};
     }

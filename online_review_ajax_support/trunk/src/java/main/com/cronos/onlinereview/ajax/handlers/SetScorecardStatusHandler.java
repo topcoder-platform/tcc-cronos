@@ -155,7 +155,7 @@ public class SetScorecardStatusHandler extends CommonHandler {
             scorecardId = request.getParameterAsLong("ScorecardId");
         } catch (NumberFormatException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The scorecard id should be a long value.", "SetScorecardStatus. " + "User id : " + userId);
+                    "The scorecard id should be a long value.", "SetScorecardStatus. " + "User id : " + userId, e);
         }
 
         status = request.getParameter("Status");
@@ -178,7 +178,8 @@ public class SetScorecardStatusHandler extends CommonHandler {
             }
         } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "Error when check user has gloable manager role.", "SetScorecardStatus. " + "User id : " + userId);
+                    "Error when check user has gloable manager role.", "SetScorecardStatus. " + "User id : " + userId,
+                    e);
         }
 
         // get the scorecard from the manager
@@ -188,7 +189,7 @@ public class SetScorecardStatusHandler extends CommonHandler {
         } catch (PersistenceException e1) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
                     "Error when get scorecard.", "SetScorecardStatus. " + "User id : " + userId
-                    + "\tscorecard : " + scorecardId);
+                    + "\tscorecard : " + scorecardId, e1);
         }
         if (card == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_SCORECARD_ERROR,
@@ -210,7 +211,7 @@ public class SetScorecardStatusHandler extends CommonHandler {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't update review.",
                     "SetScorecardStatus. User id : " + userId + "\tscorecard id : "
-                    + scorecardId + "\tstatus" + status);
+                    + scorecardId + "\tstatus" + status, e);
         }
 
         return AjaxSupportHelper.createAndLogSucceess(request.getType(), SUCCESS, "", null,

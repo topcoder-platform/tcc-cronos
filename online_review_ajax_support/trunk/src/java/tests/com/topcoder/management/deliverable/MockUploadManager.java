@@ -15,6 +15,11 @@ import com.topcoder.search.builder.filter.Filter;
 public class MockUploadManager implements UploadManager {
 
     /**
+     * <p>A <code>Throwable</code> representing the exception to be thrown from any method of the mock class.</p>
+     */
+    private static Throwable globalException = null;
+
+    /**
      * Create submission.
      * @param submission the submission to create
      * @param operator the operator
@@ -59,7 +64,15 @@ public class MockUploadManager implements UploadManager {
      * @param id the id
      * @return the submission
      */
-    public Submission getSubmission(long id) {
+    public Submission getSubmission(long id) throws UploadPersistenceException {
+        if (MockUploadManager.globalException != null) {
+            if (MockUploadManager.globalException instanceof UploadPersistenceException) {
+                throw (UploadPersistenceException) MockUploadManager.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly",
+                                           MockUploadManager.globalException);
+            }
+        }
         Submission sub = new MockSubmission();
         sub.setId(1);
         Upload upload = new MockUpload();
@@ -167,6 +180,30 @@ public class MockUploadManager implements UploadManager {
     public void updateUploadType(UploadType arg0, String arg1) throws UploadPersistenceException {
         // TODO Auto-generated method stub
         
+    }
+
+    /**
+     * <p>Sets the exception to be thrown when the specified method is called.</p>
+     *
+     * @param exception a <code>Throwable</code> representing the exception to be thrown whenever any method is called.
+     * If this argument is <code>null</code> then no exception will be thrown.
+     */
+    public static void throwGlobalException(Throwable exception) {
+        MockUploadManager.globalException = exception;
+    }
+
+    /**
+     * <p>Releases the state of <code>MockLog</code> so all collected method arguments, configured method results and
+     * exceptions are lost.</p>
+     */
+    public static void releaseState() {
+        MockUploadManager.globalException = null;
+    }
+
+    /**
+     * <p>Initializes the initial state for all created instances of <code>MockResourceManager</code> class.</p>
+     */
+    public static void init() {
     }
 
 }

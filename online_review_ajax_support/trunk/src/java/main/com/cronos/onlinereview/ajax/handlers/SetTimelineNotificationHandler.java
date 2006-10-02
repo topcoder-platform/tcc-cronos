@@ -132,7 +132,7 @@ public class SetTimelineNotificationHandler extends CommonHandler {
             projectId = request.getParameterAsLong("ProjectId");
         } catch (NumberFormatException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The project id should be a long value.", "SetTimelineNotification. User id : " + userId);
+                    "The project id should be a long value.", "SetTimelineNotification. User id : " + userId, e);
         }
 
         // status
@@ -161,7 +161,7 @@ public class SetTimelineNotificationHandler extends CommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
                     "Can't get the project.", "SetTimelineNotification. User id : " + userId
-                    + "\tproject id : " + projectId);
+                    + "\tproject id : " + projectId, e);
         }
         if (project == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
@@ -189,8 +189,7 @@ public class SetTimelineNotificationHandler extends CommonHandler {
             }
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "Can't get the user's projects.", "SetTimelineNotification. User id : " + userId
-            );
+                    "Can't get the user's projects.", "SetTimelineNotification. User id : " + userId, e);
         }
 
         // check whether the user has global manager role
@@ -201,7 +200,7 @@ public class SetTimelineNotificationHandler extends CommonHandler {
                 }
             } catch (ResourceException e) {
                 return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                        "Can't check the user's role : " + e, "SetTimelineNotification. User id : " + userId);
+                        "Can't check the user's role : " + e, "SetTimelineNotification. User id : " + userId, e);
             }
         }
 
@@ -229,7 +228,7 @@ public class SetTimelineNotificationHandler extends CommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
                     "Can't add/remove notification : " + e, "SetTimelineNotification. User id : "
-                    + userId + "\tproject id : " + projectId + "\ttimelineNotifcationId : " + timelineNotificationId);
+                    + userId + "\tproject id : " + projectId + "\ttimelineNotifcationId : " + timelineNotificationId, e);
         }
 
         return AjaxSupportHelper.createAndLogSucceess(request.getType(), SUCCESS,

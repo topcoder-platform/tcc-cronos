@@ -34,6 +34,12 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 public abstract class CommonHandler implements AjaxRequestHandler {
 
     /**
+     * <p>A <code>String</code> providing the name of the resource property which is expected to provide the user ID.
+     * </p>
+     */
+    protected static final String EXTERNAL_REFERENCE_ID_PROPERTY = "External Reference ID";
+
+    /**
      * <p>
      * The resource manager used to get resource data
      * This variable is immutable, it is initialized by the constructor to a not null ReviewManager object,
@@ -101,7 +107,7 @@ public abstract class CommonHandler implements AjaxRequestHandler {
             throw new IllegalArgumentException("The resource can't be null.");
         }
         // check if "External Reference ID" property exists or not
-        Object value = resource.getProperty("External Reference ID");
+        Object value = resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
         if (value == null) {
             return false;
         }
@@ -156,7 +162,7 @@ public abstract class CommonHandler implements AjaxRequestHandler {
         Filter noProjectFilter = ResourceFilterBuilder.createNoProjectFilter();
         Filter resourceRoleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(managerRoleId);
         Filter extensionPropertyNameFilter
-            = ResourceFilterBuilder.createExtensionPropertyNameFilter("External Reference ID");
+            = ResourceFilterBuilder.createExtensionPropertyNameFilter(EXTERNAL_REFERENCE_ID_PROPERTY);
         Filter extensionPropertyValueFilter
             = ResourceFilterBuilder.createExtensionPropertyValueFilter(Long.toString(userId));
 

@@ -3,10 +3,6 @@
  */
 package com.cronos.onlinereview.ajax.handlers;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.TestHelper;
@@ -14,8 +10,11 @@ import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.scorecalculator.CalculationManager;
 import com.topcoder.management.scorecard.MockScorecardManager;
 import com.topcoder.util.config.ConfigManager;
-
 import junit.framework.TestCase;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Test the class <code>ResolveAppealHandler</code>.
@@ -98,6 +97,7 @@ public class ResolveAppealHandlerTest extends TestCase {
         map.put("ReviewId", "1");
         map.put("ItemId", "1");
         map.put("Status", "Succeeded");
+        map.put("Text", "Appeal Response");
 
         AjaxRequest request = new AjaxRequest("ResolveAppeal", map);
 
@@ -107,7 +107,7 @@ public class ResolveAppealHandlerTest extends TestCase {
         // verify the result
         // the reseult should be score card error
         // since we used mock data so there is nothing in the database
-        assertEquals("The status should be success.", "Business error", response.getStatus());
+        assertEquals("The status should be success.", "Success", response.getStatus());
     }
 
     /**
@@ -191,6 +191,7 @@ public class ResolveAppealHandlerTest extends TestCase {
         map.put("ReviewId", "1");
         map.put("ItemId", "1");
         map.put("Status", "Succeeded");
+        map.put("Text", "Appeal Response");
 
         AjaxRequest request = new AjaxRequest("ResolveAppeal", map);
 
@@ -214,6 +215,7 @@ public class ResolveAppealHandlerTest extends TestCase {
         map.put("ReviewId", "11");
         map.put("ItemId", "1");
         map.put("Status", "Succeeded");
+        map.put("Text", "Appeal Response");
 
         AjaxRequest request = new AjaxRequest("ResolveAppeal", map);
 
@@ -237,6 +239,7 @@ public class ResolveAppealHandlerTest extends TestCase {
         map.put("ReviewId", "1");
         map.put("ItemId", "11");
         map.put("Status", "Succeeded");
+        map.put("Text", "Appeal Response");
 
         AjaxRequest request = new AjaxRequest("ResolveAppeal", map);
 

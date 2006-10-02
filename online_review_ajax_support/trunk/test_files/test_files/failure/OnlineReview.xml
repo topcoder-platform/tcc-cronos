@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <CMConfig>
     <Config name="com.cronos.onlinereview.ajax">
         <!-- defining the Ajax request handlers names -->

@@ -18,13 +18,27 @@ import com.topcoder.search.builder.filter.Filter;
 public class MockResourceManager implements ResourceManager {
 
     /**
+     * <p>A <code>Throwable</code> representing the exception to be thrown from any method of the mock class.</p>
+     */
+    private static Throwable globalException = null;
+
+    /**
      * Add notifications.
      * @param users the users
      * @param project the project
      * @param notificationType the type
      * @param operator the operator
      */
-    public void addNotifications(long[] users, long project, long notificationType, String operator) {
+    public void addNotifications(long[] users, long project, long notificationType, String operator)
+        throws ResourcePersistenceException {
+        if (MockResourceManager.globalException != null) {
+            if (MockResourceManager.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourceManager.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly",
+                                           MockResourceManager.globalException);
+            }
+        }
     }
 
     /**
@@ -65,7 +79,15 @@ public class MockResourceManager implements ResourceManager {
      * @param id the resource id
      * @return the resource object
      */
-    public Resource getResource(long id) {
+    public Resource getResource(long id) throws ResourcePersistenceException {
+        if (MockResourceManager.globalException != null) {
+            if (MockResourceManager.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourceManager.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly",
+                                           MockResourceManager.globalException);
+            }
+        }
         Resource resource = new MockResource();
         resource.setId(2);
         resource.setProject(new Long(1));
@@ -123,17 +145,17 @@ public class MockResourceManager implements ResourceManager {
 
     public void removeNotificationType(NotificationType arg0, String arg1) throws ResourcePersistenceException {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void removeResource(Resource arg0, String arg1) throws ResourcePersistenceException {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void removeResourceRole(ResourceRole arg0, String arg1) throws ResourcePersistenceException {
         // TODO Auto-generated method stub
-        
+
     }
 
     public NotificationType[] searchNotificationTypes(Filter arg0) throws ResourcePersistenceException, SearchBuilderException, SearchBuilderConfigurationException {
@@ -150,7 +172,20 @@ public class MockResourceManager implements ResourceManager {
         return null;
     }
 
-    public Resource[] searchResources(Filter arg0) throws ResourcePersistenceException, SearchBuilderException, SearchBuilderConfigurationException {
+    public Resource[] searchResources(Filter arg0) throws ResourcePersistenceException, SearchBuilderException,
+                                                          SearchBuilderConfigurationException {
+        if (MockResourceManager.globalException != null) {
+            if (MockResourceManager.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourceManager.globalException;
+            } else if (MockResourceManager.globalException instanceof SearchBuilderException) {
+                throw (SearchBuilderException) MockResourceManager.globalException;
+            } else if (MockResourceManager.globalException instanceof SearchBuilderConfigurationException) {
+                throw (SearchBuilderConfigurationException) MockResourceManager.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly",
+                                           MockResourceManager.globalException);
+            }
+        }
         return new Resource[1];
     }
 
@@ -160,4 +195,27 @@ public class MockResourceManager implements ResourceManager {
     public void updateResourceRole(ResourceRole arg0, String arg1) throws ResourcePersistenceException {
     }
 
+    /**
+     * <p>Sets the exception to be thrown when the specified method is called.</p>
+     *
+     * @param exception a <code>Throwable</code> representing the exception to be thrown whenever any method is called.
+     * If this argument is <code>null</code> then no exception will be thrown.
+     */
+    public static void throwGlobalException(Throwable exception) {
+        MockResourceManager.globalException = exception;
+    }
+
+    /**
+     * <p>Releases the state of <code>MockLog</code> so all collected method arguments, configured method results and
+     * exceptions are lost.</p>
+     */
+    public static void releaseState() {
+        MockResourceManager.globalException = null;
+    }
+
+    /**
+     * <p>Initializes the initial state for all created instances of <code>MockResourceManager</code> class.</p>
+     */
+    public static void init() {
+    }
 }

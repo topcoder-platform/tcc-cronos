@@ -233,27 +233,32 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         long itemId = 0;
         String text = null;
 
+        // check the userId for validation
+        if (userId == null) {
+            return AjaxSupportHelper.createAndLogError(request.getType(), LOGIN_ERROR,
+                    "Doesn't login or expired.", "PlaceAppeal. " + "User id : " + userId);
+        }
+
         // ReviewID
         try {
             reviewId = request.getParameterAsLong("ReviewId");
         } catch (NumberFormatException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", "PlaceAppeal. " + "User id : " + userId);
+                    "The review id should be a long value.", "PlaceAppeal. " + "User id : " + userId, e);
         }
         // ItemId
         try {
             itemId = request.getParameterAsLong("ItemId");
         } catch (NumberFormatException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", "PlaceAppeal. " + "User id : " + userId);
+                    "The review id should be a long value.", "PlaceAppeal. " + "User id : " + userId, e);
         }
         // text
-        text = request.getParameter("text");
-
-        // check the userId for validation
-        if (userId == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), LOGIN_ERROR,
-                    "Doesn't login or expired.", "PlaceAppeal. " + "User id : " + userId);
+        // ISV : Appeal text is required and must be provided by "Text" parameter but not "text"
+        text = request.getParameter("Text");
+        if ((text == null) || (text.trim().length() == 0)) {
+            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
+                    "The appeal text must be provided.", "PlaceAppeal. " + "User id : " + userId);
         }
 
         // check whether this user has the right to appeal
@@ -264,7 +269,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't get the review : " + e.getMessage(),
-                    "PlaceAppeal. User id : " + userId + "\treview id : " + reviewId);
+                    "PlaceAppeal. User id : " + userId + "\treview id : " + reviewId, e);
         }
         if (review == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_REVIEW_ERROR,
@@ -283,7 +288,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't get the submission : " + e.getMessage(),
-                    "User id : " + userId + "\tsubmission id : " + submissionId);
+                    "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
         if (submission == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
@@ -293,12 +298,6 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
 
         // Get the upload
         Upload upload = submission.getUpload();
-        if (userId.longValue() != upload.getOwner()) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    ROLE_ERROR, "The user is not right.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId);
-        }
-
 
         // get the submission resource
         Resource submitterResource = null;
@@ -307,7 +306,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Error when finding the resource.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId);
+                    "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
         if (submitterResource == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
@@ -324,7 +323,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't check the user role.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId);
+                    "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
 
         // check the user has submitter role
@@ -337,8 +336,26 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't check the user role.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId);
+                    "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
+
+        // ISV : Get the user ID for the submitter resource
+        Object extRefId = submitterResource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
+        if (extRefId == null) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "The resource matching the resource ID [" + submitterResource.getId() + "] does not"
+                                         + " provide the 'External Reference ID' property",
+                    "User id : " + userId + "\tsubmission id : " + submissionId);
+        } else {
+            // ISV : Convert to string as at this point the exact type of the property is not clarified
+            String extRefIdString = String.valueOf(extRefId);
+            if (userId.longValue() != Long.parseLong(extRefIdString)) {
+                return AjaxSupportHelper.createAndLogError(request.getType(),
+                                                           ROLE_ERROR, "The user is not right.",
+                                                           "User id : " + userId + "\tsubmission id : " + submissionId);
+            }
+        }
+
 
         // get the reviewer resource
         Resource reviewerResource = null;
@@ -347,7 +364,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Error when finding the resource.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId);
+                    "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
         if (reviewerResource == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
@@ -366,7 +383,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (ResourceException e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't check the user role.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId);
+                    "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
 
 
@@ -377,7 +394,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't get phases.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId + "\tupload id :" + upload.getId());
+                    "User id : " + userId + "\tsubmission id : " + submissionId + "\tupload id :" + upload.getId(), e);
         }
 
         // get the review phase
@@ -407,9 +424,6 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId
                     + "\texpected phase id :" + reviewPhase.getId() + "\tactual id : " + reviewerResource.getPhase());
         }
-
-        System.out.println("4");
-
 
         // get the appeal phase
         Phase appealPhase = null;
@@ -466,7 +480,9 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
 
         // create a new comment, set the text to text parameter
         Comment comment = new Comment();
-        comment.setAuthor(userId.longValue());
+        // ISV : The appeal should be associated with resource but not external reference ID
+//        comment.setAuthor(userId.longValue());
+        comment.setAuthor(submitterResource.getId());
         comment.setComment(text);
         comment.setCommentType(appealCommentType);
 
@@ -479,7 +495,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         } catch (Exception e) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
                     BUSINESS_ERROR, "Can't update review.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId + "\treview id :" + review.getId());
+                    "User id : " + userId + "\tsubmission id : " + submissionId + "\treview id :" + review.getId(), e);
         }
 
         // succeed
