@@ -353,7 +353,26 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             scorecard.setModificationUser(operator);
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
-            throw new PersistenceException("Error occurs while deleting the scoreacard.", ex);
+            String errMsg = scorecard + " op:" + operator ;
+            try
+            {
+            errMsg = "Scorecard Status: " + scorecard.getScorecardStatus().getId() +
+                            " - Scorecard Type: " + scorecard.getScorecardType().getId() +
+                            " - Scorecard Category: " + scorecard.getCategory() +
+                             " - Scorecard Name: " + scorecard.getName() +
+                             " - Scorecard Version: " + scorecard.getVersion() +
+                             " - Scorecard Min Score: " + scorecard.getMinScore() +
+                             " - Scorecard Max Score: " + scorecard.getMaxScore() +
+                             " - Operator: " + operator +
+                             " - Scorecard ID: " + scorecard.getId();
+            }
+            catch(Exception e)
+            {
+              throw new PersistenceException("Couldn't format error output:" + errMsg);
+            }
+            throw new PersistenceException("Error occurs while deleting the scorecard: " + errMsg, ex);
+
+
         } catch (PersistenceException ex) {
             DBUtils.rollback(conn);
             throw ex;
@@ -668,12 +687,13 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         try {
             pstmt = conn.prepareStatement(SELECT_IN_USE_IDS + DBUtils.createQuestionMarks(ids.length));
             for (int i = 0; i < ids.length; i++) {
-                pstmt.setLong(i + 1, ids[i]);
+                pstmt.setString(i + 1, String.valueOf(ids[i]));
+                //pstmt.setLong(i + 1, ids[i]);
             }
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                result.add(new Long(rs.getLong(1)));
+                result.add(new Long(rs.getString(1)));
             }
             return result;
         } catch (SQLException ex) {
