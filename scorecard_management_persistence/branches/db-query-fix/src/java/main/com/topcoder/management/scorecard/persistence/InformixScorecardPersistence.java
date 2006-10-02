@@ -687,7 +687,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         try {
             pstmt = conn.prepareStatement(SELECT_IN_USE_IDS + DBUtils.createQuestionMarks(ids.length));
             for (int i = 0; i < ids.length; i++) {
-                pstmt.setString(i + 1, ids[i]);
+                pstmt.setString(i + 1, String.valueOf(ids[i]));
+                //pstmt.setLong(i + 1, ids[i]);
             }
 
             rs = pstmt.executeQuery();
