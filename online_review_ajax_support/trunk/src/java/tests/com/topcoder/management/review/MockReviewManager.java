@@ -96,7 +96,11 @@ public class MockReviewManager implements ReviewManager {
             Review review = new MockReview();
             review.setId(1);
             review.setSubmission(1);
-            review.setAuthor(3);
+            if (id >= 3 && id <= 6) {
+                review.setAuthor(id);
+            } else {
+                review.setAuthor(3);
+            }
             review.setScorecard(1);
             return review;
         }

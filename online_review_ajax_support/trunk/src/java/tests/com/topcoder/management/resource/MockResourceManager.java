@@ -103,6 +103,15 @@ public class MockResourceManager implements ResourceManager {
         } else if (id == 3) {
             resourceRole.setName("Reviewer");
             resource.setPhase(new Long(1));
+        } else if (id == 4) {
+            resourceRole.setName("Accuracy Reviewer");
+            resource.setPhase(new Long(1));
+        } else if (id == 5) {
+            resourceRole.setName("Failure Reviewer");
+            resource.setPhase(new Long(1));
+        } else if (id == 6) {
+            resourceRole.setName("Stress Reviewer");
+            resource.setPhase(new Long(1));
         }
         return resource;
     }

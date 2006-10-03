@@ -315,7 +315,10 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
 
         // check the user has the role of "Reviewer"
         try {
-            if (!checkResourceHasRole(reviewerResource, "Reviewer")) {
+            if (!(checkResourceHasRole(reviewerResource, "Reviewer")
+                  || checkResourceHasRole(reviewerResource, "Accuracy Reviewer")
+                  || checkResourceHasRole(reviewerResource, "Failure Reviewer")
+                  || checkResourceHasRole(reviewerResource, "Stress Reviewer"))) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
                         ROLE_ERROR, "The user should be a reviewer.",
                         "User id : " + userId + "\treview id : " + reviewId);

@@ -568,6 +568,49 @@ public class BugResolutionTestCase extends TestCase {
     }
 
     /**
+     * <p>Tests the resolution of bug caused by the <code>PlaceAppealHandler</code> validating the reviewers against
+     * <code>Reviewer</code> role only. In fact the reviewer resolving the appeal may be assigned any of <code>Reviewer
+     * </code>, <code>Accuracy Reviewer</code>, <code>Failure Reviewer</code>, <code>Stress Reviewer</code> role.</p>
+     *
+     * @throws Exception if an unexpected error occurs.
+     */
+    public void testReviewerRoles_ResolveAppealHandler() throws Exception {
+        final String requestType = "ResolveAppeal";
+        AjaxResponse ajaxResponse;
+
+        // Create valid request
+        Map map = new HashMap();
+        map.put("ItemId", "1");
+        map.put("Text", "Appeal text");
+        map.put("Status", "Failed");
+        map.put("Answer", "Yes");
+
+        // Test when reviewer is granted a Reviewer role
+        map.put("ReviewId", "3");
+        ajaxResponse = this.resolveAppealHandler.service(new AjaxRequest(requestType, map), new Long(3));
+        Assert.assertEquals("Should have responded with response of 'Success' status for reviewer greanted 'Reviewer' "
+                            + "role", "Success", ajaxResponse.getStatus());
+
+        // Test when reviewer is granted an Accuracy Reviewer role
+        map.put("ReviewId", "4");
+        ajaxResponse = this.resolveAppealHandler.service(new AjaxRequest(requestType, map), new Long(4));
+        Assert.assertEquals("Should have responded with response of 'Success' status for reviewer greanted 'Accuracy "
+                             + "Reviewer' role", "Success", ajaxResponse.getStatus());
+
+        // Test when reviewer is granted a Failure Reviewer role
+        map.put("ReviewId", "5");
+        ajaxResponse = this.resolveAppealHandler.service(new AjaxRequest(requestType, map), new Long(5));
+        Assert.assertEquals("Should have responded with response of 'Success' status for reviewer greanted 'Failure "
+                             + "Reviewer' role", "Success", ajaxResponse.getStatus());
+
+        // Test when reviewer is granted a Stress Reviewer role
+        map.put("ReviewId", "6");
+        ajaxResponse = this.resolveAppealHandler.service(new AjaxRequest(requestType, map), new Long(6));
+        Assert.assertEquals("Should have responded with response of 'Success' status for reviewer greanted 'Stress "
+                             + "Reviewer' role", "Success", ajaxResponse.getStatus());
+    }
+
+    /**
      * <p>Verifies that the exception stack trace is logged for the request of specified type.</p>
      *
      * @param requestType a <code>String</code> specifying the type of the request.

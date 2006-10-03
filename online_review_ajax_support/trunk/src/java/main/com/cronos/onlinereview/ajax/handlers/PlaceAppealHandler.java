@@ -374,7 +374,10 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
 
         // check the review's author has reviewer role
         try {
-            if (!checkResourceHasRole(reviewerResource, "Reviewer")) {
+            if (!(checkResourceHasRole(reviewerResource, "Reviewer") ||
+                  checkResourceHasRole(reviewerResource, "Accuracy Reviewer") ||
+                  checkResourceHasRole(reviewerResource, "Failure Reviewer") ||
+                  checkResourceHasRole(reviewerResource, "Stress Reviewer"))) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
                         ROLE_ERROR, "The author should be a reviewer.",
                         "User id : " + userId + "\tsubmission id : " + submissionId
@@ -505,3 +508,4 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                 + "\titem id : " + item.getId());
     }
 }
+
