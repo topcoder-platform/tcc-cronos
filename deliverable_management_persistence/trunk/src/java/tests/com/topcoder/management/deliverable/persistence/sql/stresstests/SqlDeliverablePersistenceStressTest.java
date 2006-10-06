@@ -39,7 +39,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         // stress tests
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
             // load the deliverables
-            Deliverable[] deliverables = persistence.loadDeliverables(1);
+            Deliverable[] deliverables = persistence.loadDeliverables(1, 2);
             // assert the accuracy
             assertEquals("The length of the deliverables is not correct.", 1, deliverables.length);
 
@@ -64,7 +64,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         Date start = new Date();
 
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
-            Deliverable diverable = persistence.loadDeliverable(1, 1);
+            Deliverable diverable = persistence.loadDeliverable(1, 1, 1);
             assertNull("The record does not exists.", diverable);
         }
 
@@ -85,16 +85,18 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
 
         // creates the query ids
         long[] ids = new long[10];
+        long[] idstwo = new long[10];
 
         // sets the ids
         for (int i = 0; i < 10; i++) {
             ids[i] = i + 1;
+            idstwo[i] = i + 2;
         }
 
-        long[] expected = new long[] {2, 2, 1, 1};
+        long[] expected = new long[] {2, 1};
 
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
-            Deliverable[] deliverables = persistence.loadDeliverables(ids);
+            Deliverable[] deliverables = persistence.loadDeliverables(ids, idstwo);
             assertIds(expected, deliverables);
         }
 
@@ -142,7 +144,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         // sets the ids
         for (int i = 0; i < 10; i++) {
             id1s[i] = i + 1;
-            id2s[i] = i + 1;
+            id2s[i] = i + 3;
         }
 
         long[] expected = new long[] {};
@@ -172,6 +174,30 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         // get the connection
         Connection conn = getConnection();
         Statement statement = conn.createStatement();
+
+
+        statement.addBatch("INSERT INTO project (project_id) VALUES (1)");
+        statement.addBatch("INSERT INTO project (project_id) VALUES (2)");
+        statement.addBatch("INSERT INTO project (project_id) VALUES (3)");
+
+        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (1)");
+        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (2)");
+        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (3)");
+
+        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (1)");
+        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (2)");
+        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (3)");
+
+        statement.addBatch("INSERT INTO project_phase (project_phase_id, project_id, phase_type_id) VALUES (1, 1, 1)");
+        statement.addBatch("INSERT INTO project_phase (project_phase_id, project_id, phase_type_id) VALUES (2, 2, 2)");
+        statement.addBatch("INSERT INTO project_phase (project_phase_id, project_id, phase_type_id) VALUES (3, 3, 3)");
+
+        statement.addBatch("INSERT INTO resource (resource_id, resource_role_id, project_id, project_phase_id)"
+                + " VALUES (1, 2, 1, 1)");
+        statement.addBatch("INSERT INTO resource (resource_id, resource_role_id, project_id, project_phase_id)"
+                + " VALUES (2, 2, 2, 2)");
+        statement.addBatch("INSERT INTO resource (resource_id, resource_role_id, project_id, project_phase_id)"
+                + " VALUES (3, 3, 3, 3)");
 
         // add upload_type
         statement.addBatch("INSERT INTO upload_type_lu(upload_type_id, name, description, "
@@ -222,21 +248,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
             + "create_user, create_date, modify_user, modify_date) "
             + "VALUES (5, 'Deleted', 'Deleted', 'System', CURRENT, 'System', CURRENT)");
 
-        statement.addBatch("INSERT INTO project (project_id) VALUES (1)");
-        statement.addBatch("INSERT INTO project (project_id) VALUES (2)");
-        statement.addBatch("INSERT INTO project (project_id) VALUES (3)");
 
-        statement.addBatch("INSERT INTO resource (resource_id) VALUES (1)");
-        statement.addBatch("INSERT INTO resource (resource_id) VALUES (2)");
-        statement.addBatch("INSERT INTO resource (resource_id) VALUES (3)");
-
-        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (1)");
-        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (2)");
-        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (3)");
-
-        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (1)");
-        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (2)");
-        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (3)");
 
         statement.addBatch("INSERT INTO upload"
             + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "

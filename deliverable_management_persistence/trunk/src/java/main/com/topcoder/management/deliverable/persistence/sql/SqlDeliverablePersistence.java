@@ -40,14 +40,17 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * Represents the sql statement to load deliverables with submission.
      */
     private static final String LOAD_DELIVERABLES_WITH_SUBMISSION_SQL = "SELECT "
-        + "upload.project_id, deliverable_lu.phase_type_id, deliverable_lu.resource_role_id, "
+        + "upload.project_id, deliverable_lu.phase_type_id, resource.resource_id, "
         + "submission.submission_id, deliverable_lu.required, "
         + "deliverable_lu.deliverable_id, deliverable_lu.create_user, deliverable_lu.create_date, "
         + "deliverable_lu.modify_user, deliverable_lu.modify_date, "
         + "deliverable_lu.name, deliverable_lu.description "
-        + "FROM deliverable_lu CROSS JOIN submission " + "INNER JOIN submission_status_lu "
+        + "FROM deliverable_lu "
+        + "INNER JOIN resource " + "ON resource.resource_role_id = deliverable_lu.resource_role_id "
+        + "INNER JOIN upload " + "ON upload.project_id=resource.project_id "
+        + "INNER JOIN submission " + "ON submission.upload_id = upload.upload_id "
+        + "INNER JOIN submission_status_lu "
         + "ON submission.submission_status_id=submission_status_lu.submission_status_id "
-        + "INNER JOIN upload " + "ON submission.upload_id=upload.upload_id "
         + "WHERE deliverable_lu.per_submission=1 " + "AND submission_status_lu.name='Active' AND ";
 
     /**
@@ -63,12 +66,15 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * Represents the sql statement to load deliverables without submission.
      */
     private static final String LOAD_DELIVERABLES_WITHOUT_SUBMISSION_SQL = "SELECT "
-        + "project.project_id, deliverable_lu.phase_type_id, "
-        + "deliverable_lu.resource_role_id, deliverable_lu.required, "
+        + "resource.project_id, deliverable_lu.phase_type_id, "
+        + "resource.resource_id, deliverable_lu.required, "
         + "deliverable_lu.deliverable_id, deliverable_lu.create_user, deliverable_lu.create_date, "
         + "deliverable_lu.modify_user, deliverable_lu.modify_date, "
         + "deliverable_lu.name, deliverable_lu.description "
-        + "FROM deliverable_lu CROSS JOIN project " + "WHERE deliverable_lu.per_submission=0 AND ";
+        + "FROM deliverable_lu "
+        + "INNER JOIN resource " + "ON resource.resource_role_id = deliverable_lu.resource_role_id "
+        + "WHERE deliverable_lu.per_submission=0 AND ";
+
 
     /**
      * Represents the column types for the result set which is returned by
@@ -134,8 +140,8 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
 
     /**
      * <p>
-     * Loads the deliverables associated with the given deliverable id. There
-     * may be more than one deliverable returned. If there is no matching
+     * Loads the deliverables associated with the given deliverable id and resource id.
+     * There may be more than one deliverable returned. If there is no matching
      * deliverable in the persistence, an empty array should be returned.
      * </p>
      * @return The matching deliverables (possibly expanded by matching with
@@ -143,21 +149,24 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      *         or an empty array.
      * @param deliverableId
      *            The id of the deliverable
+     * @param resourceId
+     *            The resource id of deliverable
      * @throws IllegalArgumentException
-     *             If deliverableId is <= 0
+     *             If deliverableId is <= 0 or resourceId <=0
      * @throws DeliverablePersistenceException
      *             If there is an error when reading the persistence
      */
-    public Deliverable[] loadDeliverables(long deliverableId)
+    public Deliverable[] loadDeliverables(long deliverableId, long resourceId)
         throws DeliverablePersistenceException {
         Helper.assertIdNotUnset(deliverableId, "deliverableId");
+        Helper.assertIdNotUnset(resourceId, "resourceId");
 
-        return loadDeliverables(new long[] {deliverableId});
+        return loadDeliverables(new long[] {deliverableId}, new long[] {resourceId});
     }
 
     /**
      * <p>
-     * Loads the deliverable associated with the given submission. The
+     * Loads the deliverable associated with the given submission and resource. The
      * deliverable must be a "per submission" deliverable and the given
      * submission must be "Active". If this is not the case, null is returned.
      * </p>
@@ -166,40 +175,54 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      *         submission
      * @param deliverableId
      *            The id of the deliverable
+     * @param resourceId
+     *            The resource id of deliverable
      * @param submissionId
      *            The id of the submission the deliverable should be associated
      *            with
      * @throws IllegalArgumentException
-     *             If deliverableId or submissionId is <= 0
+     *             If deliverableId, resourceId or submissionId is <= 0
      * @throws DeliverablePersistenceException
      *             If there is an error when reading the persistence data
      */
-    public Deliverable loadDeliverable(long deliverableId, long submissionId)
+    public Deliverable loadDeliverable(long deliverableId, long resourceId, long submissionId)
         throws DeliverablePersistenceException {
         Helper.assertIdNotUnset(deliverableId, "deliverableId");
+        Helper.assertIdNotUnset(resourceId, "resourceId");
         Helper.assertIdNotUnset(submissionId, "submissionId");
 
         Deliverable[] deliverables = loadDeliverables(new long[] {deliverableId},
-            new long[] {submissionId});
+            new long[] {resourceId}, new long[] {submissionId});
         return deliverables.length == 0 ? null : deliverables[0];
     }
 
     /**
      * <p>
-     * Loads all Deliverables with the given ids from persistence. May return a
-     * 0-length array.
+     * Loads all Deliverables with the given ids and resource ids from persistence.
+     * May return a 0-length array.
      * </p>
      * @param deliverableIds
      *            The ids of deliverables to load
+     * @param resourceIds
+     *            The resource ids of deliverables to load
      * @return The loaded deliverables
      * @throws IllegalArgumentException
-     *             if deliverableIds is null or any id is <= 0
+     *             if deliverableIds or resourceIds is null or any id is <= 0
+     * @throws IllegalArgumentException
+     *             If the two arguments do not have the same number of elements
      * @throws DeliverablePersistenceException
      *             if there is an error when reading the persistence data
      */
-    public Deliverable[] loadDeliverables(long[] deliverableIds)
+    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds)
         throws DeliverablePersistenceException {
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(deliverableIds, "deliverableIds");
+        Helper.assertLongArrayNotNulLAndOnlyHasPositive(resourceIds, "resourceIds");
+
+        // if two arrays have different length, thrown IllegalArgumentException
+        if (deliverableIds.length != resourceIds.length) {
+            throw new IllegalArgumentException("deliverableIds and resourceIds should have"
+                    + " the same number of elements.");
+        }
 
         // simply return an empty Deliverable array if deliverableIds is empty
         if (deliverableIds.length == 0) {
@@ -207,8 +230,22 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         }
 
         // build the match condition string.
-        String matchCondition = "deliverable_lu.deliverable_id IN "
-            + Helper.makeIdListString(deliverableIds);
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append('(');
+        for (int i = 0; i < deliverableIds.length; ++i) {
+            if (i != 0) {
+                stringBuffer.append(" OR ");
+            }
+            stringBuffer.append('(');
+            stringBuffer.append("deliverable_lu.deliverable_id=");
+            stringBuffer.append(deliverableIds[i]);
+            stringBuffer.append(" AND ");
+            stringBuffer.append("resource.resource_id=");
+            stringBuffer.append(resourceIds[i]);
+            stringBuffer.append(")");
+        }
+        stringBuffer.append(')');
+        String matchCondition = stringBuffer.toString();
 
         Connection conn = null;
         try {
@@ -249,30 +286,34 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
 
     /**
      * <p>
-     * Loads the deliverables associated with the given submissions. The
+     * Loads the deliverables associated with the given submissions and resource. The
      * deliverables must be "per submission" deliverables and the given
      * submissions must be "Active". Pairs of ids not meeting this requirement
      * will not be returned.
      * </p>
      * @param deliverableIds
      *            The ids of deliverables to load
+     * @param resourceIds
+     *            The resource ids of deliverables to load
      * @param submissionIds
      *            The ids of the submission for each deliverable
      * @return The loaded deliverables
      * @throws IllegalArgumentException
      *             if any array is null or any id (in either array) is <= 0
      * @throws IllegalArgumentException
-     *             If the two arguments do not have the same number of elements
+     *             If the three arguments do not have the same number of elements
      * @throws DeliverablePersistenceException
      *             if there is an error when reading the persistence data
      */
-    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] submissionIds)
+    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] submissionIds)
         throws DeliverablePersistenceException {
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(deliverableIds, "deliverableIds");
+        Helper.assertLongArrayNotNulLAndOnlyHasPositive(resourceIds, "resourceIds");
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(submissionIds, "submissionIds");
-        if (deliverableIds.length != submissionIds.length) {
+        if ((deliverableIds.length != submissionIds.length)
+                || (deliverableIds.length != resourceIds.length)) {
             throw new IllegalArgumentException(
-                "deliverableIds and submissionIds should have the same number of elements");
+                "deliverableIds, resourceIds and submissionIds should have the same number of elements");
         }
 
         // simply return an empty Deliverable array if deliverableIds is empty
@@ -293,6 +334,9 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             stringBuffer.append(" AND ");
             stringBuffer.append("submission.submission_id=");
             stringBuffer.append(submissionIds[i]);
+            stringBuffer.append(" AND ");
+            stringBuffer.append("resource.resource_id=");
+            stringBuffer.append(resourceIds[i]);
             stringBuffer.append(")");
         }
         stringBuffer.append(')');
@@ -351,11 +395,11 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             // get the parameters of the Deliverable's constructor
             long projectId = ((Long) row[startIndex++]).longValue();
             long phaseTypeId = ((Long) row[startIndex++]).longValue();
-            long resourceRoleId = ((Long) row[startIndex++]).longValue();
+            long resourceId = ((Long) row[startIndex++]).longValue();
             boolean required = ((Boolean) row[startIndex++]).booleanValue();
 
             // create a new Deliverable object
-            Deliverable deliverable = new Deliverable(projectId, phaseTypeId, resourceRoleId, null,
+            Deliverable deliverable = new Deliverable(projectId, phaseTypeId, resourceId, null,
                 required);
 
             // then fill the NamedDeliverableStructure fields from startIndex
@@ -404,12 +448,12 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             // get the parameters of the Deliverable's constructor
             long projectId = ((Long) row[startIndex++]).longValue();
             long phaseTypeId = ((Long) row[startIndex++]).longValue();
-            long resourceRoleId = ((Long) row[startIndex++]).longValue();
+            long resourceId = ((Long) row[startIndex++]).longValue();
             Long submissionId = (Long) row[startIndex++];
             boolean required = ((Boolean) row[startIndex++]).booleanValue();
 
             // create a new Deliverable object
-            Deliverable deliverable = new Deliverable(projectId, phaseTypeId, resourceRoleId,
+            Deliverable deliverable = new Deliverable(projectId, phaseTypeId, resourceId,
                 submissionId, required);
 
             // then fill the NamedDeliverableStructure fields from startIndex

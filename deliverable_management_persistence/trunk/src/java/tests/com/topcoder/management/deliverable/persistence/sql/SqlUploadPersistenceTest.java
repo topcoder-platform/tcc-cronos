@@ -174,6 +174,29 @@ public class SqlUploadPersistenceTest extends TestCase {
 
         Statement statement = conn.createStatement();
 
+        statement.addBatch("INSERT INTO project (project_id) VALUES (1)");
+        statement.addBatch("INSERT INTO project (project_id) VALUES (2)");
+        statement.addBatch("INSERT INTO project (project_id) VALUES (3)");
+
+        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (1)");
+        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (2)");
+        statement.addBatch("INSERT INTO resource_role_lu (resource_role_id) VALUES (3)");
+
+        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (1)");
+        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (2)");
+        statement.addBatch("INSERT INTO phase_type_lu (phase_type_id) VALUES (3)");
+
+        statement.addBatch("INSERT INTO project_phase (project_phase_id, project_id, phase_type_id) VALUES (1, 1, 1)");
+        statement.addBatch("INSERT INTO project_phase (project_phase_id, project_id, phase_type_id) VALUES (2, 2, 2)");
+        statement.addBatch("INSERT INTO project_phase (project_phase_id, project_id, phase_type_id) VALUES (3, 3, 3)");
+
+        statement.addBatch("INSERT INTO resource (resource_id, resource_role_id, project_id, project_phase_id)"
+                + " VALUES (1, 2, 1, 1)");
+        statement.addBatch("INSERT INTO resource (resource_id, resource_role_id, project_id, project_phase_id)"
+                + " VALUES (2, 2, 2, 2)");
+        statement.addBatch("INSERT INTO resource (resource_id, resource_role_id, project_id, project_phase_id)"
+                + " VALUES (3, 3, 3, 3)");
+
         // add upload_type
         statement.addBatch("INSERT INTO upload_type_lu(upload_type_id, name, description, "
             + "create_user, create_date, modify_user, modify_date) "
@@ -223,13 +246,7 @@ public class SqlUploadPersistenceTest extends TestCase {
             + "create_user, create_date, modify_user, modify_date) "
             + "VALUES (5, 'Deleted', 'Deleted', 'System', CURRENT, 'System', CURRENT)");
 
-        statement.addBatch("INSERT INTO project (project_id) VALUES (1)");
-        statement.addBatch("INSERT INTO project (project_id) VALUES (2)");
-        statement.addBatch("INSERT INTO project (project_id) VALUES (3)");
 
-        statement.addBatch("INSERT INTO resource (resource_id) VALUES (1)");
-        statement.addBatch("INSERT INTO resource (resource_id) VALUES (2)");
-        statement.addBatch("INSERT INTO resource (resource_id) VALUES (3)");
 
         statement.addBatch("INSERT INTO upload"
             + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
@@ -241,11 +258,6 @@ public class SqlUploadPersistenceTest extends TestCase {
             + "create_user, create_date, modify_user, modify_date) "
             + "VALUES (2, 3, 3, 2, 2, 'parameter 2', 'System', CURRENT, 'System', CURRENT)");
 
-        statement.addBatch("INSERT INTO upload"
-            + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
-            + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (3, 3, 3, 2, 2, 'parameter 2', 'System', CURRENT, 'System', CURRENT)");
-
         statement.addBatch("INSERT INTO submission"
             + "(submission_id, upload_id, submission_status_id, "
             + "create_user, create_date, modify_user, modify_date) "
@@ -255,6 +267,18 @@ public class SqlUploadPersistenceTest extends TestCase {
             + "(submission_id, upload_id, submission_status_id, "
             + "create_user, create_date, modify_user, modify_date) "
             + "VALUES (2, 1, 1, 'System', CURRENT, 'System', CURRENT)");
+
+        statement.addBatch("INSERT INTO deliverable_lu"
+            + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
+            + "name, description, create_user, create_date, modify_user, modify_date) "
+            + "VALUES (1, 2, 2, 1, 1, 'deliverable 1', 'per submission deliverable', "
+            + "'System', CURRENT, 'System', CURRENT)");
+
+        statement.addBatch("INSERT INTO deliverable_lu"
+            + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
+            + "name, description, create_user, create_date, modify_user, modify_date) "
+            + "VALUES (2, 3, 3, 0, 0, 'deliverable 2', 'non per submission deliverable', "
+            + "'System', CURRENT, 'System', CURRENT)");
 
         statement.executeBatch();
         statement.close();
@@ -286,19 +310,18 @@ public class SqlUploadPersistenceTest extends TestCase {
         Statement statement = conn.createStatement();
 
         // clear the tables
+        statement.addBatch("DELETE FROM deliverable_lu");
         statement.addBatch("DELETE FROM submission");
-        statement.addBatch("DELETE FROM submission_status_lu");
-
         statement.addBatch("DELETE FROM upload");
+        statement.addBatch("DELETE FROM submission_status_lu");
+        statement.addBatch("DELETE FROM resource");
+
+        statement.addBatch("DELETE FROM project_phase");
         statement.addBatch("DELETE FROM upload_type_lu");
         statement.addBatch("DELETE FROM upload_status_lu");
-
-        statement.addBatch("DELETE FROM upload_status_lu");
-
-        statement.addBatch("DELETE FROM deliverable_lu");
         statement.addBatch("DELETE FROM phase_type_lu");
         statement.addBatch("DELETE FROM resource_role_lu");
-        statement.addBatch("DELETE FROM resource");
+
         statement.addBatch("DELETE FROM project");
 
         statement.executeBatch();
@@ -704,8 +727,8 @@ public class SqlUploadPersistenceTest extends TestCase {
                 Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE,
                 Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE});
 
-        assertEquals("4 results", 4, rows.length);
-        Object[] row = rows[3];
+        assertEquals("3 results", 3, rows.length);
+        Object[] row = rows[2];
 
         assertEquals("check id", new Long(upload.getId()), row[0]);
         assertEquals("check create_user", upload.getCreationUser(), row[1]);
@@ -1172,7 +1195,7 @@ public class SqlUploadPersistenceTest extends TestCase {
                 Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE,
                 Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE});
 
-        assertEquals("3 results", 3, rows.length);
+        assertEquals("2 results", 2, rows.length);
         Object[] row = rows[0];
 
         assertEquals("check id", new Long(upload.getId()), row[0]);

@@ -16,13 +16,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://172.30.114.230:1526/or:INFORMIXSERVER=or</Value>
+						<Value>jdbc:informix-sqli://wishingbone:15260/dm:INFORMIXSERVER=or</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>google</Value>
+						<Value>informix</Value>
 					</Property>
 				</Property>
 			</Property>

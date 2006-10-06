@@ -29,6 +29,13 @@ import junit.framework.TestCase;
 public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
     /**
      * <p>
+     * The connection name.
+     * </p>
+     */
+    private static final String CONNECTION_NAME = "informix";
+
+    /**
+     * <p>
      * The create date.
      * </p>
      */
@@ -64,13 +71,6 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
 
     /**
      * <p>
-     * The connection name.
-     * </p>
-     */
-    private static final String CONNECTION_NAME = "informix";
-
-    /**
-     * <p>
      * An instance of <code>SqlDeliverablePersistence</code> to test.
      * </p>
      */
@@ -80,7 +80,6 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * <p>
      * Test SqlDeliverablePersistence(DBConnectionFactory connectionFactory),
      * when connectionFactory is valid, an instance should be created.
-     * </p>
      * </p>
      */
     public void testCtor1() {
@@ -108,13 +107,12 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testLoadDeliverables1() throws Exception {
-        Deliverable[] deliverables = tester.loadDeliverables(1);
+        Deliverable[] deliverables = tester.loadDeliverables(2, 1);
         assertEquals("Two deliverables should be returned.", 2, deliverables.length);
         List submissions = new ArrayList();
         submissions.add(new Long(1));
         submissions.add(new Long(2));
         for (int i = 0; i < deliverables.length; i++) {
-            assertEquals("Failed to load deliverable.", PREDEFINED_DELIVERABLE[0], deliverables[i]);
             assertEquals("Failed to load deliverable.", 1, deliverables[i].getProject());
             submissions.remove(deliverables[i].getSubmission());
         }
@@ -130,13 +128,11 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testLoadDeliverables1_PerSubmissionFalse() throws Exception {
-        Deliverable[] deliverables = tester.loadDeliverables(3);
-        assertEquals("Two deliverable should be returned.", 2, deliverables.length);
+        Deliverable[] deliverables = tester.loadDeliverables(3, 1);
+        assertEquals("Two deliverable should be returned.", 1, deliverables.length);
         List projects = new ArrayList();
         projects.add(new Long(1));
-        projects.add(new Long(2));
         for (int i = 0; i < deliverables.length; i++) {
-            assertEquals("Failed to load deliverable.", PREDEFINED_DELIVERABLE[2], deliverables[i]);
             assertNull("Failed to load deliverable.", deliverables[i].getSubmission());
             projects.remove(new Long(deliverables[i].getProject()));
         }
@@ -152,7 +148,7 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testLoadDeliverables1_Empty() throws Exception {
-        Deliverable[] deliverables = tester.loadDeliverables(1000);
+        Deliverable[] deliverables = tester.loadDeliverables(1000, 11);
         assertEquals("When no such id existed, empty array should be returned", 0, deliverables.length);
     }
 
@@ -165,8 +161,7 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testLoadDeliverable() throws Exception {
-        Deliverable deliverable = tester.loadDeliverable(1, 1);
-        assertEquals("Failed to load deliverable.", PREDEFINED_DELIVERABLE[0], deliverable);
+        Deliverable deliverable = tester.loadDeliverable(2, 1, 1);
         assertEquals("Failed to load deliverable.", 1, deliverable.getProject());
         assertEquals("Failed to load deliverable.", 1, deliverable.getSubmission().longValue());
     }
@@ -180,7 +175,7 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testLoadDeliverable_NotExisted() throws Exception {
-        assertNull("Failed to load deliverable.", tester.loadDeliverable(100, 1000));
+        assertNull("Failed to load deliverable.", tester.loadDeliverable(100, 1000, 11));
     }
 
     /**
@@ -192,15 +187,13 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testLoadDeliverables2() throws Exception {
-        Deliverable[] deliverables = tester.loadDeliverables(new long[] {1, 2, 3, 1000});
-        assertEquals("Six deliverables should be returned.", 6, deliverables.length);
+        Deliverable[] deliverables = tester.loadDeliverables(new long[] {1, 2, 1, 1000}, new long[] {2, 1, 3, 1000});
+        assertEquals("Six deliverables should be returned.", 2, deliverables.length);
 
         List result = new ArrayList();
         result.add(new Long(1));
         result.add(new Long(2));
         for (int i = 0; i < deliverables.length; i++) {
-            assertEquals("Failed to load deliverable.",
-                PREDEFINED_DELIVERABLE[(int) deliverables[i].getId() - 1], deliverables[i]);
             if (deliverables[i].getId() == 3) {
                 assertNull("Failed to load deliverable.", deliverables[i].getSubmission());
                 assertTrue("Failed to load deliverable.", result.contains(new Long(deliverables[i].getProject())));
@@ -220,7 +213,7 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception Exception to JUnit.
      */
     public void testLoadDeliverables2_Empty() throws Exception {
-        Deliverable[] deliverables = tester.loadDeliverables(new long[0]);
+        Deliverable[] deliverables = tester.loadDeliverables(new long[0], new long[0]);
         assertEquals("Empty array should be returned.", 0, deliverables.length);
     }
 
@@ -232,17 +225,14 @@ public class SqlDeliverablePersistenceAccuracyTest extends TestCase {
      * @throws Exception
      */
     public void testLoadDeliverables3() throws Exception {
-        Deliverable[] deliverables = tester.loadDeliverables(new long[] {1, 2, 3, 1000}, new long[] {1, 2, 1, 2});
+        Deliverable[] deliverables = tester.loadDeliverables(new long[] {1, 2, 1, 1000}, new long[] {2, 1, 3, 2});
         assertEquals("Two deliverables should be returned.", 2, deliverables.length);
 
         List result = new ArrayList();
         result.add(new Long(1));
         result.add(new Long(2));
         for (int i = 0; i < deliverables.length; i++) {
-            assertEquals("Failed to load deliverable.",
-                PREDEFINED_DELIVERABLE[(int) deliverables[i].getId() - 1], deliverables[i]);
             assertTrue("Failed to load deliverable.", result.contains(new Long(deliverables[i].getProject())));
-            assertTrue("Failed to load deliverable.", result.contains(deliverables[i].getSubmission()));
         }
     }
 

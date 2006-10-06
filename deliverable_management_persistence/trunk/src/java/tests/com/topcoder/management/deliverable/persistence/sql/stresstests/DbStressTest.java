@@ -50,12 +50,13 @@ public class DbStressTest extends TestCase {
         "submission",
         "submission_status_lu",
         "upload",
+        "resource",
         "upload_status_lu",
         "upload_type_lu",
         "resource_role_lu",
+        "project_phase",
         "phase_type_lu",
         "project",
-        "resource",
     };
 
     /**
@@ -336,14 +337,8 @@ public class DbStressTest extends TestCase {
      * @throws Exception to JUnit
      */
     protected void setLuTableRecords() throws Exception {
-        // insert into resource table
-        String sql = "INSERT INTO resource(resource_id) VALUES(?)";
-        for (int i = 0; i < 10; i++) {
-            doSQLUpdate(sql, new Object[] {new Long(i + 1)});
-        }
-
         // insert into project table
-        sql = "INSERT INTO project(project_id) VALUES(?)";
+        String sql = "INSERT INTO project(project_id) VALUES(?)";
         for (int i = 0; i < 10; i++) {
             doSQLUpdate(sql, new Object[] {new Long(i + 1)});
         }
@@ -351,6 +346,12 @@ public class DbStressTest extends TestCase {
         // insert into phase_type_lu
         sql = "INSERT INTO phase_type_lu(phase_type_id) VALUES(?)";
         for (int i = 0; i < 10; i++) {
+            doSQLUpdate(sql, new Object[] {new Long(i + 1)});
+        }
+
+        // insert into project_phase
+        sql = "INSERT INTO project_phase(project_phase_id, project_id, phase_type_id) VALUES(?, 1, 1)";
+        for (int i = 0; i < 1; i++) {
             doSQLUpdate(sql, new Object[] {new Long(i + 1)});
         }
 
@@ -383,6 +384,13 @@ public class DbStressTest extends TestCase {
             + "submission_status_id, name, description, create_user, create_date, modify_user, modify_date) "
             + "VALUES(?, 'test', 'for test', 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
 
+        for (int i = 0; i < 10; i++) {
+            doSQLUpdate(sql, new Object[] {new Long(i + 1)});
+        }
+
+        // insert into resource table
+        sql = "INSERT INTO resource(resource_id, resource_role_id, project_id, project_phase_id)"
+            + " VALUES(?, 1, 1, 1)";
         for (int i = 0; i < 10; i++) {
             doSQLUpdate(sql, new Object[] {new Long(i + 1)});
         }
