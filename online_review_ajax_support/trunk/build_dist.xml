@@ -9,7 +9,7 @@
     <property name="package" value="com.cronos.onlinereview.ajax" />
     <property name="packagedir" value="com/cronos/onlinereview/ajax" />
     <property name="distfilename" value="online_review_ajax_support" />
-    <property name="component_version" value="1.0" />
+    <property name="component_version" value="1.0.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -74,7 +74,7 @@
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
     
-    <property name="object_factory.version" value="2.0"/>
+    <property name="object_factory.version" value="2.0.1"/>
     <property name="object_factory.jar.name" value="object_factory.jar"/>
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
@@ -139,7 +139,7 @@
     <property name="resource_management.path" value="resource_management/${resource_management.version}"/>
     <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.path}/${resource_management.jar.name}"/>
 
-    <property name="deliverable_management.version" value="1.0"/>
+    <property name="deliverable_management.version" value="1.0.1"/>
     <property name="deliverable_management.jar.name" value="deliverable_management.jar"/>
     <property name="deliverable_management.path" value="deliverable_management/${deliverable_management.version}"/>
     <property name="deliverable_management.jar" value="${tcs_libdir}/${deliverable_management.path}/${deliverable_management.jar.name}"/>
