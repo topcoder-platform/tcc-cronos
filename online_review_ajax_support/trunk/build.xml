@@ -16,6 +16,7 @@
     <property name="srcdir" value="src" />
     <property name="tcs_libdir" value="lib/tcs" />
     <property name="ext_libdir" value="lib" />
+    <property name="cronos_libdir" value="../lib" />
     <property name="jar_tcs_libdir" value="lib/tcs" />
     <property name="jar_ext_libdir" value="lib" />
     <property name="docsdir" value="docs" />
@@ -470,11 +471,11 @@
     </target>
     
     <target name="move_to_tcs">
-        <mkdir dir="${tcs_libdir}/${component_path}"/>
-        <mkdir dir="${tcs_libdir}/${component_path}/dist"/>
+        <mkdir dir="${cronos_libdir}/${component_path}"/>
+        <mkdir dir="${cronos_libdir}/${component_path}/dist"/>
 
-        <copy file="${component.jar}" todir="${tcs_libdir}/${component_path}"/>
-        <copy file="${component.dist.jar}" todir="${tcs_libdir}/${component_path}/dist"/>
+        <copy file="${component.jar}" todir="${cronos_libdir}/${component_path}"/>
+        <copy file="${component.dist.jar}" todir="${cronos_libdir}/${component_path}/dist"/>
     </target>
 
     <target name="dev_submission" depends="test">
