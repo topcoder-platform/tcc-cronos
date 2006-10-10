@@ -54,7 +54,7 @@ public class DAOStressTest extends TestCase {
     private static final String[] tableNames = new String[] {
             "screening_result", "screening_response_lu", "response_severity_lu", "screening_task",
             "screening_status_lu", "upload", "resource_info", "resource", "resource_info_type_lu",
-            "project", "project_category_lu", "user", "email"
+            "project_info", "project", "project_category_lu", "user", "email", "id_sequences"
         };
 
     /** The InformixResponseDAO used to manipulate on database. */
@@ -92,7 +92,9 @@ public class DAOStressTest extends TestCase {
     protected void setUp() throws Exception {
         clearConfigManager();
         ConfigManager.getInstance().add(new File(DB_CONN_FACTORY_CONF).getAbsolutePath());
-
+        clearTables();
+        executeSQLFile(new File("test_files/stress/data.sql").getAbsolutePath());
+        
         fac = new DBConnectionFactoryImpl(DB_CONN_FACTORY_NAMESPACE);
 
         userRetrieval = new DBUserRetrieval(DB_CONN_FACTORY_NAMESPACE);

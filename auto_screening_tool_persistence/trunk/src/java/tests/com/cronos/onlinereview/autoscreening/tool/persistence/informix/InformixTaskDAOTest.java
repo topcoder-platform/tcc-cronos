@@ -533,7 +533,7 @@ public class InformixTaskDAOTest extends DbTestCase {
             fail("DAOException should be thrown");
         } catch (DAOException e) {
             assertEquals("check error message",
-                "There is no personal information for user id [10].", e.getMessage());
+                "There is no personal information for user id [1].", e.getMessage());
         }
     }
 

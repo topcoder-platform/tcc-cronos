@@ -1,4 +1,3 @@
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('screening_result_id_seq', 1, 1, 0);
 
 INSERT INTO project_category_lu (project_category_id) VALUES (1);
 INSERT INTO project_category_lu (project_category_id) VALUES (2);
@@ -10,6 +9,12 @@ INSERT INTO project (project_id, project_category_id) VALUES (2, 2);
 INSERT INTO project (project_id, project_category_id) VALUES (3, 3);
 INSERT INTO project (project_id, project_category_id) VALUES (4, 1);
 INSERT INTO project (project_id, project_category_id) VALUES (5, 2);
+
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (1, 5, 2);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (2, 5, 1);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (3, 5, 3);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (4, 5, 2);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (5, 5, 1);
 
 INSERT INTO resource (resource_id) VALUES (1);
 INSERT INTO resource (resource_id) VALUES (2);

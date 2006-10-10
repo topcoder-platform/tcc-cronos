@@ -1,3 +1,4 @@
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('screening_result_id_seq', 1, 20, 0);
 insert into project_category_lu(project_category_id) values(12345);
 insert into project(project_id, project_category_id) values(11, 12345);
 insert into project(project_id, project_category_id) values(12, 12345);
@@ -5,6 +6,12 @@ insert into project(project_id, project_category_id) values(13, 12345);
 insert into project(project_id, project_category_id) values(14, 12345);
 insert into project(project_id, project_category_id) values(15, 12345);
 insert into project(project_id, project_category_id) values(16, 12345);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (11, 5, 2);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (12, 5, 1);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (13, 5, 3);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (14, 5, 2);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (15, 5, 1);
+INSERT INTO project_info (project_id, project_info_type_id, value) VALUES (16, 5, 1);
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date) VALUES(1, 'External Reference ID', 'External Reference ID', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date) VALUES(2, 'External Reference ID', 'External Reference ID', 'System', CURRENT, 'System', CURRENT);
 insert into resource(resource_id) values(41);

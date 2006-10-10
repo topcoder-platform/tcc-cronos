@@ -56,7 +56,8 @@ public class TestInformixTaskDAOAccuracy extends TestCase {
 
         ConfigManager cm = ConfigManager.getInstance();
         cm.add("accuracytests/DBConnectionFactory.xml");
-
+        
+        DBUtil.clearTables();
         DBUtil.prepareDate();
 
         userRetrieval = new DBUserRetrieval(DBUtil.DB_FACTORY_NAMESPACE);

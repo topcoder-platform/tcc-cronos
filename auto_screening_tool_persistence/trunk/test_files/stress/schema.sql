@@ -11,6 +11,15 @@ CREATE TABLE project (
     REFERENCES project_category_lu(project_category_id)
 );
 
+CREATE TABLE project_info (
+    project_id                  INTEGER                         NOT NULL,
+    project_info_type_id        INTEGER                         NOT NULL,
+    value                       LVARCHAR(4096)                  NOT NULL,
+    PRIMARY KEY(project_id, project_info_type_id),
+    FOREIGN KEY(project_id)
+    	REFERENCES project(project_id)
+);
+
 CREATE TABLE resource (
   resource_id                   INTEGER                         NOT NULL,
   PRIMARY KEY(resource_id)
