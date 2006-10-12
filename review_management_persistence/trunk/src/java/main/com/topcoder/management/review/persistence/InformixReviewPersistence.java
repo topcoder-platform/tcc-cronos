@@ -553,8 +553,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
     private Connection createTransactionalConnection() throws ReviewPersistenceException {
         try {
             Connection conn = dbFactory.createConnection(connectionName);
-            conn.setAutoCommit(false);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            //conn.setAutoCommit(false);
+            //conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             return conn;
         } catch (DBConnectionException e) {
             throw new ReviewPersistenceException("Error occurs when getting the connection.", e);
