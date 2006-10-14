@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.cronos.onlinereview.external.ExternalProject;
 import com.cronos.onlinereview.external.ExternalUser;
 import com.cronos.onlinereview.external.RetrievalException;
 import com.cronos.onlinereview.phases.lookup.NotificationTypeLookupUtility;
@@ -16,6 +15,8 @@ import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.phase.PhaseHandler;
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.project.PersistenceException;
+import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.message.email.AddressException;
 import com.topcoder.message.email.EmailEngine;
@@ -94,7 +95,13 @@ import com.topcoder.util.file.templatesource.TemplateSourceException;
  * @version 1.0
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
-    /** constant for lookup value for project info type id. */
+    /** constant for "Project Name" project info. */
+    private static final String PROJECT_NAME = "Project Name";
+
+    /** constant for "Project Version" project info. */
+    private static final String PROJECT_VERSION = "Project Version";
+
+    /** constant for lookup value for notification type id. */
     private static final String NOTIFICATION_TYPE_TIMELINE_NOTIFICATION = "Timeline Notification";
 
     /** Property name constant for connection factory namespace. */
@@ -365,7 +372,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         throws PhaseHandlingException {
         Connection conn = createConnection();
         ExternalUser[] users = null;
-        ExternalProject project = null;
+        Project project = null;
 
         try {
             long projectId = phase.getProject().getId();
@@ -379,14 +386,16 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             users = managerHelper.getUserRetrieval().retrieveUsers(externalIds);
 
             //retrieve project information
-            project = managerHelper.getProjectRetrieval().retrieveProject(projectId);
+            project = managerHelper.getProjectManager().getProject(projectId);
         } catch (SQLException ex) {
             throw new PhaseHandlingException("Could not lookup project info type id for " +
                 NOTIFICATION_TYPE_TIMELINE_NOTIFICATION, ex);
         } catch (ResourcePersistenceException ex) {
             throw new PhaseHandlingException("There was a problem with resource retrieval", ex);
         } catch (RetrievalException ex) {
-            throw new PhaseHandlingException("There was a problem with user/project retrieval", ex);
+            throw new PhaseHandlingException("There was a problem with user retrieval", ex);
+        } catch (PersistenceException ex) {
+            throw new PhaseHandlingException("There was a problem with project retrieval", ex);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -449,7 +458,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      *
      * @return template fields with data set.
      */
-    private TemplateFields setTemplateFieldValues(TemplateFields root, ExternalUser user, ExternalProject project,
+    private TemplateFields setTemplateFieldValues(TemplateFields root, ExternalUser user, Project project,
         Phase phase, boolean bStart) {
         Node[] nodes = root.getNodes();
 
@@ -466,9 +475,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 } else if ("USER_HANDLE".equals(field.getName())) {
                     field.setValue(user.getHandle());
                 } else if ("PROJECT_NAME".equals(field.getName())) {
-                    field.setValue(project.getName());
+                    field.setValue((String) project.getProperty(PROJECT_NAME));
                 } else if ("PROJECT_VERSION".equals(field.getName())) {
-                    field.setValue(project.getVersion());
+                    field.setValue((String) project.getProperty(PROJECT_VERSION));
                 } else if ("PHASE_OPERATION".equals(field.getName())) {
                     if (bStart) {
                         field.setValue("start");

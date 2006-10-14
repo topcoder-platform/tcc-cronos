@@ -117,8 +117,25 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
-            //return true if all dependencies have stopped and start time has been reached.
-            return PhasesHelper.canPhaseStart(phase);
+            //return true if all dependencies have stopped and start time has been reached and there is a winner.
+            boolean canPhaseStart = PhasesHelper.canPhaseStart(phase);
+            
+            if (canPhaseStart) {
+            	//check if there is a winner.
+                Connection conn = null;
+                try {
+                    conn = createConnection();
+                    Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                    		conn, phase.getProject().getId());
+                    
+                    //return true if there is a winner
+                    return (winner != null);
+                } finally {
+                	PhasesHelper.closeConnection(conn);
+                }
+            }
+            
+            return false;
         } else {
             //return true if all dependencies have stopped and aggregation worksheet exists.
             return (PhasesHelper.havePhaseDependenciesStopped(phase)
@@ -194,10 +211,19 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
 
                 //copy the comments from review scorecards
                 Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false);
+                
+                //find winning submitter.
+                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), conn,
+                        phase.getProject().getId());
+                if (winningSubmitter == null) {
+                	throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
+                }
+                
+                Long winningSubmissionId = winningSubmitter.getSubmission();
 
-                //Search all review scorecard from review phase
+                //Search all review scorecard from review phase for the winning submitter
                 Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                    reviewPhase.getId(), new String[] { "Reviewer" });
+                    reviewPhase.getId(), PhasesHelper.REVIEWER_ROLE_NAMES, winningSubmissionId);
 
                 for (int r = 0; r < reviews.length; r++) {
                     aggWorksheet.setScorecard(reviews[r].getScorecard());

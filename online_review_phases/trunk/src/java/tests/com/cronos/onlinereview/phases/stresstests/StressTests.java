@@ -20,18 +20,17 @@ public class StressTests extends TestCase {
 
         final TestSuite suite = new TestSuite();
 
-        suite.addTestSuite(AggregationPhaseHandlerTest.class);
         suite.addTestSuite(PhaseStatusLookupUtilityTest.class);
         suite.addTestSuite(ReviewPhaseHandlerTest.class);
         suite.addTestSuite(RegistrationPhaseHandlerTest.class);
         suite.addTestSuite(ScreeningPhaseHandlerTest.class);
         suite.addTestSuite(SubmissionPhaseHandlerTest.class);
-        suite.addTestSuite(AggregationPhaseHandlerTest.class);
         suite.addTestSuite(AppealsPhaseHandlerTest.class);
         suite.addTestSuite(ApprovalPhaseHandlerTest.class);
         suite.addTestSuite(FinalFixPhaseHandlerTest.class);
-
         suite.addTestSuite(FinalReviewPhaseHandlerTest.class);
+        //suite.addTestSuite(AggregationPhaseHandlerTest.class);
+        
         return suite;
     }
 }

@@ -140,7 +140,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
             //Get all approval scorecards
             Review[] approveReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                phase.getId(), new String[] { "Approver" });
+                phase.getId(), new String[] { "Approver" }, null);
 
             if (approveReviews.length == 0) {
                 throw new PhaseHandlingException("No approval reviews found for phase: " + phase.getId());

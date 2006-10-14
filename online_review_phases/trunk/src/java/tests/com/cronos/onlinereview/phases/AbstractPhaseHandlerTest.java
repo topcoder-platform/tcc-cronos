@@ -209,7 +209,10 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         PreparedStatement preparedStmt = null;
 
         try {
+            //insert project
             insertProject(conn);
+            //insert project info for "Project Name" and "Project Version" info ids.
+            insertProjectInfo(conn, 1, new long[] {6, 7}, new String[] {"Online Review Phases", "1.0"});
 
             //insert into notification
             String insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id,"

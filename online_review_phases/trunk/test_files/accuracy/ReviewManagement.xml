@@ -71,6 +71,12 @@
                 <Property name="name">
                     <Value>ReviewSearchBundle</Value>
                 </Property>
+				<Property name="DBNamcespace"> 
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+				</Property> 
+				<Property name="connectionProducerName"> 
+						<Value>informix_connection</Value>  
+				</Property>
 
                 <Property name="context">
                     <Value>select review_id from review, scorecard, resource where review.scorecard_id=scorecard.scorecard_id and review.resource_id=resource.resource_id and </Value>

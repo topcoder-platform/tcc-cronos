@@ -130,13 +130,6 @@ public class ManagerHelperTest extends BaseTest {
     }
 
     /**
-     * Tests that ManagerHelper.getProjectRetrieval() returns non-null value.
-     */
-    public void testGetProjectRetrieval() {
-        assertNotNull("getProjectRetrieval() returned null.", managerHelper.getProjectRetrieval());
-    }
-
-    /**
      * Tests that ManagerHelper.getScorecardAggregator() returns non-null value.
      */
     public void testGetScorecardAggregator() {

@@ -191,7 +191,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
             //Search all review scorecard for the review phase
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), reviewPhaseId,
-                    new String[] { "Reviewer" });
+                    PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             if (reviews.length == 0) {
                 throw new PhaseHandlingException("No reviews found for phase: " + reviewPhaseId);
@@ -237,8 +237,10 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             RankedSubmission[] placements = scoreAggregator.calcPlacements(aggregations);
 
             //status objects
-            SubmissionStatus failedStatus = PhasesHelper.createSubmissionStatus(conn, "Failed Review");
-            SubmissionStatus noWinStatus = PhasesHelper.createSubmissionStatus(conn, "Completed Without Win");
+            SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
+                    "Failed Review");
+            SubmissionStatus noWinStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
+                    "Completed Without Win");
 
             Resource winningSubmitter = null;
             Resource runnerUpSubmitter = null;
@@ -279,18 +281,30 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 getManagerHelper().getResourceManager().updateResource(submitter, operator);
             } //end for
 
-            //Set project properties to store the winner and the runner up
-            //Gets the project instance
-            Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
+            //cannot be the case where there is a runner up but no winner
+            if (runnerUpSubmitter != null && winningSubmitter == null) {
+                throw new PhaseHandlingException("Runner up present, but no winner for project with id:"
+                    + phase.getProject().getId());
+            }
 
-            Object winnerExtId = winningSubmitter.getProperty("External Reference ID");
-            Object runnerExtId = runnerUpSubmitter.getProperty("External Reference ID");
+            //if there is a winner
+            if (winningSubmitter != null) {
+                //Set project properties to store the winner and the runner up
+                //Get the project instance
+                Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
 
-            project.setProperty("Winner External Reference ID", winnerExtId);
-            project.setProperty("Runner-up External Reference ID", runnerExtId);
+                Object winnerExtId = winningSubmitter.getProperty("External Reference ID");
+                project.setProperty("Winner External Reference ID", winnerExtId);
 
-            //update the project
-            getManagerHelper().getProjectManager().updateProject(project, "Update the winner and runner up.", operator);
+                //if there is a runner up
+                if (runnerUpSubmitter != null) {
+                    Object runnerExtId = runnerUpSubmitter.getProperty("External Reference ID");
+                    project.setProperty("Runner-up External Reference ID", runnerExtId);
+                }
+
+                //update the project
+                getManagerHelper().getProjectManager().updateProject(project, "Update the winner and runner up.", operator);
+            }
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (ResourcePersistenceException e) {
@@ -327,7 +341,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
             //Get all reviews
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), reviewPhaseId,
-                    new String[] { "Reviewer" });
+                    PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             //for each review
             for (int i = 0; i < reviews.length; i++) {

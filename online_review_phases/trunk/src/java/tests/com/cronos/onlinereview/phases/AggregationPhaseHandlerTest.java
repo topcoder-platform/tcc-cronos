@@ -208,11 +208,17 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 	        aggregationPhase.setActualStartDate(new Date());
 	        assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
 	
-	        //time has passed and dependency met.
+	        //time has passed and dependency met, but no winner
 	        aggregationPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
+	        assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
+	        
+	        //insert winner.
+	        Connection conn = getConnection();
+	        insertWinningSubmitter(conn, 1, project.getId());
 	        assertTrue("canPerform should have returned true", handler.canPerform(aggregationPhase));
         } finally {
         	cleanTables();
+        	closeConnection();
         }
     }
 
@@ -269,24 +275,30 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 	        Phase aggregationPhase = phases[6];
 	        aggregationPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 	        Phase reviewPhase = phases[3];
+	        Phase submissionPhase = phases[1];
 	        
 	        //populate db with required data
+	        //insert submitter, winner and submissions
+	        Resource winner = createResource(11, submissionPhase.getId(), project.getId(), 1);
+	        Upload winnerUpload = createUpload(1, project.getId(), winner.getId(), 1, 1, "parameter");
+	        Submission winSubmission = createSubmission(1, winnerUpload.getId(), 1);
+	        
+	        Resource submitter = createResource(12, submissionPhase.getId(), project.getId(), 1);
+	        Upload noWinUpload = createUpload(2, project.getId(), submitter.getId(), 1, 1, "parameter");
+	        Submission noWinSubmission = createSubmission(2, noWinUpload.getId(), 1);
+	        
 	        //aggregator resource
 	        Resource aggregator = createResource(1, aggregationPhase.getId(), project.getId(), 8);
 	        
 	        //reviewer resource and related review
-	        Resource reviewer1 = createResource(2, reviewPhase.getId(), project.getId(), 4);
-	        Upload upload1 = createUpload(1, project.getId(), reviewer1.getId(), 4, 1, "parameter");
-	        Submission submission1 = createSubmission(1, upload1.getId(), 1);
+	        Resource reviewer1 = createResource(2, reviewPhase.getId(), project.getId(), 5);
 	        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-	        Review review1 = createReview(11, reviewer1.getId(), submission1.getId(), scorecard1.getId(), true, 80.0f);
+	        Review review1 = createReview(11, reviewer1.getId(), winSubmission.getId(), scorecard1.getId(), true, 90.0f);
 	        review1.addComment(createComment(1, reviewer1.getId(), "Good Design", 1, "Comment"));
 	        
-	        Resource reviewer2 = createResource(3, reviewPhase.getId(), project.getId(), 4);
-	        Upload upload2 = createUpload(2, project.getId(), reviewer2.getId(), 4, 1, "parameter");
-	        Submission submission2 = createSubmission(2, upload2.getId(), 1);
+	        Resource reviewer2 = createResource(3, reviewPhase.getId(), project.getId(), 5);
 	        Scorecard scorecard2 = createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-	        Review review2 = createReview(12, reviewer2.getId(), submission2.getId(), scorecard2.getId(), true, 80.0f);
+	        Review review2 = createReview(12, reviewer2.getId(), noWinSubmission.getId(), scorecard2.getId(), true, 80.0f);
 	        
 	        Item[] reviewItems = new Item[4];
 	        reviewItems[0] = createReviewItem(11, "Answer 1", review1.getId(), 1);
@@ -303,12 +315,14 @@ public class AggregationPhaseHandlerTest extends BaseTest {
         	Connection conn = getConnection();
             
         	//insert records
-        	insertResources(conn, new Resource[] {aggregator, reviewer1, reviewer2});
-            insertUploads(conn, new Upload[] {upload1, upload2});
-            insertSubmissions(conn, new Submission[] {submission1, submission2});
+        	insertResources(conn, new Resource[] {winner, submitter, aggregator, reviewer1, reviewer2});
+        	insertResourceInfo(conn, winner.getId(), 12, "1"); //winner info
+            insertUploads(conn, new Upload[] {winnerUpload, noWinUpload});
+            insertSubmissions(conn, new Submission[] {winSubmission, noWinSubmission});
+            insertResourceSubmission(conn, winner.getId(), winSubmission.getId());
             insertScorecards(conn, new Scorecard[] {scorecard1, scorecard2});
             insertReviews(conn, new Review[] {review1, review2});
-            insertComments(conn, new long[] {1,2}, new long[] {reviewer1.getId(), reviewer2.getId()}, 
+            insertComments(conn, new long[] {101,102}, new long[] {reviewer1.getId(), reviewer2.getId()}, 
             		new long[] {review1.getId(), review2.getId()}, new String[] {"comment 1", "comment 2"}, 
             		new long[] {1, 3});
             insertScorecardQuestion(conn, 1, 1);
@@ -328,7 +342,9 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             aggWorksheet = PhasesHelper.getAggregationWorksheet(conn, handler.getManagerHelper(), 
             		aggregationPhase.getId());
             assertNotNull("Aggregation worksheet should exist after perform()", aggWorksheet);
-            assertEquals("review items not copied", aggWorksheet.getAllItems().length, reviewItems.length);
+            
+            //should only have 2 review items cause scorecard for winner has only 2 review items.
+            assertEquals("review items not copied", aggWorksheet.getAllItems().length, 2);
         	
         } finally {
             closeConnection();

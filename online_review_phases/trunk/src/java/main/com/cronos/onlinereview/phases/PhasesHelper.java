@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistException;
@@ -63,6 +66,10 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * @version 1.0
  */
 final class PhasesHelper {
+    /** Constant for reviewer role names to be used when searching for reviewer resources and review scorecards. */
+    static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer", "Accuracy Reviewer",
+    	"Failure Reviewer", "Stress Reviewer"};
+
     /** constant for "Scheduled" phase status. */
     private static final String PHASE_STATUS_SCHEDULED = "Scheduled";
 
@@ -442,6 +449,7 @@ final class PhasesHelper {
      * @param managerHelper ManagerHelper instance.
      * @param phaseId phase id to be used as filter.
      * @param resourceRoleNames resource role names to be used as filter.
+     * @param submissionId submission id to be used as filter when searching for reviews.
      *
      * @return Review[] which match filter conditions.
      *
@@ -449,7 +457,7 @@ final class PhasesHelper {
      * @throws SQLException in case of error when looking up resource role id.
      */
     static Review[] searchReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper, long phaseId,
-        String[] resourceRoleNames)
+        String[] resourceRoleNames, Long submissionId)
             throws PhaseHandlingException, SQLException {
         try {
             //look up ids for resource role names
@@ -471,8 +479,14 @@ final class PhasesHelper {
             }
 
             Filter reviewFilter = SearchBundle.buildInFilter("reviewer", Arrays.asList(reviewerIds));
+            Filter fullReviewFilter = reviewFilter;
+            //if submission id filter is given, add it as filter condition
+            if (submissionId != null) {
+	            Filter submissionFilter = SearchBundle.buildEqualToFilter("submission", submissionId);
+	            fullReviewFilter = SearchBundle.buildAndFilter(reviewFilter, submissionFilter);
+            }
 
-            return managerHelper.getReviewManager().searchReviews(reviewFilter, true);
+            return managerHelper.getReviewManager().searchReviews(fullReviewFilter, true);
         } catch (SearchBuilderConfigurationException e) {
             throw new PhaseHandlingException("Problem with search builder configuration", e);
         } catch (ResourcePersistenceException e) {
@@ -645,20 +659,29 @@ final class PhasesHelper {
     }
 
     /**
-     * utility method to create a SubmissionStatus object for the given status name.
+     * utility method to get a SubmissionStatus object for the given status name.
      *
-     * @param conn connection to use to lookup id for the given name.
+     * @param uploadManager UploadManager instance used to search for submission status.
      * @param statusName submission status name.
      *
      * @return a SubmissionStatus object for the given status name.
      *
-     * @throws SQLException if there was a problem when looking up the id.
+     * @throws PhaseHandlingException if submission status could not be found.
      */
-    static SubmissionStatus createSubmissionStatus(Connection conn, String statusName)
-        throws SQLException {
-        long statusId = SubmissionStatusLookupUtility.lookUpId(conn, statusName);
-
-        return new SubmissionStatus(statusId, statusName);
+    static SubmissionStatus getSubmissionStatus(UploadManager uploadManager, String statusName)
+        throws PhaseHandlingException {
+    	SubmissionStatus[] statuses = null;
+		try {
+			statuses = uploadManager.getAllSubmissionStatuses();
+		} catch (UploadPersistenceException e) {
+			throw new PhaseHandlingException("Error finding submission status with name: " + statusName, e);
+		}
+    	for (int i = 0; i < statuses.length; i++) {
+    		if (statusName.equals(statuses[i].getName())) {
+    			return statuses[i];
+    		}
+    	}
+    	throw new PhaseHandlingException("Could not find submission status with name: " + statusName);
     }
 
     /**
@@ -708,7 +731,7 @@ final class PhasesHelper {
         throws PhaseHandlingException, SQLException {
         //Search the aggregated review scorecard
         Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, aggPhaseId,
-            new String[] {"Aggregator"});
+            new String[] {"Aggregator"}, null);
 
         if (reviews.length == 0) {
             return null;
@@ -733,7 +756,7 @@ final class PhasesHelper {
     static Review getFinalReviewWorksheet(Connection conn, ManagerHelper managerHelper, long finalReviewPhaseId)
         throws PhaseHandlingException, SQLException {
         Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, finalReviewPhaseId,
-                new String[] { "Final Reviewer" });
+                new String[] { "Final Reviewer" }, null);
 
         if (reviews.length == 0) {
             return null;
@@ -805,7 +828,7 @@ final class PhasesHelper {
      * @return the winning submiter Resource.
      *
      * @throws SQLException if an error occurs when connecting to db.
-     * @throws PhaseHandlingException if an error oc
+     * @throws PhaseHandlingException if an error occurs when searching for resource.
      */
     static Resource getWinningSubmitter(ResourceManager manager, Connection conn, long projectId)
         throws PhaseHandlingException {
@@ -914,8 +937,8 @@ final class PhasesHelper {
             for (int d = 0; d < dependencies.length; d++) {
                 Dependency dependency = dependencies[d];
                 dependency.getDependent().removeDependency(dependency);
-                dependency.getDependent().addDependency(new Dependency(dependency.getDependent(),
-                        lastNewPhase, dependency.isDependencyStart(), dependency.isDependentStart(),
+                dependency.getDependent().addDependency(new Dependency(lastNewPhase,
+                		dependency.getDependent(), dependency.isDependencyStart(), dependency.isDependentStart(),
                         dependency.getLagTime()));
             }
         }
@@ -935,6 +958,59 @@ final class PhasesHelper {
         }
 
         return currentPhaseIndex;
+    }
+    
+    /**
+     * Creates an aggregator or Final Reviewer resource. This method is called when a new aggregation/review or new final
+     * fix/review cycle is inserted when aggregation of final review worksheet is rejected. It simply copies the
+     * old aggregator/final reviewer properties, except for the id and phase id and inserts the new resource in the database.
+     * 
+     * @param currentPhase the aggregation review or final review phase instance.
+     * @param oldPhaseName "Aggregation" or "Final Review" to which the aggregator or final reviewer is associated with.
+     * @param managerHelper ManagerHelper instance.
+     * @param conn connection to use.
+     * @param roleName "Aggregator" or "Final Reviewer".
+     * @param newPhaseId the new phase id the new resource is to be associated with.
+     * @param operator operator name.
+     * 
+     * @return the id of the newly created resource.
+     * 
+     * @throws PhaseHandlingException
+     */
+    static long createAggregatorOrFinalReviewer(Phase currentPhase, String oldPhaseName, ManagerHelper managerHelper,
+    		Connection conn, String roleName, long newPhaseId, String operator) throws PhaseHandlingException {
+    	
+    	//locate the old associated phase from current phase
+    	Phase oldPhase = PhasesHelper.locatePhase(currentPhase, oldPhaseName, false);
+        //search for the old "Aggregator" or "Final Reviewer" resource
+    	Resource[] resources = PhasesHelper.searchResourcesForRoleNames(managerHelper, conn,
+                new String[] { roleName }, oldPhase.getId());
+        Resource oldResource = resources[0];
+        
+        //copy resource properties
+        Resource newResource = new Resource();
+        newResource.setProject(oldResource.getProject());
+        newResource.setResourceRole(oldResource.getResourceRole());
+        newResource.setSubmission(oldResource.getSubmission());
+        Map properties = oldResource.getAllProperties();
+        if (properties != null && !properties.isEmpty()) {
+        	Set entries = properties.entrySet();
+        	for (Iterator itr = entries.iterator(); itr.hasNext();) {
+	        	Map.Entry entry = (Map.Entry) itr.next();
+	        	newResource.setProperty((String) entry.getKey(), entry.getValue());
+        	}
+        }
+        
+        //set phase id
+        newResource.setPhase(new Long(newPhaseId));
+        
+        //update resource into persistence.
+        try {
+			managerHelper.getResourceManager().updateResource(newResource, operator);
+			return newResource.getId();
+		} catch (ResourcePersistenceException e) {
+			throw new PhaseHandlingException("Problem when persisting resource with role:" + roleName, e);
+		}
     }
 
     /**

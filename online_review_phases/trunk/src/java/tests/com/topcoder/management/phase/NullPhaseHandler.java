@@ -8,7 +8,7 @@ import com.topcoder.project.phases.Phase;
 /**
  * A simple phase handler that allows all operations to be performed.
  *
- * @author bose_java
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 

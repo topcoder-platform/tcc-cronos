@@ -44,6 +44,7 @@ public class AggregationPhaseHandlerTest extends StressBaseTest {
 
         handler = new AggregationPhaseHandler("com.cronos.onlinereview.phases.OtherHandler");
         Project project = new Project(new Date(), new DefaultWorkdays());
+        project.setId(DEFAULT_ID);
         phase = new Phase(project, DEFAULT_ID);
 
         // set a phase type to the phase

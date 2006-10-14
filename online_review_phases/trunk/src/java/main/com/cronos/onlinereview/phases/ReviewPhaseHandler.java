@@ -181,11 +181,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             //Search the reviewIds
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    new String[] { "Reviewer" }, phase.getId());
+            		PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
 
             //Search all review scorecard for the current phase
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
-                    new String[] { "Reviewer" });
+            		PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             //create array to hold scores from all reviewers for all submissions
             com.topcoder.management.review.scoreaggregator.Submission[] submissionScores =
@@ -301,7 +301,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 //Update failed submission status to "Failed Screening"
                 conn = createConnection();
 
-                SubmissionStatus subStatus = PhasesHelper.createSubmissionStatus(conn, "Failed Screening");
+                SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
+                		"Failed Screening");
 
                 //set status of each submission and persist
                 for (int iSub = 0; iSub < submissions.length; iSub++) {
@@ -312,8 +313,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 throw new PhaseHandlingException("Problem when retrieving uploads", e);
             } catch (SearchBuilderException e) {
                 throw new PhaseHandlingException("Problem when search builder", e);
-            } catch (SQLException e) {
-                throw new PhaseHandlingException("Problem when looking up id", e);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
@@ -342,11 +341,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             //Search the reviewIds
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    new String[] { "Reviewer" }, phase.getId());
+            		PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
 
             //Search all review scorecard for the current phase
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
-                    new String[] { "Reviewer" });
+            		PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             //for each submission
             for (int iSub = 0; iSub < subs.length; iSub++) {

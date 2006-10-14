@@ -217,24 +217,20 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, phase,
                         new PhaseType[] {aggPhaseType, aggReviewPhaseType}, phaseStatus,
                         getManagerHelper().getPhaseManager(), operator);
-
-
+                
                 //save the phases
                 getManagerHelper().getPhaseManager().updatePhases(currentPrj, operator);
-
+                
                 //get the id of the newly created aggregation phase
                 long newAggPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 1].getId();
 
-                //the final reviewer resource should be created automatically when a final review phase is inserted.
+                //copy the old Aggregator resource to the new Aggregation phase.
+                long newAggregatorId = PhasesHelper.createAggregatorOrFinalReviewer(phase, "Aggregation", getManagerHelper(), conn,
+                		"Aggregator", newAggPhaseId, operator);
 
-                //Search for id of the Final Reviewer for the new final review phase
-                Resource[] resource = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                        new String[] { "Final Reviewer" }, newAggPhaseId);
-                if (resource.length == 0) {
-                    throw new PhaseHandlingException("No Final Reviewer resource found for phase: " + newAggPhaseId);
-                }
-                Resource finalReviewer = resource[0];
-                aggregationWorksheet.setAuthor(finalReviewer.getId());
+                //Set the author of the aggregation worksheet to the id of the newly created Aggregator resource.
+                aggregationWorksheet.setAuthor(newAggregatorId);
+                
                 //update the worksheet
                 getManagerHelper().getReviewManager().updateReview(aggregationWorksheet, operator);
             }
@@ -273,7 +269,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
             //will hold reviewers that are not aggregators
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    new String[] { "Reviewer" }, reviewPhase.getId());
+                    PhasesHelper.REVIEWER_ROLE_NAMES, reviewPhase.getId());
             //winning submitter.
             Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), conn,
                     phase.getProject().getId());

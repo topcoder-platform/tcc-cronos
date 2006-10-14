@@ -154,17 +154,6 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest {
     }
 
     /**
-     * Tests get ProjectRetrieval from ManagerHelper. The returned value is expected to be non null.
-     *
-     * @throws Exception to JUnit.
-     */
-    public void testGetProjectRetrieval() throws Exception {
-        ManagerHelper helper = new ManagerHelper();
-        ProjectRetrieval projectRetrieval = helper.getProjectRetrieval();
-        assertNotNull("Cannot get ProjectRetrieval using ManagerHelper.", projectRetrieval);
-    }
-
-    /**
      * Tests get UserRetrieval from ManagerHelper. The returned value is expected to be non null.
      *
      * @throws Exception to JUnit.

@@ -205,7 +205,7 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
 	
 	        //time has passed, and enough registrants.
             Connection conn = getConnection();
-            Resource resource = super.createResource(1, 1, 1, 1);
+            Resource resource = super.createResource(1, 101, 1, 1);
             super.insertResources(conn, new Resource[] {resource});
             assertTrue("can stop should return true", handler.canPerform(registration));
         } finally {

@@ -13,7 +13,7 @@ import com.topcoder.project.phases.Project;
  * Simple implementation of PhasePersistence. All methods throw PhasePersistenceException. Any methods that are
  * expected to be invoked by a particular test should be overriden in a specialized subclass.
  *
- * @author bose_java
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 

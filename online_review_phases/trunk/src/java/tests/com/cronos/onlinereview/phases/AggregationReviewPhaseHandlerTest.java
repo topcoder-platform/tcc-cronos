@@ -3,9 +3,17 @@
  */
 package com.cronos.onlinereview.phases;
 
+import java.sql.Connection;
 import java.util.Date;
 
+import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.resource.Resource;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.Item;
+import com.topcoder.management.review.data.Review;
+import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
@@ -246,5 +254,56 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
         Phase aggregationReviewPhase = createPhase(1, 1, "Scheduled", 2, "Aggregation Review");
         String operator = "operator";
         handler.perform(aggregationReviewPhase, operator);
+    }
+
+    /**
+     * Tests the perform with Open status. Tests with a rejected comment in aggregation worksheet such
+     * that a new aggregation/review cycle is created, new aggregator resource is created.
+     *
+     * @throws Exception not under test.
+     */
+    public void testPerformWithOpen() throws Exception {
+    	AggregationReviewPhaseHandler handler = new AggregationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        try {
+	        cleanTables();
+	        Project project = super.setupPhases();
+	        Phase[] phases = project.getAllPhases();
+	        Phase aggregationPhase = phases[6];
+	        Phase aggregationReviewPhase = phases[7];
+	        aggregationReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+	        
+	        //populate db with required data
+	        //aggregator resource
+	        Resource aggregator = createResource(101, aggregationPhase.getId(), project.getId(), 8);
+	        Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
+	        Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+	        
+	        //reviewer resource and related review
+	        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+	        Review aggWorksheet = createReview(11, aggregator.getId(), aggSubmission.getId(), scorecard1.getId(), true, 90.0f);
+	        //add a rejected comment
+	        aggWorksheet.addComment(createComment(1, aggregator.getId(), "Rejected", 1, "Aggregation Review Comment"));
+	        
+        	Connection conn = getConnection();
+            
+        	//insert records
+        	insertResources(conn, new Resource[] {aggregator});
+            insertUploads(conn, new Upload[] {aggUpload});
+            insertSubmissions(conn, new Submission[] {aggSubmission});
+            insertResourceSubmission(conn, aggregator.getId(), aggSubmission.getId());
+            insertScorecards(conn, new Scorecard[] {scorecard1});
+            insertReviews(conn, new Review[] {aggWorksheet});
+            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {aggregator.getId()}, 
+            		new long[] {aggWorksheet.getId()}, new String[] {"Rejected COmment"}, 
+            		new long[] {7}, new String[] {"Rejected"});
+            insertScorecardQuestion(conn, 1, 1);
+            
+            //no exception should be thrown.
+            String operator = "operator";
+            handler.perform(aggregationReviewPhase, operator);
+        } finally {
+            closeConnection();
+        	cleanTables();
+        }
     }
 }

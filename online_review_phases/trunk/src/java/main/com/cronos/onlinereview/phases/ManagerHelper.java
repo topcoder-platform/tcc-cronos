@@ -9,12 +9,10 @@ import java.util.Map;
 
 import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
 import com.cronos.onlinereview.autoscreening.management.ScreeningManagerFactory;
-import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.cronos.onlinereview.external.UserRetrieval;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistence;
-import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.resource.ResourceManager;
@@ -165,12 +163,6 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  *      &lt;Property name="UserRetrievalNamespace"&gt;
  *          &lt;Value&gt;com.cronos.onlinereview.external&lt;/Value&gt;
  *      &lt;/Property&gt;
- *      &lt;Property name="ProjectRetrievalClassName"&gt;
- *          &lt;Value&gt;com.cronos.onlinereview.external.impl.DBProjectRetrieval&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name="ProjectRetrievalNamespace"&gt;
- *          &lt;Value&gt;com.cronos.onlinereview.external&lt;/Value&gt;
- *      &lt;/Property&gt;
  *  &lt;/Property&gt;
  *
  *  &lt;Property name="ScorecardAggregator"&gt;
@@ -291,17 +283,11 @@ public class ManagerHelper {
     /** Property name constant for namespace to be passed to UserRetrieval implementation constructor. */
     private static final String PROP_USER_RETRIEVAL_NAMESPACE = "UserProjectDataStore.UserRetrievalNamespace";
 
-    /** Property name constant for ProjectRetrieval implementation class name. */
-    private static final String PROP_PROJECT_RETRIEVAL_CLASS_NAME = "UserProjectDataStore.ProjectRetrievalClassName";
-
-    /** Property name constant for namespace to be passed to ProjectRetrieval implementation constructor. */
-    private static final String PROP_PROJECT_RETRIEVAL_NAMESPACE = "UserProjectDataStore.ProjectRetrievalNamespace";
-
     /** Property name constant for namespace to be passed to ReviewScoreAggregator constructor. */
     private static final String PROP_SCORE_AGGREGATOR_NAMESPACE = "ScorecardAggregator.Namespace";
 
     /**
-     * ScorecardManager, ReviewManager, ProjectManager, UserRetrieval and ProjectRetrieval all use same constructor
+     * ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval all use same constructor
      * signature which is the one that takes a String parameter. This constant array is used as parameter types array
      * when instantiating using reflection in the initManager() method.
      */
@@ -356,12 +342,6 @@ public class ManagerHelper {
     private final UserRetrieval userRetrieval;
 
     /**
-     * Represents the ProjectRetrieval instance. It is initialized in the constructor and never changed after that.
-     * It is never null.
-     */
-    private final ProjectRetrieval projectRetrieval;
-
-    /**
      * Represents the ReviewScoreAggregator instance. It is initialized in the constructor and never changed after that.
      * It is never null.
      */
@@ -407,8 +387,6 @@ public class ManagerHelper {
         this.resourceManager = initResourceManager(namespace);
         this.userRetrieval = (UserRetrieval) initManager(namespace, PROP_USER_RETRIEVAL_CLASS_NAME,
                 PROP_USER_RETRIEVAL_NAMESPACE, UserRetrieval.class, true);
-        this.projectRetrieval = (ProjectRetrieval) initManager(namespace, PROP_PROJECT_RETRIEVAL_CLASS_NAME,
-                PROP_PROJECT_RETRIEVAL_NAMESPACE, ProjectRetrieval.class, true);
         this.scorecardAggregator = initScorecardAggregator(namespace);
     }
 
@@ -482,15 +460,6 @@ public class ManagerHelper {
      */
     public UserRetrieval getUserRetrieval() {
         return userRetrieval;
-    }
-
-    /**
-     * Gets the non-null ProjectRetrieval instance.
-     *
-     * @return The non-null ProjectRetrieval instance.
-     */
-    public ProjectRetrieval getProjectRetrieval() {
-        return projectRetrieval;
     }
 
     /**
@@ -818,8 +787,8 @@ public class ManagerHelper {
     }
 
     /**
-     * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, UserRetrieval and
-     * ProjectRetrieval instances since all use the same constructor signature.
+     * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval
+     * instances since all use the same constructor signature.
      *
      * @param namespace the namespace to load configuration settings from.
      * @param classPropName name of property which holds the class name to instantiate.
@@ -828,7 +797,7 @@ public class ManagerHelper {
      * @param nsPropertyReqd whether property by name nsPropName is required, which is true in case of
      *          Retrieval classes, false otherwise.
      *
-     * @return either a ScorecardManager, ReviewManager, ProjectManager, UserRetrieval or ProjectRetrieval instance.
+     * @return either a ScorecardManager, ReviewManager, ProjectManager, or UserRetrieval instance.
      *
      * @throws ConfigurationException if a required property is missing or if a problem occurs during instantiation.
      */

@@ -743,7 +743,7 @@ public class TestDataFactory {
      * @return a new <code>Connection</code> instance.
      */
     public static Connection getConnection() throws Exception {
-        DBConnectionFactory factory = new DBConnectionFactoryImpl("Dbconnection.factory");
+        DBConnectionFactory factory = new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
         return factory.createConnection();
     }
 

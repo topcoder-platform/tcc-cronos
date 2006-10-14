@@ -246,7 +246,8 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            long screeningPhaseId = 3;
+            Phase screeningPhase = phases[2];
+            long screeningPhaseId = screeningPhase.getId();
             Resource submitter = super.createResource(1, submissionPhase.getId(), 1, 1);
             Resource reviewer1 = super.createResource(2, screeningPhaseId, 1, 2);
             Resource reviewer2 = super.createResource(3, screeningPhaseId, 1, 3);

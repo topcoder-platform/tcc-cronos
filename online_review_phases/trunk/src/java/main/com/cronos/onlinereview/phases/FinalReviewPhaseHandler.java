@@ -5,7 +5,6 @@ package com.cronos.onlinereview.phases;
 
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
-import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
@@ -208,19 +207,16 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 //save the phases
                 getManagerHelper().getPhaseManager().updatePhases(currentPrj, operator);
 
-                //get the id of the newly created review phase
-                long reviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
+                //get the id of the newly created final review phase
+                long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
 
-                //the final reviewer resource should be created automatically when a final review phase is inserted.
+                //copy the old final reviewer resource to the new final review phase.
+                long newFinalReviewerId = PhasesHelper.createAggregatorOrFinalReviewer(phase, "Final Review", getManagerHelper(), conn,
+                		"Final Reviewer", finalReviewPhaseId, operator);
 
-                //Search for id of the Final Reviewer for the new final review phase
-                Resource[] resources = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                        new String[] { "Final Reviewer" }, reviewPhaseId);
-                if (resources.length == 0) {
-                    throw new PhaseHandlingException("No Final Reviewer found for phase: " + reviewPhaseId);
-                }
-                Resource finalReviewer = resources[0];
-                finalWorksheet.setAuthor(finalReviewer.getId());
+                //Set the author of the final review worksheet to the id of the newly created Final Reviewer resource.
+                finalWorksheet.setAuthor(newFinalReviewerId);
+                
                 //update the worksheet
                 getManagerHelper().getReviewManager().updateReview(finalWorksheet, operator);
             }

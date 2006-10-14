@@ -182,7 +182,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
                 //Search all screening scorecard for the current phase
                 Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                        phase.getId(), new String[] { ROLE_PRIMARY_SCREENER, ROLE_SCREENER });
+                        phase.getId(), new String[] { ROLE_PRIMARY_SCREENER, ROLE_SCREENER }, null);
 
                 if (screenReviews.length == 0) {
                     throw new PhaseHandlingException("No screening scorecards found for phase: " + phase.getId());
@@ -264,15 +264,13 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             //If screeningScore < screening minimum score, Set submission status to "Failed Screening"
             if (screeningScore.floatValue() < minScore) {
 
-                SubmissionStatus subStatus = PhasesHelper.createSubmissionStatus(conn,
+                SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
                     SUBMISSION_STATUS_FAILED_SCREENING);
                 submission.setSubmissionStatus(subStatus);
                 getManagerHelper().getUploadManager().updateSubmission(submission, operator);
             }
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("There was a resource persistence error", e);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("There was a database connection error", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("There was a upload persistence error", e);
         }
@@ -319,7 +317,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
             //search for review
             Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
-                    new String[] { ROLE_SCREENER });
+                    new String[] { ROLE_SCREENER }, null);
 
             if (screenReviews.length != 1) {
                 throw new PhaseHandlingException("Inconsistent data: Multiple reviews");
@@ -363,7 +361,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
             //get all screening scorecards for the phase
             Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
-                    new String[] { ROLE_PRIMARY_SCREENER });
+                    new String[] { ROLE_PRIMARY_SCREENER }, null);
 
             if (screenReviews.length == 0) {
                 throw new PhaseHandlingException("No screening scorecards found for phase: " + phase.getId());

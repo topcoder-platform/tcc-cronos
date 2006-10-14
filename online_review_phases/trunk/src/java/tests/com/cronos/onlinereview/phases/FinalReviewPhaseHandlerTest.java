@@ -3,9 +3,15 @@
  */
 package com.cronos.onlinereview.phases;
 
+import java.sql.Connection;
 import java.util.Date;
 
+import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.resource.Resource;
+import com.topcoder.management.review.data.Review;
+import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
@@ -246,4 +252,54 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
         String operator = "operator";
         handler.perform(finalReviewPhase, operator);
     }
+
+    /*
+     * Tests the perform with Open status. Tests with a rejected comment in aggregation worksheet such
+     * that a new aggregation/review cycle is created, new aggregator resource is created.
+     *
+     * @throws Exception not under test.
+     */
+    /*public void testPerformWithOpen() throws Exception {
+    	FinalReviewPhaseHandler handler = new FinalReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+        try {
+	        cleanTables();
+	        Project project = super.setupPhases();
+	        Phase[] phases = project.getAllPhases();
+	        Phase finalReviewPhase = phases[9];
+	        finalReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+	        
+	        //populate db with required data
+	        //final reviewer resource
+	        Resource finalReviewer = createResource(101, finalReviewPhase.getId(), project.getId(), 9);
+	        Upload frUpload = createUpload(1, project.getId(), finalReviewer.getId(), 4, 1, "parameter");
+	        Submission frSubmission = createSubmission(1, frUpload.getId(), 1);
+	        
+	        //reviewer resource and related review
+	        Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+	        Review frWorksheet = createReview(11, finalReviewer.getId(), frSubmission.getId(), scorecard1.getId(), true, 90.0f);
+	        //add a rejected comment
+	        frWorksheet.addComment(createComment(1, finalReviewer.getId(), "Rejected", 10, "Final Review Comment"));
+	        
+        	Connection conn = getConnection();
+            
+        	//insert records
+        	insertResources(conn, new Resource[] {finalReviewer});
+            insertUploads(conn, new Upload[] {frUpload});
+            insertSubmissions(conn, new Submission[] {frSubmission});
+            insertResourceSubmission(conn, finalReviewer.getId(), frSubmission.getId());
+            insertScorecards(conn, new Scorecard[] {scorecard1});
+            insertReviews(conn, new Review[] {frWorksheet});
+            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {finalReviewer.getId()}, 
+            		new long[] {frWorksheet.getId()}, new String[] {"Rejected COmment"}, 
+            		new long[] {10}, new String[] {"Rejected"});
+            insertScorecardQuestion(conn, 1, 1);
+            
+            //no exception should be thrown.
+            String operator = "operator";
+            handler.perform(finalReviewPhase, operator);
+        } finally {
+            closeConnection();
+        	cleanTables();
+        }
+    }*/
 }

@@ -52,6 +52,12 @@
                 <Property name="type">
                     <Value>Database</Value>
                 </Property>
+				<Property name="DBNamcespace"> 
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+				</Property> 
+				<Property name="connectionProducerName"> 
+						<Value>informix_connection</Value>  
+				</Property>
                 <Property name="name">
                     <Value>ScorecardSearchBundle</Value>
                 </Property>

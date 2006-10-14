@@ -6,7 +6,7 @@ package com.topcoder.management.project;
 /**
  * This a mock class implements ProjectPersistence.
  *
- * @author bose_java
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockProjectPersistence implements ProjectPersistence {

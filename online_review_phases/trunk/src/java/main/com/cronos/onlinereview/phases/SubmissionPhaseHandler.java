@@ -177,7 +177,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
             //get reviews for the phase
             Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                    screeningPhaseId, new String[] { "Primary Screener", "Screener" });
+                    screeningPhaseId, new String[] { "Primary Screener", "Screener" }, null);
             if (screenReviews.length == 0) {
                 throw new PhaseHandlingException("No screening scorecards found for phase: " + screeningPhaseId);
             }

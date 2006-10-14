@@ -411,6 +411,41 @@ public class BaseTest extends TestCase {
     }
 
     /**
+     * inserts project properties into the database. Inserts records into the project_info table.
+     *
+     * @param conn connection to use.
+     * @param projectId project id.
+     * @param infoTypes array of project info type ids.
+     * @param infoValues array of corresponding project info values.
+     *
+     * @throws Exception not under test.
+     */
+    protected void insertProjectInfo(Connection conn, long projectId, long[] infoTypes, String[] infoValues) throws Exception {
+        PreparedStatement preparedStmt = null;
+
+        try {
+            //insert a project info
+            String insertProjectInfo = "insert into project_info(project_id, project_info_type_id, value,"
+                    + "create_user, create_date, modify_user, modify_date) values "
+                    + "(?, ?, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertProjectInfo);
+            
+            for (int i = 0; i < infoTypes.length; i++) {
+            	preparedStmt.setLong(1, projectId);
+            	preparedStmt.setLong(2, infoTypes[i]);
+            	preparedStmt.setString(3, infoValues[i]);
+	            preparedStmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+	            preparedStmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+	            preparedStmt.executeUpdate();
+            }
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+        } finally {
+            closeStatement(preparedStmt);
+        }
+    }
+
+    /**
      * inserts a project and the standard phases into the database.
      *
      * @throws Exception not under test.
@@ -436,7 +471,7 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertPhase);
 
             //insert all standard phases
-            long[] phaseIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+            long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111};
             long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
             String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review", "Appeals",
                     "Appeals Response", "Aggregation", "Aggregation Review", "Final Fix", "Final Review", "Approval"};
@@ -482,8 +517,8 @@ public class BaseTest extends TestCase {
                 + " create_user, create_date, modify_user, modify_date)"
                 + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertDependency);
-            long[] dependencyPhaseIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-            long[] dependentPhaseIds = new long[] {2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110};
+            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111};
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < dependencyPhaseIds.length; i++) {
@@ -739,6 +774,50 @@ public class BaseTest extends TestCase {
     }
     
     /**
+     * Helper method to insert Comment with extra info into the database.
+     * 
+     * @param conn connection to use
+     * @param ids comment id
+     * @param authors author of comment.
+     * @param reviewIds review id.
+     * @param sComments comment text.
+     * @param commentTypeIds comment type id.
+     * @param extraInfos extra info
+     * 
+     * @throws Exception not under test.
+     */
+    protected void insertCommentsWithExtraInfo(Connection conn, long[] ids, long[] authors, long[] reviewIds, String[] sComments,
+    		long[] commentTypeIds, String[] extraInfos) throws Exception {
+        PreparedStatement preparedStmt = null;
+        try {
+            String insertReview = "INSERT INTO review_comment"
+                + "(review_comment_id, resource_id, review_id, comment_type_id, content, sort, extra_info,"
+                + "create_user, create_date, modify_user, modify_date) "
+                + "VALUES (?, ?, ?, ?, ?, 1, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertReview);
+
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+            
+            for (int i = 0; i < ids.length; i++) {
+	            preparedStmt.setLong(1, ids[i]);
+	            preparedStmt.setLong(2, authors[i]);
+	            preparedStmt.setLong(3, reviewIds[i]);
+	            preparedStmt.setLong(4, commentTypeIds[i]);
+	            preparedStmt.setString(5, sComments[i]);
+	            preparedStmt.setString(6, extraInfos[i]);
+	            preparedStmt.setTimestamp(7, now);
+	            preparedStmt.setTimestamp(8, now);
+	            preparedStmt.executeUpdate();
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+        } finally {
+            closeStatement(preparedStmt);
+        }
+    }
+    
+    /**
      * Helper method to insert a question. This inserts a record into the scorecard_group,
      * scorecard_section, scorecard_question tables.
      * 
@@ -882,21 +961,36 @@ public class BaseTest extends TestCase {
      * @throws Exception not under test.
      */
     protected void insertWinningSubmitter(Connection conn, long resourceId, long projectId) throws Exception {
-    	Resource winner = createResource(resourceId, 1, projectId, 1);
+    	Resource winner = createResource(resourceId, 101, projectId, 1);
     	insertResources(conn, new Resource[] {winner});
-
+    	insertResourceInfo(conn, resourceId, 12, "1");
+    }
+    
+    /**
+     * A helper method to insert a winning submitter for the given project id with given resource id.
+     * 
+     * @param conn connection to use.
+     * @param resourceId resource id.
+     * @param resourceInfoTypeId resource info type id.
+     * @param resourceInfo resource info value.
+     * 
+     * @throws Exception not under test.
+     */
+    protected void insertResourceInfo(Connection conn, long resourceId, long resourceInfoTypeId, String resourceInfo) throws Exception {
         PreparedStatement preparedStmt = null;
         try {
             String insertInfo = "insert into resource_info"
                 + "(resource_id, resource_info_type_id, value,"
                 + "create_user, create_date, modify_user, modify_date) "
-                + "VALUES (?, 12, '1', 'user', ?, 'user', ?)";
+                + "VALUES (?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertInfo);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
 	            preparedStmt.setLong(1, resourceId);
-	            preparedStmt.setTimestamp(2, now);
-	            preparedStmt.setTimestamp(3, now);
+	            preparedStmt.setLong(2, resourceInfoTypeId);
+	            preparedStmt.setString(3, resourceInfo);
+	            preparedStmt.setTimestamp(4, now);
+	            preparedStmt.setTimestamp(5, now);
 	            preparedStmt.executeUpdate();
 
             closeStatement(preparedStmt);
@@ -904,7 +998,38 @@ public class BaseTest extends TestCase {
         } finally {
             closeStatement(preparedStmt);
         }
+    }
+    
+    /**
+     * Inserts resource-submission mapping into the resource_submission table.
+     * 
+     * @param conn connection to use.
+     * @param resourceId resource id.
+     * @param submissionId submission id.
+     * 
+     * @throws Exception not under test.
+     */
+    protected void insertResourceSubmission(Connection conn, long resourceId, long submissionId) throws Exception {
+        PreparedStatement preparedStmt = null;
+        try {
+            String insertInfo = "insert into resource_submission"
+                + "(resource_id, submission_id,"
+                + "create_user, create_date, modify_user, modify_date) "
+                + "VALUES (?, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertInfo);
 
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+	            preparedStmt.setLong(1, resourceId);
+	            preparedStmt.setLong(2, submissionId);
+	            preparedStmt.setTimestamp(3, now);
+	            preparedStmt.setTimestamp(4, now);
+	            preparedStmt.executeUpdate();
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+        } finally {
+            closeStatement(preparedStmt);
+        }
     }
     
     /**

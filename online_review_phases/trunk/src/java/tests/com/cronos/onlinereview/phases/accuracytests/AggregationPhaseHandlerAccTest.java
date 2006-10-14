@@ -55,7 +55,7 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
 
     /**
      * Tests the canPerform() method that check if the phase can start. The input phase has one dependency and
-     * the dependency phase status is closed. The result is expected to be true.
+     * the dependency phase status is closed. The result is expected to be false since there is no winner.
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
@@ -74,7 +74,7 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
 
             boolean result = handler.canPerform(phase);
 
-            assertTrue("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result);
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -111,7 +111,7 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
 
     /**
      * Tests the canPerform() method that check if the phase can start. The input phase has no dependency.
-     * The result is expected to be true.
+     * The result is expected to be false since there is no winner.
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
@@ -128,7 +128,7 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
 
             boolean result = handler.canPerform(phase);
 
-            assertTrue("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result);
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();

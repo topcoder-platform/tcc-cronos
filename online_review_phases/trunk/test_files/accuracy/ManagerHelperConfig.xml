@@ -120,12 +120,6 @@
 		<Property name="UserRetrievalNamespace">
 			<Value>com.cronos.onlinereview.external</Value>
 		</Property>
-		<Property name="ProjectRetrievalClassName">
-			<Value>com.cronos.onlinereview.external.impl.DBProjectRetrieval</Value>
-		</Property>
-		<Property name="ProjectRetrievalNamespace">
-			<Value>com.cronos.onlinereview.external</Value>
-		</Property>
 	</Property>
 
 	<Property name="ScorecardAggregator">

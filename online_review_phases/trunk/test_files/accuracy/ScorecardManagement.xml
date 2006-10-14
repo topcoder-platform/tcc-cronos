@@ -35,47 +35,6 @@
 
 	</Config>
     
-    <!-- Namespace for DBConnectionFactory component -->
-    <Config name="Dbconnection.factory">
-        <Property name="connections">
-            <Property name="default">
-                <Value>dbconnection</Value>
-            </Property>
-            
-            <Property name="dbconnection">
-                <Property name="producer">
-                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
-                </Property>
-                
-                <Property name="parameters">
-                    <Property name="jdbc_driver">
-                        <Value>com.informix.jdbc.IfxDriver</Value>
-                    </Property>
-
-                    <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://zeyuanzhu-home:1526/score:INFORMIXSERVER=ol_home</Value>
-                    </Property>
-
-                    <Property name="SelectMethod">
-                        <Value>cursor</Value>
-                    </Property>
-
-                    <Property name="DatabaseName">
-                        <Value>score</Value>
-                    </Property>
-
-                    <Property name="user">
-                        <Value>informix</Value>
-                    </Property>
-
-                    <Property name="password">
-                        <Value>12345</Value>
-                    </Property>
-                </Property>
-            </Property>
-        </Property>
-    </Config>
-    
     <Config name="com.topcoder.searchbuilder.ScorecardManager">
         <Property name="searchStrategyFactoryNamespace">
             <Value>com.topcoder.search.builder.strategy.factory</Value>
@@ -112,6 +71,12 @@
                 <Property name="name">
                     <Value>ScorecardSearchBundle</Value>
                 </Property>
+				<Property name="DBNamcespace"> 
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>  
+				</Property> 
+				<Property name="connectionProducerName"> 
+						<Value>informix_connection</Value>  
+				</Property>
 
                 <Property name="context">
                     <Value>SELECT scorecard.scorecard_id FROM scorecard 

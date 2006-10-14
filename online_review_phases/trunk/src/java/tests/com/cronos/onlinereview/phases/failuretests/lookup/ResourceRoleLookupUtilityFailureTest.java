@@ -151,7 +151,7 @@ public class ResourceRoleLookupUtilityFailureTest extends AbstractTestCase {
     public void testLookUpId_Connection_String_SQLError() {
         MockConnection.throwGlobalException(new SQLException());
         try {
-            ResourceRoleLookupUtility.lookUpId(TestDataFactory.getMockConnection(), "Accuracy Reviewer");
+            ResourceRoleLookupUtility.lookUpId(TestDataFactory.getMockConnection(), "Observer");
             Assert.fail("SQLException should have been thrown");
         } catch (SQLException e) {
             // expected behavior
