@@ -4399,9 +4399,9 @@ public class InformixTimeTrackerProjectPersistence implements
                     "Some error occurs in DB configuration file", e);
         } catch (DBConnectionException e) {
             throw new PersistenceException("Fails to obtain the connection", e);
-        } catch (SQLException e) {
-            DBUtil.close(connection);
-            throw new PersistenceException("Fails to set transaction level", e);
+//        } catch (SQLException e) {
+//            DBUtil.close(connection);
+//            throw new PersistenceException("Fails to set transaction level", e);
         }
 
         try {
