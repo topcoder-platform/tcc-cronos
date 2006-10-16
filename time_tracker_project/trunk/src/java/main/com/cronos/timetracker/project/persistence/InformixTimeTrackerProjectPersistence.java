@@ -4392,8 +4392,8 @@ public class InformixTimeTrackerProjectPersistence implements
                     .createConnection(connectionProducerName);
 
             // make sure dirty reads are prevented
-            connection
-                    .setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+//            connection
+//                    .setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         } catch (com.topcoder.db.connectionfactory.ConfigurationException e) {
             throw new PersistenceException(
                     "Some error occurs in DB configuration file", e);
