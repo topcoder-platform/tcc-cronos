@@ -104,7 +104,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             return PhasesHelper.canPhaseStart(phase);
         } else {
             //return true if all dependencies have stopped and final fix exists.
-            return (PhasesHelper.havePhaseDependenciesStopped(phase)
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && (getFinalFix(phase) != null));
         }
     }

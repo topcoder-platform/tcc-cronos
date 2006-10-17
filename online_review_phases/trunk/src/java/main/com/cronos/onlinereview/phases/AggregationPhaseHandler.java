@@ -119,26 +119,26 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         if (toStart) {
             //return true if all dependencies have stopped and start time has been reached and there is a winner.
             boolean canPhaseStart = PhasesHelper.canPhaseStart(phase);
-            
+
             if (canPhaseStart) {
-            	//check if there is a winner.
+                //check if there is a winner.
                 Connection conn = null;
                 try {
                     conn = createConnection();
                     Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
-                    		conn, phase.getProject().getId());
-                    
+                            conn, phase.getProject().getId());
+
                     //return true if there is a winner
                     return (winner != null);
                 } finally {
-                	PhasesHelper.closeConnection(conn);
+                    PhasesHelper.closeConnection(conn);
                 }
             }
-            
+
             return false;
         } else {
             //return true if all dependencies have stopped and aggregation worksheet exists.
-            return (PhasesHelper.havePhaseDependenciesStopped(phase)
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && isAggregationWorksheetPresent(phase));
         }
     }
@@ -211,14 +211,14 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
 
                 //copy the comments from review scorecards
                 Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false);
-                
+
                 //find winning submitter.
-                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), conn,
-                        phase.getProject().getId());
+                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                        conn, phase.getProject().getId());
                 if (winningSubmitter == null) {
-                	throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
+                    throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
                 }
-                
+
                 Long winningSubmissionId = winningSubmitter.getSubmission();
 
                 //Search all review scorecard from review phase for the winning submitter

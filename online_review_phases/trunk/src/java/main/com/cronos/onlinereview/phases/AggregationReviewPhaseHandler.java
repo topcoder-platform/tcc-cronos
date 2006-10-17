@@ -114,7 +114,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            return (PhasesHelper.havePhaseDependenciesStopped(phase)
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && aggregationReviewDone(phase));
         }
     }
@@ -217,20 +217,20 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, phase,
                         new PhaseType[] {aggPhaseType, aggReviewPhaseType}, phaseStatus,
                         getManagerHelper().getPhaseManager(), operator);
-                
+
                 //save the phases
                 getManagerHelper().getPhaseManager().updatePhases(currentPrj, operator);
-                
+
                 //get the id of the newly created aggregation phase
                 long newAggPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 1].getId();
 
                 //copy the old Aggregator resource to the new Aggregation phase.
-                long newAggregatorId = PhasesHelper.createAggregatorOrFinalReviewer(phase, "Aggregation", getManagerHelper(), conn,
-                		"Aggregator", newAggPhaseId, operator);
+                long newAggregatorId = PhasesHelper.createAggregatorOrFinalReviewer(phase, "Aggregation",
+                        getManagerHelper(), conn, "Aggregator", newAggPhaseId, operator);
 
                 //Set the author of the aggregation worksheet to the id of the newly created Aggregator resource.
                 aggregationWorksheet.setAuthor(newAggregatorId);
-                
+
                 //update the worksheet
                 getManagerHelper().getReviewManager().updateReview(aggregationWorksheet, operator);
             }

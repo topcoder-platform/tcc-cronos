@@ -228,6 +228,9 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
 	        Project project = super.setupPhases();
 	        Phase[] phases = project.getAllPhases();
 	        Phase appealsResponsePhase = phases[5];
+	    	
+	        //change dependency type to F2F
+	        appealsResponsePhase.getAllDependencies()[0].setDependentStart(false);
 	
 	        //test with open status.
 	        appealsResponsePhase.setPhaseStatus(PhaseStatus.OPEN);

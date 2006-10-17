@@ -236,6 +236,9 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 	        Project project = super.setupPhases();
 	        Phase[] phases = project.getAllPhases();
 	        Phase aggregationPhase = phases[6];
+	    	
+	        //change dependency type to F2F
+	        aggregationPhase.getAllDependencies()[0].setDependentStart(false);
 	
 	        //test with open status.
 	        aggregationPhase.setPhaseStatus(PhaseStatus.OPEN);

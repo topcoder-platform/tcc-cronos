@@ -222,6 +222,9 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 	        Project project = super.setupPhases();
 	        Phase[] phases = project.getAllPhases();
 	        Phase approvalPhase = phases[10];
+	    	
+	        //change dependency type to F2F
+	        approvalPhase.getAllDependencies()[0].setDependentStart(false);
 	
 	        //test with open status.
 	        approvalPhase.setPhaseStatus(PhaseStatus.OPEN);

@@ -91,7 +91,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            return (PhasesHelper.havePhaseDependenciesStopped(phase)
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && PhasesHelper.reachedPhaseEndTime(phase));
         }
     }

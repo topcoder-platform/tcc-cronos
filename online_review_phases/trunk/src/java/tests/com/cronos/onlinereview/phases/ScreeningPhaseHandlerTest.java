@@ -225,6 +225,8 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 	
 	        //test with open status.
 	        screeningPhase.setPhaseStatus(PhaseStatus.OPEN);
+	        //change dependency type to F2F
+	        screeningPhase.getAllDependencies()[0].setDependentStart(false);
 	
 	        //time has not passed, dependencies not met
 	        assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));

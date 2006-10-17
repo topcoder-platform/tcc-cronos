@@ -225,6 +225,9 @@ public class AppealsPhaseHandlerTest extends BaseTest {
 	
 	        //test with open status.
 	        appealsPhase.setPhaseStatus(PhaseStatus.OPEN);
+	    	
+	        //change dependency type to F2F
+	        appealsPhase.getAllDependencies()[0].setDependentStart(false);
 	
 	        //time has not passed, dependencies not met
 	        assertFalse("canPerform should have returned false", handler.canPerform(appealsPhase));

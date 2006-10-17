@@ -118,7 +118,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            return (PhasesHelper.havePhaseDependenciesStopped(phase)
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && allReviewsDone(phase)
                     && allTestCasesUploaded(phase));
         }
@@ -181,11 +181,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             //Search the reviewIds
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-            		PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
+                    PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
 
             //Search all review scorecard for the current phase
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
-            		PhasesHelper.REVIEWER_ROLE_NAMES, null);
+                    PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             //create array to hold scores from all reviewers for all submissions
             com.topcoder.management.review.scoreaggregator.Submission[] submissionScores =
@@ -302,7 +302,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 conn = createConnection();
 
                 SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
-                		"Failed Screening");
+                        "Failed Screening");
 
                 //set status of each submission and persist
                 for (int iSub = 0; iSub < submissions.length; iSub++) {
@@ -341,11 +341,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             //Search the reviewIds
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-            		PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
+                    PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
 
             //Search all review scorecard for the current phase
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
-            		PhasesHelper.REVIEWER_ROLE_NAMES, null);
+                    PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             //for each submission
             for (int iSub = 0; iSub < subs.length; iSub++) {
@@ -386,13 +386,21 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      *
      * @param phase the phase instance.
      *
-     * @return true if all test case reviewers have one test case uploaded, false otherwise.
+     * @return true if all test case reviewers have one test case uploaded, or if
+     *       there are no test case reviewers; false otherwise.
      *
      * @throws PhaseHandlingException if anyb error occured when retrieving data.
      */
     private boolean allTestCasesUploaded(Phase phase) throws PhaseHandlingException {
         // get reviewers for phase id
         Resource[] reviewers = getReviewers(phase);
+
+        // if there are no test case reviewers,
+        // no need to check if all uploads have been uploaded
+        if (reviewers.length == 0) {
+            return true;
+        }
+
         List reviewerIds = new ArrayList();
 
         for (int i = 0; i < reviewers.length; i++) {

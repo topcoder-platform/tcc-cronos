@@ -113,7 +113,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            return (PhasesHelper.havePhaseDependenciesStopped(phase)
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && allAppealsResolved(phase));
         }
     }
@@ -303,7 +303,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 }
 
                 //update the project
-                getManagerHelper().getProjectManager().updateProject(project, "Update the winner and runner up.", operator);
+                getManagerHelper().getProjectManager().updateProject(project, "Update the winner and runner up.",
+                    operator);
             }
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up id", e);

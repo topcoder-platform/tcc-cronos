@@ -230,6 +230,9 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
 	
 	        //test with open status.
 	        submissionPhase.setPhaseStatus(PhaseStatus.OPEN);
+	        
+	        //change dependency type to F2F
+	        submissionPhase.getAllDependencies()[0].setDependentStart(false);
 	
 	        //time has not passed, nor dependencies met
 	        assertFalse("canPerform should have returned false", handler.canPerform(submissionPhase));

@@ -230,7 +230,10 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 	        Project project = super.setupPhases();
 	        Phase[] phases = project.getAllPhases();
 	        Phase finalFixPhase = phases[8];
-	
+	    	
+	        //change dependency type to F2F
+	        finalFixPhase.getAllDependencies()[0].setDependentStart(false);
+
 	        //test with open status.
 	        finalFixPhase.setPhaseStatus(PhaseStatus.OPEN);
 	

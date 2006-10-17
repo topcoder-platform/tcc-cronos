@@ -68,7 +68,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
 final class PhasesHelper {
     /** Constant for reviewer role names to be used when searching for reviewer resources and review scorecards. */
     static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer", "Accuracy Reviewer",
-    	"Failure Reviewer", "Stress Reviewer"};
+        "Failure Reviewer", "Stress Reviewer"};
 
     /** constant for "Scheduled" phase status. */
     private static final String PHASE_STATUS_SCHEDULED = "Scheduled";
@@ -293,7 +293,7 @@ final class PhasesHelper {
      * @return true if status is "Open", false otherwise.
      */
     static boolean isPhaseToEnd(PhaseStatus status) {
-        return (PHASE_STATUS_OPEN.equals(status.getName()));
+        return isPhaseOpen(status);
     }
 
     /**
@@ -308,14 +308,26 @@ final class PhasesHelper {
     }
 
     /**
-     * Returns true if all the dependencies of the given phase have stopped or if the phase has no
-     * dependencies.
+     * Returns if phase has started, i.e. has status "Open".
+     *
+     * @param status the phase status.
+     *
+     * @return true if phase status is "Closed", false otherwise.
+     */
+    static boolean isPhaseOpen(PhaseStatus status) {
+        return (PHASE_STATUS_OPEN.equals(status.getName()));
+    }
+
+    /**
+     * Returns true if all the dependencies of the given phase have started/stopped based on the type of dependency,
+     * or if the phase has no dependencies.
      *
      * @param phase the phase to check.
+     * @param bPhaseStarting true if phase is starting, false if phase is ending.
      *
      * @return true if all the dependencies of the given phase have stopped or if the phase has no dependencies.
      */
-    static boolean havePhaseDependenciesStopped(Phase phase) {
+    static boolean arePhaseDependenciesMet(Phase phase, boolean bPhaseStarting) {
         Dependency[] dependencies = phase.getAllDependencies();
 
         if ((dependencies == null) || (dependencies.length == 0)) {
@@ -326,13 +338,34 @@ final class PhasesHelper {
             //get the dependency phase.
             Phase dependency = dependencies[i].getDependency();
 
-            //return false if dependency is not closed.
-            if (!isPhaseClosed(dependency.getPhaseStatus())) {
-                return false;
+            if (bPhaseStarting) {
+                if (dependencies[i].isDependencyStart() && dependencies[i].isDependentStart()) {
+                    //S2S dependencies should be started
+                    if (!isPhaseOpen(dependency.getPhaseStatus())) {
+                        return false;
+                    }
+                } else if (!dependencies[i].isDependencyStart() && dependencies[i].isDependentStart()) {
+                    //S2F dependencies should be closed
+                    if (!isPhaseClosed(dependency.getPhaseStatus())) {
+                        return false;
+                    }
+                }
+            } else {
+                if (dependencies[i].isDependencyStart() && !dependencies[i].isDependentStart()) {
+                    //F2S dependencies should be started
+                    if (!isPhaseOpen(dependency.getPhaseStatus())) {
+                        return false;
+                    }
+                } else if (!dependencies[i].isDependencyStart() && !dependencies[i].isDependentStart()) {
+                    //F2F dependencies should be closed
+                    if (!isPhaseClosed(dependency.getPhaseStatus())) {
+                        return false;
+                    }
+                }
             }
         }
 
-        //all are closed.
+        //all are met.
         return true;
     }
 
@@ -376,7 +409,7 @@ final class PhasesHelper {
      * @return true if a phase can start, false otherwise.
      */
     static boolean canPhaseStart(Phase phase) {
-        return (PhasesHelper.havePhaseDependenciesStopped(phase)
+        return (PhasesHelper.arePhaseDependenciesMet(phase, true)
             && PhasesHelper.reachedPhaseStartTime(phase));
     }
 
@@ -482,8 +515,8 @@ final class PhasesHelper {
             Filter fullReviewFilter = reviewFilter;
             //if submission id filter is given, add it as filter condition
             if (submissionId != null) {
-	            Filter submissionFilter = SearchBundle.buildEqualToFilter("submission", submissionId);
-	            fullReviewFilter = SearchBundle.buildAndFilter(reviewFilter, submissionFilter);
+                Filter submissionFilter = SearchBundle.buildEqualToFilter("submission", submissionId);
+                fullReviewFilter = SearchBundle.buildAndFilter(reviewFilter, submissionFilter);
             }
 
             return managerHelper.getReviewManager().searchReviews(fullReviewFilter, true);
@@ -670,18 +703,18 @@ final class PhasesHelper {
      */
     static SubmissionStatus getSubmissionStatus(UploadManager uploadManager, String statusName)
         throws PhaseHandlingException {
-    	SubmissionStatus[] statuses = null;
-		try {
-			statuses = uploadManager.getAllSubmissionStatuses();
-		} catch (UploadPersistenceException e) {
-			throw new PhaseHandlingException("Error finding submission status with name: " + statusName, e);
-		}
-    	for (int i = 0; i < statuses.length; i++) {
-    		if (statusName.equals(statuses[i].getName())) {
-    			return statuses[i];
-    		}
-    	}
-    	throw new PhaseHandlingException("Could not find submission status with name: " + statusName);
+        SubmissionStatus[] statuses = null;
+        try {
+            statuses = uploadManager.getAllSubmissionStatuses();
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Error finding submission status with name: " + statusName, e);
+        }
+        for (int i = 0; i < statuses.length; i++) {
+            if (statusName.equals(statuses[i].getName())) {
+                return statuses[i];
+            }
+        }
+        throw new PhaseHandlingException("Could not find submission status with name: " + statusName);
     }
 
     /**
@@ -938,7 +971,7 @@ final class PhasesHelper {
                 Dependency dependency = dependencies[d];
                 dependency.getDependent().removeDependency(dependency);
                 dependency.getDependent().addDependency(new Dependency(lastNewPhase,
-                		dependency.getDependent(), dependency.isDependencyStart(), dependency.isDependentStart(),
+                        dependency.getDependent(), dependency.isDependencyStart(), dependency.isDependentStart(),
                         dependency.getLagTime()));
             }
         }
@@ -959,12 +992,13 @@ final class PhasesHelper {
 
         return currentPhaseIndex;
     }
-    
+
     /**
-     * Creates an aggregator or Final Reviewer resource. This method is called when a new aggregation/review or new final
-     * fix/review cycle is inserted when aggregation of final review worksheet is rejected. It simply copies the
-     * old aggregator/final reviewer properties, except for the id and phase id and inserts the new resource in the database.
-     * 
+     * Creates an aggregator or Final Reviewer resource. This method is called when a new aggregation/review or new
+     * finalfix/review cycle is inserted when aggregation of final review worksheet is rejected. It simply copies the
+     * old aggregator/final reviewer properties, except for the id and phase id and inserts the new resource
+     * in the database.
+     *
      * @param currentPhase the aggregation review or final review phase instance.
      * @param oldPhaseName "Aggregation" or "Final Review" to which the aggregator or final reviewer is associated with.
      * @param managerHelper ManagerHelper instance.
@@ -972,21 +1006,21 @@ final class PhasesHelper {
      * @param roleName "Aggregator" or "Final Reviewer".
      * @param newPhaseId the new phase id the new resource is to be associated with.
      * @param operator operator name.
-     * 
+     *
      * @return the id of the newly created resource.
-     * 
+     *
      * @throws PhaseHandlingException
      */
     static long createAggregatorOrFinalReviewer(Phase currentPhase, String oldPhaseName, ManagerHelper managerHelper,
-    		Connection conn, String roleName, long newPhaseId, String operator) throws PhaseHandlingException {
-    	
-    	//locate the old associated phase from current phase
-    	Phase oldPhase = PhasesHelper.locatePhase(currentPhase, oldPhaseName, false);
+            Connection conn, String roleName, long newPhaseId, String operator) throws PhaseHandlingException {
+
+        //locate the old associated phase from current phase
+        Phase oldPhase = PhasesHelper.locatePhase(currentPhase, oldPhaseName, false);
         //search for the old "Aggregator" or "Final Reviewer" resource
-    	Resource[] resources = PhasesHelper.searchResourcesForRoleNames(managerHelper, conn,
+        Resource[] resources = PhasesHelper.searchResourcesForRoleNames(managerHelper, conn,
                 new String[] { roleName }, oldPhase.getId());
         Resource oldResource = resources[0];
-        
+
         //copy resource properties
         Resource newResource = new Resource();
         newResource.setProject(oldResource.getProject());
@@ -994,23 +1028,23 @@ final class PhasesHelper {
         newResource.setSubmission(oldResource.getSubmission());
         Map properties = oldResource.getAllProperties();
         if (properties != null && !properties.isEmpty()) {
-        	Set entries = properties.entrySet();
-        	for (Iterator itr = entries.iterator(); itr.hasNext();) {
-	        	Map.Entry entry = (Map.Entry) itr.next();
-	        	newResource.setProperty((String) entry.getKey(), entry.getValue());
-        	}
+            Set entries = properties.entrySet();
+            for (Iterator itr = entries.iterator(); itr.hasNext();) {
+                Map.Entry entry = (Map.Entry) itr.next();
+                newResource.setProperty((String) entry.getKey(), entry.getValue());
+            }
         }
-        
+
         //set phase id
         newResource.setPhase(new Long(newPhaseId));
-        
+
         //update resource into persistence.
         try {
-			managerHelper.getResourceManager().updateResource(newResource, operator);
-			return newResource.getId();
-		} catch (ResourcePersistenceException e) {
-			throw new PhaseHandlingException("Problem when persisting resource with role:" + roleName, e);
-		}
+            managerHelper.getResourceManager().updateResource(newResource, operator);
+            return newResource.getId();
+        } catch (ResourcePersistenceException e) {
+            throw new PhaseHandlingException("Problem when persisting resource with role:" + roleName, e);
+        }
     }
 
     /**

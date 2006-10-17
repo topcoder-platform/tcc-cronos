@@ -128,7 +128,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            boolean dependenciesStopped = PhasesHelper.havePhaseDependenciesStopped(phase);
+            boolean dependenciesStopped = PhasesHelper.arePhaseDependenciesMet(phase, false);
             boolean allScorecardsCommitted = false;
             if (dependenciesStopped) {
                 boolean bPrimaryScreening = isPrimaryScreening(phase);

@@ -226,6 +226,9 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 	        //test with open status.
 	        reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
 	
+	        //change dependency type to F2F
+	        reviewPhase.getAllDependencies()[0].setDependentStart(false);
+	        
 	        //time has not passed, dependencies not met
 	        assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
         } finally {

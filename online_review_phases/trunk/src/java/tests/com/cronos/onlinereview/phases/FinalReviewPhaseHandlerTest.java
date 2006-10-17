@@ -228,6 +228,9 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 	        Project project = super.setupPhases();
 	        Phase[] phases = project.getAllPhases();
 	        Phase finalReviewPhase = phases[9];
+	    	
+	        //change dependency type to F2F
+	        finalReviewPhase.getAllDependencies()[0].setDependentStart(false);
 	
 	        //test with open status.
 	        finalReviewPhase.setPhaseStatus(PhaseStatus.OPEN);

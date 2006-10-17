@@ -105,7 +105,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
         if (toStart) {
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            return (PhasesHelper.havePhaseDependenciesStopped(phase)
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && PhasesHelper.reachedPhaseEndTime(phase)
                     && arePassedSubmissionsEnough(phase));
         }
