@@ -259,35 +259,41 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         throws PhaseHandlingException {
         Comment[] comments = getAggregationWorksheet(phase).getAllComments();
 
-        //Locate the nearest Review phase
+        //Locate the nearest Review and Aggregation phase
         Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false);
+        Phase aggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false);
         Connection conn = null;
 
-        //Locate the winning submitter
         try {
             conn = createConnection();
 
-            //will hold reviewers that are not aggregators
+            //will hold all reviewers
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     PhasesHelper.REVIEWER_ROLE_NAMES, reviewPhase.getId());
+            Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                    new String[] { "Aggregator" }, aggregationPhase.getId());
+            if (aggregators.length == 0) {
+                throw new PhaseHandlingException("No Aggregator resource found for phase: " + aggregationPhase.getId());
+            }
+            String aggregatorUserId = (String) aggregators[0].getProperty("External Reference ID");
+
             //winning submitter.
             Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), conn,
                     phase.getProject().getId());
 
-            //check if review has been done
-            int reviewerAggCount = 0;
-
             //The reviewers that are not aggregator should have a review comment of type
             //"Aggregation Review Comment" with extra info of either "Approved" or "Rejected".
             for (int i = 0; i < reviewers.length; i++) {
-                if (doesCommentExist(comments, reviewers[i].getId(), "Aggregation Review Comment")) {
-                    reviewerAggCount++;
+                if (reviewers[i].getProperty("External Reference ID") == null ||
+                    reviewers[i].getProperty("External Reference ID").equals(aggregatorUserId)) {
+                    continue;
+                }
+                if (!doesCommentExist(comments, reviewers[i].getId(), "Aggregation Review Comment")) {
+                    return false;
                 }
             }
 
-            boolean winnerReviewDone = doesCommentExist(comments, winningSubmitter.getId(), "Submitter Comment");
-
-            return ((reviewerAggCount >= 2) && winnerReviewDone);
+            return doesCommentExist(comments, winningSubmitter.getId(), "Submitter Comment");
         } finally {
             PhasesHelper.closeConnection(conn);
         }
