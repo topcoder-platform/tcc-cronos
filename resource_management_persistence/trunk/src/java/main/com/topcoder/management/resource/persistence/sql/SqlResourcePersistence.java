@@ -786,9 +786,9 @@ public class SqlResourcePersistence implements ResourcePersistence {
             Resource resource) throws ResourcePersistenceException {
 
         String query = "SELECT resource_info_type_lu.name, resource_info.value"
-                + " FROM resource_info INNER JOIN resource_info_type_lu ON "
-                + "(resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id)"
-                + " WHERE resource_id = ?";
+                + " FROM resource_info, resource_info_type_lu  "
+                + " WHERE resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id "
+                + " AND resource_id = ?";
 
         ResultSet rs = null;
         PreparedStatement statement = null;
@@ -1577,10 +1577,10 @@ public class SqlResourcePersistence implements ResourcePersistence {
 
         // this sql query will select all internal properties once.
         String query = "SELECT resource_info.resource_id, resource_info_type_lu.name, resource_info.value"
-                + " FROM resource_info INNER JOIN resource_info_type_lu ON"
-                + " (resource_info.resource_info_type_id = "
-                + " resource_info_type_lu.resource_info_type_id)"
-                + " WHERE resource_info.resource_id IN (";
+                + " FROM resource_info, resource_info_type_lu ON"
+                + " WHERE resource_info.resource_info_type_id = "
+                + " resource_info_type_lu.resource_info_type_id "
+                + " AND resource_info.resource_id IN (";
 
         PreparedStatement statement = null;
 
