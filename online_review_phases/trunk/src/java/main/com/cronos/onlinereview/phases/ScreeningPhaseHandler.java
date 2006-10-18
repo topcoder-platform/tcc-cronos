@@ -363,29 +363,26 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
                     new String[] { ROLE_PRIMARY_SCREENER }, null);
 
-            if (screenReviews.length == 0) {
-                throw new PhaseHandlingException("No screening scorecards found for phase: " + phase.getId());
-            }
-
             //get the submissions for the project
             Submission[] submissions = PhasesHelper.searchSubmissionsForProject(getManagerHelper().getUploadManager(),
                     phase.getProject().getId());
 
-            if (submissions.length == 0) {
-                throw new PhaseHandlingException("No submissions found for project:" + phase.getProject().getId());
+            // If the number of reviews doesn't match submission number - not all reviews are commited for sure
+            if (screenReviews.length != submissions.length) {
+                return false;
             }
-
-            //check if each review has a scorecard...
-            boolean foundScorecard = false;
 
             for (int i = 0; i < submissions.length; i++) {
                 long subId = submissions[i].getId();
 
-                for (int j = 0; j < screenReviews.length; j++) {
-                    if (subId == screenReviews[j].getScorecard()) {
-                        foundScorecard = true;
+                //check if each submission has a review...
+                boolean foundReview = false;
 
-                        //also check if each scorecard is committed
+                for (int j = 0; j < screenReviews.length; j++) {
+                    if (subId == screenReviews[j].getSubmission()) {
+                        foundReview = true;
+
+                        //also check if each review is committed
                         if (!screenReviews[j].isCommitted()) {
                             return false;
                         }
@@ -394,8 +391,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                     }
                 }
 
-                //if a scorecard was not found for a particular submission, return false.
-                if (!foundScorecard) {
+                //if a review was not found for a particular submission, return false.
+                if (!foundReview) {
                     return false;
                 }
             }

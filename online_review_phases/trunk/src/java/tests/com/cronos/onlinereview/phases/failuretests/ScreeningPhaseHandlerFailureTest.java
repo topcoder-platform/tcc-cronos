@@ -574,75 +574,8 @@ public class ScreeningPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Configures the mock implementation <code>MockResourceManager</code> to return an invalid value from method and
      * expects the <code>PhaseHandlingException</code> to be thrown.</p>
      */
-/*
-    public void testCanPerform_Phase_ScreeningModesMixed() {
-        MockResourceManager.setMethodResult("searchResources_Filter", TODO);
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].canPerform(TestDataFactory.getScreeningPhase());
-                Assert.fail("PhaseHandlingException should have been thrown");
-            } catch (PhaseHandlingException e) {
-                // expected behavior
-            } catch (Exception e) {
-                fail("PhaseHandlingException was expected but the original exception is : " + e);
-            }
-        }
-    }
-*/
-
-    /**
-     * <p>Failure test. Tests the {@link ScreeningPhaseHandler#canPerform,Phase} for proper behavior if the underlying
-     * service returns incorrect result.</p>
-     *
-     * <p>Configures the mock implementation <code>MockResourceManager</code> to return an invalid value from method and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
-     */
     public void testCanPerform_Phase_NoSubmitter() {
         MockResourceManager.setMethodResult("searchResources_Filter", new Resource[0]);
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenScreeningPhase());
-                Assert.fail("PhaseHandlingException should have been thrown");
-            } catch (PhaseHandlingException e) {
-                // expected behavior
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail("PhaseHandlingException was expected but the original exception is : " + e);
-            }
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ScreeningPhaseHandler#canPerform,Phase} for proper behavior if the underlying
-     * service returns incorrect result.</p>
-     *
-     * <p>Configures the mock implementation <code>MockUploadManager</code> to return an invalid value from method and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
-     */
-    public void testCanPerform_Phase_NoSubmission() {
-        MockUploadManager.setMethodResult("searchSubmissions_Filter", new Submission[0]);
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenScreeningPhase());
-                Assert.fail("PhaseHandlingException should have been thrown");
-            } catch (PhaseHandlingException e) {
-                // expected behavior
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail("PhaseHandlingException was expected but the original exception is : " + e);
-            }
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link ScreeningPhaseHandler#canPerform,Phase} for proper behavior if the underlying
-     * service returns incorrect result.</p>
-     *
-     * <p>Configures the mock implementation <code>MockReviewManager</code> to return an invalid value from method and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
-     */
-    public void testCanPerform_Phase_NoReview() {
-        MockReviewManager.setMethodResult("searchReviews_Filter_boolean", new Review[0]);
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
                 this.testedInstances[i].canPerform(TestDataFactory.getOpenScreeningPhase());
