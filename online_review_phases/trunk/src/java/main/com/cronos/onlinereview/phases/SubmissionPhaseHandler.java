@@ -179,7 +179,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
             Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
                     screeningPhaseId, new String[] { "Primary Screener", "Screener" }, null);
             if (screenReviews.length == 0) {
-                throw new PhaseHandlingException("No screening scorecards found for phase: " + screeningPhaseId);
+                return 0;
             }
             float minScore = PhasesHelper.getScorecardMinimumScore(getManagerHelper().getScorecardManager(),
                     screenReviews[0]);

@@ -1026,8 +1026,7 @@ final class PhasesHelper {
      * old aggregator/final reviewer properties, except for the id and phase id and inserts the new resource
      * in the database.
      *
-     * @param currentPhase the aggregation review or final review phase instance.
-     * @param oldPhaseName "Aggregation" or "Final Review" to which the aggregator or final reviewer is associated with.
+     * @param oldPhase the aggregation or final review phase instance.
      * @param managerHelper ManagerHelper instance.
      * @param conn connection to use.
      * @param roleName "Aggregator" or "Final Reviewer".
@@ -1038,11 +1037,9 @@ final class PhasesHelper {
      *
      * @throws PhaseHandlingException
      */
-    static long createAggregatorOrFinalReviewer(Phase currentPhase, String oldPhaseName, ManagerHelper managerHelper,
+    static long createAggregatorOrFinalReviewer(Phase oldPhase, ManagerHelper managerHelper,
             Connection conn, String roleName, long newPhaseId, String operator) throws PhaseHandlingException {
 
-        //locate the old associated phase from current phase
-        Phase oldPhase = PhasesHelper.locatePhase(currentPhase, oldPhaseName, false);
         //search for the old "Aggregator" or "Final Reviewer" resource
         Resource[] resources = PhasesHelper.searchResourcesForRoleNames(managerHelper, conn,
                 new String[] { roleName }, oldPhase.getId());

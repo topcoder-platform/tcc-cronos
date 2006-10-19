@@ -180,30 +180,29 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             try {
                 conn = createConnection();
 
-                //Search all screening scorecard for the current phase
-                Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                        phase.getId(), new String[] { ROLE_PRIMARY_SCREENER, ROLE_SCREENER }, null);
-
-                if (screenReviews.length == 0) {
-                    throw new PhaseHandlingException("No screening scorecards found for phase: " + phase.getId());
-                }
-
-                //get minimum score
-                float minScore = PhasesHelper.getScorecardMinimumScore(getManagerHelper().getScorecardManager(),
-                        screenReviews[0]);
-
                 //Search all submissions for current project
                 Submission[] submissions = PhasesHelper.searchSubmissionsForProject(
                         getManagerHelper().getUploadManager(), phase.getProject().getId());
 
-                if (submissions.length == 0) {
-                    throw new PhaseHandlingException("No submissions found for project:" + phase.getProject().getId());
+                //Search all screening scorecard for the current phase
+                Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
+                        phase.getId(), new String[] { ROLE_PRIMARY_SCREENER, ROLE_SCREENER }, null);
+
+                if (submissions.length != screenReviews.length) {
+                    throw new PhaseHandlingException("Submission count does not match screening count for project:"
+                            + phase.getProject().getId());
                 }
 
-                //for each submission...
-                for (int iSub = 0; iSub < submissions.length; iSub++) {
-                    Submission submission = submissions[iSub];
-                    processAndUpdateSubmission(submission, screenReviews, minScore, operator, conn);
+                if (screenReviews.length > 0) {
+                    //get minimum score
+                    float minScore = PhasesHelper.getScorecardMinimumScore(getManagerHelper().getScorecardManager(),
+                            screenReviews[0]);
+
+                    //for each submission...
+                    for (int iSub = 0; iSub < submissions.length; iSub++) {
+                        Submission submission = submissions[iSub];
+                        processAndUpdateSubmission(submission, screenReviews, minScore, operator, conn);
+                    }
                 }
             } catch (SQLException e) {
                 throw new PhaseHandlingException("Problem when looking up ids.", e);

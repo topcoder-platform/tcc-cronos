@@ -224,11 +224,12 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 //save the phases
                 getManagerHelper().getPhaseManager().updatePhases(currentPrj, operator);
 
+                Phase[] allPhases = currentPrj.getAllPhases();
                 //get the id of the newly created aggregation phase
-                long newAggPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 1].getId();
+                long newAggPhaseId = allPhases[currentPhaseIndex + 1].getId();
 
                 //copy the old Aggregator resource to the new Aggregation phase.
-                long newAggregatorId = PhasesHelper.createAggregatorOrFinalReviewer(phase, "Aggregation",
+                long newAggregatorId = PhasesHelper.createAggregatorOrFinalReviewer(allPhases[currentPhaseIndex - 1],
                         getManagerHelper(), conn, "Aggregator", newAggPhaseId, operator);
 
                 //Set the author of the aggregation worksheet to the id of the newly created Aggregator resource.

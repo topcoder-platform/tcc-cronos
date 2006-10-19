@@ -389,10 +389,10 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * @return true if all test case reviewers have one test case uploaded, or if
      *       there are no test case reviewers; false otherwise.
      *
-     * @throws PhaseHandlingException if anyb error occured when retrieving data.
+     * @throws PhaseHandlingException if any error occured when retrieving data.
      */
     private boolean allTestCasesUploaded(Phase phase) throws PhaseHandlingException {
-        // get reviewers for phase id
+        // get test case reviewers for phase id
         Resource[] reviewers = getReviewers(phase);
 
         // if there are no test case reviewers,

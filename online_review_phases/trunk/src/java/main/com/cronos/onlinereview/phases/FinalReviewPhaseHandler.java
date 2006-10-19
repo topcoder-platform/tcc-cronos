@@ -214,7 +214,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
 
                 //copy the old final reviewer resource to the new final review phase.
-                long newFinalReviewerId = PhasesHelper.createAggregatorOrFinalReviewer(phase, "Final Review",
+                long newFinalReviewerId = PhasesHelper.createAggregatorOrFinalReviewer(phase,
                         getManagerHelper(), conn, "Final Reviewer", finalReviewPhaseId, operator);
 
                 //Set the author of the final review worksheet to the id of the newly created Final Reviewer resource.
