@@ -209,9 +209,12 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 Project currentPrj = phase.getProject();
 
                 //create phase type and status objects
-                PhaseType aggPhaseType = PhasesHelper.createPhaseType(conn, "Aggregation");
-                PhaseType aggReviewPhaseType = PhasesHelper.createPhaseType(conn, "Aggregation Review");
-                PhaseStatus phaseStatus = PhasesHelper.createPhaseStatus(conn, "Scheduled");
+                PhaseType aggPhaseType = PhasesHelper.getPhaseType(
+                        getManagerHelper().getPhaseManager(), "Aggregation");
+                PhaseType aggReviewPhaseType = PhasesHelper.getPhaseType(
+                        getManagerHelper().getPhaseManager(), "Aggregation Review");
+                PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(
+                        getManagerHelper().getPhaseManager(), "Scheduled");
 
                 //use helper method to create and save the new phases
                 int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, phase,
@@ -234,8 +237,6 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 //update the worksheet
                 getManagerHelper().getReviewManager().updateReview(aggregationWorksheet, operator);
             }
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when connecting to database", e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);
         } catch (ReviewManagementException e) {

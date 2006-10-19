@@ -192,9 +192,12 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                     }
                 }
 
-                PhaseType finalFixPhaseType = PhasesHelper.createPhaseType(conn, "Final Fix");
-                PhaseType finalReviewPhaseType = PhasesHelper.createPhaseType(conn, "Final Review");
-                PhaseStatus phaseStatus = PhasesHelper.createPhaseStatus(conn, "Scheduled");
+                PhaseType finalFixPhaseType = PhasesHelper.getPhaseType(
+                        getManagerHelper().getPhaseManager(), "Final Fix");
+                PhaseType finalReviewPhaseType = PhasesHelper.getPhaseType(
+                        getManagerHelper().getPhaseManager(), "Final Review");
+                PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(
+                        getManagerHelper().getPhaseManager(), "Scheduled");
 
                 //find current phase index and also the lengths of 'final fix' and 'final review' phases.
                 Project currentPrj = phase.getProject();

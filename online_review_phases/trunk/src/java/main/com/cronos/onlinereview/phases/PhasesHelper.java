@@ -803,52 +803,79 @@ final class PhasesHelper {
     /**
      * utility method to create a PhaseType instance with given name.
      *
-     * @param conn connection to lookup the phase type id with.
-     * @param phaseType phase type name.
+     * @param phaseManager PhaseManager instance used to search for submission status.
+     * @param typeName phase type name.
      *
      * @return PhaseType instance.
      *
-     * @throws SQLException if unable to connect to database.
+     * @throws PhaseHandlingException if phase status could not be found.
      */
-    static PhaseType createPhaseType(Connection conn, String phaseType)
-        throws SQLException {
-        long phaseTypeId = PhaseTypeLookupUtility.lookUpId(conn, phaseType);
-
-        return new PhaseType(phaseTypeId, phaseType);
+    static PhaseType getPhaseType(PhaseManager phaseManager, String typeName)
+        throws PhaseHandlingException {
+        PhaseType[] types = null;
+        try {
+            types = phaseManager.getAllPhaseTypes();
+        } catch (PhaseManagementException e) {
+            throw new PhaseHandlingException("Error finding phase type with name: " + typeName, e);
+        }
+        for (int i = 0; i < types.length; i++) {
+            if (typeName.equals(types[i].getName())) {
+                return types[i];
+            }
+        }
+        throw new PhaseHandlingException("Could not find phase type with name: " + typeName);
     }
 
     /**
      * utility method to create a PhaseStatus instance with given name.
      *
-     * @param conn connection to lookup the phase status id with.
-     * @param phaseStatus phase status name.
+     * @param phaseManager PhaseManager instance used to search for submission status.
+     * @param statusName phase status name.
      *
      * @return PhaseStatus instance.
      *
-     * @throws SQLException if unable to connect to database.
+     * @throws PhaseHandlingException if phase status could not be found.
      */
-    static PhaseStatus createPhaseStatus(Connection conn, String phaseStatus)
-        throws SQLException {
-        long phaseStatusId = PhaseStatusLookupUtility.lookUpId(conn, phaseStatus);
-
-        return new PhaseStatus(phaseStatusId, phaseStatus);
+    static PhaseStatus getPhaseStatus(PhaseManager phaseManager, String statusName)
+        throws PhaseHandlingException {
+        PhaseStatus[] statuses = null;
+        try {
+            statuses = phaseManager.getAllPhaseStatuses();
+        } catch (PhaseManagementException e) {
+            throw new PhaseHandlingException("Error finding phase status with name: " + statusName, e);
+        }
+        for (int i = 0; i < statuses.length; i++) {
+            if (statusName.equals(statuses[i].getName())) {
+                return statuses[i];
+            }
+        }
+        throw new PhaseHandlingException("Could not find phase status with name: " + statusName);
     }
 
     /**
      * utility method to create a UploadStatus instance with given name.
      *
-     * @param conn connection to lookup the upload status id with.
-     * @param uploadStatus upload status name.
+     * @param uploadManager UploadManager instance used to search for submission status.
+     * @param statusName upload status name.
      *
      * @return UploadStatus instance.
      *
-     * @throws SQLException if unable to connect to database.
+     * @throws PhaseHandlingException if submission status could not be found.
      */
-    static UploadStatus createUploadStatus(Connection conn, String uploadStatus)
-        throws SQLException {
-        long uploadStatusId = UploadStatusLookupUtility.lookUpId(conn, uploadStatus);
-
-        return new UploadStatus(uploadStatusId, uploadStatus);
+    static UploadStatus getUploadStatus(UploadManager uploadManager, String statusName)
+        throws PhaseHandlingException {
+        UploadStatus[] statuses = null;
+        try {
+            statuses = uploadManager.getAllUploadStatuses();
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Error finding upload status with name: " + statusName, e);
+        }
+        for (int i = 0; i < statuses.length; i++) {
+            if (statusName.equals(statuses[i].getName())) {
+                return statuses[i];
+            }
+        }
+        throw new PhaseHandlingException("Could not find upload status with name: " + statusName);
     }
 
     /**

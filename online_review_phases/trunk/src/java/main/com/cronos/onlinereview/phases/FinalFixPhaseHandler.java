@@ -210,7 +210,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             //delete the earlier final fix if it exists.
             Upload finalFix = getFinalFix(phase);
             if (finalFix != null) {
-                finalFix.setUploadStatus(PhasesHelper.createUploadStatus(conn, "Deleted"));
+                finalFix.setUploadStatus(PhasesHelper.getUploadStatus(
+                        getManagerHelper().getUploadManager(), "Deleted"));
                 getManagerHelper().getUploadManager().updateUpload(finalFix, operator);
             }
         } catch (ReviewManagementException e) {
