@@ -146,6 +146,10 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
     private boolean arePassedSubmissionsEnough(Phase phase) throws PhaseHandlingException {
         boolean bManual = PhasesHelper.isScreeningManual(phase);
 
+        if (phase.getAttribute("Submission Number") == null) {
+            return true;
+        }
+
         int submissionNum = PhasesHelper.getIntegerAttribute(phase, "Submission Number");
         int passedNum = 0;
 

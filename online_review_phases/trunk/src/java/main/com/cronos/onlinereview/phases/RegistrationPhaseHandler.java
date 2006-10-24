@@ -142,7 +142,12 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if there is any error occurred while processing the phase.
      */
     private boolean areRegistrationsEnough(Phase phase) throws PhaseHandlingException {
+        if (phase.getAttribute("Registration Number") == null) {
+            return true;
+        }
+
         int regNumber = PhasesHelper.getIntegerAttribute(phase, "Registration Number");
+
         Resource[] resources = searchResources(phase);
         return (regNumber <= resources.length);
     }
