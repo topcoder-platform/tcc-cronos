@@ -268,7 +268,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         Connection conn = null;
         try {
             conn = createConnection();
-            return (PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), phase.getId()) != null);
+            Review review = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), phase.getId());
+            return (review != null && review.isCommitted());
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
