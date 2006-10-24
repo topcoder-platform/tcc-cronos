@@ -386,9 +386,11 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
     private void updateEmails(Map objects, PreparedStatement ps)
         throws RetrievalException {
 
+        ResultSet rs = null;
+        
         try {
             // Executes the PreparedStatement to get the ResultSet.
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 // Gets values from the ResultSet.
@@ -406,6 +408,22 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
             throw new RetrievalException("ResultSet execute error or some of the user email values "
                     + "cannot be retrieved.", e);
         }
+        finally
+        {
+          try{
+            if(rs != null)
+            {
+              rs.close();
+            }   
+          }
+          catch(Exception e)
+          {
+            //ignore
+          }
+               
+
+        }
+
     }
 
     /**
@@ -422,9 +440,10 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
     private void updateRatings(Map objects, PreparedStatement ps)
         throws RetrievalException {
 
+        ResultSet rs = null;
         try {
             // Executes the PreparedStatement to get the ResultSet.
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 // Gets values from the ResultSet.
@@ -462,6 +481,22 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
             throw new RetrievalException("Some parameters of RatingType.getRatingType() or "
                     + "RatingInfo.ctor() invalid.", e);
         }
+        finally
+        {
+          try{
+            if(rs != null)
+            {
+              rs.close();
+            }   
+          }
+          catch(Exception e)
+          {
+            //ignore
+          }
+               
+
+        }
+
     }
 
     /**
