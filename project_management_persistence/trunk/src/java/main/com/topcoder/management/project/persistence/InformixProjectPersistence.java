@@ -376,7 +376,7 @@ public class InformixProjectPersistence implements ProjectPersistence {
                 .createConnection(connectionName);
 
             conn.setAutoCommit(false);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            //conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             return conn;
         } catch (DBConnectionException e) {
             throw new PersistenceException("Error occurs when getting "
