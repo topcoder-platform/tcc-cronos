@@ -181,26 +181,6 @@ public class RegistrationPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Failure test. Tests the {@link RegistrationPhaseHandler#canPerform(Phase)} method for proper handling the
      * invalid input arguments.</p>
      *
-     * <p>Passes {@link TestDataFactory#getRegistrationPhaseWithNoRegistrationNumberAttribute()} as <code>phase</code>
-     * and expects the <code>PhaseHandlingException</code> to be thrown.</p>
-     */
-    public void testCanPerform_Phase_phase_RegistrationPhaseWithNoRegistrationNumberAttribute() {
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].canPerform(TestDataFactory.getRegistrationPhaseWithNoRegistrationNumberAttribute());
-                Assert.fail("PhaseHandlingException should have been thrown");
-            } catch (PhaseHandlingException e) {
-                // expected behavior
-            } catch (Exception e) {
-                Assert.fail("PhaseHandlingException was expected but the original exception is : " + e);
-            }
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link RegistrationPhaseHandler#canPerform(Phase)} method for proper handling the
-     * invalid input arguments.</p>
-     *
      * <p>Passes {@link TestDataFactory#getRegistrationPhaseWithNonIntegerRegistrationNumberAttribute()} as
      * <code>phase</code> and expects the <code>PhaseHandlingException</code> to be thrown.</p>
      */
@@ -350,7 +330,9 @@ public class RegistrationPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new SearchBuilderConfigurationException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenRegistrationPhase());
+                Phase phase = TestDataFactory.getOpenRegistrationPhase();
+                phase.setAttribute("Registration Number", "1");
+                this.testedInstances[i].canPerform(phase);
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
@@ -371,7 +353,9 @@ public class RegistrationPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new ResourcePersistenceException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenRegistrationPhase());
+                Phase phase = TestDataFactory.getOpenRegistrationPhase();
+                phase.setAttribute("Registration Number", "1");
+                this.testedInstances[i].canPerform(phase);
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
@@ -392,7 +376,9 @@ public class RegistrationPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new SearchBuilderException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenRegistrationPhase());
+                Phase phase = TestDataFactory.getOpenRegistrationPhase();
+                phase.setAttribute("Registration Number", "1");
+                this.testedInstances[i].canPerform(phase);
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior

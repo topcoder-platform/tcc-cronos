@@ -3,6 +3,9 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
@@ -10,6 +13,8 @@ import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
+import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.Filter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -219,7 +224,14 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                     throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
                 }
 
-                Long winningSubmissionId = winningSubmitter.getSubmission();
+                // find the winning submission
+                Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
+                Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
+                if (submissions == null || submissions.length != 1) {
+                    throw new PhaseHandlingException("No winning submission for project with id"
+                            + phase.getProject().getId());
+                }
+                Long winningSubmissionId = new Long(submissions[0].getId());
 
                 //Search all review scorecard from review phase for the winning submitter
                 Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
@@ -251,6 +263,10 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Problem when persisting review", e);
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up ids.", e);
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

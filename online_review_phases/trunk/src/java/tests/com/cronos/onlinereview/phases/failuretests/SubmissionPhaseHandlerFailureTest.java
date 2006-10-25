@@ -188,27 +188,6 @@ public class SubmissionPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Failure test. Tests the {@link SubmissionPhaseHandler#canPerform(Phase)} method for proper handling the
      * invalid input arguments.</p>
      *
-     * <p>Passes {@link TestDataFactory#getSubmissionPhaseWithNoSubmissionNumberAttribute()} as <code>phase</code> and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
-     */
-    public void testCanPerform_Phase_phase_SubmissionPhaseWithNoSubmissionNumberAttribute() {
-        for (int i = 0; i < this.testedInstances.length; i++) {
-            try {
-                this.testedInstances[i].canPerform(TestDataFactory.getSubmissionPhaseWithNoSubmissionNumberAttribute());
-                Assert.fail("PhaseHandlingException should have been thrown");
-            } catch (PhaseHandlingException e) {
-                // expected behavior
-            } catch (Exception e) {
-                e.printStackTrace();
-                Assert.fail("PhaseHandlingException was expected but the original exception is : " + e);
-            }
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link SubmissionPhaseHandler#canPerform(Phase)} method for proper handling the
-     * invalid input arguments.</p>
-     *
      * <p>Passes {@link TestDataFactory#getSubmissionPhaseWithNonIntegerSubmissionNumberAttribute()} as
      * <code>phase</code> and expects the <code>PhaseHandlingException</code> to be thrown.</p>
      */
