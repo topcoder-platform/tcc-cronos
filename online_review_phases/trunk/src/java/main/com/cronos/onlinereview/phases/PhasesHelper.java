@@ -16,11 +16,8 @@ import java.util.Set;
 
 import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistException;
-import com.cronos.onlinereview.phases.lookup.PhaseStatusLookupUtility;
-import com.cronos.onlinereview.phases.lookup.PhaseTypeLookupUtility;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
-import com.cronos.onlinereview.phases.lookup.UploadStatusLookupUtility;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;

@@ -128,19 +128,20 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            boolean dependenciesStopped = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            boolean allScorecardsCommitted = false;
-            if (dependenciesStopped) {
-                boolean bPrimaryScreening = isPrimaryScreening(phase);
-
-                if (bPrimaryScreening) {
-                    allScorecardsCommitted = arePrimaryScorecardsCommitted(phase);
-                } else {
-                    allScorecardsCommitted = areScorecardsCommitted(phase);
-                }
+            if (!PhasesHelper.arePhaseDependenciesMet(phase, false)) {
+                return false;
             }
 
-            return (dependenciesStopped && allScorecardsCommitted);
+            Boolean bPrimaryScreening = isPrimaryScreening(phase);
+            if (bPrimaryScreening == null) {
+                return false;
+            }
+
+            if (bPrimaryScreening.booleanValue()) {
+                return arePrimaryScorecardsCommitted(phase);
+            } else {
+                return areScorecardsCommitted(phase);
+            }
         }
     }
 
@@ -414,7 +415,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      *
      * @throws PhaseHandlingException if an error occurs during data retrieval or if data is inconsistent.
      */
-    private boolean isPrimaryScreening(Phase phase) throws PhaseHandlingException {
+    private Boolean isPrimaryScreening(Phase phase) throws PhaseHandlingException {
         Connection conn = null;
 
         try {
@@ -434,17 +435,17 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 screeners = new Resource[0];
             }
 
-            //if both searches returned more than one row throw exception
+            //if both searches returned more than one row
             if ((primaryScreeners.length > 0) && (screeners.length > 0)) {
-                throw new PhaseHandlingException("Inconsistent data: Multiple primary and individual screeners");
+                return null;
             }
 
             if (primaryScreeners.length > 0) {
-                return true;
+                return Boolean.TRUE;
             } else if (screeners.length > 0) {
-                return false;
+                return Boolean.FALSE;
             } else {
-                throw new PhaseHandlingException("Inconsistent data: No primary or individual screeners");
+                return null;
             }
         } finally {
             PhasesHelper.closeConnection(conn);
