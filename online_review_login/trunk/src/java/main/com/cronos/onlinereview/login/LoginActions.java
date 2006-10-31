@@ -214,6 +214,7 @@ public class LoginActions extends DispatchAction {
             DynaValidatorForm validatorForm = (DynaValidatorForm) form;
             String userName = getFormProperty(validatorForm, Util.USERNAME);
             String password = getFormProperty(validatorForm, Util.PASSWORD);
+            String projectId = request.getParameter(Util.REDIRECT_TO_PROJECT_ID);
 
             // create a principal with user name and password
             Principal principal = new Principal("dummy");
@@ -224,7 +225,12 @@ public class LoginActions extends DispatchAction {
             Response authResponse = authenticator.authenticate(principal);
             authResponseParser.setLoginState(principal, authResponse, request, response);
             if (authResponse.isSuccessful()) {
-                return mapping.findForward("success");
+                if (projectId == null || projectId.trim().length() == 0) {
+                    return mapping.findForward("success");
+                } else {            
+                    return cloneForwardAndAppendToPath(
+                            mapping.findForward("redirectToProject"), "&pid=" + projectId);
+                }
             } else {
                 return mapping.findForward("failure");
             }
@@ -241,6 +247,34 @@ public class LoginActions extends DispatchAction {
             recordException(e);
             throw e;
         }
+    }
+
+    /**
+     * This static method clones specified action forward and appends specified string argument to
+     * the path of the newly-created forward.
+     *
+     * @return cloned and mofied action forward.
+     * @param forward
+     *            an action forward to clone.
+     * @param arg0
+     *            a string that should be appended to the path of the newly-cloned forward. This
+     *            parameter must not be <code>null</code>, but can be an empty string.
+     * @throws IllegalArgumentException
+     *             if any of the parameters are <code>null</code>.
+     */
+    private static ActionForward cloneForwardAndAppendToPath(ActionForward forward, String arg0) {
+        // Create new ActionForward object
+        ActionForward clonedForward = new ActionForward();
+
+        // Clone (copy) the fields
+        clonedForward.setModule(forward.getModule());
+        clonedForward.setName(forward.getName());
+        clonedForward.setRedirect(forward.getRedirect());
+        // Append string argument
+        clonedForward.setPath(forward.getPath() + arg0);
+
+        // Return the newly-created action forward
+        return clonedForward;
     }
 
     /**
