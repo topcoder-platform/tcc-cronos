@@ -754,7 +754,7 @@ class Helper {
             // if auto-commit mode is disabled, try to set transaction isolation
             // level to Connection.TRANSACTION_SERIALIZABLE.
             if (!autoCommit) {
-                conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+                //conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             }
 
             return conn;
