@@ -500,6 +500,9 @@ final class PhasesHelper {
             Filter phaseIdFilter = ResourceFilterBuilder.createPhaseIdFilter(phaseId);
             Filter fullFilter = SearchBundle.buildAndFilter(resourceRoleFilter, phaseIdFilter);
             Resource[] reviewers = managerHelper.getResourceManager().searchResources(fullFilter);
+            if (reviewers.length == 0) {
+                return new Review[0];
+            }
 
             //create reviewer ids array
             Long[] reviewerIds = new Long[reviewers.length];

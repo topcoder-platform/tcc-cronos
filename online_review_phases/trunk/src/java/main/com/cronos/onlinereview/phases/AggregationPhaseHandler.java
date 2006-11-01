@@ -122,25 +122,26 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
-            //return true if all dependencies have stopped and start time has been reached and there is a winner.
-            boolean canPhaseStart = PhasesHelper.canPhaseStart(phase);
-
-            if (canPhaseStart) {
-                //check if there is a winner.
-                Connection conn = null;
-                try {
-                    conn = createConnection();
-                    Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
-                            conn, phase.getProject().getId());
-
-                    //return true if there is a winner
-                    return (winner != null);
-                } finally {
-                    PhasesHelper.closeConnection(conn);
-                }
+            //return true if all dependencies have stopped and start time has been reached and there is a winner
+            //and one aggregator.
+            if (!PhasesHelper.canPhaseStart(phase)) {
+                return false;
             }
 
-            return false;
+            Connection conn = null;
+            try {
+                conn = createConnection();
+                Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                        conn, phase.getProject().getId());
+
+                Resource[] aggregator = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+                        conn, new String[] {"Aggregator"}, phase.getId());
+
+                //return true if there is a winner and an aggregator
+                return (winner != null) && (aggregator.length == 1);
+            } finally {
+                PhasesHelper.closeConnection(conn);
+            }
         } else {
             //return true if all dependencies have stopped and aggregation worksheet exists.
             return (PhasesHelper.arePhaseDependenciesMet(phase, false)
