@@ -1530,6 +1530,10 @@ public class SqlResourcePersistence implements ResourcePersistence {
             throw new ResourcePersistenceException(
                     "Failed to load the Resource from ResultSet.", e);
         }
+        finally
+        {
+          Util.closeResultSet(rs);
+        }
     }
 
     /**
