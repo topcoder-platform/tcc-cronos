@@ -176,7 +176,10 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
 
             //get the next screening phase
-            Phase screeningPhase = PhasesHelper.locatePhase(phase, "Screening", true);
+            Phase screeningPhase = PhasesHelper.locatePhase(phase, "Screening", true, false);
+            if (screeningPhase == null) {
+                return 0;
+            }
             long screeningPhaseId = screeningPhase.getId();
 
             //get reviews for the phase

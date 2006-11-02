@@ -186,7 +186,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                     phase.getProject().getId());
 
             //locate previous review phase
-            Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false);
+            Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, true);
             long reviewPhaseId = reviewPhase.getId();
 
             //Search all review scorecard for the review phase
@@ -334,7 +334,10 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     private boolean allAppealsResolved(Phase phase) throws PhaseHandlingException {
         //Find appeals : Go back to the nearest Review phase
-        Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false);
+        Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, false);
+        if (reviewPhase == null) {
+            return false;
+        }
         long reviewPhaseId = reviewPhase.getId();
         Connection conn = null;
 

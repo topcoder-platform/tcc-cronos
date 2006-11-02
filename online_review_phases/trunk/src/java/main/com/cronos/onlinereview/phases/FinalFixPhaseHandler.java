@@ -6,8 +6,10 @@ package com.cronos.onlinereview.phases;
 import com.cronos.onlinereview.phases.lookup.UploadStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtility;
 
+import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.deliverable.search.UploadFilterBuilder;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
@@ -106,7 +108,10 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             }
 
             //Get nearest Final Review phase
-            Phase finalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", true);
+            Phase finalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", true, false);
+            if (finalReviewPhase == null) {
+                return false;
+            }
             Connection conn = null;
 
             try {
@@ -172,7 +177,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         throws PhaseHandlingException {
         //Check if the Final Review worksheet is created
         //Get nearest Final Review phase
-        Phase finalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", true);
+        Phase finalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", true, true);
 
         Connection conn = null;
 
@@ -198,22 +203,57 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                 finalWorksheet.setCommitted(false);
 
                 //Locate the nearest backward Aggregation phase
-                Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation", false);
+                Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
+                if (aggPhase != null) {
+                    //Create final review from aggregation worksheet
 
-                //Search the aggregated review scorecard
-                Review aggWorksheet = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), aggPhase.getId());
+                    //Search the aggregated review scorecard
+                    Review aggWorksheet = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), aggPhase.getId());
 
-                if (aggWorksheet == null) {
-                    throw new PhaseHandlingException("aggregation worksheet does not exist.");
+                    if (aggWorksheet == null) {
+                        throw new PhaseHandlingException("aggregation worksheet does not exist.");
+                    }
+
+                    //copy the comments and review items
+                    PhasesHelper.copyComments(aggWorksheet, finalWorksheet, COMMENT_TYPES_TO_COPY, null);
+                    PhasesHelper.copyFinalReviewItems(aggWorksheet, finalWorksheet);
+
+                    //set the ID of a scorecard which the review scorecard corresponds to
+                    finalWorksheet.setScorecard(aggWorksheet.getScorecard());
+                    finalWorksheet.setSubmission(aggWorksheet.getSubmission());
+                } else {
+                    //Create final review from review scorecards
+
+                    //copy the comments from review scorecards
+                    Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, true);
+
+                    //find winning submitter.
+                    Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                            conn, phase.getProject().getId());
+                    if (winningSubmitter == null) {
+                        throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
+                    }
+
+                    // find the winning submission
+                    Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
+                    Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
+                    if (submissions == null || submissions.length != 1) {
+                        throw new PhaseHandlingException("No winning submission for project with id"
+                                + phase.getProject().getId());
+                    }
+                    Long winningSubmissionId = new Long(submissions[0].getId());
+
+                    //Search all review scorecard from review phase for the winning submitter
+                    Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
+                        reviewPhase.getId(), PhasesHelper.REVIEWER_ROLE_NAMES, winningSubmissionId);
+
+                    for (int r = 0; r < reviews.length; r++) {
+                        finalWorksheet.setScorecard(reviews[r].getScorecard());
+                        finalWorksheet.setSubmission(reviews[r].getSubmission());
+                        PhasesHelper.copyComments(reviews[r], finalWorksheet, COMMENT_TYPES_TO_COPY, null);
+                        PhasesHelper.copyReviewItems(reviews[r], finalWorksheet, COMMENT_TYPES_TO_COPY);
+                    }
                 }
-
-                //copy the comments and review items
-                PhasesHelper.copyComments(aggWorksheet, finalWorksheet, COMMENT_TYPES_TO_COPY, null);
-                PhasesHelper.copyFinalReviewItems(aggWorksheet, finalWorksheet);
-
-                //set the ID of a scorecard which the review scorecard corresponds to
-                finalWorksheet.setScorecard(aggWorksheet.getScorecard());
-                finalWorksheet.setSubmission(aggWorksheet.getSubmission());
 
                 //persist the review
                 getManagerHelper().getReviewManager().createReview(finalWorksheet, operator);
@@ -238,6 +278,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when persisting upload", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

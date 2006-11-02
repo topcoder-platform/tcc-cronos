@@ -216,7 +216,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 aggWorksheet.setAuthor(aggregator.getId());
 
                 //copy the comments from review scorecards
-                Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false);
+                Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, true);
 
                 //find winning submitter.
                 Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),

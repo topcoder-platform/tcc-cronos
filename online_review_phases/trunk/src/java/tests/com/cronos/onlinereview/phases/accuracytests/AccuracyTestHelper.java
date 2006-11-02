@@ -247,7 +247,7 @@ public class AccuracyTestHelper {
     }
 
     /**
-     * TODO
+     * Add dependency
      *
      * @param dependent
      * @param dependency
@@ -295,7 +295,7 @@ public class AccuracyTestHelper {
     }
 
     /**
-     * TODO
+     * Get phase
      *
      * @param type
      * @param phases

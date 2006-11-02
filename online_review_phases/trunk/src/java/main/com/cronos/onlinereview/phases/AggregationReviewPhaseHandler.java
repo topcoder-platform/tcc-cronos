@@ -262,8 +262,11 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         Comment[] comments = getAggregationWorksheet(phase).getAllComments();
 
         //Locate the nearest Review and Aggregation phase
-        Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false);
-        Phase aggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false);
+        Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, false);
+        Phase aggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
+        if (reviewPhase == null || aggregationPhase == null) {
+            return false;
+        }
         Connection conn = null;
 
         try {
@@ -312,7 +315,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private Review getAggregationWorksheet(Phase phase) throws PhaseHandlingException {
         //Locate the nearest backward Aggregation phase
-        Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation", false);
+        Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, true);
         Connection conn = null;
 
         try {

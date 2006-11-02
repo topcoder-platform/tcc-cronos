@@ -433,12 +433,13 @@ final class PhasesHelper {
      * @param phase phase to search from.
      * @param phaseType phase type to search.
      * @param forward true to search forwards, false to search backwards.
+     * @param required whether the target phase is required.
      *
      * @return nearest backward or forward phase.
      *
      * @throws PhaseHandlingException if no such phase exists.
      */
-    static Phase locatePhase(Phase phase, String phaseType, boolean forward)
+    static Phase locatePhase(Phase phase, String phaseType, boolean forward, boolean required)
         throws PhaseHandlingException {
         //get all phases for the project
         Phase[] phases = phase.getProject().getAllPhases();
@@ -469,7 +470,11 @@ final class PhasesHelper {
         }
 
         //could not find phase with desired type...
-        throw new PhaseHandlingException("Could not find nearest phase of type " + phaseType);
+        if (required) {
+            throw new PhaseHandlingException("Could not find nearest phase of type " + phaseType);
+        } else {
+            return null;
+        }
     }
 
     /**
