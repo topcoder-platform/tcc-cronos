@@ -188,7 +188,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 String value = (String) comments[i].getExtraInfo();
 
                 if (comments[i].getCommentType().getName().equals("Final Review Comment")) {
-                    if ("Approved".equals(value)) {
+                    if ("Approved".equalsIgnoreCase(value) || "Accepted".equalsIgnoreCase(value)) {
                         continue;
                     } else if ("Rejected".equals(value)) {
                         rejected = true;

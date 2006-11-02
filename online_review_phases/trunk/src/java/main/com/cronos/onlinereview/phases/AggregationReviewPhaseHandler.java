@@ -182,7 +182,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
                 if (commentType.equals("Aggregation Review Comment")
                         || commentType.equals("Submitter Comment")) {
-                    if ("Approved".equals(value)) {
+                    if ("Approved".equalsIgnoreCase(value) || "Accepted".equalsIgnoreCase(value)) {
                         continue;
                     } else if ("Rejected".equals(value)) {
                         rejected = true;
