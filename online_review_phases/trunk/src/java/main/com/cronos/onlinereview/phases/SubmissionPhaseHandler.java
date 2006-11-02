@@ -152,13 +152,12 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
         int submissionNum = PhasesHelper.getIntegerAttribute(phase, "Submission Number");
         int passedNum = 0;
-        // Manual Screening is out of scope of Submission phase, so
-        // here we just check auto screening results
-        //if (bManual) {
-        //    passedNum = getManualScreeningPasses(phase);
-        //} else {
-        passedNum = getAutoScreeningPasses(phase);
-        //}
+
+        if (bManual) {
+            passedNum = getManualScreeningPasses(phase);
+        } else {
+        		passedNum = getAutoScreeningPasses(phase);
+        }
         return (passedNum >= submissionNum);
     }
 
