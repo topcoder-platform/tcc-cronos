@@ -190,7 +190,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 if (comments[i].getCommentType().getName().equals("Final Review Comment")) {
                     if ("Approved".equalsIgnoreCase(value) || "Accepted".equalsIgnoreCase(value)) {
                         continue;
-                    } else if ("Rejected".equals(value)) {
+                    } else if ("Rejected".equalsIgnoreCase(value)) {
                         rejected = true;
 
                         break;

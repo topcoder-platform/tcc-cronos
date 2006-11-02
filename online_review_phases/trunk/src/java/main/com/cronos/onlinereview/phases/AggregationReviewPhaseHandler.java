@@ -184,7 +184,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                         || commentType.equals("Submitter Comment")) {
                     if ("Approved".equalsIgnoreCase(value) || "Accepted".equalsIgnoreCase(value)) {
                         continue;
-                    } else if ("Rejected".equals(value)) {
+                    } else if ("Rejected".equalsIgnoreCase(value)) {
                         rejected = true;
 
                         break;
@@ -344,9 +344,11 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             Comment comment = comments[i];
 
             //the comment should have "Approved" or "Rejected" extra info
+            String extraInfo = (String) comment.getExtraInfo();
             if (comment.getCommentType().getName().equals(commentType)
-                    && ("Approved".equals(comment.getExtraInfo())
-                            || "Rejected".equals(comment.getExtraInfo()))) {
+                    && ("Approved".equalsIgnoreCase(extraInfo)
+                            || "Accepted".equalsIgnoreCase(extraInfo)
+                            || "Rejected".equalsIgnoreCase(extraInfo))) {
                 if (comment.getAuthor() == resourceId) {
                     return true;
                 }
