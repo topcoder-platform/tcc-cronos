@@ -355,6 +355,10 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
                 //Match the submission with its reviews
                 for (int j = 0; j < reviews.length; j++) {
+                    // check if review is committed
+                    if (!reviews[j].isCommitted()) {
+                        return false;
+                    }
                     if (subId == reviews[j].getSubmission()) {
                         //this author of review should also match reviewer id
                         for (int r = 0; r < reviewers.length; r++) {
