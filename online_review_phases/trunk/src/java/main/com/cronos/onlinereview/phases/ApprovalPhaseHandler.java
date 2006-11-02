@@ -143,7 +143,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 phase.getId(), new String[] { "Approver" }, null);
 
             if (approveReviews.length == 0) {
-                throw new PhaseHandlingException("No approval reviews found for phase: " + phase.getId());
+                return false;
             }
 
             //get min score
