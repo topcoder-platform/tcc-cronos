@@ -2,6 +2,8 @@
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
+import java.util.Iterator;
+
 import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
@@ -53,6 +55,26 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
     private static final String TYPE_APPEALS_RESPONSE = "Appeals Response";
 
     /**
+     * The magic string for type comment.
+     */
+    private static final String COMMENT_TYPE_COMMENT = "Comment";
+
+    /**
+     * The magic string for type recommended.
+     */
+    private static final String COMMENT_TYPE_RECOMMENDED = "Recommended";
+
+    /**
+     * The magic string for type required.
+     */
+    private static final String COMMENT_TYPE_REQUIRED = "Required";
+
+    /**
+     * The magic string for type appeal response.
+     */
+    private static final String COMMENT_TYPE_APPEAL_RESPONSE = "Appeal Response";
+
+    /**
      * Represents the status of success.
      */
     private static final String SUCCESS = "Success";
@@ -88,9 +110,41 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
     private static final String INVALID_ITEM_ERROR = "Invalid item error";
 
     /**
+     * Represents the status of invalid comment error.
+     */
+    private static final String INVALID_COMMENT_ERROR = "Invalid comment error";
+
+    /**
      * Represents the status of invalid review error.
      */
     private static final String INVALID_REVIEW_ERROR = "Invalid review error";
+
+    /**
+     * <p>
+     * Represents comment type with name "Comment", it is used to modify the original comment type.
+     * This variable is immutable, it is initialized by the constructor to a not null CommentType
+     * obtained from the ReviewManager of the parent class, and used by the service method.
+     * </p>
+     */
+    private final CommentType commentCommentType;
+
+    /**
+     * <p>
+     * Represents comment type with name "Recommended", it is used to modify the original comment type.
+     * This variable is immutable, it is initialized by the constructor to a not null CommentType
+     * obtained from the ReviewManager of the parent class, and used by the service method.
+     * </p>
+     */
+    private final CommentType recommendedCommentType;
+
+    /**
+     * <p>
+     * Represents comment type with name "Required", it is used to modify the original comment type.
+     * This variable is immutable, it is initialized by the constructor to a not null CommentType
+     * obtained from the ReviewManager of the parent class, and used by the service method.
+     * </p>
+     */
+    private final CommentType requiredCommentType;
 
     /**
      * <p>
@@ -159,17 +213,41 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
 
             // get all comment types and find the one with name "Appeal Response"
             CommentType[] commentTypes = getReviewManager().getAllCommentTypes();
-            CommentType type = null;
+            CommentType comment = null;
+            CommentType recommended = null;
+            CommentType required = null;
+            CommentType appealResponse = null;
             for (int i = 0; i < commentTypes.length; i++) {
-                if (commentTypes[i].getName().equals("Appeal Response")) {
-                    type = commentTypes[i];
-                    break;
+                if (commentTypes[i].getName().equals(COMMENT_TYPE_COMMENT)) {
+                    comment = commentTypes[i];
+                } else if (commentTypes[i].getName().equals(COMMENT_TYPE_RECOMMENDED)) {
+                    recommended = commentTypes[i];
+                } else if (commentTypes[i].getName().equals(COMMENT_TYPE_REQUIRED)) {
+                    required = commentTypes[i];
+                } else if (commentTypes[i].getName().equals(COMMENT_TYPE_APPEAL_RESPONSE)) {
+                    appealResponse = commentTypes[i];
                 }
             }
-            if (type == null) {
-                throw new ConfigurationException("No appeal found.");
+            if (comment != null) {
+                this.commentCommentType = comment;
+            } else {
+                throw new ConfigurationException("No comment type Comment found.");
             }
-            this.appealResponseCommentType = type;
+            if (recommended != null) {
+                this.recommendedCommentType = recommended;
+            } else {
+                throw new ConfigurationException("No comment type Recommended found.");
+            }
+            if (required != null) {
+                this.requiredCommentType = required;
+            } else {
+                throw new ConfigurationException("No comment type Required found.");
+            }
+            if (appealResponse != null) {
+                this.appealResponseCommentType = appealResponse;
+            } else {
+                throw new ConfigurationException("No comment type Appeal Response found.");
+            }
 
             // get all phase types and find the review phase type id and appeals phase type id
             PhaseType[] phaseTypes = getPhaseManager().getAllPhaseTypes();
@@ -403,31 +481,28 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
 
         // get all the comments
         Comment[] comments = item.getAllComments();
-        Comment comment = null;
+        Comment appealResponseComment = null;
 
         // find the one with type appealResponseCommentType
         for (int i = 0; i < comments.length; i++) {
             if (comments[i].getCommentType().getId() == this.appealResponseCommentType.getId()) {
-                comment = comments[i];
+                appealResponseComment = comments[i];
                 break;
             }
         }
 
         // if the comment doesn't exist
-        if (comment == null) {
+        if (appealResponseComment == null) {
             // create a new one and add it to the item
-            comment = new Comment();
-            comment.setCommentType(appealResponseCommentType);
-            comment.setComment(text);
-            comment.setExtraInfo(item.getAnswer());
-            // ISV : The appeal response comment must be associated with reviewer resource but not the external
-            // reference ID for the reviewer
-//            comment.setAuthor(userId.longValue());
-            comment.setAuthor(reviewerResource.getId());
-            item.addComment(comment);
+            appealResponseComment = new Comment();
+            appealResponseComment.setCommentType(appealResponseCommentType);
+            appealResponseComment.setComment(text);
+            appealResponseComment.setExtraInfo(item.getAnswer());
+            appealResponseComment.setAuthor(reviewerResource.getId());
+            item.addComment(appealResponseComment);
         } else {
             // just set the comment text
-            comment.setComment(text);
+            appealResponseComment.setComment(text);
         }
 
         // find the comment with appeal comment type
@@ -447,6 +522,52 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
 
         // update the item
         item.setAnswer(answer);
+
+        // WB - allow modify the type of the original comments
+        for (Iterator itr = request.getAllParameterNames().iterator(); itr.hasNext();) {
+            String paramName = (String) itr.next();
+            if (!paramName.startsWith("CommentType")) {
+                continue;
+            }
+            String commentId = paramName.substring("CommentType".length());
+            String newType = request.getParameter(paramName);
+
+            // find the original comment
+            Comment originalComment = null;
+            for (int i = 0; i < comments.length; i++) {
+                if (commentId.equals(String.valueOf(comments[i].getId()))) {
+                    originalComment = comments[i];
+                    break;
+                }
+            }
+            if (originalComment == null) {
+                return AjaxSupportHelper.createAndLogError(request.getType(),
+                        INVALID_COMMENT_ERROR, "The original comment with id " + commentId + " can not be found.",
+                        "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+            }
+
+            // verify the comment is of one of the three types
+            if (originalComment.getCommentType().getId() != commentCommentType.getId()
+                    && originalComment.getCommentType().getId() != recommendedCommentType.getId()
+                    && originalComment.getCommentType().getId() != requiredCommentType.getId()) {
+                return AjaxSupportHelper.createAndLogError(request.getType(),
+                        INVALID_COMMENT_ERROR, "The original comment with id " + commentId + " can not be modified.",
+                        "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+            }
+
+            // verify the new comment can be set
+            if (COMMENT_TYPE_COMMENT.equals(newType)) {
+                originalComment.setCommentType(commentCommentType);
+            } else if (COMMENT_TYPE_RECOMMENDED.equals(newType)) {
+                originalComment.setCommentType(recommendedCommentType);
+            } else if (COMMENT_TYPE_REQUIRED.equals(requiredCommentType)) {
+                originalComment.setCommentType(requiredCommentType);
+            } else {
+                return AjaxSupportHelper.createAndLogError(request.getType(),
+                        INVALID_COMMENT_ERROR, "The new comment type " + newType + " can not be recognized.",
+                        "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+            }
+        }
 
         // calculate the review score
         // get the scorecard id from the review

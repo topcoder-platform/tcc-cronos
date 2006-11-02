@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -327,6 +328,17 @@ public final class AjaxRequest {
      */
     public String getType() {
         return type;
+    }
+
+    /**
+     * <p>
+     * Returns all the parameter names.
+     * </p>
+     *
+     * @return all the parameter names.
+     */
+    public Set getAllParameterNames() {
+        return new HashSet(parameters.keySet());
     }
 
     /**
