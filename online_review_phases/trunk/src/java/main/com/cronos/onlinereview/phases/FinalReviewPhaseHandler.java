@@ -88,24 +88,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
-            //return true if all dependencies have stopped and start time has been reached and there is
-            //a final reviewer
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
-            }
-
-            Connection conn = null;
-            try {
-                conn = createConnection();
-
-                Resource[] finalReviewer = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                        conn, new String[] {"Final Reviewer"}, phase.getId());
-
-                //return true if there is a final reviewer
-                return (finalReviewer.length == 1);
-            } finally {
-                PhasesHelper.closeConnection(conn);
-            }
+            //return true if all dependencies have stopped and start time has been reached
+            return PhasesHelper.canPhaseStart(phase);
         } else {
             return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && isFinalWorksheetCommitted(phase));

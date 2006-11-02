@@ -101,7 +101,25 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
         if (toStart) {
             //return true if all dependencies have stopped and start time has been reached.
-            return PhasesHelper.canPhaseStart(phase);
+            if (!PhasesHelper.canPhaseStart(phase)) {
+                return false;
+            }
+
+            //Get nearest Final Review phase
+            Phase finalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", true);
+            Connection conn = null;
+
+            try {
+                conn = createConnection();
+
+                Resource[] finalReviewer = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+                        conn, new String[] {"Final Reviewer"}, finalReviewPhase.getId());
+
+                //return true if there is a final reviewer
+                return (finalReviewer.length == 1);
+            } finally {
+                PhasesHelper.closeConnection(conn);
+            }
         } else {
             //return true if all dependencies have stopped and final fix exists.
             return (PhasesHelper.arePhaseDependenciesMet(phase, false)
