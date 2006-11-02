@@ -671,19 +671,25 @@ final class PhasesHelper {
     static ScreeningTask[] getScreeningTasks(ManagerHelper managerHelper, Phase phase)
         throws PhaseHandlingException {
         try {
+            
             //get the submissions for the project
             Submission[] submissions = searchSubmissionsForProject(managerHelper.getUploadManager(),
                 phase.getProject().getId());
-
+            //System.out.println("Getting Screening Tasks for project - " + phase.getProject().getId());
+            //System.out.print("Submission IDs : [");
             //get upload ids for all submissions
             long[] uploadIds = new long[submissions.length];
-
             for (int i = 0; i < submissions.length; i++) {
                 uploadIds[i] = submissions[i].getUpload().getId();
+                //System.out.print(submissions[i].getId() + ":" + uploadIds[i] + ", ");
             }
-
+            //System.out.println("]");
             //get screening tasks for the upload ids
-            return managerHelper.getScreeningManager().getScreeningTasks(uploadIds);
+            if (uploadIds.length == 0) {
+                return new ScreeningTask[]{};
+            } else {
+                return managerHelper.getScreeningManager().getScreeningTasks(uploadIds);
+            }
         } catch (ScreeningTaskDoesNotExistException e) {
             throw new PhaseHandlingException("There was a screening retrieval error", e);
         } catch (com.cronos.onlinereview.autoscreening.management.PersistenceException e) {
