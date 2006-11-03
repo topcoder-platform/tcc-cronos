@@ -249,8 +249,10 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             //again iterate over submissions to set the initial score and placement
             for (int iSub = 0; iSub < subs.length; iSub++) {
                 Submission submission = subs[iSub];
-                float aggScore = placements[iSub].getAggregatedScore();
-                int placement = placements[iSub].getRank();
+                // retrieve suitable rankedSubmission by submission id
+                RankedSubmission rankedSubmission = getRankedSubmissionById(placements, submission.getId());
+                float aggScore = rankedSubmission.getAggregatedScore();
+                int placement = rankedSubmission.getRank();
 
                 //update submitter's final score
                 long submitterId = submission.getUpload().getOwner();
@@ -322,6 +324,24 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         } finally {
             PhasesHelper.closeConnection(conn);
         }
+    }
+
+    /**
+     * Return suitable rankedSubmission for given submissionId.
+     * 
+     * @param rankedSubmissions the rankedSubmission array
+     * @param submissionId the submissionId
+     * @return rankedSubmission
+     * @throws PhaseHandlingException
+     */
+    private RankedSubmission getRankedSubmissionById(RankedSubmission[] rankedSubmissions, long submissionId)
+        throws PhaseHandlingException {
+        for (int i = 0; i < rankedSubmissions.length; i++) {
+            if (rankedSubmissions[i].getId() == submissionId) {
+                return rankedSubmissions[i];
+            }
+        }
+        throw new PhaseHandlingException("rankedSubmissions not found for submissionId: " + submissionId);
     }
 
     /**
