@@ -13,6 +13,7 @@ import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
 import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
@@ -361,6 +362,22 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                         appealCount++;
                     } else if ("Appeal Response".equals(commentType)) {
                         responseCount++;
+                    }
+                }
+
+                Item[] items = reviews[i].getAllItems();
+
+                for (int j = 0; j < items.length; ++j) {
+                    comments = items[j].getAllComments();
+
+                    for (int c = 0; c < comments.length; c++) {
+                        String commentType = comments[c].getCommentType().getName();
+
+                        if ("Appeal".equals(commentType)) {
+                            appealCount++;
+                        } else if ("Appeal Response".equals(commentType)) {
+                            responseCount++;
+                        }
                     }
                 }
 
