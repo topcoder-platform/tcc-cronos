@@ -39,7 +39,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         // stress tests
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
             // load the deliverables
-            Deliverable[] deliverables = persistence.loadDeliverables(1, 2);
+            Deliverable[] deliverables = persistence.loadDeliverables(1, 2, 1);
             // assert the accuracy
             assertEquals("The length of the deliverables is not correct.", 1, deliverables.length);
 
@@ -64,7 +64,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         Date start = new Date();
 
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
-            Deliverable diverable = persistence.loadDeliverable(1, 1, 1);
+            Deliverable diverable = persistence.loadDeliverable(1, 1, 1, 1);
             assertNull("The record does not exists.", diverable);
         }
 
@@ -86,17 +86,19 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         // creates the query ids
         long[] ids = new long[10];
         long[] idstwo = new long[10];
+        long[] idsthree = new long[10];
 
         // sets the ids
         for (int i = 0; i < 10; i++) {
             ids[i] = i + 1;
             idstwo[i] = i + 2;
+            idsthree[i] = 1;
         }
 
         long[] expected = new long[] {2, 1};
 
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
-            Deliverable[] deliverables = persistence.loadDeliverables(ids, idstwo);
+            Deliverable[] deliverables = persistence.loadDeliverables(ids, idstwo, idsthree);
             assertIds(expected, deliverables);
         }
 
@@ -140,17 +142,19 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         // creates the query ids
         long[] id1s = new long[10];
         long[] id2s = new long[10];
+        long[] id3s = new long[10];
 
         // sets the ids
         for (int i = 0; i < 10; i++) {
             id1s[i] = i + 1;
             id2s[i] = i + 3;
+            id3s[i] = 1;
         }
 
         long[] expected = new long[] {};
 
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
-            Deliverable[] deliverables = persistence.loadDeliverables(id1s, id2s);
+            Deliverable[] deliverables = persistence.loadDeliverables(id1s, id2s, id3s);
             assertIds(expected, deliverables);
         }
 

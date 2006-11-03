@@ -401,14 +401,15 @@ public class DemoTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory);
 
         // load a "per submission" deliverable from the persistence
-        Deliverable deliverable = persistence.loadDeliverable(2, 1, 1);
+        Deliverable deliverable = persistence.loadDeliverable(2, 1, 1, 1);
         // the above loading can be batched.
-        Deliverable[] deliverables1 = persistence.loadDeliverables(new long[] {2, 1}, new long[] {
-            1, 2});
+        Deliverable[] deliverables1 = persistence.loadDeliverables(
+                new long[] {2, 1}, new long[] {1, 2}, new long[] {1, 1}, new long[] {1, 1});
 
         // load a general deliverable from the persistence
-        Deliverable[] deliverables2 = persistence.loadDeliverables(2, 2);
+        Deliverable[] deliverables2 = persistence.loadDeliverables(2, 2, 1);
         // the above loading can be batched.
-        Deliverable[] deliverables3 = persistence.loadDeliverables(new long[] {2, 1}, new long[] {1, 2});
+        Deliverable[] deliverables3 = persistence.loadDeliverables(
+                new long[] {2, 1}, new long[] {1, 2}, new long[] {1, 1});
     }
 }

@@ -40,18 +40,18 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * Represents the sql statement to load deliverables with submission.
      */
     private static final String LOAD_DELIVERABLES_WITH_SUBMISSION_SQL = "SELECT "
-        + "upload.project_id, deliverable_lu.phase_type_id, resource.resource_id, "
+        + "upload.project_id, project_phase.project_phase_id, resource.resource_id, "
         + "submission.submission_id, deliverable_lu.required, "
         + "deliverable_lu.deliverable_id, deliverable_lu.create_user, deliverable_lu.create_date, "
         + "deliverable_lu.modify_user, deliverable_lu.modify_date, "
         + "deliverable_lu.name, deliverable_lu.description "
         + "FROM deliverable_lu "
-        + "INNER JOIN resource " + "ON resource.resource_role_id = deliverable_lu.resource_role_id "
-        + "INNER JOIN upload " + "ON upload.project_id=resource.project_id "
-        + "INNER JOIN submission " + "ON submission.upload_id = upload.upload_id "
-        + "INNER JOIN submission_status_lu "
-        + "ON submission.submission_status_id=submission_status_lu.submission_status_id "
-        + "WHERE deliverable_lu.per_submission=1 " + "AND submission_status_lu.name='Active' AND ";
+        + "INNER JOIN resource ON resource.resource_role_id = deliverable_lu.resource_role_id "
+        + "INNER JOIN project_phase ON project_phase.project_id = resource.project_id AND project_phase.phase_type_id = deliverable_lu.phase_type_id "
+        + "INNER JOIN upload ON upload.project_id = resource.project_id "
+        + "INNER JOIN submission ON submission.upload_id = upload.upload_id "
+        + "INNER JOIN submission_status_lu ON submission.submission_status_id = submission_status_lu.submission_status_id "
+        + "WHERE deliverable_lu.per_submission = 1 AND submission_status_lu.name = 'Active' AND ";
 
     /**
      * Represents the column types for the result set which is returned by
@@ -66,14 +66,15 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * Represents the sql statement to load deliverables without submission.
      */
     private static final String LOAD_DELIVERABLES_WITHOUT_SUBMISSION_SQL = "SELECT "
-        + "resource.project_id, deliverable_lu.phase_type_id, "
+        + "resource.project_id, project_phase.project_phase_id, "
         + "resource.resource_id, deliverable_lu.required, "
         + "deliverable_lu.deliverable_id, deliverable_lu.create_user, deliverable_lu.create_date, "
         + "deliverable_lu.modify_user, deliverable_lu.modify_date, "
         + "deliverable_lu.name, deliverable_lu.description "
         + "FROM deliverable_lu "
-        + "INNER JOIN resource " + "ON resource.resource_role_id = deliverable_lu.resource_role_id "
-        + "WHERE deliverable_lu.per_submission=0 AND ";
+        + "INNER JOIN resource ON resource.resource_role_id = deliverable_lu.resource_role_id "
+        + "INNER JOIN project_phase ON project_phase.project_id = resource.project_id AND project_phase.phase_type_id = deliverable_lu.phase_type_id "
+        + "WHERE deliverable_lu.per_submission = 0 AND ";
 
 
     /**
@@ -151,17 +152,20 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      *            The id of the deliverable
      * @param resourceId
      *            The resource id of deliverable
+     * @param phaseId
+     *            The phase id of deliverable
      * @throws IllegalArgumentException
      *             If deliverableId is <= 0 or resourceId <=0
      * @throws DeliverablePersistenceException
      *             If there is an error when reading the persistence
      */
-    public Deliverable[] loadDeliverables(long deliverableId, long resourceId)
+    public Deliverable[] loadDeliverables(long deliverableId, long resourceId, long phaseId)
         throws DeliverablePersistenceException {
         Helper.assertIdNotUnset(deliverableId, "deliverableId");
         Helper.assertIdNotUnset(resourceId, "resourceId");
+        Helper.assertIdNotUnset(phaseId, "phaseId");
 
-        return loadDeliverables(new long[] {deliverableId}, new long[] {resourceId});
+        return loadDeliverables(new long[] {deliverableId}, new long[] {resourceId}, new long[] {phaseId});
     }
 
     /**
@@ -177,6 +181,8 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      *            The id of the deliverable
      * @param resourceId
      *            The resource id of deliverable
+     * @param phaseId
+     *            The phase id of deliverable
      * @param submissionId
      *            The id of the submission the deliverable should be associated
      *            with
@@ -185,14 +191,15 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * @throws DeliverablePersistenceException
      *             If there is an error when reading the persistence data
      */
-    public Deliverable loadDeliverable(long deliverableId, long resourceId, long submissionId)
+    public Deliverable loadDeliverable(long deliverableId, long resourceId, long phaseId, long submissionId)
         throws DeliverablePersistenceException {
         Helper.assertIdNotUnset(deliverableId, "deliverableId");
         Helper.assertIdNotUnset(resourceId, "resourceId");
+        Helper.assertIdNotUnset(phaseId, "phaseId");
         Helper.assertIdNotUnset(submissionId, "submissionId");
 
         Deliverable[] deliverables = loadDeliverables(new long[] {deliverableId},
-            new long[] {resourceId}, new long[] {submissionId});
+            new long[] {resourceId}, new long[] {phaseId}, new long[] {submissionId});
         return deliverables.length == 0 ? null : deliverables[0];
     }
 
@@ -205,6 +212,8 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      *            The ids of deliverables to load
      * @param resourceIds
      *            The resource ids of deliverables to load
+     * @param phaseIds
+     *            The phase ids of deliverables to load
      * @return The loaded deliverables
      * @throws IllegalArgumentException
      *             if deliverableIds or resourceIds is null or any id is <= 0
@@ -213,14 +222,15 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * @throws DeliverablePersistenceException
      *             if there is an error when reading the persistence data
      */
-    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds)
+    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] phaseIds)
         throws DeliverablePersistenceException {
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(deliverableIds, "deliverableIds");
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(resourceIds, "resourceIds");
+        Helper.assertLongArrayNotNulLAndOnlyHasPositive(phaseIds, "phaseIds");
 
-        // if two arrays have different length, thrown IllegalArgumentException
-        if (deliverableIds.length != resourceIds.length) {
-            throw new IllegalArgumentException("deliverableIds and resourceIds should have"
+        if (deliverableIds.length != resourceIds.length
+                || deliverableIds.length != phaseIds.length) {
+            throw new IllegalArgumentException("deliverableIds, resourceIds and phaseIds should have"
                     + " the same number of elements.");
         }
 
@@ -242,6 +252,9 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             stringBuffer.append(" AND ");
             stringBuffer.append("resource.resource_id=");
             stringBuffer.append(resourceIds[i]);
+            stringBuffer.append(" AND ");
+            stringBuffer.append("project_phase.project_phase_id=");
+            stringBuffer.append(phaseIds[i]);
             stringBuffer.append(")");
         }
         stringBuffer.append(')');
@@ -295,6 +308,8 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      *            The ids of deliverables to load
      * @param resourceIds
      *            The resource ids of deliverables to load
+     * @param phaseIds
+     *            The phase ids of deliverables to load
      * @param submissionIds
      *            The ids of the submission for each deliverable
      * @return The loaded deliverables
@@ -305,15 +320,17 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * @throws DeliverablePersistenceException
      *             if there is an error when reading the persistence data
      */
-    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] submissionIds)
+    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] phaseIds, long[] submissionIds)
         throws DeliverablePersistenceException {
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(deliverableIds, "deliverableIds");
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(resourceIds, "resourceIds");
+        Helper.assertLongArrayNotNulLAndOnlyHasPositive(phaseIds, "phaseIds");
         Helper.assertLongArrayNotNulLAndOnlyHasPositive(submissionIds, "submissionIds");
-        if ((deliverableIds.length != submissionIds.length)
-                || (deliverableIds.length != resourceIds.length)) {
+        if (deliverableIds.length != submissionIds.length
+                || deliverableIds.length != phaseIds.length
+                || deliverableIds.length != resourceIds.length) {
             throw new IllegalArgumentException(
-                "deliverableIds, resourceIds and submissionIds should have the same number of elements");
+                "deliverableIds, resourceIds, phaseIds and submissionIds should have the same number of elements");
         }
 
         // simply return an empty Deliverable array if deliverableIds is empty
@@ -337,6 +354,9 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             stringBuffer.append(" AND ");
             stringBuffer.append("resource.resource_id=");
             stringBuffer.append(resourceIds[i]);
+            stringBuffer.append(" AND ");
+            stringBuffer.append("project_phase.project_phase_id=");
+            stringBuffer.append(phaseIds[i]);
             stringBuffer.append(")");
         }
         stringBuffer.append(')');
@@ -394,12 +414,12 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
 
             // get the parameters of the Deliverable's constructor
             long projectId = ((Long) row[startIndex++]).longValue();
-            long phaseTypeId = ((Long) row[startIndex++]).longValue();
+            long phaseId = ((Long) row[startIndex++]).longValue();
             long resourceId = ((Long) row[startIndex++]).longValue();
             boolean required = ((Boolean) row[startIndex++]).booleanValue();
 
             // create a new Deliverable object
-            Deliverable deliverable = new Deliverable(projectId, phaseTypeId, resourceId, null,
+            Deliverable deliverable = new Deliverable(projectId, phaseId, resourceId, null,
                 required);
 
             // then fill the NamedDeliverableStructure fields from startIndex
@@ -447,13 +467,13 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
 
             // get the parameters of the Deliverable's constructor
             long projectId = ((Long) row[startIndex++]).longValue();
-            long phaseTypeId = ((Long) row[startIndex++]).longValue();
+            long phaseId = ((Long) row[startIndex++]).longValue();
             long resourceId = ((Long) row[startIndex++]).longValue();
             Long submissionId = (Long) row[startIndex++];
             boolean required = ((Boolean) row[startIndex++]).booleanValue();
 
             // create a new Deliverable object
-            Deliverable deliverable = new Deliverable(projectId, phaseTypeId, resourceId,
+            Deliverable deliverable = new Deliverable(projectId, phaseId, resourceId,
                 submissionId, required);
 
             // then fill the NamedDeliverableStructure fields from startIndex

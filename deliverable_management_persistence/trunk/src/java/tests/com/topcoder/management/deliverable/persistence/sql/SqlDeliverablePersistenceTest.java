@@ -327,7 +327,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(1, 2);
+        Deliverable[] deliverables = persistence.loadDeliverables(1, 2, 1);
 
         assertEquals("1 results", 1, deliverables.length);
 
@@ -361,7 +361,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(2, 3);
+        Deliverable[] deliverables = persistence.loadDeliverables(2, 3, 1);
 
         assertEquals("1 results", 1, deliverables.length);
 
@@ -396,7 +396,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(10, 1);
+        Deliverable[] deliverables = persistence.loadDeliverables(10, 1, 1);
 
         assertEquals("0 results", 0, deliverables.length);
     }
@@ -417,7 +417,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(-1, 1);
+            persistence.loadDeliverables(-1, 1, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableId [-1] should not be UNSET_ID.", e.getMessage());
@@ -440,7 +440,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 3}, new long[] {2, 2});
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 3}, new long[] {2, 2}, new long[] {1, 1});
 
         assertEquals("1 results", 1, deliverables.length);
 
@@ -474,7 +474,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 2}, new long[] {2, 3});
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 2}, new long[] {2, 3}, new long[] {1, 1});
 
         assertEquals("2 results", 2, deliverables.length);
 
@@ -522,7 +522,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[0], new long[0]);
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[0], new long[0], new long[0]);
 
         assertEquals("0 results", 0, deliverables.length);
     }
@@ -543,7 +543,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(null, null);
+            persistence.loadDeliverables(null, null, null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableIds should not be null.", e.getMessage());
@@ -566,7 +566,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[] {1, -1}, new long[] {1, 1});
+            persistence.loadDeliverables(new long[] {1, -1}, new long[] {1, 1}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableIds should only contain positive values.", e.getMessage());
@@ -589,11 +589,11 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable deliverable = persistence.loadDeliverable(1, 2, 2);
+        Deliverable deliverable = persistence.loadDeliverable(1, 2, 2, 2);
 
         assertEquals("check id", 1, deliverable.getId());
         assertEquals("check project id", 2, deliverable.getProject());
-        assertEquals("check phase type id", 2, deliverable.getPhase());
+        assertEquals("check phase id", 2, deliverable.getPhase());
         assertEquals("check resource id", 2, deliverable.getResource());
         assertEquals("check submission id", new Long(2), deliverable.getSubmission());
         assertEquals("check required", true, deliverable.isRequired());
@@ -620,7 +620,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable deliverable = persistence.loadDeliverable(2, 1, 1);
+        Deliverable deliverable = persistence.loadDeliverable(2, 1, 1, 1);
 
         assertNull("deliverable should be null", deliverable);
     }
@@ -641,7 +641,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverable(-1, 2, 2);
+            persistence.loadDeliverable(-1, 2, 2, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableId [-1] should not be UNSET_ID.", e.getMessage());
@@ -664,7 +664,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverable(1, -1, 2);
+            persistence.loadDeliverable(1, -1, 2, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("resourceId [-1] should not be UNSET_ID.", e.getMessage());
@@ -687,7 +687,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 1, 2, 2},
-            new long[] {1, 2, 1, 2});
+            new long[] {1, 2, 1, 2}, new long[] {1, 1, 1, 1});
 
         assertEquals("1 result", 1, deliverables.length);
 
@@ -721,7 +721,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
             "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[0], new long[0]);
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[0], new long[0], new long[0]);
 
         assertEquals("0 results", 0, deliverables.length);
     }
@@ -742,7 +742,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(null, new long[] {1});
+            persistence.loadDeliverables(null, new long[] {1}, new long[] {1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableIds should not be null.", e.getMessage());
@@ -765,7 +765,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[] {1}, null);
+            persistence.loadDeliverables(new long[] {1}, null, new long[] {1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("resourceIds should not be null.", e.getMessage());
@@ -788,7 +788,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[] {1, -1}, new long[] {1, 2});
+            persistence.loadDeliverables(new long[] {1, -1}, new long[] {1, 2}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableIds should only contain positive values.", e.getMessage());
@@ -811,7 +811,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[] {1, 2}, new long[] {1, -1});
+            persistence.loadDeliverables(new long[] {1, 2}, new long[] {1, -1}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("resourceIds should only contain positive values.", e.getMessage());
@@ -835,7 +835,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[] {1, 2, 3}, new long[] {1, 2});
+            persistence.loadDeliverables(new long[] {1, 2, 3}, new long[] {1, 2}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals(

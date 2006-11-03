@@ -99,7 +99,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslong_1() throws Exception {
         try {
-            persistence.loadDeliverables(0, 1);
+            persistence.loadDeliverables(0, 1, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -115,7 +115,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslong_2() throws Exception {
         try {
-            persistence.loadDeliverables(0, 1);
+            persistence.loadDeliverables(0, 1, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -131,7 +131,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverable_1() throws Exception {
         try {
-            persistence.loadDeliverable(0, 1, 1);
+            persistence.loadDeliverable(0, 1, 1, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -147,7 +147,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverable_2() throws Exception {
         try {
-            persistence.loadDeliverable(-1, 1, 1);
+            persistence.loadDeliverable(-1, 1, 1, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -163,7 +163,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverable_3() throws Exception {
         try {
-            persistence.loadDeliverable(1, 0, 1);
+            persistence.loadDeliverable(1, 0, 1, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -179,7 +179,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverable_4() throws Exception {
         try {
-            persistence.loadDeliverable(1, -1, 1);
+            persistence.loadDeliverable(1, -1, 1, 1);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -193,7 +193,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslongArray_1() throws Exception {
         try {
-            persistence.loadDeliverables(null, null);
+            persistence.loadDeliverables(null, null, null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -210,7 +210,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslongArray_2() throws Exception {
         try {
-            persistence.loadDeliverables(new long[] { 1, 0, -1, 1 }, new long[] {1, 1, 1, 1});
+            persistence.loadDeliverables(new long[] { 1, 0, -1, 1 }, new long[] {1, 1, 1, 1}, new long[] {1, 1, 1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -224,7 +224,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      *             to junit.
      */
     public void testLoadDeliverableslongArray_4() throws Exception {
-        persistence.loadDeliverables(new long[0], new long[0]);
+        persistence.loadDeliverables(new long[0], new long[0], new long[0]);
     }
 
     /**
@@ -236,7 +236,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslongArraylongArray_1() throws Exception {
         try {
-            persistence.loadDeliverables(null, new long[] { 1 });
+            persistence.loadDeliverables(null, new long[] { 1 }, new long[] {1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -252,7 +252,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslongArraylongArray_2() throws Exception {
         try {
-            persistence.loadDeliverables(new long[] { 1 }, null);
+            persistence.loadDeliverables(new long[] { 1 }, null, new long[] {1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -268,7 +268,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslongArraylongArray_3() throws Exception {
         try {
-            persistence.loadDeliverables(new long[] { 0, 1 }, new long[] { 1, 2 });
+            persistence.loadDeliverables(new long[] { 0, 1 }, new long[] { 1, 2 }, new long[] { 1, 2 });
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -284,7 +284,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslongArraylongArray_4() throws Exception {
         try {
-            persistence.loadDeliverables(new long[] { 1, 2 }, new long[] { 1, 0 });
+            persistence.loadDeliverables(new long[] { 1, 2 }, new long[] { 1, 0 }, new long[] { 1, 2 });
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -300,7 +300,7 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      */
     public void testLoadDeliverableslongArraylongArray_5() throws Exception {
         try {
-            persistence.loadDeliverables(new long[] { 1, 2 }, new long[] { 1, 2, 3 });
+            persistence.loadDeliverables(new long[] { 1, 2 }, new long[] { 1, 2, 3 }, new long[] { 1, 2, 3, 4 });
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -314,6 +314,6 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
      *             to junit.
      */
     public void testLoadDeliverableslongArraylongArray_7() throws Exception {
-        persistence.loadDeliverables(new long[0], new long[0]);
+        persistence.loadDeliverables(new long[0], new long[0], new long[0]);
     }
 }

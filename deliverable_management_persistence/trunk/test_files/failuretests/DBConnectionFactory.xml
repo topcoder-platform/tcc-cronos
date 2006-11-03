@@ -15,7 +15,7 @@
                     </Property>
                     <!-- this database [deliverable1] should not contain any table -->
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://wishingbone:15260/dm:INFORMIXSERVER=or</Value>
+                        <Value>jdbc:informix-sqli://wishingbone:15260/dmp:INFORMIXSERVER=or</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
