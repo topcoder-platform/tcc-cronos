@@ -156,7 +156,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
         if (bManual) {
             passedNum = getManualScreeningPasses(phase);
         } else {
-        		passedNum = getAutoScreeningPasses(phase);
+            passedNum = getAutoScreeningPasses(phase);
         }
         return (passedNum >= submissionNum);
     }

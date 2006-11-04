@@ -347,8 +347,16 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
                     PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
-            if (reviews.length == 0) {
+            if (reviewers.length == 0) {
                 return false;
+            }
+
+            if (phase.getAttribute("Reviewer Number") != null) {
+                int reviewerNum = PhasesHelper.getIntegerAttribute(phase, "Reviewer Number");
+
+                if (reviewers.length < reviewerNum) {
+                    return false;
+                }
             }
 
             //for each submission
