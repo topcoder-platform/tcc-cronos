@@ -1014,16 +1014,15 @@ final class PhasesHelper {
             }
         }
 
-        //clear old phases and add the new phases to the project
-        currentPrj.clearPhases();
-
-        for (int i = 0; i < newPhases.length; i++) {
-            currentPrj.addPhase(newPhases[i]);
+        //add the new phases to the project
+        for (int p = 0; p < newPhaseTypes.length; p++) {
+            Phase newPhase = newPhases[currentPhaseIndex + (p + 1)];
+            currentPrj.addPhase(newPhase);
         }
 
         //set the scheduled start and end times after dependencies are changed
         for (int p = 0; p < newPhases.length; p++) {
-            Phase phase = newPhases[p];
+            Phase phase = newPhases[currentPhaseIndex + (p + 1)];
             phase.setScheduledStartDate(phase.calcStartDate());
             phase.setScheduledEndDate(phase.calcEndDate());
         }
