@@ -560,7 +560,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
                 originalComment.setCommentType(commentCommentType);
             } else if (COMMENT_TYPE_RECOMMENDED.equals(newType)) {
                 originalComment.setCommentType(recommendedCommentType);
-            } else if (COMMENT_TYPE_REQUIRED.equals(requiredCommentType)) {
+            } else if (COMMENT_TYPE_REQUIRED.equals(newType)) {
                 originalComment.setCommentType(requiredCommentType);
             } else {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
