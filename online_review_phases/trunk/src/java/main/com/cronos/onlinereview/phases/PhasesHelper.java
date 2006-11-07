@@ -1022,7 +1022,7 @@ final class PhasesHelper {
 
         //set the scheduled start and end times after dependencies are changed
         for (int p = 0; p < newPhases.length; p++) {
-            Phase phase = newPhases[currentPhaseIndex + (p + 1)];
+            Phase phase = newPhases[p];
             phase.setScheduledStartDate(phase.calcStartDate());
             phase.setScheduledEndDate(phase.calcEndDate());
         }
