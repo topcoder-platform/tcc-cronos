@@ -3,11 +3,9 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 
 import com.topcoder.management.deliverable.Submission;
-import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.PhaseHandlingException;
@@ -150,9 +148,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
-        if (toStart) {
-            updatedFailedSubmissions(phase, operator);
-        } else {
+        if (!toStart) {
             updateSubmissionScores(phase, operator);
         }
 
@@ -247,75 +243,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Problem when aggregating scores", e);
         } finally {
             PhasesHelper.closeConnection(conn);
-        }
-    }
-
-    /**
-     * This method sets the status of all submissions that failed automated screening to "Failed Screening". It
-     * is called from perform method when phase is starting.
-     *
-     * @param phase phase instance.
-     * @param operator the operator name.
-     *
-     * @throws PhaseHandlingException in case of error when retrieving/updating data.
-     */
-    private void updatedFailedSubmissions(Phase phase, String operator)
-        throws PhaseHandlingException {
-        //Check screening type
-        boolean bManual = PhasesHelper.isScreeningManual(phase);
-
-        if (bManual) {
-            //do nothing
-            return;
-        }
-
-        //Find submissions failed automated screening
-        List uploadIds = new ArrayList();
-        ScreeningTask[] screeningTasks = PhasesHelper.getScreeningTasks(getManagerHelper(), phase);
-
-        for (int i = 0; i < screeningTasks.length; i++) {
-            String status = screeningTasks[i].getScreeningStatus().getName();
-
-            if ("Failed".equals(status)) {
-                uploadIds.add(new Long(screeningTasks[i].getUpload()));
-            }
-        }
-
-        //only if there are some failed submissions...
-        if (!uploadIds.isEmpty()) {
-            Connection conn = null;
-            try {
-                //search for uploads which failed submission and get submitter ids.
-                Filter uploadIdFilter = SearchBundle.buildInFilter("upload_id", uploadIds);
-                Upload[] uploads = getManagerHelper().getUploadManager().searchUploads(uploadIdFilter);
-                List failedSubmitterIds = new ArrayList();
-
-                for (int u = 0; u < uploads.length; u++) {
-                    failedSubmitterIds.add(new Long(uploads[u].getOwner()));
-                }
-
-                //search submissions for given submitter ids and project id
-                Filter resourceIdFilter = SearchBundle.buildInFilter("resource_id", failedSubmitterIds);
-                Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(resourceIdFilter);
-
-                //Update failed submission status to "Failed Screening"
-                conn = createConnection();
-
-                SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
-                        "Failed Screening");
-
-                //set status of each submission and persist
-                for (int iSub = 0; iSub < submissions.length; iSub++) {
-                    submissions[iSub].setSubmissionStatus(subStatus);
-                    getManagerHelper().getUploadManager().updateSubmission(submissions[iSub], operator);
-                }
-            } catch (UploadPersistenceException e) {
-                throw new PhaseHandlingException("Problem when retrieving uploads", e);
-            } catch (SearchBuilderException e) {
-                throw new PhaseHandlingException("Problem when search builder", e);
-            } finally {
-                PhasesHelper.closeConnection(conn);
-            }
         }
     }
 

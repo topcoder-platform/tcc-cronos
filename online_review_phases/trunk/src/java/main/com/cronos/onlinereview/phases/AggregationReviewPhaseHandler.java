@@ -229,20 +229,22 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 long newAggPhaseId = allPhases[currentPhaseIndex + 1].getId();
 
                 //copy the old Aggregator resource to the new Aggregation phase.
-                long newAggregatorId = PhasesHelper.createAggregatorOrFinalReviewer(allPhases[currentPhaseIndex - 1],
+                /*long newAggregatorId = */PhasesHelper.createAggregatorOrFinalReviewer(allPhases[currentPhaseIndex - 1],
                         getManagerHelper(), conn, "Aggregator", newAggPhaseId, operator);
 
+                //WB - don't update aggregation worksheet
                 //Set the author of the aggregation worksheet to the id of the newly created Aggregator resource.
-                aggregationWorksheet.setAuthor(newAggregatorId);
+                //aggregationWorksheet.setAuthor(newAggregatorId);
 
+                //WB - don't update aggregation worksheet
                 //update the worksheet
-                getManagerHelper().getReviewManager().updateReview(aggregationWorksheet, operator);
+                //getManagerHelper().getReviewManager().updateReview(aggregationWorksheet, operator);
             }
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);
-        } catch (ReviewManagementException e) {
+        }/* catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review worksheet", e);
-        } finally {
+        } */finally {
             PhasesHelper.closeConnection(conn);
         }
     }

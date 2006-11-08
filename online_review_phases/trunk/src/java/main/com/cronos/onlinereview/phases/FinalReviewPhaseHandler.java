@@ -5,7 +5,6 @@ package com.cronos.onlinereview.phases;
 
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
-import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
@@ -215,22 +214,24 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
 
                 //copy the old final reviewer resource to the new final review phase.
-                long newFinalReviewerId = PhasesHelper.createAggregatorOrFinalReviewer(phase,
+                /*long newFinalReviewerId = */PhasesHelper.createAggregatorOrFinalReviewer(phase,
                         getManagerHelper(), conn, "Final Reviewer", finalReviewPhaseId, operator);
 
+                //WB - don't update final review worksheet
                 //Set the author of the final review worksheet to the id of the newly created Final Reviewer resource.
-                finalWorksheet.setAuthor(newFinalReviewerId);
+                //finalWorksheet.setAuthor(newFinalReviewerId);
 
+                //WB - don't update final review worksheet
                 //update the worksheet
-                getManagerHelper().getReviewManager().updateReview(finalWorksheet, operator);
+                //getManagerHelper().getReviewManager().updateReview(finalWorksheet, operator);
             }
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when connecting to database", e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);
-        } catch (ReviewManagementException e) {
+        }/* catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review worksheet", e);
-        } finally {
+        } */finally {
             PhasesHelper.closeConnection(conn);
         }
     }

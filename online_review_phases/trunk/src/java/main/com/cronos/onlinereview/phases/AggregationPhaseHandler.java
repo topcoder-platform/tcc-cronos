@@ -197,23 +197,30 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
     private void checkAggregationWorksheet(Phase phase, String operator)
         throws PhaseHandlingException {
         //Check if the Aggregation worksheet is created
+        Phase previousAggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
+
         Connection conn = null;
 
         try {
             conn = createConnection();
 
-            Review aggWorksheet = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), phase.getId());
+            //Search for id of the Aggregator
+            Resource[] resource = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                    new String[] { "Aggregator" }, phase.getId());
+            if (resource.length == 0) {
+                throw new PhaseHandlingException("No Aggregator resource found for phase: " + phase.getId());
+            }
+
+            Review aggWorksheet = null;
+            if (previousAggregationPhase != null) {
+                aggWorksheet = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(),
+                        previousAggregationPhase.getId());
+            }
+
             if (aggWorksheet == null) {
-                //Search for id of the Aggregator
-                Resource[] resource = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                        new String[] { "Aggregator" }, phase.getId());
-                if (resource.length == 0) {
-                    throw new PhaseHandlingException("No Aggregator resource found for phase: " + phase.getId());
-                }
-                Resource aggregator = resource[0];
                 //create the worksheet
                 aggWorksheet = new Review();
-                aggWorksheet.setAuthor(aggregator.getId());
+                aggWorksheet.setAuthor(resource[0].getId());
 
                 //copy the comments from review scorecards
                 Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, true);
@@ -248,6 +255,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
             } else {
                 //Mark uncommitted for the worksheet:
+                aggWorksheet.setAuthor(resource[0].getId());
                 aggWorksheet.setCommitted(false);
 
                 //Mark uncommitted for comments:
@@ -258,7 +266,9 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                     comments[i].setExtraInfo(null);
                 }
 
-                getManagerHelper().getReviewManager().updateReview(aggWorksheet, operator);
+                //persist the copy
+                aggWorksheet = PhasesHelper.cloneReview(aggWorksheet);
+                getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
             }
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review", e);

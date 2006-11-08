@@ -1179,6 +1179,52 @@ final class PhasesHelper {
     }
 
     /**
+     * Deep clone a review effectly making all items new.
+     *
+     * @param review the review to be cloned.
+     * @return the cloned review.
+     */
+    static Review cloneReview(Review review) {
+        Review copiedReview = new Review();
+        copiedReview.setAuthor(review.getAuthor());
+        copiedReview.setCommitted(review.isCommitted());
+        copiedReview.setScore(review.getScore());
+        copiedReview.setScorecard(review.getScorecard());
+        copiedReview.setSubmission(review.getSubmission());
+
+        Comment[] comments = review.getAllComments();
+        for (int i = 0; i < comments.length; ++i) {
+            Comment copiedComment = new Comment();
+            copiedComment.setAuthor(comments[i].getAuthor());
+            copiedComment.setComment(comments[i].getComment());
+            copiedComment.setCommentType(comments[i].getCommentType());
+            copiedComment.setExtraInfo(comments[i].getExtraInfo());
+            copiedReview.addComment(copiedComment);
+        }
+
+        Item[] items = review.getAllItems();
+        for (int i = 0; i < items.length; ++i) {
+            Item copiedItem = new Item();
+            copiedItem.setAnswer(items[i].getAnswer());
+            copiedItem.setDocument(items[i].getDocument());
+            copiedItem.setQuestion(items[i].getQuestion());
+            copiedReview.addItem(copiedItem);
+
+            comments = items[i].getAllComments();
+            for (int j = 0; j < comments.length; ++j) {
+                Comment copiedComment = new Comment();
+                copiedComment.setAuthor(comments[j].getAuthor());
+                copiedComment.setComment(comments[j].getComment());
+                copiedComment.setCommentType(comments[j].getCommentType());
+                copiedComment.setExtraInfo(comments[j].getExtraInfo());
+                copiedItem.addComment(copiedComment);
+            }
+        }
+
+        return copiedReview;
+    }
+
+    /**
      * Returns true if the comment is a reviewer comment, false otherwise. The comment is said to be
      * a reviewer comment if it is one of the REVIEWER_COMMENT_TYPES elements.
      *

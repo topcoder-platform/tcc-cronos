@@ -178,24 +178,29 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         //Check if the Final Review worksheet is created
         //Get nearest Final Review phase
         Phase finalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", true, true);
+        Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", false, false);
 
         Connection conn = null;
 
         try {
             conn = createConnection();
 
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, getManagerHelper(),
-                finalReviewPhase.getId());
+            //Search for id of the Final Reviewer
+            Resource[] resources = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                    new String[] { "Final Reviewer" }, finalReviewPhase.getId());
+
+            if (resources.length == 0) {
+                throw new PhaseHandlingException("No Final Reviewer found for phase: " + finalReviewPhase.getId());
+            }
+
+            Review finalWorksheet = null;
+            if (previousFinalReviewPhase != null) {
+                finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, getManagerHelper(),
+                        previousFinalReviewPhase.getId());
+            }
 
             if (finalWorksheet == null) {
                 //create the final review worksheet...
-                //Search for id of the Final Reviewer
-                Resource[] resources = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                        new String[] { "Final Reviewer" }, finalReviewPhase.getId());
-
-                if (resources.length == 0) {
-                    throw new PhaseHandlingException("No Final Reviewer found for phase: " + finalReviewPhase.getId());
-                }
 
                 //create review object
                 finalWorksheet = new Review();
@@ -259,10 +264,12 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                 getManagerHelper().getReviewManager().createReview(finalWorksheet, operator);
             } else {
                 //Mark Final Review worksheet uncommitted
+                finalWorksheet.setAuthor(resources[0].getId());
                 finalWorksheet.setCommitted(false);
 
-                //persist the change
-                getManagerHelper().getReviewManager().updateReview(finalWorksheet, operator);
+                //persist the copy
+                finalWorksheet = PhasesHelper.cloneReview(finalWorksheet);
+                getManagerHelper().getReviewManager().createReview(finalWorksheet, operator);
             }
 
             //delete the earlier final fix if it exists.
