@@ -6,7 +6,6 @@ package com.cronos.onlinereview.phases;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.resource.Resource;
-import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
 
@@ -228,23 +227,12 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 //get the id of the newly created aggregation phase
                 long newAggPhaseId = allPhases[currentPhaseIndex + 1].getId();
 
-                //copy the old Aggregator resource to the new Aggregation phase.
-                /*long newAggregatorId = */PhasesHelper.createAggregatorOrFinalReviewer(allPhases[currentPhaseIndex - 1],
+                PhasesHelper.createAggregatorOrFinalReviewer(allPhases[currentPhaseIndex - 1],
                         getManagerHelper(), conn, "Aggregator", newAggPhaseId, operator);
-
-                //WB - don't update aggregation worksheet
-                //Set the author of the aggregation worksheet to the id of the newly created Aggregator resource.
-                //aggregationWorksheet.setAuthor(newAggregatorId);
-
-                //WB - don't update aggregation worksheet
-                //update the worksheet
-                //getManagerHelper().getReviewManager().updateReview(aggregationWorksheet, operator);
             }
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);
-        }/* catch (ReviewManagementException e) {
-            throw new PhaseHandlingException("Problem when persisting review worksheet", e);
-        } */finally {
+        } finally {
             PhasesHelper.closeConnection(conn);
         }
     }

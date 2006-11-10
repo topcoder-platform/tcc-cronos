@@ -36,7 +36,9 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.resource.search.ResourceRoleFilterBuilder;
 import com.topcoder.management.review.ReviewManagementException;
+import com.topcoder.management.review.ReviewManager;
 import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.ScorecardManager;
@@ -864,6 +866,32 @@ final class PhasesHelper {
     }
 
     /**
+     * utility method to create a CommentType instance with given name.
+     *
+     * @param reviewManager ReviewManager instance used to search for comment type.
+     * @param typeName comment type name.
+     *
+     * @return CommentType instance.
+     *
+     * @throws PhaseHandlingException if comment type could not be found.
+     */
+    static CommentType getCommentType(ReviewManager reviewManager, String typeName)
+        throws PhaseHandlingException {
+        CommentType[] types = null;
+        try {
+            types = reviewManager.getAllCommentTypes();
+        } catch (ReviewManagementException e) {
+            throw new PhaseHandlingException("Error finding comment type with name: " + typeName, e);
+        }
+        for (int i = 0; i < types.length; i++) {
+            if (typeName.equals(types[i].getName())) {
+                return types[i];
+            }
+        }
+        throw new PhaseHandlingException("Could not find comment type with name: " + typeName);
+    }
+    
+    /**
      * utility method to create a UploadStatus instance with given name.
      *
      * @param uploadManager UploadManager instance used to search for submission status.
@@ -972,7 +1000,6 @@ final class PhasesHelper {
                 }
             }
         }
-
 
         //create new phases array which will hold the new phase order
         Phase[] newPhases = new Phase[phases.length + newPhaseTypes.length];

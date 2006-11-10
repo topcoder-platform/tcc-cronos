@@ -126,7 +126,22 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
         if (toStart) {
             //return true if all dependencies have stopped and start time has been reached.
-            return PhasesHelper.canPhaseStart(phase);
+            if (!PhasesHelper.canPhaseStart(phase)) {
+                return false;
+            }
+
+            Connection conn = null;
+            try {
+                conn = createConnection();
+                //Search all "Active" submissions for current project
+                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                        phase.getProject().getId());
+                return (subs.length > 0);
+            } catch (SQLException sqle) {
+                throw new PhaseHandlingException("Failed to search submissions.", sqle);
+            } finally {
+                PhasesHelper.closeConnection(conn);
+            }
         } else {
             if (!PhasesHelper.arePhaseDependenciesMet(phase, false)) {
                 return false;

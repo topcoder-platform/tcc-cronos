@@ -10,6 +10,7 @@ import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
@@ -205,11 +206,12 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
 
             //Search for id of the Aggregator
-            Resource[] resource = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+            Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     new String[] { "Aggregator" }, phase.getId());
-            if (resource.length == 0) {
+            if (aggregators.length == 0) {
                 throw new PhaseHandlingException("No Aggregator resource found for phase: " + phase.getId());
             }
+            String aggregatorUserId = (String) aggregators[0].getProperty("External Reference ID");
 
             Review aggWorksheet = null;
             if (previousAggregationPhase != null) {
@@ -220,10 +222,12 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             if (aggWorksheet == null) {
                 //create the worksheet
                 aggWorksheet = new Review();
-                aggWorksheet.setAuthor(resource[0].getId());
+                aggWorksheet.setAuthor(aggregators[0].getId());
 
                 //copy the comments from review scorecards
                 Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, true);
+                Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                        PhasesHelper.REVIEWER_ROLE_NAMES, reviewPhase.getId());
 
                 //find winning submitter.
                 Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
@@ -252,19 +256,47 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                     PhasesHelper.copyReviewItems(reviews[r], aggWorksheet, COMMENT_TYPES_TO_COPY);
                 }
 
+                //Adding empty comments
+                CommentType aggregationReviewCommentType = PhasesHelper.getCommentType(
+                        getManagerHelper().getReviewManager(), "Aggregation Review Comment");
+                CommentType submitterCommentType = PhasesHelper.getCommentType(
+                        getManagerHelper().getReviewManager(), "Submitter Comment");
+                for (int i = 0; i < reviewers.length; i++) {
+                    if (reviewers[i].getProperty("External Reference ID") == null ||
+                        reviewers[i].getProperty("External Reference ID").equals(aggregatorUserId)) {
+                        continue;
+                    }
+                    Comment comment = new Comment();
+                    comment.setAuthor(reviewers[i].getId());
+                    comment.setComment("");
+                    comment.setCommentType(aggregationReviewCommentType);
+                    aggWorksheet.addComment(comment);
+                }
+                Comment comment = new Comment();
+                comment.setAuthor(winningSubmitter.getId());
+                comment.setComment("");
+                comment.setCommentType(submitterCommentType);
+                aggWorksheet.addComment(comment);
+
                 getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
             } else {
                 //Mark uncommitted for the worksheet:
-                aggWorksheet.setAuthor(resource[0].getId());
+                aggWorksheet.setAuthor(aggregators[0].getId());
                 aggWorksheet.setCommitted(false);
 
                 //Mark uncommitted for comments:
                 Comment[] comments = aggWorksheet.getAllComments();
 
-                //For each comment, Clear comment extra info
+                //For each comment, reset comment extra info
                 for (int i = 0; i < comments.length; i++) {
-                    comments[i].setExtraInfo(null);
-                }
+                    Comment comment = comments[i];
+                    if ("Approved".equalsIgnoreCase((String) comment.getExtraInfo()) ||
+                        "Accepted".equalsIgnoreCase((String) comment.getExtraInfo())) {
+                        comment.setExtraInfo("Approving");
+                    } else if ("Rejected".equalsIgnoreCase((String) comment.getExtraInfo())) {
+                        comment.setExtraInfo(null);
+                    }
+               }
 
                 //persist the copy
                 aggWorksheet = PhasesHelper.cloneReview(aggWorksheet);
