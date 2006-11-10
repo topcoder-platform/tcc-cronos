@@ -78,8 +78,9 @@ public class AggregationReviewDeliverableChecker extends SingleQuerySqlDeliverab
                 + "INNER JOIN comment_type_lu ON review_comment.comment_type_id = comment_type_lu.comment_type_id "
                 + "INNER JOIN review ON review.review_id = review_comment.review_id "
                 + "INNER JOIN resource ON review.resource_id = resource.resource_id "
+                + "INNER JOIN phase_dependency ON resource.project_phase_id = phase_dependency.dependency_phase_id "
                 + "WHERE review_comment.resource_id = ? "
-                + "AND resource.project_phase_id = ? "
+                + "AND phase_dependency.dependent_phase_id = ? "
                 + "AND comment_type_lu.name = 'Aggregation Review Comment' "
                 + "AND (review_comment.extra_info = 'Approved' OR review_comment.extra_info = 'Rejected') "
                 + "GROUP BY review.submission_id";

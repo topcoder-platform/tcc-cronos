@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -102,10 +103,13 @@ public class AppealResponsesDeliverableChecker extends SqlDeliverableChecker {
 
             // execute
             rs = pstmt.executeQuery();
+            // no appeal at all, fill current date for workaround
+            boolean hasAppeals = false;
 
             // the last update date
             Timestamp lastDate = null;
             while (rs.next()) {
+                hasAppeals = true;
                 // get the date, if null - just return
                 Timestamp temp = rs.getTimestamp(1);
                 if (temp == null) {
@@ -121,7 +125,9 @@ public class AppealResponsesDeliverableChecker extends SqlDeliverableChecker {
             }
 
             // if there was a completion date - set it
-            if (lastDate != null) {
+            if (!hasAppeals) {
+                deliverable.setCompletionDate(new Date());
+            } else if (lastDate != null) {
                 deliverable.setCompletionDate(lastDate);
             }
 
