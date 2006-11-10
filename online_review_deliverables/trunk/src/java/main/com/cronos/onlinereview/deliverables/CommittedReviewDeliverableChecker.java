@@ -80,7 +80,6 @@ public class CommittedReviewDeliverableChecker extends SingleQuerySqlDeliverable
      * @return The SQL query string to execute.
      */
     protected String getSqlQuery() {
-        return "SELECT review.modify_date FROM review WHERE committed = 1 AND resource_id = ? "
-                + "AND submission_id = ?";
+        return "SELECT modify_date FROM review WHERE committed = 1 AND resource_id = ? AND submission_id = ?";
     }
 }

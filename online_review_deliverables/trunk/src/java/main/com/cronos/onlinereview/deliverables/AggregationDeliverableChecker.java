@@ -63,7 +63,6 @@ public class AggregationDeliverableChecker extends SingleQuerySqlDeliverableChec
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement) throws SQLException {
         statement.setLong(1, deliverable.getResource());
-        statement.setLong(2, deliverable.getProject());
     }
 
     /**
@@ -75,8 +74,6 @@ public class AggregationDeliverableChecker extends SingleQuerySqlDeliverableChec
      * @return The SQL query string to execute.
      */
     protected String getSqlQuery() {
-        return "SELECT MAX(review.modify_date) FROM review INNER JOIN resource ON "
-                + "review.resource_id = resource.resource_id WHERE committed = 1 AND review.resource_id = ? "
-                + "AND resource.project_id = ?";
+        return "SELECT modify_date FROM review WHERE committed = 1 AND resource_id = ?";
     }
 }

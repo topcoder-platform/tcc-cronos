@@ -65,11 +65,8 @@ public class SubmitterCommentDeliverableChecker extends SingleQuerySqlDeliverabl
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement)
         throws SQLException, DeliverableCheckingException {
-        if (!deliverable.isPerSubmission()) {
-            throw new DeliverableCheckingException("The deliverable is not per submission and cannot be check.");
-        }
-        statement.setLong(1, deliverable.getSubmission().longValue());
-        statement.setLong(2, deliverable.getResource());
+        statement.setLong(1, deliverable.getResource());
+        statement.setLong(2, deliverable.getPhase());
     }
 
     /**
@@ -81,11 +78,14 @@ public class SubmitterCommentDeliverableChecker extends SingleQuerySqlDeliverabl
      * @return The SQL query string to execute.
      */
     protected String getSqlQuery() {
-        return "SELECT MAX(review_comment.modify_date) FROM review_comment "
+        return "SELECT MAX(review_comment.modify_date), review.submission_id FROM review_comment "
                 + "INNER JOIN comment_type_lu ON review_comment.comment_type_id = comment_type_lu.comment_type_id "
                 + "INNER JOIN review ON review.review_id = review_comment.review_id "
-                + "WHERE review.submission_id = ? AND review_comment.resource_id = ? "
-                + "AND comment_type_lu.name = 'Submitter Comment' AND "
-                + "(review_comment.extra_info = 'Approved' OR review_comment.extra_info = 'Rejected')";
+                + "INNER JOIN resource ON review.resource_id = resource.resource_id "
+                + "WHERE review_comment.resource_id = ? "
+                + "AND resource.project_phase_id = ? "
+                + "AND comment_type_lu.name = 'Submitter Comment' "
+                + "AND (review_comment.extra_info = 'Approved' OR review_comment.extra_info = 'Rejected') "
+                + "GROUP BY review.submission_id";
     }
 }

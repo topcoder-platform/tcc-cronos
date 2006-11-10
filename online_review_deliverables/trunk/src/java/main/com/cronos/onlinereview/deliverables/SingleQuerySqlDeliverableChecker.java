@@ -94,6 +94,9 @@ public abstract class SingleQuerySqlDeliverableChecker extends SqlDeliverableChe
                 if (date != null) {
                     deliverable.setCompletionDate(date);
                 }
+                if (rs.getMetaData().getColumnCount() > 1) {
+                    deliverable.setSubmission(new Long(rs.getLong(2)));
+                }
             }
         } catch (SQLException ex) {
             throw new DeliverableCheckingException("Error occurs while database check operation.", ex);

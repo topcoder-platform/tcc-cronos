@@ -60,8 +60,7 @@ public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableCheck
      * @throws SQLException if any error occurs while setting the values to statement.
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, deliverable.getProject());
-        statement.setLong(2, deliverable.getResource());
+        statement.setLong(1, deliverable.getResource());
     }
 
     /**
@@ -77,6 +76,6 @@ public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableCheck
                 + "INNER JOIN upload_type_lu ON upload.upload_type_id = upload_type_lu.upload_type_id "
                 + "INNER JOIN upload_status_lu ON upload.upload_status_id = upload_status_lu.upload_status_id "
                 + "WHERE upload_type_lu.name = 'Submission' AND upload_status_lu.name = 'Active' "
-                + "AND upload.project_id = ? AND upload.resource_id = ?";
+                + "AND upload.resource_id = ?";
     }
 }

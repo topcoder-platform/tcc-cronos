@@ -60,8 +60,7 @@ public class TestCasesDeliverableChecker extends SingleQuerySqlDeliverableChecke
      * @throws SQLException if an error occurs while filling the statement.
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, deliverable.getProject());
-        statement.setLong(2, deliverable.getResource());
+        statement.setLong(1, deliverable.getResource());
     }
 
     /**
@@ -77,6 +76,6 @@ public class TestCasesDeliverableChecker extends SingleQuerySqlDeliverableChecke
                 + "INNER JOIN upload_type_lu ON upload.upload_type_id = upload_type_lu.upload_type_id "
                 + "INNER JOIN upload_status_lu ON upload.upload_status_id = upload_status_lu.upload_status_id "
                 + "WHERE upload_type_lu.name = 'Test Case' AND upload_status_lu.name = 'Active' "
-                + "AND upload.project_id = ? AND upload.resource_id = ?";
+                + "AND upload.resource_id = ?";
     }
 }
