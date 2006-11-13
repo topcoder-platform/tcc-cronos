@@ -409,7 +409,7 @@ public final class AjaxRequest {
         // get the string representation of the date
         String dateStr = getParameter(name);
         if (dateStr == null || dateStr.trim().length() == 0) {
-            throw new ParseException("The date is not set.", 0);
+            return null;
         }
 
         // creating a simple date formatter
