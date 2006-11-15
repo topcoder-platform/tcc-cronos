@@ -369,14 +369,13 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             Filter resourceIdFilter = SearchBundle.buildInFilter("resource_id", reviewerIds);
             Upload[] uploads = getManagerHelper().getUploadManager().searchUploads(resourceIdFilter);
 
-            //match reviewer with test case upload
-            boolean found = false;
-
             for (int i = 0; i < reviewers.length; i++) {
+                //match reviewer with test case upload
+                boolean found = false;
+
                 for (int u = 0; u < uploads.length; u++) {
                     if (reviewers[i].getId() == uploads[u].getOwner()) {
                         found = true;
-
                         break;
                     }
                 }
