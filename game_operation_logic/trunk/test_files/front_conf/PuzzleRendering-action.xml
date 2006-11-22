@@ -1,0 +1,9 @@
+<!--action config for PuzzleRenderingHandler -->
+<action name="PuzzleRendering" type="default" url-pattern="/PuzzleRendering" priority="10">
+	<handler type="PuzzleRenderingHandler">
+		<puzzle_id_request_attribute_key>puzzle_id</puzzle_id_request_attribute_key>
+		<media_type_request_attribute_key>media_type</media_type_request_attribute_key>
+		<puzzle_string_request_attribute_key>puzzle_string</puzzle_string_request_attribute_key>
+		<solutiontester_base_name>base_name</solutiontester_base_name>
+	</handler>
+</action>

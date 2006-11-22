@@ -1,0 +1,34 @@
+<CMConfig>
+	<Config name="com.topcoder.web.frontcontroller">
+		<Property name="action_selector">
+			<Value>com.topcoder.web.frontcontroller.actionselectors.RegexActionSelector</Value>
+		</Property>
+		<Property name="resource_parser">
+			<Value>com.topcoder.web.frontcontroller.parsers.DefaultResourceParser</Value>
+		</Property>
+		<!-- required if resource_root_jndi_name is missing -->
+		<Property name="resource_root">
+			<Value>E:/TCS_projects/Game_Operation_Logic_1.0/test_files/front_conf</Value>
+		</Property>
+		
+		<Property name="action_context_attributes">
+			<Property name="form_validator_namespace">
+				<Value>com.topcoder.formvalidator</Value>
+			</Property>
+			<Property name="xsl_engine_namespace">
+				<Value>com.topcoder.xslengine.HTTPXSLInternationalizer</Value>
+			</Property>
+			<Property name="response_xml_context_key">
+				<Value>response</Value>
+			</Property>
+			<Property name="response_xml_root_name">
+				<Value>response</Value>
+			</Property>
+		</Property>
+		
+		<!-- for RESTFrontController -->
+		<Property name="rest_context_file">
+			<Value>conf/REST_CONTEXT_BUILDER.xml</Value>
+		</Property>
+	</Config>
+</CMConfig>

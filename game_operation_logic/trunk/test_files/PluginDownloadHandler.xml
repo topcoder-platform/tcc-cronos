@@ -1,0 +1,9 @@
+<Root>
+	<config name="valid_config">
+		<handler type="x" >
+			<handler type="x">
+				<plugin_name_param_key>plugin</plugin_name_param_key>
+			</handler>
+		</handler>
+	</config>
+</Root>

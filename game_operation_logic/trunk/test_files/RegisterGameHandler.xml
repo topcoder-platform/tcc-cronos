@@ -1,0 +1,7 @@
+<Root>
+	<config name="valid_config">
+		<handler type="x">
+			<game_id_param_key>game_id</game_id_param_key>
+		</handler>
+	</config>
+</Root>

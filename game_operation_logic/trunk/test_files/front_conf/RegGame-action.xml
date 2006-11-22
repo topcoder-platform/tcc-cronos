@@ -1,0 +1,6 @@
+<!--action config for RegisterGameHandler -->
+<action name="RegGame" type="default" url-pattern="/regGame" priority="10">
+	<handler type="RegisterGameHandler">
+		<game_id_param_key>game_id</game_id_param_key>
+	</handler>
+</action>

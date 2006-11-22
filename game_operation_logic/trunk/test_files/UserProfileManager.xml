@@ -1,0 +1,21 @@
+<CMConfig>
+<Config name="com.topcoder.util.log">
+    <Property name="logClass">
+        <Value>com.topcoder.util.log.basic.BasicLog</Value>
+    </Property>
+</Config>
+<Config name="com.topcoder.user.profile.manager">
+    <Property name="upm_log_name">
+        <Value>UserProfileManager</Value>
+    </Property>
+    <Property name="persistence_class">
+        <Value>com.topcoder.user.profile.manager.persistence.XMLUserProfilePersistence</Value>
+    </Property>
+    <Property name="profile_type_factory_class">
+        <Value>com.topcoder.user.profile.manager.MockProfileTypeFactory</Value>
+    </Property>
+    <Property name="profile_xml_file">
+        <Value>test_files/another_profiles.xml</Value>
+    </Property>
+</Config>
+</CMConfig>

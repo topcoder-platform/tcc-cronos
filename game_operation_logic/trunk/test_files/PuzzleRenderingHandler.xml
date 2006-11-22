@@ -1,0 +1,10 @@
+<Root>
+	<config name="valid_config">
+		<handler type="x" >
+			<puzzle_id_request_attribute_key>puzzle_id</puzzle_id_request_attribute_key>
+			<media_type_request_attribute_key>media_type</media_type_request_attribute_key>
+			<puzzle_string_request_attribute_key>puzzle_string</puzzle_string_request_attribute_key>
+			<solutiontester_base_name>base_name</solutiontester_base_name>
+		</handler>
+	</config>
+</Root>
