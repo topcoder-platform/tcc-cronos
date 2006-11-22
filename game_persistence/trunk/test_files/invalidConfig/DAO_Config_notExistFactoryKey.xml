@@ -1,0 +1,39 @@
+<CMConfig>
+	<Config name="com.orpheus.game.persistence.SQLServerGameDataDAO">
+		<Property name="specNamespace">
+			<Value>com.orpheus.game.persistence.SQLServerGameDataDAO.objectfactory</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>connection_factory</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="name">
+			<Value>myConnection</Value>
+		</Property>
+		<Property name="randomStringImageKey">
+			<Value></Value>
+		</Property>
+		<Property name="keyLength">
+			<Value>3</Value>
+		</Property>
+		<Property name="mediaType">
+			<Value>mediaType</Value>
+		</Property>
+	</Config>
+	<Config name="com.orpheus.game.persistence.CustomDownloadSource">
+		<Property name="specNamespace">
+			<Value>com.orpheus.game.persistence.CustomDownloadSource.objectfactory</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value></Value>
+		</Property>
+	</Config>
+	<Config name="com.orpheus.game.persistence.DAOFactory">
+		<Property name="specNamespace">
+			<Value>com.orpheus.game.persistence.DAOFactory.objectfactory</Value>
+		</Property>
+		<Property name="gameDataDAO">
+			<Value></Value>
+		</Property>
+	</Config>
+</CMConfig>

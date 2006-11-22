@@ -1,13 +1,11 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
  */
 package com.orpheus.game.persistence.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Stress test cases.</p>
@@ -19,7 +17,8 @@ public class StressTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(SQLServerGameDataDAOStressTests.class);
+
         return suite;
     }
 }
