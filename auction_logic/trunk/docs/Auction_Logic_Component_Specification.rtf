@@ -1,0 +1,240 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052\deftab420{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fnil\fprq2\fcharset2 Wingdings;}}
+{\colortbl ;\red0\green0\blue128;\red0\green0\blue0;\red51\green51\blue153;\red0\green0\blue127;\red255\green0\blue0;\red0\green0\blue255;\red127\green127\blue127;}
+{\*\generator Msftedit 5.41.21.2500;}\viewkind4\uc1\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx720\ul\b\f0\fs32 Auction Logic Component Specification\par
+\pard\nowidctlpar\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1\fs24 1.\tab Design\f0\fs20\par
+\pard\nowidctlpar\li720\sa120\b0\f1 The Auction Logic component provides business logic in support of auction management tasks performed by the Orpheus application.  For the most part this involves providing Handler implementations conformant to the specifications of the Front Controller component version 2.1.\par
+The Orpheus server application is designed around use of the Front Controller for business logic, JSPs for view implementations, and, for user information, the User Profile Manager for persistence.  Most, if not all of the logic will be provided by Handler implementations, which can be strung together into chains and can direct to views (\ldblquote Results\rdblquote ) as appropriate for specific request URIs and HTTP methods through the Front Controller\rquote s configuration.  Where one handler must provide data for another or for a result, the most straightforward way is to attach it to the provided \ldblquote ActionContext\ldblquote  as a named attribute; such data could also be attached to the session or the ServletRequest, but the action context encapsulates it better if it does not need to be visible other than to interested handlers and results or across multiple requests.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li720\sa120\b0 Observer Pattern is used by AuctionListenerImpl and AuctionManager from the Auction Framework component to deal with the action events.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\b0 Java Servlet API 2.4\kerning0  \par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.3\tab Required Algorithms\par
+\pard\nowidctlpar\li720\qj\kerning2\b0\f0\fs21\par
+The xml Element passed to the handler\rquote s constructor must follow the DTD defined below, however developers can choose to validate the xml or not. (We can assume the xml element is valid, and throw IAE if failed to extract what we want). \par
+The xml element structure is relatively simple, please use DOM API to extract node values. \par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i\f1\fs20 1.3.1\f0\tab\f1 OpenAuctionsHandler\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0\f1 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (open_auction_key)>\par
+<!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT open_auction_key (#PCDATA)>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="\cf3 OpenAuctions\cf1 ">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <open_aution_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj open_auction_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </open_aution_key >\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. It will be referred by the global configuration file in 4.3.\par
+The open_auction_key node\rquote s value represents the http request attribute key to store the auctions.\par
+\par
+This handler retrieves the currently open auctions (those that have started but not yet ended) and assigns them (in the form of an Auction[]) as a request attribute for use in generating a view. The name of the request attribute will be configurable.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.2\f0\tab\f1 LeadingBidsHandler\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0\f1 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (action_id_param_key, leading_bids_key)>\par
+<!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT auction_id_param_key (#PCDATA)>\par
+<!ELEMENT leading_bids_key (#PCDATA)>\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="\cf3 LeadingBidsHandler\cf1 ">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <auction_id_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj auction_id_param_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </auction_id_param_key>\par
+<leading_bids_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj Leading_bids_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </leading_bids_key>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. It will be referred by the global configuration file in 4.3.\par
+The action_id_param_key\rquote s node value represents the http request parameter key to get the auction id parameter.\par
+The leading_bids_key\rquote s node value represents the http request attribute key to store the leading bids.\par
+\par
+This handler determines the current leading bids for a specified auction and assigns them (in the form of a Bid[]) as a request attribute for use in generating a view. The ID of the relevant auction will be parsed from a request parameter of configurable name, and the name of the request attribute to which the bid array is assigned will likewise be configurable.\par
+\pard\nowidctlpar\sa120\sl240\slmult0\cf4\kerning0\f2\fs16\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.3\f0\tab\f1 BidPlacementHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (action_id_param_key, \par
+\pard\nowidctlpar\fi360\li720\sa50\qj max_amount_param_key, image_id_param_key)>\par
+\pard\nowidctlpar\li720\sa50\qj <!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT auction_id_param_key (#PCDATA)>\par
+<!ELEMENT max_amount_param_key (#PCDATA)>\par
+<!ELEMENT image_id_param_key (#PCDATA)>\par
+\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="BidPlacementHandler">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <action_id_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj action_id_param_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </action_id_param_key>\par
+<max_amount_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj max_amount_param_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </max_amount_param_key>\par
+<image_id_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj image_id_param_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </image_id_param_key>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. It will be referred by the global configuration file in 4.3.\par
+The action_id_param_key\rquote s node value represents the http request parameter key to get the auction id parameter.\par
+The max_amount_param_key\rquote s node value represents the http request parameter key to get the max amount id parameter.\par
+The image_id_param_key\rquote s node value represents the http request parameter key to get the image id parameter.\par
+\par
+\pard\keep\nowidctlpar\li720\sa120\sl240\slmult0\kerning0 This handler provides for placing new bids in an open auction. To create a \f2 Bid\f1  object corresponding to this bid the handler will use the ID of the currently logged-in user as the bidder ID, will assign a timestamp corresponding to the current time, and will parse an auction ID, image ID, and maximum amount from request parameters of configurable name.\par
+\pard\nowidctlpar\li720\sa50\kerning2\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.4\f0\tab\f1 BidUpdateHandler\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0\f1 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (action_id_param_key, \par
+\pard\nowidctlpar\fi360\li720\sa50\qj max_amount_param_key, bid_id_param_key)>\par
+\pard\nowidctlpar\li720\sa50\qj <!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT auction_id_param_key (#PCDATA)>\par
+<!ELEMENT max_amount_param_key (#PCDATA)>\par
+<!ELEMENT bid_id_param_key (#PCDATA)>\par
+\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="x">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <action_id_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj action_id_param_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </action_id_param_key>\par
+<max_amount_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj max_amount_param_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </max_amount_param_key>\par
+<\cf0\f0\fs21  \cf1\f2\fs18 bid_id_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj bid_id_param_key\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </\cf0\f0\fs21  \cf1\f2\fs18 bid_id_param_key>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. It will be referred by the global configuration file in 4.3.\par
+The action_id_param_key\rquote s node value represents the http request parameter key to get the auction id parameter.\par
+The max_amount_param_key\rquote s node value represents the http request parameter key to get the max amount id parameter.\par
+The bid_id_param_key\rquote s node value represents the http request parameter key to get the bid id parameter.\par
+\par
+\pard\keep\nowidctlpar\li720\sa120\sl240\slmult0\kerning0 This handler updates existing bids in an open auction.  To find the original bid the handler will parse an auction ID and bid ID from request parameters of configurable name, will retrieve the corresponding \f2 Auction\f1 , and will search the \f2 Bid\f1 s to find the one with the correct ID.  To create a \f2 Bid\f1  object for the updated bid the handler will use the ID of the currently logged-in user as the bidder ID, will parse a maximum amount from a request parameters of configurable name, and will copy all other parameters from the original bid.\par
+\pard\nowidctlpar\fi-300\li1020\sa120\cf4\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1 1.4\tab Component Class Overview\f0\par
+\pard\nowidctlpar\li720\sa120\f1 BidUpdateHandler\b0 : \par
+\pard\keep\nowidctlpar\li720\sa120\sl240\slmult0 BidUpdateHandler updates existing bids in an open auction.  To find the original bid the handler will parse an auction ID and bid ID from request parameters of configurable name, will retrieve the corresponding \f2 Auction\f1 , and will search the \f2 Bid\f1 s to find the one with the correct ID.  To create a \f2 Bid\f1  object for the updated bid the handler will use the ID of the currently logged-in user as the bidder ID, will parse a maximum amount from a request parameters of configurable name, and will copy all other parameters from the original bid.\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe since it does not contain any mutable state.\f0\par
+\f1\par
+\b BidPlacementHandler\b0 : \par
+\pard\keep\nowidctlpar\li720\sa120\sl240\slmult0 BidPlacementHandler  provides for placing new bids in an open auction.  To create a \f2 Bid\f1  object corresponding to this bid the handler will use the ID of the currently logged-in user as the bidder ID, will assign a timestamp corresponding to the current time, and will parse an auction ID, image ID, and maximum amount from request parameters of configurable name.\par
+\pard\nowidctlpar\li720\sa120\f0\par
+\f1 This class is thread safe since it does not contain any mutable state.\f0\par
+\f1\par
+\b LeadingBidsHandler\b0  \par
+\pard\keep\nowidctlpar\li720\sa120\sl240\slmult0 LeadingBidsHandler determines the current leading bids for a specified auction and assigns them (in the form of a \f2 Bid[]\f1 ) as a request attribute for use in generating a view.  The ID of the relevant auction will be parsed from a request parameter of configurable name, and the name of the request attribute to which the bid array is assigned will likewise be configurable.\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe since it does not contain any mutable state.\f0\par
+\f1\par
+\b OpenAuctionHandler\b0 : \par
+\pard\keep\nowidctlpar\li720\sa120\sl240\slmult0 OpenauctionHandler retrieves the currently open auctions (those that have started but not yet ended) and assigns them (in the form of an \f2 Auction[]\f1 ) as a request attribute for use in generating a view.  The name of the request attribute will be configurable.\par
+\pard\nowidctlpar\li720\sa120\par
+This class is thread safe since it does not contain any mutable state.\par
+\par
+\b KeyConstants\b0 : \par
+The KeyConstants class defined three key constants used to get the AuctionManager, GameDataManager and AdministratorManager from the ServletContext attributes..\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\li720\sa120\b\f1 BidValidatorImpl\b0 : \par
+The BidValidatorImpl is used by AuctionManager to validate the bid before creating a new bid or updating a bid.\par
+New bids and bid updates are invalid if the specified auction has not yet started or has already completed.\par
+New bids are invalid if their maximum amount is not at least as great as the auction\rquote s minimum bid.\par
+Bid updates are invalid if their maximum amount is not greater than that of the original bid, or if the IDs, bidder IDs, or image IDs differ.\par
+Bid updates are invalid if the specified original bid is not among the bids in the specified auction.\par
+This class is thread safe since it's immutable.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\li720\sa120\b\f1 AuctionListenerImpl\b0 : \par
+\pard\keep\nowidctlpar\li720\sa120\sl240\slmult0 An AuctionListener implementation that responds to auction completion events by notifying the game data manager service of the IDs of the winning bids and then requesting that the administration manager service initialize the slots for the corresponding block. For this purpose, the listener  will assume that the block ID required by the game data manager is the same as the auction ID of the completed auction.\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe since it does not contain any mutable state.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.5\tab Component Exception Definitions\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IllegalArgumentException\par
+\b0 This exception is thrown in various methods if null object is not allowed, or the given string argument is empty. Refer to the documentation in Poseidon for more details.\f0\par
+\cf5\b\f1 NOTE: Empty string means string of zero length or string full of whitespaces.\par
+\cf0 HandlerExecutionException\f0\par
+\b0\f1 It is thrown from OpenAuctionsHandler, LeadingBidsHandler, BidPlacementHandler and BidUpdateHandler classes.. \f0\par
+\pard\nowidctlpar\sa120\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\b0 Though this component is not completely thread safe, it could be used in a thread safe manner. All the four handler implementations are immutable and thread safe. The KeyConstants, BidValidatorImpl and AuctionListenerImpl are all immutable and thread safe. CustomBidImpl is mutable and not thread safe. However, in the current version, the instance of CustomBid will not be shared among multi-threads.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\nowidctlpar\li720\sa120\b0 Java 1.4 or higher.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\f0\par
+\pard\nowidctlpar\fi400\sa120\f1 Configuration Manager 2.1.5\par
+\pard\nowidctlpar\fi500\sa120\b0 It is used to load configuration values.\par
+\pard\nowidctlpar\sa120\b\tab Front Controller 2.1\par
+\tab\b0 The Handler interface comes from this component\par
+\b\tab Auction Framework 1.0\par
+\tab\b0 The Auction entities come from this component.\par
+\b\tab Orpheus Auction Persistence 1.0\par
+\tab\b0 The OrpheusBid class comes from this component.\par
+\b\tab Orpheus Game Logic 1.0\par
+\tab\b0 The GameDataManager class comes from this component.\par
+\b\tab Web Application User Logic 1.0\par
+\tab\b0 The LoginHandler class comes from this component.\par
+\pard\nowidctlpar\fi400\sa120\b User Profile 1.0\par
+\pard\nowidctlpar\sa120\tab\b0 The UserProfile class comes from this component.\par
+\pard\nowidctlpar\f0\fs24\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1\fs20 2.3\tab Third Party Components\par
+\pard\nowidctlpar\fi800\sa120\qj\b0 None.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 com.orpheus.auction\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f0\par
+\pard\nowidctlpar\li720\b0\fs24 Configuration values for \f1\fs20 com.orheus.auction.keyConstants\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120 autction_manager\f0\cell\b0\f1 The value is used get the AuctionManager instance from the ServletContext. \b Required\b0 .\cell auction_manager\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b game_data_manager\cell\b0 The value is used get the GameDataManager instance from the ServletContext. \b Required\b0 . \cell game_data_manager\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b administrator_manager\cell\b0 The value is used get the AdministratorManager instance from the ServletContext.\par
+\b Required\b0 .\cell administrator_manager\cell\row\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\li720\sa120\cf4\f1\fs16\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\fs20 3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 ConfigurationManager should be properly configured to make this component work.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-420\li1140\sa120\tx1140\lang2052\b0\f3\'d8\lang1033\tab\f1 Extract the component distribution.\par
+\pard\nowidctlpar\fi-420\li1140\sa120\lang2052\f3\'d8\lang1033\tab\f1 Follow \cf6\ul Dependencies Configuration\cf0\ulnone .\par
+\lang2052\f3\'d8\lang1033\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Preload the configuration file into Configuration Manager. Follow demo.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.3\tab Demo\f0\par
+\pard\nowidctlpar\li720\cf7\b0\f2\fs18 Assume the configuration file in 3.2 is used here. And follow the algorithm section about how to configure the handlers.\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.1\tab Global file for all the handlers\f0\par
+\pard\nowidctlpar\li720\qj\cf3\kerning2\i0\f2\fs18 <global>\par
+  <actions-def>\par
+     <!-- the default action from Front Controller component -->\par
+\pard\nowidctlpar\fi-90\li846\qj     <action-def name="default">\par
+\pard\nowidctlpar\fi810\li756\qj com.topcoder.web.Front Controller.DefaultAction\par
+\pard\nowidctlpar\fi1260\qj </action-def>\par
+\pard\nowidctlpar\li720\qj   </actions-def>\par
+\par
+  <handlers-def>\par
+\pard\nowidctlpar\fi418\li630\qj <handler-def name="OpenAuctionsHandler">\par
+\pard\nowidctlpar\fi778\li630\qj com.orpheus.auction.OpenAuctionsHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="LeadingBidsHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.auction.LeadingBidsHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="BidPlacementHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.auction.BidPacementHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="BidUpdateHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.auction.BidUpdateHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\li720\qj   </handlers-def> \par
+\cf0\f0\fs21  \cf3\f2\fs18 </global>\par
+\pard\nowidctlpar\fi453\li2\cf4\kerning0\fs16\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.2\tab How to configure the specified handlers\f0\par
+\pard\nowidctlpar\li813\qj\cf3\kerning2\i0\f2\fs18 The algorithm 1.3 lists the DTD file and sample XML files for all the handlers.\par
+\cf5 All the configuration files in algorithm section give the real data, and  explains how the handlers are expected to work in the Front Controller 2.1 framework. \cf3 Please refer to that section about how to configure the specified handlers.\par
+\pard\nowidctlpar\fi-360\li1080\cf7\kerning0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li701\sa120\b0 More handler implementation could be added.\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\par
+\pard\nowidctlpar\fs24\par
+}
+ 
