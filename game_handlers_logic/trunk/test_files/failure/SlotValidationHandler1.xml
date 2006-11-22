@@ -1,0 +1,4 @@
+<handler type="x">
+    <slot_id_param_key>slotId</slot_id_param_key>    
+    <validation_failed_result_code>validation_failed</validation_failed_result_code>    
+</handler>

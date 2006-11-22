@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<CMConfig>
+<Config name="com.orpheus.game.GameDataHelper">
+	<Property name="jndi_context_name">
+		<Value>mockejb</Value>
+	</Property>
+	<Property name="game_data_jndi_name">
+		<Value>mock_game_data</Value>
+	</Property>
+	<Property name="use_remote_home">
+		<Value>true</Value>
+	</Property>
+</Config>
+</CMConfig>

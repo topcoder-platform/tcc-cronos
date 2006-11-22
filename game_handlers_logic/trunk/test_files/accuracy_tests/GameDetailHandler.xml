@@ -1,0 +1,4 @@
+<handler type="gamedetail">
+	<game_id_param_key>id</game_id_param_key>
+	<game_detail_key>detail</game_detail_key>    
+</handler>

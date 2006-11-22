@@ -1,0 +1,32 @@
+<global>
+    <actions-def>
+        <!-- the default action from Front Controller component -->
+        <action-def name="default">com.topcoder.web.FrontController.DefaultAction</action-def>
+    </actions-def>
+
+    <handlers-def>
+        <!-- define the ActiveGamesHandler -->
+        <handler-def name="active_games">com.orpheus.game.ActiveGamesHandler</handler-def>
+        <!-- define the TestTargetObjectHandler. -->
+        <handler-def name="test_target_object">com.orpheus.game.TestTargetObjectHandler</handler-def>
+        <!-- define the UserGamesHandler -->
+        <handler-def name="user_games">com.orpheus.game.UserGamesHandler</handler-def>
+        <!-- default the TestDomainHandler -->
+        <handler-def name="test_domain">com.orpheus.game.TestDomainHandler</handler-def>
+        <!-- define the UpcomingDomainsHandler -->
+        <handler-def name="upcoming_domains">com.orpheus.game.UpcomingDomainsHandler</handler-def>
+        <!-- define the UnlockedDomainsHandler -->
+        <handler-def name="unlocked_domains">com.orpheus.game.UnlockedDomainsHandler</handler-def>
+        <!-- define the GameDetailHandler -->
+        <handler-def name="game_detail">com.orpheus.game.GameDetailHandler</handler-def>
+        <!-- define the LeaderBoardHandler -->
+        <handler-def name="leader_board">com.orpheus.game.LeaderBoardHandler</handler-def>
+        <!-- define the SlotValidationHandler -->
+        <handler-def name="slot_validation">com.orpheus.game.SlotValidationHandler</handler-def>
+    </handlers-def>
+
+    <results-def>
+        <!-- the forward result from Front Controller component -->
+        <result-def name="forward">com.topcoder.web.Front Controller.results.ForwardResult</result-def>
+    </results-def>
+</global>

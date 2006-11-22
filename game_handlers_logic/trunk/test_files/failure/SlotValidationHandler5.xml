@@ -1,0 +1,4 @@
+<handler type="x">
+    <game_id_param_key>gameId</game_id_param_key>
+    <slot_id_param_key>slotId</slot_id_param_key>    
+</handler>

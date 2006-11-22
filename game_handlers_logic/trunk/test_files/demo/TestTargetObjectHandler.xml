@@ -1,0 +1,19 @@
+<action name="TestTargetObject" type="default" url-pattern="/testTargetObject" priority="10">
+    <handler type="test_target_object">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domain_name_param_key>domainName</domain_name_param_key>
+        <sequence_number_param_key>seqNo</sequence_number_param_key>
+        <text_param_key>text</text_param_key>
+        <test_failed_result_code>test_failed</test_failed_result_code>
+        <not_logged_in_result_code>not_logged_in</not_logged_in_result_code>
+    </handler>
+    <result name="not_logged_in" type="forward">
+        <forward-url>/login.jsp</forward-url>
+    </result>
+    <result name="test_failed" type="forward">
+        <forward-url>/failure.jsp</forward-url>
+    </result>
+    <result name="success" type="forward">
+        <forward-url>/success.jsp</forward-url>
+    </result>
+</action>

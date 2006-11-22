@@ -1,0 +1,42 @@
+<!-- DTD for XMLUserProfilePersistence profile store -->
+
+<!-- The root element -->
+<!ELEMENT profiles (profile*)>
+
+<!-- Each <profile> element represents one user profile.  It has an ID, zero or
+  -  more extra profile types (BaseProfileType is assumed to always apply), and
+  -  zero or more properties.
+  -->
+<!ELEMENT profile (type*,property*)>
+<!ATTLIST profile id NMTOKEN #REQUIRED>
+
+<!-- Each <type> element names a user profile type that is assigned to the user
+  -  profile in which this this element appears.  At this version, the type
+  -  element provides ony the relevant user profile type name (which is supposed
+  -  to be a unique identifier, per the User Profile component).  Future
+  -  versions might include some mechanism for recording profile type parameters
+  -  in this element's body, but at this version its body is defined to be empty
+  -->
+<!ELEMENT type EMPTY>
+<!ATTLIST type name CDATA #REQUIRED>
+
+<!-- Each <property> element describes one user profile property for the profile
+  -  in which this element appears.  Properties are name value mappings, where
+  -  both names and values may be arbitrary objects.
+  -->
+<!ELEMENT property (name,value)>
+
+<!-- Each <name> element represents the name of the user profile property in
+  -  which it appears.  No particular content model is required at this version,
+  -  but future versions may define specific mechanisms for representing Java
+  -  objects via the content of these elements.
+  -->
+<!ELEMENT name (#PCDATA)>
+
+<!-- Each <value> element represents the value of the user profile property in
+  -  which it appears.  No particular content model is required at this version,
+  -  but future versions may define specific mechanisms for representing Java
+  -  objects via the content of these elements.
+  -->
+<!ELEMENT value (#PCDATA)>
+

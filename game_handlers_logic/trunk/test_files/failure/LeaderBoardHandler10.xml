@@ -1,0 +1,7 @@
+<handler type="x">
+  <game_id_param_key>gameId</game_id_param_key>
+  <profiles_key>profiles</profiles_key>
+  <max_leaders>10</max_leaders>
+  <object_factory_namespace>invalid</object_factory_namespace>
+  <user_profile_manager_token>simple_user_profile_manager</user_profile_manager_token>
+</handler>

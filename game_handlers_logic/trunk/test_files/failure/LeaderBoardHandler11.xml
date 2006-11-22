@@ -1,0 +1,6 @@
+<handler type="x">
+  <game_id_param_key>gameId</game_id_param_key>
+  <profiles_key>profiles</profiles_key>
+  <max_leaders>10</max_leaders>
+  <object_factory_namespace>com.orpheus.game.objectfactory</object_factory_namespace>
+</handler>

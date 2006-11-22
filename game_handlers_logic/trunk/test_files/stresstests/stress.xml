@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<CMConfig>
+<Config name="com.orpheus.game.GameDataHelper">
+	<Property name="jndi_context_name">
+		<Value>mockejb</Value>
+	</Property>
+	<Property name="game_data_jndi_name">
+		<Value>mock_game_data</Value>
+	</Property>
+	<Property name="use_remote_home">
+		<Value>true</Value>
+	</Property>
+</Config>
+<Config name="com.topcoder.naming.jndiutility">
+	<Property name="context.mockejb.factory">
+		<Value>org.mockejb.jndi.MockContextFactory</Value>
+	</Property>
+	<Property name="context.mockejb.url">
+		<Value>mockejb/GameOperationLogic</Value>
+	</Property>
+</Config>
+<Config name="com.topcoder.user.profile.manager">
+        <Property name="upm_log_name">
+            <Value>UserProfileManager</Value>
+        </Property>
+        <Property name="persistence_class">
+            <Value>com.topcoder.user.profile.manager.persistence.XMLUserProfilePersistence</Value>
+        </Property>
+        <Property name="profile_type_factory_class">
+            <Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+        </Property>
+        <Property name="profile_xml_file">
+            <Value>test_files/stresstests/profiles.xml</Value>
+        </Property>
+</Config>
+<Config name="com.topcoder.user.profile.ConfigProfileType.base">
+        <Property name="first_name">
+            <Value>User_0,User_1,User_2,User_3,User_4</Value>
+        </Property>
+</Config>
+<Config name="com.orpheus.game.objectfactory">
+        <Property name="simple_user_profile_manager">
+            <Property name="type">
+	<Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+            </Property>
+            <Property name="params">
+                  <Property name="param1">
+	    <Property name="type">
+	         <Value>String</Value>
+	    </Property>
+	    <Property name="value">
+	         <Value>com.topcoder.user.profile.manager</Value>
+	     </Property>
+	</Property>			
+             </Property>
+         </Property>
+</Config>
+<Config name="com.topcoder.util.log">
+    <Property name="logClass">
+        <Value>com.topcoder.util.log.basic.BasicLog</Value>
+    </Property>
+</Config>
+</CMConfig>

@@ -1,0 +1,10 @@
+<action name="GameDetail" type="default" url-pattern="/gameDetail" priority="10">
+    <handler type="game_detail">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_detail_key>game</game_detail_key>
+    </handler>
+
+    <result name="success" type="forward">
+        <forward-url>/game.jsp</forward-url>
+    </result>
+</action>

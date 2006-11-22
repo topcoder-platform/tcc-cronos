@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<CMConfig>
+<Config name="com.orpheus.game.GameDataHelper">
+	<Property name="jndi_context_name">
+		<Value></Value>
+	</Property>
+	<Property name="use_remote_home">
+		<Value>true</Value>
+	</Property>
+</Config>
+</CMConfig>

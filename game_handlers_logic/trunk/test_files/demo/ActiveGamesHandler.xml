@@ -1,0 +1,9 @@
+<action name="ActiveGames" type="default" url-pattern="/activeGames" priority="10">
+    <handler type="active_games">
+      <games_key>games</games_key>
+    </handler>
+
+    <result name="success" type="forward">
+        <forward-url>/active_games.jsp</forward-url>
+    </result>
+</action>

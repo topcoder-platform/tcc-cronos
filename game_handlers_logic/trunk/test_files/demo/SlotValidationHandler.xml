@@ -1,0 +1,15 @@
+<action name="SlotValidation" type="default" url-pattern="/slotValidation" priority="10">
+    <handler type="slot_validation">
+        <game_id_param_key>gameId</game_id_param_key>
+        <slot_id_param_key>slotId</slot_id_param_key>
+        <validation_failed_result_code>validation_failed</validation_failed_result_code>
+    </handler>
+
+    <result name="validation_failed" type="forward">
+        <forward-url>/failure.jsp</forward-url>
+    </result>
+
+    <result name="success" type="forward">
+        <forward-url>/success.jsp</forward-url>
+    </result>
+</action>

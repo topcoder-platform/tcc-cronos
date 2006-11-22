@@ -1,0 +1,10 @@
+<action name="UpcomingDomains" type="default" url-pattern="/upcomingDomains" priority="10">
+    <handler type="upcoming_domains">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domains_key>domains</domains_key>
+    </handler>
+
+    <result name="success" type="forward">
+        <forward-url>/domains.jsp</forward-url>
+    </result>
+</action>
