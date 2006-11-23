@@ -1,0 +1,4 @@
+<handler type="LeadingBidsHandler">
+	<auction_id_param_key>key1</auction_id_param_key>
+	<leading_bids_key>key1</leading_bids_key>
+</handler>

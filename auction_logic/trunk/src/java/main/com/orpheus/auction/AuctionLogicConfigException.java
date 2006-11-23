@@ -1,0 +1,42 @@
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ */
+package com.orpheus.auction;
+
+import com.topcoder.util.errorhandling.BaseRuntimeException;
+
+/**
+ * <p>
+ * This exception is thrown by KeyConstants if failed to load configuration values from the
+ * ConfigManager or configuration values are invalid.
+ * </p>
+ * <p>
+ * Thread Safety: This class is immutable and thread-safe.
+ * </p>
+ * @author woodjhon, TCSDEVELOPER
+ * @version 1.0
+ */
+public class AuctionLogicConfigException extends BaseRuntimeException {
+
+    /**
+     * <p>
+     * Creates a new AuctionLogicConfigException instance with the given error message.
+     * </p>
+     * @param msg the error message of the exception.
+     */
+    public AuctionLogicConfigException(String msg) {
+        super(msg);
+    }
+
+    /**
+     * <p>
+     * Creates a new AuctionLogicConfigException instance with the given error message and inner
+     * cause.
+     * </p>
+     * @param msg the error message of the exception.
+     * @param cause the inner cause of the exception.
+     */
+    public AuctionLogicConfigException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+}

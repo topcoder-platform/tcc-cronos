@@ -1,0 +1,27 @@
+<CMConfig>
+    <Config name="com.orpheus.auction.keyConstants">
+        <Property name="auction_manager">
+            <Value>auction_manager</Value>
+        </Property>
+        <Property name="game_data_manager">
+            <Value>game_data_manager</Value>
+        </Property>
+        <Property name="administration_manager">
+            <Value>administration_manager</Value>
+        </Property>
+    </Config>
+    
+    
+    <Config name="com.orpheus.auction.KeyConstants">
+        <Property name="auction_manager">
+            <Value>auction_manager</Value>
+        </Property>
+        <Property name="game_data_manager">
+            <Value>game_data_manager</Value>
+        </Property>
+        <Property name="administration_manager">
+            <Value>administration_manager</Value>
+        </Property>
+    </Config>
+    
+</CMConfig>

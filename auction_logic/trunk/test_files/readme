@@ -1,0 +1,23 @@
+1. I use front-controller version 2.0 since all classes referenced from the Auction Logic component
+(ActionContext, ...) are not changed in version 2.1
+
+2. Some classes that are referenced from this component are declared in other not-yet-finished
+components. So mocks are used here. They are defined under src/java/mock
+In order to compile them I've modified build.xml:
+a) added 'javamock' property
+b) target java_compile is changed to compile mock classes
+
+3. This component uses Jakarta Cactus for testing (it was approved by PM).
+As servlet container I use Tomcat. 
+You can use my build.xml to create web aplication. In this case you need to
+change the ${cactus.path} property
+(for details see build_dev.xml)
+
+
+To run tests:
+a) undeploy the current auction_logic from the Tomcat 5.5.16
+b) type 'ant create_webapp'
+c) copy auction_logic directory from the build/webapp to Tomcat server, ensure that it is
+deployed
+d) type 'ant test'
+

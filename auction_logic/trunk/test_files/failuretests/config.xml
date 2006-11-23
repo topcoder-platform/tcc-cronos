@@ -1,0 +1,32 @@
+<CMConfig>
+    <Config name="com.orpheus.auction.KeyConstants">
+        <Property name="auction_manager">
+            <Value>auction_manager</Value>
+        </Property>
+        <Property name="game_data_manager">
+            <Value>game_data_manager</Value>
+        </Property>
+        <Property name="administration_manager">
+            <Value>administration_manager</Value>
+        </Property>
+    </Config>
+
+
+    <Config name="com.topcoder.web.frontcontroller">
+        <Property name="action_selector">
+            <Value>com.topcoder.web.frontcontroller.actionselectors.RegexActionSelector</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.user.profile.ConfigProfileType.base">
+        <Property name="first_name">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="last_name">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="email_address">
+            <Value>notempty</Value>
+        </Property>
+    </Config>
+</CMConfig>

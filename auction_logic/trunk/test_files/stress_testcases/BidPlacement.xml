@@ -1,0 +1,5 @@
+<handler type="BidPlacementHandler">
+	<auction_id_param_key>auction_id_param_key</auction_id_param_key>
+	<max_amount_param_key>max_amount_param_key</max_amount_param_key>
+	<image_id_param_key>image_id_param_key</image_id_param_key>
+</handler>

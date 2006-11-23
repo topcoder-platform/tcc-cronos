@@ -1,0 +1,85 @@
+<CMConfig>
+    <Config name="com.topcoder.util.auction.impl.AuctionManagerImpl">
+        <!--The namespace of the config manager specification factory -->
+		<Property name = "config_manager_specification_factory">
+			<Value>com.topcocder.util.auction.manager.AuctionManagerImpl.SpecFactory</Value>
+		</Property>
+		<!-- The key to create the persistence -->
+		<Property name = "auction_persistence">
+			<Value>dummy_auction_persistence</Value>
+		</Property>
+		<!-- The key to create the validator -->
+		<Property name = "bid_validator">
+			<Value>bid_validator_impl</Value>
+		</Property>
+		<!-- The key to create the strategy -->
+		<Property name = "auction_strategy">
+			<Value>simple_auction_strategy</Value>
+		</Property>
+    </Config>
+    
+    <!-- Setting up the ConfigManagerSpecificationFactory to create
+	the objects of this component -->
+	<Config name = "com.topcocder.util.auction.manager.AuctionManagerImpl.SpecFactory">
+		<!-- A default DBAuctionPersistence -->
+		<Property name = "dummy_auction_persistence">
+			<Property name="type">
+				<Value>com.orpheus.auction.accuracytests.DummyAuctionPersistence</Value>
+			</Property>
+		</Property>
+		<!-- A BidValidatorImpl -->
+		<Property name = "bid_validator_impl">
+			<Property name="type">
+				<Value>com.orpheus.auction.BidValidatorImpl</Value>
+			</Property>
+		</Property>
+		
+		<!-- The default MinimumIncrementCalculator 
+		unit FixedMinimumIncrementCalculator-->
+		<Property name = "minimum_increment_calculator">
+			<Property name="type">
+				<Value>com.topcoder.util.auction.impl.FixedMinimumIncrementCalculator</Value>
+			</Property>
+			<Property name = "params">
+				<Property name = "param1">
+					<Property name = "type">
+						<Value>int</Value>
+					</Property>
+					<Property name="value">
+						<Value>1</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		
+		<!-- A SimpleAuctionStrategy with a default MinimumIncrementCalculator-->
+		<Property name = "simple_auction_strategy">
+			<Property name="type">
+				<Value>com.orpheus.auction.accuracytests.DummyAuctionStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name = "param1">
+					<Property name="name">
+						<Value>minimum_increment_calculator</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<!-- An AutomatedProxyBiddingAuctionStrategy with a default MinimumIncrementCalculator-->
+		<Property name = "automated_proxy_bidding_auction_strategy">
+			<Property name="type">
+				<Value>com.topcoder.util.auction.impl.AutomatedProxyBiddingAuctionStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name = "param1">
+					<Property name="name">
+						<Value>minimum_increment_calculator</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		
+		
+	</Config>
+	
+</CMConfig>

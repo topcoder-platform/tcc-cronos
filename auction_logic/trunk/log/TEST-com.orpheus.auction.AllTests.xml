@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.orpheus.auction.AllTests" tests="193" failures="0" errors="0" time="7.0">
+  <properties>
+    <property name="object_factory.path" value="object_factory/2.0.1"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="dist_testfiles" value="build/dist/auction_logic-1.0/test_files"></property>
+    <property name="front_controller.jar.name" value="front_controller.jar"></property>
+    <property name="java.home" value="D:\Java\j2sdk1.4.2_12\jre"></property>
+    <property name="ant.file.Auction Logic" value="D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\build_dev.xml"></property>
+    <property name="dist_javadocs" value="build/dist/auction_logic-1.0/docs/javadocs"></property>
+    <property name="debug" value="off"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="distfilename" value="auction_logic"></property>
+    <property name="component.dist.jar" value="build/dist/auction_logic-1.0.jar"></property>
+    <property name="generic_event_manager.jar.name" value="generic_event_manager.jar"></property>
+    <property name="java.endorsed.dirs" value="D:\Java\j2sdk1.4.2_12\jre\lib\endorsed"></property>
+    <property name="object_factory.jar" value="D:\TopCoder\Java\lib\lib\tcs/object_factory/2.0.1/object_factory.jar"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="design_dist.jar" value="Auction_Logic_1.0_design_dist.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="user_profile_manager.jar.name" value="user_profile_manager.jar"></property>
+    <property name="java.version" value="1.4.2_12"></property>
+    <property name="eclipse.pdebuild.home" value="/D:/Java/eclipse/plugins/org.eclipse.pde.build_3.2.1.r321_v20060823/./"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="dist_src" value="build/dist/auction_logic-1.0/src"></property>
+    <property name="user_profile_manager.path" value="user_profile_manager/1.0"></property>
+    <property name="user.name" value="Acer"></property>
+    <property name="packagedir" value="com/orpheus/auction"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="component_version" value="1.0"></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="reports" value="reports"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/auction_logic/1.0/auction_logic.jar"></property>
+    <property name="user_profile.jar" value="D:\TopCoder\Java\lib\lib\tcs/user_profile/1.0/user_profile.jar"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="path.separator" value=";"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="file.encoding" value="GB18030"></property>
+    <property name="servlet.jar" value="D:\TopCoder\Java\lib\lib/servletapi-2.3.jar"></property>
+    <property name="ant.file" value="D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\build_dev.xml"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/auction_logic_tests.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\Acer\LOCALS~1\Temp\"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="verbose" value="no"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="component_path" value="auction_logic/1.0"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="dist_conf" value="build/dist/auction_logic-1.0/conf"></property>
+    <property name="user_profile_manager.version" value="1.0"></property>
+    <property name="object_factory.version" value="2.0.1"></property>
+    <property name="eclipse.pdebuild.templates" value="/D:/Java/eclipse/plugins/org.eclipse.pde.build_3.2.1.r321_v20060823/templates/"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.5"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="junit.jar" value="D:\TopCoder\Java\lib\lib/junit-3.8.1.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="generic_event_manager.path" value="generic_event_manager/1.0"></property>
+    <property name="build_tcsdistdir" value="build/dist/auction_logic-1.0"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="dist_docs" value="build/dist/auction_logic-1.0/docs"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="configmanager.jar" value="D:\TopCoder\Java\lib\lib\tcs/configuration_manager/2.1.5/configuration_manager.jar"></property>
+    <property name="java.library.path" value="D:\Java\j2sdk1.4.2_12\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;D:\oraclexe\app\oracle\product\10.2.0\server\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;D:\Program Files\IDM Computer Solutions\UltraEdit-32;C:\Program Files\Microsoft SQL Server\80\Tools\BINN;C:\Program Files\Microsoft SQL Server\90\Tools\binn\;D:\dotNET\nant-0.85\bin\;;C:\PROGRA~1\COMMON~1\MUVEET~1\030625;D:\CWB-NC\BIN"></property>
+    <property name="docpackage.jar" value="auction_logic_docs.jar"></property>
+    <property name="eclipse.pdebuild.scripts" value="/D:/Java/eclipse/plugins/org.eclipse.pde.build_3.2.1.r321_v20060823/scripts/"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="basedir" value="D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission"></property>
+    <property name="front_controller.version" value="2.0"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="ant.home" value="D:\Java\eclipse\plugins\org.apache.ant_1.6.5"></property>
+    <property name="component.war" value="${dist_examples}/auction_logic.war"></property>
+    <property name="javamock" value="src/java/mock"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="generic_event_manager.version" value="1.0"></property>
+    <property name="generic_event_manager.jar" value="D:\TopCoder\Java\lib\lib\tcs/generic_event_manager/1.0/generic_event_manager.jar"></property>
+    <property name="sun.boot.library.path" value="D:\Java\j2sdk1.4.2_12\jre\bin"></property>
+    <property name="user_profile.path" value="user_profile/1.0"></property>
+    <property name="ext_libdir" value="D:\TopCoder\Java\lib\lib"></property>
+    <property name="cactus.path" value="D:\Java\jakarta-cactus-13-1.7.2"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="user.variant" value=""></property>
+    <property name="front_controller.path" value="front_controller/2.0"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="dev_dist.jar" value="Auction_Logic_1.0_dev_dist.jar"></property>
+    <property name="ant.project.name" value="Auction Logic"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="webdir" value="web"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="checkstyledir" value="d:\tcs\checkstyle"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="java.ext.dirs" value="D:\Java\j2sdk1.4.2_12\jre\lib\ext"></property>
+    <property name="user_profile_manager.jar" value="D:\TopCoder\Java\lib\lib\tcs/user_profile_manager/1.0/user_profile_manager.jar"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="user.home" value="C:\Documents and Settings\Acer"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="object_factory.jar.name" value="object_factory.jar"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="package" value="com.orpheus.auction"></property>
+    <property name="base_exception.jar" value="D:\TopCoder\Java\lib\lib\tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="user.dir" value="D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission"></property>
+    <property name="configmanager.version" value="2.1.5"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="java.vm.version" value="1.4.2_12-b03"></property>
+    <property name="java.class.path" value="D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\build\testClasses;D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\build\classes;D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\auction_framework.jar;D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\easymock.jar;D:\TopCoder\Java\lib\lib\junit-3.8.1.jar;D:\TopCoder\Java\lib\lib\servletapi-2.3.jar;D:\TopCoder\Java\lib\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;D:\TopCoder\Java\lib\lib\tcs\base_exception\1.0\base_exception.jar;D:\TopCoder\Java\lib\lib\tcs\user_profile\1.0\user_profile.jar;D:\TopCoder\Java\lib\lib\tcs\object_factory\2.0.1\object_factory.jar;D:\TopCoder\Java\lib\lib\tcs\generic_event_manager\1.0\generic_event_manager.jar;D:\TopCoder\Java\lib\lib\tcs\user_profile_manager\1.0\user_profile_manager.jar;D:\TopCoder\Java\lib\lib\tcs\front_controller\2.0\front_controller.jar;D:\Java\jakarta-cactus-13-1.7.2\lib\cactus-1.7.2.jar;D:\Java\jakarta-cactus-13-1.7.2\lib\aspectjrt-1.2.1.jar;D:\Java\jakarta-cactus-13-1.7.2\lib\commons-httpclient-2.0.2.jar;D:\Java\jakarta-cactus-13-1.7.2\lib\commons-logging-1.0.4.jar;D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\conf;D:\TopCoder\Java\workspace\Auction_Logic_1.0_dev_submission\test_files;D:\Java\jakarta-cactus-13-1.7.2\lib\junit-3.8.1.jar;D:\Java\eclipse\plugins\org.apache.ant_1.6.5\lib\ant-launcher.jar;D:\Java\eclipse\plugins\org.apache.ant_1.6.5\lib\ant.jar;D:\Java\eclipse\plugins\org.apache.ant_1.6.5\lib\ant-junit.jar"></property>
+    <property name="dev_submission.jar" value="Auction_Logic_1.0_dev_submission.jar"></property>
+    <property name="ant.library.dir" value="D:\Java\eclipse\plugins\org.apache.ant_1.6.5\lib"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="file.separator" value="\"></property>
+    <property name="user_profile.version" value="1.0"></property>
+    <property name="java.runtime.version" value="1.4.2_12-b03"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="sun.boot.class.path" value="D:\Java\j2sdk1.4.2_12\jre\lib\rt.jar;D:\Java\j2sdk1.4.2_12\jre\lib\i18n.jar;D:\Java\j2sdk1.4.2_12\jre\lib\sunrsasign.jar;D:\Java\j2sdk1.4.2_12\jre\lib\jsse.jar;D:\Java\j2sdk1.4.2_12\jre\lib\jce.jar;D:\Java\j2sdk1.4.2_12\jre\lib\charsets.jar;D:\Java\j2sdk1.4.2_12\jre\classes"></property>
+    <property name="front_controller.jar" value="D:\TopCoder\Java\lib\lib\tcs/front_controller/2.0/front_controller.jar"></property>
+    <property name="design_submission.jar" value="Auction_Logic_1.0_design_submission.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="user.country" value="CN"></property>
+    <property name="tcs_libdir" value="D:\TopCoder\Java\lib\lib\tcs"></property>
+    <property name="component" value="Auction_Logic"></property>
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"></property>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.specification.version" value="1.4"></property>
+    <property name="user_profile.jar.name" value="user_profile.jar"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="javatests" value="src/java/tests"></property>
+  </properties>
+  <testcase name="testConstructor1" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="1.094"></testcase>
+  <testcase name="testAuctionComplete1" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.015"></testcase>
+  <testcase name="testAuctionComplete2" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.11"></testcase>
+  <testcase name="testAuctionComplete3" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.093"></testcase>
+  <testcase name="testAuctionComplete4" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.047"></testcase>
+  <testcase name="testAuctionComplete5" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.047"></testcase>
+  <testcase name="testAuctionComplete6" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.031"></testcase>
+  <testcase name="testAuctionComplete7" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.032"></testcase>
+  <testcase name="testAuctionComplete8" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.046"></testcase>
+  <testcase name="testAuctionComplete9" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.032"></testcase>
+  <testcase name="testAuctionComplete10" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.015"></testcase>
+  <testcase name="testAuctionComplete11" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.032"></testcase>
+  <testcase name="testAuctionComplete12" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.031"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.265"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA3" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorA4" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.047"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB3" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.047"></testcase>
+  <testcase name="testConstructorB4" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorB5" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.063"></testcase>
+  <testcase name="testConstructorB6" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.078"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute3" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.032"></testcase>
+  <testcase name="testExecute4" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.062"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.047"></testcase>
+  <testcase name="testExecute6" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute7" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.078"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.109"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA3" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorA4" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorB3" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB4" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.047"></testcase>
+  <testcase name="testExecute3" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute4" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute6" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute7" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.047"></testcase>
+  <testcase name="testConstructorA5" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorA6" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.047"></testcase>
+  <testcase name="testExecute8" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.062"></testcase>
+  <testcase name="testIsBidUpdateValid1" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid2" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid3" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid1" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid2" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.063"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.047"></testcase>
+  <testcase name="testConstructorA3" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorA4" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.079"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorB3" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute6" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute7" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute8" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.047"></testcase>
+  <testcase name="testExecute9" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute10" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.063"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.062"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.032"></testcase>
+  <testcase name="testExecute3" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute4" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testAuctionListenerImpl" classname="com.orpheus.auction.accuracytests.AuctionListenerImplAccuracyTest" time="0.218"></testcase>
+  <testcase name="testAuctionComplete" classname="com.orpheus.auction.accuracytests.AuctionListenerImplAccuracyTest" time="0.032"></testcase>
+  <testcase name="testAuctionComplete_NoBids" classname="com.orpheus.auction.accuracytests.AuctionListenerImplAccuracyTest" time="0.031"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.accuracytests.BidPlacementHandlerAccuracyTest" time="0.25"></testcase>
+  <testcase name="testBidPlacementHandlerStringStringString" classname="com.orpheus.auction.accuracytests.BidPlacementHandlerAccuracyTest" time="0.047"></testcase>
+  <testcase name="testBidPlacementHandlerElement" classname="com.orpheus.auction.accuracytests.BidPlacementHandlerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.accuracytests.BidPlacementHandlerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.accuracytests.BidUpdateHandlerAccuracyTest" time="0.063"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.accuracytests.BidUpdateHandlerAccuracyTest" time="0.015"></testcase>
+  <testcase name="testBidUpdateHandlerStringStringString" classname="com.orpheus.auction.accuracytests.BidUpdateHandlerAccuracyTest" time="0.032"></testcase>
+  <testcase name="testBidUpdateHandlerElement" classname="com.orpheus.auction.accuracytests.BidUpdateHandlerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testIsNewBidValid_Valid" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid_AuctionNotStartedYet" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid_AuctionFinished" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid_BidBeforeAuction" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid_BidTooLow" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid_AuctionNotStartedYet" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid_AuctionFinished" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid_NewBidTooLow" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid_OrginalBidDoesntExist" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid_DifferentIDs" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid_DifferentBidders" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid_DifferentImageIds" classname="com.orpheus.auction.accuracytests.BidValidatorImplAccuracyTest" time="0.0"></testcase>
+  <testcase name="testValues" classname="com.orpheus.auction.accuracytests.KeyConstantsAccuracyTest" time="0.062"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.accuracytests.LeadingBidsHandlerAccuracyTest" time="0.094"></testcase>
+  <testcase name="testLeadingBidsHandlerStringString" classname="com.orpheus.auction.accuracytests.LeadingBidsHandlerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testLeadingBidsHandlerElement" classname="com.orpheus.auction.accuracytests.LeadingBidsHandlerAccuracyTest" time="0.016"></testcase>
+  <testcase name="testExecute_NoBids" classname="com.orpheus.auction.accuracytests.LeadingBidsHandlerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.accuracytests.OpenAuctionsHandlerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.accuracytests.OpenAuctionsHandlerAccuracyTest" time="0.016"></testcase>
+  <testcase name="testOpenAuctionsHandlerString" classname="com.orpheus.auction.accuracytests.OpenAuctionsHandlerAccuracyTest" time="0.031"></testcase>
+  <testcase name="testOpenAuctionsHandlerElement" classname="com.orpheus.auction.accuracytests.OpenAuctionsHandlerAccuracyTest" time="0.032"></testcase>
+  <testcase name="testExecute_NoAuctions" classname="com.orpheus.auction.accuracytests.OpenAuctionsHandlerAccuracyTest" time="0.093"></testcase>
+  <testcase name="testConstructor1" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.016"></testcase>
+  <testcase name="testAuctionComplete1" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.016"></testcase>
+  <testcase name="testAuctionComplete2" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.015"></testcase>
+  <testcase name="testAuctionComplete3" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.031"></testcase>
+  <testcase name="testAuctionComplete4" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.032"></testcase>
+  <testcase name="testAuctionComplete5" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.015"></testcase>
+  <testcase name="testAuctionComplete6" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.016"></testcase>
+  <testcase name="testAuctionComplete7" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.016"></testcase>
+  <testcase name="testAuctionComplete8" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.015"></testcase>
+  <testcase name="testAuctionComplete9" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.016"></testcase>
+  <testcase name="testAuctionComplete10" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.015"></testcase>
+  <testcase name="testAuctionComplete11" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.016"></testcase>
+  <testcase name="testAuctionComplete12" classname="com.orpheus.auction.failuretests.AuctionListenerImplTests" time="0.016"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.032"></testcase>
+  <testcase name="testConstructorA3" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorA4" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorB3" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB4" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB5" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorB6" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute3" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute4" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute6" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute7" classname="com.orpheus.auction.failuretests.BidPlacementHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA3" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA4" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB3" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorB4" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute3" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute4" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute6" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute7" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorA5" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA6" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute8" classname="com.orpheus.auction.failuretests.BidUpdateHandlerTests" time="0.032"></testcase>
+  <testcase name="testIsBidUpdateValid1" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid2" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsBidUpdateValid3" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid1" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testIsNewBidValid2" classname="com.orpheus.auction.failuretests.BidValidatorImplTests" time="0.0"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.031"></testcase>
+  <testcase name="testConstructorA3" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA4" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.032"></testcase>
+  <testcase name="testConstructorB3" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.047"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.032"></testcase>
+  <testcase name="testExecute6" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute7" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute8" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute9" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute10" classname="com.orpheus.auction.failuretests.LeadingBidsHandlerTests" time="0.015"></testcase>
+  <testcase name="testConstructorA1" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorA2" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.062"></testcase>
+  <testcase name="testConstructorB1" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testConstructorB2" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute1" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.031"></testcase>
+  <testcase name="testExecute2" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute3" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.015"></testcase>
+  <testcase name="testExecute4" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.016"></testcase>
+  <testcase name="testExecute5" classname="com.orpheus.auction.failuretests.OpenAuctionsHandlerTests" time="0.015"></testcase>
+  <testcase name="testAuctionComplete" classname="com.orpheus.auction.stresstests.AuctionListenerImplStressTestCases" time="0.094"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.stresstests.BidPlacementHandlerStressTestCase" time="0.172"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.stresstests.BidUpdateHandlerStressTestCase" time="0.063"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.stresstests.LeadingBidsHandlerStressTestCase" time="0.078"></testcase>
+  <testcase name="testExecute" classname="com.orpheus.auction.stresstests.OpenAuctionsHandlerStressTestCase" time="0.062"></testcase>
+  <system-out><![CDATA[StressTests - AuctionListenerImpl.auctionComplete() : 500 operations, takes 94 ms
+StressTests - BidPlacementHandler.execute() : 500 operations, takes 141 ms
+StressTests - BidUpdateHandler.execute() : 500 operations, takes 63 ms
+StressTests - LeadingBidsHandler.execute() : 500 operations, takes 78 ms
+StressTests - OpenAuctionsHandler.execute() : 500 operations, takes 62 ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

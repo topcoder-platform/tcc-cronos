@@ -1,0 +1,5 @@
+<handler type="BidUpdateHandler">
+	<auction_id_param_key>auction_id_param_key</auction_id_param_key>
+	<bid_id_param_key>bid_id_param_key</bid_id_param_key>
+	<max_amount_param_key>max_amount_param_key</max_amount_param_key>
+</handler>

@@ -1,17 +1,16 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
- package com.orpheus.auction.failuretests;
+package com.orpheus.auction.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
- *
+ * <p>
+ * This test case aggregates all Failure test cases.
+ * </p>
  * @author TopCoder
  * @version 1.0
  */
@@ -19,8 +18,14 @@ public class FailureTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(AuctionListenerImplTests.class);
+        suite.addTestSuite(BidPlacementHandlerTests.class);
+        suite.addTestSuite(BidUpdateHandlerTests.class);
+        suite.addTestSuite(BidValidatorImplTests.class);
+        suite.addTestSuite(LeadingBidsHandlerTests.class);
+        suite.addTestSuite(OpenAuctionsHandlerTests.class);
+
         return suite;
     }
-
 }

@@ -19,7 +19,14 @@ public class AccuracyTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        
+        suite.addTestSuite(AuctionListenerImplAccuracyTest.class);
+        suite.addTestSuite(BidPlacementHandlerAccuracyTest.class);
+        suite.addTestSuite(BidUpdateHandlerAccuracyTest.class);
+        suite.addTestSuite(BidValidatorImplAccuracyTest.class);
+        suite.addTestSuite(KeyConstantsAccuracyTest.class);
+        suite.addTestSuite(LeadingBidsHandlerAccuracyTest.class);
+        suite.addTestSuite(OpenAuctionsHandlerAccuracyTest.class);
         return suite;
     }
 
