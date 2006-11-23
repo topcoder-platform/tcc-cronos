@@ -1,0 +1,16 @@
+<CMConfig>
+  <Config name="com.orpheus.auction.persistence.AuctionDAOFactory">
+    <!-- Key for the AuctionDAO to pass to ObjectFactory. Required -->
+    <Property name="auctionDAO">
+      <Value>MockAuctionDAO</Value>
+    </Property>
+  </Config>
+  <!-- Config for object factory -->
+  <Config name="com.orpheus.auction.persistence.objectfactory">
+    <Property name="MockAuctionDAO">
+      <Property name="type">
+        <Value>com.orpheus.auction.persistence.failuretests.MockAuctionDAO</Value>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

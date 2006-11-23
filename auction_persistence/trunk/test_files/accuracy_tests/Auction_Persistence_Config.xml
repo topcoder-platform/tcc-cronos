@@ -1,0 +1,109 @@
+<CMConfig>
+  <Config name="com.orpheus.auction.persistence.LocalCustomAuctionPersistence">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <!-- The JNDI reference for the EJB. Required -->
+    <Property name="jndiEjbReference">
+      <Value>auction/AuctionEJB</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.RemoteCustomAuctionPersistence">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <!-- The JNDI reference for the EJB. Required -->
+    <Property name="jndiEjbReference">
+      <Value>auction/AuctionEJB</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.AuctionDAOFactory">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionDAO to pass to ObjectFactory. Required -->
+    <Property name="auctionDAO">
+      <Value>SQLServerAuctionDAO</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.impl.SQLServerAuctionDAO">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <!-- <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+     -->
+  </Config>
+  <!-- Config for object factory -->
+  <Config name="com.orpheus.auction.persistence.objectfactory">
+    <Property name="DefaultAuctionTranslator">
+      <Property name="type">
+        <Value>com.orpheus.auction.persistence.impl.DefaultAuctionTranslator</Value>
+      </Property>
+    </Property>
+    <Property name="SimpleCache">
+      <Property name="type">
+        <Value>com.topcoder.util.cache.SimpleCache</Value>
+      </Property>
+    </Property>
+    <Property name="DBConnectionFactory">
+      <Property name="type">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+    <Property name="SQLServerAuctionDAO">
+      <Property name="type">
+        <Value>com.orpheus.auction.persistence.impl.SQLServerAuctionDAO</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>com.orpheus.auction.persistence.impl.SQLServerAuctionDAO</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

@@ -1,0 +1,276 @@
+<CMConfig>
+  <!-- Config for object factory -->
+  <Config name="com.orpheus.auction.persistence.objectfactory">
+    <Property name="DefaultAuctionTranslator">
+      <Property name="type">
+        <Value>com.orpheus.auction.persistence.impl.DefaultAuctionTranslator</Value>
+      </Property>
+    </Property>
+    <Property name="SimpleCache">
+      <Property name="type">
+        <Value>com.topcoder.util.cache.SimpleCache</Value>
+      </Property>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.objectfactory1">
+    <Property name="DefaultAuctionTranslator">
+      <Property name="type">
+        <Value>java.lang.Object</Value>
+      </Property>
+    </Property>
+    <Property name="SimpleCache">
+      <Property name="type">
+        <Value>com.topcoder.util.cache.SimpleCache</Value>
+      </Property>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.objectfactory2">
+    <Property name="DefaultAuctionTranslator">
+      <Property name="type">
+        <Value>com.orpheus.auction.persistence.impl.DefaultAuctionTranslator</Value>
+      </Property>
+    </Property>
+    <Property name="SimpleCache">
+      <Property name="type">
+        <Value>java.lang.Object</Value>
+      </Property>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence1">
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence2">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence3">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value></Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence4">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>  </Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence5">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory.invalid</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence6">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence7">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence8">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value></Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence9">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value> </Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence10">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslatorInvalid</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence11">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence12">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence13">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value></Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence14">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>  </Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence15">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCacheInvalid</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence16">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory1</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.CustomAuctionPersistence17">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory2</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+</CMConfig>

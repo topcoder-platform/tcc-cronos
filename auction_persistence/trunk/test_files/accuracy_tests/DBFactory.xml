@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<CMConfig>
+  <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+    <Property name="connections">
+        <!--
+            The "default" property refers to a configured connection.
+        -->
+        <Property name="default">
+            <Value>persistence</Value>
+        </Property>
+        <!--
+            The following property configures the ConnectionProducer obtaining the Connections
+            from a JDBC URL
+        -->
+        <Property name="persistence">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jdbc_driver">
+                    <Value>com.microsoft.sqlserver.jdbc.SQLServerDriver</Value>
+                </Property>
+                <Property name="jdbc_url">
+                   <Value>jdbc:microsoft:sqlserver://localhost:1433</Value>
+                </Property>
+                <Property name="DatabaseName">
+                  <Value>tcs</Value>
+                </Property>
+                <Property name="user">
+                    <Value>sa</Value>
+                </Property>
+                <Property name="password">
+                    <Value>1234KFC</Value>
+                </Property>
+            </Property>
+        </Property>
+	</Property>
+  </Config>
+</CMConfig>

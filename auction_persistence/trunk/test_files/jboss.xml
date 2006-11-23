@@ -1,0 +1,12 @@
+<jboss>
+  <enterprise-beans>
+    <session>
+      <ejb-name>AuctionEJB</ejb-name>
+      <jndi-name>auction/Auction</jndi-name>
+    </session>
+    <session>
+      <ejb-name>TCS_Auction_Persistence_EJBTestRunnerEJB</ejb-name>
+      <jndi-name>auction/EJBTestRunner</jndi-name>
+    </session>
+  </enterprise-beans>
+</jboss>

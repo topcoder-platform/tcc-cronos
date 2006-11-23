@@ -1,0 +1,118 @@
+<CMConfig>
+  <!-- Config for object factory -->
+  <Config name="com.orpheus.auction.persistence.objectfactory">
+    <Property name="DefaultAuctionTranslator">
+      <Property name="type">
+        <Value>com.orpheus.auction.persistence.impl.DefaultAuctionTranslator</Value>
+      </Property>
+    </Property>
+    <Property name="SimpleCache">
+      <Property name="type">
+        <Value>com.topcoder.util.cache.SimpleCache</Value>
+      </Property>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.RemoteCustomAuctionPersistence">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+	<!-- The JNDI reference for the EJB. Required -->
+    <Property name="jndiEjbReference">
+      <Value>auction/Auction</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.RemoteCustomAuctionPersistence1">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.RemoteCustomAuctionPersistence2">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+	<!-- The JNDI reference for the EJB. Required -->
+    <Property name="jndiEjbReference">
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.RemoteCustomAuctionPersistence3">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+	<!-- The JNDI reference for the EJB. Required -->
+    <Property name="jndiEjbReference">
+      <Value></Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.RemoteCustomAuctionPersistence4">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+	<!-- The JNDI reference for the EJB. Required -->
+    <Property name="jndiEjbReference">
+      <Value> </Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.RemoteCustomAuctionPersistence5">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionTranslator to pass to ObjectFactory. Required -->
+    <Property name="translatorKey">
+      <Value>DefaultAuctionTranslator</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+	<!-- The JNDI reference for the EJB. Required -->
+    <Property name="jndiEjbReference">
+      <Value>InvalidContext</Value>
+    </Property>
+  </Config>
+</CMConfig>

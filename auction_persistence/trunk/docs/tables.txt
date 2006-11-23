@@ -1,0 +1,73 @@
+CREATE TABLE any_user 
+( id BIGINT NOT NULL, handle VARCHAR(29) NOT NULL, 
+  e_mail VARCHAR(255) NOT NULL, PRIMARY KEY(id), 
+  UNIQUE INDEX user_handle_unique(handle), 
+  UNIQUE INDEX user_email_unique(e_mail)
+)
+
+CREATE TABLE game 
+( id BIGINT NOT NULL AUTO_INCREMENT, 
+  PRIMARY KEY(id), 
+)
+
+CREATE TABLE sponsor 
+( any_user_id BIGINT NOT NULL, 
+  PRIMARY KEY(any_user_id), 
+  FOREIGN KEY(any_user_id) 
+  REFERENCES any_user(id) 
+)
+
+CREATE TABLE domain 
+( id BIGINT NOT NULL AUTO_INCREMENT, 
+  sponsor_id BIGINT NOT NULL, 
+  PRIMARY KEY(id), 
+  FOREIGN KEY(sponsor_id) 
+  REFERENCES sponsor(any_user_id) 
+)
+
+CREATE TABLE image 
+( id BIGINT NOT NULL AUTO_INCREMENT, 
+  domain_id BIGINT NOT NULL, 
+  PRIMARY KEY(id), 
+  FOREIGN KEY(domain_id) 
+  REFERENCES domain(id) 
+)
+
+CREATE TABLE hosting_block 
+( id BIGINT NOT NULL 
+  AUTO_INCREMENT, 
+  PRIMARY KEY(id) 
+)
+
+CREATE TABLE auction 
+( hosting_block_id BIGINT NOT NULL, 
+  start_time DATETIME NOT NULL, 
+  end_time DATETIME NOT NULL, 
+  min_bid INTEGER UNSIGNED NOT NULL, 
+  bid_increment INTEGER UNSIGNED NOT NULL, 
+  item_count INTEGER UNSIGNED NOT NULL, 
+  PRIMARY KEY(hosting_block_id), 
+  FOREIGN KEY(hosting_block_id) 
+  REFERENCES hosting_block(id) 
+)
+
+CREATE TABLE bid 
+( id BIGINT NOT NULL AUTO_INCREMENT,
+  auction_id BIGINT NOT NULL, 
+  image_id BIGINT NOT NULL, 
+  max_amount INTEGER UNSIGNED NOT NULL, 
+  time DATETIME NOT NULL, 
+  PRIMARY KEY(id), 
+  FOREIGN KEY(auction_id) 
+  REFERENCES auction(hosting_block_id) 
+  FOREIGN KEY(image_id) 
+  REFERENCES image(id) 
+)
+
+CREATE TABLE effective_bid 
+( bid_id BIGINT NOT NULL, 
+  current_amount INTEGER UNSIGNED NOT NULL, 
+  PRIMARY KEY(bid_id), 
+  FOREIGN KEY(bid_id) 
+  REFERENCES bid(id) 
+)

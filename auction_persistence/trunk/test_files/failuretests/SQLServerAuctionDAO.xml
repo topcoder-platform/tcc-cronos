@@ -1,0 +1,284 @@
+<CMConfig>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+    <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest1">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest2">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest3">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value></Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+    <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest4">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>  </Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest5">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory.invalid</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest6">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest7">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest8">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value></Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest9">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value> </Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest10">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactoryInvalid</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>SimpleCache</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest11">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest12">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest13">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value></Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest14">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value> </Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.auction.persistence.failuretests.SQLServerAuctionDAOFailureTest15">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the DB Connection Factory to pass to ObjectFactory. Required -->
+    <Property name="factoryKey">
+      <Value>DBConnectionFactory</Value>
+    </Property>
+    <!-- Key for the Cache to pass to ObjectFactory. Required -->
+    <Property name="cacheKey">
+      <Value>invalid</Value>
+    </Property>
+    <Property name="name">
+      <Value>SQLServerConnectionImpl</Value>
+    </Property>
+  </Config>
+   <!-- Config for object factory -->
+  <Config name="com.orpheus.auction.persistence.objectfactory">
+    <Property name="SimpleCache">
+      <Property name="type">
+        <Value>com.topcoder.util.cache.SimpleCache</Value>
+      </Property>
+    </Property>
+    <Property name="DBConnectionFactory">
+      <Property name="type">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

@@ -119,6 +119,23 @@
         <pathelement location="${base_exception.jar}" />
         <pathelement location="${compression_utility.jar}" />
         <pathelement location="${memory_usage.jar}" />
+		<pathelement location="test_files/mock.jar" />
+		<pathelement location="D:/lib/j2ee.jar" />
+		<pathelement location="D:/lib/cglib-2.1.3.jar" />
+		<pathelement location="D:/lib/asm.jar" />
+		<pathelement location="D:/lib/jakarta-oro-2.0.8.jar"/>
+		<pathelement location="${jbossall-client.jar}" />
+		<pathelement location="${commons.logging.jar}" />
+		<pathelement location="${jtds.jar}" />
+		<!--
+		<pathelement location="D:/lib/jdbc/msbase.jar" />
+		<pathelement location="D:/lib/jdbc/msutil.jar" />
+		<pathelement location="D:/lib/jdbc/mssqlserver.jar" />
+		-->
+		<pathelement location="D:/lib/jdbc/sqljdbc.jar" />
+		<pathelement location="D:/lib/mock/mockrunner-ejb.jar" />
+		<pathelement location="${junitejb.jar}" />
+		<pathelement location="${mockejb.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
@@ -133,6 +150,23 @@
         <pathelement location="${build_classdir}"/>
         <path refid="buildlibs"/>
     </path>
+
+    <taskdef resource="checkstyletask.properties">
+        <classpath>
+            <pathelement location="D:/lib/checkstyle-all-4.1.jar"/>
+            <path refid="buildlibs"/>
+        </classpath>
+    </taskdef>
+    <target name="checkstyle" description="Generates a report of code convention violations.">
+        <checkstyle config="D:/TopCoder/config/tc_checks.xml" failOnViolation="false">
+            <formatter type="plain" toFile="${testlogdir}/checkstyle_main"/>
+            <fileset dir="${javamain}" includes="**/*.java"/>
+        </checkstyle>
+        <checkstyle config="D:/TopCoder/config/tc_test_checks.xml" failOnViolation="false">
+            <formatter type="plain" toFile="${testlogdir}/checkstyle_tests"/>
+            <fileset dir="${javatests}" includes="**/*.java"/>
+        </checkstyle>
+    </target>
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>

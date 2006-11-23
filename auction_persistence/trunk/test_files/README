@@ -1,0 +1,6 @@
+1: run the create.ddl under folder test_files/sql
+2: update the config file DBConnectionFactory_Config.xml to adjust the database settings
+3: junitejb is used to test. You can download it from http://sourceforge.net/projects/junitejb/
+4: Make sure jboss is running before running the unit test. Deploy the auction.ear into jboss, this is an easy job as just to put the file auction.ear under the directory JBOSS_HOME/server/default/deploy and jboss will auto deploy this ear.
+5: Make sure test_files/mock.jar is in your classpath before running the unit test.
+

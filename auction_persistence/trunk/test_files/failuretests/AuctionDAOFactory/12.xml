@@ -1,0 +1,20 @@
+<CMConfig>
+  <Config name="com.orpheus.auction.persistence.AuctionDAOFactory">
+    <!-- Namespace to use with the ConfigManagerSpecificationFactory. Required -->
+    <Property name="specNamespace">
+      <Value>com.orpheus.auction.persistence.objectfactory</Value>
+    </Property>
+    <!-- Key for the AuctionDAO to pass to ObjectFactory. Required -->
+    <Property name="auctionDAO">
+      <Value>MockAuctionDAO</Value>
+    </Property>
+  </Config>
+  <!-- Config for object factory -->
+  <Config name="com.orpheus.auction.persistence.objectfactory">
+    <Property name="MockAuctionDAO">
+      <Property name="type">
+        <Value>java.lang.Object</Value>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

@@ -1,0 +1,32 @@
+<CMConfig>
+  <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+    <Property name="connections">
+      <!-- The default should not be oracle, the db should be in the scope of the DBs which are allowed in IDGenerator 2.0 -->
+      <Property name="default">
+        <Value>SQLServerConnectionImpl</Value>
+      </Property>
+      <Property name="SQLServerConnectionImpl">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+          <Property name="jdbc_driver">
+            <Value>com.microsoft.sqlserver.jdbc.SQLServerDriver</Value>
+          </Property>
+          <Property name="jdbc_url">
+            <Value>jdbc:sqlserver://localhost:1433</Value>
+          </Property>
+          <Property name="DatabaseName">
+            <Value>tcs</Value>
+          </Property>
+          <Property name="user">
+            <Value>sa</Value>
+          </Property>
+          <Property name="password">
+            <Value>1234KFC</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>
