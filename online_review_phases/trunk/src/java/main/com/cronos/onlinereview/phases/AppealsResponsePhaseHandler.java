@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -247,10 +248,10 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             Resource runnerUpSubmitter = null;
 
             //again iterate over submissions to set the initial score and placement
-            for (int iSub = 0; iSub < subs.length; iSub++) {
-                Submission submission = subs[iSub];
-                // retrieve suitable rankedSubmission by submission id
-                RankedSubmission rankedSubmission = getRankedSubmissionById(placements, submission.getId());
+            for (int iSub = 0; iSub < placements.length; iSub++) {
+                RankedSubmission rankedSubmission = placements[iSub];
+                rankedSubmission = breakTies(rankedSubmission, subs, placements);
+                Submission submission = getSubmissionById(subs, rankedSubmission.getId());
                 float aggScore = rankedSubmission.getAggregatedScore();
                 int placement = rankedSubmission.getRank();
 
@@ -327,21 +328,45 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * Return suitable rankedSubmission for given submissionId.
+     * Return suitable submission for given submissionId.
      * 
-     * @param rankedSubmissions the rankedSubmission array
+     * @param submissions the submission array
      * @param submissionId the submissionId
-     * @return rankedSubmission
+     * @return submission
      * @throws PhaseHandlingException
      */
-    private RankedSubmission getRankedSubmissionById(RankedSubmission[] rankedSubmissions, long submissionId)
+    private Submission getSubmissionById(Submission[] submissions, long submissionId)
         throws PhaseHandlingException {
-        for (int i = 0; i < rankedSubmissions.length; i++) {
-            if (rankedSubmissions[i].getId() == submissionId) {
-                return rankedSubmissions[i];
+        for (int i = 0; i < submissions.length; i++) {
+            if (submissions[i].getId() == submissionId) {
+                return submissions[i];
             }
         }
-        throw new PhaseHandlingException("rankedSubmissions not found for submissionId: " + submissionId);
+        throw new PhaseHandlingException("submissions not found for submissionId: " + submissionId);
+    }
+
+    /**
+     * Break ties by submission timestamp
+     * @param submission the submission to calculate
+     * @param submissions all the submission records
+     * @param placements all the ranked submission records
+     * @return the submission with fixed placement
+     * @throws PhaseHandlingException
+     */
+    private RankedSubmission breakTies(RankedSubmission submission,
+            Submission[] submissions, RankedSubmission[] placements) throws PhaseHandlingException {
+        int rank = submission.getRank();
+        Date timestamp = getSubmissionById(submissions, submission.getId())
+                .getUpload().getCreationTimestamp();
+        for (int i = 0; i < placements.length; ++i) {
+            if (placements[i].getRank() == submission.getRank()) {
+                Submission tie = getSubmissionById(submissions, placements[i].getId());
+                if (tie.getUpload().getCreationTimestamp().before(timestamp)) {
+                    ++rank;
+                }
+            }
+        }
+        return new RankedSubmission(submission, rank);
     }
 
     /**
