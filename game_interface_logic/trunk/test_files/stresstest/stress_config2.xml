@@ -1,0 +1,30 @@
+<CMConfig>
+  <Config name="GameDataManagerImpl_stresstest_namespace">
+    <Property name="jndi_names">				
+		<Value>GameDataRemote, Remote</Value>
+    </Property>
+    <Property name="new_game_poll_interval">
+				<Value>200</Value>
+    </Property>
+    <Property name="game_started_poll_interval">
+				<Value>500</Value>
+    </Property>
+  </Config>
+  <Config name="com.orpheus.game.GameDataManager_ObjectFactory">
+    <Property name="GameDataManager">
+		<Property name="type">
+            <Value>com.orpheus.game.GameDataManagerImpl</Value>
+        </Property>
+        <Property name="params">
+	    		<Property name="param1">
+	      			<Property name="type">
+	        			<Value>String</Value>
+	      			</Property>
+	      			<Property name="value">
+	        			<Value>GameDataManagerImpl_stresstest_namespace</Value>
+	      			</Property>
+	    		</Property>
+	    	</Property>
+    </Property>
+  </Config>
+</CMConfig>

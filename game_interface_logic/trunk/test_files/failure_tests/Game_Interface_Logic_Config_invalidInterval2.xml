@@ -1,0 +1,14 @@
+<CMConfig>
+  <Config name="com.orpheus.game.GameDataManagerImpl">
+    <Property name="jndi_names">
+				<Value>game/GameDataBean, Local</Value>
+				<Value>java:comp/env/ejb/game/GameDataEJB, Remote</Value>
+    </Property>
+    <Property name="new_game_poll_interval">
+				<Value>1000</Value>
+    </Property>
+    <Property name="game_started_poll_interval">
+				<Value>not numner</Value>
+    </Property>
+  </Config>
+</CMConfig>

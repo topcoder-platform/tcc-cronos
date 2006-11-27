@@ -1,26 +1,33 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
- package com.orpheus.game.failuretests;
+package com.orpheus.game.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
+
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
- *
- * @author TopCoder
+ * <p>
+ * This test case aggregates all Failure test cases.
+ * </p>
+ * @author waits
  * @version 1.0
  */
 public class FailureTests extends TestCase {
-
+    /**
+     * return suite to junit
+     *
+     * @return test suite
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(GameDataManagerImplCtorFailureTests.class);
+        suite.addTestSuite(GameDataManagerImplFailureTests.class);
+        suite.addTestSuite(GameDataUtilityFailureTests.class);
+
         return suite;
     }
-
 }

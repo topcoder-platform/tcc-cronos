@@ -1,0 +1,10 @@
+<CMConfig>
+  <Config name="Invalid_namespace">
+    <Property name="new_game_poll_interva">
+				<Value>5000</Value>
+    </Property>
+    <Property name="game_started_poll_interval">
+				<Value>5000</Value>
+    </Property>
+  </Config>
+</CMConfig>
