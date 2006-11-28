@@ -1,0 +1,26 @@
+<CMConfig>
+  <Config name="missing.spec.namespace">
+    <Property name="key">
+      <Value>some.object</Value>
+    </Property>
+  </Config>
+
+  <Config name="missing.key">
+    <Property name="specNamespace">
+      <Value>spec.namespace</Value>
+    </Property>
+  </Config>
+
+  <Config name="missing.property">
+  </Config>
+
+  <Config name="bad.object">
+    <Property name="key">
+      <Value>some.object</Value>
+    </Property>
+
+    <Property name="specNamespace">
+      <Value>spec.namespace</Value>
+    </Property>
+  </Config>
+</CMConfig>

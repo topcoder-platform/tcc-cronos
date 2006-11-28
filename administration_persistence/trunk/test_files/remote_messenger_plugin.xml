@@ -1,0 +1,27 @@
+<CMConfig>
+  <Config name="remote.messenger.plugin.factory">
+    <Property name="com/orpheus/administration/persistence/MessageTranslator:messageTranslator">
+      <Property name="type">
+        <Value>com.orpheus.administration.persistence.impl.RSSItemTranslator</Value>
+      </Property>
+    </Property>
+
+    <Property name="com/orpheus/administration/persistence/SearchCriteriaTranslator:searchCriteriaTranslator">
+      <Property name="type">
+        <Value>com.orpheus.administration.persistence.impl.RSSSearchCriteriaTranslator</Value>
+      </Property>
+    </Property>
+  </Config>
+
+  <Config name="remote.messenger.plugin">
+    <Property name="specNamespace">
+      <Value>remote.messenger.plugin.factory</Value>
+    </Property>
+    <Property name="messageTranslatorKey">
+      <Value>messageTranslator</Value>
+    </Property>
+    <Property name="jndiEjbReference">
+      <Value>MessageRemote</Value>
+    </Property>
+  </Config>
+</CMConfig>

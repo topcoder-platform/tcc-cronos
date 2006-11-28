@@ -1,0 +1,56 @@
+<CMConfig>
+  <Config name="object.factory.namespace">
+    <Property name="com/topcoder/db/connectionfactory/DBConnectionFactory:connectionFactory">
+      <Property name="type">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>connection.factory.namespace</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+
+  <Config name="admin.dao.config">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>0.15</Value>
+    </Property>
+  </Config>
+
+  <Config name="invalid.adminFee">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>-1</Value>
+    </Property>
+  </Config>
+
+
+  <Config name="invalid.specNamespace">
+    <Property name="specNamespace">
+      <Value>no.such.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>0.15</Value>
+    </Property>
+  </Config>
+</CMConfig>

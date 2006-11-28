@@ -1,0 +1,28 @@
+<CMConfig>
+  <Config name="connection.factory.namespace">
+    <Property name="connections">
+      <Property name="default">
+        <Value>DefaultConnection</Value>
+      </Property>
+      <Property name="DefaultConnection">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+            <Property name="jdbc_driver">
+                <Value>com.microsoft.sqlserver.jdbc.SQLServerDriver</Value>
+            </Property>
+            <Property name="jdbc_url">
+                <Value>jdbc:sqlserver://10.120.32.151:4333;DatabaseName=master</Value>
+            </Property>
+            <Property name="user">
+                <Value>sa</Value>
+            </Property>
+            <Property name="password">
+                <Value>tcs</Value>
+            </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

@@ -1,0 +1,188 @@
+<CMConfig>
+  <Config name="object.factory.namespace">
+    <Property name="com/topcoder/db/connectionfactory/DBConnectionFactory:connectionFactory">
+      <Property name="type">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>connection.factory.namespace</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+
+  <Config name="admin.dao.valid">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>0.15</Value>
+    </Property>
+  </Config>
+
+   <Config name="connection.factory.namespace">
+    <Property name="connections">
+      <Property name="default">
+        <Value>DefaultConnection</Value>
+      </Property>
+      <Property name="DefaultConnection">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+            <Property name="jdbc_driver">
+                <Value>com.microsoft.sqlserver.jdbc.SQLServerDriver</Value>
+            </Property>
+            <Property name="jdbc_url">
+                <Value>jdbc:sqlserver://10.120.32.151:4333;DatabaseName=master</Value>
+            </Property>
+            <Property name="user">
+                <Value>sa</Value>
+            </Property>
+            <Property name="password">
+                <Value>tcs</Value>
+            </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+
+  <Config name="dao.factory.namespace">
+    <Property name="com/orpheus/administration/persistence/AdminDataDAO:adminDAO">
+      <Property name="type">
+        <Value>com.orpheus.administration.persistence.impl.SQLServerAdminDataDAO</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>admin.dao.config</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+
+    <Property name="com/orpheus/administration/persistence/MessageDAO:messageDAO">
+      <Property name="type">
+        <Value>com.orpheus.administration.persistence.impl.SQLServerMessageDAO</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>message.dao.config</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+
+  <Config name="com.orpheus.administration.persistence.DAOFactory">
+    <Property name="specNamespace">
+      <Value>dao.factory.namespace</Value>
+    </Property>
+    <Property name="adminDataDAO">
+      <Value>adminDAO</Value>
+    </Property>
+    <Property name="messageDAO">
+      <Value>messageDAO</Value>
+    </Property>
+  </Config>
+
+  <Config name="admin.dao.fail1">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <!--Property name="adminFee">
+      <Value>0.15</Value>
+    </Property-->
+  </Config>
+
+    <Config name="admin.dao.fail2">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value> </Value>
+    </Property>
+  </Config>
+
+      <Config name="admin.dao.fail3">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>6</Value>
+    </Property>
+  </Config>
+
+    <Config name="admin.dao.fail4">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <!--Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property-->
+    <Property name="adminFee">
+      <Value>0.15</Value>
+    </Property>
+  </Config>
+
+    <Config name="admin.dao.fail5">
+    <Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value> </Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>0.15</Value>
+    </Property>
+  </Config>
+
+      <Config name="admin.dao.fail6">
+    <!--Property name="specNamespace">
+      <Value>object.factory.namespace</Value>
+    </Property-->
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>0.15</Value>
+    </Property>
+  </Config>
+
+        <Config name="admin.dao.fail7">
+    <Property name="specNamespace">
+      <Value> </Value>
+    </Property>
+    <Property name="factoryKey">
+      <Value>connectionFactory</Value>
+    </Property>
+    <Property name="adminFee">
+      <Value>0.15</Value>
+    </Property>
+  </Config>
+</CMConfig>

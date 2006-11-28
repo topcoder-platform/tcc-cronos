@@ -1,0 +1,47 @@
+<CMConfig>
+  <Config name="dao.factory.namespace">
+    <Property name="com/orpheus/administration/persistence/AdminDataDAO:adminDAO">
+      <Property name="type">
+        <Value>com.orpheus.administration.persistence.impl.SQLServerAdminDataDAO</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>admin.dao.config</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+
+    <Property name="com/orpheus/administration/persistence/MessageDAO:messageDAO">
+      <Property name="type">
+        <Value>com.orpheus.administration.persistence.impl.SQLServerMessageDAO</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>message.dao.config</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+
+  <Config name="com.orpheus.administration.persistence.DAOFactory">
+    <Property name="specNamespace">
+      <Value>dao.factory.namespace</Value>
+    </Property>
+    <Property name="adminDataDAO">
+      <Value>adminDAO</Value>
+    </Property>
+    <Property name="messageDAO">
+      <Value>messageDAO</Value>
+    </Property>
+  </Config>
+</CMConfig>

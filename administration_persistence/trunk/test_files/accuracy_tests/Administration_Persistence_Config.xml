@@ -1,0 +1,102 @@
+<CMConfig>
+	<Config	name="com.orpheus.administration.persistence.impl.SQLServerMessageDAO">
+		<Property name="specNamespace">
+			<Value>objectfactory.SQLServerMessageDAO</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="name">
+			<Value>authorization</Value>
+		</Property>
+		<Property name="searchNamespace">
+			<Value>searchBundleManager.SQLServerMessageDAO</Value>
+		</Property>
+		<Property name="searchBundle">
+			<Value>bundle</Value>
+		</Property>
+	</Config>
+	
+	<Config	name="com.orpheus.administration.persistence.impl.SQLServerAdminDataDAO">
+		 <Property name="specNamespace">
+      		<Value>objectfactory.SQLServerAdminDataDAO</Value>
+    	</Property>
+	    <Property name="factoryKey">
+	      <Value>connection_factory</Value>
+	    </Property>
+	  	<Property name="name">
+			<Value>authorization</Value>
+		</Property>
+	    <Property name="adminFee">
+	      <Value>0.15</Value>
+	    </Property>
+	</Config>
+	
+	  <Config name="com.orpheus.administration.persistence.DAOFactory">
+	    <Property name="specNamespace">
+	      <Value>dao.factory.namespace</Value>
+	    </Property>
+	    <Property name="adminDataDAO">
+	      <Value>adminDAO</Value>
+	    </Property>
+	    <Property name="messageDAO">
+	      <Value>messageDAO</Value>
+	    </Property>
+	  </Config>
+	  
+	  
+	  <Config name="com.orpheus.administration.persistence.RemoteOrpheusMessengerPlugin">
+	    <Property name="specNamespace">
+	      <Value>remote.messenger.plugin.factory</Value>
+	    </Property>
+	    <Property name="messageTranslatorKey">
+	      <Value>messageTranslator</Value>
+	    </Property>
+	    <Property name="jndiEjbReference">
+	      <Value>admin/Message</Value>
+	    </Property>
+	  </Config>
+	  
+	  <Config name="com.orpheus.administration.persistence.LocalOrpheusMessengerPlugin">
+	    <Property name="specNamespace">
+	      <Value>remote.messenger.plugin.factory</Value>
+	    </Property>
+	    <Property name="messageTranslatorKey">
+	      <Value>messageTranslator</Value>
+	    </Property>
+	    <Property name="jndiEjbReference">
+	      <Value>admin/Message</Value>
+	    </Property>
+	  </Config>
+	  
+	  
+	  <Config name="com.orpheus.administration.persistence.RemoteOrpheusMessageDataStore">
+	    <Property name="specNamespace">
+	      <Value>remote.data.store.factory</Value>
+	    </Property>
+	    <Property name="messageTranslatorKey">
+	      <Value>messageTranslator</Value>
+	    </Property>
+	    <Property name="jndiEjbReference">
+	      <Value>admin/Message</Value>
+	    </Property>
+	    <Property name="searchCriteriaTranslatorKey">
+	      <Value>searchCriteriaTranslator</Value>
+	    </Property>
+	  </Config>
+	  
+	   <Config name="com.orpheus.administration.persistence.LocalOrpheusMessageDataStore">
+	    <Property name="specNamespace">
+	      <Value>local.data.store.factory</Value>
+	    </Property>
+	    <Property name="messageTranslatorKey">
+	      <Value>messageTranslator</Value>
+	    </Property>
+	    <Property name="jndiEjbReference">
+	      <Value>admin/Message</Value>
+	    </Property>
+	    <Property name="searchCriteriaTranslatorKey">
+	      <Value>searchCriteriaTranslator</Value>
+	    </Property>
+	  </Config>
+</CMConfig>

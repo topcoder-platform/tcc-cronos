@@ -1,0 +1,36 @@
+<CMConfig>
+  <Config name="object.factory.namespace">
+  <Property name="com/topcoder/db/connectionfactory/DBConnectionFactory:connectionFactory">
+      <Property name="type">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+  <Config name="search.strategy.factory">
+    <Property name="databaseSearchStrategy">
+        <Property name="type">
+        <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>db.search.strategy</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>
