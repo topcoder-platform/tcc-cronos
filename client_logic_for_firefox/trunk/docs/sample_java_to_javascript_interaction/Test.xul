@@ -1,0 +1,9 @@
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+ xmlns:html="http://www.w3.org/1999/xhtml">
+<script src="Test.js" type="application/x-javascript"/>
+
+<html:applet id="TheApplet" code="com.topcoder.applet.TheApplet.class" name="TheApplet" width="0" height="0" MAYSCRIPT="true" ></html:applet>
+
+<button class="dialog" value="dialog" label="Call into Java" onclick="sayHi();"/>
+
+</window>
