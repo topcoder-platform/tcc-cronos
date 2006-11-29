@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
@@ -93,8 +94,23 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
-            //return true if all dependencies have stopped and start time has been reached.
-            return PhasesHelper.canPhaseStart(phase);
+            //return true if all dependencies have stopped and start time has been reached and there is an approver.
+            if (!PhasesHelper.canPhaseStart(phase)) {
+                return false;
+            }
+
+            Connection conn = null;
+            try {
+                conn = createConnection();
+
+                Resource[] approver = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+                        conn, new String[] {"Approver"}, phase.getId());
+
+                //return true if there is an approver
+                return (approver.length == 1);
+            } finally {
+                PhasesHelper.closeConnection(conn);
+            }
         } else {
             return (PhasesHelper.arePhaseDependenciesMet(phase, false)
                     && checkScorecards(phase));
