@@ -1,0 +1,162 @@
+<ConfigManager>
+	
+	<namespace name="Orpheus.Plugin.InternetExplorer.MsieClientLogic">
+	
+		<!-- The Object Factory key where the BloomFilter is configured. -->
+		<property name="bloom_filter">
+			<value>bloom_filter_object_factory_key</value>
+		</property>
+
+		<!-- The Object Factory key where the IWebBrowserWindowNavigator implementation to use is configured. -->
+		<property name="window_navigator">
+			<value>window_navigator_object_factory_key</value>
+		</property>
+
+		<!-- The Object Factory key where the IPersistence implementation to use is configured. -->
+		<property name="persistence">
+			<value>persistence_object_factory_key</value>
+		</property>
+
+		<!-- The Object Factory key where the IExtensionEventsManager implementation to use is configured. -->
+		<property name="extension_events_manager">
+			<value>extension_events_manager_object_factory_key</value>
+		</property>
+
+		<!-- The Object Factory key where the IDocHostUIHandler implementation to use is configured. -->
+		<!-- Note that the class instance created by this key should provide a (MsieClientLogic) constructor. -->
+		<property name="doc_host_ui_handler">
+			<value>doc_host_ui_handler_object_factory_key</value>
+		</property>
+
+		<!-- The Object Factory key where the scripting object to create is configured. -->
+		<!-- Note that the class instance created by this key should provide a (MsieClientLogic) constructor. -->
+		<property name="scripting_object">
+			<value>scripting_object_object_factory_key</value>
+		</property>
+
+		<!-- The interval in minutes to poll for updates. -->
+		<property name="poll_interval">
+			<value>10</value>
+		</property>
+		
+    </namespace>
+    
+	<namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.DefaultExtensionEventsManager">
+		
+		<!-- The Object Factory key where the IExtensionEventHandlerFactory implementation to use is configured. -->
+		<property name="event_handlers_factory">
+			<value>event_handlers_factory_object_factory_key</value>
+		</property>
+
+		<!-- Represents a list of events. Based on the event name the configured handlers are retrieved. Event names (ex: DocumentCompleted, LogIn, LogOut) should be added here. -->
+		<property name="events">
+
+			<!-- User interface events. -->
+			<!-- These events should be fired by client code (user interface button click for example) --> 
+			<!-- All these events should be configured with the HttpRequestUserInterfaceEventHandler handler -->  
+			<value>LogIn</value>
+			<value>LogOut</value>
+			<value>ShowActiveGames</value>
+			<value>ShowUserGames</value>
+			<value>ShowUnlockedDomains</value>
+			<value>ShowUpcomingDomains</value>
+			<value>ShowLeaders</value>
+			<value>ShowLatestClue</value>
+
+			<!-- General events -->
+			<!-- These events will be fired by the MsieClientLogic class. -->
+
+			<!-- This event should be configured with the WebBrowserDocumentCompletedEventHandler handler -->
+			<value>DisplayedPageChanged</value>			
+			<!-- This event should be configured with the PollingEventHandler handler -->
+			<value>PollUpdates</value>
+
+			<!-- Note that the scripting object(or any other part of the component) can throw events. 
+			The scripting object for example fires the LoggedIn, LoggedOut and WorkingGameChanged events. 
+			These events are intended to be handled by client code. 
+			Handlers for these events can be added by client code through the IExtensionEventsManager interface -->			
+
+		</property>
+		
+    </namespace>
+
+	<namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Factories.DefaultExtensionEventHandlerFactory">
+
+		<!-- The name of the handlers configured to be invoked for the event. 
+		For each handler name there is another property: <handler name> _handler. Any number of handlers can be added here. -->
+		<!--  This is an example how to configure the LogIn event handler. -->
+		<property name="LogIn_handlers">
+			<value>log_in</value>
+		</property>
+
+		<!-- The Object Factory key where the  IExtensionEventHandler implementation to use is configured. -->
+		<!-- Object Factory should be configured to create an HttpRequestUserInterfaceEventHandler for this key.-->
+		<property name="log_in_handler">
+			<value>log_in_object_factory_key</value>
+		</property>
+
+	</namespace>
+
+	<namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers.HttpRequestUserInterfaceEventHandler">
+
+		<!-- The URL of the page to request as response to the event. -->
+		<!--  This is an example how to configure the LogIn event handler. -->
+		<property name="LogIn_url">
+			<value>www.topcoder.com/Login.aspx</value>
+		</property>
+
+		<!-- Whether to display the result of the web request in a new window or not. -->
+		<property name="LogIn_new_window">
+			<value>true</value>
+		</property>
+
+		<!-- The method to use for the request. -->
+		<property name="LogIn_method">
+			<value>GET</value>
+		</property>
+
+	</namespace>
+
+	<namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers.WebBrowserDocumentCompletedEventHandler">
+
+		<!-- The url to make the request to. The host parameter will be placed in string as {0}. -->
+		<property name="document_completed_url">
+			<value>www.tc.com/?host={0}</value>
+		</property>
+
+		<!-- The url to make the request to. The host parameter will be placed in string as {0}. -->
+		<property name="document_completed_0_responce_url">
+			<value>www.tc.com/?host={0}</value>
+		</property>
+
+	</namespace>
+
+	<namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers.PoolingEventHandler">
+
+		<!-- The Object Factory key of the IRSSParser implementation to use. Atom1.0 parser should be configured. -->
+		<property name="rss_parser">
+			<value>rss_parser_object_factory_key</value>
+		</property>
+
+		<!-- The polling url.The timestamp parameter will be placed in string as {0}. -->
+		<property name="polling _url">
+			<value>www.tc.com/Updates.aspx?timestamp={0}</value>
+		</property>
+
+	</namespace>
+
+	<namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers.TestObjectEventHandler">
+
+		<!-- The Object Factory key of the HashAlgorithm implementation to use. The SHA-1 should be configured. -->
+		<property name="hash_algorithm">
+			<value>hash_algorithm_object_factory_key</value>
+		</property>
+
+		<!-- The test object request url.The parameters will be placed in string as {0}, {1} … -->
+		<property name="test_object_url">
+			<value><![CDATA[www.tc.com/?gameId={0}&target={1}&hash={3}]]></value>
+		</property>
+
+	</namespace>
+	
+</ConfigManager>
