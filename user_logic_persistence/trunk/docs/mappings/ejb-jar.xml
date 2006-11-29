@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd"
+         version="2.1">
+
+ <enterprise-beans>
+	<session>
+     <ejb-name>PendingConfirmationEJB</ejb-name>
+     <home>com.orpheus.user.persistence.ejb.PendingConfirmationHomeRemote</home>
+     <remote>com.orpheus.user.persistence.ejb.PendingConfirmationRemote</remote>
+      <local-home>com.orpheus.user.persistence.ejb.PendingConfirmationHomeLocal</local-home>
+      <local>com.orpheus.user.persistence.ejb.PendingConfirmationLocal</local>
+     <ejb-class>com.orpheus.user.persistence.ejb.PendingConfirmationBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+	</session>
+
+	<session>
+     <ejb-name>UserProfileEJB</ejb-name>
+     <home>com.orpheus.user.persistence.ejb.UserProfileHomeRemote</home>
+     <remote>com.orpheus.user.persistence.ejb.UserProfileRemote</remote>
+      <local-home>com.orpheus.user.persistence.ejb.UserProfileHomeLocal</local-home>
+      <local>com.orpheus.user.persistence.ejb.UserProfileLocal</local>
+     <ejb-class>com.orpheus.user.persistence.ejb.UserProfileBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+	</session>
+
+ </enterprise-beans>
+
+ <assembly-descriptor>
+
+   <container-transaction>
+     <method>
+        <ejb-name>PendingConfirmationEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+
+   <container-transaction>
+     <method>
+        <ejb-name>UserProfileEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+
+ </assembly-descriptor>
+
+</ejb-jar>
