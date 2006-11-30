@@ -1,0 +1,385 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Invalid test configuration for testing the OrpheusPendingConfirmationStorage class.
+		Each namespace represents a different type of invalid configuration.
+	-->
+
+	<!--
+		The required specNamespace property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.missingSpecNamespace">
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+
+	<!--
+		The required specNamespace property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.emptySpecNamespace">
+		<Property name="specNamespace">
+			<Value> </Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+
+	<!--
+		The specNamespace property does refers to an unknown namespace.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.invalidSpecNamespace">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.unknownNamespace</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+
+	<!--
+		The required translatorKey property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.missingTranslatorKey">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+
+	<!--
+		The required translatorKey property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.emptyTranslatorKey">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value></Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The translatorKey property does not refer to a translator key specified in the
+		Object Factory configuration.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.invalidTranslatorKey">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>unknownTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required cacheKey property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.missingCacheKey">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required cacheKey property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.emptyCacheKey">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>  </Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The cacheKey property does not refer to a cache key specified in the
+		Object Factory configuration.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.invalidCacheKey">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>unknownCache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required log property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.missingLog">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required log property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.emptyLog">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value></Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required jndiEjbReference property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.missingJndiRef">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required jndiEjbReference property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.emptyJndiRef">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value></Value>
+		</Property>
+	</Config>
+
+	<!--
+		The jndiEjbReference property refers to an unknown EJB.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.invalidJndiRef">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>java:comp/env/ejb/UnknownEJB</Value>
+		</Property>
+	</Config>
+
+	<!-- 
+		The objTranslator property refers to the wrong object type
+		(should be com.orpheus.user.persistence.impl.ConfirmationMessageTranslator).
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory.wrongTranslatorClass">
+		<Property name="objTranslator">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.util.cache</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The ConfirmationMessageTranslator class constructor does not take any parameters.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory.invalidTranslatorSpec">
+		<Property name="objTranslator">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.impl.ConfirmationMessageTranslator</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.orpheus.user.persistence</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.util.cache</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The cache property refers to the wrong object type
+		(should be com.topcoder.util.cache.SimpleCache).
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory.wrongCacheClass">
+		<Property name="objTranslator">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.impl.ConfirmationMessageTranslator</Value>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The SimpleCache class constructor needs parameters.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory.invalidCacheSpec">
+		<Property name="objTranslator">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.impl.ConfirmationMessageTranslator</Value>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+		</Property>
+	</Config>
+
+</CMConfig>

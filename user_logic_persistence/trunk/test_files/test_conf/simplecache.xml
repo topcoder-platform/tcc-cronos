@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<CMConfig>
+
+	<!-- 
+		Simple Cache configuration.
+	-->
+	<Config name="com.topcoder.util.cache">
+
+		<!-- 
+			Maximum number of cache entries allowed
+		-->
+		<Property name="MaxCacheSize">
+			<Value>1000</Value>
+		</Property>
+		
+		<!-- 
+			Cache refresh interval after which the cache entries will be refreshed
+		-->
+		<Property name="TimeoutMS">
+			<Value>3600000</Value>
+		</Property>
+
+		<!-- 
+			The cache eviction strategy class.
+			Using least-recently-used (LRU).
+		-->
+		<Property name="CacheEvictionStrategy">
+			<Value>com.topcoder.util.cache.LRUCacheEvictionStrategy</Value>
+		</Property>
+
+		<!--
+			Maximum number of memory bytes that all the entries are allowed
+		-->
+		<Property name="MaxCacheByteCapacity">
+			<Value>10000000</Value>
+		</Property>
+
+		<!-- 
+			Memory utilization handler used to determine object sizes in memory
+			This is used to calculate the cache capacity.
+		-->
+		<Property name="MemoryUtilizationHandler">
+			<Value>com.topcoder.util.cache.SimpleMemoryUtilizationHandler</Value>
+		</Property>
+
+		<!-- 
+			Flag signalling if compression is applied to the entries
+		-->
+		<Property name="CompressionFlag">
+			<Value>true</Value>
+		</Property>
+
+		<!-- 
+			A listing of compression handlers that should be applied to cache entries
+			If multiple handlers are present then they are chained based on the order
+			given here. Basically the first handler in the list will be tried first
+			and if it can not compress the entry then the next one will be tried.
+			Each handler can be configured with additional peramaters as specified 
+			below.       
+		-->
+		<Property name="CompressionHandlers">
+			<Property name="SomeHandler">
+				<Property name="class">
+					<Value>com.topcoder.util.cache.DefaultCompressionHandler</Value>
+				</Property>
+
+				<!-- 
+					A list of accepted types that this handler 'knows' how to compress
+					Optional. Defaults to "java.lang.Object" which will simply match 
+					everything. There is an exception: if this is not supplied but the
+					regular expression is supplied then this will default to null.
+					When matching the ObjectType matching will always take precededence
+					over regexp matching.
+				-->
+				<Property name="AcceptedObjectTypes">
+					<Value>com.topcoder.user.profile.UserProfile</Value>
+					<Value>com.orpheus.user.persistence.ejb.UserProfileDTO</Value>
+					<Value>com.topcoder.validation.emailconfirmation.ConfirmationMessage</Value>
+					<Value>com.orpheus.user.persistence.ejb.ConfirmationMessageDTO</Value>
+				</Property>
+
+				<!-- 	
+					A regular expression string which can be used to specify the accepted
+					types of objects based on matching class type of the object.
+					Optional. Defaults to null.
+				-->
+				<!--  Property name="AcceptedObjectTypesRegex">
+					<Value>java.util.*</Value>
+				</Property -->
+
+				<!-- 	
+					A fully qualified java class name for the codec to be used with the
+					compression handler.
+				-->
+				<Property name="CompressionCodecClass">
+					<Value>com.topcoder.util.compression.DeflateCodec</Value>
+				</Property>
+
+				<!-- 	
+					A fully qualified java class name for the byte to object and object to 
+					byte conversion handler. Compression Handlers work on byte arrays and 
+					thus need some help converting objects into byte array representations and 
+					back.
+				-->
+				<Property name="ObjectByteConverterClass">
+					<Value>com.topcoder.util.cache.SerializableObjectByteConverter</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

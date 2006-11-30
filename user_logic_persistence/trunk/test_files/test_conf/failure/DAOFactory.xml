@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Valid test configuration for testing the LocalOrpheusPendingConfirmationStorage class.
+	-->
+	<Config name="OrpheusPendingConfirmationStorage.valid">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmationLocal</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		Valid test configuration for testing the RemoteOrpheusPendingConfirmationStorage class.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.remote">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/PendingConfirmation</Value>
+		</Property>
+	</Config>
+
+
+	<!-- 
+		Valid Object Factory configuration for testing the OrpheusPendingConfirmationStorage class.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusPendingConfirmationStorage.objFactory">
+		<Property name="objTranslator">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.impl.ConfirmationMessageTranslator</Value>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.util.cache</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+
+</CMConfig>

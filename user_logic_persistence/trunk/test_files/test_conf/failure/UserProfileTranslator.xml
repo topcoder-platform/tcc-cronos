@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Valid test configuration for testing the UserProfileTranslator class.
+	-->
+	<Config name="UserProfileTranslator.valid">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>profileTypeFactory</Value>
+		</Property>
+	</Config>
+	
+	<!-- 
+		Valid Object Factory configuration for testing the UserProfileTranslator class.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory">
+		<Property name="profileTypeFactory">
+			<Property name="type">
+				<Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.util.log</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+
+
+
+
+
+
+		<Config name="UserProfileTranslator.fail1">
+		<!--Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory
+			</Value>
+		</Property-->
+		<Property name="factoryKey">
+			<Value>profileTypeFactory</Value>
+		</Property>
+	</Config>
+
+		<Config name="UserProfileTranslator.fail2">
+		<Property name="specNamespace">
+			<Value> </Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>profileTypeFactory</Value>
+		</Property>
+	</Config>
+
+
+		<Config name="UserProfileTranslator.fail3">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory
+			</Value>
+		</Property>
+		<!--Property name="factoryKey">
+			<Value>profileTypeFactory</Value>
+		</Property-->
+	</Config>
+
+
+		<Config name="UserProfileTranslator.fail4">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value> </Value>
+		</Property>
+	</Config>
+</CMConfig>

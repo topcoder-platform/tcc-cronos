@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		DB Connection Factory configuration. 
+	 -->
+    <Property name="connections">
+    
+        <!--
+            The default DB connection.
+        -->
+        <Property name="default">
+            <Value>topcoderDB</Value>
+        </Property>
+
+        <!--
+            SQL Server data source via JNDI
+        --> 
+        <Property name="topcoderDB">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jndi_name">
+                    <Value>java:orpheus/MSSQLDS</Value>
+                </Property>
+                <Property name="java_naming_factory_initial">
+                    <Value>org.jnp.interfaces.NamingContextFactory</Value>
+                </Property>
+                <Property name="java_naming_provider_url">
+                    <Value>jnp://localhost:1099</Value>
+                </Property>
+            </Property>
+        </Property>
+        
+        <!--
+        	PostgreSQL data source via JNDI
+         -->
+        <!--
+        <Property name="topcoderDB">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jndi_name">
+                    <Value>java:orpheus/PostgresDS</Value>
+                </Property>
+                <Property name="java_naming_factory_initial">
+                    <Value>org.jnp.interfaces.NamingContextFactory</Value>
+                </Property>
+                <Property name="java_naming_provider_url">
+                    <Value>jnp://localhost:1099</Value>
+                </Property>
+            </Property>
+        </Property>
+        -->
+		
+    </Property>
+</CMConfig>

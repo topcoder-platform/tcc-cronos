@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Invalid test configuration for testing the UserProfileTranslator class.
+		Each namespace represents a different type of invalid configuration.
+	-->
+	
+	<!--
+		The required specNamespace property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.missingSpecNamespace">
+		<Property name="factoryKey">
+			<Value>profileTypeFactory</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The specNamespace property value is empty
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.emptySpecNamespace">
+		<Property name="specNamespace">
+			<Value></Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>profileTypeFactory</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The specNamespace property refers to an unknown Object Factory namespace.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.invalidSpecNamespace">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.unknownNamespace
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>profileTypeFactory</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required factoryKey property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.missingFactoryKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory
+			</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The factoryKey property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.emptyFactoryKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value> </Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The factoryKey property does not refer to a factory key specified in the
+		Object Factory configuration.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.invalidFactoryKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>unknownProfileTypeFactory</Value>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The profileTypeFactory property refers to the wrong object type
+		(should be com.topcoder.user.profile.manager.ConfigProfileTypeFactory).
+	-->
+	<Config name="com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory.wrongClass">
+		<Property name="profileTypeFactory">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.ejb.ConfirmationMessageDTO</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The ConfigProfileTypeFactory class constructor needs a String parameter.
+	-->
+	<Config
+		name="com.orpheus.user.persistence.impl.UserProfileTranslator.objFactory.invalidSpecification">
+		<Property name="profileTypeFactory">
+			<Property name="type">
+				<Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+			</Property>
+		</Property>
+	</Config>
+
+</CMConfig>

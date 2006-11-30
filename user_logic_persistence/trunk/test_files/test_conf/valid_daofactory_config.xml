@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Valid test configuration for testing the DAOFactory class.
+	-->
+	<Config name="com.orpheus.user.persistence.DAOFactory">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.DAOFactory.objFactory
+			</Value>
+		</Property>
+		<Property name="pendingConfirmationDAO">
+			<Value>pendingConfirmationDAO</Value>
+		</Property>
+		<Property name="userProfileDAO">
+			<Value>userProfileDAO</Value>
+		</Property>
+	</Config>
+	
+	<!-- 
+		Valid Object Factory configuration for testing the DAOFactory class.
+	-->
+	<Config name="com.orpheus.user.persistence.DAOFactory.objFactory">
+		<Property name="pendingConfirmationDAO">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.impl.SQLServerPendingConfirmationDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.orpheus.user.persistence.impl.DAO.validWithConnName</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="userProfileDAO">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.impl.SQLServerUserProfileDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.orpheus.user.persistence.impl.DAO.validWithConnName</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

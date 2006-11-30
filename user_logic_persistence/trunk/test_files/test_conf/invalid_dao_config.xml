@@ -1,0 +1,282 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Invalid test configuration for testing the DAO classes.
+		Each namespace represents a different type of invalid configuration.
+	-->
+
+	<!--
+		The required specNamespace property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.missingSpecNamespace">
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required specNamespace property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.emptySpecNamespace">
+		<Property name="specNamespace">
+			<Value>
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The specNamespace property refers to an unknown Object Factory namespace.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.invalidSpecNamespace">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.impl.DAO.unknownNamespace</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required factoryKey property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.missingFactoryKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required factoryKey property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.emptyFactoryKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value></Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The factoryKey property does not refer to a factory key specified in the
+		Object Factory configuration.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.invalidFactoryKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>unknownDbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+		<!--
+		The required cacheKey property is missing.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.missingCacheKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The required cacheKey property value is empty.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.emptyCacheKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value> </Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		The cacheKey property does not refer to a cache key specified in the
+		Object Factory configuration.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.invalidCacheKey">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>unknownCache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The dbConnectionFactory property refers to the wrong object type
+		(should be com.topcoder.db.connectionfactory.DBConnectionFactoryImpl).
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.objFactory.wrongFactoryClass">
+		<Property name="dbConnectionFactory">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.util.cache</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The DBConnectionFactoryImpl class constructor needs a String parameter.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.objFactory.invalidFactorySpec">
+		<Property name="dbConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.util.cache</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The cache property refers to the wrong object type
+		(should be com.topcoder.util.cache.SimpleCache).
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.objFactory.wrongCacheClass">
+		<Property name="dbConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- 
+		The SimpleCache class constructor needs parameters.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.objFactory.invalidCacheSpec">
+		<Property name="dbConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+</CMConfig>

@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<CMConfig>
+
+	<!--
+		Valid test configuration for testing the LocalOrpheusUserProfilePersistence class.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusUserProfilePersistence.local">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusUserProfilePersistence.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/UserProfileLocal</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		Valid test configuration for testing the RemoteOrpheusUserProfilePersistence class.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusUserProfilePersistence.remote">
+		<Property name="specNamespace">
+			<Value>com.orpheus.user.persistence.OrpheusUserProfilePersistence.objFactory</Value>
+		</Property>
+		<Property name="translatorKey">
+			<Value>objTranslator</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="log">
+			<Value>userLogicPersistence</Value>
+		</Property>
+		<Property name="jndiEjbReference">
+			<Value>orpheus/UserProfile</Value>
+		</Property>
+	</Config>
+	
+	<!-- 
+		Valid Object Factory configuration for testing the OrpheusUserProfilePersistence class.
+	-->
+	<Config name="com.orpheus.user.persistence.OrpheusUserProfilePersistence.objFactory">
+		<Property name="objTranslator">
+			<Property name="type">
+				<Value>com.orpheus.user.persistence.impl.UserProfileTranslator</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.orpheus.user.persistence.impl.UserProfileTranslator.valid</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="cache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.util.cache</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+</CMConfig>

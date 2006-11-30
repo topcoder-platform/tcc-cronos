@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE application
+  PUBLIC '-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN'
+  'http://java.sun.com/j2ee/dtds/application_1_3.dtd'>
+
+<application>
+  <display-name>User Logic Persistence</display-name>
+  
+  <!-- EJB's -->
+  <!--module><ejb>user_logic_persistence.jar</ejb></module-->
+  
+  <!-- Dependencies -->
+  <module><java>lib/base_exception.jar</java></module>
+  <module><java>lib/compression_utility.jar</java></module> 
+  <module><java>lib/configuration_manager.jar</java></module>
+  <module><java>lib/data_validation.jar</java></module>
+  <module><java>lib/db_connection_factory.jar</java></module>
+  <module><java>lib/email_address_validator.jar</java></module>
+  <module><java>lib/email_confirmation.jar</java></module>
+  <module><java>lib/generic_event_manager.jar</java></module>
+  <module><java>lib/id_generator.jar</java></module>
+  <module><java>lib/logging_wrapper.jar</java></module>
+  <module><java>lib/object_factory.jar</java></module>
+  <module><java>lib/random_string_generator.jar</java></module>
+  <module><java>lib/simple_cache.jar</java></module>
+  <module><java>lib/typesafe_enum.jar</java></module>
+  <module><java>lib/user_profile.jar</java></module>
+  <module><java>lib/user_profile_manager.jar</java></module>
+</application>

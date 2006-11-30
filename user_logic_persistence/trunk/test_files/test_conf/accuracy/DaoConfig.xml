@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Valid test configuration for testing the DAO classes.
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.validWithConnName">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+		<Property name="name">
+			<Value>topcoderDB</Value>
+		</Property>
+	</Config>
+	
+	<!--
+		Valid test configuration for testing the DAO classes.
+		The optional "name" property is excluded. 
+	-->
+	<Config name="com.orpheus.user.persistence.impl.DAO.validWithoutConnName">
+		<Property name="specNamespace">
+			<Value>
+				com.orpheus.user.persistence.impl.DAO.objFactory
+			</Value>
+		</Property>
+		<Property name="factoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="cacheKey">
+			<Value>cache</Value>
+		</Property>
+	</Config>
+
+</CMConfig>
