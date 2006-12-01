@@ -13,11 +13,9 @@
  */
 
 /**
- * The "user" table.
- *
- * NOTE: Please ensure that the QUOTED_IDENTIFIER options is set to ON.
+ * The "any_user" table.
  */
-CREATE TABLE "user" (
+CREATE TABLE any_user (
    id BIGINT NOT NULL PRIMARY KEY,
    handle VARCHAR(29) NOT NULL,
    e_mail VARCHAR(255) NOT NULL,
@@ -44,10 +42,10 @@ CREATE TABLE contact_info (
  * The "player" table.
  */
 CREATE TABLE player (
-   user_id BIGINT NOT NULL,
+   any_user_id BIGINT NOT NULL,
    contact_info_id BIGINT,
    payment_pref VARCHAR(49),
-   FOREIGN KEY (user_id) REFERENCES "user" (id),
+   FOREIGN KEY (any_user_id) REFERENCES any_user (id),
    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
 );
 
@@ -55,20 +53,20 @@ CREATE TABLE player (
  * The "admin" table.
  */
 CREATE TABLE admin (
-   user_id BIGINT NOT NULL,
-   FOREIGN KEY (user_id) REFERENCES "user" (id)
+   any_user_id BIGINT NOT NULL,
+   FOREIGN KEY (any_user_id) REFERENCES any_user (id)
 );
 
 /**
  * The "sponsor" table.
  */
 CREATE TABLE sponsor (
-   user_id BIGINT NOT NULL,
+   any_user_id BIGINT NOT NULL,
    contact_info_id BIGINT,
    fax NUMERIC,
    payment_pref VARCHAR(49),
    is_approved BIT,
-   FOREIGN KEY (user_id) REFERENCES "user" (id),
+   FOREIGN KEY (any_user_id) REFERENCES any_user (id),
    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
 );
 

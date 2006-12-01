@@ -46,6 +46,11 @@ import com.topcoder.validation.emailconfirmation.PendingConfirmationStorageInter
  * (JVM).
  * </p>
  * <p>
+ * <b>Note:</b> In order to be compatible with the Email Confirmation component,
+ * subclasses should provide a default constructor (a constructor without parameters)
+ * that loads the class configuration from some default configuration namespace.
+ * </p>
+ * <p>
  * Since the <code>ConfirmationMessage</code> objects are not serializable,
  * this class first converts them internally to corresponding
  * {@link ConfirmationMessageDTO} instances in order to facilitate the transfer

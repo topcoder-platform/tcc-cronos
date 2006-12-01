@@ -91,6 +91,27 @@ public class RemoteOrpheusPendingConfirmationStorageTest extends RemoteOrpheusEJ
 
     /**
      * <p>
+     * Tests the RemoteOrpheusPendingConfirmationStorage() constructor. The
+     * configuration is loaded from the default namespace - the fully-qualified
+     * name of the RemoteOrpheusPendingConfirmationStorage class. The newly
+     * created instance should not be null.
+     * </p>
+     */
+    public void testDefaultCtor() throws Exception {
+        // Load test config.
+        ConfigHelper.loadConfig(VALID_CONFIG_FILE, RemoteOrpheusPendingConfirmationStorage.class.getName());
+
+        try {
+            RemoteOrpheusPendingConfirmationStorage remoteStorage = new RemoteOrpheusPendingConfirmationStorage();
+            assertNotNull("The RemoteOrpheusPendingConfirmationStorage instance should not be null", remoteStorage);
+        } finally {
+            // Unload config.
+            ConfigHelper.unloadConfig(RemoteOrpheusPendingConfirmationStorage.class.getName());
+        }
+    }
+
+    /**
+     * <p>
      * Tests the RemoteOrpheusPendingConfirmationStorage(String namespace)
      * constructor. The newly created instance should not be null.
      * </p>

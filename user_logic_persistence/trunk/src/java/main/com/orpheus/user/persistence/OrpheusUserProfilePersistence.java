@@ -674,7 +674,7 @@ public abstract class OrpheusUserProfilePersistence implements UserProfilePersis
      * @throws IllegalArgumentException if the criteria map contains keys that are
      *         <code>null</code>, non-<code>String</code> instances or blank strings,
      *         or if the keys are not equal to one of the property constants defined
-     *         in the {@link UserConstants) interface
+     *         in the {@link UserConstants} interface
      * @throws PersistenceException if retrieving the user profile from the
      *         persistent store that match the given criteria fails
      */

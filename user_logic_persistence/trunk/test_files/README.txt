@@ -64,11 +64,6 @@ Database setup steps:
 
 Other database issues:
 
-- If you are using SQL Server, please ensure that the QUOTED_IDENTIFIER option is set to ON.
-  This is the default in SQL Server 2000 and possibly later versions as well. The QUOTED_IDENTIFIER
-  option allows us to use the T-SQL keyword, user, as a table name by surrounding it in
-  double-quotations like so: "user" (see conf/ddl/create_tables-sqlserver.sql). 
-
 - When populating the database with test data, please ensure that it contains no user profiles
   with ID's in the range 9223372036854775760 to 9223372036854775807. Otherwise, clashes may
   occur while executing the unit tests, resulting in failed tests cases. Also ensure that there

@@ -8,7 +8,7 @@
   <display-name>User Logic Persistence</display-name>
   
   <!-- EJB's -->
-  <!--module><ejb>user_logic_persistence.jar</ejb></module-->
+  <module><ejb>user_logic_persistence.jar</ejb></module>
   
   <!-- Dependencies -->
   <module><java>lib/base_exception.jar</java></module>

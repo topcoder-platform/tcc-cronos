@@ -112,7 +112,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String INSERT_USER_SQL_STATEMENT
-        = "INSERT INTO \"user\" (id, handle, e_mail, passwd, is_active) VALUES (?, ?, ?, ?, ?)";
+        = "INSERT INTO any_user (id, handle, e_mail, passwd, is_active) VALUES (?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -120,14 +120,14 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String INSERT_PLAYER_SQL_STATEMENT
-        = "INSERT INTO player (user_id, contact_info_id, payment_pref) VALUES (?, ?, ?)";
+        = "INSERT INTO player (any_user_id, contact_info_id, payment_pref) VALUES (?, ?, ?)";
 
     /**
      * <p>
      * The SQL statement to insert an admin into the database.
      * </p>
      */
-    private static final String INSERT_ADMIN_SQL_STATEMENT = "INSERT INTO admin (user_id) VALUES (?)";
+    private static final String INSERT_ADMIN_SQL_STATEMENT = "INSERT INTO admin (any_user_id) VALUES (?)";
 
     /**
      * <p>
@@ -135,7 +135,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String INSERT_SPONSOR_SQL_STATEMENT
-        = "INSERT INTO sponsor (user_id, contact_info_id, fax, payment_pref, is_approved) VALUES (?, ?, ?, ?, ?)";
+        = "INSERT INTO sponsor (any_user_id, contact_info_id, fax, payment_pref, is_approved) VALUES (?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -152,7 +152,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String UPDATE_USER_SQL_STATEMENT
-        = "UPDATE \"user\" SET handle=?, e_mail=?, passwd=?, is_active=? WHERE id=?";
+        = "UPDATE any_user SET handle=?, e_mail=?, passwd=?, is_active=? WHERE id=?";
 
     /**
      * <p>
@@ -160,7 +160,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String UPDATE_PLAYER_SQL_STATEMENT
-        = "UPDATE player SET contact_info_id=?, payment_pref=? WHERE user_id=?";
+        = "UPDATE player SET contact_info_id=?, payment_pref=? WHERE any_user_id=?";
 
     /**
      * <p>
@@ -168,7 +168,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String UPDATE_SPONSOR_SQL_STATEMENT
-        = "UPDATE sponsor SET contact_info_id=?, fax=?, payment_pref=?, is_approved=? WHERE user_id=?";
+        = "UPDATE sponsor SET contact_info_id=?, fax=?, payment_pref=?, is_approved=? WHERE any_user_id=?";
 
     /**
      * <p>
@@ -185,7 +185,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String SELECT_PLAYER_SQL_STATEMENT = "SELECT * FROM ( "
-            + "SELECT * FROM \"user\" INNER JOIN player ON \"user\".id=player.user_id WHERE id=?) AS userplayer "
+            + "SELECT * FROM any_user INNER JOIN player ON any_user.id=player.any_user_id WHERE id=?) AS userplayer "
             + "LEFT OUTER JOIN contact_info ON userplayer.contact_info_id=contact_info.id";
 
     /**
@@ -193,8 +193,8 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * The SQL statement to select the admin information from the database.
      * </p>
      */
-    private static final String SELECT_ADMIN_SQL_STATEMENT = "SELECT * FROM \"user\" "
-            + "INNER JOIN admin ON \"user\".id=admin.user_id WHERE id=?";
+    private static final String SELECT_ADMIN_SQL_STATEMENT = "SELECT * FROM any_user "
+            + "INNER JOIN admin ON any_user.id=admin.any_user_id WHERE id=?";
 
     /**
      * <p>
@@ -202,7 +202,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String SELECT_SPONSOR_SQL_STATEMENT = "SELECT * FROM ( "
-            + "SELECT * FROM \"user\" INNER JOIN sponsor ON \"user\".id=sponsor.user_id WHERE id=?) AS usersponsor "
+            + "SELECT * FROM any_user INNER JOIN sponsor ON any_user.id=sponsor.any_user_id WHERE id=?) AS usersponsor "
             + " LEFT OUTER JOIN contact_info ON usersponsor.contact_info_id=contact_info.id";
 
     /**
@@ -211,7 +211,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String SELECT_ALL_PLAYERS_SQL_STATEMENT = "SELECT * FROM ( "
-            + "SELECT * FROM \"user\" INNER JOIN player ON \"user\".id=player.user_id) AS userplayer "
+            + "SELECT * FROM any_user INNER JOIN player ON any_user.id=player.any_user_id) AS userplayer "
             + "LEFT OUTER JOIN contact_info ON userplayer.contact_info_id=contact_info.id";
 
     /**
@@ -219,8 +219,8 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * The SQL statement to select all the admins from the database.
      * </p>
      */
-    private static final String SELECT_ALL_ADMINS_SQL_STATEMENT = "SELECT * FROM \"user\" "
-            + "INNER JOIN admin ON \"user\".id=admin.user_id";
+    private static final String SELECT_ALL_ADMINS_SQL_STATEMENT = "SELECT * FROM any_user "
+            + "INNER JOIN admin ON any_user.id=admin.any_user_id";
 
     /**
      * <p>
@@ -228,7 +228,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String SELECT_ALL_SPONSORS_SQL_STATEMENT = "SELECT * FROM ( "
-            + "SELECT * FROM \"user\" INNER JOIN sponsor ON \"user\".id=sponsor.user_id) AS usersponsor "
+            + "SELECT * FROM any_user INNER JOIN sponsor ON any_user.id=sponsor.any_user_id) AS usersponsor "
             + "LEFT OUTER JOIN contact_info ON usersponsor.contact_info_id=contact_info.id";
 
     /**
@@ -344,7 +344,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         Connection connection = UserLogicPersistenceHelper.createDBConnection(connectionFactory, connectionName);
         try {
             // Check if the user profile is already in the database.
-            if (recordExists(id.longValue(), "\"user\"", "id", connection)) {
+            if (recordExists(id.longValue(), "any_user", "id", connection)) {
                 throw new DuplicateEntryException("A user profile with ID, " + id + ", already exists in the database",
                                                   id);
             }
@@ -642,7 +642,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         Connection connection = UserLogicPersistenceHelper.createDBConnection(connectionFactory, connectionName);
         try {
             // Check if the user profile is in the database.
-            if (!recordExists(id.longValue(), "\"user\"", "id", connection)) {
+            if (!recordExists(id.longValue(), "any_user", "id", connection)) {
                 throw new EntryNotFoundException("No user profile with ID, " + id + ", was found in the database", id);
             }
 
@@ -1131,15 +1131,15 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         try {
             // First check if the user profile is in the database.
             // If it is not, throw an EntryNotFoundException.
-            if (!recordExists(id, "\"user\"", "id", connection)) {
+            if (!recordExists(id, "any_user", "id", connection)) {
                 throw new EntryNotFoundException("No user profile with ID, " + id + ", was found in the database",
                         new Long(id));
             }
 
             // If the user is a player.
-            if (recordExists(id, "player", "user_id", connection)) {
-                deleteRecord(id, "player", "user_id", connection);
-                deleteRecord(id, "\"user\"", "id", connection);
+            if (recordExists(id, "player", "any_user_id", connection)) {
+                deleteRecord(id, "player", "any_user_id", connection);
+                deleteRecord(id, "any_user", "id", connection);
 
                 // Delete the contact information if it exists.
                 if (recordExists(id, "contact_info", "id", connection)) {
@@ -1150,16 +1150,16 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
             }
 
             // If the user is an admin.
-            if (recordExists(id, "admin", "user_id", connection)) {
-                deleteRecord(id, "admin", "user_id", connection);
-                deleteRecord(id, "\"user\"", "id", connection);
+            if (recordExists(id, "admin", "any_user_id", connection)) {
+                deleteRecord(id, "admin", "any_user_id", connection);
+                deleteRecord(id, "any_user", "id", connection);
                 return;
             }
 
             // If the user is a sponsor.
-            if (recordExists(id, "sponsor", "user_id", connection)) {
-                deleteRecord(id, "sponsor", "user_id", connection);
-                deleteRecord(id, "\"user\"", "id", connection);
+            if (recordExists(id, "sponsor", "any_user_id", connection)) {
+                deleteRecord(id, "sponsor", "any_user_id", connection);
+                deleteRecord(id, "any_user", "id", connection);
 
                 // Delete the contact information if it exists.
                 if (recordExists(id, "contact_info", "id", connection)) {

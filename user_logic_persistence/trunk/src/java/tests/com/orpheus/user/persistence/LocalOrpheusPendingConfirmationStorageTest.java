@@ -91,6 +91,27 @@ public class LocalOrpheusPendingConfirmationStorageTest extends LocalOrpheusClie
 
     /**
      * <p>
+     * Tests the LocalOrpheusPendingConfirmationStorage() constructor. The
+     * configuration is loaded from the default namespace - the fully-qualified
+     * name of the LocalOrpheusPendingConfirmationStorage class. The newly
+     * created instance should not be null.
+     * </p>
+     */
+    public void testDefaultCtor() throws Exception {
+        // Load test config.
+        ConfigHelper.loadConfig(VALID_CONFIG_FILE, LocalOrpheusPendingConfirmationStorage.class.getName());
+
+        try {
+            LocalOrpheusPendingConfirmationStorage localStorage = new LocalOrpheusPendingConfirmationStorage();
+            assertNotNull("The LocalOrpheusPendingConfirmationStorage instance should not be null", localStorage);
+        } finally {
+            // Unload config.
+            ConfigHelper.unloadConfig(LocalOrpheusPendingConfirmationStorage.class.getName());
+        }
+    }
+
+    /**
+     * <p>
      * Tests the LocalOrpheusPendingConfirmationStorage(String namespace)
      * constructor. The newly created instance should not be null.
      * </p>

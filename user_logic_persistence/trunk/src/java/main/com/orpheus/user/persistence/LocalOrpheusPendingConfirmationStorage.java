@@ -80,6 +80,39 @@ public class LocalOrpheusPendingConfirmationStorage extends OrpheusPendingConfir
     /**
      * <p>
      * Creates a new <code>LocalOrpheusPendingConfirmationStorage</code>
+     * instance using the default configuration namespace (the fully qualified
+     * name of this class).
+     * </p>
+     * <p>
+     * The configuration namespace is used to load the {@link ObjectTranslator},
+     * which is used to convert <code>ConfirmationMessage</code> objects to
+     * serializable {@link ConfirmationMessageDTO} instances that are
+     * transported to the {@link PendingConfirmationLocal} EJB session bean, and
+     * vice-versa. It is also used to load the <code>Cache</code>, which is
+     * used to cache confirmation messages within this class, the name of the
+     * logger which will be used to log persistence errors, and the JNDI
+     * reference to the EJB session bean. If an error occurs reading the
+     * configuration information, while instantiating the
+     * <code>ObjectTranslator</code> or <code>Cache</code> objects or while
+     * looking up the <code>PendingConfirmationLocal</code> EJB session bean,
+     * an <code>ObjectInstantiationException</code> is thrown. Please consult
+     * the class documentation for more information on the configuration
+     * parameters.
+     * </p>
+     *
+     * @throws ObjectInstantiationException if an error occurs reading from the
+     *         configuration namespace, while instantiating the
+     *         <code>ObjectTranslator</code> or <code>Cache</code> objects,
+     *         or while looking up the <code>PendingConfirmationLocal</code>
+     *         EJB session bean
+     */
+    public LocalOrpheusPendingConfirmationStorage() throws ObjectInstantiationException {
+        this(LocalOrpheusPendingConfirmationStorage.class.getName());
+    }
+
+    /**
+     * <p>
+     * Creates a new <code>LocalOrpheusPendingConfirmationStorage</code>
      * instance using the specified configuration namespace.
      * </p>
      * <p>
