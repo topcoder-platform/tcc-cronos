@@ -1,27 +1,27 @@
 create table player (
-   user_id BIGINT NOT NULL,
+   any_user_id BIGINT NOT NULL,
    contact_info_id BIGINT,
    payment_pref VARCHAR(49),
-   FOREIGN KEY (user_id) REFERENCES user (id),
+   FOREIGN KEY (any_user_id) REFERENCES any_user (id),
    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
 );
 
 create table admin (
-   user_id BIGINT NOT NULL,
-   FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
+   any_user_id BIGINT NOT NULL,
+   FOREIGN KEY (any_user_id) REFERENCES any_user (id)
 );
 
-create table player (
-   user_id BIGINT NOT NULL,
+create table sponsor (
+   any_user_id BIGINT NOT NULL,
    contact_info_id BIGINT NOT NULL,
    fax NUMERIC,
    payment_pref VARCHAR(49),
    is_approved BOOL,
-   FOREIGN KEY (user_id) REFERENCES user (id),
+   FOREIGN KEY (any_user_id) REFERENCES any_user (id),
    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
 );
 
-create table user (
+create table any_user (
    id BIGINT NOT NULL PRIMARY KEY,
    handle VARCHAR(29) NOT NULL,
    e_mail VARCHAR(255) NOT NULL,
