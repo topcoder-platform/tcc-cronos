@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ConfigManager>
+    <namespace name="Orpheus.Plugin.InternetExplorer">
+	    <!-- Required The Object Factory key where the BloomFilter is configured. -->
+        <property name="bloom_filter">
+            <value>bloom_filter</value>
+		</property>
+	    <!-- Required The Object Factory key where the IWebBrowserWindowNavigator implementation to use is configured. -->
+        <property name="window_navigator">
+            <value>window_navigator</value>
+		</property>
+	    <!-- Required The Object Factory key where the IPersistence implementation to use is configured. -->
+        <property name="persistence">
+            <value>persistence</value>
+		</property>
+	    <!-- Required The Object Factory key where the IExtensionEventsManager  implementation to use is configured. -->
+        <property name="extension_events_manager">
+            <value>extension_events_manager</value>
+		</property>
+	    <!-- Required The Object Factory key where the IDocHostUIHandler implementation to use is configured. -->
+        <property name="doc_host_ui_handler">
+            <value>doc_host_ui_handler</value>
+		</property>
+	    <!-- Required The Object Factory key where the scripting object to create is configured. -->
+        <property name="scripting_object">
+            <value>scripting_object</value>
+		</property>
+	    <!-- Required The interval in minutes to poll for updates. -->
+        <property name="poll_interval">
+            <value>1</value>
+		</property>
+	</namespace>
+
+    <namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers">
+	    <!-- Required The Object Factory key where the IExtensionEventHandlerFactory  implementation to use is configured. -->
+		<property name="event_handlers_factory">
+            <value>event_handlers_factory</value>
+		</property>
+		
+	    <!-- Required Represents a list of events. Based on the event name the configured handlers are retrieved. 
+		Event names (ex: DocumentCompleted, LogIn, LogOut) should be added here.-->
+		<property name="events">
+            <value>test</value>
+            <value>empty</value>
+		</property>
+	</namespace>
+
+    <namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Factories">
+	    <!-- Required The name of the handlers configured to be invoked for the event. 
+		For each handler name there is another property: <handler name>_handler. Any number of handlers can be added here. -->
+        <property name="test_handlers">
+            <value>test1</value>
+            <value>test2</value>
+		</property>
+		<!-- Required The Object Factory key where the  IExtensionEventHandler implementation to use is configured. -->
+        <property name="test1_handler">
+            <value>poll</value>
+		</property>
+        <property name="test2_handler">
+            <value>http</value>
+		</property>
+
+		<!-- for config file test -->
+		<property name="PageChanged_handlers">
+		    <value>mock</value>
+		</property>
+		<property name="PollUpdates_handlers">
+            <value>mock</value>
+		</property>
+        <property name="mock_handler">
+            <value>mock</value>
+		</property>
+		<property name="empty_handlers">
+		</property>
+	</namespace>
+
+
+    <!-- HttpRequestUserInterfaceEventHandler -->
+    <namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers">
+        <!-- for HttpRequestUserInterfaceEventHandler -->
+		<!-- Required The URL of the page to request as response to the event. -->
+        <property name="http_url">
+            <value>http://www.google.com</value>
+		</property>
+	    <!-- Optional Whether to display the result of the web request in a new window or not. true or false, Default=false.-->
+		<property name="http_new_window">
+            <value>false</value>
+		</property>
+		<!-- Optional The method to use for the request. GET or POST. Default=Get.-->
+        <property name="http_method">
+            <value>Get</value>
+		</property>
+
+        <!-- for WebBrowserDocumentCompletedEventHandler -->
+		<!-- Required The url to make the request to. The host parameter will be placed in string as {0}
+		Ex:www.tc.com/?host={0}-->
+        <property name="document_completed_url">
+            <value>http://www.topcoder.com/default.aspx?host={0}</value>
+		</property>
+		<!-- Required The url to make the request to. The host parameter will be placed in string as {0}.
+		ExEx:www.tc.com/?host={0}-->
+        <property name="document_completed_0_responce_url">
+            <value>http://www.topcoder.com/default.aspx?host={0}</value>
+		</property>
+
+        <!-- for PoolingEventHandler -->
+		<!-- Required The Object Factory key of the IRSSParser implementation to use. Atom1.0 parser should be configured.-->
+        <property name="rss_parser">
+            <value>rssparser</value>
+		</property>
+		<!-- Required The polling url.The timestamp parameter will be placed in string as {0}.-->
+        <property name="polling_url">
+            <value><![CDATA[http://forums.topcoder.com/?module=RSS&forumID=506175]]></value>
+		</property>
+
+        <!-- for TestObjectEventHandler -->
+	    <!-- Required  The Object Factory key of the HashAlgorithm implementation to use. -->
+        <property name="hash_algorithm">
+            <value>hash_algorithm</value>
+        </property>
+		<!-- Required The test object request url.The parameters will be placed in string as {0}, {1} -->
+        <property name="test_object_url">
+            <value><![CDATA[www.tc.com/?gameId={0}&domain={1}&seq={2}&hash={3}]]></value>
+        </property>
+	</namespace>
+</ConfigManager>

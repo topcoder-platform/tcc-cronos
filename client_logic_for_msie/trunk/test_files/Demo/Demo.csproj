@@ -1,0 +1,175 @@
+<VisualStudioProject>
+    <CSHARP
+        ProjectType = "Local"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{5F4C765D-D82C-41ED-B49B-67D5EBCD1226}"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "Demo"
+                AssemblyOriginatorKeyFile = ""
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Grid"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                PreBuildEvent = ""
+                PostBuildEvent = ""
+                RootNamespace = "Orpheus.Plugin.InternetExplorer"
+                RunPostBuildEvent = "OnBuildSuccess"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "false"
+                    OutputPath = "bin\Release\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\Release\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\..\bin\Debug\nunit.framework.dll"
+                />
+                <Reference
+                    Name = "TopCoder.Util.BloomFilter"
+                    AssemblyName = "TopCoder.Util.BloomFilter"
+                    HintPath = "..\..\bin\Debug\TopCoder.Util.BloomFilter.dll"
+                />
+                <Reference
+                    Name = "TopCoder.Util.Hash"
+                    AssemblyName = "TopCoder.Util.Hash"
+                    HintPath = "..\..\bin\Debug\TopCoder.Util.Hash.dll"
+                />
+                <Reference
+                    Name = "TopCoder.Util.ObjectFactory"
+                    AssemblyName = "TopCoder.Util.ObjectFactory"
+                    HintPath = "..\..\bin\Debug\TopCoder.Util.ObjectFactory.dll"
+                />
+                <Reference
+                    Name = "TopCoder.Util.RSS"
+                    AssemblyName = "TopCoder.Util.RSS"
+                    HintPath = "..\..\bin\Debug\TopCoder.Util.RSS.dll"
+                />
+                <Reference
+                    Name = "System.Windows.Forms"
+                    AssemblyName = "System.Windows.Forms"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "SHDocVw"
+                    AssemblyName = "SHDocVw"
+                    HintPath = "..\..\lib\SHDocVw.dll"
+                />
+                <Reference
+                    Name = "AxSHDocVw"
+                    AssemblyName = "AxSHDocVw"
+                    HintPath = "..\..\lib\AxSHDocVw.dll"
+                />
+                <Reference
+                    Name = "MsHtmHstInterop"
+                    AssemblyName = "MsHtmHstInterop"
+                    HintPath = "..\..\lib\MsHtmHstInterop.dll"
+                />
+                <Reference
+                    Name = "Mshtml"
+                    AssemblyName = "Mshtml"
+                    HintPath = "..\..\lib\Mshtml.dll"
+                />
+                <Reference
+                    Name = "TopCoder.Util.ConfigurationManager"
+                    AssemblyName = "TopCoder.Util.ConfigurationManager"
+                    HintPath = "..\..\lib\TopCoder.Util.ConfigurationManager.dll"
+                />
+                <Reference
+                    Name = "Client_Logic_for_MSIE"
+                    AssemblyName = "Client_Logic_for_MSIE"
+                    HintPath = "..\..\bin\Debug\Client_Logic_for_MSIE.dll"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MyEventHandler.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MyToolBand.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MyToolBand.resx"
+                    DependentUpon = "MyToolBand.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+            </Include>
+        </Files>
+    </CSHARP>
+</VisualStudioProject>
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ConfigManager>
+    <namespace name="TopCoder.Util.ObjectFactory.default">
+        <property name="type_name">
+            <value>TopCoder.Util.ObjectFactory.ConfigurationObjectFactory</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.default.parameters">
+        <property name="string">
+            <value>TopCoder.Util.ObjectFactory</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.bloom_filter">
+        <property name="assembly">
+            <value>TopCoder.Util.BloomFilter.dll</value>
+        </property>
+        <property name="type_name">
+            <value>TopCoder.Util.BloomFilter.BloomFilter</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.bloom_filter.parameters">
+        <property name="int">
+            <value>1</value>
+        </property>
+        <property name="float">
+            <value>0.9</value>
+        </property>
+	</namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.window_navigator">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.WindowNavigators.DefaultWebBrowserWindowNavigator</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.persistence">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.Persistence.RegistryPersistence</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.extension_events_manager">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.EventsManagers.DefaultExtensionEventsManager</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.doc_host_ui_handler">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.DefaultDocHostUIHandler</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.doc_host_ui_handler.parameters">
+        <property name="object">
+            <value>null</value>
+        </property>
+	</namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.scripting_object">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.ScriptingObject</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.scripting_object.parameters">
+        <property name="object">
+            <value>null</value>
+        </property>
+	</namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.event_handlers_factory">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.EventsManagers.Factories.DefaultExtensionEventHandlerFactory</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.poll">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers.PollingEventHandler</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.http">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers.HttpRequestUserInterfaceEventHandler</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.mock">
+        <property name="assembly">
+            <value>Orpheus.Plugin.InternetExplorer.Test.dll</value>
+        </property>
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.Mock.MockExtensionEventHandler</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.hash_algorithm">
+        <property name="assembly">
+            <value>TopCoder.Util.Hash.dll</value>
+        </property>
+        <property name="type_name">
+            <value>TopCoder.Util.Hash.Algorithm.MD5Algorithm</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.rssparser">
+        <property name="assembly">
+            <value>TopCoder.Util.RSS.dll</value>
+        </property>
+        <property name="type_name">
+            <value>TopCoder.Util.RSS.RSS20.IO.RSS20Parser</value>
+        </property>
+    </namespace>
+</ConfigManager>
