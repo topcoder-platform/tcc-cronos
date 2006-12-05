@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * Test the <code>PendingWinnerRejectionHandler</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class PendingWinnerRejectionHandlerUnitTests extends TestCase {

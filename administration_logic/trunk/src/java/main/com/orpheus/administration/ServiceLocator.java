@@ -14,7 +14,7 @@ import com.topcoder.naming.jndiutility.JNDIUtils;
  * resources such as JMS Destinations etc.<br/> Thread-Safety: This class is
  * not thread-safe. Instances should not be shared among threads. It can be made
  * thread-safe by synchronizing over the initialContext instance variable.
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author bose_java, KKD
  * @version 1.0
  */
 public class ServiceLocator {

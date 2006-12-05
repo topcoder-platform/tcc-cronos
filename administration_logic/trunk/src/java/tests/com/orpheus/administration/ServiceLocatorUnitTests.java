@@ -12,7 +12,7 @@ import com.orpheus.game.persistence.GameDataHome;
  * Test the <code>ServiceLocator</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class ServiceLocatorUnitTests extends TestCase {

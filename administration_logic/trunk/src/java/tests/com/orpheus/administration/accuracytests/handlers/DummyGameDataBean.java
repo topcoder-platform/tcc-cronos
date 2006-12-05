@@ -22,7 +22,7 @@ import com.orpheus.game.persistence.PersistenceException;
  * <strong>Thread Safety</strong></p>
  * <p>This object is immutable and thread-safe</p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class DummyGameDataBean implements SessionBean {

@@ -11,7 +11,7 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * interface defined in the Puzzle Framework component.<br/> Thread-Safety:
  * This class is immutable and hence thread-safe.
  *
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author bose_java, KKD
  * @version 1.0
  */
 public class PuzzleTypeEnum extends Enum {

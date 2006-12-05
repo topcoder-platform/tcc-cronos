@@ -17,7 +17,7 @@ import com.orpheus.game.persistence.HostingBlock;
  * Test the <code>GameImpl</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class GameImplAccuracyTests extends TestCase {

@@ -42,7 +42,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
 /**
  * This is a common utility class used in this component.
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class Helper {

@@ -18,7 +18,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>AdminSummaryHandler</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class AdminSummaryHandlerUnitTests extends TestCase {

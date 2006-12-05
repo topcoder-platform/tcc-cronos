@@ -14,7 +14,7 @@ import com.orpheus.administration.TestHelper;
  * Test the <code>SponsorApprovalHandler</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class SponsorApprovalHandlerUnitTests extends TestCase {

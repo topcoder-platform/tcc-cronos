@@ -9,7 +9,7 @@ import com.orpheus.administration.persistence.PendingWinner;
 /**
  * This is a dummy class for PendingWinner.
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class MockPendingWinner implements PendingWinner {

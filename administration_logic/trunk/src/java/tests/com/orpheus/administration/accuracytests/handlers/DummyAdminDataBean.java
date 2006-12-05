@@ -15,7 +15,7 @@ import com.topcoder.util.puzzle.PuzzleData;
  * <strong>Thread Safety</strong></p>
  * <p>This object is immutable and thread-safe</p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class DummyAdminDataBean implements javax.ejb.SessionBean {

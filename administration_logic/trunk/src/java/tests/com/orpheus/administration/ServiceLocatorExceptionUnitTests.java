@@ -9,7 +9,7 @@ import junit.framework.TestCase;
  * Test the <code>ServiceLocatorException</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class ServiceLocatorExceptionUnitTests extends TestCase {

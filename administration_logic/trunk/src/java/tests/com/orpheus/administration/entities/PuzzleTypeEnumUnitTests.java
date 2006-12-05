@@ -10,7 +10,7 @@ import junit.framework.TestCase;
  * Test the <code>PuzzleTypeEnum</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class PuzzleTypeEnumUnitTests extends TestCase {

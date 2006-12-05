@@ -22,7 +22,7 @@ import java.util.Map;
  * <p>
  * Mock implementation of HttpServletRequest, for test purpose.
  * </p>
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 2.0
  */
 public class MockHttpRequest implements HttpServletRequest {

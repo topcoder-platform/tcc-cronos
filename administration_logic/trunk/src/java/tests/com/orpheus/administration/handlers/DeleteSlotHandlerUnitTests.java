@@ -18,7 +18,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>DeleteSlotHandler</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class DeleteSlotHandlerUnitTests extends TestCase {

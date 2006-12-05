@@ -38,7 +38,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * synchronizes over the userProfileManager instance var in the execute()
  * method.
  * 
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author bose_java, KKD
  * @version 1.0
  */
 abstract class SponsorApprovalRejectionHandler implements Handler {

@@ -18,7 +18,7 @@ import com.orpheus.game.persistence.HostingBlock;
  * data transfer object between remote calls.<br/> Thread-Safety: this class is
  * not thread safe as it is mutable.
  *
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author bose_java, KKD
  * @version 1.0
  */
 public class GameImpl implements Game {

@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 /**
  * Accuracy test for AdminSummaryHandler.
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class AdminSummaryHandlerAccuracyTests extends TestCase {

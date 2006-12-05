@@ -8,7 +8,7 @@ import com.orpheus.game.persistence.ImageInfo;
 /**
  * Dummy class.
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class MockImageInfo implements ImageInfo {

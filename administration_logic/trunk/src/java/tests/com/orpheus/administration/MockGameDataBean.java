@@ -31,7 +31,7 @@ import com.topcoder.web.frontcontroller.results.DownloadData;
  * A dummy class of <code>AdminDataBean</code>.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class MockGameDataBean implements SessionBean {

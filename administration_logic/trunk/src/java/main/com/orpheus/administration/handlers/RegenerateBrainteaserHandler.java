@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
  * thread-safe as it does not maintain any state and inherits the thread-safety
  * behaviour of the parent class.
  *
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author bose_java, KKD
  * @version 1.0
  */
 public class RegenerateBrainteaserHandler extends

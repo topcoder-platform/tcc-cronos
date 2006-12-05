@@ -17,7 +17,7 @@ import com.topcoder.util.puzzle.PuzzleData;
  * Mock implementation of <code>AdminDataBean</code> only for testing purpose.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class MockAdminDataBean implements SessionBean {

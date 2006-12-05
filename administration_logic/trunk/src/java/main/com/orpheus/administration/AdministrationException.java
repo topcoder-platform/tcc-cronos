@@ -10,7 +10,7 @@ import com.topcoder.util.errorhandling.BaseException;
  * ConfigurationException and ServiceLocatorException. In addition it is also thrown to
  * indicate errors such as remote exception.
  *
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author bose_java, KKD
  * @version 1.0
  *
  */

@@ -26,7 +26,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * Handler implementations. This class is immutable and automatically
  * thread-safe.
  * 
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author bose_java, KKD
  * @version 1.0
  */
 public class PendingWinnerHandler implements Handler {

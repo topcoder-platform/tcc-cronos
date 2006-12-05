@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  * Test the <code>HostingBlockImpl</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class HostingBlockImplUnitTests extends TestCase {

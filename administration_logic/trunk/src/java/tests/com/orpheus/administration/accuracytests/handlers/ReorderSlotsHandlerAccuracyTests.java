@@ -20,7 +20,7 @@ import junit.framework.TestCase;
  * Test the accuracy of <code>ReorderSlotsHandler</code> class.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class ReorderSlotsHandlerAccuracyTests extends TestCase {

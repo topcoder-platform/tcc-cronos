@@ -7,7 +7,7 @@ import com.topcoder.util.puzzle.PuzzleType;
 import com.topcoder.util.puzzle.PuzzleTypeSource;
 /**
  * Just a Mock class.
- * @author TCSDEVELOPER
+ * @author KKD
  * @version 1.0
  */
 public class MockPuzzleTypeSource implements PuzzleTypeSource {
