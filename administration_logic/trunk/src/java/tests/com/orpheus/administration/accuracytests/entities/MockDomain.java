@@ -9,7 +9,7 @@ import com.orpheus.game.persistence.ImageInfo;
 /**
  * Dummy class.
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class MockDomain implements Domain {

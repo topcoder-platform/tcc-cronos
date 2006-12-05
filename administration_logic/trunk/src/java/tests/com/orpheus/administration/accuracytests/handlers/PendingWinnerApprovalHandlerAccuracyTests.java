@@ -20,7 +20,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the accuracy for <code>PendingWinnerApprovalHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class PendingWinnerApprovalHandlerAccuracyTests extends TestCase {

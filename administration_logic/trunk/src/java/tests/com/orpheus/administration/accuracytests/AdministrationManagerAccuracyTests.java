@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 /**
  * Accuracy test for AdministrationManager.
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class AdministrationManagerAccuracyTests extends TestCase {

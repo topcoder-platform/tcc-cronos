@@ -20,7 +20,7 @@ import junit.framework.TestCase;
  * the base class.
  * </p>
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class SponsorImageApprovalHandlerAccuracyTests extends TestCase {

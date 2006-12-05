@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * Test the <code>HandlerResult</code> class.
  * </p>
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class HandlerResultAccuracyTests extends TestCase {

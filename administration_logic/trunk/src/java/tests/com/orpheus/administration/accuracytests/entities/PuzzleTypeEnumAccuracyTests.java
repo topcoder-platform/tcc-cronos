@@ -12,7 +12,7 @@ import junit.framework.TestCase;
  * Test the <code>PuzzleTypeEnum</code> class.
  * </p>
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class PuzzleTypeEnumAccuracyTests extends TestCase {

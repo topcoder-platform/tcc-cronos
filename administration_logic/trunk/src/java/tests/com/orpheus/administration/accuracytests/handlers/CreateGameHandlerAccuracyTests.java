@@ -23,7 +23,7 @@ import junit.framework.TestCase;
  * Test the accuray of <code>CreateGameHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class CreateGameHandlerAccuracyTests extends TestCase {

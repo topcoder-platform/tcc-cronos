@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 /**
  * Accuracy test for ServiceLocator.
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class ServiceLocatorAccuracyTests extends TestCase {

@@ -14,7 +14,7 @@ import com.orpheus.game.persistence.HostingSlot;
  * <p>
  * This class is the mock up of the database used as the back database of the ejb.
  * </p>
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 final class DataProvider {

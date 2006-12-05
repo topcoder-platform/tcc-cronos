@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * Test the accuracy of <code>PendingSponsorDomainHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class PendingSponsorDomainHandlerAccuracyTests extends TestCase {

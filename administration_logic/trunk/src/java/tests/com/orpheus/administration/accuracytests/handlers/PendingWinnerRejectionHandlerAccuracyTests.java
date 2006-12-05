@@ -20,7 +20,7 @@ import junit.framework.TestCase;
  * Test the accuracy for <code>PendingWinnerRejectionHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class PendingWinnerRejectionHandlerAccuracyTests extends TestCase {

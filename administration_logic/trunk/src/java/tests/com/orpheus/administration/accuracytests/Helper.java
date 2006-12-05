@@ -38,7 +38,7 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * This is a helper class used in tests.
  *
- * @author KKD
+ * @author myxgyy
  * @version 1.0
  */
 public class Helper {
