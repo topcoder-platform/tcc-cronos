@@ -17,7 +17,7 @@
 			<value>email1@company.com</value>
 		</property>
 		<property>
-			<name>IS_APPROVED</name>
+			<name>sponsor-is-approved</name>
 			<value></value>
 		</property>
 	</profile>
@@ -36,7 +36,7 @@
 			<value>email2@company.com</value>
 		</property>
 		<property>
-			<name>IS_APPROVED</name>
+			<name>sponsor-is-approved</name>
 			<value></value>
 		</property>
 	</profile> 
@@ -55,7 +55,7 @@
 			<value>invalid@company.com</value>
 		</property>
 		<property>
-			<name>IS_APPROVED</name>
+			<name>sponsor-is-approved</name>
 			<value></value>
 		</property>
 	</profile>
@@ -74,7 +74,7 @@
 			<value>invalid@company.com</value>
 		</property>
 		<property>
-			<name>IS_APPROVED</name>
+			<name>sponsor-is-approved</name>
 			<value></value>
 		</property>
 	</profile>

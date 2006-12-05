@@ -4,14 +4,14 @@
 	<profile id="1">
 	    <type name="sponsor"/>
 		<property>
-		    <name>IS_APPROVED</name>
+		    <name>sponsor-is-approved</name>
 			<value>true</value>
 		</property>
 	</profile>
 		<profile id="2">
 	    <type name="sponsor"/>
 		<property>
-		    <name>IS_APPROVED</name>
+		    <name>sponsor-is-approved</name>
 			<value></value>
 		</property>
 	</profile>

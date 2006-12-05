@@ -227,7 +227,7 @@ abstract class DomainApprovalRejectionHandler implements Handler {
         if (sponsor == null) {
             return failedResult;
         }
-        String approved = (String) sponsor.getProperty("IS_APPROVED");
+        String approved = (String) sponsor.getProperty("sponsor-is-approved");
         if (approved == null || approved.trim().length() == 0) {
             Helper.processFailureApprovalNotPending(request,
                     failRequestAttrName, domain.getSponsorId());

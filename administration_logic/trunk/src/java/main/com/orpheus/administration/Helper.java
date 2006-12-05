@@ -884,7 +884,7 @@ public class Helper {
      * @return true if true if approval
      */
     public static final boolean checkApproval(UserProfile sponsor) {
-        String approved = (String) sponsor.getProperty("IS_APPROVED");
+        String approved = (String) sponsor.getProperty("sponsor-is-approved");
         return approved != null && approved.trim().length() != 0;
     }
 
