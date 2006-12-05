@@ -1,0 +1,1 @@
+DELETE FROM id_sequences;

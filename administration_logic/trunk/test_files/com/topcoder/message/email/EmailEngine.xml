@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+    <Property name="smtp_host_addr" value="127.0.0.1"/>
+    <Property name="smtp_host_port" value="25"/>
+    <Property name="username" value=""/>
+    <Property name="password" value=""/>
+</CMConfig>
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE profiles SYSTEM "XML_persistence.dtd">
+<profiles>
+	<profile id="1001">
+		<type name="sponsor"/>
+		<property>
+			<name>user_name</name>
+			<value>user1</value>
+		</property>
+		<property>
+			<name>password</name>
+			<value>123456</value>
+		</property>
+		<property>
+			<name>email_addr</name>
+			<value>email1@company.com</value>
+		</property>
+		<property>
+			<name>IS_APPROVED</name>
+			<value></value>
+		</property>
+	</profile>
+</profiles>

@@ -1,0 +1,366 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.util.log">
+		<Property name="logClass">
+			<Value>com.topcoder.util.log.basic.BasicLog</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.user.profile.manager.SimpleUserProfileManager">
+		<Property name="upm_log_name">
+			<Value>UserProfileManager</Value>
+		</Property>
+		<Property name="persistence_class">
+			<Value>com.topcoder.user.profile.manager.persistence.XMLUserProfilePersistence</Value>
+		</Property>
+		<Property name="profile_type_factory_class">
+			<Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+		</Property>
+		<Property name="profile_xml_file">
+			<Value>test_files/profiles.xml</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.user.profile.ConfigProfileType.testProfileType">
+		<Property name="name1">
+			<Value>value1</Value>
+		</Property>
+		<Property name="name2">
+			<Value>value2</Value>
+		</Property>
+		<Property name="name3">
+			<Value>value3</Value>
+		</Property>
+	</Config>
+  
+    <!-- object factory config -->
+  <Config name="objFactoryNS">
+		<Property name="com/topcoder/user/profile/manager/UserProfileManager">
+	      <Property name="type">
+	        <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+	      </Property>
+	      <Property name="params">
+	        <Property name="param1">
+	          <Property name="type">
+	            <Value>String</Value>
+	          </Property>
+	          <Property name="value">
+	            <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+	          </Property>
+	        </Property>
+	      </Property>
+	    </Property>
+	</Config>
+	
+	<Config name="com.topcoder.user.profile.ConfigProfileType.teacher">
+    <Property name="user_name">
+        <Value>notempty</Value>
+    </Property>
+    <Property name="password">
+        <Value>notempty</Value>
+    </Property>
+    <Property name="email_addr">
+        <Value>notempty</Value>
+    </Property>
+	</Config>
+	<Config name="com.topcoder.user.profile.ConfigProfileType.employee">
+	</Config>
+	<Config name="com.topcoder.user.profile.ConfigProfileType.student">
+    <Property name="user_name">
+        <Value>notempty</Value>
+    </Property>
+    <Property name="password">
+        <Value>notempty</Value>
+    </Property>
+    <Property name="email_addr">
+        <Value>notempty</Value>
+    </Property>
+	</Config>
+	<Config name="com.topcoder.user.profile.ConfigProfileType.president">
+    <Property name="user_name">
+        <Value>notempty</Value>
+    </Property>
+    <Property name="password">
+        <Value>notempty</Value>
+    </Property>
+    <Property name="email_addr">
+        <Value>notempty</Value>
+    </Property>
+	</Config>
+	
+  <Config name="com.orpheus.administration.AdministrationManager">
+    <Property name="jigsaw">
+      <Property name="puzzleTypeName">
+        <Value>jigsaw</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    
+    <Property name="slidingTile">
+      <Property name="puzzleTypeName">
+        <Value>slidingTile</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    
+    <Property name="missingLetter">
+      <Property name="puzzleTypeName">
+        <Value>missingLetter</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="letterScramble">
+      <Property name="puzzleTypeName">
+        <Value>letterScramble</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="admin-data-jndi-name">
+        <Value>AdminDataHome</Value>
+    </Property>
+    <Property name="game-data-jndi-name">
+        <Value>GameDataHome</Value>
+    </Property>
+    <Property name="MinTargetLength">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxTargetLength">
+        <Value>12</Value>
+    </Property>
+    <Property name="PreferredTargetLength">
+        <Value>5</Value>
+    </Property>
+    <Property name="MinDistinctPages">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxDistinctPages">
+        <Value>4</Value>
+    </Property>
+    <Property name="PreferredDistinctPages">
+        <Value>3</Value>
+    </Property>
+    <Property name="objFactoryNS">
+        <Value>objFactoryNS</Value>
+    </Property>
+  </Config>
+  
+    <Config name="com.orpheus.administration.AdministrationManager1">
+    <Property name="jigsaw">
+      <Property name="puzzleTypeName">
+        <Value>jigsaw</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    
+    <Property name="slidingTile">
+      <Property name="puzzleTypeName">
+        <Value>slidingTile</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    
+    <Property name="missingLetter">
+      <Property name="puzzleTypeName">
+        <Value>missingLetter</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="letterScramble">
+      <Property name="puzzleTypeName">
+        <Value>letterScramble</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="admin-data-jndi-name">
+        <Value>AdminDataHome</Value>
+    </Property>
+    <Property name="game-data-jndi-name">
+        <Value>GameDataHome</Value>
+    </Property>
+    <Property name="MinTargetLength">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxTargetLength">
+        <Value>12</Value>
+    </Property>
+    <Property name="PreferredTargetLength">
+        <Value>5</Value>
+    </Property>
+    <Property name="MinDistinctPages">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxDistinctPages">
+        <Value>-4</Value>
+    </Property>
+    <Property name="PreferredDistinctPages">
+        <Value>3</Value>
+    </Property>
+    <Property name="objFactoryNS">
+        <Value>objFactoryNS</Value>
+    </Property>
+  </Config>
+  
+    <Config name="com.orpheus.administration.AdministrationManager2">
+    <Property name="jigsaw">
+      <Property name="puzzleTypeName">
+        <Value>jigsaw</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    
+    <Property name="slidingTile">
+      <Property name="puzzleTypeName">
+        <Value>slidingTile</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    
+    <Property name="missingLetter">
+      <Property name="puzzleTypeName">
+        <Value>missingLetter</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="letterScramble">
+      <Property name="puzzleTypeName">
+        <Value>letterScramble</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="admin-data-jndi-name">
+        <Value>AdminDataHome</Value>
+    </Property>
+    <Property name="game-data-jndi-name">
+        <Value>  </Value>
+    </Property>
+    <Property name="MinTargetLength">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxTargetLength">
+        <Value>12</Value>
+    </Property>
+    <Property name="PreferredTargetLength">
+        <Value>5</Value>
+    </Property>
+    <Property name="MinDistinctPages">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxDistinctPages">
+        <Value>4</Value>
+    </Property>
+    <Property name="PreferredDistinctPages">
+        <Value>3</Value>
+    </Property>
+    <Property name="objFactoryNS">
+        <Value>objFactoryNS</Value>
+    </Property>
+  </Config>
+  
+    <Config name="com.orpheus.administration.AdministrationManager3">
+    
+    <Property name="slidingTile">
+      <Property name="puzzleTypeName">
+        <Value>slidingTile</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    
+    <Property name="missingLetter">
+      <Property name="puzzleTypeName">
+        <Value>missingLetter</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="letterScramble">
+      <Property name="puzzleTypeName">
+        <Value>letterScramble</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
+    <Property name="admin-data-jndi-name">
+        <Value>AdminDataHome</Value>
+    </Property>
+    <Property name="game-data-jndi-name">
+        <Value>GameDataHome</Value>
+    </Property>
+    <Property name="MinTargetLength">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxTargetLength">
+        <Value>12</Value>
+    </Property>
+    <Property name="PreferredTargetLength">
+        <Value>5</Value>
+    </Property>
+    <Property name="MinDistinctPages">
+        <Value>1</Value>
+    </Property>
+    <Property name="MaxDistinctPages">
+        <Value>4</Value>
+    </Property>
+    <Property name="PreferredDistinctPages">
+        <Value>3</Value>
+    </Property>
+    <Property name="objFactoryNS">
+        <Value>objFactoryNS</Value>
+    </Property>
+  </Config>
+</CMConfig>

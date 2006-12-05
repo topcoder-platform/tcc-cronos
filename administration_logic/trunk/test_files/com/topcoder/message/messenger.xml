@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+    <Property name="plugins">
+        <Value>log:com.topcoder.message.messenger.plugins.LogPlugin</Value>
+        <Value>email:com.topcoder.message.messenger.plugins.EmailPlugin</Value>
+    </Property>
+</CMConfig>
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE profiles SYSTEM "XML_persistence.dtd">
+<profiles>
+	<profile id="1">
+	    <type name="sponsor"/>
+		<property>
+		    <name>IS_APPROVED</name>
+			<value>true</value>
+		</property>
+	</profile>
+		<profile id="2">
+	    <type name="sponsor"/>
+		<property>
+		    <name>IS_APPROVED</name>
+			<value></value>
+		</property>
+	</profile>
+</profiles>

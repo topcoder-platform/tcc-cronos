@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<CMConfig>
+  <Config name="com.topcoder.user.profile.ConfigProfileType.teacher">
+		<Property name="profile_session_key">
+			<Value>user_profile_session_key</Value>
+		</Property>
+  </Config>
+  <Config name="com.topcoder.user.profile.ConfigProfileType.student">
+		<Property name="profile_session_key">
+			<Value>user_profile_session_key</Value>
+		</Property>
+  </Config>
+  <Config name="com.topcoder.user.profile.ConfigProfileType.president">
+		<Property name="profile_session_key">
+			<Value>user_profile_session_key</Value>
+		</Property>
+  </Config>
+</CMConfig>

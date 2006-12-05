@@ -1,0 +1,56 @@
+<CMConfig>  
+  <!-- Configuration of Web Site Statistics Component -->
+  <Config name="com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl">
+  	<Property name="case_sensitive_element">
+            <Value>false</Value>
+    </Property>
+    <Property name="case_sensitive_word">
+            <Value>false</Value>
+    </Property>
+    <Property name="ignore_punctuation">
+            <Value>true</Value>
+    </Property>
+    <Property name="object_factory">
+            <Value>com.topcoder.util.web.sitestatistics.inclusion.rule</Value>
+    </Property>
+    <Property name="element_inclusion_rule">
+            <Value>ElementInclusionRule</Value>
+    </Property>
+    <Property name="word_inclusion_rule">
+            <Value>WordInclusionRule</Value>
+    </Property>
+  </Config>
+
+  <!-- Configuration of Object Factory Component -->
+  <Config name="com.topcoder.util.web.sitestatistics.inclusion.rule">
+  	<Property name="com/topcoder/util/web/sitestatistics/impl/InclusionRule:WordInclusionRule">
+		<Property name="type">
+			<Value>com.topcoder.util.web.sitestatistics.impl.rules.LengthRule</Value>
+		</Property>
+		<Property name="params">
+        	<Property name="param1">
+          		<Property name="type">
+            		<Value>int</Value>
+          		</Property>
+          		<Property name="value">
+            		<Value>2</Value>
+          		</Property>
+        	</Property>
+        	<Property name="param2">
+          		<Property name="type">
+            		<Value>int</Value>
+          		</Property>
+          		<Property name="value">
+            		<Value>10</Value>
+          		</Property>
+        	</Property>
+      </Property>
+  	</Property>
+
+  	<Property name="com/topcoder/util/web/sitestatistics/impl/InclusionRule:ElementInclusionRule">
+		<Property name="type">
+			<Value>com.topcoder.util.web.sitestatistics.impl.rules.TextOnlyElementRule</Value>
+		</Property>
+  	</Property>
+  </Config>
+</CMConfig>
