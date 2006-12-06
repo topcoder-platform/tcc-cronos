@@ -26,7 +26,6 @@ public class CustomDownloadSourceTest extends TestCase {
     public void testGetDownloadData_InternalException() {
         // create a source which will always throw PersistenceException
         CustomDownloadSource source = new CustomDownloadSource() {
-            @Override
             protected DownloadData ejbGetDownloadData(String id) throws PersistenceException {
                 throw new PersistenceException("haha");
             }};
