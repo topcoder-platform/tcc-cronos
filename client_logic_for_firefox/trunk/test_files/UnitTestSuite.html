@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Client Logic for Firefox 1.0 Unit Test Suite</title>
+        <script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+        <script language="JavaScript" type="text/javascript">
+            /**
+             * Builds the JSUnit Test Suite.
+             */
+            function suite() {
+                var newsuite = new top.jsUnitTestSuite();
+
+                newsuite.addTestPage("../FirefoxExtensionWrapperUnitTest.xul");
+
+                return newsuite;
+            }
+        </script>
+    </head>
+    <body>
+        <h1><b>Client Logic for Firefox 1.0</b> Unit Test Suite</h1>
+
+        <p>This page contains a suite of unit tests for testing <b>Client Logic for Firefox 1.0</b>.</p>
+    </body>
+</html>

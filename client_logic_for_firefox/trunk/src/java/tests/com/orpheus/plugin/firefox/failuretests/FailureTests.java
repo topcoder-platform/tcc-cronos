@@ -7,7 +7,6 @@
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Failure test cases.</p>
@@ -19,7 +18,11 @@ public class FailureTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(FirefoxClientExceptionTest.class);
+        suite.addTestSuite(FirefoxExtensionConfigurationExceptionTest.class);
+        suite.addTestSuite(FirefoxExtensionHelperTest.class);
+        suite.addTestSuite(FirefoxExtensionPersistenceExceptionTest.class);
+        suite.addTestSuite(OrpheusServerTest.class);
         return suite;
     }
 

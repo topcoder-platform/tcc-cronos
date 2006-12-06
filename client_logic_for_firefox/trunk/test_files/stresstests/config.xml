@@ -1,0 +1,95 @@
+<CMConfig>  
+  <Config name="com.orpheus.plugin.firefox.stresstests">
+    <Property name="domain_parameter_name">
+      <Value>domain_param</Value>
+    </Property>
+    <Property name="orpheus_url">
+      <Value>http://www.google.com</Value>
+    </Property>
+    <Property name="orpheus_poll_time">
+      <Value>1</Value>
+    </Property>
+    <Property name="orpheus_timestamp_parameter">
+      <Value>timestamp_param</Value>
+    </Property>
+    <Property name="persistence_class">
+      <Value>com.orpheus.plugin.firefox.persistence.CookieExtensionPersistence</Value>
+    </Property>
+    <Property name="hash_match_URL">
+      <Value>http://www.abc.com</Value>
+    </Property>
+    <Property name="hash_match_domain_parameter">
+      <Value>hash_match_domain_param</Value>
+    </Property>
+    <Property name="hash_match_sequence_number_parameter">
+      <Value>hash_match_sequence_number_param</Value>
+    </Property>
+    <Property name="target_text_parameter">
+      <Value>target_text_param</Value>
+    </Property>
+    <Property name="page_changed_URL">
+      <Value>http://www.topcoder.com</Value>
+    </Property>
+    <Property name="default_width">
+      <Value>100</Value>
+    </Property>
+    <Property name="default_height">
+      <Value>100</Value>
+    </Property>
+    <Property name="event_pages">
+      <Value>login, http://www.google.com</Value>
+      <Value>successful login, http://www.google.com</Value>
+      <Value>logout, http://www.google.com</Value>
+      <Value>successful logout, http://www.google.com</Value>
+      <Value>show active games, http://www.google.com</Value>
+      <Value>show my games, http://www.google.com</Value>
+      <Value>show unlocked domains, http://www.google.com</Value>
+      <Value>show upcoming games, http://www.google.com</Value>
+      <Value>show leaders, http://www.google.com</Value>
+      <Value>show latest clue, http://www.google.com</Value>
+      <Value>page changed, http://www.google.com</Value>
+      <Value>working game id update, http://www.google.com</Value>
+    </Property>
+  </Config>
+  <Config name="ValidConfigNamespaceForTest">
+    <Property name="domain_parameter_name">
+      <Value>domain_param</Value>
+    </Property>
+    <Property name="orpheus_url">
+      <Value>http://www.google.com</Value>
+    </Property>
+    <Property name="orpheus_poll_time">
+      <Value>1</Value>
+    </Property>
+    <Property name="orpheus_timestamp_parameter">
+      <Value>timestamp_param</Value>
+    </Property>
+    <Property name="persistence_class">
+      <Value>com.orpheus.plugin.firefox.persistence.CookieExtensionPersistence</Value>
+    </Property>
+    <Property name="hash_match_URL">
+      <Value>http://www.abc.com</Value>
+    </Property>
+    <Property name="hash_match_domain_parameter">
+      <Value>hash_match_domain_param</Value>
+    </Property>
+    <Property name="hash_match_sequence_number_parameter">
+      <Value>hash_match_sequence_number_param</Value>
+    </Property>
+    <Property name="target_text_parameter">
+      <Value>target_text_param</Value>
+    </Property>
+    <Property name="page_changed_URL">
+      <Value>http://www.topcoder.com</Value>
+    </Property>
+    <Property name="default_width">
+      <Value>100</Value>
+    </Property>
+    <Property name="default_height">
+      <Value>100</Value>
+    </Property>
+    <Property name="event_pages">
+      <Value>login, http://www.google.com</Value>
+    </Property>
+  </Config>
+</CMConfig>

@@ -1,0 +1,327 @@
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+  <script src="jsunit/app/jsUnitCore.js" type="application/x-javascript"/>
+  <script src="../src/java/main/FirefoxExtensionWrapper.js" type="application/x-javascript"/>
+  <html:applet id="TheApplet" ARCHIVE="../test_files/all.jar" code="com.orpheus.plugin.firefox.FirefoxExtensionHelper" name="TheApplet" width="0" height="0" MAYSCRIPT="true"/>
+  <script type="application/x-javascript">
+        /**
+         * setUp. The testing instance is created.
+         */
+        function setUp() {
+            parentWindow = null;
+            init("TheApplet");
+        }
+
+        /**
+         * Test the method logInClick().
+         */
+        function test_LogInClick_Accuracy() {
+            logInClick();
+        }
+
+        /**
+         * Test the method successfulLogIn().
+         */
+        function test_SuccessfulLogIn_Accuracy() {
+            successfulLogIn();
+        }
+
+        /**
+         * Test the method showActiveGamesClick().
+         */
+        function test_ShowActiveGamesClick_Accuracy() {
+            showActiveGamesClick();
+        }
+
+        /**
+         * Test the method showMyGamesClick().
+         */
+        function test_ShowMyGamesClick_Accuracy() {
+            showMyGamesClick();
+        }
+
+        /**
+         * Test the method showUnlockedDomainsClick().
+         */
+        function test_ShowUnlockedDomainsClick_Accuracy() {
+            showUnlockedDomainsClick();
+        }
+
+        /**
+         * Test the method showUpcomingGamesClick().
+         */
+        function test_ShowUpcomingGamesClick_Accuracy() {
+            showUpcomingGamesClick();
+        }
+
+        /**
+         * Test the method showLeadersClick().
+         */
+        function test_ShowLeadersClick_Accuracy() {
+            showLeadersClick();
+        }
+
+        /**
+         * Test the method showLatestClueClick().
+         */
+        function test_ShowLatestClueClick_Accuracy() {
+            showLatestClueClick();
+        }
+
+        /**
+         * Test the method pageChanged(newPage).
+         */
+        function test_PageChanged_Accuracy() {
+            pageChanged("test.html");
+        }
+
+        /**
+         * Test the method setWorkingGameID() and getWorkingGameID()
+         */
+        function test_SetGetWorkingGameID_Accuracy() {
+            setWorkingGameID(1);
+            assertEquals("The id should be set properly.", 1, getWorkingGameID());
+        }
+
+        /**
+         * Test the method setCurrentTargetID() and getCurrentTargetID()
+         */
+        function test_SetGetCurrentTargetID_Accuracy() {
+            setCurrentTargetID("id", 1);
+            assertEquals("The id should be set properly.", "id", getCurrentTargetID());
+        }
+
+        /**
+         * Test the method pollServerNow().
+         */
+        function test_PollServerNow_Accuracy() {
+            pollServerNow();
+        }
+
+        /**
+         * Test the method setPollTime() and getPollTime()
+         */
+        function test_SetGetPollTime_Accuracy() {
+            setPollTime(1);
+            assertEquals("The time should be set properly.", 1, getPollTime());
+        }
+
+        /**
+         * Test the method currentTargetTest().
+         */
+        function test_CurrentTargetTest_Accuracy() {
+            setCurrentTargetID("040f06fd774092478d450774f5ba30c5da78acc8", 1);
+            var target = "&lt;test&gt; content &lt;/test&gt;";
+            currentTargetTest(target);
+        }
+
+        /**
+         * Test the method isPopupWindow().
+         */
+        function test_IsPopupWindow_Accuracy() {
+            isPopupWindow();
+        }
+
+        /**
+         * Test the method popupWindow().
+         */
+        function test_PopupWindow_Accuracy() {
+            popupWindow("test.html", false, false, false, false, false, false, false, 200, 200);
+        }
+
+        /**
+         * Test the method popupWindowWithContent().
+         */
+        function test_PopupWindowWithContent_Accuracy() {
+            popupWindowWithContent("test", false, false, false, false, false, false, false, 200, 200);
+        }
+
+        /**
+         * Test the method logOutClick().
+         */
+        function test_LogOutClick_Accuracy() {
+            logOutClick();
+        }
+
+        /**
+         * Test the method successfulLogOut().
+         */
+        function test_SuccessfulLogOut_Accuracy() {
+            successfulLogOut();
+        }
+
+        /**
+         * Test the method addLogInClickHandler().
+         */
+        function test_AddLogInClickHandler_Accuracy() {
+            addLogInClickHandler("login");
+        }
+
+        /**
+         * Test the method removeLogInClickHandler().
+         */
+        function test_RemoveLogInClickHandler_Accuracy() {
+            removeLogInClickHandler("login");
+        }
+
+        /**
+         * Test the method addSuccessfulLogInHandler().
+         */
+        function test_AddSuccessfulLogInHandler_Accuracy() {
+            addSuccessfulLogInHandler("successLogin");
+        }
+
+        /**
+         * Test the method removeSuccessfulLogInHandler().
+         */
+        function test_RemoveSuccessfulLogInHandler_Accuracy() {
+            removeSuccessfulLogInHandler("successLogin");
+        }
+
+        /**
+         * Test the method addLogOutClickHandler().
+         */
+        function test_AddLogOutClickHandler_Accuracy() {
+            addLogOutClickHandler("logout");
+        }
+
+        /**
+         * Test the method removeLogOutClickHandler().
+         */
+        function test_RemoveLogOutClickHandler_Accuracy() {
+            removeLogOutClickHandler("logout");
+        }
+
+        /**
+         * Test the method addSuccessfulLogOutHandler().
+         */
+        function test_AddSuccessfulLogOutHandler_Accuracy() {
+            addSuccessfulLogOutHandler("successLogout");
+        }
+
+        /**
+         * Test the method removeSuccessfulLogOutHandler().
+         */
+        function test_RemoveSuccessfulLogOutHandler_Accuracy() {
+            removeSuccessfulLogOutHandler("successLogout");
+        }
+
+        /**
+         * Test the method addShowActiveGamesClickHandler().
+         */
+        function test_AddShowActiveGamesClickHandler_Accuracy() {
+            addShowActiveGamesClickHandler("showActiveGames");
+        }
+
+        /**
+         * Test the method removeShowActiveGamesClickHandler().
+         */
+        function test_RemoveShowActiveGamesClickHandler_Accuracy() {
+            removeShowActiveGamesClickHandler("showActiveGames");
+        }
+
+        /**
+         * Test the method addShowMyGamesClickHandler().
+         */
+        function test_AddShowMyGamesClickHandler_Accuracy() {
+            addShowMyGamesClickHandler("showMyGames");
+        }
+
+        /**
+         * Test the method removeShowMyGamesClickHandler().
+         */
+        function test_RemoveShowMyGamesClickHandler_Accuracy() {
+            removeShowMyGamesClickHandler("showMyGames");
+        }
+
+        /**
+         * Test the method addShowUnlockedDomainsClickHandler().
+         */
+        function test_AddShowUnlockedDomainsClickHandler_Accuracy() {
+            addShowUnlockedDomainsClickHandler("showUnlockedDomains");
+        }
+
+        /**
+         * Test the method removeShowUnlockedDomainsClickHandler().
+         */
+        function test_RemoveShowUnlockedDomainsClickHandler_Accuracy() {
+            removeShowUnlockedDomainsClickHandler("showUnlockedDomains");
+        }
+
+        /**
+         * Test the method addShowUpcomingGamesClickHandler().
+         */
+        function test_AddShowUpcomingGamesClickHandler_Accuracy() {
+            addShowUpcomingGamesClickHandler("showUpcomingGames");
+        }
+
+        /**
+         * Test the method removeShowUpcomingGamesClickHandler().
+         */
+        function test_RemoveShowUpcomingGamesClickHandler_Accuracy() {
+            removeShowUpcomingGamesClickHandler("showUpcomingGames");
+        }
+
+        /**
+         * Test the method addShowLeadersClickHandler().
+         */
+        function test_AddShowLeadersClickHandler_Accuracy() {
+            addShowLeadersClickHandler("showLeaders");
+        }
+
+        /**
+         * Test the method removeShowLeadersClickHandler().
+         */
+        function test_RemoveShowLeadersClickHandler_Accuracy() {
+            removeShowLeadersClickHandler("showLeaders");
+        }
+
+        /**
+         * Test the method addShowLatestClueClickHandler().
+         */
+        function test_AddShowLatestClueClickHandler_Accuracy() {
+            addShowLatestClueClickHandler("showLatestClue");
+        }
+
+        /**
+         * Test the method removeShowLatestClueClickHandler().
+         */
+        function test_RemoveShowLatestClueClickHandler_Accuracy() {
+            removeShowLatestClueClickHandler("showLatestClue");
+        }
+
+        /**
+         * Test the method addPageChangedHandler().
+         */
+        function test_AddPageChangedHandler_Accuracy() {
+            addPageChangedHandler("pageChanged");
+        }
+
+        /**
+         * Test the method removePageChangedHandler().
+         */
+        function test_RemovePageChangedHandler_Accuracy() {
+            removePageChangedHandler("pageChanged");
+        }
+
+        /**
+         * Test the method addWorkingGameIDUpdateHandler().
+         */
+        function test_AddWorkingGameIDUpdateHandler_Accuracy() {
+            addWorkingGameIDUpdateHandler("workingGameIDUpdate");
+        }
+
+        /**
+         * Test the method removeWorkingGameIDUpdateHandler().
+         */
+        function test_RemoveWorkingGameIDUpdateHandler_Accuracy() {
+            removeWorkingGameIDUpdateHandler("workingGameIDUpdate");
+        }
+
+        /**
+         * Test the method setParentWindow().
+         */
+        function test_SetParentWindow_Accuracy() {
+            setParentWindow(window);
+        }
+  </script>
+</window>

@@ -1,0 +1,58 @@
+<CMConfig>
+  <Config name="MissingOrpheusUrl">
+    <!-- The query parameter name used when testing whether or not a domain is host to any games. Required -->
+    <Property name="domain_parameter_name">
+      <Value>domainParameter</Value>
+    </Property>
+    <!-- An integer value indicating how many minutes to wait between each server poll. Required -->
+    <Property name="orpheus_poll_time">
+      <Value>1</Value>
+    </Property>
+    <!-- A string parameter name for passing the timestamp along with poll requests. Required -->
+    <Property name="orpheus_timestamp_parameter">
+      <Value>timestampParameter</Value>
+    </Property>
+    <!-- A class name, like "com.orpheus.plugin.firefox.persistence.CookieExtensionPersistence", used to initialize the persistence member variable. Required -->
+    <Property name="persistence_class">
+      <Value>com.orpheus.plugin.firefox.persistence.CookieExtensionPersistence</Value>
+    </Property>
+    <!-- The URL to load when a given object matches the current target. Required -->
+    <Property name="hash_match_URL">
+      <Value>http://localhost:8080</Value>
+    </Property>
+    <!-- The query string parameter name to use when apssing the domain name to the hash_match_URL. Required -->
+    <Property name="hash_match_domain_parameter">
+      <Value>hashMatchDomainParameter</Value>
+    </Property>
+    <!-- The query string parameter name to use when passing the sequence number to the hash_match_URL. Required -->
+    <Property name="hash_match_sequence_number_parameter">
+      <Value>hashMatchSequenceNumberParameter</Value>
+    </Property>
+    <!-- The query string parameter name to use when passing the current target string to the hash_match_URL. Required -->
+    <Property name="target_text_parameter">
+      <Value>targetTextParameter</Value>
+    </Property>
+    <!-- The default height of pop-up windows. Optional -->
+    <Property name="default_height">
+      <Value>300</Value>
+    </Property>
+    <!-- The default width of pop-up windows. Optional -->
+    <Property name="default_width">
+      <Value>400</Value>
+    </Property>
+    <!-- The base of the URL to Any valid URL request when the user requests a new page in a domain that participates in theOrpheus application. Required -->
+    <Property name="page_changed_URL">
+      <Value>http://localhost:8080</Value>
+    </Property>
+    <!-- A list of comma-delimited event / page pairs, used to link event types with pages to load, should be specified like "LOGIN_CLICK, http://www.google.com". Required -->
+    <Property name="event_pages">
+      <Value>successful login,http://localhost:8080</Value>
+      <Value>show active games,http://localhost:8080</Value>
+      <Value>show my games,http://localhost:8080</Value>
+      <Value>show unlocked domains,http://localhost:8080</Value>
+      <Value>show upcoming games,http://localhost:8080</Value>
+      <Value>show leaders,http://localhost:8080</Value>
+      <Value>show latest clue,http://localhost:8080</Value>
+    </Property>
+  </Config>
+</CMConfig>

@@ -1,0 +1,7 @@
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" onload="init('TheApplet', 'file:///../build/classes/')">
+  <script src="../src/java/main/FirefoxExtensionWrapper.js" type="application/x-javascript"/>
+  <html:applet id="TheApplet" codebase="../build/classes/" code="com.orpheus.plugin.firefox.FirefoxExtensionHelper.class" name="TheApplet" width="0" height="0" MAYSCRIPT="true"/>
+  <button label="Log In" onclick="logInClicked();"/>
+  <button label="Log Out" onclick="logOutClicked();"/>
+  <button label="Show Active Games" onclick="showActiveGames();"/>
+</window>

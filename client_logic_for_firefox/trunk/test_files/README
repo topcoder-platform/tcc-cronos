@@ -1,0 +1,4 @@
+1: jsunit is used for testing the FirefoxExtensionWrapper.js. First, you should unzip the jsunit under /test_files and then you should run UnitTestSuite.html in test_files/jsunit/testRunner.html under firefox.
+2: A web server should be started before unit testing. You should deploy the module: test_files/web/Client_Logic_for_Firefox.war into any web application server. You can modify file of test_files/domain.properties to adjust the settings of your web application server.
+3: please add the test_files/rssgeneratormock.jar under classpath before unit testing.
+4: please add all the compiled the class files of this component into the test_files/all.jar before the jsunit testing.

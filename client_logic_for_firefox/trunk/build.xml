@@ -13,11 +13,11 @@
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
+    <property name="tcs_libdir" value="/Jtcs/lib/tcs" />
+    <property name="ext_libdir" value="/Jtcs/lib/third_party" />
+    <property name="jar_tcs_libdir" value="/Jtcs/lib/tcs" />
+    <property name="jar_ext_libdir" value="/Jtcs/lib/third_party" />
     <property name="srcdir" value="src" />
-    <property name="tcs_libdir" value="lib/tcs" />
-    <property name="ext_libdir" value="lib" />
-    <property name="jar_tcs_libdir" value="lib/tcs" />
-    <property name="jar_ext_libdir" value="lib" />
     <property name="docsdir" value="docs" />
     <property name="configdir" value="conf" />
     <property name="testlogdir" value="log" />
@@ -67,7 +67,24 @@
     <!-- DOCUMENT PACKAGE -->
     <property name="dist_docpackage" value="${builddir}/doc_package" />
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
-    
+
+      <!-- JDK definitions -->
+	  <path id="java_1_5_classpath">
+	    <fileset dir="D:\Program Files\Java\jdk1.5.0_04">
+	      <include name="jre/lib/charsets.jar"/>
+	      <include name="jre/lib/deploy.jar"/>
+	      <include name="jre/lib/javaws.jar"/>
+	      <include name="jre/lib/jce.jar"/>
+	      <include name="jre/lib/jsse.jar"/>
+	      <include name="jre/lib/plugin.jar"/>
+	      <include name="jre/lib/rt.jar"/>
+	      <include name="jre/lib/ext/dnsns.jar"/>
+	      <include name="jre/lib/ext/localedata.jar"/>
+	      <include name="jre/lib/ext/sunjce_provider.jar"/>
+	      <include name="jre/lib/ext/sunpkcs11.jar"/>
+	    </fileset>
+	  </path>
+        
     <!-- TCS Dependencies -->
     <property name="configmanager.version" value="2.1.5"/>
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
@@ -89,18 +106,39 @@
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
 
-    <!-- 3rd Party Dependencies  -->
-    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="typesafe_enum.version" value="1.0"/>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
+    <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
+
+    <property name="rss_generator.version" value="1.0"/>
+    <property name="rss_generator.jar.name" value="rss_generator.jar"/>
+    <property name="rss_generator.path" value="rss_generator/${rss_generator.version}"/>
+    <property name="rss_generator.jar" value="${tcs_libdir}/${rss_generator.path}/${rss_generator.jar.name}"/>
+
+    <property name="stress_test.version" value="1.0"/>
+    <property name="stress_test.jar.name" value="stress_test.jar"/>
+    <property name="stress_test.path" value="stress_test/${stress_test.version}"/>
+    <property name="stress_test.jar" value="${tcs_libdir}/${stress_test.path}/${stress_test.jar.name}"/>
+
+    <property name="mock_rss_generator.jar" value="${testfiles}/rssgeneratormock.jar"/>
+
+            <!-- 3rd Party Dependencies  -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
 
     <!-- Java Locations -->
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
 
     <path id="buildlibs">
+        <path refid="java_1_5_classpath"/>
         <pathelement location="${junit.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${bloom_filter.jar}" />
+        <pathelement location="${stress_test.jar}" />
+        <pathelement location="${mock_rss_generator.jar}" />
         <pathelement location="${hashing_utility.jar}" />
         <pathelement location="${base_exception.jar}" />
+        <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
