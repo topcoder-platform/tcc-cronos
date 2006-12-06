@@ -134,8 +134,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             try {
                 conn = createConnection();
                 //Search all "Active" submissions for current project
-                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                        phase.getProject().getId());
+                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                        conn, phase.getProject().getId());
                 return (subs.length > 0);
             } catch (SQLException sqle) {
                 throw new PhaseHandlingException("Failed to search submissions.", sqle);
@@ -379,8 +379,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                     new String[] { ROLE_PRIMARY_SCREENER }, null);
 
             //get the submissions for the project
-            Submission[] submissions = PhasesHelper.searchSubmissionsForProject(getManagerHelper().getUploadManager(),
-                    phase.getProject().getId());
+            Submission[] submissions = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                    conn, phase.getProject().getId());
 
             // If the number of reviews doesn't match submission number - not all reviews are commited for sure
             if (screenReviews.length != submissions.length) {
