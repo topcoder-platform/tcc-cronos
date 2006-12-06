@@ -90,7 +90,7 @@ public abstract class User implements Serializable {
      * <p>
      * This field is set and accessed in the setActive(String) and getActive()
      * methods, respectively. It can be any value, but is expected to be either
-     * "true" or "false".
+     * "Y" or "N".
      * </p>
      */
     private String active;

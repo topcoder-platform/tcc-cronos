@@ -420,7 +420,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         player.setEmail("updatedemail@somehost.domain");
         player.setPassword("pwdupdate");
         player.setPaymentPref(null);
-        player.setActive("false");
+        player.setActive("N");
 
         try {
             // Try to update the profile.
@@ -534,7 +534,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         Admin admin = (Admin) profile.get(UserProfileDTO.ADMIN_KEY);
         admin.setEmail("updatedemail@somehost.domain");
         admin.setPassword("pwdupdate");
-        admin.setActive("false");
+        admin.setActive("N");
 
         try {
             // Try to update the admin profile.
@@ -570,7 +570,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         sponsor.setPassword("pwdupdate");
         sponsor.setFax("987645321");
         sponsor.setPaymentPref(null);
-        sponsor.setActive("false");
+        sponsor.setActive("N");
         sponsor.setApproved(Sponsor.APPROVED_UNDECIDED);
 
         try {
@@ -609,8 +609,8 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         sponsor.setPassword("pwdupdate");
         sponsor.setFax("987645321");
         sponsor.setPaymentPref(null);
-        sponsor.setActive("false");
-        sponsor.setApproved(Sponsor.APPROVED_UNDECIDED);
+        sponsor.setActive("N");
+        sponsor.setApproved(Sponsor.APPROVED_TRUE);
 
         // Update some contact information.
         ContactInfo contactInfo = (ContactInfo) profile.get(UserProfileDTO.CONTACT_INFO_KEY);
@@ -655,8 +655,8 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         sponsor.setPassword("pwdupdate");
         sponsor.setFax("987645321");
         sponsor.setPaymentPref(null);
-        sponsor.setActive("false");
-        sponsor.setApproved(Sponsor.APPROVED_UNDECIDED);
+        sponsor.setActive("N");
+        sponsor.setApproved(Sponsor.APPROVED_TRUE);
 
         // Add contact information to the player profile.
         addContactInfo(sponsor.getId(), profile);
@@ -1192,7 +1192,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         // Insert some random (non-matching) profiles into the database.
         populateDatabase(numRandomProfiles, idOffset);
 
-        String active = "false";
+        String active = "N";
 
         // Insert a bunch of matching user profiles.
         for (int i = 0; i < numMatchingProfiles; i++) {
@@ -1269,7 +1269,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         // Insert some random (non-matching) profiles into the database.
         populateDatabase(numRandomProfiles, idOffset);
 
-        String active = "true";
+        String active = "Y";
         String paymentPref = "Wire transfer";
 
         // Insert a bunch of matching profiles.
@@ -1327,7 +1327,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         // Insert some random (non-matching) profiles into the database.
         populateDatabase(numRandomProfiles, idOffset);
 
-        String active = "false";
+        String active = "N";
         String handle = "joeuser";
         String city = "Los Angeles";
         String state = "California";
@@ -1869,7 +1869,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         user.setHandle("tcsdeveloper");
         user.setEmail("tcsdeveloper@topcodersoftware.com");
         user.setPassword("repolevedsct");
-        user.setActive("true");
+        user.setActive("Y");
     }
 
     /**

@@ -233,6 +233,22 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
 
     /**
      * <p>
+     * The string representation of a boolean true value. This string is stored
+     * in the UserProfile object.
+     * </p>
+     */
+    private static final String BOOLEAN_TRUE_STRING = "Y";
+
+    /**
+     * <p>
+     * The string representation of a boolean false value. This string is stored
+     * in the UserProfile object.
+     * </p>
+     */
+    private static final String BOOLEAN_FALSE_STRING = "N";
+
+    /**
+     * <p>
      * The connection factory that is used to obtain database connections. It
      * should be backed by a JNDI connection producer, which eases the obtaining
      * of a connection from a DataSource via JNDI.
@@ -531,7 +547,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         // Insert the approved status. If the approved status is undecided
         // (null), set the field to null.
         if (sponsor.getApproved() != Sponsor.APPROVED_UNDECIDED) {
-            sql.setBoolean(5, Boolean.valueOf(sponsor.getApproved()).booleanValue());
+            sql.setBoolean(5, convertStringToBoolean(sponsor.getApproved()));
         } else {
             sql.setNull(5, Types.BOOLEAN);
         }
@@ -608,7 +624,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         sql.setString(2, user.getHandle());
         sql.setString(3, user.getEmail());
         sql.setString(4, user.getPassword());
-        sql.setBoolean(5, Boolean.valueOf(user.getActive()).booleanValue());
+        sql.setBoolean(5, convertStringToBoolean(user.getActive()));
         sql.executeUpdate();
         sql.close();
     }
@@ -847,7 +863,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         if (sponsor.getApproved() == Sponsor.APPROVED_UNDECIDED) {
             sql.setNull(4, Types.BOOLEAN);
         } else {
-            sql.setBoolean(4, Boolean.valueOf(sponsor.getApproved()).booleanValue());
+            sql.setBoolean(4, convertStringToBoolean(sponsor.getApproved()));
         }
 
         // WHERE id = ?
@@ -874,7 +890,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         sql.setString(1, user.getHandle());
         sql.setString(2, user.getEmail());
         sql.setString(3, user.getPassword());
-        sql.setBoolean(4 , Boolean.valueOf(user.getActive()).booleanValue());
+        sql.setBoolean(4 , convertStringToBoolean(user.getActive()));
 
         // WHERE id = ?
         sql.setLong(5, user.getId());
@@ -1265,7 +1281,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * Map criteria = new HashMap();
      *
      * // Find the user profiles of all the active users.
-     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, Boolean.TRUE);
+     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, &quot;Y&quot;);
      * UserProfileDTO[] profiles = findProfiles(criteria);
      *
      * // Find the user profiles of all the active players that have &quot;Wire transfer&quot;
@@ -1276,7 +1292,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * // Find the user profiles of all the non-active players and sponsors who live in
      * // Los Angeles, California.
      * criteria.clear();
-     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, &quot;false&quot;);
+     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, &quot;N&quot;);
      * criteria.put(UserConstants.ADDRESS_CITY, &quot;Los Angeles&quot;);
      * criteria.put(UserConstants.ADDRESS_STATE, &quot;California&quot;);
      * profiles = findProfiles(criteria);
@@ -1524,7 +1540,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
                 if (tableName.equals("is_active") || tableName.equals("is_approved")) {
                     // For the user.isactive and sponsor.is_approved columns,
                     // set the criterion value as a BIT or BOOLEAN.
-                    sql.setBoolean(j, Boolean.valueOf(criterionValue.toString()).booleanValue());
+                    sql.setBoolean(j, convertStringToBoolean(criterionValue.toString()));
                 } else if (criterion.equals("fax")) {
                     // For the sponsor.fax column, we need a NUMERIC data type.
                     try {
@@ -1865,7 +1881,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         // Be careful when getting the approved flag. It may be null.
         boolean approved = results.getBoolean(results.findColumn("is_approved"));
         if (!results.wasNull()) {
-            sponsor.setApproved(String.valueOf(approved));
+            sponsor.setApproved(convertBooleanToString(approved));
         } else {
             sponsor.setApproved(Sponsor.APPROVED_UNDECIDED);
         }
@@ -1894,7 +1910,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         user.setHandle(result.getString(result.findColumn("handle")));
         user.setEmail(result.getString(result.findColumn("e_mail")));
         user.setPassword(result.getString(result.findColumn("passwd")));
-        user.setActive(String.valueOf(result.getBoolean(result.findColumn("is_active"))));
+        user.setActive(convertBooleanToString(result.getBoolean(result.findColumn("is_active"))));
     }
 
     /**
@@ -1968,6 +1984,49 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         }
 
         return new Long(((User) bean).getId());
+    }
+
+    /**
+     * <p>
+     * Converts the given string to a boolean value. If the string is equal to
+     * the <code>BOOLEAN_TRUE_STRING</code> constant or "true", then
+     * <code>true</code> is returned. Otherwise, <code>false</code> is returned.
+     * </p>
+     * <p>
+     * The case of the given string does not matter. If the string is "TRUE",
+     * for example, then <code>true</code> will still be returned.
+     * </p>
+     *
+     * @param s the string to convert to a boolean value
+     * @return <code>true</code> if the given string is equal to BOOLEAN_TRUE_STRING
+     *         or "true"; <code>false</code> otherwise
+     */
+    private boolean convertStringToBoolean(String s) {
+        // If the string is equal to BOOLEAN_TRUE_STRINg (i.e. "Y") or "true",
+        // then return true.
+        if (s.toUpperCase().equals(BOOLEAN_TRUE_STRING) || Boolean.valueOf(s).booleanValue()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * <p>
+     * Converts the given boolean value to a string representation. If the
+     * boolean value is <code>true</code>, then the value of the
+     * <code>BOOLEAN_TRUE_STRING</code> constant is returned. Otherwise,
+     * the value of the <code>BOOLEAN_FALSE_STRING</code> constant is returned.
+     * </p>
+     *
+     * @param b the boolean value to convert to a string
+     * @return <code>BOOLEAN_TRUE_STRING</code> if the boolean value is
+     *         <code>true</code>; <code>BOOLEAN_FALSE_STRING</code> otherwise
+     */
+    private String convertBooleanToString(boolean b) {
+        if (b) {
+            return BOOLEAN_TRUE_STRING;
+        }
+        return BOOLEAN_FALSE_STRING;
     }
 
 }

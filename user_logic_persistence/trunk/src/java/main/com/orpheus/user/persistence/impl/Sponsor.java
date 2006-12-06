@@ -43,14 +43,14 @@ public class Sponsor extends User {
      * Represents an approved sponsor.
      * </p>
      */
-    public static final String APPROVED_TRUE = "true";
+    public static final String APPROVED_TRUE = "Y";
 
     /**
      * <p>
      * Represents a sponsor that is not approved.
      * </p>
      */
-    public static final String APPROVED_FALSE = "false";
+    public static final String APPROVED_FALSE = "N";
 
     /**
      * <p>

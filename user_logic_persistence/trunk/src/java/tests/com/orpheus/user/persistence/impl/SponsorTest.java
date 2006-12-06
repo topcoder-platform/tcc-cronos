@@ -173,20 +173,20 @@ public class SponsorTest extends TestCase {
 
     /**
      * <p>
-     * Tests that the Sponsor.APPROVED_TRUE constant is equal to "true".
+     * Tests that the Sponsor.APPROVED_TRUE constant is equal to "Y".
      * </p>
      */
     public void testApprovedTrueConstant() {
-        assertEquals("APPROVED_TRUE is incorrect", Sponsor.APPROVED_TRUE, "true");
+        assertEquals("APPROVED_TRUE is incorrect", Sponsor.APPROVED_TRUE, "Y");
     }
 
     /**
      * <p>
-     * Tests that the Sponsor.APPROVED_FALSE constant is equal to "false".
+     * Tests that the Sponsor.APPROVED_FALSE constant is equal to "N".
      * </p>
      */
     public void testApprovedFalseConstant() {
-        assertEquals("APPROVED_FALSE is incorrect", Sponsor.APPROVED_FALSE, "false");
+        assertEquals("APPROVED_FALSE is incorrect", Sponsor.APPROVED_FALSE, "N");
     }
 
     /**

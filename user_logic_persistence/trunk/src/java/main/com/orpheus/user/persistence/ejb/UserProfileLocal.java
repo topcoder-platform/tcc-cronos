@@ -141,7 +141,7 @@ public interface UserProfileLocal extends EJBLocalObject {
      * Map criteria = new HashMap();
      *
      * // Find the user profiles of all the active users.
-     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, Boolean.TRUE);
+     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, &quot;Y&quot;);
      * UserProfileDTO[] profiles = findProfiles(criteria);
      *
      * // Find the user profiles of all the active players that have &quot;Wire transfer&quot;
@@ -152,7 +152,7 @@ public interface UserProfileLocal extends EJBLocalObject {
      * // Find the user profiles of all the non-active players and sponsors who live in
      * // Los Angeles, California.
      * criteria.clear();
-     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, Boolean.FALSE);
+     * criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, &quot;N&quot;);
      * criteria.put(UserConstants.ADDRESS_CITY, &quot;Los Angeles&quot;);
      * criteria.put(UserConstants.ADDRESS_STATE, &quot;California&quot;);
      * profiles = findProfiles(criteria);

@@ -235,7 +235,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         profile.setProperty(BaseProfileType.EMAIL_ADDRESS, "updatedemail@somehost.domain");
         profile.setProperty(UserConstants.CREDENTIALS_PASSWORD, "pwdupdate");
         profile.setProperty(UserConstants.PLAYER_PAYMENT_PREF, "Cash");
-        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "false");
+        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "N");
 
         try {
             // Try to update the profile.
@@ -344,7 +344,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         // Update some admin information.
         profile.setProperty(BaseProfileType.EMAIL_ADDRESS, "updatedemail@somehost.domain");
         profile.setProperty(UserConstants.CREDENTIALS_PASSWORD, "pwdupdate");
-        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "false");
+        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "N");
 
         try {
             // Try to update the admin profile.
@@ -415,7 +415,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         profile.setProperty(BaseProfileType.EMAIL_ADDRESS, "updatedemail@somehost.domain");
         profile.setProperty(UserConstants.CREDENTIALS_PASSWORD, "pwdupdate");
         profile.setProperty(UserConstants.SPONSOR_FAX_NUMBER, "987645321");
-        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "false");
+        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "N");
         profile.setProperty(UserConstants.SPONSOR_APPROVED, Sponsor.APPROVED_TRUE);
 
         // Update some contact information.
@@ -458,7 +458,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         profile.setProperty(BaseProfileType.EMAIL_ADDRESS, "updatedemail@somehost.domain");
         profile.setProperty(UserConstants.CREDENTIALS_PASSWORD, "pwdupdate");
         profile.setProperty(UserConstants.SPONSOR_FAX_NUMBER, "987645321");
-        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "false");
+        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "N");
         profile.setProperty(UserConstants.CREDENTIALS_HANDLE, "newhandle");
         profile.setProperty(UserConstants.SPONSOR_APPROVED, Sponsor.APPROVED_TRUE);
 
@@ -892,7 +892,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         // Insert some random (non-matching) profiles into the database.
         populateDatabase(numRandomProfiles, idOffset);
 
-        String active = "false";
+        String active = "N";
 
         // Insert a bunch of matching user profiles.
         for (int i = 0; i < numMatchingProfiles; i++) {
@@ -955,7 +955,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         // Insert some random (non-matching) profiles into the database.
         populateDatabase(numRandomProfiles, idOffset);
 
-        String active = "true";
+        String active = "Y";
         String paymentPref = "Wire transfer";
 
         // Insert a bunch of matching profiles.
@@ -1014,7 +1014,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         // Insert some random (non-matching) profiles into the database.
         populateDatabase(numRandomProfiles, idOffset);
 
-        String active = "false";
+        String active = "N";
         String handle = "joeuser";
         String city = "Los Angeles";
         String state = "California";
@@ -1497,7 +1497,7 @@ public class OrpheusUserProfilePersistenceTestHelper {
         profile.setProperty(UserConstants.CREDENTIALS_HANDLE, "tcsdeveloper");
         profile.setProperty(BaseProfileType.EMAIL_ADDRESS, "tcsdeveloper@topcodersoftware.com");
         profile.setProperty(UserConstants.CREDENTIALS_PASSWORD, "repolevedsct");
-        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "true");
+        profile.setProperty(UserConstants.CREDENTIALS_IS_ACTIVE, "Y");
     }
 
     /**
