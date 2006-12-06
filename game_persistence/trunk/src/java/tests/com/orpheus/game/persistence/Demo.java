@@ -34,7 +34,7 @@ import javax.rmi.PortableRemoteObject;
  * <p>
  * Demo show how to use this component.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class Demo extends TestCase {

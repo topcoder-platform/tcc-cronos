@@ -19,7 +19,7 @@ import javax.ejb.EJBHome;
  * implementations.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public interface GameDataHome extends EJBHome {

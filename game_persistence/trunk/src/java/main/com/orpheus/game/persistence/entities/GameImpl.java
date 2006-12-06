@@ -21,7 +21,7 @@ import java.util.Date;
  * <p>
  * <b>Thread Safety</b>:This class is immutable and thread-safe.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class GameImpl implements Game {

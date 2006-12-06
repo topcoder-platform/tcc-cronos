@@ -22,7 +22,7 @@ import javax.ejb.EJBObject;
  * <b>Thread Safety:</b>The container assumes all responsibility for thread-safety of these implementations.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public interface GameData extends EJBObject {

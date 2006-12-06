@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 /**
  * This class defines all the helper methods used in the base implementation classes of this component.
- *@author TCSDEVELOPER
+ *@author waits
  *@version 1.0
  */
 public final class Helper {

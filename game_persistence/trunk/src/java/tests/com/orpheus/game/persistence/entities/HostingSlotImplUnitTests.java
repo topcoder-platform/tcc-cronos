@@ -18,7 +18,7 @@ import java.util.Date;
  * <p>
  * Unit test case for class <code>HostingSlotImpl</code>.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class HostingSlotImplUnitTests extends TestCase {

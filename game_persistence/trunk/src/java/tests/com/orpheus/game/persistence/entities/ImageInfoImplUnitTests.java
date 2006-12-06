@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 /**
  * Unit test cases for <code>ImageInfoImpl</code> class.
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class ImageInfoImplUnitTests extends TestCase {

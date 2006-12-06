@@ -15,7 +15,7 @@ import java.io.Serializable;
  * <b>Thread Safety</b>: Implementations should strive to be thread-safe, but they can expect to be used in a
  * thread-safe manner.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public interface BallColor extends Serializable {

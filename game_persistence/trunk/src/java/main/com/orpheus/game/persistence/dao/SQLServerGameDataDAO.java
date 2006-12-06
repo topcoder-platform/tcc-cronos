@@ -85,7 +85,7 @@ import java.util.Map;
  * <p>
  * <b>Thread Safety:</b>This class is mutable and thread-safe.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class SQLServerGameDataDAO implements GameDataDAO {
@@ -1265,7 +1265,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
             long sponsorId = 0;
             String domainName = null;
-            boolean approved = false;
+            Boolean approved = null;
             // checks if the domain id exist or not, if not , throw exception
             rs = query(conn, SQL_SELECT_DOMAIN_WITH_ID + domainId, null);
 
@@ -1275,7 +1275,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             } else {
                 sponsorId = rs.getLong(FIELD_SPONSOR_ID);
                 domainName = rs.getString(FIELD_BASE_URL);
-                approved = rs.getBoolean(FIELD_IS_APPROVED);
+                approved =  (Boolean) rs.getObject(FIELD_IS_APPROVED);
             }
 
             close(rs);
@@ -1286,10 +1286,10 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
             while (rs.next()) {
                 images.add(new ImageInfoImpl(new Long(rs.getLong(FIELD_ID)), rs.getLong(FIELD_DOWNLOAD_OBJ_ID),
-                        rs.getString(FIELD_DESCRIPTION), new Boolean(rs.getBoolean(FIELD_IS_APPROVED))));
+                        rs.getString(FIELD_DESCRIPTION), (Boolean)rs.getObject(FIELD_IS_APPROVED)));
             }
 
-            return new DomainImpl(new Long(domainId), sponsorId, domainName, new Boolean(approved),
+            return new DomainImpl(new Long(domainId), sponsorId, domainName, approved,
                 (ImageInfo[]) images.toArray(new ImageInfo[images.size()]));
         } catch (PersistenceException e) {
             throw e;
@@ -1809,7 +1809,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             }
 
             // update domain table
-            update(conn, SQL_UPDATE_DOMAIN,
+            updateWithNullApprove(conn, SQL_UPDATE_DOMAIN,
                 new Object[] {domain.getDomainName(), domain.isApproved(), domain.getId()});
 
             // update or insert the the imageInfo into the 'image' table
@@ -1826,10 +1826,10 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         throw new EntryNotFoundException("The image of the domain does not exist.", images[i].getId());
                     }
 
-                    update(conn, SQL_UPDATE_IMAGE,
+                    updateWithNullApprove(conn, SQL_UPDATE_IMAGE,
                         new Object[] {images[i].isApproved(), images[i].getDescription(), images[i].getId()});
                 } else {
-                    update(conn, SQL_INSERT_IMAGE,
+                    updateWithNullApprove(conn, SQL_INSERT_IMAGE,
                         new Object[] {
                             domain.getId(), new Long(images[i].getDownloadId()), images[i].isApproved(),
                             images[i].getDescription()
@@ -2698,7 +2698,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * @param sql the sql statement.
      * @param params parameters for the sql statement.
      * @param connection a connection to database.
-     *
      * @return the PreparedStatement with the value set.
      *
      * @throws SQLException thrown by prepareStatement.
@@ -2803,6 +2802,43 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
         try {
             pstmt = this.prepareStatement(sql, parameters, conn);
+
+            return pstmt.executeUpdate();
+        } finally {
+            close(pstmt);
+        }
+    }
+    /**
+     * <p>
+     * Insert a column into the database.
+     * </p>
+     *
+     * @param conn Connection instance
+     * @param sql the sql to insert into the database
+     * @param parameters the param to check
+     *
+     * @return update result
+     *
+     * @throws SQLException If fail to update database, it gets thrown.
+     */
+    private int updateWithNullApprove(Connection connection, String sql, Object[] params)
+        throws SQLException {
+        PreparedStatement pstmt = null;
+
+        try {
+            //create the prepareStatement with the clause
+            pstmt = connection.prepareStatement(sql);
+
+            // set the parameter for statement
+            if (params != null) {
+                for (int i = 0; i < params.length; ++i) {
+                    if (params[i] == null) {
+                        pstmt.setNull(i + 1, Types.BIT);
+                    } else {
+                        pstmt.setObject(i + 1, params[i]);
+                    }
+                }
+            }
 
             return pstmt.executeUpdate();
         } finally {

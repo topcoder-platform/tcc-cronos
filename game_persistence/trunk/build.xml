@@ -118,9 +118,9 @@
     <property name="mockejb.jar" value="${ext_libdir}/mockejb.jar"/>
     <property name="easymock.jar" value="${ext_libdir}/easymock.jar"/>
     <property name="fscontext.jar" value="${ext_libdir}/fscontext.jar"/>
-		<property name="providerutil.jar" value="${ext_libdir}/providerutil.jar"/>
-		<property name="mockrunner-ejb.jar" value="${ext_libdir}/mockrunner-ejb.jar"/>
-		<property name="sqlserver.jar" value="${ext_libdir}/sqljdbc.jar"/>
+	<property name="providerutil.jar" value="${ext_libdir}/providerutil.jar"/>
+	<property name="mockrunner-ejb.jar" value="${ext_libdir}/mockrunner-ejb.jar"/>
+	<property name="sqlserver.jar" value="${ext_libdir}/sqljdbc.jar"/>
 
 	<!-- Java Locations -->
 	<property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar" />

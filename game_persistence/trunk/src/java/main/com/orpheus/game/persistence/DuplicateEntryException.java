@@ -13,7 +13,7 @@ package com.orpheus.game.persistence;
  * The DAO and the associated EJB and client helper methods use it.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class DuplicateEntryException extends PersistenceException {

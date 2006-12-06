@@ -10,7 +10,7 @@ package com.orpheus.game.persistence;
  * methods use it.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class InvalidEntryException extends PersistenceException {

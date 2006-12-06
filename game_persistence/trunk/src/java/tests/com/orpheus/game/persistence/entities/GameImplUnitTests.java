@@ -21,7 +21,7 @@ import java.util.Date;
  * <p>
  * Unit test case for class <code>GameImpl</code>.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class GameImplUnitTests extends TestCase {

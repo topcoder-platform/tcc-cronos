@@ -14,7 +14,7 @@ import java.util.Date;
  * <p>
  * Unit test cases for class <code>SlotCompletionImpl</code>.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class SlotCompletionImplUnitTests extends TestCase {

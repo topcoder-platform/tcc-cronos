@@ -55,7 +55,7 @@ import javax.rmi.PortableRemoteObject;
  * <p>
  * Unit test case for class <code>GameDataBean</code>.  Here we MockEJB/MockRUnner to test ejb.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class GameDataBeanUnitTests extends TestCase {

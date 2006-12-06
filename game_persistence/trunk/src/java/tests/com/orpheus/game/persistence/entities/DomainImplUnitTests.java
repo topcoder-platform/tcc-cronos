@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  * <p>
  * Unit test case for class <code>DomainImpl</code>.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class DomainImplUnitTests extends TestCase {

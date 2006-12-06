@@ -19,7 +19,7 @@ import com.topcoder.web.frontcontroller.results.DownloadSource;
  * <strong>Thread Safety:</strong>This class is immutable and thread-safe.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public abstract class CustomDownloadSource implements DownloadSource {

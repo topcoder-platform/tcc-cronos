@@ -10,7 +10,7 @@ import junit.framework.TestCase;
  * <p>
  * Unit test cases for class <code>GameDataDAOFactory</code>.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class GameDataDAOFactoryUnitTests extends TestCase {

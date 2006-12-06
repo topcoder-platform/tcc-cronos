@@ -22,7 +22,7 @@ import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
  * <p>
  * <b>Thread Safety:</b>This class is mutable and thread-safe.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class GameDataDAOFactory {

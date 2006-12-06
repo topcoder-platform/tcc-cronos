@@ -14,7 +14,7 @@ import java.io.InputStream;
  * <p>
  * Unit test cases for class <code>DownloadDataImpl</code>.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class DownloadDataImplUnitTests extends TestCase {

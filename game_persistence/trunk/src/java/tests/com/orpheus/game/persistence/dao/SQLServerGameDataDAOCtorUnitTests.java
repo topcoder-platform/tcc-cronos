@@ -16,7 +16,7 @@ import junit.framework.TestCase;
  * <p>
  * Unit test case for class <code>SQLServerGameDataDAO</code>.  This class test the ctor of the class.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class SQLServerGameDataDAOCtorUnitTests extends TestCase {

@@ -16,7 +16,7 @@ import java.util.Date;
  * thread-safe manner.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public interface GameDataDAO {

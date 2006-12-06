@@ -12,7 +12,7 @@ import junit.framework.TestCase;
  * <p>
  * Unit test for class <code>DomainTargetImpl</code>.
  * </p>
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class DomainTargetImplUnitTests extends TestCase {

@@ -35,7 +35,7 @@ import javax.ejb.SessionContext;
  * <p>
  * <b>Thread Safety:</b>This object is mutable and thread-safe, as the container handles this.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class GameDataBean implements SessionBean {

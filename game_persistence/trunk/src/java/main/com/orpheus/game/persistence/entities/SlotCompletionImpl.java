@@ -19,7 +19,7 @@ import java.util.Date;
  * <b>Thread Safety:</b>This class is immutable and thread-safe.
  * </p>
  * 
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class SlotCompletionImpl implements SlotCompletion {

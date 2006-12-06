@@ -14,7 +14,7 @@ import com.orpheus.game.persistence.ImageInfo;
  * <p>
  * Thread Safety:This class is immutable and thread-safe.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class ImageInfoImpl implements ImageInfo {

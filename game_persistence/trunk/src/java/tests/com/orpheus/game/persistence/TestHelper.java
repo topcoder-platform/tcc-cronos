@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * Defines helper methods used in unit tests of this component.
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public final class TestHelper {

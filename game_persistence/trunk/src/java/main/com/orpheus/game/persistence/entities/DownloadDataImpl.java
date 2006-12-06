@@ -22,7 +22,7 @@ import java.io.Serializable;
  * <p>
  * <strong>Thread Safety</strong>:This class is immutable and thread-safe.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class DownloadDataImpl implements Serializable, DownloadData {

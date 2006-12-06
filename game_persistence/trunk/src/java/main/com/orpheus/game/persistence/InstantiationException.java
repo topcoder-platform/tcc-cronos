@@ -17,7 +17,7 @@ import com.orpheus.game.GameDataException;
  * SQLServergameDataDAO. It is thrown if there is an error during the construction of these objects.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class InstantiationException extends GameDataException {

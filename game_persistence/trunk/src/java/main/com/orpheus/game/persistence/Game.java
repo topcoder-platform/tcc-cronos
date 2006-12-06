@@ -20,7 +20,7 @@ import java.util.Date;
  * a thread-safe manner.
  * </p>
  * 
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public interface Game extends Serializable {

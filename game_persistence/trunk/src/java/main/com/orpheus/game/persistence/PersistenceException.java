@@ -17,7 +17,7 @@ import com.orpheus.game.GameDataException;
  * exceptions.
  * </p>
  *
- * @author argolite, TCSDEVELOPER
+ * @author argolite, waits
  * @version 1.0
  */
 public class PersistenceException extends GameDataException {

@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /**
  * Unit test for <code>BallColorImpl</code> class.
  * 
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  * 
  */

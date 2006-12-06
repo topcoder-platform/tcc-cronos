@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 /**
  * Unit test for <code>InvalidEntryException</code> exception.
  *
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class InvalidEntryExceptionUnitTests extends TestCase {

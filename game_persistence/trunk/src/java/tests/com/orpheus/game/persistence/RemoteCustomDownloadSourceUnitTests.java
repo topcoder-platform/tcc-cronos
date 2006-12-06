@@ -28,7 +28,7 @@ import javax.naming.InitialContext;
 /**
  * Unit test for <code>RemoteCustomDownloadSource</code> exception.
  *
- * @author TCSDEVELOPER
+ * @author waits
  * @version 1.0
  */
 public class RemoteCustomDownloadSourceUnitTests extends TestCase {
