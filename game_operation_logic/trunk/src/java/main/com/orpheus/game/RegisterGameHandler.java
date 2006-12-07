@@ -4,6 +4,7 @@
 package com.orpheus.game;
 
 import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 
 import com.topcoder.user.profile.UserProfile;
 
@@ -89,15 +90,13 @@ public class RegisterGameHandler implements Handler {
         long gameId = RequestHelper.getLongParameter(request, gameIdParamKey); //gameId from request parameter
 
         try {
-            GameData gameData;
-
             if (golu.isUseLocalInterface()) {
-                gameData = golu.getGameDataLocalHome().create();
+            	GameDataLocal gameData = golu.getGameDataLocalHome().create();
+            	gameData.recordRegistration(userId, gameId);
             } else {
-                gameData = golu.getGameDataRemoteHome().create();
+            	GameData gameData = golu.getGameDataRemoteHome().create();
+            	gameData.recordRegistration(userId, gameId);
             }
-
-            gameData.recordRegistration(userId, gameId);
         } catch (Exception e) {
             throw new HandlerExecutionException("error occurs while recording user registation", e);
         }

@@ -4,6 +4,7 @@
 package com.orpheus.game;
 
 import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 
 import com.topcoder.util.config.ConfigManagerException;
 
@@ -15,6 +16,7 @@ import org.w3c.dom.Element;
 
 import java.rmi.RemoteException;
 
+import javax.ejb.CreateException;
 import javax.naming.NamingException;
 
 
@@ -83,17 +85,17 @@ public class PluginDownloadHandler implements Handler {
             throw new HandlerExecutionException("parameter:" + pluginNameParamKey + " does not exist");
         }
 
-        GameData gameData = null;
         GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
 
         try {
             if (golu.isUseLocalInterface()) {
-                gameData = golu.getGameDataLocalHome().create();
+            	GameDataLocal gameData = golu.getGameDataLocalHome().create();
+            	gameData.recordPluginDownload(pluginName);
             } else {
-                gameData = golu.getGameDataRemoteHome().create();
+            	GameData gameData = golu.getGameDataRemoteHome().create();
+            	gameData.recordPluginDownload(pluginName);
             }
-
-            gameData.recordPluginDownload(pluginName);
+            
         } catch (ConfigManagerException e) {
             throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
         } catch (NamingException e) {
@@ -102,7 +104,9 @@ public class PluginDownloadHandler implements Handler {
             throw new HandlerExecutionException("failed to record plugin download:" + pluginName, e);
         } catch (RemoteException e) {
             throw new HandlerExecutionException("failed to record plugin download:" + pluginName, e);
-        }
+        } catch (Exception e) {
+        	 throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
+		}
 
         return null;
     }

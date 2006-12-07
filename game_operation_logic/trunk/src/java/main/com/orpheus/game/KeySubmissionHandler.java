@@ -3,29 +3,25 @@
  */
 package com.orpheus.game;
 
-import com.orpheus.game.persistence.Game;
-import com.orpheus.game.persistence.GameData;
-import com.orpheus.game.persistence.HostingSlot;
-
-import com.topcoder.user.profile.UserProfile;
-
-import com.topcoder.util.config.ConfigManagerException;
-
-import com.topcoder.web.frontcontroller.ActionContext;
-import com.topcoder.web.frontcontroller.Handler;
-import com.topcoder.web.frontcontroller.HandlerExecutionException;
-import com.topcoder.web.user.LoginHandler;
-
-import org.w3c.dom.Element;
-
 import java.rmi.RemoteException;
-
 import java.util.Arrays;
 import java.util.Date;
 
 import javax.naming.NamingException;
-
 import javax.servlet.http.HttpServletRequest;
+
+import org.w3c.dom.Element;
+
+import com.orpheus.game.persistence.Game;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
+import com.orpheus.game.persistence.HostingSlot;
+import com.topcoder.user.profile.UserProfile;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.web.frontcontroller.ActionContext;
+import com.topcoder.web.frontcontroller.Handler;
+import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import com.topcoder.web.user.LoginHandler;
 
 
 /**
@@ -188,16 +184,18 @@ public class KeySubmissionHandler implements Handler {
 
         // obtains GameData
         GameData gameData = null;
+        GameDataLocal gameDataLocal = null;
         GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
 
         try {
             if (golu.isUseLocalInterface()) {
-                gameData = golu.getGameDataLocalHome().create();
+            	gameDataLocal = golu.getGameDataLocalHome().create();
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }
 
-            Game game = gameData.getGame(gameId);
+            Game game = golu.isUseLocalInterface()?gameDataLocal.getGame(gameId):gameData.getGame(gameId);
+            
             Date currentDate = new Date();
 
             if (game.getStartDate().before(currentDate) && (game.getEndDate() == null)) {
@@ -205,14 +203,14 @@ public class KeySubmissionHandler implements Handler {
                 return this.inactiveGameResult;
             }
 
-            HostingSlot[] slot = gameData.findCompletedSlots(gameId);
+            HostingSlot[] slot = golu.isUseLocalInterface()?gameDataLocal.findCompletedSlots(gameId):gameData.findCompletedSlots(gameId);
             long[] slotIds = new long[slot.length];
 
             for (int i = 0; i < slot.length; i++) {
                 slotIds[i] = slot[i].getId().longValue();
             }
 
-            String[] keys = gameData.getKeysForPlayer(userId, slotIds);
+            String[] keys = golu.isUseLocalInterface()?gameDataLocal.getKeysForPlayer(userId, slotIds):gameData.getKeysForPlayer(userId, slotIds);
 
             String[] submitedKeys = request.getParameterValues(this.submissionParamKey);
 
@@ -248,6 +246,8 @@ public class KeySubmissionHandler implements Handler {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
         } catch (RemoteException e) {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
-        }
+        } catch (Exception e) {
+        	 throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
+		}
     }
 }

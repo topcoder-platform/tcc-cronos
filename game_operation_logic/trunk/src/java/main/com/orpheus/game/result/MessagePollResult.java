@@ -3,39 +3,10 @@
  */
 package com.orpheus.game.result;
 
-import com.orpheus.game.GameOperationLogicUtility;
-import com.orpheus.game.ParameterCheck;
-import com.orpheus.game.XMLHelper;
-import com.orpheus.game.persistence.GameData;
-
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.EqualToFilter;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.GreaterThanFilter;
-import com.topcoder.search.builder.filter.OrFilter;
-
-import com.topcoder.user.profile.UserProfile;
-
-import com.topcoder.util.rssgenerator.DataStore;
-import com.topcoder.util.rssgenerator.RSSItem;
-import com.topcoder.util.rssgenerator.SearchCriteria;
-import com.topcoder.util.rssgenerator.datastore.SearchCriteriaImpl;
-import com.topcoder.util.rssgenerator.io.RSSWriteException;
-import com.topcoder.util.rssgenerator.io.atom10.Atom10Writer;
-
-import com.topcoder.web.frontcontroller.ActionContext;
-import com.topcoder.web.frontcontroller.Result;
-import com.topcoder.web.frontcontroller.ResultExecutionException;
-import com.topcoder.web.user.LoginHandler;
-
-import org.w3c.dom.Element;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -48,6 +19,30 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.w3c.dom.Element;
+
+import com.orpheus.game.GameOperationLogicUtility;
+import com.orpheus.game.ParameterCheck;
+import com.orpheus.game.XMLHelper;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
+import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.EqualToFilter;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.GreaterThanFilter;
+import com.topcoder.search.builder.filter.OrFilter;
+import com.topcoder.user.profile.UserProfile;
+import com.topcoder.util.rssgenerator.DataStore;
+import com.topcoder.util.rssgenerator.RSSItem;
+import com.topcoder.util.rssgenerator.SearchCriteria;
+import com.topcoder.util.rssgenerator.datastore.SearchCriteriaImpl;
+import com.topcoder.util.rssgenerator.io.RSSWriteException;
+import com.topcoder.util.rssgenerator.io.atom10.Atom10Writer;
+import com.topcoder.web.frontcontroller.ActionContext;
+import com.topcoder.web.frontcontroller.Result;
+import com.topcoder.web.frontcontroller.ResultExecutionException;
+import com.topcoder.web.user.LoginHandler;
 
 
 /**
@@ -146,21 +141,26 @@ public class MessagePollResult implements Result {
         DataStore dataStore = (DataStore) request.getSession().getServletContext().getAttribute(golu.getDataStoreKey());
 
         try {
-            GameData gameData = null;
-
-            if (golu.isUseLocalInterface()) {
-                gameData = golu.getGameDataLocalHome().create();
-            } else {
-                gameData = golu.getGameDataRemoteHome().create();
-            }
-
-            //a list of categories that should be involved in search
+        	 //a list of categories that should be involved in search
             List categories = new ArrayList(Arrays.asList(this.categoryNames));
-            long[] gameIds = gameData.findGameRegistrations(userId);
+            
+            if (golu.isUseLocalInterface()) {
+            	GameDataLocal gameData = golu.getGameDataLocalHome().create();
+            	
+            	long[] gameIds = gameData.findGameRegistrations(userId);
 
-            for (int i = 0; i < gameIds.length; i++) {
-                //add the use's registration game to the categories list
-                categories.add(gameData.getGame(gameIds[i]).getName());
+                for (int i = 0; i < gameIds.length; i++) {
+                    //add the use's registration game to the categories list
+                    categories.add(gameData.getGame(gameIds[i]).getName());
+                }
+            } else {
+            	GameData gameData = golu.getGameDataRemoteHome().create();
+            	long[] gameIds = gameData.findGameRegistrations(userId);
+
+                for (int i = 0; i < gameIds.length; i++) {
+                    //add the use's registration game to the categories list
+                    categories.add(gameData.getGame(gameIds[i]).getName());
+                }
             }
 
             //creates searchCriteria along with the categories and date

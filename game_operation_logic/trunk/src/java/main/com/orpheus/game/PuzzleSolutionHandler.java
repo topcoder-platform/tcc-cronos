@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.w3c.dom.Element;
 
 import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.persistence.SlotCompletion;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManagerException;
@@ -148,16 +149,17 @@ public class PuzzleSolutionHandler implements Handler {
 
         // obtains GameData
         GameData gameData = null;
+        GameDataLocal gameDataLocal = null;
         GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
 
         try {
             if (golu.isUseLocalInterface()) {
-                gameData = golu.getGameDataLocalHome().create();
+            	gameDataLocal = golu.getGameDataLocalHome().create();
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }
 
-            Long puzzledId = gameData.getSlot(slotId).getPuzzleId();
+            Long puzzledId = golu.isUseLocalInterface()?gameDataLocal.getSlot(slotId).getPuzzleId():gameData.getSlot(slotId).getPuzzleId();
             SolutionTester tester = (SolutionTester) request.getSession().getAttribute(this.solutionTesterBaseName
                     + puzzledId);
 
@@ -166,7 +168,11 @@ public class PuzzleSolutionHandler implements Handler {
             }
 
             if (tester.testSolution(request.getParameterMap())) {
-                gameData.recordGameCompletion(userId, gameId);
+            	if (golu.isUseLocalInterface()){
+            		gameDataLocal.recordGameCompletion(userId, gameId);
+            	}else{
+            		gameData.recordGameCompletion(userId, gameId);
+            	}
 
                 return null;
             } else {
@@ -174,7 +180,13 @@ public class PuzzleSolutionHandler implements Handler {
                 getAttribute(golu.getGameManagerKey());
                 gdMgr.advanceHostingSlot(slotId);
 
-                SlotCompletion completion = gameData.recordSlotCompletion(userId, slotId, new Date());
+                SlotCompletion completion;
+                if (golu.isUseLocalInterface()){
+                	completion = gameDataLocal.recordSlotCompletion(userId, slotId, new Date());
+                }else{
+                	completion = gameData.recordSlotCompletion(userId, slotId, new Date());
+                }
+                
                 request.setAttribute(this.slotCompletion, completion);
 
                 return this.incorrectSolutionResult;
@@ -187,6 +199,8 @@ public class PuzzleSolutionHandler implements Handler {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
         } catch (RemoteException e) {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
+        }catch (Exception e) {
+            throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
         }
     }
 }
