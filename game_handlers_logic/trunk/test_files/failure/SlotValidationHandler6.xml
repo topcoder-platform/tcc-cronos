@@ -1,5 +1,7 @@
+<action>
 <handler type="x">
     <game_id_param_key>gameId</game_id_param_key>
     <slot_id_param_key>slotId</slot_id_param_key>    
     <validation_failed_result_code> </validation_failed_result_code>
 </handler>
+</action>

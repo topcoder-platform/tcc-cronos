@@ -1,4 +1,6 @@
+<action>
 <handler type="x">
 	<game_id_param_key></game_id_param_key>
 	<game_detail_key>game</game_detail_key>    
 </handler>
+</action>

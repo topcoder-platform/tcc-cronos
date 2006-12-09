@@ -1,2 +1,4 @@
-<handler type="x">
-</handler>
+<action>
+    <handler type="x">
+    </handler>
+</action>

@@ -1,3 +1,4 @@
+<action>
 <handler type="x">
   <game_id_param_key>gameId</game_id_param_key>
   <domain_name_param_key>domainName</domain_name_param_key>
@@ -5,4 +6,4 @@
   <text_param_key>text</text_param_key>
   <not_logged_in_result_code>not_logged_in</not_logged_in_result_code>
 </handler>
-
+</action>

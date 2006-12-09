@@ -1,6 +1,7 @@
-<handler type="x">
-  <domain_name_param_key>domainName</domain_name_param_key>
-  <games_key>games</games_key>
-  <not_logged_in_result_code>not_logged_in</not_logged_in_result_code>
-</handler>
-
+<action name="TestDomain" type="default" url-pattern="/testDomain" priority="10">
+    <handler type="x">
+      <domain_name_param_key>domainName</domain_name_param_key>
+      <games_key>games</games_key>
+      <not_logged_in_result_code>not_logged_in</not_logged_in_result_code>
+    </handler>
+</action>

@@ -1,3 +1,4 @@
+<action>
 <handler type="x">
   <game_id_param_key>  </game_id_param_key>
   <profiles_key>profiles</profiles_key>
@@ -5,3 +6,4 @@
   <object_factory_namespace>com.orpheus.game.objectfactory</object_factory_namespace>
   <user_profile_manager_token>simple_user_profile_manager</user_profile_manager_token>
 </handler>
+</action>

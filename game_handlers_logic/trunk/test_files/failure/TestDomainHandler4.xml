@@ -1,6 +1,7 @@
+<action>
 <handler type="x">
   <domain_name_param_key>domainName</domain_name_param_key>
   <games_key> </games_key>
   <not_logged_in_result_code>not_logged_in</not_logged_in_result_code>
 </handler>
-
+</action>

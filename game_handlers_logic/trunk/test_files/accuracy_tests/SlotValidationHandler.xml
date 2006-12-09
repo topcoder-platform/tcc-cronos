@@ -1,5 +1,7 @@
-<handler type="validate">
-    <game_id_param_key>game</game_id_param_key>
-    <slot_id_param_key>slot</slot_id_param_key>    
-    <validation_failed_result_code>failed</validation_failed_result_code>    
-</handler>
+<action name="SlotValidation" type="default" url-pattern="/slotValidation" priority="10">
+    <handler type="validate">
+        <game_id_param_key>game</game_id_param_key>
+        <slot_id_param_key>slot</slot_id_param_key>    
+        <validation_failed_result_code>failed</validation_failed_result_code>    
+    </handler>
+</action>

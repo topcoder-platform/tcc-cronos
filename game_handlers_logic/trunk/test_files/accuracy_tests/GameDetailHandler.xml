@@ -1,4 +1,6 @@
-<handler type="gamedetail">
-	<game_id_param_key>id</game_id_param_key>
-	<game_detail_key>detail</game_detail_key>    
-</handler>
+<action name="GameDetail" type="default" url-pattern="/gameDetail" priority="10">
+    <handler type="gamedetail">
+        <game_id_param_key>id</game_id_param_key>
+        <game_detail_key>detail</game_detail_key>    
+    </handler>
+</action>

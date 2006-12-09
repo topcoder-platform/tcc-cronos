@@ -1,5 +1,6 @@
+<action>
 <handler type="x">
   <domain_name_param_key>domainName</domain_name_param_key>
   <games_key>games</games_key>
 </handler>
-
+</action>

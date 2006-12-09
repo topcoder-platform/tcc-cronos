@@ -1,3 +1,5 @@
+<action>
 <handler type="x">
     <domains_key>domains</domains_key>    
 </handler>
+</action>

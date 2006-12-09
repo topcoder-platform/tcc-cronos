@@ -86,7 +86,7 @@ final class ImplementationHelper {
     public static String getElement(Element element, String key) {
         NodeList nodeList;
         try {
-            nodeList = XPathAPI.selectNodeList(element, "/handler/" + key);
+            nodeList = XPathAPI.selectNodeList(element, "/action/handler/" + key);
             if (nodeList.getLength() == 0) {
                 throw new IllegalArgumentException("Key '" + key + "' is missing in the element");
             }

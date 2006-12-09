@@ -1,9 +1,10 @@
-<handler type="testtarget">
-  <game_id_param_key>id</game_id_param_key>
-  <domain_name_param_key>domains</domain_name_param_key>
-  <sequence_number_param_key>seq</sequence_number_param_key>
-  <text_param_key>text</text_param_key>
-  <test_failed_result_code>failed</test_failed_result_code>
-  <not_logged_in_result_code>notlogged</not_logged_in_result_code>
-</handler>
-
+<action name="TestTargetObject" type="default" url-pattern="/testTargetObject" priority="10">
+    <handler type="testtarget">
+      <game_id_param_key>id</game_id_param_key>
+      <domain_name_param_key>domains</domain_name_param_key>
+      <sequence_number_param_key>seq</sequence_number_param_key>
+      <text_param_key>text</text_param_key>
+      <test_failed_result_code>failed</test_failed_result_code>
+      <not_logged_in_result_code>notlogged</not_logged_in_result_code>
+    </handler>
+</action>
