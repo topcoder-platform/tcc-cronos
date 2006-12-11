@@ -197,8 +197,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 conn = createConnection();
 
                 //Search all submissions for current project
-                Submission[] submissions = PhasesHelper.searchSubmissionsForProject(
-                        getManagerHelper().getUploadManager(), phase.getProject().getId());
+                Submission[] submissions = PhasesHelper.searchActiveSubmissions(
+                        getManagerHelper().getUploadManager(), conn, phase.getProject().getId());
 
                 //Search all screening scorecard for the current phase
                 Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
