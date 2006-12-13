@@ -96,7 +96,9 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 		AccuracyTestHelper.clearConfig();
-		ConfigManager.getInstance().add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		ConfigManager configManager = ConfigManager.getInstance();
+		configManager.add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		configManager.add("GameOperationLogicUtilityTest.xml");
         handler = new KeySubmissionHandler(GAME_ID, SUBMISSION_PARAM_KEY, GAME_INACTIVE, FAILURE_OVER, FAILURE_CONTINUE, 1);
     }
     

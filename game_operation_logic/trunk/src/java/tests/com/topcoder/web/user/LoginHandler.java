@@ -1,5 +1,7 @@
 package com.topcoder.web.user;
 
+import com.topcoder.user.profile.BaseProfileType;
+import com.topcoder.user.profile.InvalidValueException;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.web.frontcontroller.ActionContext;
@@ -60,8 +62,11 @@ public class LoginHandler implements com.topcoder.web.frontcontroller.Handler {
 	public static com.topcoder.user.profile.UserProfile getAuthenticatedUser(
 			javax.servlet.http.HttpSession session) {
 		try {
-            return new UserProfile(new Long(1));
-        } catch (ConfigManagerException e) {
+			UserProfile user = new UserProfile(new Long(1));
+			user.setProperty(BaseProfileType.EMAIL_ADDRESS, "test@topcoder.com");
+            return user;
+        } catch (Exception e) {
+        	e.printStackTrace();
             return null;
         }
 	}

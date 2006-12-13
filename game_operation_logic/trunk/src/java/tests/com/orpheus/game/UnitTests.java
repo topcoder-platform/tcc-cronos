@@ -20,6 +20,7 @@ public class UnitTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
+        //suite.addTest(XXX.suite());
         
         suite.addTestSuite(KeySubmissionHandlerTest.class);
         suite.addTestSuite(MessageHandlerTest.class);
@@ -33,7 +34,6 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(GameOperationLogicUtilityTest.class);
         suite.addTestSuite(GameOperationConfigExceptionTest.class); 
         suite.addTestSuite(AttributeScopeTest.class);
-        suite.addTestSuite(Demo.class);
         return suite;
     }
 

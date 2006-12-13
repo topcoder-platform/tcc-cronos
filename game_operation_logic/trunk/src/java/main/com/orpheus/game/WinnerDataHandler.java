@@ -43,18 +43,13 @@ import javax.servlet.http.HttpServletRequest;
  * to corresponding user profile property names. The Handler will install the profile type(s) if necessary, then copy
  * the parameter values to the profile and store it. This class is thread safe since it does not contain any mutable
  * state.
- * @author woodjhon, TCSDEVELOPER
- * @version 1.0
  */
 public class WinnerDataHandler implements Handler {
-    /**
-     * a map from parameter names to corresponding user profile property names, string property name as key and string
-     * parameter name as value.
-     */
+    /** a map from parameter names to corresponding user profile property names, string property name as key and string parameter name as value. */
     private final Map propertyNameMap;
 
     /** ProfileTypeFactory is used to get the ProfileType by the profile type name. */
-    private final ProfileTypeFactory profileTypeFactory;
+    private final ProfileTypeFactory profileTypFactory;
 
     /** UserProfileManager instance used to store the UserProfile instance. */
     private final UserProfileManager profileManager;
@@ -73,8 +68,7 @@ public class WinnerDataHandler implements Handler {
      * @throws IllegalArgumentException if any argument is null or empty, or invalid(see the variable document for the
      *         valid values)
      */
-    public WinnerDataHandler(UserProfileManager manager, String[] names, Map propertyNameMap,
-            ProfileTypeFactory factory) {
+    public WinnerDataHandler(UserProfileManager manager, String[] names, Map propertyNameMap, ProfileTypeFactory factory) {
         ParameterCheck.checkNull("manager", manager);
         ParameterCheck.checkEmptyArray("names", names);
         ParameterCheck.checkEmptyMap("propertyNameMap", propertyNameMap);
@@ -84,41 +78,11 @@ public class WinnerDataHandler implements Handler {
         System.arraycopy(names, 0, this.profileTypeNames, 0, names.length);
         this.profileManager = manager;
         this.propertyNameMap = new HashMap(propertyNameMap);
-        this.profileTypeFactory = factory;
+        this.profileTypFactory = factory;
     }
 
     /**
-     * Create the instance from element.
-     * <pre>Follow is a sample xml:
-     *  &lt;handler type=&quot;x&quot; &gt;
-     *  &lt;object_factory&gt;
-     *  &lt;namespace&gt;com.orpheus.game&lt;/namespace&gt;
-     *  &lt;user_profile_manager_key&gt;UserProfileManager&lt;/user_profile_manager_key&gt;
-     *  &lt;profile_type_factory_key&gt; ProfileTypeFactory&lt;/profile_type_factory_key&gt;
-     *  &lt;/object_factory&gt;
-     *  &lt;profile_type_names&gt;
-     *  &lt;value&gt;typeA&lt;/value&gt;
-     *  &lt;value&gt;typeB&lt;/value&gt;
-     *  &lt;/profile_type_names&gt;
-     *  &lt;profile_property_param_names&gt;
-     *  &lt;value&gt;firstName&lt;/value&gt;
-     *  &lt;value&gt;email&lt;/value&gt;
-     *  &lt;/profile_property_param_names&gt;
-     *  &lt;profile_property_names&gt;
-     *  &lt;value&gt;first_name&lt;/value&gt;
-     *  &lt;value&gt;email_address&lt;/value&gt;
-     *  &lt;/profile_property_names&gt;
-     *  &lt;/handler&gt;
-     *  Following is simple explanation of the above XML structure.
-     *  The handler¡¯s type attribute is required by Front Controller component, it won¡¯t be used in this design.
-     *  The object_factory node contains the values to create the UserProfileManager and ProfileTypeFactory
-     *  from ObjectFactory.
-     *  The profile_type_names node contains the profile type names that will be added to the UserProfile
-     *  The profile_property_param_names node contains the http request parameter names used to get the property value.
-     *  The profile_property_names node contains the profile property names.
-     *  Please note that the profile_property_param_names must have the same number of children value nodes as the
-     *  profile_property_names.
-     *  </pre>
+     * Create the instance from element. The structure of the element can be found in cs.
      *
      * @param element the xml element
      *
@@ -135,7 +99,7 @@ public class WinnerDataHandler implements Handler {
         try {
             ObjectFactory factory = new ObjectFactory(new ConfigManagerSpecificationFactory(namespace));
             this.profileManager = (UserProfileManager) factory.createObject(managerKey);
-            this.profileTypeFactory = (ProfileTypeFactory) factory.createObject(factoryKey);
+            this.profileTypFactory = (ProfileTypeFactory) factory.createObject(factoryKey);
         } catch (SpecificationConfigurationException e) {
             throw new IllegalArgumentException("can not create ObjectFactory with namespace:" + namespace + " " + e);
         } catch (IllegalReferenceException e) {
@@ -151,17 +115,16 @@ public class WinnerDataHandler implements Handler {
 
         if (paramNames.length != propNames.length) {
             throw new IllegalArgumentException(
-                "node handler.profile_property_param_names and handler.profile_property_names must have the same "
-                + "number of elements");
+                "node handler.profile_property_param_names and handler.profile_property_names must have the same number of elements");
         }
 
-        Map propertyMap = new HashMap(paramNames.length);
+        Map propertyNameMap = new HashMap(paramNames.length);
 
         for (int i = 0; i < paramNames.length; i++) {
-            propertyMap.put(propNames[i], paramNames[i]);
+            propertyNameMap.put(propNames[i], paramNames[i]);
         }
 
-        this.propertyNameMap = propertyMap;
+        this.propertyNameMap = propertyNameMap;
     }
 
     /**
@@ -172,7 +135,6 @@ public class WinnerDataHandler implements Handler {
      * @return null always
      *
      * @throws HandlerExecutionException if any other error ocurred
-     * @throws IllegalArgumentException if the context is null
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
         ParameterCheck.checkNull("context", context);
@@ -183,7 +145,7 @@ public class WinnerDataHandler implements Handler {
             profile = new UserProfile();
 
             for (int i = 0; i < this.profileTypeNames.length; i++) {
-                ProfileType type = profileTypeFactory.getProfileType(profileTypeNames[i]);
+                ProfileType type = profileTypFactory.getProfileType(profileTypeNames[i]);
                 profile.addProfileType(type);
             }
 

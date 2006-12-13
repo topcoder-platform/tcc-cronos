@@ -13,7 +13,7 @@ public class MockHostingSlot implements HostingSlot {
 
 	public Domain getDomain() {
 		// TODO Auto-generated method stub
-		return null;
+		return new MockDomain();
 	}
 
 	public long getImageId() {

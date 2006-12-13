@@ -78,7 +78,9 @@ public class MessageHandlerAccuracyTest extends TestCase {
         
         Map map = new HashMap();
         map.put(new AttributeScope("request_property_name", "request"), "property1");
-		ConfigManager.getInstance().add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		ConfigManager configManager = ConfigManager.getInstance();
+		configManager.add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		configManager.add("GameOperationLogicUtilityTest.xml");
         handler = new MessageHandler("some_name",map);
     }
     

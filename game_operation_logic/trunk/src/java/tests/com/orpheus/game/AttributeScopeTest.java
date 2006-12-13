@@ -24,67 +24,6 @@ public class AttributeScopeTest extends TestCase {
     }
 
     /**
-     * Test method for AttributeScope(java.lang.String, java.lang.String). In this case, the attribute is
-     * empty.
-     */
-    public void testAttributeScope_EmptyAttr() {
-        try {
-            new AttributeScope(" ", "request");
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
-
-    /**
-     * Test method for AttributeScope(java.lang.String, java.lang.String). In this case, the scope is empty.
-     */
-    public void testAttributeScope_EmptyScope() {
-        try {
-            new AttributeScope("test", " ");
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
-
-    /**
-     * Test method for AttributeScope(java.lang.String, java.lang.String). In this case, the scope is empty.
-     */
-    public void testAttributeScope_InvalidScope() {
-        try {
-            new AttributeScope("test", "test");
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
-
-    /**
-     * Test method for AttributeScope(java.lang.String, java.lang.String). In this case, the attribute is null.
-     */
-    public void testAttributeScope_NullAttr() {
-        try {
-            new AttributeScope(null, "request");
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
-
-    /**
-     * Test method for AttributeScope(java.lang.String, java.lang.String). In this case, the scope is null.
-     */
-    public void testAttributeScope_NullScope() {
-        try {
-            new AttributeScope("test", null);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
-
-    /**
      * Test method getAttribute(), expected value should be returned.
      */
     public void testGetAttribute() {
@@ -97,7 +36,72 @@ public class AttributeScopeTest extends TestCase {
     public void testGetScope() {
         assertEquals("getAttribute() should return", "request", as.getScope());
     }
+    
+    /**
+     * Test method for AttributeScope(java.lang.String, java.lang.String).
+     * In this case, the attribute is null.
+     */
+    public void testAttributeScope_NullAttr() {
+        try {
+            new AttributeScope(null, "request");
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+            // should land here
+        }
+    }
 
+    /**
+     * Test method for AttributeScope(java.lang.String, java.lang.String).
+     * In this case, the attribute is empty.
+     */
+    public void testAttributeScope_EmptyAttr() {
+        try {
+            new AttributeScope(" ", "request");
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+            // should land here
+        }
+    }
+
+    /**
+     * Test method for AttributeScope(java.lang.String, java.lang.String).
+     * In this case, the scope is null.
+     */
+    public void testAttributeScope_NullScope() {
+        try {
+            new AttributeScope("test", null);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+            // should land here
+        }
+    }
+
+    /**
+     * Test method for AttributeScope(java.lang.String, java.lang.String).
+     * In this case, the scope is empty.
+     */
+    public void testAttributeScope_EmptyScope() {
+        try {
+            new AttributeScope("test", " ");
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+            // should land here
+        }
+    }
+
+    /**
+     * Test method for AttributeScope(java.lang.String, java.lang.String).
+     * In this case, the scope is empty.
+     */
+    public void testAttributeScope_InvalidScope() {
+        try {
+            new AttributeScope("test", "test");
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+            // should land here
+        }
+    }
+    
     /**
      * Creates a default AttributeScope object for test.
      *

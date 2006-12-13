@@ -1,0 +1,1 @@
+Please modify JNDIUtils.xml. Set "context.default.url" to a path exists.

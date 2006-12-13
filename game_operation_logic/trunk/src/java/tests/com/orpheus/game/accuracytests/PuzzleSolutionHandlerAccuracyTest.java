@@ -76,8 +76,10 @@ public class PuzzleSolutionHandlerAccuracyTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 		AccuracyTestHelper.clearConfig();
-		ConfigManager.getInstance().add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
-        handler = new PuzzleSolutionHandler("puzzle_id", "Slot_id", "base_name", INCORRECT, "test");
+		ConfigManager configManager = ConfigManager.getInstance();
+		configManager.add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		configManager.add("GameOperationLogicUtilityTest.xml");
+        handler = new PuzzleSolutionHandler("puzzle_id", "Slot_id", "base_name", INCORRECT, "slotCompletion");
     }
     
 	/**
@@ -93,7 +95,7 @@ public class PuzzleSolutionHandlerAccuracyTest extends TestCase {
 	}
 
     /**
-     * Test for {@link PuzzleSolutionHandler#PuzzleSolutionHandler(String, String, String, String)}.
+     * Test for {@link PuzzleSolutionHandler#PuzzleSolutionHandler(String, String, String, String, String)}.
      * No exception should be thrown.
      */
 	public void testPuzzleSolutionHandler_Constructor1() {
@@ -115,7 +117,7 @@ public class PuzzleSolutionHandlerAccuracyTest extends TestCase {
 				+ "            <game_id_param_key>puzzle_id</game_id_param_key>"
 				+ "            <slot_id_param_key>Slot_id</slot_id_param_key>"
 				+ "            <solutiontester_base_name>base_name</solutiontester_base_name>"
-				+ "            <slot_completion_request_attribute_key>base_name</slot_completion_request_attribute_key>"
+				+ "            <slot_completion_request_attribute_key>slotCompletion</slot_completion_request_attribute_key>"
 				+ "            <incorrect_solution_result>incorrect_solution_result</incorrect_solution_result>"
 				+ "        </handler>"
 				+ "    </config>"

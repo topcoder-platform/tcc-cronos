@@ -27,7 +27,7 @@ public class SearchCriteriaImpl implements com.topcoder.util.rssgenerator.Search
  */
     public  SearchCriteriaImpl(com.topcoder.search.builder.filter.Filter searchFilter) {        
         // your code here
-    } 
+    }
 
 /**
  * <p>Purpose: This method returns the Filter which represents this search criteria.</p>

@@ -40,7 +40,7 @@ public class MockGameData implements GameData {
 	}
 
 	public Game getGame(long gameId) throws RemoteException, GameDataException {
-		return new MockGame(gameId,gameId+"");
+		return new MockGame(gameId, gameId+"");
 	}
 
 	public HostingBlock getBlock(long blockId) throws RemoteException,

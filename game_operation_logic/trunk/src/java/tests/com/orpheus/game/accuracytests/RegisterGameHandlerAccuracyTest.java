@@ -70,7 +70,17 @@ public class RegisterGameHandlerAccuracyTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 		AccuracyTestHelper.clearConfig();
-		ConfigManager.getInstance().add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		ConfigManager configManager = ConfigManager.getInstance();
+		configManager.add("com.topcoder.naming.jndiutility",
+				"com/topcoder/naming/jndiutility/JNDIUtils.properties",
+				ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		configManager.add("com.topcoder.util.file.DocumentGenerator",
+				"com/topcoder/util/file/DocumentManager.xml",
+				ConfigManager.CONFIG_XML_FORMAT);
+		configManager.add("com.topcoder.user.profile.ConfigProfileType.base",
+				"com/topcoder/user/profile/ConfigBaseProfileType.properties",
+				ConfigManager.CONFIG_PROPERTIES_FORMAT);
+		configManager.add("GameOperationLogicUtilityTest.xml");
         handler = new RegisterGameHandler("game_id");
     }
     
@@ -107,6 +117,8 @@ public class RegisterGameHandlerAccuracyTest extends TestCase {
 				+ "    <config name=\"valie_config\">"
 				+ "        <handler type=\"x\" >"
 				+ "            <game_id_param_key>game_id</game_id_param_key>"
+				+ "            <templateName>test_files/emailTemplate.txt</templateName>"
+				+ "            <templateSource>testTemplate</templateSource>"
 				+ "        </handler>"
 				+ "    </config>"
 				+ "</Root>");
@@ -135,6 +147,9 @@ public class RegisterGameHandlerAccuracyTest extends TestCase {
 		mockRequest.setParameter("game_id","1");
         
 		assertEquals("execute failed.", null, handler.execute(context));
+		System.out.println(context.getAttribute("message-to"));
+		System.out.println(context.getAttribute("message-subject"));
+		System.out.println(context.getAttribute("message-body"));
 	}
 
 

@@ -1,9 +1,16 @@
 package com.topcoder.util.rssgenerator;
 
+import com.topcoder.util.rssgenerator.impl.RSSItemImpl;
+import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
+import com.topcoder.util.rssgenerator.impl.atom10.Atom10Content;
+
 
 public class MockDataStore implements DataStore {
 
-	public static final RSSItem[] FIND_ITEMS = new RSSItem[]{new MockRssItem ("1"),new MockRssItem ("1")};
+	public static final RSSItem[] FIND_ITEMS = 
+		new RSSItem[]{
+			new RSSItemImpl(new Atom10Content()),
+			new RSSItemImpl(new Atom10Content())};
 
 	public void createFeed(RSSFeed feed) {
 		// TODO Auto-generated method stub

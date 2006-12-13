@@ -3,25 +3,29 @@
  */
 package com.orpheus.game;
 
-import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.Date;
-
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
-import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.persistence.HostingSlot;
+
 import com.topcoder.user.profile.UserProfile;
+
 import com.topcoder.util.config.ConfigManagerException;
+
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import com.topcoder.web.user.LoginHandler;
+
+import org.w3c.dom.Element;
+
+import java.rmi.RemoteException;
+
+import java.util.Arrays;
+import java.util.Date;
+
+import javax.naming.NamingException;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -34,8 +38,10 @@ import com.topcoder.web.user.LoginHandler;
  * specified game since the last time its hosting slot changed. (The ID of the most recently-completed hosting slot in
  * that game is one possible measure of whether the hosting slot has changed.)
  * </p>
+ * 
  * <p>
  * Contingencies and results:
+ * 
  * <ol>
  * <li>
  * If the specified game is not active then the handler returns a configurable result code characteristic of the
@@ -51,10 +57,9 @@ import com.topcoder.web.user.LoginHandler;
  * data persistence component), then returns null
  * </li>
  * </ol>
+ * 
  * This class is thread safe since it does not contain any mutable state.
  * </p>
- * @author woodjhon, TCSDEVELOPER
- * @version 1.0
  */
 public class KeySubmissionHandler implements Handler {
     /** Represent the result name this handler will return if the max failure is met or exceeded. */
@@ -70,8 +75,8 @@ public class KeySubmissionHandler implements Handler {
     private final String inactiveGameResult;
 
     /**
-     * A configurable param name to retrieve the key submissions from the request parameters(The value retrieved is a
-     * string array.).
+     * A configurable param name to retrieve the key submissions from the request parameters.(The value retrieved is a
+     * string array.)
      */
     private final String submissionParamKey;
 
@@ -84,7 +89,7 @@ public class KeySubmissionHandler implements Handler {
      * @param gameIdParamKey the game id param key
      * @param submissionParamKey the submission param key
      * @param inactiveGameResult the inactive game result
-     * @param failureCountExceededResult the failure count exceeded result
+     * @param failureCountExceededResult the failure coun exceeded result
      * @param failureCountNotMetResult the failure count not met result
      * @param maxFailureCount the max failure count
      *
@@ -108,29 +113,7 @@ public class KeySubmissionHandler implements Handler {
     }
 
     /**
-     * Create the instance from element. The structure of the Element will be like this:
-     * <pre>&lt;handler type=&quot;x&quot;&gt;
-     *  &lt;game_id_param_key&gt;gameId&lt;/game_id_param_key&gt;
-     *  &lt;submission_param_key&gt;submissions&lt;/submission_param_key&gt;
-     *  &lt;max_failure_count&gt;10&lt;/max_failure_count&gt;
-     *  &lt;inactive_game_result&gt;inactive_game_result&lt;/inactive_game_result&gt;
-     *  &lt;failure_count_not_met_result&gt;count_not_met_result&lt;/failure_count_not_met_result&gt;
-     *  &lt;failure_count_exceeded_result&gt;count_exceeded_result&lt;/failure_count_exceeded_result&gt;
-     *  &lt;/handler&gt;</pre>
-     * <p>
-     * <br> Following is simple explanation of the above XML structure.
-     * </p>
-     * <p>
-     * The handler¡¯s type attribute is required by Front Controller component, it won¡¯t be used in this design. <br>
-     * The game_id_param_key node¡¯s value represents the http request parameter name to get the game id<br>
-     * The submission_param_key node value represents the http request parameter name to get the key submissions<br>
-     * The max_failure_count node represents the max failure count of the comparision of the submitted submissions
-     * with these retrieved from EJB<br>
-     * The failure_count_not_met_result node represents the result name this handler will return if the max count is
-     * not met<br>
-     * The failure_count_exceeded_result node represents the result name this handler will return if the max count is
-     * met or exceeded.<br>
-     * </p>
+     * Create the instance from element. The structure of the Element is described in CS.
      *
      * @param element the xml element to create the handler instance.
      *
@@ -159,14 +142,13 @@ public class KeySubmissionHandler implements Handler {
     }
 
     /**
-     * Processes user's  key submissions.
+     * Executes this handler.
      *
      * @param context the action context
      *
-     * @return null if execution successfully otherwise a configurable forward name
+     * @return null always
      *
      * @throws HandlerExecutionException if any error occurred while executing this handler
-     * @throws IllegalArgumentException if the context is null
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
         ParameterCheck.checkNull("context", context);
@@ -184,18 +166,16 @@ public class KeySubmissionHandler implements Handler {
 
         // obtains GameData
         GameData gameData = null;
-        GameDataLocal gameDataLocal = null;
         GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
 
         try {
             if (golu.isUseLocalInterface()) {
-            	gameDataLocal = golu.getGameDataLocalHome().create();
+                gameData = golu.getGameDataLocalHome().create();
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }
 
-            Game game = golu.isUseLocalInterface()?gameDataLocal.getGame(gameId):gameData.getGame(gameId);
-            
+            Game game = gameData.getGame(gameId);
             Date currentDate = new Date();
 
             if (game.getStartDate().before(currentDate) && (game.getEndDate() == null)) {
@@ -203,14 +183,14 @@ public class KeySubmissionHandler implements Handler {
                 return this.inactiveGameResult;
             }
 
-            HostingSlot[] slot = golu.isUseLocalInterface()?gameDataLocal.findCompletedSlots(gameId):gameData.findCompletedSlots(gameId);
+            HostingSlot[] slot = gameData.findCompletedSlots(gameId);
             long[] slotIds = new long[slot.length];
 
             for (int i = 0; i < slot.length; i++) {
                 slotIds[i] = slot[i].getId().longValue();
             }
 
-            String[] keys = golu.isUseLocalInterface()?gameDataLocal.getKeysForPlayer(userId, slotIds):gameData.getKeysForPlayer(userId, slotIds);
+            String[] keys = gameData.getKeysForPlayer(userId, slotIds);
 
             String[] submitedKeys = request.getParameterValues(this.submissionParamKey);
 
@@ -246,8 +226,6 @@ public class KeySubmissionHandler implements Handler {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
         } catch (RemoteException e) {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
-        } catch (Exception e) {
-        	 throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
-		}
+        }
     }
 }

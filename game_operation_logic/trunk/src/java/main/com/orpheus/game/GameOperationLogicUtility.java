@@ -78,7 +78,7 @@ public class GameOperationLogicUtility {
      *
      * @throws GameOperationConfigException if failed to load the configured values or they are invalid.
      */
-    private GameOperationLogicUtility() {
+    private GameOperationLogicUtility() throws GameOperationConfigException {
         ConfigManager cm = ConfigManager.getInstance();
         contextName = getPropertyAsRequired(cm, PROP_CONTEXT_NAME);
         dataStoreKey = getPropertyAsRequired(cm, PROP_DATA_STORE);
@@ -93,8 +93,8 @@ public class GameOperationLogicUtility {
         if (useLocalInterfaceValue.equalsIgnoreCase("true") || useLocalInterfaceValue.equalsIgnoreCase("false")) {
             useLocalInterface = Boolean.valueOf(useLocalInterfaceValue).booleanValue();
         } else {
-            throw new GameOperationConfigException("property [" + PROP_USE_LOCAL_INTERFACE
-                + "] must be either 'true' or 'false', but is [" + useLocalInterfaceValue + "]");
+            throw new GameOperationConfigException("property [" + PROP_USE_LOCAL_INTERFACE +
+                "] must be either 'true' or 'false', but is [" + useLocalInterfaceValue + "]");
         }
     }
 
@@ -108,7 +108,9 @@ public class GameOperationLogicUtility {
     public static GameOperationLogicUtility getInstance() {
         if (instance == null) {
             synchronized (GameOperationLogicUtility.class) {
-                instance = new GameOperationLogicUtility();
+                if (instance == null) {
+                    instance = new GameOperationLogicUtility();
+                }
             }
         }
 
@@ -190,7 +192,8 @@ public class GameOperationLogicUtility {
      *
      * @throws GameOperationConfigException if the property does not exist
      */
-    private String getPropertyAsRequired(ConfigManager cm, String propertyName) {
+    private String getPropertyAsRequired(ConfigManager cm, String propertyName)
+        throws GameOperationConfigException {
         String value;
 
         try {
@@ -201,8 +204,8 @@ public class GameOperationLogicUtility {
         }
 
         if ((value == null) || (value.trim().length() == 0)) {
-            throw new GameOperationConfigException("property [" + propertyName + "] is required in namespace ["
-                + DEFAULT_NAMESPACE + "]");
+            throw new GameOperationConfigException("property [" + propertyName + "] is required in namespace [" +
+                DEFAULT_NAMESPACE + "]");
         }
 
         return value;

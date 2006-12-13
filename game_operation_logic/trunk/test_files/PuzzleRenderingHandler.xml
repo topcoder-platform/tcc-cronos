@@ -1,5 +1,5 @@
 <Root>
-	<config name="valid_config">
+	<config name="valie_config">
 		<handler type="x" >
 			<puzzle_id_request_attribute_key>puzzle_id</puzzle_id_request_attribute_key>
 			<media_type_request_attribute_key>media_type</media_type_request_attribute_key>

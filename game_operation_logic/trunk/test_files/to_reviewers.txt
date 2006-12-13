@@ -1,0 +1,18 @@
+Here are some notes for reviewers for final fix:
+to assistant:
+a) RegisterGameHandlerTest#testRegisterGameHandler_Element_NoParamKey
+	the sample xml you provided was not correct, game_id_param_key is expected to be null but existing, please be noted.
+
+
+to all Zulander and catcher:
+a) I found there are some conflicts on the environment configuration between my tests and yours.
+	Most of your tests depend on the default config set in ConfigManager.properties, but in each test of mine,
+	I will always clear all the namespaces, for this reason, while aggregate all the tests in AllTests,
+	the stress tests and accuracy tests won't get the proper config as expected and failed. Plz be noted.
+
+to all reviewers:
+a) PuzzleSolutionHandler#ctor is changed by adding new string argument, according to https://software.topcoder.com/forum/c_forum_message.jsp?f=24092901&r=24515339
+	So, the relative tests for this class should be modified as well.
+
+b) There are still some fixes should be done, but I didn't have time to finish them in 24 hours(final fix stage always lasts only 24 hours?). The deadline is approaching, I have no idea what
+will happen if I don't post a submission on time, so, even though it's not complete, I still hand up this submission.

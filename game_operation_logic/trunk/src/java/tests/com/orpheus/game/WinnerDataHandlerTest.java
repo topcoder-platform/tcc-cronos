@@ -22,46 +22,54 @@ import java.util.Map;
 
 
 /**
- * Test case for WinnerDataHandler.
+ * TODO DOCUMENT ME!
  *
  * @author TCSDEVELOPER
  * @version 1.0
  */
 public class WinnerDataHandlerTest extends TestCase {
-    /** Represents the default ActionContext used in this test. */
+    /**
+     * Represents TODO DOCUMENT ME!
+     */
     private ActionContext context;
 
-    /** Represents the default HttpRequest used in this test. */
+    /**
+     * Represents TODO DOCUMENT ME!
+     */
     private MockHttpRequest request;
 
-    /** Represents the default HttpResponse used in this test. */
+    /**
+     * Represents TODO DOCUMENT ME!
+     */
     private MockHttpResponse response;
 
-    /** Represents the default HttpSession  used in this test. */
+    /**
+     * Represents TODO DOCUMENT ME!
+     */
     private MockHttpSession session;
 
-    /** Represents the default servletContext used in this test. */
+    /**
+     * Represents TODO DOCUMENT ME!
+     */
     private MockServletContext servletContext;
 
-    /** Represents the default WinnerDataHandler used in this test. */
+    /**
+     * Represents TODO DOCUMENT ME!
+     */
     private WinnerDataHandler handler;
 
     /**
-     * Test for {@link WinnerDataHandler#execute(ActionContext)}. It should return null.
-     *
-     * @throws Exception exception thrown to JUnit.
+     * Test execute(ActionContext).
      */
     public void testExecute() throws Exception {
-        assertEquals("execute failed.", null, handler.execute(context));
+        handler.execute(context);
     }
 
     /**
      * Test WinnerDataHandler(Element) with valid Element.
-     *
-     * @throws Exception to junit
      */
     public void testWinnerDataHandlerElement() throws Exception {
-        Element element = DocumentHelper.getDocument("/WinnerDataHandler.xml", "config", "valid_config");
+        Element element = DocumentHelper.getDocument("/WinnerDataHandler.xml", "config", "valie_config");
         WinnerDataHandler handler = new WinnerDataHandler(element);
         handler.execute(context);
 
@@ -84,7 +92,7 @@ public class WinnerDataHandlerTest extends TestCase {
         super.setUp();
         tearDown();
         TestHelper.loadConfig();
-
+        
         String[] profileTypeNames = new String[] { "typeA", "typeB" };
         Map profilesMap = new HashMap();
         profilesMap.put("first_name", "firstName");
@@ -102,17 +110,13 @@ public class WinnerDataHandlerTest extends TestCase {
 
         request.setParameter("firstName", "tom");
         request.setParameter("email", "tom@email.com");
-
+        
         JNDIHelper.initJNDI();
     }
-
-    /**
-     * Clears test environment.
-     *
-     * @throws Exception to junit
-     */
+    
     protected void tearDown() throws Exception {
         super.tearDown();
         TestHelper.unloadConfig();
     }
+
 }

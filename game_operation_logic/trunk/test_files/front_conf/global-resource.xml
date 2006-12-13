@@ -1,27 +1,22 @@
-<!--global resource config for this component -->
 <global>
 	<actions-def>
-		<action-def name="default">com.topcoder.web.FrontController.DefaultAction</action-def>
+		<action-def name="default">com.topcoder.web.frontcontroller.DefaultAction</action-def>
 	</actions-def>
 	
 	<handlers-def>
-		<handler-def name="RegisterGameHandler">com.orpheus.game.RegisterGameHandler </handler-def>
-		<handler-def name="KeySubmissionHandler">com.orpheus.game.KeySubmissionHandler </handler-def>
-		<handler-def name="PuzzleSolutionHandler">com.orpheus.game.PuzzleSolutionHandler </handler-def>
-		<handler-def name="PuzzleRenderingHandler">com.orpheus.game.PuzzleRenderingHandler </handler-def>
-		<handler-def name="WinnerDataHandler">com.orpheus.game.WinnerDataHandler</handler-def>
-		<handler-def name="PluginDownloadHandler">com.orpheus.game.PluginDownloadHandler</handler-def>
-		<handler-def name="MessageHandler"> com.orpheus.game.MessageHandler</handler-def>
+		<handler-def name="TestHandler">TestHandler</handler-def>
 	</handlers-def>
 	
+	<results-def>
+		<result-def name="forward">com.topcoder.web.frontcontroller.results.ForwardResult</result-def>
+		<result-def name="redirect">com.topcoder.web.frontcontroller.results.RedirectResult</result-def>
+	</results-def>
+	
+	<global-handlers>
+
+	</global-handlers>
+	
 	<global-results>
-		<result name="messagePollResult">
-			<date_param_key>date</date_param_key>
-			<category_names>
-				<value>cat1</value>
-				<value>cat2</value>
-				<value>cat3</value>
-			</category_names>
-		</result>
+
 	</global-results>
- </global>
+</global>

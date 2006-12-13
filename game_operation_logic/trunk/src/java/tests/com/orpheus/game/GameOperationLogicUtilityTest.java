@@ -6,6 +6,8 @@ package com.orpheus.game;
 import com.orpheus.game.persistence.GameDataHome;
 import com.orpheus.game.persistence.GameDataLocalHome;
 
+import com.topcoder.util.config.ConfigManager;
+
 import junit.framework.TestCase;
 
 
@@ -28,8 +30,6 @@ public class GameOperationLogicUtilityTest extends TestCase {
 
     /**
      * Test method for getGameDataLocalHome(), the return result is expected to be the value set in config.
-     *
-     * @throws Exception to junit
      */
     public void testGetGameDataLocalHome() throws Exception {
         assertTrue("getGameDataLocalHome() should return instance of GameDataLocalHome",
@@ -38,8 +38,6 @@ public class GameOperationLogicUtilityTest extends TestCase {
 
     /**
      * Test method for getGameDataRemoteHome(), the return result is expected to be the value set in config.
-     *
-     * @throws Exception to junit
      */
     public void testGetGameDataRemoteHome() throws Exception {
         assertTrue("getGameDataRemoteHome() should return instance of GameDataHome",

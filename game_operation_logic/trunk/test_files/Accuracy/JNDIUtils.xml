@@ -1,0 +1,10 @@
+<CMConfig>
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context.default.factory">
+			<Value>com.sun.jndi.fscontext.RefFSContextFactory</Value>
+		</Property>
+		<Property name="context.default.url">
+			<Value>file://H:\TCReview\submission-9898\test_files\Accuracy\JNDI_Dir</Value>
+		</Property>
+	</Config>
+</CMConfig>

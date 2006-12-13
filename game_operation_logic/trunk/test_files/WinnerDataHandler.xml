@@ -1,5 +1,5 @@
 <Root>
-	<config name="valid_config">
+	<config name="valie_config">
 		<handler type="x" >
 			<object_factory>
 				<namespace>com.orpheus.game</namespace>

@@ -1,7 +1,9 @@
 <Root>
-	<config name="valid_config">
+	<config name="valie_config">
 		<handler type="x">
 			<game_id_param_key>game_id</game_id_param_key>
+			<templateName>../../test_files/emailTemplate.txt</templateName>
+			<templateSource>testTemplate</templateSource>
 		</handler>
 	</config>
 </Root>

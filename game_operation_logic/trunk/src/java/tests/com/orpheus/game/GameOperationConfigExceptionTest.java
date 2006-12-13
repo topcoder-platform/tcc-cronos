@@ -14,8 +14,7 @@ import junit.framework.TestCase;
  */
 public class GameOperationConfigExceptionTest extends TestCase {
     /**
-     * Test ctor GameOperationConfigException(String) with string message and test whether it can be obtained
-     * later.
+     * Test ctor GameOperationConfigException(String) with string message and test whether it can be obtained later.
      */
     public void testGameOperationConfigExceptionString() {
         String msg = "msg";

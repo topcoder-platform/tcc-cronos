@@ -45,7 +45,7 @@ public class MockGame implements Game {
 	}
 
 	public HostingBlock[] getBlocks() {
-		return null;
+		return new MockHostingBlock[] { new MockHostingBlock() };
 	}
 
 }

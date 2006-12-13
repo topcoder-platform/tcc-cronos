@@ -1,5 +1,5 @@
 <Root>
-	<config name="valid_config">
+	<config name="valie_config">
 		<handler type="x">
 			<game_id_param_key>gameId</game_id_param_key>
 			<submission_param_key>submissions</submission_param_key>
