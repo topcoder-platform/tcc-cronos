@@ -93,7 +93,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
      *
      * <p>
      * It should be backed by a JNDI connection producer, which simply eases the obtaining of a connection from a
-     * datasource via JNDI. This is created in the constructor, will not be null, and willl never change.
+     * datasource via JNDI. This is created in the constructor, will not be null, and will never change.
      * </p>
      */
     private final DBConnectionFactory connectionFactory;
@@ -193,10 +193,9 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         }
 
         Connection conn = null;
-        boolean success = false;
 
         try {
-            conn = this.createConnection(false);
+            conn = this.createConnection();
 
             if (checkAuctionIdExistInAuction(conn, auction.getId().longValue())) {
                 throw new DuplicateEntryException("The auction already exists.", auction.getId());
@@ -227,19 +226,16 @@ public class SQLServerAuctionDAO implements AuctionDAO {
                 }
             }
 
-            conn.commit();
-
             // If all goes well, put auction in cache
             auction.setDescription("");
             auction.setSummary("");
             cache.put(auction.getId(), auction);
-            success = true;
 
             return auction;
         } catch (SQLException e) {
             throw new PersistenceException("Something wrong in the database related operations.", e);
         } finally {
-            releaseConnection(conn, success);
+            releaseConnection(conn);
         }
     }
 
@@ -272,7 +268,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         Connection conn = null;
 
         try {
-            conn = this.createConnection(true);
+            conn = this.createConnection();
 
             // retrieve the auction from the database persistence
             auction = getAuction(conn, auctionId);
@@ -290,7 +286,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         } catch (SQLException e) {
             throw new PersistenceException("Something wrong in the database related operations.", e);
         } finally {
-            releaseConnection(conn, true);
+            releaseConnection(conn);
         }
     }
 
@@ -324,10 +320,8 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         }
 
         Connection conn = null;
-        boolean success = false;
-
         try {
-            conn = this.createConnection(false);
+            conn = this.createConnection();
 
             // update the auction record
             if (updateAuction(conn, auction) != 1) {
@@ -338,19 +332,16 @@ public class SQLServerAuctionDAO implements AuctionDAO {
             updateBidDTOS(conn, auction.getId().longValue(), auction.getBids());
             auction.setBids(this.getBids(conn, auction.getId().longValue()));
 
-            conn.commit();
-
             // if all goes well, put auction in cache
             auction.setDescription("");
             auction.setSummary("");
             cache.put(auction.getId(), auction);
-            success = true;
 
             return auction;
         } catch (SQLException e) {
             throw new PersistenceException("Something wrong in the database related operations.", e);
         } finally {
-            releaseConnection(conn, success);
+            releaseConnection(conn);
         }
     }
 
@@ -381,10 +372,9 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         AuctionPersistenceHelper.validateBidDTOCollection(bids, "bids");
 
         Connection conn = null;
-        boolean success = false;
 
         try {
-            conn = this.createConnection(false);
+            conn = this.createConnection();
 
             AuctionDTO auction = getAuction(conn, auctionId);
 
@@ -396,17 +386,14 @@ public class SQLServerAuctionDAO implements AuctionDAO {
             updateBidDTOS(conn, auctionId, bids);
             auction.setBids(this.getBids(conn, auction.getId().longValue()));
 
-            conn.commit();
-
             // if all goes well, put auction in cache
             cache.put(auction.getId(), auction);
-            success = true;
 
             return auction;
         } catch (SQLException e) {
             throw new PersistenceException("Something wrong in the database related operations.", e);
         } finally {
-            releaseConnection(conn, success);
+            releaseConnection(conn);
         }
     }
 
@@ -427,10 +414,9 @@ public class SQLServerAuctionDAO implements AuctionDAO {
      */
     public void deleteAuction(long auctionId) throws PersistenceException {
         Connection conn = null;
-        boolean success = false;
 
         try {
-            conn = this.createConnection(false);
+            conn = this.createConnection();
 
             List bidIds = getBidIds(conn, auctionId);
 
@@ -444,15 +430,12 @@ public class SQLServerAuctionDAO implements AuctionDAO {
                 throw new EntryNotFoundException("The auction does not exist.", new Long(auctionId));
             }
 
-            conn.commit();
-
             // Remove from cache
             cache.remove(new Long(auctionId));
-            success = true;
         } catch (SQLException e) {
             throw new PersistenceException("Something wrong in the database related operations.", e);
         } finally {
-            releaseConnection(conn, success);
+            releaseConnection(conn);
         }
     }
 
@@ -478,7 +461,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         Connection conn = null;
 
         try {
-            conn = this.createConnection(true);
+            conn = this.createConnection();
 
             List auctionIds = selectAuctionIds(conn, startingBy, endingAfter);
 
@@ -492,7 +475,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         } catch (SQLException e) {
             throw new PersistenceException("Something wrong in the database related operations.", e);
         } finally {
-            releaseConnection(conn, true);
+            releaseConnection(conn);
         }
     }
 
@@ -500,7 +483,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
      * <p>
      * Gets all auctions currently in persistence for the given bidderId whose end date is smaller than endingAfter
      * date parameter. If endingAfter is null, ignores the parameter in comparisons. It makes no sense to try to match
-     * cached items with persisted items, se we get all directly from persistence, and then cache all retrieved
+     * cached items with persisted items, so we get all directly from persistence, and then cache all retrieved
      * AuctionDTOs. Returns empty array if no auctions found.
      * </p>
      *
@@ -515,7 +498,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         Connection conn = null;
 
         try {
-            conn = this.createConnection(true);
+            conn = this.createConnection();
 
             List auctionIds = selectAuctionIdsByBidder(conn, bidderId, endingAfter);
 
@@ -529,7 +512,7 @@ public class SQLServerAuctionDAO implements AuctionDAO {
         } catch (SQLException e) {
             throw new PersistenceException("Something wrong in the database related operations.", e);
         } finally {
-            releaseConnection(conn, true);
+            releaseConnection(conn);
         }
     }
 
@@ -586,13 +569,11 @@ public class SQLServerAuctionDAO implements AuctionDAO {
      * Get database connection from the db connection factory.
      * </p>
      *
-     * @param autoCommit whether to set the value of autoCommit. False means the transaction will be in manual.
-     *
      * @return A database connection.
      *
-     * @throws PersistenceException If can't get conntion or fails to set the auto commit value.
+     * @throws PersistenceException If can't get connection.
      */
-    private Connection createConnection(boolean autoCommit) throws PersistenceException {
+    private Connection createConnection() throws PersistenceException {
         Connection conn = null;
 
         try {
@@ -600,38 +581,21 @@ public class SQLServerAuctionDAO implements AuctionDAO {
             conn = (connectionName == null) ? connectionFactory.createConnection()
                                             : connectionFactory.createConnection(connectionName);
 
-            // disable the auto commit mode if needed
-            if (!autoCommit) {
-                conn.setAutoCommit(false);
-            }
-
             return conn;
         } catch (DBConnectionException e) {
-            this.releaseConnection(conn, true);
+            this.releaseConnection(conn);
             throw new PersistenceException("Can't get the connection from database.", e);
-        } catch (SQLException e) {
-            this.releaseConnection(conn, true);
-            throw new PersistenceException("Fails to set auto commit to false.", e);
         }
     }
 
     /**
      * <p>
-     * Release the connection. If not success, rollback the transaction.
+     * Release the connection.
      * </p>
      *
      * @param conn the connection.
-     * @param success whether there is any need to roll back the transaction.
      */
-    private void releaseConnection(Connection conn, boolean success) {
-        try {
-            if (success && (conn != null) && !conn.isClosed()) {
-                conn.rollback();
-            }
-        } catch (SQLException e) {
-            // ignore it
-        }
-
+    private void releaseConnection(Connection conn) {
         try {
             if ((conn != null) && !conn.isClosed()) {
                 conn.close();
