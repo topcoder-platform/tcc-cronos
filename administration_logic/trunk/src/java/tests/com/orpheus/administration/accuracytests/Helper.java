@@ -3,17 +3,10 @@
  */
 package com.orpheus.administration.accuracytests;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -26,13 +19,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.orpheus.administration.accuracytests.handlers.DummyAdminDataBean;
-import com.orpheus.administration.accuracytests.handlers.DummyGameDataBean;
 import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.administration.persistence.AdminDataHome;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataHome;
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -120,18 +110,28 @@ public class Helper {
      *             to JUnit
      */
     public static void prepareTest() throws Exception {
-        Locale.setDefault(Locale.US);
         ConfigManager cfg = ConfigManager.getInstance();
-
         releaseNamespace();
         // load namespace
         cfg.add("accuracytests/Config.xml");
-        // cfg.add("DBConnectionFactoryImpl.xml");
+        cfg.add("accuracytests/ObjectFactory.xml");
 
-        // executeSqlFile(DELETE_SQL_FILE);
-        // executeSqlFile(INSERT_SQL_FILE);
+        /* We need to set MockContextFactory as our JNDI provider.
+         * This method sets the necessary system properties.
+         */
+        MockContextFactory.setAsInitial();
 
-        deployEJB();
+        // create the initial context that will be used for binding EJBs
+        Context context = new InitialContext();
+
+        // Create an instance of the MockContainer
+        MockContainer mockContainer = new MockContainer(context);
+
+        // Deploy operation creates Home and binds it to JNDI
+        mockContainer.deploy(new SessionBeanDescriptor("GameDataHome",
+                GameDataHome.class, GameData.class, new DummyGameDataBean()));
+        mockContainer.deploy(new SessionBeanDescriptor("AdminDataHome",
+                AdminDataHome.class, AdminData.class, new DummyAdminDataBean()));
     }
 
     /**
@@ -143,7 +143,6 @@ public class Helper {
      *             to JUnit
      */
     public static void clearTestEnvironment() throws Exception {
-        // executeSqlFile(DELETE_SQL_FILE);
         releaseNamespace();
     }
 
@@ -160,53 +159,6 @@ public class Helper {
 
         for (Iterator it = cm.getAllNamespaces(); it.hasNext();) {
             cm.removeNamespace((String) it.next());
-        }
-    }
-
-    /**
-     * Execute the sql statements in a file.
-     *
-     * @param filename
-     *            the sql file.
-     * @throws Exception
-     *             to JUnit
-     */
-    private static void executeSqlFile(String filename) throws Exception {
-        Reader file = new FileReader(filename);
-        char[] buffer = new char[1024];
-        int retLength = 0;
-        StringBuffer content = new StringBuffer();
-
-        while ((retLength = file.read(buffer)) >= 0) {
-            content.append(buffer, 0, retLength);
-        }
-
-        file.close();
-
-        List sqls = new ArrayList();
-        int lastIndex = 0;
-
-        // parse the sqls
-        for (int i = 0; i < content.length(); i++) {
-            if (content.charAt(i) == ';') {
-                sqls.add(content.substring(lastIndex, i).trim());
-                lastIndex = i + 1;
-            }
-        }
-
-        // get the connection
-        Connection conn = new DBConnectionFactoryImpl(
-                DBConnectionFactoryImpl.class.getName()).createConnection();
-        Statement stmt = conn.createStatement();
-
-        try {
-            // excute the sql in the file
-            for (int i = 0; i < sqls.size(); i++) {
-                stmt.executeUpdate((String) sqls.get(i));
-            }
-        } finally {
-            stmt.close();
-            conn.close();
         }
     }
 
@@ -229,29 +181,4 @@ public class Helper {
         // return the document element
         return parser.getDocument().getDocumentElement();
     }
-
-    /**
-     * Deploy ejb using mock ejb.
-     *
-     * @throws Exception to Junit
-     */
-    public static void deployEJB() throws Exception {
-        /* We need to set MockContextFactory as our JNDI provider.
-         * This method sets the necessary system properties.
-         */
-        MockContextFactory.setAsInitial();
-
-        // create the initial context that will be used for binding EJBs
-        Context context = new InitialContext();
-
-        // Create an instance of the MockContainer
-        MockContainer mockContainer = new MockContainer(context);
-
-        // Deploy operation creates Home and binds it to JNDI
-        mockContainer.deploy(new SessionBeanDescriptor(GAME_DATA_JNDI_NAME,
-                GameDataHome.class, GameData.class, new DummyGameDataBean()));
-        mockContainer.deploy(new SessionBeanDescriptor(ADMIN_DATA_JNDI_NAME,
-                AdminDataHome.class, AdminData.class, new DummyAdminDataBean()));
-    }
-
 }

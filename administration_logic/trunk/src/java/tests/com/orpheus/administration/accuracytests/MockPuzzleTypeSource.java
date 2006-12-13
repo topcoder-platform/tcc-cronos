@@ -17,7 +17,7 @@ public class MockPuzzleTypeSource implements PuzzleTypeSource {
      * @return just a stub
      */
     public PuzzleType getPuzzleType(String name) {
-        return null;
+        return new MockPuzzleType();
     }
     /**
      * Just a mock.
@@ -27,5 +27,4 @@ public class MockPuzzleTypeSource implements PuzzleTypeSource {
     public boolean hasPuzzleType(String name) {
         return false;
     }
-
 }

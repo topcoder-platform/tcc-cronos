@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.w3c.dom.Element;
 
+import com.orpheus.administration.accuracytests.DataProvider;
 import com.orpheus.administration.accuracytests.Helper;
 import com.orpheus.administration.entities.HandlerResult;
 import com.orpheus.administration.entities.ResultCode;
@@ -130,18 +131,17 @@ public class ReorderSlotsHandlerAccuracyTests extends TestCase {
         request.setParameter("gameId", "1001");
         request.setParameter("slotId", "1001");
         request.setParameter("offset", "2");
-
         assertNull("null should be returned if fail.", target
                 .execute(context));
-        // verify the hostingSlots   
+        // verify the hostingSlots
         assertNotNull("ReorderSlotsHandler'excute method failed",
                 DataProvider.slots);
         assertTrue("ReorderSlotsHandler'excute method failed",
                 DataProvider.slots[0].getSequenceNumber() == 3);
-        assertEquals("ReorderSlotsHandler'excute method failed", 2,
-                DataProvider.slots[2].getSequenceNumber());
-        assertEquals("ReorderSlotsHandler'excute method failed",1, 
-                DataProvider.slots[1].getSequenceNumber());
+        assertTrue("ReorderSlotsHandler'excute method failed",
+                DataProvider.slots[1].getSequenceNumber() == 1);
+        assertTrue("ReorderSlotsHandler'excute method failed",
+                DataProvider.slots[2].getSequenceNumber() == 2);
     }
 
     /**

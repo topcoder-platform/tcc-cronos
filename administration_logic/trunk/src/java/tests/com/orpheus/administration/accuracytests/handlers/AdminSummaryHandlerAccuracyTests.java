@@ -6,13 +6,13 @@ package com.orpheus.administration.accuracytests.handlers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import junit.framework.TestCase;
+
 import org.w3c.dom.Element;
 
 import com.orpheus.administration.accuracytests.Helper;
 import com.orpheus.administration.handlers.AdminSummaryHandler;
 import com.topcoder.web.frontcontroller.ActionContext;
-
-import junit.framework.TestCase;
 
 /**
  * Accuracy test for AdminSummaryHandler.

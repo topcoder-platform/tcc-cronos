@@ -18,15 +18,45 @@ import junit.framework.TestCase;
 public class PuzzleTypeEnumAccuracyTests extends TestCase {
     /**
      * <p>
-     * Accuracy test. Tests the <code>PuzzleTypeEnum</code> for
-     * define correctly enum.
+     * Tests that the PuzzleTypeEnum actually represents
+     * an enumeration.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
-    public void testEnumNumberAccuracy() throws Exception {
-        assertEquals("4 enum expected.", 4, PuzzleTypeEnum.getEnumList(PuzzleTypeEnum.class)
-                .size());
+    public void testEnumeration() throws Exception {
+        assertEquals(PuzzleTypeEnum.JIGSAW, PuzzleTypeEnum.JIGSAW);
+        assertEquals(PuzzleTypeEnum.LETTER_SCRAMBLE, PuzzleTypeEnum.LETTER_SCRAMBLE);
+        assertEquals(PuzzleTypeEnum.MISSING_LETTER, PuzzleTypeEnum.MISSING_LETTER);
+        assertEquals(PuzzleTypeEnum.SLIDING_TILE, PuzzleTypeEnum.SLIDING_TILE);
+    }
+
+    /**
+     * <p>
+     * Tests the equals method of the Enumeration.
+     * A member of the Enumeration should be equal to
+     * itself.
+     * </p>
+     * @throws Exception to JUnit
+     */
+    public void testEquals() throws Exception {
+        assertTrue(PuzzleTypeEnum.JIGSAW.equals(PuzzleTypeEnum.JIGSAW));
+        assertFalse(PuzzleTypeEnum.JIGSAW.equals(PuzzleTypeEnum.LETTER_SCRAMBLE));
+        assertFalse(PuzzleTypeEnum.JIGSAW.equals(PuzzleTypeEnum.MISSING_LETTER));
+        assertFalse(PuzzleTypeEnum.JIGSAW.equals(PuzzleTypeEnum.SLIDING_TILE));
+
+        assertTrue(PuzzleTypeEnum.LETTER_SCRAMBLE.equals(PuzzleTypeEnum.LETTER_SCRAMBLE));
+        assertFalse(PuzzleTypeEnum.LETTER_SCRAMBLE.equals(PuzzleTypeEnum.JIGSAW));
+        assertFalse(PuzzleTypeEnum.LETTER_SCRAMBLE.equals(PuzzleTypeEnum.MISSING_LETTER));
+        assertFalse(PuzzleTypeEnum.LETTER_SCRAMBLE.equals(PuzzleTypeEnum.SLIDING_TILE));
+
+        assertTrue(PuzzleTypeEnum.MISSING_LETTER.equals(PuzzleTypeEnum.MISSING_LETTER));
+        assertFalse(PuzzleTypeEnum.MISSING_LETTER.equals(PuzzleTypeEnum.JIGSAW));
+        assertFalse(PuzzleTypeEnum.MISSING_LETTER.equals(PuzzleTypeEnum.LETTER_SCRAMBLE));
+        assertFalse(PuzzleTypeEnum.MISSING_LETTER.equals(PuzzleTypeEnum.SLIDING_TILE));
+
+        assertTrue(PuzzleTypeEnum.SLIDING_TILE.equals(PuzzleTypeEnum.SLIDING_TILE));
+        assertFalse(PuzzleTypeEnum.SLIDING_TILE.equals(PuzzleTypeEnum.JIGSAW));
+        assertFalse(PuzzleTypeEnum.SLIDING_TILE.equals(PuzzleTypeEnum.LETTER_SCRAMBLE));
+        assertFalse(PuzzleTypeEnum.SLIDING_TILE.equals(PuzzleTypeEnum.MISSING_LETTER));
     }
 }

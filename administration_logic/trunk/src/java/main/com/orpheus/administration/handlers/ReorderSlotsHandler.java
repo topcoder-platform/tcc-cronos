@@ -190,6 +190,7 @@ public class ReorderSlotsHandler implements Handler {
                     failRequestAttrName, e);
             return failedResult;
         }
+        
         // Search for the HostingBlock [block] which contains the given slot id
         HostingBlock[] hostingBlocks = game.getBlocks();
         HostingSlot slot = null;
@@ -210,6 +211,8 @@ public class ReorderSlotsHandler implements Handler {
                 break;
             }
         }
+        
+        
         if (slot == null) {
             // if meet this, it is failure condition
             return failedResult;

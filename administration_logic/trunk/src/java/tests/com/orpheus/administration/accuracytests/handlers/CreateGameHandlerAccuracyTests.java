@@ -8,6 +8,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import junit.framework.TestCase;
+
 import org.w3c.dom.Element;
 
 import com.orpheus.administration.accuracytests.Helper;
@@ -15,8 +17,6 @@ import com.orpheus.administration.entities.HandlerResult;
 import com.orpheus.administration.entities.ResultCode;
 import com.orpheus.administration.handlers.CreateGameHandler;
 import com.topcoder.web.frontcontroller.ActionContext;
-
-import junit.framework.TestCase;
 
 /**
  * <p>
@@ -305,36 +305,8 @@ public class CreateGameHandlerAccuracyTests extends TestCase {
             "\"auctionEndTime\":\"2006-12-30 09:00\""});
         assertEquals("'fail' should be returned if success.", failedResult,
                 target.execute(context));
-        assertEquals("EXCEPTION_OCCURRED should be returned.",
+        assertEquals("BLOCK_INFO_LENGTH_NOT_MATCH should be returned.",
                 ResultCode.EXCEPTION_OCCURRED, ((HandlerResult) request
                         .getAttribute(failRequestAttrName)).getResultCode());
     }
-
-    /**
-     * <p>
-     * Accuracy test. Tests the <code>execute(ActionContext)</code> for
-     * proper behavior. Verifies if the return value is correct.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit
-     */
-    public void testExecuteAccuracy3() throws Exception {
-        HttpSession session = request.getSession(false);
-        session.setAttribute(ballColorIdAttrName, new Long(1));
-        session.setAttribute(keyCountAttrName, new Integer(1));
-        session.setAttribute(startDateAttrName, new Date());
-        session.setAttribute(blockCountAttrName, new Integer(4));
-        request.setParameterValues(blockInfoParamName, new String[] {
-            "\"maxSlotTime\":5", "\"slotCount\":12",
-            "\"auctionStartTime\":\"2006-12-21 09:00\"",
-            "\"auctionEndTime\":\"2006-12-30 09:00\""});
-        assertEquals("'fail' should be returned if success.", failedResult,
-                target.execute(context));
-        assertEquals("EXCEPTION_OCCURRED should be returned.",
-                ResultCode.EXCEPTION_OCCURRED, ((HandlerResult) request
-                        .getAttribute(failRequestAttrName)).getResultCode());
-    }
-    
-    
 }

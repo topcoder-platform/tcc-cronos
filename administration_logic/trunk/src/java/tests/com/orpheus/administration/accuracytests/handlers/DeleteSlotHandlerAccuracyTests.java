@@ -3,16 +3,28 @@
  */
 package com.orpheus.administration.accuracytests.handlers;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 
+import org.mockejb.MockContainer;
+import org.mockejb.SessionBeanDescriptor;
+import org.mockejb.jndi.MockContextFactory;
 import org.w3c.dom.Element;
 
+import com.orpheus.administration.accuracytests.DataProvider;
+import com.orpheus.administration.accuracytests.DummyAdminDataBean;
+import com.orpheus.administration.accuracytests.DummyGameDataBean;
 import com.orpheus.administration.accuracytests.Helper;
 import com.orpheus.administration.entities.HandlerResult;
 import com.orpheus.administration.entities.ResultCode;
 import com.orpheus.administration.handlers.DeleteSlotHandler;
+import com.orpheus.administration.persistence.AdminData;
+import com.orpheus.administration.persistence.AdminDataHome;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataHome;
 import com.topcoder.web.frontcontroller.ActionContext;
 
 /**
@@ -124,7 +136,7 @@ public class DeleteSlotHandlerAccuracyTests extends TestCase {
     public void testExecuteAccuracy1() throws Exception {
         request.setParameter("gameId", "1001");
         request.setParameter("slotId", "1001");
-        assertNull("null should be returned.", target
+        assertNull("null should be returned if success.", target
                 .execute(context));
         assertTrue("slot have not been deleted corretly.", DataProvider.isDeleted);
     }
