@@ -11,7 +11,7 @@ import com.topcoder.web.frontcontroller.results.DownloadData;
 /**
  * This is a dummy class of <code>DownloadData</code>.
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockDownloadData implements DownloadData {

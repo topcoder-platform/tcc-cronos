@@ -35,7 +35,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * Section 3.2.11 of Comp Spec.<br/> Thread-Safety: This class is immutable and
  * hence thread-safe as is required of Handler implementations.
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 abstract class RegenerateBrainteaserOrPuzzleHandler implements Handler {

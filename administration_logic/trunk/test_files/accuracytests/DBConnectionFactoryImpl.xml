@@ -13,7 +13,7 @@
 						<Value>com.mysql.jdbc.Driver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:mysql://localhost:3306/adminlogic</Value>
+						<Value>jdbc:mysql://localhost:3306/test</Value>
 					</Property>
 					<Property name="DatabaseName">
 						<Value>test</Value>
@@ -22,7 +22,7 @@
 						<Value>root</Value>
 					</Property>
 					<Property name="password">
-						<Value>1234</Value>
+						<Value>root</Value>
 					</Property>
 					<Property name="SelectMethod">
 						<Value>Cursor</Value>

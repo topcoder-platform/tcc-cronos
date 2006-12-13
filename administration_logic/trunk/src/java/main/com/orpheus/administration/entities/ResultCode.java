@@ -15,7 +15,7 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * error message) for different failure reasons.<br/> Thread-Safety: This class
  * is immutable and hence thread-safe.
  *
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class ResultCode extends Enum {

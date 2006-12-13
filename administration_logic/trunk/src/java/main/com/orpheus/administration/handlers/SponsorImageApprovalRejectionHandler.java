@@ -37,7 +37,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * required of Handler implementations. To achieve this, it synchronizes over
  * the userProfileManager instance var in the execute() method.
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 abstract class SponsorImageApprovalRejectionHandler implements Handler {
@@ -170,7 +170,7 @@ abstract class SponsorImageApprovalRejectionHandler implements Handler {
      *             if handlerElement is null, or contains invalid data.
      */
     SponsorImageApprovalRejectionHandler(Element handlerElement) {
-        Helper.checkNull(handlerElement, "handlerElement");
+        Helper.checkHandlerElement(handlerElement);
         objFactoryNS = Helper.getValue(handlerElement,
                 "/handler/object-factory-ns");
         userProfileManager = Helper.createUserProfileManager(objFactoryNS);

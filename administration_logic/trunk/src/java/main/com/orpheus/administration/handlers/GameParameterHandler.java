@@ -30,7 +30,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * Thread-Safety: This class is thread-safe as is required of Handler
  * implementations. This class is immutable and automatically thread-safe.
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class GameParameterHandler implements Handler {

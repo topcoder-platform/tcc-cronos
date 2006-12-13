@@ -16,7 +16,7 @@ import java.util.Locale;
  * Mock implementation of HttpServletResponse, for test purpose.
  * </p>
  *
- * @author myxgyy
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockHttpResponse implements HttpServletResponse {

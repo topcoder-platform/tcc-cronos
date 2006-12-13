@@ -16,7 +16,7 @@
 			<value>email1@company.com</value>
 		</property>
 		<property>
-			<name>sponsor-is-approved</name>
+			<name>IS_APPROVED</name>
 			<value></value>
 		</property>
 	</profile>

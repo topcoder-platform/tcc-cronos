@@ -8,7 +8,7 @@ package com.orpheus.administration;
  * creating the InitialContext or when looking up ejb remote home references. It
  * is used to wrap NamingException when performing JNDI lookups.
  *
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class ServiceLocatorException extends AdministrationException {

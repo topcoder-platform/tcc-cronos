@@ -18,7 +18,7 @@ import junit.framework.TestCase;
  * Test the <code>PendingSponsorHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class PendingSponsorHandlerUnitTests extends TestCase {

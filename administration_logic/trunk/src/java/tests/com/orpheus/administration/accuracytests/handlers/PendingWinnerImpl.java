@@ -12,7 +12,7 @@ import com.orpheus.administration.persistence.PendingWinner;
  *
  * <p><strong>Thread Safety</strong>: This object is immutable and thread safe.
  *
- * @author argolite, myxgyy
+ * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
 public class PendingWinnerImpl implements PendingWinner {

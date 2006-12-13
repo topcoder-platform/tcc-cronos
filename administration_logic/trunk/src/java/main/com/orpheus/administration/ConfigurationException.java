@@ -6,7 +6,7 @@ package com.orpheus.administration;
 /**
  * This exception is thrown to indicate a configuration error such as missing properties
  * or missing configuration which prevent initialization of AdministrationManager.<br/>
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class ConfigurationException extends AdministrationException {

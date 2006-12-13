@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSessionContext;
  * Dummy class.
  * </p>
  *
- * @author myxgyy
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockHttpSession implements HttpSession {

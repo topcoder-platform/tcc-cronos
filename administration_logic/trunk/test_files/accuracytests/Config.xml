@@ -50,7 +50,7 @@
         <Property name="email_addr">
             <Value>notempty</Value>
         </Property>
-        <Property name="sponsor-is-approved">
+        <Property name="IS_APPROVED">
             <Value>notnull</Value>
         </Property>
 	</Config>

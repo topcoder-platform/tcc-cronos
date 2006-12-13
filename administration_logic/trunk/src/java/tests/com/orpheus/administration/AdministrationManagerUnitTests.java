@@ -16,7 +16,7 @@ import com.topcoder.util.puzzle.PuzzleTypeSource;
  * Test the <code>AdministrationManager</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class AdministrationManagerUnitTests extends TestCase {

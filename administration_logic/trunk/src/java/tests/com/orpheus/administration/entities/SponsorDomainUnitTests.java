@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  * Test the <code>SponsorDomain</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class SponsorDomainUnitTests extends TestCase {

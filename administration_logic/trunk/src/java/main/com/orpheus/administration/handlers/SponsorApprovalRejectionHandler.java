@@ -31,14 +31,14 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * message can be generated. In case of success, the execute() method will
  * return null.<br/> SponsorApprovalHandler and SponsorRejectionHandler classes
  * provide concrete implementations on whether to approve or reject, in that
- * they provide the value to be set for the sponsor-is-approved property of the
+ * they provide the value to be set for the IS_APPROVED property of the
  * UserProfile instance.<br/> For configuration details on this handler, please
  * see Section 3.2.4 of Comp Spec.<br/> Thread-Safety: This class is
  * thread-safe as is required of Handler implementations. To achieve this, it
  * synchronizes over the userProfileManager instance var in the execute()
  * method.
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 abstract class SponsorApprovalRejectionHandler implements Handler {
@@ -185,7 +185,7 @@ abstract class SponsorApprovalRejectionHandler implements Handler {
         } else {
             try {
                 sponsor
-                        .setProperty("sponsor-is-approved",
+                        .setProperty("IS_APPROVED",
                                 getIsApprovedPropertyValue());
                 synchronized (userProfileManager) {
                     userProfileManager.updateUserProfile(sponsor);
@@ -217,11 +217,11 @@ abstract class SponsorApprovalRejectionHandler implements Handler {
 
     /**
      * This method must be implemented by the sub class to provide the value for
-     * the sponsor-is-approved property of the UserProfile instance representing the
+     * the IS_APPROVED property of the UserProfile instance representing the
      * sponsor.
      * 
      * 
-     * @return value for sponsor-is-approved property of UserProfile instance
+     * @return value for IS_APPROVED property of UserProfile instance
      *         representing the sponsor.
      */
     abstract String getIsApprovedPropertyValue();

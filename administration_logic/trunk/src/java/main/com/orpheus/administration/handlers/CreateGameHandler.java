@@ -24,6 +24,7 @@ import com.topcoder.json.object.io.JSONDecoder;
 import com.topcoder.json.object.io.JSONDecodingException;
 import com.topcoder.json.object.io.StandardJSONDecoder;
 import com.topcoder.util.auction.Auction;
+import com.topcoder.util.auction.AuctionException;
 import com.topcoder.util.auction.AuctionManager;
 import com.topcoder.util.auction.Bid;
 import com.topcoder.util.auction.impl.AuctionImpl;
@@ -46,7 +47,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * Handler implementations. This class is immutable and automatically
  * thread-safe.
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class CreateGameHandler implements Handler {
@@ -453,7 +454,13 @@ public class CreateGameHandler implements Handler {
 
             Auction auction = new AuctionImpl(null, summary, description,
                     itemCount, this.minimumBid, startDate, endDate, new Bid[0]);
-            auctionMgr.createAuction(auction);
+            try {
+                auctionMgr.createAuction(auction);
+            } catch (AuctionException e) {
+                Helper.processFailureExceptionOccur(request,
+                        "Failed to create auction.", failRequestAttrName, e);
+                return false;
+            }
         }
 
         return true;

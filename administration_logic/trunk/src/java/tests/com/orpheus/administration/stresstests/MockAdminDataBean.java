@@ -46,6 +46,21 @@ public class MockAdminDataBean implements SessionBean {
     public AdminSummary getAdminSummary() {
 
         return new AdminSummary() {
+
+            public int getActiveGameCount() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            public int getPendingSponsorCount() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            public int getPendingWinnerCount() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
         };
     }
 

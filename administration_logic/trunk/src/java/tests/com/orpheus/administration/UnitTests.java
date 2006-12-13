@@ -43,7 +43,7 @@ import com.orpheus.administration.handlers.SponsorRejectionHandlerUnitTests;
 /**
  * <p>This test case aggregates all Unit test cases.</p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class UnitTests extends TestCase {

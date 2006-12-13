@@ -18,7 +18,7 @@ import junit.framework.TestCase;
  * Test the <code>RegenerateBrainteaserOrPuzzleHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class RegenerateBrainteaserOrPuzzleHandlerUnitTests extends TestCase {

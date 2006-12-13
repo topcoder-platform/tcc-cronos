@@ -20,7 +20,7 @@ import junit.framework.TestCase;
  * Test the accuracy of <code>DomainRejectionHandler</code> class.
  * </p>
  *
- * @author myxgyy
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class DomainRejectionHandlerAccuracyTests extends TestCase {

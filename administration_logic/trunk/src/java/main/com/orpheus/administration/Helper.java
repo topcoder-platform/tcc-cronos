@@ -12,7 +12,6 @@ import javax.ejb.CreateException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -147,51 +146,8 @@ public class Helper {
     }
 
     /**
-     * Get the xpath name for element node or attribute node.
-     *
-     * @param node
-     *            the node to get full xpath name
-     *
-     * @return the full xpath name, for example:
-     *         /handler/allowed_profile_types/value
-     */
-    private static final String getXPathName(Node node) {
-        // Ignore non-element or non-attribute node
-        if ((node == null)
-                || (!(node.getNodeType() == Node.ELEMENT_NODE) && !(node
-                        .getNodeType() == Node.ATTRIBUTE_NODE))) {
-            return "";
-        }
-
-        // Retireve the name of this node
-        String name = null;
-        Node parent = null;
-
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-            // is Element node
-            name = ((Element) node).getTagName();
-            parent = node.getParentNode();
-        } else {
-            // is Attr node
-            Attr attr = (Attr) node;
-            name = attr.getName();
-
-            // Attribute's parent is owner element
-            parent = attr.getOwnerElement();
-        }
-
-        // use "/" to seperate every node name
-        name = "/" + name;
-
-        if (parent == null) {
-            return name;
-        }
-
-        return getXPathName(parent) + name;
-    }
-
-    /**
      * Get the element with given xpath.
+     * Note the xpath should start with handler ('/handler/...').
      *
      * @param xpath
      *            the xpath for required element
@@ -201,31 +157,44 @@ public class Helper {
      * @return the element corresponding to given xpath, null if can not find
      */
     private static final Element getElement(Element element, String xpath) {
-        // Compare with given element's xpath
-        String fullName = getXPathName(element);
+        String[] path = xpath.split("/");
+        // the child-element
+        Element ele = element;
+        int index = 2;
+        do {
+            ele = getChildElement(ele, path[index]);
+            index++;
+        } while (index < path.length);
 
-        if (fullName.equals(xpath)) {
-            // find it
-            return element;
-        }
+        return ele;
+    }
+    
+    /**
+     * Get the child Element using given tag name.
+     *
+     * @param element
+     *            the element
+     * @param tagName
+     *            the tag name
+     * @return a child element if find. null if not find.
+     */
+    private static Element getChildElement(Element element, String tagName) {
+        if (element == null) {
+            return null;
+        } else {
+            NodeList childNodes = element.getChildNodes();
+            for (int i = 0; i < childNodes.getLength(); ++i) {
+                Node child = childNodes.item(i);
 
-        NodeList nodes = element.getChildNodes();
-
-        for (int i = 0; i < nodes.getLength(); i++) {
-            Node node = nodes.item(i);
-
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element find = getElement((Element) node, xpath);
-
-                // Find it, simply return
-                if (find != null) {
-                    return find;
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                    Element childElement = (Element) child;
+                    if (childElement.getTagName().equals(tagName)) {
+                        return childElement;
+                    }
                 }
             }
+            return null;
         }
-
-        // can not find
-        return null;
     }
 
     /**
@@ -884,7 +853,7 @@ public class Helper {
      * @return true if true if approval
      */
     public static final boolean checkApproval(UserProfile sponsor) {
-        String approved = (String) sponsor.getProperty("sponsor-is-approved");
+        String approved = (String) sponsor.getProperty("IS_APPROVED");
         return approved != null && approved.trim().length() != 0;
     }
 

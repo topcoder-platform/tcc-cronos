@@ -14,7 +14,7 @@ import com.orpheus.administration.TestHelper;
  * Test the <code>SponsorImageApprovalHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class SponsorImageApprovalHandlerUnitTests extends TestCase {
@@ -38,7 +38,7 @@ public class SponsorImageApprovalHandlerUnitTests extends TestCase {
         TestHelper.prepareTest();
         //      the xml string used for test
         String xml = SponsorImageApprovalRejectionHandlerUnitTests.XMLSTRING;
-        Element element = TestHelper.loadXmlString(xml);
+        Element element = (Element) TestHelper.loadXmlString(xml).getElementsByTagName("handler").item(0);
         target = new SponsorImageApprovalHandler(element);
     }
 

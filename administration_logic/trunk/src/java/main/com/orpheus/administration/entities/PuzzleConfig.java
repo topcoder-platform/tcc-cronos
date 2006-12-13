@@ -14,7 +14,7 @@ import com.orpheus.administration.Helper;
  * used when regenerating puzzles and brainteasers.<br/> Thread-Safety: This
  * class is immutable and hence thread-safe.
  *
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class PuzzleConfig {

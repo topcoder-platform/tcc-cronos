@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
  * it does not maintain any state and inherits the thread-safety behaviour of
  * the parent class.
  *
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class DomainRejectionHandler extends DomainApprovalRejectionHandler {

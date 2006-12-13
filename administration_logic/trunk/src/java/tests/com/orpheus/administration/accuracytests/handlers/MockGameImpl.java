@@ -12,7 +12,7 @@ import com.orpheus.game.persistence.HostingBlock;
 /**
  * Dummy class.
  *
- * @author myxgyy
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockGameImpl implements Game {

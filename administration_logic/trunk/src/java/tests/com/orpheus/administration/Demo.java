@@ -12,7 +12,7 @@ import com.topcoder.util.puzzle.PuzzleTypeSource;
  * This is a demo of this component.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class Demo extends TestCase {

@@ -140,7 +140,7 @@ import com.topcoder.webspider.web.WebPageData;
  * synchronize over puzzleConfigMap whenever it is accessed.
  * </p>
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class AdministrationManager {

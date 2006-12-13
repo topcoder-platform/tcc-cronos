@@ -21,7 +21,7 @@
 		</Property>
 	</Config>
   <Config name="com.topcoder.user.profile.ConfigProfileType.sponsor">
-      <Property name="sponsor-is-approved">
+      <Property name="IS_APPROVED">
 		<Value>notnull</Value>
 	  </Property>
   </Config>

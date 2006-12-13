@@ -17,7 +17,7 @@ import com.mockrunner.mock.web.MockServletContext;
  * <p>
  * Dummy class.
  * </p>
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockHttpSession implements HttpSession {

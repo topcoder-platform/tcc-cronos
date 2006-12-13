@@ -17,7 +17,7 @@ import com.orpheus.game.persistence.ImageInfo;
  * Test the <code>HostingSlotImpl</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class HostingSlotImplUnitTests extends TestCase {

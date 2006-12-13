@@ -12,7 +12,7 @@ import junit.framework.TestCase;
  * Test the <code>PuzzleConfig</code> class.
  * </p>
  *
- * @author myxgyy
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class PuzzleConfigAccuracyTests extends TestCase {

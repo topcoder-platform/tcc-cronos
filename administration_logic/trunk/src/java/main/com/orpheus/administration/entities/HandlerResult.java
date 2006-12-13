@@ -15,7 +15,7 @@ import com.orpheus.administration.Helper;
  * message based on the result code.<br/> Thread-Safety: This class is
  * immutable and hence thread-safe.
  *
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class HandlerResult {

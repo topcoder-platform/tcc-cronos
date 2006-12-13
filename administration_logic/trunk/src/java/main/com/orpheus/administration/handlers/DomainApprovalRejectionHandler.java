@@ -36,7 +36,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * required of Handler implementations. To achieve this, it synchronizes over
  * the userProfileManager instance var in the execute() method.
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 abstract class DomainApprovalRejectionHandler implements Handler {
@@ -227,7 +227,7 @@ abstract class DomainApprovalRejectionHandler implements Handler {
         if (sponsor == null) {
             return failedResult;
         }
-        String approved = (String) sponsor.getProperty("sponsor-is-approved");
+        String approved = (String) sponsor.getProperty("IS_APPROVED");
         if (approved == null || approved.trim().length() == 0) {
             Helper.processFailureApprovalNotPending(request,
                     failRequestAttrName, domain.getSponsorId());

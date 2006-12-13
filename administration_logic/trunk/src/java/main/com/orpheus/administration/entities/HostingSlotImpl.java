@@ -16,7 +16,7 @@ import com.orpheus.game.persistence.HostingSlot;
  * transfer object between remote calls.<br/> Thread-Safety: this class is not
  * thread safe as it is mutable.
  *
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class HostingSlotImpl implements HostingSlot {

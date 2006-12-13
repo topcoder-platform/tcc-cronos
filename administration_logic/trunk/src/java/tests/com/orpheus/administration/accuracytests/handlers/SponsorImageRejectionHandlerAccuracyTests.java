@@ -20,7 +20,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * the base class.
  * </p>
  *
- * @author myxgyy
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class SponsorImageRejectionHandlerAccuracyTests extends TestCase {

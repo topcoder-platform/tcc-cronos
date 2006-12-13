@@ -17,7 +17,7 @@ import com.topcoder.util.puzzle.PuzzleData;
  * Mock implementation of <code>AdminDataBean</code> only for testing purpose.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class MockAdminDataBean implements SessionBean {
@@ -54,6 +54,21 @@ public class MockAdminDataBean implements SessionBean {
      */
     public AdminSummary getAdminSummary() {
         return new AdminSummary() {
+
+            public int getActiveGameCount() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            public int getPendingSponsorCount() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
+
+            public int getPendingWinnerCount() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
         };
     }
 

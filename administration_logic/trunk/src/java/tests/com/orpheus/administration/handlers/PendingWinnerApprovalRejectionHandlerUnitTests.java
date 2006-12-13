@@ -20,7 +20,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>PendingWinnerApprovalRejectionHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class PendingWinnerApprovalRejectionHandlerUnitTests extends TestCase {

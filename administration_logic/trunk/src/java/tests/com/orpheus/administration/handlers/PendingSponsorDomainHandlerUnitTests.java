@@ -18,7 +18,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>PendingSponsorDomainHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class PendingSponsorDomainHandlerUnitTests extends TestCase {

@@ -22,7 +22,7 @@
 						<Value>root</Value>
 					</Property>
 					<Property name="password">
-						<Value>1234</Value>
+						<Value>root</Value>
 					</Property>
 					<Property name="SelectMethod">
 						<Value>Cursor</Value>

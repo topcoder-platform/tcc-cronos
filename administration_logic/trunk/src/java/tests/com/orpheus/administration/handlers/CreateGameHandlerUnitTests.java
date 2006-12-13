@@ -22,7 +22,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>CreateGameHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class CreateGameHandlerUnitTests extends TestCase {
@@ -357,10 +357,12 @@ public class CreateGameHandlerUnitTests extends TestCase {
             "\"auctionEndTime\":\"2006-12-30 09:00\""});
         assertEquals("'fail' should be returned if success.", failedResult,
                 target.execute(context));
-        assertEquals("BLOCK_INFO_LENGTH_NOT_MATCH should be returned.",
+        assertEquals("EXCEPTION_OCCURRED should be returned.",
                 ResultCode.EXCEPTION_OCCURRED, ((HandlerResult) request
                         .getAttribute(failRequestAttrName)).getResultCode());
     }
+    
+    
 
     /**
      * <p>

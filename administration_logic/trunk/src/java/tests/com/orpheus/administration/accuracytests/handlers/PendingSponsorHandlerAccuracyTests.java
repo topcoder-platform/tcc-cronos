@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 /**
  * Accuracy test for PendingSponsorHandler class.
  *
- * @author myxgyy
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class PendingSponsorHandlerAccuracyTests extends TestCase {

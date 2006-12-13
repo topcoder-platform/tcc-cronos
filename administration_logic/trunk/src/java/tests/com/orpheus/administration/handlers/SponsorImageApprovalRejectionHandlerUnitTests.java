@@ -19,13 +19,13 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>SponsorImageApprovalRejectionHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class SponsorImageApprovalRejectionHandlerUnitTests extends TestCase {
 
     /** Represents the xml string. */
-    public static final String XMLSTRING = "<handler type=\"sponsorImageApproval\">"
+    public static final String XMLSTRING = "<xxx><handler type=\"sponsorImageApproval\">"
             + "<object-factory-ns>objFactoryNS</object-factory-ns>"
             + "<admin-data-jndi-name>"
             + TestHelper.ADMIN_DATA_JNDI_NAME
@@ -37,7 +37,7 @@ public class SponsorImageApprovalRejectionHandlerUnitTests extends TestCase {
             + "<domain-id-request-param>DomainId</domain-id-request-param>"
             + "<sponsor-id-request-param>sponsorId</sponsor-id-request-param>"
             + "<fail-result>Failed</fail-result><fail-request-attribute>"
-            + "fail</fail-request-attribute></handler>";
+            + "fail</fail-request-attribute></handler></xxx>";
 
     /**
      * <p>This holds the name of the namespace to be used when instantiating ConfigManagerSpecificationFactory
@@ -133,7 +133,7 @@ public class SponsorImageApprovalRejectionHandlerUnitTests extends TestCase {
         context = new ActionContext(request, response);
         //      the xml string used for test
         String xml = XMLSTRING;
-        Element element = TestHelper.loadXmlString(xml);
+        Element element = (Element) TestHelper.loadXmlString(xml).getElementsByTagName("handler").item(0);
         target = new SponsorImageApprovalHandler(element);
     }
 

@@ -18,7 +18,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>PendingWinnerHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class PendingWinnerHandlerUnitTests extends TestCase {

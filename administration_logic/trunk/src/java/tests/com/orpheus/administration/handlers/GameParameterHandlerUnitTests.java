@@ -19,7 +19,7 @@ import com.topcoder.web.frontcontroller.ActionContext;
  * Test the <code>GameParameterHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class GameParameterHandlerUnitTests extends TestCase {
@@ -139,7 +139,7 @@ public class GameParameterHandlerUnitTests extends TestCase {
         // initialize instances used in tests
         context = new ActionContext(request, response);
         // the xml string used for test
-        String xml = "<handler type=\"gameParameter\"><ballcolor-id-request-param>"
+        String xml = "<xxx><handler type=\"gameParameter\"><ballcolor-id-request-param>"
                 + "ballColorId</ballcolor-id-request-param><ballcolor-id-session-attr>"
                 + "ballColorId</ballcolor-id-session-attr><key-count-request-param>"
                 + "keyCount</key-count-request-param><key-count-session-attr>"
@@ -150,8 +150,8 @@ public class GameParameterHandlerUnitTests extends TestCase {
                 + "dtFormat</date-format-request-param><start-date-session-attr>"
                 + "startDate</start-date-session-attr><fail-result>Failed</fail-result>"
                 + "<fail-request-attribute>fail</fail-request-attribute>"
-                + "</handler>";
-        Element element = TestHelper.loadXmlString(xml);
+                + "</handler></xxx>";
+        Element element = (Element) TestHelper.loadXmlString(xml).getElementsByTagName("handler").item(0);
         target = new GameParameterHandler(element);
     }
 

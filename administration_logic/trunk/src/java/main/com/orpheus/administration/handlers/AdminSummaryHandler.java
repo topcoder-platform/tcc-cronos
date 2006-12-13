@@ -26,7 +26,7 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
  * Handler implementations. This class is immutable and automatically
  * thread-safe.
  * 
- * @author bose_java, KKD
+ * @author TCSDESIGNER, KKD
  * @version 1.0
  */
 public class AdminSummaryHandler implements Handler {

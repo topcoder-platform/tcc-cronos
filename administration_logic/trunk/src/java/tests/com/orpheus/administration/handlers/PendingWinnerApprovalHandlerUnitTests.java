@@ -14,7 +14,7 @@ import com.orpheus.administration.TestHelper;
  * Test the <code>PendingWinnerApprovalHandler</code> class.
  * </p>
  *
- * @author KKD
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class PendingWinnerApprovalHandlerUnitTests extends TestCase {
