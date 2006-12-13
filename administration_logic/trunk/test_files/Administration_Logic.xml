@@ -1,111 +1,113 @@
 <?xml version="1.0" ?>
 <CMConfig>
-	<Config name="com.topcoder.util.log">
-		<Property name="logClass">
-			<Value>com.topcoder.util.log.basic.BasicLog</Value>
-		</Property>
-	</Config>
-	
-	<Config name="com.topcoder.user.profile.manager.SimpleUserProfileManager">
-		<Property name="upm_log_name">
-			<Value>UserProfileManager</Value>
-		</Property>
-		<Property name="persistence_class">
-			<Value>com.topcoder.user.profile.manager.persistence.XMLUserProfilePersistence</Value>
-		</Property>
-		<Property name="profile_type_factory_class">
-			<Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
-		</Property>
-		<Property name="profile_xml_file">
-			<Value>test_files/profiles.xml</Value>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.testProfileType">
-		<Property name="name1">
-			<Value>value1</Value>
-		</Property>
-		<Property name="name2">
-			<Value>value2</Value>
-		</Property>
-		<Property name="name3">
-			<Value>value3</Value>
-		</Property>
-	</Config>
+    <Config name="com.topcoder.util.log">
+        <Property name="logClass">
+            <Value>com.topcoder.util.log.basic.BasicLog</Value>
+        </Property>
+    </Config>
+    
+    <Config name="com.topcoder.user.profile.manager.SimpleUserProfileManager">
+        <Property name="upm_log_name">
+            <Value>UserProfileManager</Value>
+        </Property>
+        <Property name="persistence_class">
+            <Value>com.topcoder.user.profile.manager.persistence.XMLUserProfilePersistence</Value>
+        </Property>
+        <Property name="profile_type_factory_class">
+            <Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+        </Property>
+        <Property name="profile_xml_file">
+            <Value>test_files/profiles.xml</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.user.profile.ConfigProfileType.testProfileType">
+        <Property name="name1">
+            <Value>value1</Value>
+        </Property>
+        <Property name="name2">
+            <Value>value2</Value>
+        </Property>
+        <Property name="name3">
+            <Value>value3</Value>
+        </Property>
+    </Config>
   
     <!-- object factory config -->
   <Config name="objFactoryNS">
-		<Property name="com/topcoder/user/profile/manager/UserProfileManager">
-	      <Property name="type">
-	        <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
-	      </Property>
-	      <Property name="params">
-	        <Property name="param1">
-	          <Property name="type">
-	            <Value>String</Value>
-	          </Property>
-	          <Property name="value">
-	            <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
-	          </Property>
-	        </Property>
-	      </Property>
-	    </Property>
-	    
-	    <Property name="SiteStatistics">
-	      <Property name="type">
-	        <Value>com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl</Value>
-	      </Property>
-	      <Property name="params">
-	      </Property>
-	    </Property>
-	</Config>
-	
-	<Config name="com.topcoder.user.profile.ConfigProfileType.teacher">
-    <Property name="user_name">
-        <Value>notempty</Value>
-    </Property>
-    <Property name="password">
-        <Value>notempty</Value>
-    </Property>
-    <Property name="email_addr">
-        <Value>notempty</Value>
-    </Property>
-            <Property name="IS_APPROVED">
-            <Value>notnull</Value>
+        <Property name="com/topcoder/user/profile/manager/UserProfileManager">
+          <Property name="type">
+            <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+          </Property>
+          <Property name="params">
+            <Property name="param1">
+              <Property name="type">
+                <Value>String</Value>
+              </Property>
+              <Property name="value">
+                <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+              </Property>
+            </Property>
+          </Property>
         </Property>
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.employee">
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.student">
-    <Property name="user_name">
-        <Value>notempty</Value>
-    </Property>
-    <Property name="password">
-        <Value>notempty</Value>
-    </Property>
-    <Property name="email_addr">
-        <Value>notempty</Value>
-    </Property>
-                <Property name="IS_APPROVED">
-            <Value>notnull</Value>
+        
+        <Property name="SiteStatistics">
+          <Property name="type">
+            <Value>com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl</Value>
+          </Property>
+          <Property name="params">
+          </Property>
         </Property>
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.president">
-    <Property name="user_name">
+    </Config>
+    
+    <Config name="com.topcoder.user.profile.ConfigProfileType.teacher">
+      <Property name="user_name">
         <Value>notempty</Value>
-    </Property>
-    <Property name="password">
+      </Property>
+      <Property name="password">
         <Value>notempty</Value>
-    </Property>
-    <Property name="email_addr">
+      </Property>
+      <Property name="email_addr">
         <Value>notempty</Value>
-    </Property>
-                <Property name="IS_APPROVED">
-            <Value>notnull</Value>
-        </Property>
-	</Config>
-	
-	
-	
+      </Property>
+      <Property name="sponsor-is-approved">
+        <Value>notnull</Value>
+      </Property>
+    </Config>
+
+    <Config name="com.topcoder.user.profile.ConfigProfileType.employee">
+    </Config>
+
+    <Config name="com.topcoder.user.profile.ConfigProfileType.student">
+      <Property name="user_name">
+        <Value>notempty</Value>
+      </Property>
+      <Property name="password">
+        <Value>notempty</Value>
+      </Property>
+      <Property name="email_addr">
+        <Value>notempty</Value>
+      </Property>
+      <Property name="sponsor-is-approved">
+        <Value>notnull</Value>
+      </Property>
+    </Config>
+
+    <Config name="com.topcoder.user.profile.ConfigProfileType.president">
+      <Property name="user_name">
+        <Value>notempty</Value>
+      </Property>
+      <Property name="password">
+        <Value>notempty</Value>
+      </Property>
+      <Property name="email_addr">
+        <Value>notempty</Value>
+      </Property>
+      <Property name="sponsor-is-approved">
+        <Value>notnull</Value>
+      </Property>
+    </Config>
+    
   <Config name="com.orpheus.administration.AdministrationManager">
     <Property name="jigsaw">
       <Property name="puzzleTypeName">
@@ -178,5 +180,5 @@
     </Property>
   </Config>
   
-
 </CMConfig>
+

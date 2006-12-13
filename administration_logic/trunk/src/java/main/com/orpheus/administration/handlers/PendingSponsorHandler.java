@@ -176,7 +176,7 @@ public class PendingSponsorHandler implements Handler {
 
         // Search for pending sponsors
         Map searchParams = new HashMap();
-        searchParams.put("IS_APPROVED", null);
+        searchParams.put("sponsor-is-approved", null);
         // Search for the pending sponsors
         UserProfile[] sponsors = null;
         synchronized (userProfileManager) {

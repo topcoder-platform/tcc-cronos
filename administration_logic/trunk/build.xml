@@ -7,15 +7,17 @@
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Administration_Logic" />
     <property name="package" value="com.orpheus.administration" />
-    <property name="packagedir" value="com" />
+    <property name="packagedir" value="com/orpheus/administration" />
     <property name="distfilename" value="administration_logic" />
     <property name="component_version" value="1.0" />
     <property name="component_path" value="${distfilename}/${component_version}" />
+    <property name="client" value="cronos" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
     <property name="tcs_libdir" value="lib/tcs" />
     <property name="ext_libdir" value="lib" />
+    <property name="custom_libdir" value="${lib_base}/lib/${client}/components" />
     <property name="jar_tcs_libdir" value="lib/tcs" />
     <property name="jar_ext_libdir" value="lib" />
     <property name="docsdir" value="docs" />
@@ -89,6 +91,11 @@
     <property name="user_profile_manager.path" value="user_profile_manager/${user_profile_manager.version}"/>
     <property name="user_profile_manager.jar" value="${tcs_libdir}/${user_profile_manager.path}/${user_profile_manager.jar.name}"/>
     
+    <property name="object_factory.version" value="2.0"/>
+    <property name="object_factory.jar.name" value="object_factory.jar"/>
+    <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
+    
     <property name="json_object.version" value="1.0"/>
     <property name="json_object.jar.name" value="json_object.jar"/>
     <property name="json_object.path" value="json_object/${json_object.version}"/>
@@ -139,11 +146,6 @@
     <property name="html_document_parser.path" value="html_parser/${html_document_parser.version}"/>
     <property name="html_document_parser.jar" value="${tcs_libdir}/${html_document_parser.path}/${html_document_parser.jar.name}"/>
     
-    <property name="http_utility.version" value="1.0"/>
-    <property name="http_utility.jar.name" value="http_utility.jar"/>
-    <property name="http_utility.path" value="http_utility/${http_utility.version}"/>
-    <property name="http_utility.jar" value="${tcs_libdir}/${http_utility.path}/${http_utility.jar.name}"/>
-    
     <property name="simple_cache.version" value="1.0"/>
     <property name="simple_cache.jar.name" value="simple_cache.jar"/>
     <property name="simple_cache.path" value="simple_cache/${simple_cache.version}"/>
@@ -158,32 +160,93 @@
     <property name="memory_usage.jar.name" value="memory_usage.jar"/>
     <property name="memory_usage.path" value="memory_usage/${memory_usage.version}"/>
     <property name="memory_usage.jar" value="${tcs_libdir}/${memory_usage.path}/${memory_usage.jar.name}"/>
+    
+    <property name="site_validation.version" value="1.0"/>
+    <property name="site_validation.jar.name" value="site_validation.jar"/>
+    <property name="site_validation.path" value="site_validation/${site_validation.version}"/>
+    <property name="site_validation.jar" value="${tcs_libdir}/${site_validation.path}/${site_validation.jar.name}"/>
+    
+    <property name="web_site_statistics.version" value="1.0"/>
+    <property name="web_site_statistics.jar.name" value="web_site_statistics.jar"/>
+    <property name="web_site_statistics.path" value="web_site_statistics/${web_site_statistics.version}"/>
+    <property name="web_site_statistics.jar" value="${tcs_libdir}/${web_site_statistics.path}/${web_site_statistics.jar.name}"/>
+    
+    <property name="http_utility.version" value="1.1"/>
+    <property name="http_utility.jar.name" value="http_utility.jar"/>
+    <property name="http_utility.path" value="http_utility/${http_utility.version}"/>
+    <property name="http_utility.jar" value="${tcs_libdir}/${http_utility.path}/${http_utility.jar.name}"/>
+
+    <property name="front_controller.version" value="2.1"/>
+    <property name="front_controller.jar.name" value="front_controller.jar"/>
+    <property name="front_controller.path" value="front_controller/${front_controller.version}"/>
+    <property name="front_controller.jar" value="${tcs_libdir}/${front_controller.path}/${front_controller.jar.name}"/>
+
+    <property name="image_manipulation.version" value="1.0"/>
+    <property name="image_manipulation.jar.name" value="image_manipulation.jar"/>
+    <property name="image_manipulation.path" value="image_manipulation/${image_manipulation.version}"/>
+    <property name="image_manipulation.jar" value="${tcs_libdir}/${image_manipulation.path}/${image_manipulation.jar.name}"/>
+
+    <property name="puzzle_framework.version" value="1.0"/>
+    <property name="puzzle_framework.jar.name" value="puzzle_framework.jar"/>
+    <property name="puzzle_framework.path" value="puzzle_framework/${puzzle_framework.version}"/>
+    <property name="puzzle_framework.jar" value="${tcs_libdir}/${puzzle_framework.path}/${puzzle_framework.jar.name}"/>
+
+    <property name="auction_framework.version" value="1.0"/>
+    <property name="auction_framework.jar.name" value="auction_framework.jar"/>
+    <property name="auction_framework.path" value="auction_framework/${auction_framework.version}"/>
+    <property name="auction_framework.jar" value="${tcs_libdir}/${auction_framework.path}/${auction_framework.jar.name}"/>
+
+    <!-- Custom Component Dependencies -->
+
+    <property name="administration_persistence.version" value="1.0" />
+    <property name="administration_persistence.jar.name" value="administration_persistence.jar" />
+    <property name="administration_persistence.path" value="administration_persistence/${administration_persistence.version}" />
+    <property name="administration_persistence.jar" value="${custom_libdir}/${administration_persistence.path}/${administration_persistence.jar.name}" />
+
+    <property name="game_persistence.version" value="1.0" />
+    <property name="game_persistence.jar.name" value="game_persistence.jar" />
+    <property name="game_persistence.path" value="game_persistence/${game_persistence.version}" />
+    <property name="game_persistence.jar" value="${custom_libdir}/${game_persistence.path}/${game_persistence.jar.name}" />
+
+    <property name="game_interface_logic.version" value="1.0" />
+    <property name="game_interface_logic.jar.name" value="game_interface_logic.jar" />
+    <property name="game_interface_logic.path" value="game_interface_logic/${game_interface_logic.version}" />
+    <property name="game_interface_logic.jar" value="${custom_libdir}/${game_interface_logic.path}/${game_interface_logic.jar.name}" />
 
     <!-- 3rd Party Dependencies  -->
-    <property name="d1.jar" value="${ext_libdir}/cglib-full-2.0-RC2.jar"/>
-    <property name="d2.jar" value="${ext_libdir}/jakarta-oro-2.0.8.jar"/>
-	<property name="d3.jar" value="${ext_libdir}/mysql-connector-java-3.1.11-bin.jar"/>
-	<property name="d4.jar" value="${ext_libdir}/Image_manipulation.jar"/>
-	<property name="d5.jar" value="${ext_libdir}/web_site_statistics.jar"/>
-	<property name="d6.jar" value="${ext_libdir}/j2ee.jar"/>
-	<property name="d7.jar" value="${ext_libdir}/object_factory.jar"/>
-	<property name="d8.jar" value="${ext_libdir}/xerces.jar"/>
-	<property name="d9.jar" value="${ext_libdir}/mockejb.jar"/>
-	<property name="d10.jar" value="${ext_libdir}/site_validation.jar"/>	
-	<property name="d11.jar" value="${ext_libdir}/commons-logging.jar"/>
-	<property name="d12.jar" value="${ext_libdir}/mockrunner.jar"/>
-	<property name="d13.jar" value="${ext_libdir}/admin_persistence.jar"/>
-	<property name="d14.jar" value="${ext_libdir}/auction_framework.jar"/>
-	
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="j2ee.jar" value="${ext_libdir}/j2ee.jar"/>
+    <property name="tidy.jar" value="${ext_libdir}/jtidy/04Aug200r7/Tidy.jar"/>
+    <property name="xerces.jar" value="${ext_libdir}/xerces/1.4.4/xerces.jar"/>
+    <property name="mockrunner.jar" value="${ext_libdir}/mockrunner/0.3.7/lib/mockrunner.jar"/>
+    
+    <!--    
+    <property name="msbase.jar" value="${ext_libdir}/SQLServerJDBC/SP3/msbase.jar"/>
+    <property name="mssqlserver.jar" value="${ext_libdir}/SQLServerJDBC/SP3/mssqlserver.jar"/>
+    <property name="msutil.jar" value="${ext_libdir}/SQLServerJDBC/SP3/msutil.jar"/>
+    
+    -->
+    <property name="mysql.jar" value="${ext_libdir}/mysql/3.1.12/mysql-connector-java-3.1.12-bin.jar"/>
+    <property name="mockejb_dir" value="${ext_libdir}/mockejb/0.6-beta2" />    
+    <property name="mockejb.jar" value="${mockejb_dir}/mockejb.jar"/>
+    <property name="cglib-full-2.0-RC2.jar" value="${mockejb_dir}/cglib-full-2.0-RC2.jar"/>
+    <property name="commons-logging.jar" value="${mockejb_dir}/commons-logging.jar"/>
+
+    <property name="jakarta-oro-2.0.8.jar" value="${ext_libdir}/jakarta-oro/2.0.8/jakarta-oro-2.0.8.jar"/>
+    
     <!-- Java Locations -->
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
 
     <path id="buildlibs">
-        <pathelement location="${junit.jar}" />
+        <pathelement location="${j2ee.jar}" />
+	<!--        <pathelement location="${xerces.jar}" />  -->
+        <pathelement location="${tidy.jar}" />
+        
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${user_profile.jar}" />
         <pathelement location="${user_profile_manager.jar}" />
+        <pathelement location="${object_factory.jar}" />
         <pathelement location="${json_object.jar}" />
         <pathelement location="${web_spider.jar}" />
         <pathelement location="${jndi_context_utility.jar}" />
@@ -194,33 +257,42 @@
         <pathelement location="${db_connection_factory.jar}" />
         <pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${html_document_parser.jar}" />
-        <pathelement location="${http_utility.jar}" />
         <pathelement location="${simple_cache.jar}" />
         <pathelement location="${compression_utility.jar}" />
         <pathelement location="${memory_usage.jar}" />
+        <pathelement location="${site_validation.jar}" />
+        <pathelement location="${web_site_statistics.jar}" />
+	<pathelement location="${http_utility.jar}" />
+	<pathelement location="${front_controller.jar}" />
+	<pathelement location="${image_manipulation.jar}" />
+	<pathelement location="${puzzle_framework.jar}" />
+	<pathelement location="${auction_framework.jar}" />
+
+	<pathelement location="${administration_persistence.jar}" />
+	<pathelement location="${game_persistence.jar}" />
+	<pathelement location="${game_interface_logic.jar}" />
+        
         <pathelement location="${configdir}" />
-        <pathelement location="${testfiles}" />
-    	<pathelement location="${d1.jar}" />
-    	<pathelement location="${d2.jar}" />
-    		<pathelement location="${d3.jar}" />
-    		<pathelement location="${d4.jar}" />
-    		<pathelement location="${d5.jar}" />
-    		<pathelement location="${d6.jar}" />
-    		<pathelement location="${d7.jar}" />
-    		<pathelement location="${d8.jar}" />
-		<pathelement location="${d9.jar}" />
-		<pathelement location="${d10.jar}" />
-    	<pathelement location="${d11.jar}" />
-    	<pathelement location="${d11.jar}" />
-        	<pathelement location="${d12.jar}" />
-        	<pathelement location="${d13.jar}" />
-    	<pathelement location="${d14.jar}" />
+	<pathelement location="${testfiles}" />
+
+	<!--        
+        <pathelement location="${msbase.jar}" />
+        <pathelement location="${mssqlserver.jar}" />
+        <pathelement location="${msutil.jar}" />
+	--> 
     </path>
 
     <path id="test.build.classpath">
+        <pathelement location="${mockrunner.jar}" />
+        <pathelement location="${mockejb.jar}" />
         <pathelement location="${build_testclassdir}"/>
         <pathelement location="${build_classdir}"/>
         <path refid="buildlibs"/>
+        <pathelement location="${junit.jar}" />
+        <pathelement location="${mysql.jar}" />
+        <pathelement location="${cglib-full-2.0-RC2.jar}" />
+        <pathelement location="${commons-logging.jar}" />
+        <pathelement location="${jakarta-oro-2.0.8.jar}" />
     </path>
 
     <path id="runtime.classpath">
@@ -268,7 +340,7 @@
 
     <target name="compile_tests" depends="compile">
         <mkdir dir="${build_testclassdir}"/>
-        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}">
+        <javac srcdir="${javasrc}" destdir="${build_testclassdir}" debug="true" verbose="${verbose}">
             <classpath refid="test.build.classpath" />
         </javac>
     </target>
@@ -338,7 +410,7 @@
     <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
     <!-- ************************************************************************** -->
 
-    <target name="dist_tcs" depends="clean,dist,javadoc">
+    <target name="dist_custom" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
 <!-- uncomment if configuration files exist.
         <mkdir dir="${dist_conf}"/>
@@ -371,17 +443,17 @@
 
         <antcall target="package_docs" />
 
-<!-- uncomment if test files exist.
+	<!-- uncomment if test files exist.  -->
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
--->
+
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
         
-        <antcall target="move_to_tcs"/>
+        <antcall target="move_to_custom"/>
     </target>
 
     <target name="package_docs" depends="javadoc">
@@ -402,12 +474,12 @@
         <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}" />
     </target>
     
-    <target name="move_to_tcs">
-        <mkdir dir="${tcs_libdir}/${component_path}"/>
-        <mkdir dir="${tcs_libdir}/${component_path}/dist"/>
+    <target name="move_to_custom">
+        <mkdir dir="${custom_libdir}/${component_path}"/>
+        <mkdir dir="${custom_libdir}/${component_path}/dist"/>
 
-        <copy file="${component.jar}" todir="${tcs_libdir}/${component_path}"/>
-        <copy file="${component.dist.jar}" todir="${tcs_libdir}/${component_path}/dist"/>
+        <copy file="${component.jar}" todir="${custom_libdir}/${component_path}"/>
+        <copy file="${component.dist.jar}" todir="${custom_libdir}/${component_path}/dist"/>
     </target>
 
     <target name="dev_submission" depends="test">
@@ -464,6 +536,12 @@
         <copy file="${compression_utility.jar}" todir="${jar_tcs_libdir}/${compression_utility.path}" />
         <mkdir dir="${jar_tcs_libdir}/${memory_usage.path}"/>
         <copy file="${memory_usage.jar}" todir="${jar_tcs_libdir}/${memory_usage.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${image_manipulation.path}"/>
+        <copy file="${image_manipulation.jar}" todir="${jar_tcs_libdir}/${image_manipulation.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${puzzle_framework.path}"/>
+        <copy file="${puzzle_framework.jar}" todir="${jar_tcs_libdir}/${puzzle_framework.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${auction_framework.path}"/>
+        <copy file="${auction_framework.jar}" todir="${jar_tcs_libdir}/${auction_framework.path}" />
         
         <jar jarfile="${dev_dist.jar}"
              basedir="."

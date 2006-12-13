@@ -123,7 +123,7 @@
         <Value>3</Value>
     </Property>
     <Property name="objFactoryNS">
-        <Value>objFactoryNS</Value>
+        <Value>com.topcoder.util.web.sitestatistics.inclusion.rule</Value>
     </Property>
   </Config>
 </CMConfig>
