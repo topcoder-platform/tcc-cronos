@@ -227,8 +227,8 @@ public class SQLServerAuctionDAO implements AuctionDAO {
             }
 
             // If all goes well, put auction in cache
-            auction.setDescription("");
-            auction.setSummary("");
+            auction.setDescription("Hosting slots for block " + auction.getId() + ".");
+            auction.setSummary("Hosting slots for block " + auction.getId() + ".");
             cache.put(auction.getId(), auction);
 
             return auction;
@@ -333,8 +333,8 @@ public class SQLServerAuctionDAO implements AuctionDAO {
             auction.setBids(this.getBids(conn, auction.getId().longValue()));
 
             // if all goes well, put auction in cache
-            auction.setDescription("");
-            auction.setSummary("");
+            auction.setDescription("Hosting slots for block " + auction.getId() + ".");
+            auction.setSummary("Hosting slots for block " + auction.getId() + ".");
             cache.put(auction.getId(), auction);
 
             return auction;
@@ -723,8 +723,8 @@ public class SQLServerAuctionDAO implements AuctionDAO {
                 auction.setMinimumBid(resultSet.getInt(3));
                 auction.setStartDate(timestamp2Date(resultSet.getTimestamp(4)));
                 auction.setEndDate(timestamp2Date(resultSet.getTimestamp(5)));
-                auction.setDescription("");
-                auction.setSummary("");
+                auction.setDescription("Hosting slots for block " + auction.getId() + ".");
+                auction.setSummary("Hosting slots for block " + auction.getId() + ".");
             }
 
             return auction;
