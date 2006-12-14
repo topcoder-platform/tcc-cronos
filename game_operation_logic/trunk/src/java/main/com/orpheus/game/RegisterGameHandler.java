@@ -250,17 +250,19 @@ public class RegisterGameHandler implements Handler {
         long gameId = RequestHelper.getLongParameter(request, gameIdParamKey); //gameId from request parameter
 
         try {
+        	Game game = null;
             if (golu.isUseLocalInterface()) {
             	GameDataLocal gameData = golu.getGameDataLocalHome().create();
             	gameData.recordRegistration(userId, gameId);
+            	game = gameData.getGame(gameId);
             } else {
             	GameData gameData = golu.getGameDataRemoteHome().create();
             	gameData.recordRegistration(userId, gameId);
+            	game = gameData.getGame(gameId);
             }
             
             ///////////////////////////////////////////////////////////
             // Added by Zulander to fix BALL-4675
-            Game game = gameData.getGame(gameId);
             context.setAttribute("message-to", 
             		user.getProperty(BaseProfileType.EMAIL_ADDRESS));
             context.setAttribute("message-subject",

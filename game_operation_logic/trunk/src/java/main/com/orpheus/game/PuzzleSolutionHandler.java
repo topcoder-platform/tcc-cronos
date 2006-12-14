@@ -126,7 +126,7 @@ public class PuzzleSolutionHandler implements Handler {
 
         try {
             if (golu.isUseLocalInterface()) {
-                gameData = golu.getGameDataLocalHome().create();
+                gameDataLocal = golu.getGameDataLocalHome().create();
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }

@@ -131,8 +131,6 @@ public class PuzzleRenderingHandler implements Handler {
                 puzzleData = gameData.getPuzzle(puzzleId.longValue());
             }
 
-            PuzzleData puzzleData = gameData.getPuzzle(puzzleId.longValue());
-
             String typeName = puzzleData.getAttribute(PuzzleData.PUZZLE_TYPE_ATTRIBUTE);
             PuzzleTypeSource puzzleTypeSource = (PuzzleTypeSource) request.getSession().getServletContext()
                                                                           .getAttribute(golu.getPuzzleTypeSourceKey());

@@ -33,7 +33,11 @@ import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.GreaterThanFilter;
 import com.topcoder.search.builder.filter.OrFilter;
 import com.topcoder.user.profile.UserProfile;
+
+import com.topcoder.util.rssgenerator.RSSFeed;
 import com.topcoder.util.rssgenerator.DataStore;
+import com.topcoder.util.rssgenerator.impl.RSSFeedImpl;
+import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
 import com.topcoder.util.rssgenerator.RSSItem;
 import com.topcoder.util.rssgenerator.SearchCriteria;
 import com.topcoder.util.rssgenerator.datastore.SearchCriteriaImpl;
@@ -366,7 +370,7 @@ public class MessagePollResult implements Result {
             responseWriter.close();
         } catch (IOException e) {
             throw new ResultExecutionException("failed to write content to response", e);
-        } catch (RSSWriteException e) {
+        } catch (Exception e) {
             throw new ResultExecutionException("failed to write RSSItme to response", e);
         } finally {
             if (responseWriter != null) {

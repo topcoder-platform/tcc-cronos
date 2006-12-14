@@ -224,8 +224,6 @@ public class KeySubmissionHandler implements Handler {
             throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
         } catch (NamingException e) {
             throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
-        } catch (GameDataException e) {
-            throw new HandlerExecutionException("failed to obtain data from GameData", e);
         } catch (RemoteException e) {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
         } catch (Exception e) {
