@@ -4,6 +4,7 @@
 package com.orpheus.game;
 
 import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.puzzle.PuzzleData;
@@ -119,13 +120,15 @@ public class PuzzleRenderingHandler implements Handler {
 
         try {
             // obtains GameData
-            GameData gameData = null;
             GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
 
+            PuzzleData puzzleData;
             if (golu.isUseLocalInterface()) {
-                gameData = golu.getGameDataLocalHome().create();
+            	GameDataLocal gameData = golu.getGameDataLocalHome().create();
+                puzzleData = gameData.getPuzzle(puzzleId.longValue());
             } else {
-                gameData = golu.getGameDataRemoteHome().create();
+            	GameData gameData = golu.getGameDataRemoteHome().create();
+                puzzleData = gameData.getPuzzle(puzzleId.longValue());
             }
 
             PuzzleData puzzleData = gameData.getPuzzle(puzzleId.longValue());
@@ -151,6 +154,8 @@ public class PuzzleRenderingHandler implements Handler {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
         } catch (RemoteException e) {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
+        } catch (Exception e) {
+            throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
         }
     }
 }
