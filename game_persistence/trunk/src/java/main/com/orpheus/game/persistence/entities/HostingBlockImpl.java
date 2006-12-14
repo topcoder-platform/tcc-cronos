@@ -18,7 +18,7 @@ import com.orpheus.game.persistence.HostingSlot;
  * <p>
  * <b>Thread Safety</b>:This class is immutable and thread-safe.
  * </p>
- * @author argolite, waits
+ * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
 public class HostingBlockImpl implements HostingBlock {
@@ -75,15 +75,19 @@ public class HostingBlockImpl implements HostingBlock {
         Helper.checkNegative(sequenceNumber, "sequenceNumber");
         Helper.checkNegative(maxHostingTimePerSlot, "maxHostingTimePerSlot");
 
-        //the slots should not be null and  should not contain null element
-        Helper.checkNotNullOrContainNullElement(slots, "HostingSlots");
-
+        //the slots can be null but should not contain null element
+        if (slots != null) {
+            for (int i = 0; i < slots.length; i++) {
+                Helper.checkNotNull(slots[i], "HostingSlot");
+            }
+        }
+        
         this.id = id;
         this.sequenceNumber = sequenceNumber;
         this.maxHostingTimePerSlot = maxHostingTimePerSlot;
 
         //shallow copy the slot array
-        this.slots = (HostingSlot[]) slots.clone();
+        this.slots = slots != null?(HostingSlot[]) slots.clone():null;
     }
 
     /**
@@ -117,7 +121,7 @@ public class HostingBlockImpl implements HostingBlock {
      * @return the array of HostingSlot objects
      */
     public HostingSlot[] getSlots() {
-        return (HostingSlot[]) this.slots.clone();
+        return slots!=null?(HostingSlot[]) this.slots.clone():null;
     }
 
     /**

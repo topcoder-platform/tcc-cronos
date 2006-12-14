@@ -17,7 +17,7 @@ import junit.framework.TestCase;
  * <p>
  * Unit test cases for <code>HostingBlockImpl</code>.
  * </p>
- * @author waits
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class HostingBlockImplTests extends TestCase {
@@ -139,12 +139,9 @@ public class HostingBlockImplTests extends TestCase {
      * test the ctor, the slots is null, iae expected.
      */
     public void testCtor_nullSlotArray() {
-        try {
-            new HostingBlockImpl(null, SEQUENCE_NUMBER, null, MAX_HOSTING_TIME_PER_SLOT);
-            fail("The Slots is null.");
-        } catch (Exception e) {
-            //good
-        }
+        this.hostingBlock = new HostingBlockImpl(null, SEQUENCE_NUMBER, null, MAX_HOSTING_TIME_PER_SLOT);
+        assertNull(this.hostingBlock.getSlots());
+            
     }
 
     /**

@@ -58,19 +58,6 @@ public class HostingBlockImplTest extends TestCase {
 
     /**
      * Test method for HostingBlockImpl(java.lang.Long, int, HostingSlot[], int).
-     * In this case, the slots is null.
-     */
-    public void testHostingBlockImpl_NullSlots() {
-        try {
-            new HostingBlockImpl(new Long(1), 1, null, 1);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
-
-    /**
-     * Test method for HostingBlockImpl(java.lang.Long, int, HostingSlot[], int).
      * In this case, the slots contains null.
      */
     public void testHostingBlockImpl_NullInSlots() {
