@@ -338,15 +338,8 @@ public abstract class AdminTestBase extends DAOTestBase {
             ResultSet results = statement.executeQuery();
             try {
                 assertTrue("query did not return any results", results.next());
-                String val = results.getString(1);
-                if (val.equals("Y")) {
-                    return true;
-                } else if (val.equals("N")) {
-                    return false;
-                } else {
-                    fail("invalid value for is_approved: " + val);
-                    return false;
-                }
+                int val = results.getInt(1);
+                return val == 1;
             } finally {
                 results.close();
             }
@@ -412,7 +405,7 @@ public abstract class AdminTestBase extends DAOTestBase {
 
             try {
                 statement.setLong(1, id);
-                statement.setString(2, (approved.booleanValue() ? "Y" : "N"));
+                statement.setInt(2, (approved.booleanValue() ? 1 : 0));
                 assertEquals("should have inserted 1 sponsor", 1, statement.executeUpdate());
             } finally {
                 statement.close();
@@ -575,8 +568,9 @@ public abstract class AdminTestBase extends DAOTestBase {
      * @throws junit.framework.AssertionFailedError if the pending winner does not exist or has not been handled
      */
     protected void assertHandled(PendingWinner winner) throws Exception {
-        PreparedStatement statement = getConnection().prepareStatement("SELECT is_handled FROM plyr_compltd_game WHERE "
-                                                                  + "game_id = ? AND player_id = ?");
+        PreparedStatement statement =
+            getConnection().prepareStatement("SELECT is_handled FROM plyr_compltd_game WHERE "
+                                             + "game_id = ? AND player_id = ?");
 
         try {
             statement.setLong(1, winner.getGameId());
@@ -585,7 +579,7 @@ public abstract class AdminTestBase extends DAOTestBase {
             ResultSet results = statement.executeQuery();
             try {
                 assertTrue("the winner does not exist", results.next());
-                assertEquals("the winner should have handled", "Y", results.getString(1));
+                assertEquals("the winner should have handled", 1, results.getInt(1));
             } finally {
                 results.close();
             }
