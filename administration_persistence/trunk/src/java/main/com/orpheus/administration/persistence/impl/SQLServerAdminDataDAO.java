@@ -74,8 +74,8 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     private static final String PENDING_WINNER_QUERY =
         "SELECT plyr_compltd_game.player_id, plyr_compltd_game.game_id FROM (game JOIN plyr_compltd_game ON game.id = "
         + "plyr_compltd_game.game_id) LEFT OUTER JOIN plyr_won_game ON plyr_compltd_game.game_id = "
-        + "plyr_won_game.game_id WHERE plyr_won_game.player_id IS NULL AND game.start_date <= GETDATE() ORDER BY "
-        + "plyr_compltd_game.sequence_number";
+        + "plyr_won_game.game_id WHERE plyr_won_game.player_id IS NULL AND game.start_date <= GETDATE() AND "
+        + "is_handled = 0 ORDER BY plyr_compltd_game.sequence_number";
 
     /**
      * The query used to determine the pending winner count.
@@ -83,7 +83,7 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     private static final String PENDING_WINNER_COUNT_QUERY =
         "SELECT COUNT(game.id) FROM (game INNER JOIN plyr_compltd_game ON game.id = plyr_compltd_game.game_id) LEFT "
         + "OUTER JOIN plyr_won_game ON game.id = plyr_won_game.game_id WHERE game.start_date <= GETDATE() AND "
-        + "plyr_won_game.player_id IS NULL";
+        + "plyr_won_game.player_id IS NULL AND is_handled = 0";
 
     /**
      * The query used to determine the active game count.
@@ -241,12 +241,12 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
 
                 return new AdminSummaryImpl(pendingSponsorCount, pendingWinnerCount, activeGameCount);
             } finally {
-                if (statement != null) {
-                    statement.close();
-                }
-
                 if (results != null) {
                     results.close();
+                }
+
+                if (statement != null) {
+                    statement.close();
                 }
 
                 connection.close();
@@ -271,7 +271,7 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             try {
                 PreparedStatement stmt = connection.prepareStatement(UPDATE_DOMAIN_APPROVAL);
                 try {
-                    stmt.setString(1, approved ? "Y" : "N");
+                    stmt.setInt(1, approved ? 1 : 0);
                     stmt.setLong(2, domainId);
 
                     if (stmt.executeUpdate() < 1) {
@@ -303,7 +303,7 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             try {
                 PreparedStatement stmt = connection.prepareStatement(UPDATE_IMAGE_APPROVAL);
                 try {
-                    stmt.setString(1, approved ? "Y" : "N");
+                    stmt.setInt(1, approved ? 1 : 0);
                     stmt.setLong(2, imageId);
 
                     if (stmt.executeUpdate() < 1) {
@@ -580,11 +580,11 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
                     throw new EntryNotFoundException("pending winner does not exist", winner);
                 }
 
-                if (results.getString(1).equals("Y")) {
+                if (results.getInt(1) == 1) {
                     throw new InvalidEntryException("winner is already handled", winner);
                 }
 
-                results.updateString(1, "Y");
+                results.updateInt(1, 1);
                 results.updateRow();
             } finally {
                 results.close();

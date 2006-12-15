@@ -13,10 +13,11 @@ import com.topcoder.util.rssgenerator.RSSLink;
 import com.topcoder.util.rssgenerator.RSSText;
 
 import com.topcoder.util.rssgenerator.impl.RSSCategoryImpl;
-import com.topcoder.util.rssgenerator.impl.RSSItemImpl;
 import com.topcoder.util.rssgenerator.impl.RSSLinkImpl;
 import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
 import com.topcoder.util.rssgenerator.impl.RSSTextImpl;
+
+import com.topcoder.util.rssgenerator.impl.atom10.Atom10Item;
 
 import java.util.Date;
 
@@ -51,7 +52,7 @@ public class RSSItemTranslator implements MessageTranslator {
             throw new IllegalArgumentException("message DTO must not be null");
         }
 
-        RSSItem item = new RSSItemImpl(new RSSObjectImpl());
+        RSSItem item = new Atom10Item(new RSSObjectImpl());
 
         // GUID
         item.setId(messageDataTransferObject.getGuid());
