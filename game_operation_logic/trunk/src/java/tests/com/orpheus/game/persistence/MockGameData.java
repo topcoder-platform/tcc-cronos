@@ -11,6 +11,7 @@ import javax.ejb.RemoveException;
 import com.orpheus.game.GameDataException;
 import com.topcoder.util.puzzle.MockPuzzleData;
 import com.topcoder.util.puzzle.PuzzleData;
+import com.topcoder.web.frontcontroller.results.DownloadData;
 
 public class MockGameData implements GameData {
 
@@ -197,4 +198,11 @@ public class MockGameData implements GameData {
 		return null;
 	}
 
+	public SlotCompletion[] findSlotCompletions(long l1, long l2) throws RemoteException {
+		return new SlotCompletion[0];
+	}
+
+	public DownloadData getDownloadData(long downloadId) throws RemoteException {
+		return null;
+	}
 }

@@ -5,7 +5,6 @@ package com.orpheus.game;
 
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataLocal;
-
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.puzzle.PuzzleData;
 import com.topcoder.util.puzzle.PuzzleRenderer;
@@ -75,7 +74,31 @@ public class PuzzleRenderingHandler implements Handler {
     }
 
     /**
-     * Create the instance from given xml element. The structure of the element can be found in CS.
+     * Create the instance from given xml element.
+     * <pre>Follow is a sample xml:
+     *  &lt;handler type=&quot;x&quot;&gt;
+     *  &lt;puzzle_id_request_attribute_key&gt;
+     *  puzzle_id
+     *  &lt;/puzzle_id_request_attribute_key&gt;
+     *  &lt;media_type_request_attribute_key&gt;
+     *  media_type
+     *  &lt;/media_type_request_attribute_key&gt;
+     *  &lt;puzzle_string_request_attribute_key&gt;
+     *  puzzle_string
+     *  &lt;/puzzle_string_request_attribute_key&gt;
+     *  &lt;solutiontester_base_name&gt;
+     *  base_name
+     *  &lt;/solutiontester_base_name&gt;
+     *  &lt;incorrect_solution_result&gt;
+     *  incorrect_solution_result
+     *  &lt;/incorrect_solution_result&gt;
+     *  &lt;/handler&gt;
+     *  Following is simple explanation of the above XML structure.
+     *  The handler¡¯s type attribute is required by Front Controller component, it won¡¯t be used in this design.
+     *  The puzzle_id_param_key node¡¯s value represents the http request parameter name to get the puzzle id
+     *  The slot_id_param_key node represents the http request parameter name to get the slot id
+     *  The solutiontester_base_name node represents the SolutionTester base name.
+     *  </pre>
      *
      * @param element the xml element to create the handler instance.
      *
@@ -92,7 +115,7 @@ public class PuzzleRenderingHandler implements Handler {
     }
 
     /**
-     * produces a rendition of a puzzle in String form and attaches it to the request as an attribute of configurable
+     * Produces a rendition of a puzzle in String form and attaches it to the request as an attribute of configurable
      * name.
      *
      * @param context the action context
@@ -100,6 +123,7 @@ public class PuzzleRenderingHandler implements Handler {
      * @return null always
      *
      * @throws HandlerExecutionException if any other error occurred
+     * @throws IllegalArgumentException if the context is null
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
         ParameterCheck.checkNull("context", context);
@@ -119,7 +143,6 @@ public class PuzzleRenderingHandler implements Handler {
         }
 
         try {
-            // obtains GameData
             GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
 
             PuzzleData puzzleData;

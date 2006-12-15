@@ -38,10 +38,11 @@ public final class ParameterCheck {
     }
 
     /**
-     * Checks if the given map contains null key or null value
+     * Checks if the given map is null or contains null key or null value.
      *
      * @param paramName name of the parameter
      * @param map map to be checked
+     * @throws IllegalArgumentException if the given map is null or contains null key or null value
      */
     public static void checkEmptyMap(String paramName, Map map) {
         checkNull(paramName, map);

@@ -127,8 +127,7 @@ public class RegisterGameHandler implements Handler {
      * @param templateName The template file used to generate the email body
      * @param templateSource The template source ID of the generator used to generate the email body
      *
-     * @throws IllegalArgumentException
-     *         If string argument is null or empty
+     * @throws IllegalArgumentException if string argument is null or empty
      * @throws IllegalStateException
      *         If error getting instance of DocumentGenerator, configuration of DocumentGenerator
      *         is invalid or template got is of invalid format.
@@ -137,7 +136,7 @@ public class RegisterGameHandler implements Handler {
      */
     public RegisterGameHandler(String gameIdParamKey, String templateName, String templateSource) {
         // Parameter Validation
-    	ParameterCheck.checkNullEmpty("gameIdParamKey", gameIdParamKey);
+            ParameterCheck.checkNullEmpty("gameIdParamKey", gameIdParamKey);
         ParameterCheck.checkNullEmpty(TEMPLATE_NAME_PROP, templateName);
         ParameterCheck.checkNullEmpty(TEMPLATE_SOURCE_PROP, templateSource);
         
@@ -148,17 +147,17 @@ public class RegisterGameHandler implements Handler {
             this.mailBodyTemplate = docGenerator
                     .getTemplate(templateSource, templateName);
         } catch (ConfigManagerException cme) {
-        	throw new IllegalStateException(
-        			"Error occur while getting instance of DocumentGenerator", cme);
+                throw new IllegalStateException(
+                                "Error occur while getting instance of DocumentGenerator");
         } catch (InvalidConfigException ice) {
-        	throw new IllegalStateException(
-        			"Configuration of DocumentGenerator is invalid", ice);
+                throw new IllegalStateException(
+                                "Configuration of DocumentGenerator is invalid");
         } catch (TemplateSourceException tse) {
-        	throw new IllegalArgumentException(
-        			"Cannot get template with given templateSource and templateName", tse);
+                throw new IllegalArgumentException(
+                                "Cannot get template with given templateSource and templateName");
         } catch (TemplateFormatException tfe) {
-        	throw new IllegalStateException(
-        			"Template got is of invalid format", tfe);
+                throw new IllegalStateException(
+                                "Template got is of invalid format");
         }
     }
 
@@ -183,8 +182,16 @@ public class RegisterGameHandler implements Handler {
 
     /**
      * <p>Modified by Zulander to fix BALL-4675.</p>
-     * 
-     * <p>Create the instance from element. Please see the CS for the structure of the element.</p>
+     * <p>Create the instance from element.</p>
+     * <pre>Follow is a sample xml:
+     *  &lt;handler type=&quot;x&quot;&gt;
+     *  &lt;game_id_param_key&gt; game_id&lt;/game_id_param_key&gt;
+     *  &lt;/handler&gt; </pre>
+     * <p>
+     * Following is simple explanation of the above XML structure.<br>
+     * The handler¡¯s type attribute is required by Front Controller component, it won¡¯t be used in this design. <br>
+     * The game_id_param_key node¡¯s value represents the http request parameter name to get the game id.<br>
+     * </p>
      *
      * @param element the xml element to create the handler instance.
      *
@@ -197,7 +204,7 @@ public class RegisterGameHandler implements Handler {
      */
     public RegisterGameHandler(Element element) {
         // Parameter Validation
-    	ParameterCheck.checkNull("element", element);
+            ParameterCheck.checkNull("element", element);
         
         this.gameIdParamKey = XMLHelper.getNodeValue(element, "game_id_param_key", true);
         // Get template
@@ -208,17 +215,17 @@ public class RegisterGameHandler implements Handler {
             this.mailBodyTemplate = docGenerator
                     .getTemplate(templateSource, templateName);
         } catch (ConfigManagerException cme) {
-        	throw new IllegalStateException(
-        			"Error occur while getting instance of DocumentGenerator", cme);
+                throw new IllegalStateException(
+                                "Error occur while getting instance of DocumentGenerator");
         } catch (InvalidConfigException ice) {
-        	throw new IllegalStateException(
-        			"Configuration of DocumentGenerator is invalid", ice);
+                throw new IllegalStateException(
+                                "Configuration of DocumentGenerator is invalid");
         } catch (TemplateSourceException tse) {
-        	throw new IllegalArgumentException(
-        			"Cannot get template with given templateSource and templateName", tse);
+                throw new IllegalArgumentException(
+                                "Cannot get template with given templateSource and templateName");
         } catch (TemplateFormatException tfe) {
-        	throw new IllegalStateException(
-        			"Template got is of invalid format", tfe);
+                throw new IllegalStateException(
+                                "Template got is of invalid format");
         }
     }
 
@@ -250,29 +257,32 @@ public class RegisterGameHandler implements Handler {
         long gameId = RequestHelper.getLongParameter(request, gameIdParamKey); //gameId from request parameter
 
         try {
-        	Game game = null;
+            Game game;
+
             if (golu.isUseLocalInterface()) {
-            	GameDataLocal gameData = golu.getGameDataLocalHome().create();
-            	gameData.recordRegistration(userId, gameId);
-            	game = gameData.getGame(gameId);
+                GameDataLocal gameData = golu.getGameDataLocalHome().create();
+
+                gameData.recordRegistration(userId, gameId);
+                game = gameData.getGame(gameId);
             } else {
-            	GameData gameData = golu.getGameDataRemoteHome().create();
-            	gameData.recordRegistration(userId, gameId);
-            	game = gameData.getGame(gameId);
+                GameData gameData = golu.getGameDataRemoteHome().create();
+
+                gameData.recordRegistration(userId, gameId);
+                game = gameData.getGame(gameId);
             }
             
             ///////////////////////////////////////////////////////////
             // Added by Zulander to fix BALL-4675
             context.setAttribute("message-to", 
-            		user.getProperty(BaseProfileType.EMAIL_ADDRESS));
+                            user.getProperty(BaseProfileType.EMAIL_ADDRESS));
             context.setAttribute("message-subject",
-            		"You are registered for " + game.getName());
+                            "You are registered for " + game.getName());
             // Fill parameters for document generator
             Map parameters = new TreeMap();
             parameters.put("GAME_NAME", game.getName());
             parameters.put("START_DATE", game.getStartDate().toString());
             parameters.put("FIRST_DOMAIN",
-            		game.getBlocks()[0].getSlots()[0].getDomain().getDomainName());
+                            game.getBlocks()[0].getSlots()[0].getDomain().getDomainName());
             context.setAttribute("message-body", generateEmailBody(parameters));
             ///////////////////////////////////////////////////////////
         } catch (Exception e) {

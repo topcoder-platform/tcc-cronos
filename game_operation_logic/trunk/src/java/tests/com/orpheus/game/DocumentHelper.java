@@ -6,7 +6,8 @@ package com.orpheus.game;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.xerces.parsers.DOMParser;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -18,6 +19,14 @@ import org.xml.sax.SAXException;
 import com.topcoder.util.config.ConfigParserException;
 
 public final class DocumentHelper {
+
+    private final static DocumentBuilderFactory dbFactory;
+
+    static {
+	dbFactory = DocumentBuilderFactory.newInstance();
+	dbFactory.setValidating(false);
+    }
+
     private DocumentHelper(){
         
     }
@@ -30,18 +39,15 @@ public final class DocumentHelper {
      */
     private static Document loadDocument(String fileName) throws Exception{
         InputStream input = DocumentHelper.class.getResourceAsStream(fileName);
-        DOMParser parser = new DOMParser();
+        DocumentBuilder parser = dbFactory.newDocumentBuilder();
         InputSource is = new InputSource(input);
         try {
-            parser.parse(is);
+            return parser.parse(is);
         } catch (SAXException saxe) {
             throw new ConfigParserException(saxe.getMessage());
         } catch (IOException ioe) {
             throw new ConfigParserException(ioe.getMessage());
         }
-        
-        Document doc = parser.getDocument();
-        return doc;
     }
     
     /**

@@ -31,25 +31,28 @@ public final class XMLHelper {
      *
      * @return text value of the specified node
      *
-     * @throws IllegalArgumentException if the specified node is a required one but does not exist or is empty string in the element
+     * @throws IllegalArgumentException if the specified node is a required one but does not exist or is empty string
+     *         in the element
      */
     public static final String getNodeValue(Element element, String name, boolean required) {
         String[] values = getNodeValues(element, name);
-        
-        if (required){
-        	if (values==null || values.length==0){
-        		throw new IllegalArgumentException("node is not found:" + name);
-        	}
-        	
-        	if (values[0]==null || values[0].trim().length()==0){
-        		throw new IllegalArgumentException("node is empty:" + name);
-        	}
-        	return values[0];
-        }else{
-        	if (values==null || values.length==0){
-        		return null;
-        	}
-        	return values[0];
+
+        if (required) {
+            if ((values == null) || (values.length == 0)) {
+                throw new IllegalArgumentException("node is not found:" + name);
+            }
+
+            if ((values[0] == null) || (values[0].trim().length() == 0)) {
+                throw new IllegalArgumentException("node is empty:" + name);
+            }
+
+            return values[0];
+        } else {
+            if ((values == null) || (values.length == 0)) {
+                return null;
+            }
+
+            return values[0];
         }
     }
 
@@ -74,11 +77,13 @@ public final class XMLHelper {
 
         for (int i = 0; i < list.getLength(); i++) {
             //values[i] = list.item(0).getFirstChild().getNodeValue();
-        	Node node = list.item(0).getFirstChild();
-        	if (node==null){
-        		throw new IllegalArgumentException("node is empty:"+name);
-        	}
-        	values[i]=node.getNodeValue();
+            Node node = list.item(0).getFirstChild();
+
+            if (node == null) {
+                throw new IllegalArgumentException("node is empty:" + name);
+            }
+
+            values[i] = node.getNodeValue();
         }
 
         return values;
@@ -87,8 +92,8 @@ public final class XMLHelper {
     /**
      * Helper method to obtain a list of nodes from root element according to the given hierachical name.
      *
-     * @param root
-     * @param name
+     * @param root root element from which the search starts
+     * @param name hierachical name of the node, delimited by .
      *
      * @return NodeList that has the equal hierachical name as given
      */

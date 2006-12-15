@@ -1,6 +1,7 @@
 package com.topcoder.util.puzzle;
 
 import java.io.OutputStream;
+import java.io.Writer;
 
 public class MockPuzzleRenderer implements PuzzleRenderer {
 

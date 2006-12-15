@@ -16,6 +16,3 @@ c) Besides the dependency components listed in the CS, there are more components
 	xerces.jar - used by test cases
 	fscontext.jar and providerutil.jar File System JNDI provider, http://java.sun.com/products/jndi/serviceproviders.html
 
-d) Directory src/mocks contains mock objects that used in the test. Add them to class path before running the tests.
-	
-	

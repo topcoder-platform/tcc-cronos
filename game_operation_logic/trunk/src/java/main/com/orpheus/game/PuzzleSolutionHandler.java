@@ -27,6 +27,8 @@ import com.topcoder.web.user.LoginHandler;
  * The component will provide a Handler that tests whether the HTTP request parameters describe a solution to a
  * previously presented puzzle. It determines the IDs of the game and slot to which the puzzle applies from request
  * parameters of configurable name. This class is thread safe since it does not contain any mutable state.
+ * @author woodjhon, TCSDEVELOPER
+ * @version 1.0
  */
 public class PuzzleSolutionHandler implements Handler {
     /** A configurable param name to retrieve the game id from the request parameters. */
@@ -35,6 +37,9 @@ public class PuzzleSolutionHandler implements Handler {
     /** The result name that will be returned by this handler if the solution is incorrect. */
     private final String incorrectSolutionResult;
 
+    /** The http request attribute name to save the slot completion. */
+    private final String slotCompletion;
+
     /**
      * A configurable param name to retrieve the slot id from the request parameters It's set in the constructor,
      * non-null and non-empty after set.
@@ -42,15 +47,10 @@ public class PuzzleSolutionHandler implements Handler {
     private final String slotIdParamKey;
 
     /**
-     * The base name of the key to get the SolutionTester from the http session. The compelete name will be baseName +
+     * The base name of the key to get the SolutionTester from the http session. The complete name will be baseName +
      * puzzleId.
      */
     private final String solutionTesterBaseName;
-    
-    /**
-     * The 
-     */
-    private final String slotCompletion;
 
     /**
      * Create the instance from given arguments.
@@ -59,6 +59,7 @@ public class PuzzleSolutionHandler implements Handler {
      * @param slotIdParamKey the slot id param key
      * @param solutionTesterBaseName the solution tester base name
      * @param incorrectSolutionResult the incorrect solution result name
+     * @param slotCompletion the http request attribute name to save the slot completion
      *
      * @throws IllegalArgumentException if any argument is null or empty string.
      */
@@ -78,7 +79,33 @@ public class PuzzleSolutionHandler implements Handler {
     }
 
     /**
-     * Create the instance from given xml element, the structure of the element can be found in CS.
+     * Create the instance from given xml element.
+     * <pre>Follow is a sample xml:
+     *  &lt;handler type=&quot;x&quot;&gt;
+     *  &lt;puzzle_id_request_attribute_key&gt;
+     *  puzzle_id
+     *  &lt;/puzzle_id_request_attribute_key&gt;
+     *  &lt;media_type_request_attribute_key&gt;
+     *  media_type
+     *  &lt;/media_type_request_attribute_key&gt;
+     *  &lt;puzzle_string_request_attribute_key&gt;
+     *  puzzle_string
+     *  &lt;/puzzle_string_request_attribute_key&gt;
+     *  &lt;solutiontester_base_name&gt;
+     *  base_name
+     *  &lt;/solutiontester_base_name&gt;
+     *  &lt;incorrect_solution_result&gt;
+     *  incorrect_solution_result
+     *  &lt;/incorrect_solution_result&gt;
+     *  &lt;/handler&gt;
+     *  Following is simple explanation of the above XML structure.
+     *  The handler's type attribute is required by Front Controller component, it won't be used in this design.
+     *  The puzzle_id_param_key node's value represents the http request parameter name to get the puzzle id
+     *  The slot_id_param_key node represents the http request parameter name to get the slot id
+     *  The solutiontester_base_name node represents the SolutionTester base name.
+     *  The slot_completion_request_attribute_key node's value represents the http request attribute name to save
+     *  the slot completion.
+     *  </pre>
      *
      * @param element the xml element to create the instance
      *
@@ -99,9 +126,10 @@ public class PuzzleSolutionHandler implements Handler {
      *
      * @param context the action context
      *
-     * @return null always
+     * @return null if execution successfully otherwise a configurable forward name
      *
      * @throws HandlerExecutionException if any other error occurred.
+     * @throws IllegalArgumentException if the context is null
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
         ParameterCheck.checkNull("context", context);
@@ -126,14 +154,14 @@ public class PuzzleSolutionHandler implements Handler {
 
         try {
             if (golu.isUseLocalInterface()) {
-                gameDataLocal = golu.getGameDataLocalHome().create();
+            	gameDataLocal = golu.getGameDataLocalHome().create();
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }
 
             Long puzzledId = golu.isUseLocalInterface()?gameDataLocal.getSlot(slotId).getPuzzleId():gameData.getSlot(slotId).getPuzzleId();
-            SolutionTester tester = (SolutionTester) request.getSession().getAttribute(this.solutionTesterBaseName +
-                    puzzledId);
+            SolutionTester tester = (SolutionTester) request.getSession().getAttribute(this.solutionTesterBaseName
+                    + puzzledId);
 
             if (tester == null) {
                 throw new HandlerExecutionException("no SolutionTester is found for puzzle:" + puzzledId);
@@ -148,15 +176,18 @@ public class PuzzleSolutionHandler implements Handler {
 
                 return null;
             } else {
-                GameDataManager gdMgr = (GameDataManager) request.getSession().getServletContext().getAttribute(golu.getGameManagerKey());
+                GameDataManager gdMgr = (GameDataManager) request.getSession().getServletContext().
+                getAttribute(golu.getGameManagerKey());
                 gdMgr.advanceHostingSlot(slotId);
+
                 SlotCompletion completion;
                 if (golu.isUseLocalInterface()){
                 	completion = gameDataLocal.recordSlotCompletion(userId, slotId, new Date());
                 }else{
                 	completion = gameData.recordSlotCompletion(userId, slotId, new Date());
                 }
-                request.setAttribute(this.slotCompletion,slotCompletion);
+                
+                request.setAttribute(this.slotCompletion, completion);
 
                 return this.incorrectSolutionResult;
             }

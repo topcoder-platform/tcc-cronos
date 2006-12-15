@@ -15,6 +15,8 @@ import com.topcoder.util.config.UnknownNamespaceException;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
+import javax.rmi.PortableRemoteObject;
+
 
 /**
  * A utility class whose methods will be used by all the handlers and results in this component. The variable values
@@ -37,7 +39,7 @@ public class GameOperationLogicUtility {
     /** Represents property name where gameDataEJBRemoteHomeName is configured in ConfigManager. */
     private static final String PROP_GAME_DATA_REMOTEL = "game_data_remote";
 
-    /** Represents property name where gameDAtaEJBLocalHomeName is configured in ConfigManager. */
+    /** Represents property name where gameDataEJBLocalHomeName is configured in ConfigManager. */
     private static final String PROP_GAME_DATA_LOCAL = "game_data_local";
 
     /** Represents property name where dataStoreKey is configured in ConfigManager. */
@@ -59,7 +61,7 @@ public class GameOperationLogicUtility {
     private final String dataStoreKey;
 
     /** the GameData EJB local home name used by JNDIUtils to search for the ejb local home instance. */
-    private final String gameDAtaEJBLocalHomeName;
+    private final String gameDataEJBLocalHomeName;
 
     /** the GameData EJB remote home name used by JNDIUtils to search for the ejb remote home instance. */
     private final String gameDataEJBRemoteHomeName;
@@ -82,7 +84,7 @@ public class GameOperationLogicUtility {
         ConfigManager cm = ConfigManager.getInstance();
         contextName = getPropertyAsRequired(cm, PROP_CONTEXT_NAME);
         dataStoreKey = getPropertyAsRequired(cm, PROP_DATA_STORE);
-        gameDAtaEJBLocalHomeName = getPropertyAsRequired(cm, PROP_GAME_DATA_LOCAL);
+        gameDataEJBLocalHomeName = getPropertyAsRequired(cm, PROP_GAME_DATA_LOCAL);
 
         gameDataEJBRemoteHomeName = getPropertyAsRequired(cm, PROP_GAME_DATA_REMOTEL);
         gameDataManagerKey = getPropertyAsRequired(cm, PROP_GAME_DATA_MANAGER);
@@ -106,8 +108,8 @@ public class GameOperationLogicUtility {
      * @throws GameOperationConfigException if GameOperationLogicUtility is not configured properly.
      */
     public static GameOperationLogicUtility getInstance() {
-        if (instance == null) {
-            synchronized (GameOperationLogicUtility.class) {
+        synchronized (GameOperationLogicUtility.class) {
+            if (instance == null) {
                 if (instance == null) {
                     instance = new GameOperationLogicUtility();
                 }
@@ -137,7 +139,7 @@ public class GameOperationLogicUtility {
     public GameDataLocalHome getGameDataLocalHome() throws ConfigManagerException, NamingException {
         Context context = JNDIUtils.getContext(contextName);
 
-        return (GameDataLocalHome) JNDIUtils.getObject(context, this.gameDAtaEJBLocalHomeName);
+        return (GameDataLocalHome) JNDIUtils.getObject(context, this.gameDataEJBLocalHomeName);
     }
 
     /**
@@ -151,7 +153,7 @@ public class GameOperationLogicUtility {
     public GameDataHome getGameDataRemoteHome() throws ConfigManagerException, NamingException {
         Context context = JNDIUtils.getContext(contextName);
 
-        return (GameDataHome) JNDIUtils.getObject(context, this.gameDataEJBRemoteHomeName);
+        return (GameDataHome) PortableRemoteObject.narrow(JNDIUtils.getObject(context, this.gameDataEJBRemoteHomeName), GameDataHome.class);
     }
 
     /**

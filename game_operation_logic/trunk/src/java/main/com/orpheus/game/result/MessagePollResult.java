@@ -3,10 +3,43 @@
  */
 package com.orpheus.game.result;
 
+import com.orpheus.game.GameOperationLogicUtility;
+import com.orpheus.game.ParameterCheck;
+import com.orpheus.game.XMLHelper;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
+
+import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.EqualToFilter;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.GreaterThanFilter;
+import com.topcoder.search.builder.filter.OrFilter;
+
+import com.topcoder.user.profile.UserProfile;
+
+import com.topcoder.util.rssgenerator.DataStore;
+import com.topcoder.util.rssgenerator.RSSFeed;
+import com.topcoder.util.rssgenerator.RSSItem;
+import com.topcoder.util.rssgenerator.SearchCriteria;
+import com.topcoder.util.rssgenerator.datastore.SearchCriteriaImpl;
+import com.topcoder.util.rssgenerator.impl.RSSFeedImpl;
+import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
+import com.topcoder.util.rssgenerator.io.RSSWriteException;
+import com.topcoder.util.rssgenerator.io.atom10.Atom10Writer;
+
+import com.topcoder.web.frontcontroller.ActionContext;
+import com.topcoder.web.frontcontroller.Result;
+import com.topcoder.web.frontcontroller.ResultExecutionException;
+import com.topcoder.web.user.LoginHandler;
+
+import org.w3c.dom.Element;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -19,34 +52,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.w3c.dom.Element;
-
-import com.orpheus.game.GameOperationLogicUtility;
-import com.orpheus.game.ParameterCheck;
-import com.orpheus.game.XMLHelper;
-import com.orpheus.game.persistence.GameData;
-import com.orpheus.game.persistence.GameDataLocal;
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.EqualToFilter;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.GreaterThanFilter;
-import com.topcoder.search.builder.filter.OrFilter;
-import com.topcoder.user.profile.UserProfile;
-
-import com.topcoder.util.rssgenerator.RSSFeed;
-import com.topcoder.util.rssgenerator.DataStore;
-import com.topcoder.util.rssgenerator.impl.RSSFeedImpl;
-import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
-import com.topcoder.util.rssgenerator.RSSItem;
-import com.topcoder.util.rssgenerator.SearchCriteria;
-import com.topcoder.util.rssgenerator.datastore.SearchCriteriaImpl;
-import com.topcoder.util.rssgenerator.io.RSSWriteException;
-import com.topcoder.util.rssgenerator.io.atom10.Atom10Writer;
-import com.topcoder.web.frontcontroller.ActionContext;
-import com.topcoder.web.frontcontroller.Result;
-import com.topcoder.web.frontcontroller.ResultExecutionException;
-import com.topcoder.web.user.LoginHandler;
 
 
 /**
@@ -61,7 +66,7 @@ import com.topcoder.web.user.LoginHandler;
  * any of those categories will be included in the feed, subject to the date restriction already described. The Result
  * will be configured with zero or more category names for categories whose items are always included in the feed,
  * subject to the date restriction criterion. The response will be assigned the content type registered for Atom,
- * ¡°application/atom+xml¡±. This class is thread safe since it does not contain any mutable state.
+ * "application/atom+xml". This class is thread safe since it does not contain any mutable state.
  *
  * @author woodjhon, TCSDEVELOPER
  * @version 1.0
@@ -97,7 +102,21 @@ public class MessagePollResult implements Result {
     }
 
     /**
-     * Create the instance from the element. The structure of the element can be found in CS.
+     * <p>Create the instance from the element. The structure of the element should be:</p>
+     * <pre>&lt;result name=&quot;x&quot;&gt;
+     *  &lt;date_param_key&gt;date&lt;/date_param_key&gt;
+     *  &lt;catetory_names&gt;
+     *      &lt;value&gt;some category name&lt;/value&gt;
+     *      &lt;value&gt;some category name &lt;/value&gt;
+     *      &lt;value&gt;some category name &lt;/value&gt;
+     *  &lt;/category_names&gt;
+     *&lt;/result&gt;</pre>
+     * <p>
+     * Following is simple explanation of the above XML structure.<br>
+     * The handler¡¯s type attribute is required by Front Controller component, it won¡¯t be used in this design. <br>
+     * The date node¡¯s value represents the http request parameter name to get the date string<br>
+     * The category_names node contains an array of category names that will be used to construct the SearchCriteria
+     * </p>
      *
      * @param element the xml element
      *
@@ -116,6 +135,7 @@ public class MessagePollResult implements Result {
      * @param context the action context
      *
      * @throws ResultExecutionException if and error occurred while executing this result
+     * @throws IllegalArgumentException if the context is null
      */
     public void execute(ActionContext context) throws ResultExecutionException {
         ParameterCheck.checkNull("context", context);
@@ -129,28 +149,26 @@ public class MessagePollResult implements Result {
         DataStore dataStore = (DataStore) request.getSession().getServletContext().getAttribute(golu.getDataStoreKey());
 
         try {
-        	 //a list of categories that should be involved in search
+            //a list of categories that should be involved in search
             List categories = new ArrayList(Arrays.asList(this.categoryNames));
-
+            
             if (golu.isUseLocalInterface()) {
-            	GameDataLocal gameData = golu.getGameDataLocalHome().create();
-            	
-            	long[] gameIds = gameData.findGameRegistrations(userId);
+                GameDataLocal gameData = golu.getGameDataLocalHome().create();
+                long[] gameIds = gameData.findGameRegistrations(userId);
 
                 for (int i = 0; i < gameIds.length; i++) {
                     //add the use's registration game to the categories list
                     categories.add(gameData.getGame(gameIds[i]).getName());
                 }
             } else {
-            	GameData gameData = golu.getGameDataRemoteHome().create();
-            	long[] gameIds = gameData.findGameRegistrations(userId);
+                GameData gameData = golu.getGameDataRemoteHome().create();
+                long[] gameIds = gameData.findGameRegistrations(userId);
 
                 for (int i = 0; i < gameIds.length; i++) {
                     //add the use's registration game to the categories list
                     categories.add(gameData.getGame(gameIds[i]).getName());
                 }
             }
-
 
             //creates searchCriteria along with the categories and date
             SearchCriteria searchCriteria = getSearchCriteria(categories, date);
@@ -370,7 +388,7 @@ public class MessagePollResult implements Result {
             responseWriter.close();
         } catch (IOException e) {
             throw new ResultExecutionException("failed to write content to response", e);
-        } catch (Exception e) {
+        } catch (RSSWriteException e) {
             throw new ResultExecutionException("failed to write RSSItme to response", e);
         } finally {
             if (responseWriter != null) {
