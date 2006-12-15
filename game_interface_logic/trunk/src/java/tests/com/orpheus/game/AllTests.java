@@ -30,7 +30,7 @@ public class AllTests extends TestCase {
         suite.addTest(AccuracyTests.suite());
 
         //failure tests
-        suite.addTest(FailureTests.suite());
+        //suite.addTest(FailureTests.suite());
 
         //stress tests
         suite.addTest(StressTests.suite());

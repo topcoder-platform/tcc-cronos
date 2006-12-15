@@ -3,6 +3,8 @@
  */
 package com.orpheus.game;
 
+import com.orpheus.administration.persistence.OrpheusMessengerPlugin;
+import com.orpheus.administration.persistence.RemoteOrpheusMessengerPlugin;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.Game;
@@ -13,6 +15,9 @@ import com.orpheus.game.persistence.GameDataLocalHome;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 
+import com.topcoder.bloom.BloomFilter;
+import com.topcoder.message.messenger.MessageAPI;
+import com.topcoder.util.generator.guid.UUIDType;
 import com.topcoder.util.url.validation.SiteValidationResults;
 import com.topcoder.util.url.validation.SiteValidator;
 
@@ -26,6 +31,7 @@ import java.util.Random;
 import java.util.Set;
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
+import com.topcoder.util.generator.guid.UUIDUtility;
 
 
 /**
@@ -127,6 +133,22 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * The temporary variable to hold the local EJB.
      */
     private GameDataLocal localEJB = null;
+    /**
+     * The capacity of the Bloom Filter.
+     */
+    private final int capacity;
+    /**
+     * The errorrate of the Bloom Filter.
+     */
+    private final float errorRate;
+    /**
+     * The namespace to create the messager pluin instance.
+     */
+    private final String messagerPluginNS;
+    /**
+     * The category of the component.
+     */
+    private final String category;
 
     /**
      * <p>
@@ -191,6 +213,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             newGameInterval = Long.parseLong(Helper.getMandatoryProperty(
                         namespace, NEW_GAME_POLL_INTERVAl));
 
+            capacity = Integer.parseInt(Helper.getMandatoryProperty(namespace, "capacity"));
+            errorRate = Float.parseFloat(Helper.getMandatoryProperty(namespace, "errorRate"));
+            messagerPluginNS = Helper.getMandatoryProperty(namespace, "messengerPluginNS");
+            category = Helper.getMandatoryProperty(namespace, "category");
             //check the intervals should be > 0
             if (gameStartInterval <= 0) {
                 throw new GameDataManagerConfigurationException(
@@ -273,10 +299,12 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws GameDataException if any other error occurs
      */
     public GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations,
-        long newGameDiscoveryPollInterval, long gameStartedPollInterval)
+        long newGameDiscoveryPollInterval, long gameStartedPollInterval,
+        int capacity, float errorRate, String messengerPluginNS, String category)
         throws GameDataException {
         Helper.checkObjectNotNull(jndiNames, "jndiNames");
         Helper.checkObjectNotNull(jndiDesignations, "jndiDesignations");
+        Helper.checkStringNotNullOrEmpty(messengerPluginNS, "messengerPluginNS");
 
         if (jndiNames.length != jndiDesignations.length) {
             throw new IllegalArgumentException(
@@ -303,7 +331,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             throw new IllegalArgumentException(
                 "The game start interval should be > 0.");
         }
+        if (errorRate <= 0 || errorRate >= 1.0) {
+            throw new IllegalArgumentException("The errorRate should be between 0 and 1.");
+        }
 
+        this.capacity = capacity;
+        this.errorRate = errorRate;
+        this.messagerPluginNS = messengerPluginNS;
+        this.category = category;
         lookUpEJB(jndiNames, jndiDesignations);
 
         //if no EJB is looked up successfully
@@ -725,8 +760,39 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
             // for each game see if it needs to be started
             for (int i = 0; (i < games.length) && games[i].getStartDate().before(new Date()); i++) {
-                //notify the game has started
-                gameStartListener.gameStatusChangedToStarted(games[i]);
+                Domain [] domains = null;
+                try {
+                    if(gameDataPersistenceRemote != null) {
+                        domains = gameDataPersistenceRemote.findActiveDomains();
+                    } else {
+                        domains = gameDataPersistenceLocal.findActiveDomains();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                gameStatusChangedToStarted(games[i]);
+                //after start a game, broadcast to a BloomFilter update
+                BloomFilter bloomFilter = new BloomFilter(capacity, errorRate);
+                if(domains != null) {
+                    //add the names of the domain to the BloomFilter
+                    for(int j = 0; j < domains.length; j ++) {
+                        bloomFilter.add(domains[i].getDomainName());
+                    }
+                }
+                try {
+                    OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
+                    MessageAPI message = plugin.createMessage();
+
+                    //set the parameters, TODO
+                    message.setParameterValue("GUID", UUIDUtility.getNextUUID(UUIDType.TYPE1));
+                    message.setParameterValue("category", category);
+                    message.setParameterValue("bloom_filter", "application/x-tc-bloom-filter");
+                    message.setParameterValue("body", bloomFilter.getSerialized());
+                    message.setParameterValue("time", new Date());
+                    plugin.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 

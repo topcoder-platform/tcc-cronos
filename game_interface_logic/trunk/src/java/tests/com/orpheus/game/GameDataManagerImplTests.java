@@ -97,7 +97,7 @@ public class GameDataManagerImplTests extends TestCase {
      */
     public void test_ctor_accuracy1() throws Exception {
         GameDataManagerImpl instance = new GameDataManagerImpl(
-                new String[] {"localjbossBean"}, new String[]{"local"}, 1000, 1000);
+                new String[] {"localjbossBean"}, new String[]{"local"}, 1000, 1000, 1000, (float)0.5, "namespace", "c");
         assertNotNull("create failed", instance);
         instance.stopManager();
     }
@@ -175,7 +175,7 @@ public class GameDataManagerImplTests extends TestCase {
      */
     public void test_ctor_failure4() throws Exception {
         try {
-            new GameDataManagerImpl(null, new String[] {"local"}, 5000, 5000);
+            new GameDataManagerImpl(null, new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -192,7 +192,7 @@ public class GameDataManagerImplTests extends TestCase {
     public void test_ctor_failure5() throws Exception {
         try {
             new GameDataManagerImpl(new String[] {null},
-                new String[] {"local"}, 5000, 5000);
+                new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -208,7 +208,7 @@ public class GameDataManagerImplTests extends TestCase {
      */
     public void test_ctor_failure6() throws Exception {
         try {
-            new GameDataManagerImpl(new String[] {"name"}, null, 5000, 5000);
+            new GameDataManagerImpl(new String[] {"name"}, null, 5000, 5000, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -225,7 +225,7 @@ public class GameDataManagerImplTests extends TestCase {
     public void test_ctor_failure7() throws Exception {
         try {
             new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"not local or remote"}, 5000, 5000);
+                new String[] {"not local or remote"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -242,7 +242,7 @@ public class GameDataManagerImplTests extends TestCase {
     public void test_ctor_failure8() throws Exception {
         try {
             new GameDataManagerImpl(new String[] {" "},
-                new String[] {"local"}, 5000, 5000);
+                new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -259,7 +259,7 @@ public class GameDataManagerImplTests extends TestCase {
     public void test_ctor_failure9() throws Exception {
         try {
             new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"local", "remote"}, 5000, 5000);
+                new String[] {"local", "remote"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -276,7 +276,7 @@ public class GameDataManagerImplTests extends TestCase {
     public void test_ctor_failure10() throws Exception {
         try {
             new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"local"}, 0, 5000);
+                new String[] {"local"}, 0, 5000, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -293,7 +293,7 @@ public class GameDataManagerImplTests extends TestCase {
     public void test_ctor_failure11() throws Exception {
         try {
             new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"local"}, 5000, 0);
+                new String[] {"local"}, 5000, 0, 1000, (float)0.5, "namespace", "c");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
