@@ -14,7 +14,7 @@ CREATE TABLE any_user (
 
 CREATE TABLE sponsor (
   any_user_id BIGINT NOT NULL,
-  is_approved char(1) NULL,
+  is_approved bit NULL,
   PRIMARY KEY(any_user_id),
   FOREIGN KEY(any_user_id)
     REFERENCES any_user(id)
@@ -125,7 +125,7 @@ CREATE TABLE plyr_compltd_game (
   game_id BIGINT NOT NULL,
   player_id BIGINT NOT NULL,
   sequence_number BIGINT NOT NULL IDENTITY,
-  is_handled char(1) NOT NULL DEFAULT 'N',
+  is_handled bit NOT NULL DEFAULT 0,
   PRIMARY KEY(game_id, player_id),
   FOREIGN KEY(game_id)
     REFERENCES game(id),
@@ -143,7 +143,7 @@ CREATE TABLE domain (
   id BIGINT NOT NULL IDENTITY,
   sponsor_id BIGINT NOT NULL,
   base_url VARCHAR(255) NOT NULL,
-  is_approved char(1) NULL,
+  is_approved bit NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(sponsor_id)
     REFERENCES sponsor(any_user_id)
@@ -210,7 +210,7 @@ CREATE TABLE image (
   id BIGINT NOT NULL IDENTITY,
   domain_id BIGINT NOT NULL,
   download_obj_id BIGINT NOT NULL,
-  is_approved char(1) NULL,
+  is_approved bit NULL,
   description VARCHAR(255) NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(domain_id)
