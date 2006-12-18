@@ -7,13 +7,20 @@ package com.orpheus.game.failuretests;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.easymock.MockControl;
+import servlet.MockHttpRequest;
+import servlet.MockHttpResponse;
+import servlet.MockHttpSession;
+import servlet.MockServletContext;
 
 import com.orpheus.game.AttributeScope;
+import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.MessageHandler;
+import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import com.topcoder.web.frontcontroller.ResultExecutionException;
@@ -157,12 +164,16 @@ public class MessageHandlerTest extends TestCase {
      */
     public void testExecute_FailedToLoad() throws Exception {
         try {
-            MockControl reqControl = MockControl.createNiceControl(HttpServletRequest.class);
-            MockControl resControl = MockControl.createControl(HttpServletResponse.class);
-            reqControl.replay();
-            ActionContext ac = new ActionContext(
-                    (HttpServletRequest) reqControl.getMock(),
-                    (HttpServletResponse) resControl.getMock());
+        	ServletContext servletContext = new MockServletContext();
+    		servletContext.setAttribute(GameOperationLogicUtility.getInstance()
+    				.getDataStoreKey(), new MockDataStore());
+
+    		HttpSession session = new MockHttpSession(servletContext);
+    		MockHttpRequest mockRequest = new MockHttpRequest(session);
+    		HttpServletRequest request = mockRequest;
+
+    		HttpServletResponse response = new MockHttpResponse();
+            ActionContext ac = new ActionContext(request, response);
             handler.execute(ac);
             fail("HandlerExecutionException expected.");
         } catch (HandlerExecutionException e) {

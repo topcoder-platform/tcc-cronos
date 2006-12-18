@@ -14,6 +14,8 @@ import org.w3c.dom.Element;
 
 import servlet.MockHttpRequest;
 import servlet.MockHttpResponse;
+import servlet.MockHttpSession;
+import servlet.MockServletContext;
 
 import com.orpheus.game.PluginDownloadHandler;
 import com.topcoder.util.config.ConfigManager;
@@ -118,10 +120,13 @@ public class PluginDownloadHandlerAccuracyTest extends TestCase {
 	 * @throws Exception exception thrown to JUnit.
 	 */
 	public void testPluginDownloadHandler_Execute() throws Exception {
-		MockHttpRequest mockRequest = new MockHttpRequest(null);
+		servletContext = new MockServletContext();
+		session = new MockHttpSession(servletContext);
+		MockHttpRequest mockRequest = new MockHttpRequest(session);
 		request = mockRequest;
 		mockRequest.setParameter("plugin","some_plugin");
-        context = new ActionContext(request, new MockHttpResponse());
+		response = new MockHttpResponse();
+        context = new ActionContext(request, response);
         
         JNDIHelper.initJNDI();
         

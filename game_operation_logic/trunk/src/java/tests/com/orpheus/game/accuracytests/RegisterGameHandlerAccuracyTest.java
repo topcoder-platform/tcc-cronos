@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import junit.framework.TestCase;
+
 import org.w3c.dom.Element;
 
 import servlet.MockHttpRequest;
@@ -17,11 +19,11 @@ import servlet.MockServletContext;
 
 import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.RegisterGameHandler;
+import com.topcoder.user.profile.BaseProfileType;
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
-
-import junit.framework.TestCase;
 
 /**
  * Accuracy test case for RegisterGameHandler.
@@ -142,6 +144,9 @@ public class RegisterGameHandlerAccuracyTest extends TestCase {
 
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
+		UserProfile user = new UserProfile(new Long(1));
+		user.setProperty(BaseProfileType.EMAIL_ADDRESS, "test@topcoder.com");
+		session.setAttribute("user_profile", user);
 		JNDIHelper.initJNDI();
 		
 		mockRequest.setParameter("game_id","1");

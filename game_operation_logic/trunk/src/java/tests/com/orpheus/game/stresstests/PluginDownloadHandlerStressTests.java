@@ -3,9 +3,16 @@
  */
 package com.orpheus.game.stresstests;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
+import servlet.MockHttpSession;
+import servlet.MockServletContext;
 import junit.framework.TestCase;
 
+import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.PluginDownloadHandler;
+import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
 
 /**
@@ -36,7 +43,10 @@ public class PluginDownloadHandlerStressTests extends TestCase {
     protected void setUp() throws Exception {
         TestsHelper.removeAllCMNamespaces();
         TestsHelper.loadConfig();
-        MockHttpSession session = new MockHttpSession();
+		ServletContext servletContext = new MockServletContext();
+		servletContext.setAttribute(GameOperationLogicUtility.getInstance()
+				.getDataStoreKey(), new MockDataStore());
+        HttpSession session = new MockHttpSession(servletContext);
         MockHttpRequest request = new MockHttpRequest(session);
         context = new ActionContext(request, new MockHttpResponse());
         request.setAttribute("request_property_name", "request_property_value");

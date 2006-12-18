@@ -3,10 +3,18 @@
  */
 package com.orpheus.game.stresstests;
 
-import junit.framework.TestCase;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import junit.framework.TestCase;
+import servlet.MockHttpSession;
+import servlet.MockServletContext;
+
+import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.KeySubmissionHandler;
-import com.topcoder.util.config.ConfigManager;
+import com.topcoder.user.profile.UserProfile;
+import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
 
 /**
@@ -39,12 +47,17 @@ public class KeySubmissionHandlerStressTest extends TestCase {
         TestsHelper.loadConfig();
         handler = new KeySubmissionHandler("gameId", "submissions", "inactive", "failureCountExceededResult",
                         "failureCountNotMetResult", 3);
-        MockHttpSession session = new MockHttpSession();
-        MockHttpRequest request = new MockHttpRequest(session);
+		ServletContext servletContext = new MockServletContext();
+		servletContext.setAttribute(GameOperationLogicUtility.getInstance()
+				.getDataStoreKey(), new MockDataStore());
+        HttpSession session = new MockHttpSession(servletContext);
+        MockHttpRequest mockRequest = new MockHttpRequest(session);
+        HttpServletRequest request = mockRequest;
         context = new ActionContext(request, new MockHttpResponse());
         request.setAttribute("request_property_name", "request_property_value");
-        request.setParameter("gameId", "1");
-        request.setParameter("submissions", "2");
+        mockRequest.setParameter("gameId", "1");
+        mockRequest.setParameter("submissions", "2");
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
     }
 
     /**

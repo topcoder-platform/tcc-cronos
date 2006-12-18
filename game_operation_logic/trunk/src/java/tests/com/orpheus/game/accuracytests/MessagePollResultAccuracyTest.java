@@ -19,6 +19,7 @@ import servlet.MockServletContext;
 
 import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.result.MessagePollResult;
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
@@ -140,6 +141,7 @@ public class MessagePollResultAccuracyTest extends TestCase {
 
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
 		JNDIHelper.initJNDI();
 		
 		mockRequest.setParameter("date", "2006-10-10T12:33:32,000-05:00");

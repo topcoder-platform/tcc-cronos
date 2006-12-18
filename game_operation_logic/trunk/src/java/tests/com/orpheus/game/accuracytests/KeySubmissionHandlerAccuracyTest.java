@@ -17,6 +17,7 @@ import servlet.MockServletContext;
 
 import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.KeySubmissionHandler;
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
@@ -163,6 +164,7 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
 
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
 		JNDIHelper.initJNDI();
 		
 		mockRequest.setParameter("gameId","1");
@@ -189,6 +191,7 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
 
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
 		JNDIHelper.initJNDI();
 		
 		mockRequest.setParameter("gameId","1");
@@ -214,6 +217,7 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
 
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
 		JNDIHelper.initJNDI();
 		
 		mockRequest.setParameter("gameId","1");

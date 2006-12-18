@@ -6,6 +6,8 @@ package com.orpheus.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import junit.framework.TestCase;
+
 import org.w3c.dom.Element;
 
 import servlet.MockHttpRequest;
@@ -13,10 +15,10 @@ import servlet.MockHttpResponse;
 import servlet.MockHttpSession;
 import servlet.MockServletContext;
 
-import com.topcoder.message.messenger.Messenger;
+import com.topcoder.user.profile.BaseProfileType;
+import com.topcoder.user.profile.UserProfile;
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.web.frontcontroller.ActionContext;
-
-import junit.framework.TestCase;
 
 public class RegisterGameHandlerTest extends TestCase {
 
@@ -51,6 +53,10 @@ public class RegisterGameHandlerTest extends TestCase {
         super.setUp();
         tearDown();
         TestHelper.loadConfig();
+        ConfigManager configManager = ConfigManager.getInstance();
+		configManager.add("com.topcoder.util.file.DocumentGenerator",
+				"com/topcoder/util/file/DocumentManager.xml",
+				ConfigManager.CONFIG_XML_FORMAT);
         
         Map map = new HashMap();
         map.put(new AttributeScope("request_property_name","request"),"property1");
@@ -65,6 +71,9 @@ public class RegisterGameHandlerTest extends TestCase {
         context = new ActionContext(request, response);
         
         request.setParameter("game_id","1");
+        UserProfile user = new UserProfile(new Long(1));
+		user.setProperty(BaseProfileType.EMAIL_ADDRESS, "test@topcoder.com");
+		session.setAttribute("user_profile", user);
         
         
         JNDIHelper.initJNDI();

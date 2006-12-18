@@ -15,6 +15,8 @@ import javax.naming.spi.ObjectFactory;
 
 import com.orpheus.game.persistence.GameDataHome;
 import com.orpheus.game.persistence.GameDataLocalHome;
+import com.orpheus.game.persistence.MockGameDataHome;
+import com.orpheus.game.persistence.MockGameDataLocalHome;
 
 
 /**
@@ -47,9 +49,9 @@ public class TestObjectFactory implements ObjectFactory {
         String className = reference.getClassName();
 
         if (className.equals(GameDataHome.class.getName())) {
-            return new GameDataHome();
+            return new MockGameDataHome();
         }else if (className.equals(GameDataLocalHome.class.getName())) {
-            return new GameDataLocalHome();
+            return new MockGameDataLocalHome();
         }
 
         return null;

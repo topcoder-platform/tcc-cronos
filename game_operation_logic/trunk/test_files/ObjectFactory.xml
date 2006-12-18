@@ -21,4 +21,21 @@
 			</Property>
 		</Property>
 	</Config>
+	<Config name="com.orpheus.game.GameDataManager_ObjectFactory">
+		<Property name="manager">
+			<Property name="type">
+            	<Value>com.orpheus.game.GameDataManagerImpl</Value>
+        	</Property>
+        	<Property name="params">
+	    		<Property name="param1">
+	      			<Property name="type">
+	        			<Value>String</Value>
+	      			</Property>
+	      			<Property name="value">
+	        			<Value>com.orpheus.game.GameDataManagerImpl</Value>
+	      			</Property>
+	    		</Property>
+	    	</Property>
+      </Property>
+	</Config>
 </CMConfig>

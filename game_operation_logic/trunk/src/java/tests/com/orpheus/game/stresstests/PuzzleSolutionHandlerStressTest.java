@@ -8,8 +8,9 @@ import servlet.MockHttpSession;
 import servlet.MockServletContext;
 
 import com.orpheus.game.GameOperationLogicUtility;
-
+import com.orpheus.game.MockGameDataManager;
 import com.orpheus.game.PuzzleSolutionHandler;
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.puzzle.MockPuzzleTypeSource;
 import com.topcoder.util.puzzle.MockSolutionTester;
 import com.topcoder.web.frontcontroller.ActionContext;
@@ -49,12 +50,13 @@ public class PuzzleSolutionHandlerStressTest extends TestCase {
         MockHttpSession session = new MockHttpSession(servletContext);
         MockHttpRequest request = new MockHttpRequest(session);
 
-        request.setParameter("puzzle_id", "1");
+        request.setParameter("puzzle_id", "19");
         request.setParameter("Slot_id", "1");
 
         context = new ActionContext(request, new MockHttpResponse());
         handler = new PuzzleSolutionHandler("puzzle_id", "Slot_id", "base_name", "incorrect_solution_result", "test");
-        session.setAttribute("base_name123", new MockSolutionTester());
+        session.setAttribute("base_name19", new MockSolutionTester());
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
         servletContext.setAttribute(GameOperationLogicUtility.getInstance().getGameManagerKey(),
                         new MockGameDataManager());
     }

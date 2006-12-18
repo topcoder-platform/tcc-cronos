@@ -3,9 +3,6 @@
  */
 package com.orpheus.game.accuracytests;
 
-import com.topcoder.util.config.ConfigManager;
-
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -15,7 +12,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+
+import com.topcoder.util.config.ConfigManager;
 
 /**
  * Defines helper methods used in accuracy tests.

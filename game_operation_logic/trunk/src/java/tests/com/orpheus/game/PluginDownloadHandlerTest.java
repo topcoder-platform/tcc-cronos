@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 public class PluginDownloadHandlerTest extends TestCase {
     
-    private  PluginDownloadHandler handler;
+    private PluginDownloadHandler handler;
     private MockHttpRequest request;
     private ActionContext context;
     

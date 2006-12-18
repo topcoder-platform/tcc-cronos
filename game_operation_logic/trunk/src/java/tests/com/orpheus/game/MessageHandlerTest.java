@@ -6,6 +6,8 @@ package com.orpheus.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import junit.framework.TestCase;
+
 import org.w3c.dom.Element;
 
 import servlet.MockHttpRequest;
@@ -14,11 +16,7 @@ import servlet.MockHttpSession;
 import servlet.MockServletContext;
 
 import com.topcoder.message.messenger.Messenger;
-import com.topcoder.user.profile.manager.MockUserProfileManager;
-import com.topcoder.user.profile.manager.ProfileTypeFactory;
 import com.topcoder.web.frontcontroller.ActionContext;
-
-import junit.framework.TestCase;
 
 public class MessageHandlerTest extends TestCase {
     /**

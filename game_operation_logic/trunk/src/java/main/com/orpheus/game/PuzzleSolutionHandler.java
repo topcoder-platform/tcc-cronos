@@ -162,6 +162,8 @@ public class PuzzleSolutionHandler implements Handler {
             Long puzzledId = golu.isUseLocalInterface()?gameDataLocal.getSlot(slotId).getPuzzleId():gameData.getSlot(slotId).getPuzzleId();
             SolutionTester tester = (SolutionTester) request.getSession().getAttribute(this.solutionTesterBaseName
                     + puzzledId);
+            System.out.println(this.solutionTesterBaseName
+                    + puzzledId);
 
             if (tester == null) {
                 throw new HandlerExecutionException("no SolutionTester is found for puzzle:" + puzzledId);

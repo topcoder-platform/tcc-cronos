@@ -41,7 +41,7 @@ public final class TestsHelper {
         cm.add("com.topcoder.naming.jndiutility","stress/jndiutility/JNDIUtils.properties",ConfigManager.CONFIG_PROPERTIES_FORMAT);
         //cm.add("FrontControllerConfig.xml");
         cm.add(GameOperationLogicUtility);
-        //cm.add("com.topcoder.user.profile.ConfigProfileType.base","com/topcoder/user/profile/ConfigProfileType.base.properties",ConfigManager.CONFIG_PROPERTIES_FORMAT);
+        cm.add("com.topcoder.user.profile.ConfigProfileType.base","com/topcoder/user/profile/ConfigProfileType.base.properties",ConfigManager.CONFIG_PROPERTIES_FORMAT);
         //cm.add("UserProfileManager.xml");
         //cm.add("DBConnectionFactory.xml");
         //cm.add("ObjectFactory.xml");

@@ -17,6 +17,7 @@ import servlet.MockHttpResponse;
 import servlet.MockHttpSession;
 import servlet.MockServletContext;
 
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
 
@@ -151,6 +152,7 @@ public class KeySubmissionHandlerTest extends TestCase {
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
 		JNDIHelper.initJNDI();
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
 		
 		mockRequest.setParameter("gameId","1");
 		mockRequest.setParameter("submissions","2");
@@ -177,7 +179,8 @@ public class KeySubmissionHandlerTest extends TestCase {
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
 		JNDIHelper.initJNDI();
-		
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
+
 		mockRequest.setParameter("gameId","1");
 		mockRequest.setParameter("submissions","2");
         
@@ -202,7 +205,8 @@ public class KeySubmissionHandlerTest extends TestCase {
 		response = new MockHttpResponse();
 		context = new ActionContext(request, response);
 		JNDIHelper.initJNDI();
-		
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
+
 		mockRequest.setParameter("gameId","1");
 		mockRequest.setParameter("submissions","2");
         

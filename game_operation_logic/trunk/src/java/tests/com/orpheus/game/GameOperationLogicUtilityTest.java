@@ -3,12 +3,10 @@
  */
 package com.orpheus.game;
 
+import junit.framework.TestCase;
+
 import com.orpheus.game.persistence.GameDataHome;
 import com.orpheus.game.persistence.GameDataLocalHome;
-
-import com.topcoder.util.config.ConfigManager;
-
-import junit.framework.TestCase;
 
 
 /**

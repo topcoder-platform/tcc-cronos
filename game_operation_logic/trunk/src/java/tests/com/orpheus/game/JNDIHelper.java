@@ -9,8 +9,8 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.NameAlreadyBoundException;
 
-import com.orpheus.game.persistence.GameDataHome;
-import com.orpheus.game.persistence.GameDataLocalHome;
+import com.orpheus.game.persistence.MockGameDataHome;
+import com.orpheus.game.persistence.MockGameDataLocalHome;
 import com.topcoder.naming.jndiutility.JNDIUtils;
 
 /**
@@ -37,8 +37,8 @@ public final class JNDIHelper {
         
         Context context = JNDIUtils.getContext("default");
         try {
-            context.bind("local", new GameDataLocalHome());
-            context.bind("remote", new GameDataHome());
+            context.bind("local", new MockGameDataLocalHome());
+            context.bind("remote", new MockGameDataHome());
         } catch (NameAlreadyBoundException nabe) {
         	// already bound
         }

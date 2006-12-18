@@ -6,11 +6,19 @@ package com.orpheus.game.stresstests;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
+import servlet.MockHttpSession;
+import servlet.MockServletContext;
+
 import com.orpheus.game.AttributeScope;
+import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.MessageHandler;
 import com.orpheus.game.stresstests.TestsHelper;
 import com.topcoder.message.messenger.Messenger;
 
+import com.topcoder.util.rssgenerator.MockDataStore;
 import com.topcoder.web.frontcontroller.ActionContext;
 
 import junit.framework.TestCase;
@@ -53,7 +61,10 @@ public class MessageHandlerStressTest extends TestCase {
             map.put(new AttributeScope("request_property_name" + j, "request"), "property" + j);
         }
         handler = new MessageHandler("stress", map);
-        MockHttpSession session = new MockHttpSession();
+		ServletContext servletContext = new MockServletContext();
+		servletContext.setAttribute(GameOperationLogicUtility.getInstance()
+				.getDataStoreKey(), new MockDataStore());
+        HttpSession session = new MockHttpSession(servletContext);
         MockHttpRequest request = new MockHttpRequest(session);
         context = new ActionContext(new MockHttpRequest(session), new MockHttpResponse());
         request.setAttribute("request_property_name", "request_property_value");

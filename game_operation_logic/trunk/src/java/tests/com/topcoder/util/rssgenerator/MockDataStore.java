@@ -9,8 +9,8 @@ public class MockDataStore implements DataStore {
 
 	public static final RSSItem[] FIND_ITEMS = 
 		new RSSItem[]{
-			new RSSItemImpl(new Atom10Content()),
-			new RSSItemImpl(new Atom10Content())};
+			new RSSItemImpl(new Atom10Content(new RSSObjectImpl())),
+			new RSSItemImpl(new Atom10Content(new RSSObjectImpl()))};
 
 	public void createFeed(RSSFeed feed) {
 		// TODO Auto-generated method stub

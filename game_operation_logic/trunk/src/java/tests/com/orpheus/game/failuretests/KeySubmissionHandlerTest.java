@@ -4,18 +4,22 @@
 
 package com.orpheus.game.failuretests;
 
-import java.security.Key;
-
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.easymock.MockControl;
-
-import com.orpheus.game.KeySubmissionHandler;
-import com.topcoder.web.frontcontroller.ActionContext;
-import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import javax.servlet.http.HttpSession;
 
 import junit.framework.TestCase;
+import servlet.MockHttpRequest;
+import servlet.MockHttpResponse;
+import servlet.MockHttpSession;
+import servlet.MockServletContext;
+
+import com.orpheus.game.GameOperationLogicUtility;
+import com.orpheus.game.KeySubmissionHandler;
+import com.topcoder.util.rssgenerator.MockDataStore;
+import com.topcoder.web.frontcontroller.ActionContext;
+import com.topcoder.web.frontcontroller.HandlerExecutionException;
 
 /**
  * Test case for <code>KeySubmissionHandler</code>.
@@ -521,12 +525,16 @@ public class KeySubmissionHandlerTest extends TestCase {
      */
     public void testExecute_FailedToLoad() throws Exception {
         try {
-            MockControl reqControl = MockControl.createNiceControl(HttpServletRequest.class);
-            MockControl resControl = MockControl.createControl(HttpServletResponse.class);
-            reqControl.replay();
-            ActionContext ac = new ActionContext(
-                    (HttpServletRequest) reqControl.getMock(),
-                    (HttpServletResponse) resControl.getMock());
+        	ServletContext servletContext = new MockServletContext();
+    		servletContext.setAttribute(GameOperationLogicUtility.getInstance()
+    				.getDataStoreKey(), new MockDataStore());
+
+    		HttpSession session = new MockHttpSession(servletContext);
+    		MockHttpRequest mockRequest = new MockHttpRequest(session);
+    		HttpServletRequest request = mockRequest;
+
+    		HttpServletResponse response = new MockHttpResponse();
+            ActionContext ac = new ActionContext(request, response);
             handler.execute(ac);
             fail("HandlerExecutionException expected.");
         } catch (HandlerExecutionException e) {

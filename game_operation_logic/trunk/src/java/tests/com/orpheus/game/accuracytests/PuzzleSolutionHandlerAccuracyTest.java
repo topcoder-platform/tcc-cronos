@@ -20,6 +20,7 @@ import servlet.MockServletContext;
 import com.orpheus.game.GameOperationLogicUtility;
 import com.orpheus.game.MockGameDataManager;
 import com.orpheus.game.PuzzleSolutionHandler;
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.puzzle.MockSolutionTester;
 import com.topcoder.web.frontcontroller.ActionContext;
@@ -163,7 +164,7 @@ public class PuzzleSolutionHandlerAccuracyTest extends TestCase {
 				.getGameManagerKey(), new MockGameDataManager());
 
 		session = new MockHttpSession(servletContext);
-        session.setAttribute("base_name123", new MockSolutionTester());
+        session.setAttribute("base_name19", new MockSolutionTester());
 		MockHttpRequest mockRequest = new MockHttpRequest(session);
 		request = mockRequest;
 
@@ -171,9 +172,10 @@ public class PuzzleSolutionHandlerAccuracyTest extends TestCase {
 		context = new ActionContext(request, response);
 		JNDIHelper.initJNDI();
 		
-		mockRequest.setParameter("puzzle_id","1");
+		mockRequest.setParameter("puzzle_id","19");
 		mockRequest.setParameter("Slot_id","1");
 		mockRequest.setParameter("redundant", "-_-b");
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
         
 		assertEquals("execute failed.", INCORRECT, handler.execute(context));
 	}

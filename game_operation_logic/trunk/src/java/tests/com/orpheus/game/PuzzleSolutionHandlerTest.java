@@ -12,6 +12,7 @@ import servlet.MockHttpResponse;
 import servlet.MockHttpSession;
 import servlet.MockServletContext;
 
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.puzzle.MockSolutionTester;
 import com.topcoder.web.frontcontroller.ActionContext;
 
@@ -61,10 +62,11 @@ public class PuzzleSolutionHandlerTest extends TestCase {
         response = new MockHttpResponse();
         context = new ActionContext(request, response);
         
-        request.setParameter("puzzle_id","1");
+        request.setParameter("puzzle_id","19");
         request.setParameter("Slot_id","1");
         
-        session.setAttribute("base_name123", new MockSolutionTester());
+        session.setAttribute("base_name19", new MockSolutionTester());
+		session.setAttribute("user_profile", new UserProfile(new Long(1)));
         servletContext.setAttribute(GameOperationLogicUtility.getInstance().getGameManagerKey(), new MockGameDataManager());
     }
 

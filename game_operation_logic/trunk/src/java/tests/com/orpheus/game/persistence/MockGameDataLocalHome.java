@@ -4,8 +4,8 @@ import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.ejb.EJBHome;
-import javax.ejb.EJBObject;
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
 import javax.ejb.Handle;
 import javax.ejb.RemoveException;
 
@@ -22,31 +22,29 @@ import com.topcoder.util.puzzle.MockPuzzleData;
 import com.topcoder.util.puzzle.PuzzleData;
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
-public class MockGameData implements GameData {
+public class MockGameDataLocalHome implements GameDataLocalHome {
 
 	public static final long[] GAME_REGISTRATIONS = new long[] { 1, 2, 3, 4 };
 
 	private HostingSlot[] slots;
 
-	public Game createGame(Game game) throws RemoteException {
+	public Game createGame(Game game) {
 		return null;
 	}
 
-	public HostingSlot[] createSlots(long blockId, long[] bidIds)
-			throws RemoteException {
+	public HostingSlot[] createSlots(long blockId, long[] bidIds) {
 		return null;
 	}
 
-	public Domain createDomain(Domain domain) throws RemoteException {
+	public Domain createDomain(Domain domain) {
 		return null;
 	}
 
-	public HostingBlock addBlock(long gameId, int slotMaxHostingTime)
-			throws RemoteException {
+	public HostingBlock addBlock(long gameId, int slotMaxHostingTime) {
 		return null;
 	}
 
-	public Game getGame(long gameId) throws RemoteException {
+	public Game getGame(long gameId) {
 		// Initialize a Game
 		// Image Info
 		ImageInfo[] images = new ImageInfo[] { new ImageInfoImpl(new Long(2),
@@ -76,75 +74,69 @@ public class MockGameData implements GameData {
 				"testBall", 0), 0, new Date(), new Date(), blocks);
 	}
 
-	public HostingBlock getBlock(long blockId) throws RemoteException {
+	public HostingBlock getBlock(long blockId) {
 		return null;
 	}
 
-	public HostingSlot getSlot(long slotId) throws RemoteException {
+	public HostingSlot getSlot(long slotId) {
 		return slots[0];
 	}
 
-	public Domain getDomain(long domainId) throws RemoteException {
+	public Domain getDomain(long domainId) {
 		return null;
 	}
 
-	public String[] getKeysForPlayer(long playerId, long[] slotIds)
-			throws RemoteException {
+	public String[] getKeysForPlayer(long playerId, long[] slotIds) {
 		return new String[] { "1" };
 	}
 
-	public PuzzleData getPuzzle(long puzzleId) throws RemoteException {
+	public PuzzleData getPuzzle(long puzzleId) {
 		return new MockPuzzleData();
 	}
 
-	public void recordPluginDownload(String pluginName) throws RemoteException {
+	public void recordPluginDownload(String pluginName) {
 
 	}
 
-	public void recordRegistration(long playerId, long gameId)
-			throws RemoteException {
+	public void recordRegistration(long playerId, long gameId) {
 
 	}
 
 	public SlotCompletion recordSlotCompletion(long playerId, long slotId,
-			Date date) throws RemoteException {
+			Date date) {
 		return new SlotCompletionImpl(playerId, slotId, date,
 				"TestSlotCompletion", 0);
 	}
 
-	public void recordGameCompletion(long playerId, long gameId)
-			throws RemoteException {
+	public void recordGameCompletion(long playerId, long gameId) {
 
 	}
 
-	public long recordBinaryObject(String name, String mediaType, byte[] content)
-			throws RemoteException {
+	public long recordBinaryObject(String name, String mediaType, byte[] content) {
 		return 0;
 	}
 
-	public HostingSlot[] updateSlots(HostingSlot[] slots)
-			throws RemoteException {
+	public HostingSlot[] updateSlots(HostingSlot[] slots) {
 		return null;
 	}
 
-	public void updateDomain(Domain domain) throws RemoteException {
+	public void updateDomain(Domain domain) {
 
 	}
 
-	public void deleteSlot(long slotId) throws RemoteException {
+	public void deleteSlot(long slotId) {
 
 	}
 
-	public Domain[] findActiveDomains() throws RemoteException {
+	public Domain[] findActiveDomains() {
 		return null;
 	}
 
-	public Game[] findGamesByDomain(String domain, long playerId)
-			throws RemoteException {
+	public Game[] findGamesByDomain(String domain, long playerId) {
 		return null;
 	}
 
-	public HostingSlot[] findCompletedSlots(long gameId) throws RemoteException {
+	public HostingSlot[] findCompletedSlots(long gameId) {
 		return slots;
 	}
 
@@ -153,56 +145,48 @@ public class MockGameData implements GameData {
 		return null;
 	}
 
-	public Game[] findGames(Boolean isStarted, Boolean isEnded)
-			throws RemoteException {
+	public Game[] findGames(Boolean isStarted, Boolean isEnded) {
 		return null;
 	}
 
-	public long[] findGameRegistrations(long playerId) throws RemoteException {
+	public long[] findGameRegistrations(long playerId) {
 
 		return GAME_REGISTRATIONS;
 	}
 
-	public Domain[] findDomainsForSponsor(long sponsorId)
-			throws RemoteException {
+	public Domain[] findDomainsForSponsor(long sponsorId) {
 		return null;
 	}
 
 	public HostingSlot findSlotForDomain(long gameId, long playerId,
-			String domain) throws RemoteException {
+			String domain) {
 		return null;
 	}
 
-	public BallColor[] findAllBallColors() throws RemoteException {
+	public BallColor[] findAllBallColors() {
 		return null;
 	}
 
-	public void remove() throws RemoteException, RemoveException {
-
-	}
-
-	public Object getPrimaryKey() throws RemoteException {
+	public Object getPrimaryKey() {
 		return null;
-	}
-
-	public EJBHome getEJBHome() throws RemoteException {
-		return null;
-	}
-
-	public boolean isIdentical(EJBObject arg0) throws RemoteException {
-		return false;
 	}
 
 	public Handle getHandle() throws RemoteException {
 		return null;
 	}
 
-	public SlotCompletion[] findSlotCompletions(long l1, long l2)
-			throws RemoteException {
+	public SlotCompletion[] findSlotCompletions(long l1, long l2) {
 		return new SlotCompletion[0];
 	}
 
-	public DownloadData getDownloadData(long downloadId) throws RemoteException {
+	public DownloadData getDownloadData(long downloadId) {
 		return null;
+	}
+
+	public GameDataLocal create() throws CreateException {
+		return new MockGameDataLocal();
+	}
+
+	public void remove(Object arg0) throws RemoveException, EJBException {
 	}
 }

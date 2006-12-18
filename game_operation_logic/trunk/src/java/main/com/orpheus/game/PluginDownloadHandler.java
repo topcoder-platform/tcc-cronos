@@ -3,21 +3,18 @@
  */
 package com.orpheus.game;
 
-import com.orpheus.game.persistence.GameData;
-import com.orpheus.game.persistence.GameDataLocal;
+import java.rmi.RemoteException;
 
-import com.topcoder.util.config.ConfigManagerException;
-
-import com.topcoder.web.frontcontroller.ActionContext;
-import com.topcoder.web.frontcontroller.Handler;
-import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import javax.naming.NamingException;
 
 import org.w3c.dom.Element;
 
-import java.rmi.RemoteException;
-
-import javax.ejb.CreateException;
-import javax.naming.NamingException;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.web.frontcontroller.ActionContext;
+import com.topcoder.web.frontcontroller.Handler;
+import com.topcoder.web.frontcontroller.HandlerExecutionException;
 
 
 /**

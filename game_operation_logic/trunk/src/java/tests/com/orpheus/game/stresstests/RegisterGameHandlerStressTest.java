@@ -7,12 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
-
 import servlet.MockHttpSession;
 import servlet.MockServletContext;
 
 import com.orpheus.game.AttributeScope;
 import com.orpheus.game.RegisterGameHandler;
+import com.topcoder.user.profile.BaseProfileType;
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.web.frontcontroller.ActionContext;
 
 /**
@@ -63,6 +64,9 @@ public class RegisterGameHandlerStressTest extends TestCase {
 
         context = new ActionContext(request, new MockHttpResponse());
         handler = new RegisterGameHandler("game_id");
+		UserProfile user = new UserProfile(new Long(1));
+		user.setProperty(BaseProfileType.EMAIL_ADDRESS, "test@topcoder.com");
+		session.setAttribute("user_profile", user);
     }
     
     /**

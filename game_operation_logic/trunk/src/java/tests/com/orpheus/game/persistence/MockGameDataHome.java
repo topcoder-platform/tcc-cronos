@@ -4,9 +4,10 @@ import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.ejb.EJBHome;
-import javax.ejb.EJBObject;
+import javax.ejb.CreateException;
+import javax.ejb.EJBMetaData;
 import javax.ejb.Handle;
+import javax.ejb.HomeHandle;
 import javax.ejb.RemoveException;
 
 import com.orpheus.game.GameDataException;
@@ -22,7 +23,7 @@ import com.topcoder.util.puzzle.MockPuzzleData;
 import com.topcoder.util.puzzle.PuzzleData;
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
-public class MockGameData implements GameData {
+public class MockGameDataHome implements GameDataHome {
 
 	public static final long[] GAME_REGISTRATIONS = new long[] { 1, 2, 3, 4 };
 
@@ -185,18 +186,6 @@ public class MockGameData implements GameData {
 		return null;
 	}
 
-	public EJBHome getEJBHome() throws RemoteException {
-		return null;
-	}
-
-	public boolean isIdentical(EJBObject arg0) throws RemoteException {
-		return false;
-	}
-
-	public Handle getHandle() throws RemoteException {
-		return null;
-	}
-
 	public SlotCompletion[] findSlotCompletions(long l1, long l2)
 			throws RemoteException {
 		return new SlotCompletion[0];
@@ -204,5 +193,23 @@ public class MockGameData implements GameData {
 
 	public DownloadData getDownloadData(long downloadId) throws RemoteException {
 		return null;
+	}
+
+	public GameData create() throws CreateException, RemoteException {
+		return new MockGameData();
+	}
+
+	public EJBMetaData getEJBMetaData() throws RemoteException {
+		return null;
+	}
+
+	public HomeHandle getHomeHandle() throws RemoteException {
+		return null;
+	}
+
+	public void remove(Object arg0) throws RemoteException, RemoveException {
+	}
+
+	public void remove(Handle arg0) throws RemoteException, RemoveException {
 	}
 }

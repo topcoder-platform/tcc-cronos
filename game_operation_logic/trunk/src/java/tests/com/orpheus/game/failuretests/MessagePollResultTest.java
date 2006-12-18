@@ -6,18 +6,23 @@ package com.orpheus.game.failuretests;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.easymock.MockControl;
-
-import com.orpheus.game.result.MessagePollResult;
-import com.topcoder.web.frontcontroller.ActionContext;
-import com.topcoder.web.frontcontroller.HandlerExecutionException;
-import com.topcoder.web.frontcontroller.ResultExecutionException;
-
 import junit.framework.TestCase;
+import servlet.MockHttpRequest;
+import servlet.MockHttpResponse;
+import servlet.MockHttpSession;
+import servlet.MockServletContext;
+
+import com.orpheus.game.GameOperationLogicUtility;
+import com.orpheus.game.result.MessagePollResult;
+import com.topcoder.util.rssgenerator.MockDataStore;
+import com.topcoder.web.frontcontroller.ActionContext;
+import com.topcoder.web.frontcontroller.ResultExecutionException;
 
 /**
  * Test case for <code>MessagePollResult</code>.
@@ -176,11 +181,16 @@ public class MessagePollResultTest extends TestCase {
      */
     public void testExecute_FailedToLoad() throws Exception {
         try {
-            MockControl reqControl = MockControl.createNiceControl(HttpServletRequest.class);
-            MockControl resControl = MockControl.createControl(HttpServletResponse.class);
-            ActionContext ac = new ActionContext(
-                    (HttpServletRequest) reqControl.getMock(),
-                    (HttpServletResponse) resControl.getMock());
+        	ServletContext servletContext = new MockServletContext();
+    		servletContext.setAttribute(GameOperationLogicUtility.getInstance()
+    				.getDataStoreKey(), new MockDataStore());
+
+    		HttpSession session = new MockHttpSession(servletContext);
+    		MockHttpRequest mockRequest = new MockHttpRequest(session);
+    		HttpServletRequest request = mockRequest;
+
+    		HttpServletResponse response = new MockHttpResponse();
+            ActionContext ac = new ActionContext(request, response);
             result.execute(ac);
             fail("ResultExecutionException expected.");
         } catch (ResultExecutionException e) {
