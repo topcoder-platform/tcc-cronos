@@ -1,39 +1,35 @@
 <html>
 <head>
-<script type="text/javascript">
+<script>
 	function ScriptingInterface()
 	{
 		//signal logged in
-		window.external.LoggedIn();
+//		window.external.LoggedIn();
 		
 		//signal logged out
-		window.external.LoggedOut();
+//		window.external.LoggedOut();
 		
 		//set the working game id
-		window.external.SetWorkingGame();
+		window.external.SetWorkingGame(1);
+		alert(window.external.GetWorkingGame());
 		
 		//get working game
-		Var gameid = window.external.GetWorkingGame();
+//		var gameid = window.external.GetWorkingGame();
 		
 		//set current target
-		window.external.SetCurrentTarget(<hash>, <sequence>);
+//		window.external.SetCurrentTarget("a", "bbb");
 		
 		//force get updates from server
-		window.external.PollMessages();
+//		window.external.PollMessages();
 		
 		//check if window is popup
-		var popup = window.external.IsPopup(window);
-	}
-
-	function login()
-	{
-		window.external.LoggedIn();
+//		var popup = window.external.IsPopup(window);
 	}
 </script>
 </head>
 
 <body>
-<button onclick="login">login</button>
+<button onclick="javascript:ScriptingInterface();">login</button>
 </body>
-
+test
 </html>

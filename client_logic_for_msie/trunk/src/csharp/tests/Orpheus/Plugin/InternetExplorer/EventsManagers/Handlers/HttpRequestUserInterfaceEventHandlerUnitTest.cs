@@ -178,13 +178,11 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         public void TestHandleEvent()
         {
             form = new BrowserForm();
-            form.Show();
             MsieClientLogic context = new MsieClientLogic(form.GetWebBrowserClass());
 
             HttpRequestUserInterfaceEventHandler handler = new HttpRequestUserInterfaceEventHandler();
             ExtensionEventArgs args = new ExtensionEventArgs("http", context);
             handler.HandleEvent(this, args);
-            //form.Close();
         }
     }
 }

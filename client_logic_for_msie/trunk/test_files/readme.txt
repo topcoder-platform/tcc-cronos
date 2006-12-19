@@ -17,12 +17,17 @@
 5. You may need to change the assembly location in config files.
 
 6. Problems in running unit test.
-    Since some test case will use the web browser control, I didn't know
-Why when the first running the web browser control don't do as expected.
-You are recommend to use nunit-gui.exe to run the test. And maybe 
-the first running time will be blocked for the web browser control,
-you need to stop and then re-start again.
+    1) you should set the http://localhost/msie to the directory ./test_fiels/msie 
+    and make sure your iis is running
+    2) Since some test case will use the web browser control, I didn't know
+       Why when the first running the web browser control don't do as expected.
+       You are recommend to use nunit-gui.exe to run the test. And maybe 
+       the first running time will be blocked for the web browser control,
+       you need to stop and then re-start again.
+    3) Please make sure your IE don't install some other plugins for test.
 
-7. And last, Please make sure your IE don't install some other plugins for test.
+7. When nant, make sure resource file also added int build.xml
+
+8. Change AssemblyKeyFile in the AssemblyInfo.cs as your local directory.
 
 Thanks

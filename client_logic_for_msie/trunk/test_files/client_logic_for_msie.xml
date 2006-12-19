@@ -120,7 +120,7 @@
         </property>
 		<!-- Required The test object request url.The parameters will be placed in string as {0}, {1} -->
         <property name="test_object_url">
-            <value><![CDATA[www.tc.com/?gameId={0}&domain={1}&seq={2}&hash={3}]]></value>
+            <value><![CDATA[http://www.topcoder.com/?gameId={0}&domain={1}&seq={2}&hash={3}]]></value>
         </property>
 	</namespace>
 </ConfigManager>

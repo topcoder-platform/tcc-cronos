@@ -38,8 +38,17 @@ namespace Orpheus.Plugin.InternetExplorer
 	[ClassInterface(ClassInterfaceType.None)]
 	public class MyToolBand : ToolBand
 	{
+		
+		/// <summary>
+		/// Login button.
+		/// </summary>
 		private System.Windows.Forms.Button btnLogin;
+
+		/// <summary>
+		/// Logout button.
+		/// </summary>
 		private System.Windows.Forms.Button btnLogout;
+
 		/// <summary>
 		/// Hold a reference to the client side logic object
 		/// </summary>
@@ -49,6 +58,21 @@ namespace Orpheus.Plugin.InternetExplorer
 		/// Login in handler
 		/// </summary>
 		private ExtensionEventHandlerDelegate login;
+
+		/// <summary>
+		/// Popup window button.
+		/// </summary>
+		private System.Windows.Forms.Button btnPopup;
+
+		/// <summary>
+		/// Url text.
+		/// </summary>
+		private System.Windows.Forms.TextBox txtUrl;
+
+		/// <summary>
+		/// check box of pop-up.
+		/// </summary>
+		private System.Windows.Forms.CheckBox chkNewWindow;
 		
 		/// <summary>
 		/// Login out handler
@@ -109,9 +133,6 @@ namespace Orpheus.Plugin.InternetExplorer
 		/// <param name="args">the args</param>
 		private void OnCompleted(object sender, ExtensionEventArgs args)
 		{
-			this.clientLogic.WebBrowserWindowNavigator.Navigate(this.clientLogic.WebBrowser,
-				"http://www.topcoder.com", true);
-
 			// customize the opened browser window
 			this.clientLogic.CustomizeWebBrowser(this.Host);
 
@@ -148,6 +169,9 @@ namespace Orpheus.Plugin.InternetExplorer
 		{
 			this.btnLogin = new System.Windows.Forms.Button();
 			this.btnLogout = new System.Windows.Forms.Button();
+			this.btnPopup = new System.Windows.Forms.Button();
+			this.txtUrl = new System.Windows.Forms.TextBox();
+			this.chkNewWindow = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// btnLogin
@@ -166,15 +190,38 @@ namespace Orpheus.Plugin.InternetExplorer
 			this.btnLogout.Text = "Logout";
 			this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
 			// 
+			// btnPopup
+			// 
+			this.btnPopup.Location = new System.Drawing.Point(248, 5);
+			this.btnPopup.Name = "btnPopup";
+			this.btnPopup.TabIndex = 2;
+			this.btnPopup.Text = "Pop-Up";
+			this.btnPopup.Click += new System.EventHandler(this.btnPopup_Click);
+			// 
+			// txtUrl
+			// 
+			this.txtUrl.Location = new System.Drawing.Point(336, 8);
+			this.txtUrl.Name = "txtUrl";
+			this.txtUrl.Size = new System.Drawing.Size(160, 21);
+			this.txtUrl.TabIndex = 3;
+			this.txtUrl.Text = "";
+			// 
+			// chkNewWindow
+			// 
+			this.chkNewWindow.Location = new System.Drawing.Point(504, 5);
+			this.chkNewWindow.Name = "chkNewWindow";
+			this.chkNewWindow.TabIndex = 4;
+			this.chkNewWindow.Text = "Pop-Up";
+			// 
 			// MyToolBand
 			// 
+			this.Controls.Add(this.chkNewWindow);
+			this.Controls.Add(this.txtUrl);
+			this.Controls.Add(this.btnPopup);
 			this.Controls.Add(this.btnLogout);
 			this.Controls.Add(this.btnLogin);
-			this.MaxSize = new System.Drawing.Size(256, 100);
-			this.MinSize = new System.Drawing.Size(60, 32);
 			this.Name = "MyToolBand";
-			this.Size = new System.Drawing.Size(256, 32);
-			this.Title = "Msie plugin Demo";
+			this.Size = new System.Drawing.Size(608, 32);
 			this.ResumeLayout(false);
 
 		}
@@ -228,6 +275,31 @@ namespace Orpheus.Plugin.InternetExplorer
 		public static void UnregisterBHO(Type t)
 		{
 			ExtensionInstaller.Unregister(t);
+		}
+
+		/// <summary>
+		/// Pop-up window test.
+		/// </summary>
+		/// 
+		/// <param name="sender">the sender</param>
+		/// <param name="e">event args.</param>
+		private void btnPopup_Click(object sender, EventArgs e)
+		{
+			txtUrl.Text = txtUrl.Text.Trim();
+			if (txtUrl.Text.Length > 0)
+			{
+				if (txtUrl.Text.ToLower().StartsWith("http://")) 
+				{
+					this.clientLogic.WebBrowserWindowNavigator.Navigate(this.clientLogic.WebBrowser, 
+						txtUrl.Text, chkNewWindow.Checked);
+				}
+				else
+				{
+					this.clientLogic.WebBrowserWindowNavigator.Navigate(this.clientLogic.WebBrowser, 
+						"http://" + txtUrl.Text, chkNewWindow.Checked);
+
+				}
+			}
 		}
 	}
 }

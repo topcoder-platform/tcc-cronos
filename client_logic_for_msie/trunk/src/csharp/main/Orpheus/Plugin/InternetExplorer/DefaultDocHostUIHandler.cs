@@ -113,7 +113,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// </summary>
         /// <param name="ppDispatch">Address of a pointer to a variable that receives
         /// an <c>IDispatch</c> interface pointer for the host application.</param>
-        public virtual void GetExternal(out object ppDispatch)
+        public void GetExternal(out object ppDispatch)
         {
             ppDispatch = context.ScriptingObject;
         }
@@ -202,10 +202,10 @@ namespace Orpheus.Plugin.InternetExplorer
         /// interface used to query command status and execute commands on this object.</param>
         /// <param name="pdispReserved">Pointer to an <c>IDispatch</c> interface of the object
         /// at the screen coordinates specified in ppt</param>
-        public virtual void ShowContextMenu(uint dwID, ref MsHtmHstInterop.tagPOINT ppt,
+        public int ShowContextMenu(uint dwID, ref MsHtmHstInterop.tagPOINT ppt,
             object pcmdtReserved, object pdispReserved)
         {
-            // does nothing
+			return -1;
         }
 
         /// <summary>
@@ -238,8 +238,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// <param name="pguidCmdGroup">Pointer to a GUID for the command group identifier.</param>
         /// <param name="nCmdID">specifies a command identifier.</param>
         public virtual void TranslateAccelerator(ref tagMSG lpmsg, ref Guid pguidCmdGroup, uint nCmdID)
-        {
-            // does nothing
+		{
         }
 
         /// <summary>

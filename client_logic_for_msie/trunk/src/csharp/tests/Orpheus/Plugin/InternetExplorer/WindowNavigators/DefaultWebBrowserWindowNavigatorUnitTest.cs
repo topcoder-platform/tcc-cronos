@@ -5,11 +5,13 @@
  */
 using System;
 using System.IO;
+using System.Text;
 
 using NUnit.Framework;
 
 using MsHtmHstInterop;
 using SHDocVw;
+using Orpheus.Plugin.InternetExplorer.Mock;
 
 namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
 {
@@ -125,6 +127,17 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         }
 
         /// <summary>
+        /// Test Navigate(WebBrowserClass webBrowser, string url, bool newWindow),
+        /// a browser window with the given url should be show.
+        /// </summary>
+        public void TestNavigate1()
+        {
+            BrowserForm form = new BrowserForm();
+
+            tester.Navigate(form.GetWebBrowserClass(), TestHelper.URL, true);
+        }
+
+        /// <summary>
         /// Test Navigate(WebBrowserClass webBrowser, Stream content, bool newWindow),
         /// when webBrowser is null, ArgumentNullException is expected.
         /// </summary>
@@ -152,6 +165,22 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         public void TestNavigate2_Failed()
         {
             tester.Navigate(webBrowser, content, true);
+        }
+
+        /// <summary>
+        /// Test Navigate(WebBrowserClass webBrowser, Stream content, bool newWindow),
+        /// a browser window with the given content should be showed.
+        /// </summary>
+        public void TestNavigate2()
+        {
+            BrowserForm form = new BrowserForm();
+            using (Stream stream = new MemoryStream())
+            {
+                byte[] buffer = ASCIIEncoding.ASCII.GetBytes("<html><body>Demo</body></html>");
+                stream.Write(buffer, 0, buffer.Length);
+                stream.Seek(0, SeekOrigin.Begin);
+                tester.Navigate(form.GetWebBrowserClass(), stream, true);
+            }
         }
     }
 }

@@ -14,12 +14,12 @@ namespace Orpheus.Plugin.InternetExplorer
 	/// All uer-defined event handlers must implement the <c>IExtentionEventHandler</c>
 	/// interface. Event handlers are added to the configuration file, and invoked by 
 	/// the component when the event they are configured for is fired.
+	/// </summary>
 	/// 
 	/// <author>TCSDESIGNER</author>
 	/// <author>TCSDEVELOPER</author>
 	/// <version>1.0</version>
 	/// <copyright>Copyright (C) 2006 TopCoder Inc., All Rights Reserved.</copyright>
-	/// </summary>
 	public class MyEventHandler :IExtensionEventHandler
 	{
 		/// <summary>
