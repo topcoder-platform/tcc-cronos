@@ -22,7 +22,15 @@
             - i18n.xsl 
             - Traductions.xml 
             - NAnt.NUnit2ReportTasks.dll 
-            
+
+
+  Compilation Requirements
+  ------------------------
+  In addition to the general installation requirements, compiling the component
+  from source requires Microsoft's IDL compiler (midl.exe), and its ActiveX and
+  TLB packagers (aximp.exe and tlbimp.exe, respectively).  The former is
+  available in the Microsoft Platform SDK, among other places, and the latter
+  two in the Microsoft .Net SDK.
 
   
   TopCoder Software Environment Configuration
@@ -38,6 +46,7 @@
      properly install and configure these tools before working with TopCoder 
      Software components.
      Note: Be sure to change your Nunit reference (see requirements above)
+
 
   Component directory Structure
   ------------------------------------------
