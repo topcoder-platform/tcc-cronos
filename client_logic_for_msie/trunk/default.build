@@ -162,7 +162,6 @@ rights reserved." />
 
     <target name="compile" depends="interop_dlls">
         <mkdir dir="${build_docsdir}"/>
-        <copy file="${ext_bin}\TopCoder.snk" todir="${builddir}" />
         <csc target="library" output="${build_classdir}\${namespace_file}.dll"
                 doc="${build_classdir}\${namespace_file}.xml" >
             <sources>
