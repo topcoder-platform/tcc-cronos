@@ -1,0 +1,1 @@
+This folder provides the samples on how to config this component under the FrontController environment.

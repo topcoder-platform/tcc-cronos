@@ -1,0 +1,24 @@
+<CMConfig>
+	<Config name="com.orpheus.game">
+		<Property name="UserProfileManager">
+      		<Property name="type">
+				<Value>com.topcoder.user.profile.manager.MockUserProfileManager</Value>
+			</Property>
+		</Property>
+		<Property name="ProfileTypeFactory">
+      		<Property name="type">
+				<Value>com.topcoder.user.profile.manager.MockProfileTypeFactory</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+          			<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.user.profile.manager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

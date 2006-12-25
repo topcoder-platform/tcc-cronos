@@ -1,0 +1,9 @@
+<CMConfig>
+	<Config name="theObj">
+		<Property name="test">
+		  <Property name="type">
+			<Value>TestObjectFactory</Value>
+		  </Property>
+    </Property>
+	</Config>
+</CMConfig>

@@ -1,0 +1,26 @@
+<CMConfig>
+	<Config name="com.orpheus.game.GameOperationLogicUtility">
+		<Property name="data_store">
+			<Value>Data_store</Value>
+		</Property>
+		<Property name="game_data_manager">
+			<Value>GameDataManager</Value>
+		</Property>
+		<Property name="puzzle_type_source">
+			<Value>PuzzleTypeSource</Value>
+		</Property>
+		
+		<Property name="context_name">
+			<Value>default</Value>
+		</Property>
+		<Property name="game_data_local">
+			<Value>local</Value>
+		</Property>
+		<Property name="game_data_remote">
+			<Value>remote</Value>
+		</Property>
+		<Property name="use_local_interface">
+			<Value>true</Value>
+		</Property>
+	</Config>
+</CMConfig>

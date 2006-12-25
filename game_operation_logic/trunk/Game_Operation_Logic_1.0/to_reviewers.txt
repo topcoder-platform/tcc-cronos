@@ -1,0 +1,18 @@
+Here are some notes for reviewers for final fix:
+to assistant:
+a) RegisterGameHandlerTest#testRegisterGameHandler_Element_NoParamKey
+	the sample xml you provided was not correct, game_id_param_key is expected to be null but existing, please be noted.
+
+b) MessagePollResultTest#testMessagePollResult_StringStringArray_EmptyNames()
+   I consider that for ctor, MessagePollResult(String dateParamKey, String[] categoryNames), categoryNames can be empty array, according
+   to the class level document.
+
+to all Zulander and catcher:
+a) I found there are some conflicts on the environment configuration between my tests and yours.
+	Most of your tests depend on the default config set in ConfigManager.properties, but in each test of mine,
+	I will always clear all the namespaces, for this reason, while aggregate all the tests in AllTests,
+	the stress tests and accuracy tests won't get the proper config as expected and failed. Plz be noted.
+
+to all reviewers:
+a) PuzzleSolutionHandler#ctor is changed by adding new string argument, according to https://software.topcoder.com/forum/c_forum_message.jsp?f=24092901&r=24515339
+	So, the relative tests for this class should be modified as well.

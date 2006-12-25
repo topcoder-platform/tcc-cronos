@@ -1,0 +1,662 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052\deftab420{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\froman\fprq2\fcharset2 Symbol;}{\f4\fnil\fprq2\fcharset2 Wingdings;}{\f5\fnil\fprq2\fcharset0 Wingdings;}}
+{\colortbl ;\red0\green0\blue128;\red0\green0\blue0;\red0\green0\blue225;\red255\green255\blue255;\red0\green0\blue127;\red255\green0\blue0;\red0\green0\blue255;\red127\green127\blue127;\red51\green51\blue153;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx720\ul\b\f0\fs32 Game Operation Logic Component Specification\par
+\pard\nowidctlpar\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1\fs24 1.\tab Design\f0\fs20\par
+\pard\nowidctlpar\li720\sa120\b0\f1 The Orpheus Game Logic components provide business logic in support of game play and game data manipulation tasks performed by the Orpheus application.  For the most part this involves providing Handler implementations conformant to the specifications of the Front Controller component version 2.1.  This game logic component focuses generally on handling user actions that require updating persistent application data, or that involve non-trivial computation or data processing within handler or result objects.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li720\sa120\b0 None.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\b0 Java Servlet API 2.4\kerning0  \par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.3\tab Required Algorithms\par
+\pard\nowidctlpar\li720\qj\kerning2\b0\f0\fs21\par
+The xml Element passed to the handler\rquote s constructor must follow the DTD defined below, however developers can choose to validate the xml or not. (We can assume the xml element is valid, and throw IAE if failed to extract what we want). \par
+The xml element structure is relatively simple, please use DOM API to extract node values. \par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i\f1\fs20 1.3.1\f0\tab\f1 RegisterGameHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (game_id_param_key)>\par
+<!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT game_id_param_key (#PCDATA)>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="x">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <game_id_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj game_id\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </game_id_param_key>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The game_id_param_key node\rquote s value represents the http request parameter name to get the game id.\par
+\par
+Assume user logs in, and the game id is 1, this handler will get the user id and game id from the http request parameter, and invoke the EJB object to register the user with the given game id.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.2\f0\tab\f1 KeySubmissionHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (game_id_param_key,submission_param_key,\par
+\pard\nowidctlpar\fi360\li720\sa50\qj max_failure_count,inactive_game_result, failure_count_not_met_result,\par
+failure_count_exceeded_result)>\par
+\pard\nowidctlpar\li720\sa50\qj <!ATTLIST handler type CDATA #REQUIRED>\par
+\par
+<!ELEMENT game_id_param_key (#PCDATA)>\par
+<!ELEMENT submission_param_key (#PCDATA)>\par
+<!ELEMENT max_failure_count (#PCDATA)>\par
+<!ELEMENT inactive_game_result (#PCDATA)>\par
+<!ELEMENT failure_count_not_met_result (#PCDATA)>\par
+<!ELEMENT failure_count_exceeded_result (#PCDATA)>\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf3\highlight4\f2 <handler\cf2  \cf3 type=\cf1 "x"\cf3 >\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <game_id_param_key>\cf2 gameId\cf3 </game_id_param_key>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <submission_param_key>\cf2 submissions\cf3 </submission_param_key>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <max_failure_count>\cf2 10\cf3 </max_failure_count>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <inactive_game_result>\par
+\pard\nowidctlpar\fi120\li2400\sa50\qj\cf2 inactive_game_result\par
+\pard\nowidctlpar\fi120\li1560\sa50\qj\cf3 </inactive_game_result>\cf0\highlight0\par
+\pard\nowidctlpar\li720\sa50\qj\cf2\highlight4\tab\tab\tab\cf3 <failure_count_not_met_result>\par
+\pard\nowidctlpar\fi120\li1980\sa50\qj\cf2 count_not_met_result\par
+\pard\nowidctlpar\fi420\li1260\sa50\qj\cf3 </failure_count_not_met_result>\cf0\highlight0\par
+\pard\nowidctlpar\li720\sa50\qj\cf2\highlight4\tab\tab\tab\cf3 <failure_count_exceeded_result>\par
+\pard\nowidctlpar\fi330\li1770\sa50\qj\cf2 count_exceeded_result\par
+\pard\nowidctlpar\li1770\sa50\qj\cf3 </failure_count_exceeded_result>\cf0\highlight0\par
+\pard\nowidctlpar\li720\sa50\qj\cf3\highlight4 </handler>\cf1\highlight0\kerning2\fs18\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The game_id_param_key node\rquote s value represents the http request parameter name to get the game id\par
+The submission_param_key node value represents the http request parameter name to get the key submissions\par
+The max_failure_count node represents the max failure count of the comparision of the submitted submissions with these retrieved from EJB\par
+The failure_count_not_met_result node represents the result name this handler will return if the max count is not met\par
+The failure_count_exceeded_result node represents the result name this handler will return if the max count is met or exceeded.\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning0 This handler processes key submissions. It will accept a game ID via a request parameter of configurable name, and several key strings as multiple values of another request parameter, also of configurable name. It will determine whether the submitted keys match those recorded for the currently logged-in player for the specified game for the most recently completed (by any player) \i k\i0  hosting slots, where \i k\i0  is the key count of the specified game.\par
+The handler will maintain a count, in the player\rquote s session, of the number of failures to submit matching keys for the specified game since the last time its hosting slot changed.  (The ID of the most recently-completed hosting slot in that game is one possible measure of whether the hosting slot has changed.)\par
+Contingencies and results:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 If the specified game is not active then the handler returns a configurable result code characteristic of the problem, regardless of the values of the keys\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 If the keys do not match then the player\rquote s failure count for the game and slot is incremented.  The handler then returns a configurable result string characteristic of whether or not the failure count meets or exceeds a configurable threshold value.\par
+\f3\'b7\tab\f1 If the keys do match then the handler records a game completion for the player in the specified game (via the game data persistence component), then returns null\par
+\pard\nowidctlpar\sa120\sl240\slmult0\cf5\f2\fs16\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.3\f0\tab\f1 PuzzleSolutionHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (game_id_param_key,slot_id_param_key,\par
+\pard\nowidctlpar\fi360\li720\sa50\qj solutiontester_base_name, slot_completion_request_attribute_key, incorrect_solution_result)>\par
+\pard\nowidctlpar\li720\sa50\qj <!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT game_id_param_key (#PCDATA)>\par
+<!ELEMENT slot_id_param_key (#PCDATA)>\par
+<!ELEMENT solutiontester_base_name (#PCDATA)>\par
+<!ELEMENT slot_completion_request_attribute_key(#PCDATA)>\par
+<!ELEMENT incorrect_solution_result (#PCDATA)>\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="x">\par
+\pard\nowidctlpar\li1140\sa50\qj <game_id_param_key>\par
+\pard\nowidctlpar\fi120\li1560\sa50\qj puzzle_id\par
+\pard\nowidctlpar\li1140\sa50\qj </game_id_param_key>\par
+<slot_id_param_key>\par
+\pard\nowidctlpar\fi120\li1560\sa50\qj Slot_id\par
+\pard\nowidctlpar\li1140\sa50\qj </slot_id_param_key>\par
+<solutiontester_base_name>\par
+\pard\nowidctlpar\fi120\li1560\sa50\qj base_name\par
+\pard\nowidctlpar\li1140\sa50\qj </solutiontester_base_name>\par
+<slot_completion_request_attribute_key>\par
+slot_completion_request_attribute_key\par
+</slot_completion_request_attribute_key>\par
+<incorrect_solution_result>\par
+\tab incorrect_solution_result\par
+</incorrect_solution_result>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 </handler>\par
+\cf0\f1\fs20\par
+\pard\nowidctlpar\li720\sa50 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The puzzle_id_request_attribute_key node\rquote s value represents the http request attribute name to get the puzzle id\par
+The media_type_request_attribute_key node represents the http request attribute name to get the media type.\par
+The puzzle_string_request_attribute_key node represents the http request attribute name to store the rendered puzzle string.\par
+\pard\nowidctlpar\fi-300\li1020\sa120 The solutiontester_base_name node represents the SolutionTester base name\par
+The incorrect_solution_result node represents the result name to return if the puzzle solution is incorrect.\par
+\pard\nowidctlpar\li720\sa50\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning0 This handler determines the IDs of the game and slot to which the puzzle applies from request parameters of configurable name.  It then finds the appropriate solution tester:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 it looks up the ID of the slot\rquote s puzzle among the slot information,\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 appends that puzzle ID to a configured prefix to obtain the name of the session attribute containing the appropriate \f2 SolutionTester\f1 , and\par
+\f3\'b7\tab\f1 retrieves the tester from the session via the computed attribute name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 The handler will pass the request\rquote s full parameter map to the tester. If the solution is correct then the handler records a game completion for the currently logged-in player in the game whose ID is available from a request parameter of configurable name, and the handler returns null.\par
+If the solution is incorrect then the game is forced to advance to the next host, and a slot completion is recorded for the current player in the specified slot, the \f2 SlotCompletion\f1  object is assigned to a request attribute of configurable name, and the handler returns a configurable result code string.\par
+\pard\nowidctlpar\li720\sa50\kerning2\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.4\f0\tab\f1 PuzzleRenderingHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (puzzle_id_request_attribute_key,\par
+\pard\nowidctlpar\fi360\li720\sa50\qj media_type_request_attribute_key,\par
+puzzle_string_request_attribute_key,\par
+solutiontester_base_name,\par
+incorrect_solution_result)>\par
+\pard\nowidctlpar\li720\sa50\qj <!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT puzzle_id_request_attribute_key (#PCDATA)>\par
+<!ELEMENT media_type_request_attribute_key (#PCDATA)>\par
+<!ELEMENT puzzle_string_request_attribute_key (#PCDATA)>\par
+<!ELEMENT solutiontester_base_name (#PCDATA)>\par
+<!ELEMENT incorrect_solution_result (#PCDATA)>\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\cf1\kerning2\f2\fs18 <handler type="x">\par
+\pard\nowidctlpar\li930\sa50 <puzzle_id_request_attribute_key>\par
+\pard\nowidctlpar\fi330\li930\sa50 puzzle_id\par
+\pard\nowidctlpar\li930\sa50 </puzzle_id_request_attribute_key>\par
+<media_type_request_attribute_key>\par
+\pard\nowidctlpar\fi330\li930\sa50 media_type\par
+\pard\nowidctlpar\li930\sa50 </media_type_request_attribute_key>\par
+<puzzle_string_request_attribute_key>\par
+\pard\nowidctlpar\fi330\li930\sa50 puzzle_string\par
+\pard\nowidctlpar\li930\sa50 </puzzle_string_request_attribute_key>\par
+<solutiontester_base_name>\par
+\pard\nowidctlpar\fi330\li930\sa50 base_name\par
+\pard\nowidctlpar\li930\sa50 </solutiontester_base_name>\par
+<incorrect_solution_result>\par
+\pard\nowidctlpar\fi330\li930\sa50 incorrect_solution_result\par
+\pard\nowidctlpar\li930\sa50 </incorrect_solution_result>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The puzzle_id_param_key node\rquote s value represents the http request parameter name to get the puzzle id\par
+The slot_id_param_key node represents the http request parameter name to get the slot id\par
+The solutiontester_base_name node represents the SolutionTester base name.\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning0 This handler produces a rendition of a puzzle in \f2 String\f1  form and attaches it to the request as an attribute of configurable name.  The handler will be configured also with the name of a request attribute from which to obtain the ID of the puzzle to render (as a \f2 Long\f1 ), the media type in which to render it (a \f2 String\f1 ), the name of the application context attribute from which to obtain a \f2 PuzzleTypeSource\f1 , and the base name of a session attribute to which to assign a \f2 SolutionTester\f1 . The handler operates in this fashion:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 It obtains from game data persistence a \f2 PuzzleData\f1  for the specified ID.\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 It extracts the puzzle type name from among the \f2 PuzzleData\f1\rquote s attributes, and feeds it to a \f2 PuzzleTypeSource\f1  to obtain the appropriate \f2 PuzzleType\f1 .\par
+\f3\'b7\tab\f1 It obtains a renderer for the specified medium from the PuzzleType, and uses it to render the puzzle.\par
+\f3\'b7\tab\f1 It assigns the \f2 SolutionTester\f1  resulting from the rendering to a session attribute named by concatenating the configured base attribute name with the puzzle ID.\par
+\f3\'b7\tab\f1 It assigns the rendered puzzle, as a String, as a request attribute with the configured name.\par
+\pard\nowidctlpar\fi-300\li1020\sa120\kerning2\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.5\f0\tab\f1 MessagePollResult\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT result (date_param_key, catetory_names)>\par
+<!ATTLIST result type CDATA #REQUIRED>\par
+<!ELEMENT game_id_param_key (#PCDATA)>\par
+<!ELEMENT catetory_names (value+)>\par
+<!ELEMENT value (#PCDATA)>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <result name="x">\par
+\pard\nowidctlpar\li930\sa50\qj <date_param_key>\par
+\pard\nowidctlpar\fi330\li930\sa50\qj date\par
+\pard\nowidctlpar\li930\sa50\qj </date_param_key>\par
+<catetory_names>\par
+\pard\nowidctlpar\li1140\sa50\qj <value>some category name</value>\par
+<value>some category name </value>\par
+<value>some category name </value>\par
+\pard\nowidctlpar\li930\sa50\qj </category_names>\par
+\pard\nowidctlpar\li720\sa50\qj </result>\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The date node\rquote s value represents the http request parameter name to get the date string\par
+The category_names node contains an array of category names that will be used to construct the SearchCriteria\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning0 This result will obtain a \f2 DataStore\f1  from an application context attribute of configurable name and use it to construct an Atom 1.0 feed document, which it returns (in XML format) as the HTTP response entity.  It will select items for the feed as follows:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 The \f2 Result\f1  will be configured with a request parameter name with which it will accept an item update date and time.  If the request specifies a parameter of that name then this \f2 Result\f1  will parse it as a \f2 java.util.Date\f1  in ISO 8601:2004 format (http://en.wikipedia.org/wiki/ISO_8601), and only items with a creation or update date strictly later than the parsed date will be included in the resulting feed.\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 The \f2 Result\f1  will determine the games for which the requesting player (the one currently logged-in) is registered; the name of each will be used as an item category, and items in any of those categories will be included in the feed, subject to the date restriction already described.\par
+\f3\'b7\tab\f1 The \f2 Result\f1  will be configured with zero or more category names for categories whose items are always included in the feed, subject to the date restriction criterion.\par
+\pard\nowidctlpar\li720\sa50\kerning2\f0\fs21 T\kerning0\f1\fs20 he response will be assigned the content type registered for Atom, \ldblquote application/atom+xml\rdblquote\kerning2\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.6\f0\tab\f1 WinnerDataHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (object_factory,profile_type_names,\par
+profile_property_param_names, profile_property_names)>\par
+<!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT object_factory (namespace, user_profile_manager_key,profile_type_factory_key)> \par
+<!ELEMENT namespace (#PCDATA)>\par
+<!ELEMENT user_profile_manager_key (#PCDATA)>\par
+<!ELEMENT profile_type_factory_key(#PCDATA)>\par
+<!ELEMENT profile_type_names (value+)>\par
+<!ELEMENT profile_property_param_names (value+)>\par
+<!ELEMENT profile_property_names (value+)>\par
+<!ELEMENT value (#PCDATA)>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf3\highlight4\f2 <handler\cf2  \cf3 type=\cf1 "x"\cf2  \cf3 >\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <object_factory>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <namespace>\cf2 com.orpheus.game\cf3 </namespace>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <user_profile_manager_key>\par
+\pard\nowidctlpar\fi120\li2400\sa50\qj\cf2 UserProfileManager\par
+\pard\nowidctlpar\fi420\li1680\sa50\qj\cf3 </user_profile_manager_key>\cf0\highlight0\par
+\pard\nowidctlpar\li720\sa50\qj\cf2\highlight4\tab\tab\tab\tab\cf3 <profile_type_factory_key>\par
+\pard\nowidctlpar\fi120\li2400\sa50\qj\cf2 ProfileTypeFactory\par
+\pard\nowidctlpar\fi420\li1680\sa50\qj\cf3 </profile_type_factory_key>\cf0\highlight0\par
+\pard\nowidctlpar\li720\sa50\qj\cf2\highlight4\tab\tab\tab\cf3 </object_factory>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <profile_type_names>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <value>\cf2 typeA\cf3 </value>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <value>\cf2 typeB\cf3 </value>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 </profile_type_names>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <profile_property_param_names>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <value>\cf2 firstName\cf3 </value>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <value>\cf2 email\cf3 </value>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 </profile_property_param_names>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 <profile_property_names>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <value>\cf2 first_name\cf3 </value>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\tab\cf3 <value>\cf2 email_address\cf3 </value>\cf0\highlight0\par
+\cf2\highlight4\tab\tab\tab\cf3 </profile_property_names>\cf0\highlight0\par
+\cf3\highlight4 </handler>\cf1\highlight0\kerning2\fs18\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The object_factory node contains the values to create the UserProfileManager and ProfileTypeFactory from ObjectFactory\par
+The profile_type_names node contains the profile type names that will be added to the UserProfile\par
+The profile_property_param_names node contains the http request parameter names used to get the property value.\par
+The profile_property_names node contains the profile property names.\par
+Please note that the profile_property_param_names must have the same number of children value nodes as the profile_property_names.\par
+\par
+This handler records contact information collected from players when they win the game.  Information will be stored in the winner\rquote s User Profile, and recorded using the User Profile Manager. The handler\rquote s configuration will specify profile types that the handler must ensure are present in the profile, and will specify a map from parameter names to corresponding user profile property names. The Handler will add the profile type(s) to the UserProfile, then copy the parameter values to the profile and store it.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.7\f0\tab\f1 MessageHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (plugin_name,attribute_names,message_property_names)>\par
+<!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT plugin_name (#PCDATA)>\par
+<!ELEMENT attribute_names (value+)>\par
+<!ATTLIST attribute_names scope CDATA #REQUIRED>\par
+<!ELEMENT message_property_names (value+)>\par
+<!ELEMENT value (#PCDATA)>\par
+<!ATTLIST value scope CDATA #REQUIRED>\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="x" >\par
+\pard\nowidctlpar\li1140\sa50\qj <plugin_name>some name</plugin_name>\par
+<attribute_names>\par
+\pard\nowidctlpar\li1560\sa50\qj <value scope=\rdblquote request_parameter\rdblquote >paramName1</value>\par
+<value scope=\rdblquote application\rdblquote >attributeName2</value>\par
+.....\par
+\pard\nowidctlpar\li1140\sa50\qj </attribute_names>\par
+<message_property_names>\par
+\pard\nowidctlpar\li1560\sa50\qj <value>some value</value>\par
+<value>some value</value>\par
+.........\par
+\pard\nowidctlpar\li1140\sa50\qj </message_property_names>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The plugin_name node\rquote s value represents the message plugin name used to get the MessagePlugin\par
+The attribute_names node\rquote s values are used to get the corresponding message property value from the request parameter or attribute, session attribute, application attribute, or ActionContext attribute, dependent on the scope attribute. The scope value must be one of the following values:\par
+request_parameter, request, session, application, action_context.\par
+The message_property_names\rquote  values service as the message property name to keep the property value.\par
+Please note that the attribute_names must have the same number of children value nodes as the message_property_names.\par
+\par
+This handler supports general-purpose messaging between the application and users via the Messenger Framework.  It is configured with the name of a MessengerPlugin and with one or more mappings between message property names and request parameter names or request / session / application / action context attribute names, dependent on the scope value. The handler obtains a MessengerPlugin instance, creates a MessageAPI instance, assigns values to the message parameters as directed by its configuration, then dispatches the message via the MessengerPlugin.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i 1.3.8\f0\tab\f1 PluginDownloadHandler\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning2\i0 The DTD of the xml element:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\f2\fs18 <!ELEMENT handler (plugin_name_param_key)>\par
+<!ATTLIST handler type CDATA #REQUIRED>\par
+<!ELEMENT plugin_name_param_key (#PCDATA)>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\kerning0\f1\fs20 Follow is a sample xml:\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\f2\fs18 <handler type="x">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <\cf0\f0\fs21  \cf1\f2\fs18 plugin_name_param_key >\par
+some key\par
+</\cf0\f0\fs21  \cf1\f2\fs18 plugin_name_param_key >\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Following is simple explanation of the above XML structure.\par
+The handler\rquote s type attribute is required by Front Controller component, it won\rquote t be used in this design. \par
+The plugin_name_param_key node\rquote s value represents the http request parameter name to get the message plugin name\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\kerning0 This handler records an instance of a plug-in download.  It will use a plug-in name taken from a request parameter of configurable name to identify the plug-in downloaded to the game data persistence component.\f0\par
+\pard\nowidctlpar\fi-300\li1020\sa120\cf5\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1 1.4\tab Component Class Overview\f0\par
+\pard\nowidctlpar\li720\sa120\f1 RegisterGameHandler\b0 : \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 Registers the current (logged-in) user for a specified game. The game to register for will by identified by its unique ID, parsed from a request parameter of configurable name.\f0\par
+\pard\nowidctlpar\li720\sa120\f1 This class is thread safe since it does not contain any mutable state.\f0\par
+\f1\par
+\b KeySubmissionHandler\b0 : \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 A Handler that processes key submissions.  It will accept a game ID via a request parameter of configurable name, and several key strings as multiple values of another request parameter, also of configurable name.  It will determine whether the submitted keys match those recorded for the currently logged-in player for the specified game for the most recently completed (by any player) \i k\i0  hosting slots, where \i k\i0  is the key count of the specified game.\par
+The handler will maintain a count, in the player\rquote s session, of the number of failures to submit matching keys for the specified game since the last time its hosting slot changed.  (The ID of the most recently-completed hosting slot in that game is one possible measure of whether the hosting slot has changed.)\par
+Contingencies and results:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 If the specified game is not active then the handler returns a configurable result code characteristic of the problem, regardless of the values of the keys\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 If the keys do not match then the player\rquote s failure count for the game and slot is incremented.  The handler then returns a configurable result string characteristic of whether or not the failure count meets or exceeds a configurable threshold value.\par
+\f3\'b7\tab\f1 If the keys do match then the handler records a game completion for the player in the specified game (via the game data persistence component), then returns null\f0\par
+\pard\nowidctlpar\li720\sa120\par
+\f1 This class is thread safe since it does not contain any mutable state.\f0\par
+\f1\par
+\b MessagePollResult\b0  \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 A\f0  \f1 Result for responding to message polling requests.  It will obtain a \f2 DataStore\f1  from an application context attribute of configurable name and use it to construct an Atom 1.0 feed document, which it returns (in XML format) as the HTTP response entity.  It will select items for the feed as follows:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 The \f2 Result\f1  will be configured with a request parameter name with which it will accept an item update date and time.  If the request specifies a parameter of that name then this \f2 Result\f1  will parse it as a \f2 java.util.Date\f1  in ISO 8601:2004 format (http://en.wikipedia.org/wiki/ISO_8601), and only items with a creation or update date strictly later than the parsed date will be included in the resulting feed.\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 The \f2 Result\f1  will determine the games for which the requesting player (the one currently logged-in) is registered; the name of each will be used as an item category, and items in any of those categories will be included in the feed, subject to the date restriction already described.\par
+\f3\'b7\tab\f1 The \f2 Result\f1  will be configured with zero or more category names for categories whose items are always included in the feed, subject to the date restriction criterion.\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 The response will be assigned the content type registered for Atom, \ldblquote application/atom+xml\rdblquote .\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe since it does not contain any mutable state.\f0\par
+\f1\par
+\b MessageHandler\b0 : \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 A handler that supports general-purpose messaging between the application and users via the Messenger Framework.  It is configured with the name of a \f2 MessengerPlugin\f1  and with one or more mappings between message property names and request parameter names or request / session / application / action context attribute names.  The handler obtains a \f2 MessengerPlugin\f1  instance, creates a \f2 MessageAPI\f1  instance, assigns values to the message parameters as directed by its configuration, then dispatches the message via the \f2 MessengerPlugin\f1 . \f0\par
+\pard\nowidctlpar\li720\sa120\f1 This class is thread safe since it does not contain any mutable state.\par
+\par
+\b PuzzleRenderingHandler\b0 : \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 A Handler that produces a rendition of a puzzle in \f2 String\f1  form and attaches it to the request as an attribute of configurable name.  The handler will be configured also with the name of a request attribute from which to obtain the ID of the puzzle to render (as a \f2 Long\f1 ), the media type in which to render it (a \f2 String\f1 ), the name of the application context attribute from which to obtain a \f2 PuzzleTypeSource\f1 , and the base name of a session attribute to which to assign a \f2 SolutionTester\f1 .  The handler operates in this fashion:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 It obtains from game data persistence a \f2 PuzzleData\f1  for the specified ID.\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 It extracts the puzzle type name from among the \f2 PuzzleData\f1\rquote s attributes, and feeds it to a \f2 PuzzleTypeSource\f1  to obtain the appropriate \f2 PuzzleType\f1 .\par
+\f3\'b7\tab\f1 It obtains a renderer for the specified medium from the PuzzleType, and uses it to render the puzzle.\par
+\f3\'b7\tab\f1 It assigns the \f2 SolutionTester\f1  resulting from the rendering to a session attribute named by concatenating the configured base attribute name with the puzzle ID.\par
+\f3\'b7\tab\f1 It assigns the rendered puzzle, as a String, as a request attribute with the configured name.\par
+\pard\nowidctlpar\li720\sa120\par
+This class is thread safe since it does not contain any mutable state.\par
+\par
+\b PuzzleSolutionHandler\b0 : \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 The component will provide a \f2 Handler\f1  that tests whether the HTTP request parameters describe a solution to a previously presented puzzle.  It determines the IDs of the game and slot to which the puzzle applies from request parameters of configurable name.  It then finds the appropriate solution tester:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 it looks up the ID of the slot\rquote s puzzle among the slot information,\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 appends that puzzle ID to a configured prefix to obtain the name of the session attribute containing the appropriate \f2 SolutionTester\f1 , and\par
+\f3\'b7\tab\f1 retrieves the tester from the session via the computed attribute name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 The handler will pass the request\rquote s full parameter map to the tester.  If the solution is correct then the handler records a game completion for the currently logged-in player in the game whose ID is available from a request parameter of configurable name, and the handler returns null.\par
+If the solution is incorrect then the game is forced to advance to the next host, and a slot completion is recorded for the current player in the specified slot, the \f2 SlotCompletion\f1  object is assigned to a request attribute of configurable name, and the handler returns a configurable result code string.\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe since it does not contain any mutable state.\par
+\par
+\b WinnerDataHandler\b0 : \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 A Handler that records contact information collected from players when they win the game.  Information will be stored in the winner\rquote s User Profile, and recorded using the User Profile Manager.  The handler\rquote s configuration will specify profile types that the handler must ensure are present in the profile, and will specify a map from parameter names to corresponding user profile property names.  The Handler will install the profile type(s) if necessary, then copy the parameter values to the profile and store it.\par
+\pard\nowidctlpar\li720\sa120\par
+This class is thread safe since it does not contain any mutable state.\par
+\par
+\b PluginDownloadHandler\b0 : \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 A Handler that records an instance of a plug-in download. It will use a plug-in name taken from a request parameter of configurable name to identify the plug-in downloaded to the game data persistence component.\f0\par
+\pard\nowidctlpar\li720\sa120\f1 This class is thread safe since it does not contain any mutable state.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\li720\sa120\b\f1 GameOperationLogicUtility\b0 : \par
+A utility class whose methods will be used by all the handlers and results in this component.\par
+The variable values are loaded from ConfigurationManager.\par
+This class is thread safe since it's immutable.\par
+\par
+\b AttributeScope\cf6\par
+\cf0\b0 The map from message AttributeScope to property name.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.5\tab Component Exception Definitions\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IllegalArgumentException\par
+\b0 This exception is thrown in various methods if null object is not allowed, or the given string argument is empty. Refer to the documentation in Poseidon for more details.\f0\par
+\cf6\b\f1 NOTE: Empty string means string of zero length or string full of whitespaces.\par
+\cf0 HandlerExecutionException\f0\par
+\b0\f1 It is thrown from Handler implementation classes.\par
+\b ResultExecutionException\f0\par
+\b0\f1 It is thrown from Result implementation classes.\par
+\b GameOperationConfigException\b0\par
+thrown by GameOperationLogicUtility#initialize block if failed to load the configured values or they are invalid.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\b0 This component is required to be completely thread safe as the handlers in this component will be invoked by users in multi-threads. All the handler implementations do not contain any mutable state and the calls to other components are thread safe\par
+\pard\nowidctlpar\fi-420\li1240\sa120\tx1240 1.\tab The EJB calls are thread safe\f0\par
+\pard\nowidctlpar\fi-420\li1240\sa120\f1 2.\tab The call to MesseganerFramework is thread-safe\f0\par
+\f1 3.\tab The call to UserProfileManager is thread-safe\f0\par
+\f1 4.\tab The calls to other components(like RSS Generator) will not modify any inner state, and they are all thread-safe,\f0\par
+\pard\nowidctlpar\li820\sa120\f1 Thus, all the handlers are thread-safe. The GameOperationLogicUtility and AttributeScope is immutable and also thread safe.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\nowidctlpar\li720\sa120\b0 Java 1.4 or higher.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\f0\par
+\pard\nowidctlpar\fi400\sa120\f1 Configuration Manager 2.1.5\par
+\pard\nowidctlpar\fi500\sa120\b0 It is used to load configuration values.\par
+\pard\nowidctlpar\sa120\b\tab Front Controller 2.1\par
+\tab\b0 The Handler interface comes from this component\par
+\b\tab Puzzle Framework 1.0\par
+\tab\b0 The Puzzle entities come from this component.\par
+\b\tab User Profile Manager 1.0\par
+\tab\b0 The UserProfileManager interface comes from this component.\par
+\b\tab Messenger Framework 1.0\par
+\b0\tab The Messenger and MessageAPI classes comes from this component.\par
+\b\tab Web Application User Logic 1.0\par
+\tab\b0 The LoginHandler class comes from this component.\par
+\b\tab User Profile 1.0\par
+\tab\b0 The UserProfile class comes from this component.\par
+    \b\tab JNDI Utility 1.0\par
+\tab\b0 The JNDIUtils class comes from this component.\par
+\b\tab RSS Generator 2.0\par
+\tab\b0 MessagePol Result will construct RSS Feed and store it as HTTP response.\par
+\pard\nowidctlpar\fi400\sa120\b Orpheus Game Persistence 1.0\par
+\pard\nowidctlpar\sa120\tab\b0 The Game interface comes from this component.\kerning2\f0\fs21\par
+\pard\nowidctlpar\fi400\sa120\kerning0\b\f1\fs20 Game Interface Logic 1.0\par
+\pard\nowidctlpar\sa120\tab\b0 The GameDataManager interface comes from this component.\kerning2\f0\fs21  \par
+\par
+\tab\b Object Factory\kerning0\b0\f1\fs20\par
+\pard\nowidctlpar\f0\fs24\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1\fs20 2.3\tab Third Party Components\par
+\pard\nowidctlpar\fi800\sa120\qj\b0 None.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 com.orpheus.game\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f0\par
+\pard\nowidctlpar\li720\b0\fs24 Configuration values for com.orpheus.game.\f1\fs20 GameOperationLogicUtility\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120 data_store\f0\cell\b0\f1 The value is used get the DataStore instance from the ServletContext. \b Required\b0 .\cell Data_store\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b game_data_manager\cell\b0 The value is used get the GameDataManager instance from the ServletContext. \b Required\b0 . \cell GameDataManager\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b puzzle_type_source\cell\b0 The value is used get the PuzzelTypeSource instance from the ServletContext.\par
+\b Required\b0 .\cell PuzzleTypeSource\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b context_name\cell\b0 The initial context name used by JNDIUtils to search for the ejb home instance. \b Required\b0 .\cell default\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b game_data_local\cell\b0 The GameData EJB local home name used by JNDIUtils to search for the ejb local home instance\b . Required\b0 .\cell local\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b game_data_remote\cell\b0 The GameData EJB remote home name used by JNDIUtils to search for the ejb remote home instance. \b Required\b0 .\cell remote\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b use_local_interface\cell\b0 The value indicates if the local or remote EJB interface is used.\b  Required\b0 .\cell true/false\cell\row\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\li720\sa120\cf5\f1\fs16\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\fs20 3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 ConfigurationManager should be properly configured to make this component work.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-420\li1140\sa120\tx1140\lang2052\b0\f4\'d8\lang1033\f5\tab\f1 Extract the component distribution.\par
+\pard\nowidctlpar\fi-420\li1140\sa120\lang2052\f4\'d8\lang1033\f5\tab\f1 Follow \cf7\ul Dependencies Configuration\cf0\ulnone .\par
+\lang2052\f4\'d8\lang1033\f5\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Preload the configuration file into Configuration Manager. Follow demo.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.3\tab Demo\f0\par
+\pard\nowidctlpar\li720\cf8\b0\f2\fs18 Assume the configuration file in 3.2 is used here. And follow the algorithm section about how to configure handler and result.\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.1\tab Global file for all the handlers\f0\par
+\pard\nowidctlpar\li720\qj\cf9\kerning2\i0\f2\fs18 <global>\par
+  <actions-def>\par
+     <!-- the default action from Front Controller component -->\par
+\pard\nowidctlpar\fi-90\li846\qj     <action-def name="default">\par
+\pard\nowidctlpar\fi810\li756\qj com.topcoder.web.Front Controller.DefaultAction\par
+\pard\nowidctlpar\fi1260\qj </action-def>\par
+\pard\nowidctlpar\li720\qj   </actions-def>\par
+\par
+  <handlers-def>\par
+\pard\nowidctlpar\fi418\li630\qj <handler-def name="RegisterGameHandler">\par
+\pard\nowidctlpar\fi778\li630\qj com.orpheus.game.RegisterGameHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="KeySubmissionHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.game.KeySubmissionHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="PuzzleSolutionHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.game.PuzzleSolutionHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="PuzzleRenderingHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.game.PuzzleRenderingHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="WinnerDataHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.game.WinnerDataHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="PluginDownloadHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.game.\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\pard\nowidctlpar\fi420\li720\qj <handler-def name="MessageHandler">\par
+\pard\nowidctlpar\fi868\li630\qj com.orpheus.game.MessageHandler\par
+\pard\nowidctlpar\fi1170\qj </handler-def>\par
+\par
+\pard\nowidctlpar\li720\qj   </handlers-def> \par
+\par
+  <global-results>\par
+\pard\nowidctlpar\li720\sa50\qj       \cf1 <result name="messagePollResult">\par
+\pard\nowidctlpar\fi720\li930\sa50\qj <date_param_key>\par
+\pard\nowidctlpar\fi1138\li930\sa50\qj date\par
+\pard\nowidctlpar\fi720\li930\sa50\qj </date_param_key>\par
+\pard\nowidctlpar\fi630\li930\sa50\qj <catetory_names>\par
+\pard\nowidctlpar\fi810\li1140\sa50\qj <value>some value</value>\par
+<value>some value</value>\par
+<value>some value</value>\par
+\pard\nowidctlpar\fi630\li930\sa50\qj </category_names>\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </result>\par
+\pard\nowidctlpar\li720\qj\cf9 </global-results>\par
+\pard\nowidctlpar\fi360\li720\sa50\qj\cf1\par
+\pard\nowidctlpar\li720\qj\cf0\f0\fs21  \cf9\f2\fs18 </global>\par
+\pard\nowidctlpar\fi453\li2\cf5\kerning0\fs16\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.2\tab How to configure the specified handlers\f0\par
+\f1 4.3.2.1\tab How to configure RegisterGameHandler\par
+\pard\nowidctlpar\li720\qj\cf1\kerning2\i0\f2\fs18 <action name="RegGame" type="default" url-pattern="/regGame" priority="10">\par
+\pard\nowidctlpar\li720\sa50\qj <handler type="x">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <game_id_param_key>\par
+\pard\nowidctlpar\fi720\li720\sa50\qj game_id\par
+\pard\nowidctlpar\fi360\li720\sa50\qj </game_id_param_key>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+</action>\f0\fs21\par
+\pard\nowidctlpar\li720\sa50\cf0\f1\fs20 Assume user logs in, and the game id is 1, this handler will get the user id and game id from the http request parameter, and invoke the EJB object to register the user with the given game id.\par
+\pard\nowidctlpar\li813\qj\cf9\f2\fs18\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\kerning0\i\f1\fs20 4.3.2.2\tab How to configure KeySubmissionHandler\par
+\pard\nowidctlpar\fi-360\li1080\qj\cf1\kerning2\i0\f2\fs18 <action name="KeySubmission" type="default" url-pattern="/KeySubmission" priority="10">\par
+\pard\nowidctlpar\li720\sa50\qj <handler type="KeySubmissionHandler">\par
+\pard\nowidctlpar\li1140\sa50\qj <game_id_param_key>\par
+\pard\nowidctlpar\fi360\li1140\sa50\qj Game_id\par
+\pard\nowidctlpar\li1140\sa50\qj </game_id_param_key>\par
+<submission_param_key>\par
+\pard\nowidctlpar\fi360\li1140\sa50\qj submissions\par
+\pard\nowidctlpar\li1140\sa50\qj </submission_param_key>\par
+<max_failure_count>\par
+\pard\nowidctlpar\fi360\li1140\sa50\qj 10\par
+\pard\nowidctlpar\li1140\sa50\qj </max_failure_count>\par
+<inactive_game_result>\par
+\pard\nowidctlpar\fi360\li1140\sa50\qj inactive_game_result\par
+\pard\nowidctlpar\li1140\sa50\qj </inactive_game_result>\par
+<failure_count_not_met_result>\par
+\pard\nowidctlpar\fi360\li1140\sa50\qj count_not_met_result\par
+\pard\nowidctlpar\li1140\sa50\qj </failure_count_not_met_result>\par
+<failure_count_exceeded_result>\par
+\pard\nowidctlpar\fi360\li1140\sa50\qj count_exceeded_result\par
+\pard\nowidctlpar\li1140\sa50\qj </failure_count_exceeded_result>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+\pard\nowidctlpar\li720\qj\par
+  <result name="inactive_game_result" type="forward">\par
+    <forward-url>/inactive_game_result.jsp</forward-url>\par
+  </result>\par
+  <result name="failure_count_not_met_result" type="forward">\par
+    <forward-url>/failure_count_not_met_result.jsp</forward-url>\par
+  </result>\par
+  <result name="failure_count_exceeded_result" type="forward">\par
+    <forward-url>/failure_count_exceeded_result.jsp</forward-url>\par
+  </result>\par
+\pard\nowidctlpar\li720\sa50\qj </action>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf0\kerning0\f1\fs20 This handler processes key submissions. It will accept a game ID via a request parameter of configurable name, and several key strings as multiple values of another request parameter, also of configurable name. It will determine whether the submitted keys match those recorded for the currently logged-in player for the specified game for the most recently completed (by any player) \i k\i0  hosting slots, where \i k\i0  is the key count of the specified game.\par
+The handler will maintain a count, in the player\rquote s session, of the number of failures to submit matching keys for the specified game since the last time its hosting slot changed.  (The ID of the most recently-completed hosting slot in that game is one possible measure of whether the hosting slot has changed.)\par
+Contingencies and results:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 If the specified game is not active then the handler returns a configurable result code characteristic of the problem, regardless of the values of the keys. \cf1\kerning2\f2\fs18 According to the above configuration file, inactive_game_result is called to forward to inactive_game_result.jsp\cf0\kerning0\f1\fs20\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 If the keys do not match then the player\rquote s failure count for the game and slot is incremented. The handler then returns a configurable result string characteristic of whether or not the failure count meets or exceeds a configurable threshold value. \cf1\kerning2\f2\fs18 According to the above configuration file, if the count is exceeded, failure_count_exceeded_result_result is called to forward to failure_count_exceeded_result.jsp;if not met, failure_count_not_met result is called to forward to failue_count_not_met.jsp\cf0\kerning0\f1\fs20\par
+\f3\'b7\tab\f1 If the keys do match then the handler records a game completion for the player in the specified game (via the game data persistence component), then returns null\par
+\pard\nowidctlpar\li720\sa50\qj\kerning2\f0\fs21\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\kerning0\i\f1\fs20 4.3.2.3\tab How to configure PuzzleSolutionHandler\par
+\pard\nowidctlpar\li720\qj\cf1\kerning2\i0\f2\fs18 <action name=" PuzzleSolutionHandler" type="default"\par
+\pard\nowidctlpar\fi360\li720\qj  url-pattern="/PuzzleSolution" priority="10">\par
+\pard\nowidctlpar\li720\sa50 <handler type="PuzzleSolutionHandler">\par
+\pard\nowidctlpar\li930\sa50 <puzzle_id_request_attribute_key>\par
+\pard\nowidctlpar\fi330\li930\sa50 puzzle_id\par
+\pard\nowidctlpar\li930\sa50 </puzzle_id_request_attribute_key>\par
+<media_type_request_attribute_key>\par
+\pard\nowidctlpar\fi330\li930\sa50 media_type\par
+\pard\nowidctlpar\li930\sa50 </media_type_request_attribute_key>\par
+<puzzle_string_request_attribute_key>\par
+\pard\nowidctlpar\fi330\li930\sa50 puzzle_string\par
+\pard\nowidctlpar\li930\sa50 </puzzle_string_request_attribute_key>\par
+<solutiontester_base_name>\par
+\pard\nowidctlpar\fi330\li930\sa50 base_name\par
+\pard\nowidctlpar\li930\sa50 </solutiontester_base_name>\par
+<incorrect_solution_result>\par
+\pard\nowidctlpar\fi330\li930\sa50 incorrect_solution_result\par
+\pard\nowidctlpar\li930\sa50 </incorrect_solution_result>\par
+\pard\nowidctlpar\li720\sa50 </handler>\par
+\pard\nowidctlpar\li720\qj\par
+  <result name="incorrect_solution_result" type="forward">\par
+    <forward-url>/incorrect_solution_result.jsp</forward-url>\par
+  </result>\par
+\pard\nowidctlpar\li720\sa50\qj </action>\par
+\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf0\kerning0\f1\fs20 This handler determines the IDs of the game and slot to which the puzzle applies from request parameters of configurable name.  It then finds the appropriate solution tester:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 it looks up the ID of the slot\rquote s puzzle among the slot information,\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 appends that puzzle ID to a configured prefix to obtain the name of the session attribute containing the appropriate \f2 SolutionTester\f1 , and\par
+\f3\'b7\tab\f1 retrieves the tester from the session via the computed attribute name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 The handler will pass the request\rquote s full parameter map to the tester. If the solution is correct then the handler records a game completion for the currently logged-in player in the game whose ID is available from a request parameter of configurable name, and the handler returns null.\par
+If the solution is incorrect then the game is forced to advance to the next host, and a slot completion is recorded for the current player in the specified slot, the \f2 SlotCompletion\f1  object is assigned to a request attribute of configurable name, and the handler returns a configurable result code string. \cf1\kerning2\f2\fs18 According to the above configuration file, incorrect_solution_result is called to forward to incorrect_solution_result.jsp\cf0\kerning0\f1\fs20\par
+\pard\nowidctlpar\li813\qj\cf9\kerning2\f2\fs18\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\kerning0\i\f1\fs20 4.3.2.4\tab How to configure PuzzleRenderingHandler\par
+\pard\nowidctlpar\fi-360\li1080\qj\cf1\kerning2\i0\f2\fs18 <action name="PuzzleRendering" type="default" url-pattern="/ PuzzleRendering "priority="10">\par
+\pard\nowidctlpar\li720\sa50\qj <handler type="PuzzleRenderingHandler">\par
+\pard\nowidctlpar\li1140\sa50\qj <game_id_param_key>\par
+\pard\nowidctlpar\fi120\li1560\sa50\qj puzzle_id\par
+\pard\nowidctlpar\li1140\sa50\qj </game_id_param_key>\par
+<slot_id_param_key>\par
+\pard\nowidctlpar\fi120\li1560\sa50\qj Slot_id\par
+\pard\nowidctlpar\li1140\sa50\qj </slot_id_param_key>\par
+<solutiontester_base_name>\par
+\pard\nowidctlpar\fi120\li1560\sa50\qj base_name\par
+\pard\nowidctlpar\li1140\sa50\qj </solutiontester_base_name>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+</action>\f0\fs21\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf0\kerning0\f1\fs20 This handler produces a rendition of a puzzle in \f2 String\f1  form and attaches it to the request as an attribute of configurable name.  The handler will be configured also with the name of a request attribute from which to obtain the ID of the puzzle to render (as a \f2 Long\f1 ), the media type in which to render it (a \f2 String\f1 ), the name of the application context attribute from which to obtain a \f2 PuzzleTypeSource\f1 , and the base name of a session attribute to which to assign a \f2 SolutionTester\f1 . The handler operates in this fashion:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 It obtains from game data persistence a \f2 PuzzleData\f1  for the specified ID.\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 It extracts the puzzle type name from among the \f2 PuzzleData\f1\rquote s attributes, and feeds it to a \f2 PuzzleTypeSource\f1  to obtain the appropriate \f2 PuzzleType\f1 .\par
+\f3\'b7\tab\f1 It obtains a renderer for the specified medium from the PuzzleType, and uses it to render the puzzle.\par
+\f3\'b7\tab\f1 It assigns the \f2 SolutionTester\f1  resulting from the rendering to a session attribute named by concatenating the configured base attribute name with the puzzle ID.\par
+\f3\'b7\tab\f1 It assigns the rendered puzzle, as a String, as a request attribute with the configured name.\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\i 4.3.2.5\tab How to configure MessagePollResult\par
+\pard\nowidctlpar\li720\sa50\qj\cf1\kerning2\i0\f2\fs18 <result name="MessagePollResult">\par
+\pard\nowidctlpar\li930\sa50\qj <date_param_key>\par
+\pard\nowidctlpar\fi330\li930\sa50\qj date\par
+\pard\nowidctlpar\li930\sa50\qj </date_param_key>\par
+<catetory_names>\par
+\pard\nowidctlpar\li1140\sa50\qj <value>some category name</value>\par
+<value>some category name </value>\par
+<value>some category name </value>\par
+\pard\nowidctlpar\li930\sa50\qj </category_names>\par
+\pard\nowidctlpar\li720\sa50\qj </result>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf0\kerning0\f1\fs20 This result will obtain a \f2 DataStore\f1  from an application context attribute of configurable name and use it to construct an Atom 1.0 feed document, which it returns (in XML format) as the HTTP response entity.  It will select items for the feed as follows:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\tx1440\f3\'b7\tab\f1 The \f2 Result\f1  will be configured with a request parameter name with which it will accept an item update date and time.  If the request specifies a parameter of that name then this \f2 Result\f1  will parse it as a \f2 java.util.Date\f1  in ISO 8601:2004 format (http://en.wikipedia.org/wiki/ISO_8601), and only items with a creation or update date strictly later than the parsed date will be included in the resulting feed.\par
+\pard\nowidctlpar\fi-360\li1440\sa120\sl240\slmult0\f3\'b7\tab\f1 The \f2 Result\f1  will determine the games for which the requesting player (the one currently logged-in) is registered; the name of each will be used as an item category, and items in any of those categories will be included in the feed, subject to the date restriction already described.\par
+\f3\'b7\tab\f1 The \f2 Result\f1  will be configured with zero or more category names for categories whose items are always included in the feed, subject to the date restriction criterion.\par
+\pard\nowidctlpar\li720\sa50\kerning2\f0\fs21 T\kerning0\f1\fs20 he response will be assigned the content type registered for Atom, \ldblquote application/atom+xml\rdblquote\kerning2\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\kerning0\i 4.3.2.6\tab How to configure WinnerDataHandler\par
+\pard\nowidctlpar\fi-360\li1080\qj\cf1\kerning2\i0\f2\fs18 <action name="WinnerData" type="default" url-pattern="/WinnerData "priority="10">\par
+\pard\nowidctlpar\li720\sa50\qj <handler type="WinnerDataHandler" >\par
+\pard\nowidctlpar\li1140\sa50\qj <object_factory>\par
+\pard\nowidctlpar\li1350\sa50\qj <namespace>\cf0\f0\fs21  \cf1\f2\fs18 com.orpheus.game </namespace>\par
+<user_profile_manager_key>\par
+\pard\nowidctlpar\fi330\li1350\sa50\qj user_profile_manager\par
+\pard\nowidctlpar\li1350\sa50\qj </user_profile_manager>\par
+\pard\nowidctlpar\li1140\sa50\qj </object_factory>\par
+<profile_type_names>\par
+\pard\nowidctlpar\li1560\sa50\qj <value>some value</value>\par
+<value some value</value>\par
+\pard\nowidctlpar\li1140\sa50\qj </profile_type_names>\par
+<profile_property_param_names>\par
+\pard\nowidctlpar\li1560\sa50\qj <value>paramName1</value>\par
+<value>paramName2</value>\par
+.....\par
+\pard\nowidctlpar\li1140\sa50\qj </profile_property_param_names>\par
+<profile_property_names>\par
+\pard\nowidctlpar\li1560\sa50\qj <value>propertyName1</value>\par
+<value>propertyName2</value>\par
+.....\par
+\pard\nowidctlpar\li1140\sa50\qj </profile_property_names>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+</action>\f0\fs21\par
+\pard\nowidctlpar\li813\qj\cf0\f1\fs20 This handler records contact information collected from players when they win the game.  Information will be stored in the winner\rquote s User Profile, and recorded using the User Profile Manager. The handler\rquote s configuration will specify profile types that the handler must ensure are present in the profile, and will specify a map from parameter names to corresponding user profile property names. The Handler will add the profile type(s) to the UserProfile, then copy the parameter values to the profile and store it.\cf9\f2\fs18\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\kerning0\i\f1\fs20 4.3.2.7\tab How to configure MessageHandler\par
+\pard\nowidctlpar\fi-360\li1080\qj\cf1\kerning2\i0\f2\fs18 <action name="Message" type="default" url-pattern="/Message "priority="10">\par
+\pard\nowidctlpar\li720\sa50\qj <handler type="MessageHandler" >\par
+\pard\nowidctlpar\li1140\sa50\qj <plugin_name>some name</plugin_name>\par
+<attribute_names>\par
+\pard\nowidctlpar\li1560\sa50\qj <value scope=\rdblquote request_parameter\rdblquote >paramName1</value>\par
+<value scope=\rdblquote application\rdblquote >attributeName2</value>\par
+.....\par
+\pard\nowidctlpar\li1140\sa50\qj </attribute_names>\par
+<message_property_names>\par
+\pard\nowidctlpar\li1560\sa50\qj <value>some value</value>\par
+<value>some value</value>\par
+.........\par
+\pard\nowidctlpar\li1140\sa50\qj </message_property_names>\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+</action>\par
+\cf0\f1\fs20 This handler supports general-purpose messaging between the application and users via the Messenger Framework.  It is configured with the name of a MessengerPlugin and with one or more mappings between message property names and request parameter names or request / session / application / action context attribute names, dependent on the scope value. The handler obtains a MessengerPlugin instance, creates a MessageAPI instance, assigns values to the message parameters as directed by its configuration, then dispatches the message via the MessengerPlugin.\cf1\f0\fs21\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\kerning0\i\f1\fs20 4.3.2.8\tab How to configure PluginDownloadHandler\par
+\pard\nowidctlpar\fi-360\li1080\qj\cf1\kerning2\i0\f2\fs18 <action name="PluginDownloadHanlder " type="default" url-pattern="/ PluginDownloadHanlder "priority="10">\par
+\pard\nowidctlpar\li720\sa50\qj <handler type="PluginDownloadHanlder">\par
+\pard\nowidctlpar\fi360\li720\sa50\qj <\cf0\f0\fs21  \cf1\f2\fs18 plugin_name_param_key >\par
+some key\par
+</\cf0\f0\fs21  \cf1\f2\fs18 plugin_name_param_key >\par
+\pard\nowidctlpar\li720\sa50\qj </handler>\par
+</action>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf0\kerning0\f1\fs20 This handler records an instance of a plug-in download.  It will use a plug-in name taken from a request parameter of configurable name to identify the plug-in downloaded to the game data persistence component.\f0\par
+\pard\nowidctlpar\cf8\f2\fs18\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li701\sa120\b0 More handler implementation could be added.\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\par
+\pard\nowidctlpar\fs24\par
+}
+ 

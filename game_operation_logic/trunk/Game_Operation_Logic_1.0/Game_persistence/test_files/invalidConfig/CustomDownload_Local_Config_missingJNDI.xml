@@ -1,0 +1,13 @@
+<CMConfig>
+	
+	
+	<Config name="com.orpheus.game.persistence.CustomDownloadSource.local">
+		<!-- missing
+		<Property name="jndiEjbReference">
+			<Value></Value>
+		</Property>
+		 -->
+	</Config>
+	
+
+</CMConfig>

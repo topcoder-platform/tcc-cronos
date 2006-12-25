@@ -1,0 +1,48 @@
+===========PuzzleRenderingHandler=========
+	puzzleId = request.getAttribute()
+	puzzleData = gameData.get(puzzleId);
+	puzzleTypeName = puzzleData.getAttribute(configName);
+	puzzleTypeSource = servletContext.getAttribute(configName);
+	puzzleType = puzzleTypeResource.get(puzzleTypeName)//???
+	mediumType = request.getAttribute(configName);
+	renderer = puzzleType.getRender(mediumType)
+	solutionTester = 
+	
+	solutionTester = renderer.renderPuzzle(puzzleData,out);
+	session.get(base+puzzleId, solutionTester);
+	result = out.getString()
+	request.setAttribute(configName, result);
+	
+	
+
+
+
+===========MessagePollResult=========
+	
+2006-10-10T12:33:32
+2006-10-10T12:33:32-05:00
+2006-10-10T17:33:32
+2006-10-10T12:33:32,000-05:00
+2006-10-10T12:33:32,753-05:00
+
+	dataStore = ServletContext.getAtt(configName);
+	currentUser = session.getCurrentUser();
+	
+	gameData = GameOperationLogicUtility.getGameData(home/remote)
+	gameIds = gameData.findGameRegistrations(playerId:long)
+	
+	categories = configCategories;
+	for each gameIds as gameId{
+		game = gameData.getGame(gameId);
+		category = game.getName();
+		categories.add(category);
+	}
+	
+	date = request.getParameter(configName);
+	searchCriteria = new SearchCriteria(date, categories);
+	RSSItems = HOWTOSEARCH.search(searchCriteria); //how to
+	
+	RSSItems->Atom 1.0 feed //how to
+	
+	response.setType("application/atom+xml");
+	response.write(atom10);
