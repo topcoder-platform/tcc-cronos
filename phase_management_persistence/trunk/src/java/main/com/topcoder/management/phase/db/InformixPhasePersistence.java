@@ -222,6 +222,11 @@ public class InformixPhasePersistence implements PhasePersistence {
     private static final String SELECT_PHASE_TYPES = "SELECT phase_type_id, name phase_type_name FROM phase_type_lu";
 
     /**
+     * Selects all projects - checks if all exists in database.
+     */
+    private static final String SELECT_PROJECT_IDS = "SELECT project_id FROM project WHERE project_id IN ";
+
+    /**
      * DBConnectionFactory constructor parameters.
      */
     private static final Class[] CTOR_PARAMS = new Class[] {String.class};
@@ -474,7 +479,27 @@ public class InformixPhasePersistence implements PhasePersistence {
         Workdays workdays = new DefaultWorkdaysFactory().createWorkdaysInstance();
 
         try {
+            pstmt = conn.prepareStatement(SELECT_PROJECT_IDS + createQuestionMarks(projectIds.length));
+            for (int i = 0; i < projectIds.length; i++) {
+                pstmt.setLong(i + 1, projectIds[i]);
+            }
+
+            rs = pstmt.executeQuery();
+
             Map projectsMap = new HashMap();
+
+            // create all the projects that exists and store them in helper map
+            while (rs.next()) {
+                long projectId = rs.getLong(1);
+                Project project = new Project(new Date(Long.MAX_VALUE), workdays);
+                project.setId(projectId);
+                projectsMap.put(new Long(projectId), project);
+            }
+
+            // closes resources
+            close(rs);
+            close(pstmt);
+
             Map phasesMap = new HashMap();
 
             // prepare the query to retrieve the phases .
@@ -490,11 +515,6 @@ public class InformixPhasePersistence implements PhasePersistence {
                 long projectId = rs.getLong("project_id");
 
                 Project project = (Project) projectsMap.get(new Long(projectId));
-                if (project == null) {
-                    project = new Project(new Date(Long.MAX_VALUE), workdays);
-                    project.setId(projectId);
-                    projectsMap.put(new Long(projectId), project);
-                }
 
                 Phase phase = populatePhase(rs, project);
                 phasesMap.put(new Long(phase.getId()), phase);
