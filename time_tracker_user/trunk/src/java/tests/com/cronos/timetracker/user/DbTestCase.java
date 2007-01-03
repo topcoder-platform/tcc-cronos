@@ -1,163 +1,399 @@
-/*
- * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+/**
+ * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
-package com.topcoder.timetracker.user;
-
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+package com.cronos.timetracker.user;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Calendar;
+import java.util.Date;
+
+import com.cronos.timetracker.common.Address;
+import com.cronos.timetracker.common.Contact;
+import com.cronos.timetracker.common.RejectEmail;
+import com.cronos.timetracker.common.RejectReason;
+import com.cronos.timetracker.common.State;
+import com.cronos.timetracker.common.TimeTrackerBean;
+import com.cronos.timetracker.company.Company;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.util.config.ConfigManager;
 
 /**
- * <p>
- * This abstract base class is used when the subclass needs to insert records into the Users
- * and DefaultUsers table, or to remove all records from those tables after testing (tearDown).
- * </p>
+ * Base class for all database tests. It contains common test helper methods.
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author kr00tki
+ * @version 2.0
  */
-abstract class DbTestCase extends ConfigTestCase {
-
-    /** The "standard" connection name to be used for a 'good' connection. */
-    protected static final String CONNECTION_NAME = "InformixConnection";
-
-    /** The Insert statement that is used to insert records into the DefaultUsers table. */
-    private static final String INSERT_DEFAULT_USER_STMT =
-        "insert into DefaultUsers (DefaultUsersID, "
-        + "       UserName, "
-        + "       Password, "
-        + "       CreationDate, "
-        + "       CreationUser, "
-        + "       ModificationDate, "
-        + "       ModificationUser, "
-        + "       Email)"
-        + " values (?, ?, ?, ?, 'user', ?, 'user', ?)";
-
-    /** The Insert statement that is used to insert records into the Users table. */
-    private static final String INSERT_USER_STMT =
-        "insert into Users (UsersID, "
-        + "       Name, "
-        + "       userstore) "
-        + " values (?, ?, ?)";
-
+public class DbTestCase extends MyTestCase {
     /**
-     * Flag indicates that something was inserted, and that the tearDown method
-     * should remove all records from the Users and DefaultUsers tables.
+     * The ID Generator name used in tests.
      */
-    private boolean inserted;
+    protected static final String IDGEN_NAME = "ttu2";
 
     /**
-     * A connection to the database, it is created when needed and only closed
-     * in the tearDown method.
+     * Database connection name.
      */
-    private Connection conn;
-
+    protected static final String CONNECTION_NAME = "ttu2";
 
     /**
-     * Remove all records from the Users and DefaultUsers table, if the inserted
-     * flag is set; closes the connection.
-     * @throws Exception Never under normal conditions.
+     * The creation user constant.
+     */
+    protected static final String CREATION_USER = "admin_create";
+
+    /**
+     * The modification user constant.
+     */
+    protected static final String MODIFICATION_USER = "admin_update";
+
+    /**
+     * Db Connection Factory namespace.
+     */
+    private static final String DB_CONN_FACTORY_NAMESPACE = DBConnectionFactoryImpl.class.getName();
+
+    /**
+     * Db Connection Factory config file.
+     */
+    private static final String DB_CONN_FACTORY_CONF = "db_conf.xml";
+
+    /**
+     * The DBManager used to manipulate on database.
+     */
+    protected DbManager testDBManager = null;
+
+    /**
+     * The DBConnectionFactory instance used in tests.
+     */
+    protected DBConnectionFactory factory = null;
+
+    /**
+     * Db connection.
+     */
+    private Connection connection = null;
+
+    /**
+     * ResultSet instance.
+     */
+    private ResultSet resultSet = null;
+
+    /**
+     * Statement instance.
+     */
+    private Statement statement = null;
+
+    /**
+     * Sets up test environment.
+     *
+     * @throws Exception to JUnit.
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        ConfigManager.getInstance().add(DB_CONN_FACTORY_CONF);
+        ConfigManager.getInstance().add("db_manager_conf.xml");
+        ConfigManager.getInstance().add("Logging.xml");
+        testDBManager = new DbManager();
+        testDBManager.clearTables();
+        testDBManager.loadDataSet("test_files/dataset.xml");
+        factory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
+        //clearTables();
+    }
+
+    /**
+     * Clears after test.
+     *
+     * @throws Exception to JUnit.
      */
     protected void tearDown() throws Exception {
-        if (inserted) {
-            cleanupDatabase();
+        //clearTables();
+        testDBManager.clearTables();
+        testDBManager.release();
+
+        if (resultSet != null) {
+            resultSet.close();
+            resultSet = null;
         }
-        if (conn != null) {
-            conn.close();
+
+        if (statement != null) {
+            statement.close();
+            statement = null;
+        }
+
+        if (connection != null) {
+            connection.close();
+            connection = null;
         }
         super.tearDown();
     }
 
-
     /**
-     * Turn on the 'inserted' flag.
-     */
-    protected void inserted() {
-        inserted = true;
-    }
-
-
-    /**
-     * Opens a connection from the DBConectionFactory using the default namesapce
-     * and default connection name (InformixConnection).  Only creates one connection
-     * and keeps giving back that same connection.
-     * @return a Connection to connect to Informix
-     * @throws Exception Never under normal condition.
+     * Creates db connection.
+     *
+     * @return db connection.
+     * @throws Exception to JUnit.
      */
     protected Connection getConnection() throws Exception {
-        if (conn == null) {
-            conn = new DBConnectionFactoryImpl(NAMESPACE).createConnection(CONNECTION_NAME);
+        if (connection == null) {
+            connection = new DBConnectionFactoryImpl(DB_CONN_FACTORY_NAMESPACE).createConnection(CONNECTION_NAME);
         }
-        return conn;
+
+        return connection;
     }
 
-
     /**
-     * Remove all records from the Users and DefaultUsers table. Also, removes all principal
-     * roles and principals, so that the SQLAuthorizationPersistence will be working from
-     * a clean database each time.
+     * Returns ResultSet for given query.
      *
-     * @throws Exception Never under normal conditions.
+     * @param query db query.
+     * @return query resul
+     * @throws Exception to JUnit.
      */
-    protected void cleanupDatabase() throws Exception {
-        getConnection();
-        conn.createStatement().executeUpdate("delete from defaultUsers");
-        conn.createStatement().executeUpdate("delete from users");
-        conn.createStatement().executeUpdate("delete from principal_role");
-        conn.createStatement().executeUpdate("delete from principal");
-        conn.close();
-        conn = null;
+    protected ResultSet getResultSet(String query) throws Exception {
+        Connection conn = getConnection();
+        statement = conn.createStatement();
+        resultSet = statement.executeQuery(query);
+        return resultSet;
     }
-
 
     /**
-     * Insert FOUR records into the DefaultUsers table.
-     * @throws Exception Never under normal conditions.
+     * Asserts test by query.
+     *
+     * @param assertionMessage assertion message.
+     * @param binarySQLQuery SQL query that should return something or not.
+     * @param expected expected true or false.
+     * @throws Exception to JUnit.
      */
-    protected void insertDefaultUsers() throws Exception {
-
-        inserted();
-
-        conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement(INSERT_DEFAULT_USER_STMT);
-        for (int i = 1; i <= 3; ++i) {
-            stmt.setInt(1, i);
-            stmt.setString(2, "username" + i);
-            stmt.setString(3, "password" + i);
-            stmt.setDate(4, new Date(System.currentTimeMillis()));
-            stmt.setDate(5, new Date(System.currentTimeMillis()));
-            stmt.setString(6, "username" + i + "@topcoder.com");
-            stmt.executeUpdate();
-        }
-        stmt.setInt(1, 4);
-        stmt.setString(2, "username");
-        stmt.setString(3, "password");
-        stmt.setDate(4, new Date(System.currentTimeMillis()));
-        stmt.setDate(5, new Date(System.currentTimeMillis()));
-        stmt.setString(6, "username" + "@topcoder.com");
-        stmt.executeUpdate();
-        stmt.close();
+    protected void assertByQuery(String assertionMessage, String binarySQLQuery, boolean expected)
+        throws Exception {
+        ResultSet rs = getResultSet(binarySQLQuery);
+        assertEquals(assertionMessage, expected, rs.next());
     }
-
 
     /**
-     * Insert three records into the Users table.
-     * @throws Exception Never under normal conditions.
+     * Helper method to execute SQL command.
+     *
+     * @param sqlQuery query.
+     * @throws Exception to JUnit.
      */
-    protected void insertUsers() throws Exception {
-
-        inserted();
-
-        conn = getConnection();
-        for (int i = 1; i <= 3; ++i) {
-            PreparedStatement stmt = conn.prepareStatement(INSERT_USER_STMT);
-            stmt.setInt(1, i);
-            stmt.setString(2, "username" + i);
-            stmt.setString(3, "userStore");
-            stmt.executeUpdate();
-            stmt.close();
-        }
+    protected void execute(String sqlQuery) throws Exception {
+        statement = getConnection().createStatement();
+        statement.execute(sqlQuery);
     }
+
+    /**
+     * Creates the User object with all required fields set.
+     *
+     * @param companyId the company id to be used.
+     * @return the User instance.
+     */
+    protected User createUser(long companyId) {
+        AccountStatus status = new AccountStatus();
+        status.setId(1);
+        Address address = createAddress();
+        Contact contact = createContact();
+
+        User user = new User();
+        user.setAccountStatus(status);
+        user.setCompanyId(companyId);
+        user.setContactInfo(contact);
+        user.setAddress(address);
+        user.setAlgorithmName(ALGORITHM_NAME);
+        user.setPassword("test");
+        user.setUsername("username");
+
+        return user;
+    }
+
+    /**
+     * Creates the Contact object with the values set.
+     *
+     * @return the Contact object.
+     */
+    protected Contact createContact() {
+        Contact contact = new Contact();
+        contact.setFirstName("jan");
+        contact.setLastName("marian");
+        contact.setPhoneNumber("phon");
+        contact.setEmailAddress("email");
+        return contact;
+    }
+
+    /**
+     * Creates the Address object with the values set.
+     *
+     * @return the Address object.
+     */
+    protected Address createAddress() {
+        Address address = new Address();
+        address.setCity("NY");
+        address.setLine1("line1");
+        address.setZipCode("123");
+
+        address.setState(createState());
+        return address;
+    }
+
+    /**
+     * Creates the State object with the values set.
+     *
+     * @return the State object.
+     */
+    protected State createState() {
+        State state = new State();
+        state.setId(1);
+        state.setAbbreviation("NC");
+        state.setName("North Carolina");
+        state.setChanged(false);
+        return state;
+    }
+
+    /**
+     * Checks if given user instances are equal. It compares all the fields.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, User expected, User actual) {
+        assertEquals(message + " Id.", expected.getId(), actual.getId());
+        assertEquals(message + " company.", expected.getCompanyId(), actual.getCompanyId());
+        assertEquals(message + " username.", expected.getUsername(), actual.getUsername());
+        assertEquals(message + " password.", expected.getPassword(), actual.getPassword());
+
+        assertEquals(message + " Address.", expected.getAddress(), actual.getAddress());
+        assertEquals(message + " Account status.", expected.getAccountStatus().getId(),
+                actual.getAccountStatus().getId());
+        assertEquals(message + " Contact.", expected.getContactInfo(), actual.getContactInfo());
+        assertEquals(message, (TimeTrackerBean) expected, (TimeTrackerBean) actual);
+    }
+
+    /**
+     * Checks if given reject reasons instances are equal. It compares all the fields.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, RejectReason expected, RejectReason actual) {
+        assertEquals(message + " Id.", expected.getId(), actual.getId());
+        assertEquals(message + " description.", expected.getDescription(), actual.getDescription());
+        assertEquals(message + " company.", expected.getCompanyId(), actual.getCompanyId());
+        assertEquals(message + " active.", expected.isActive(), actual.isActive());
+
+        assertEquals(message, (TimeTrackerBean) expected, (TimeTrackerBean) actual);
+    }
+
+    /**
+     * Checks if given reject email instances are equal. It compares all the fields.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, RejectEmail expected, RejectEmail actual) {
+        assertEquals(message + " Id.", expected.getId(), actual.getId());
+        assertEquals(message + " body.", expected.getBody(), actual.getBody());
+        assertEquals(message + " company.", expected.getCompanyId(), actual.getCompanyId());
+
+        assertEquals(message, (TimeTrackerBean) expected, (TimeTrackerBean) actual);
+    }
+
+    /**
+     * Checks if given companies instances are equal. It compares all the fields.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, Company expected, Company actual) {
+        assertEquals(message + " Id.", expected.getId(), actual.getId());
+        assertEquals(message + " name.", expected.getCompanyName(), actual.getCompanyName());
+        assertEquals(message + " passcode.", expected.getPasscode(), actual.getPasscode());
+
+        assertEquals(message + " Address.", expected.getAddress(), actual.getAddress());
+        assertEquals(message + " Contact.", expected.getContact(), actual.getContact());
+        assertEquals(message, (TimeTrackerBean) expected, (TimeTrackerBean) actual);
+    }
+
+    /**
+     * Checks if given contact instances are equal. It compares all the fields.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, Contact expected, Contact actual) {
+        assertEquals(message + " Id.", expected.getId(), actual.getId());
+        assertEquals(message + " first name.", expected.getFirstName(), actual.getFirstName());
+        assertEquals(message + " last name.", expected.getLastName(), actual.getLastName());
+        assertEquals(message + " phone.", expected.getPhoneNumber(), actual.getPhoneNumber());
+        assertEquals(message + " email.", expected.getEmailAddress(), actual.getEmailAddress());
+
+        assertEquals(message, (TimeTrackerBean) expected, (TimeTrackerBean) actual);
+    }
+
+    /**
+     * Checks if given addresses instances are equal. It compares all the fields.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, Address expected, Address actual) {
+        assertEquals(message + " Id.", expected.getId(), actual.getId());
+        assertEquals(message + " line1.", expected.getLine1(), actual.getLine1());
+        assertEquals(message + " line2.", expected.getLine2(), actual.getLine2());
+        assertEquals(message + " city.", expected.getCity(), actual.getCity());
+        assertEquals(message + " zipcode.", expected.getZipCode(), actual.getZipCode());
+
+        assertEquals(message + " State.", expected.getState(), actual.getState());
+        assertEquals(message, (TimeTrackerBean) expected, (TimeTrackerBean) actual);
+    }
+
+    /**
+     * Checks if given states instances are equal. It compares all the fields.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, State expected, State actual) {
+        assertEquals(message + " Id.", expected.getId(), actual.getId());
+        assertEquals(message + " name.", expected.getName(), actual.getName());
+        assertEquals(message + " abb.", expected.getAbbreviation(), actual.getAbbreviation());
+    }
+
+    /**
+     * Checks if given bease instances are equal. It compares the users and dates (up to seconds).
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertEquals(String message, TimeTrackerBean expected, TimeTrackerBean actual) {
+        assertEquals(message + " creation user.", expected.getCreationUser(), actual.getCreationUser());
+        assertEquals(message + " modification user.", expected.getModificationUser(), actual.getModificationUser());
+        assertDateToSec(message + ". mod date.", expected.getModificationDate(), actual.getModificationDate());
+        assertDateToSec(message + ". creation date.", expected.getCreationDate(), actual.getCreationDate());
+    }
+
+    /**
+     * Compares the given dates up to the secounds.
+     *
+     * @param message the error message.
+     * @param expected the expected result.
+     * @param actual the actual result.
+     */
+    protected void assertDateToSec(String message, Date expected, Date actual) {
+        Calendar calExp = Calendar.getInstance();
+        calExp.setTime(expected);
+        calExp.set(Calendar.MILLISECOND, 0);
+
+        Calendar calAct = Calendar.getInstance();
+        calAct.setTime(actual);
+        calAct.set(Calendar.MILLISECOND, 0);
+
+        assertEquals(message, calExp.getTime().getTime(), calAct.getTime().getTime());
+
+    }
+
 }

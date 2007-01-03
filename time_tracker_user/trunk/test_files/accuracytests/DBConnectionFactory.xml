@@ -1,15 +1,13 @@
 <?xml version="1.0"?>
 <CMConfig>
-
 	<Config
 		name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
 		<Property name="connections">
 			<!-- the "default" property refers to a configured connection -->
 			<Property name="default">
-				<Value>stress</Value>
+				<Value>sysuser</Value>
 			</Property>
-
-			<Property name="stress">
+			<Property name="sysuser">
 				<Property name="producer">
 					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
 				</Property>
@@ -30,5 +28,4 @@
 			</Property>
 		</Property>
 	</Config>
-
 </CMConfig>

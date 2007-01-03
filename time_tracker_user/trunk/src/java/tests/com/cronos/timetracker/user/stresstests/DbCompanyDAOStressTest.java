@@ -1,4 +1,4 @@
-package com.cronos.timetracker.stresstests;
+package com.cronos.timetracker.user.stresstests;
 
 import junit.framework.TestCase;
 
@@ -37,9 +37,11 @@ public class DbCompanyDAOStressTest extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        StressTestHelper.loadConfigAndData();
+        //StressTestHelper.loadConfigAndData();
         factory = new DBConnectionFactoryImpl(
                 "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
+        StressTestHelper.clearData(factory);
+        StressTestHelper.loadConfigAndData();
         dao = new DbCompanyDAO(factory,
                 StressTestHelper.CONNECTION_NAME,
                 StressTestHelper.ALGO_NAME,
@@ -136,7 +138,7 @@ public class DbCompanyDAOStressTest extends TestCase {
             dao.createCompany(company, USER);
             id = company.getId();
         }
-        
+
 
         StressTestHelper.startRecord();
 
@@ -166,7 +168,7 @@ public class DbCompanyDAOStressTest extends TestCase {
             dao.createCompany(company, USER);
             id = company.getId();
         }
-        
+
 
         StressTestHelper.startRecord();
 
@@ -196,7 +198,7 @@ public class DbCompanyDAOStressTest extends TestCase {
             dao.createCompany(company, USER);
             id = company.getId();
         }
-        
+
 
         StressTestHelper.startRecord();
 

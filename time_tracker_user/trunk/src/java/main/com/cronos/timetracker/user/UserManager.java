@@ -1,681 +1,750 @@
 /*
- * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+ * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
  */
-package com.topcoder.timetracker.user;
+package com.cronos.timetracker.user;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import com.cronos.timetracker.common.Utils;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.security.authenticationfactory.AbstractAuthenticator;
 import com.topcoder.security.authenticationfactory.AuthenticateException;
 import com.topcoder.security.authenticationfactory.Response;
 import com.topcoder.security.authorization.AuthorizationPersistence;
 import com.topcoder.security.authorization.AuthorizationPersistenceException;
+import com.topcoder.security.authorization.Principal;
 import com.topcoder.security.authorization.SecurityRole;
-import com.topcoder.security.authorization.persistence.GeneralSecurityRole;
-import com.topcoder.security.authorization.persistence.SQLAuthorizationPersistence;
-import com.topcoder.util.idgenerator.IDGenerationException;
-import com.topcoder.util.idgenerator.IDGenerator;
-import com.topcoder.util.idgenerator.IDGeneratorFactory;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-
+import com.topcoder.security.authorization.persistence.GeneralPrincipal;
 
 /**
  * <p>
- * This is the central class of the Time Tracker User component. It provides the ability to import
- * users from various user stores into a centralized persistent store, from which those imported
- * users can be authenticated.
+ * This class is a facade that provides access to all functions related to a Time Tracker User. It provides CRUDE
+ * methods to manage the users within the persistent store. It works with the Authorization Manager component to
+ * manage the Authorization Roles for a user. And finally, it is also capable of authenticating a User through a
+ * username/password combination.
  * </p>
- *
  * <p>
- * When users are imported, an internal ID is generated (using the ID Generator component) and the
- * original user name is replicated locally for performance. Also, this class provides
- * authentication of users with a provided password using the UserStore.authenticate method. This
- * supporting component can be backed by a database or other persistence mechanism (such as LDAP or
- * Active Directory.)
+ * This class automatically manages the representation of the User as an authorization Role within the data store
+ * of the Authorization component. When a user is created via the UserManager, the user will be defined both in the
+ * Time Tracker data store (via the UserDAO), and the Authorization data store (via Authorization Persistence).
+ * Updates will also reflect in both data stores.
  * </p>
- *
  * <p>
- * The class uses the Authorization component to store and retrieve users (as Principals) and their
- * Roles. There are some pre-defined roles that are required to be supported by the authorization
- * database. Since there are no defined permissions for this component, this class provides access
- * to the Authorization persistence mechanism (getAuthPersistence method), so the Time Tracker
- * application can define permissions on its managed resources and apply them for imported users
- * based on their assigned roles.
+ * Thread Safety: - Like the DAO classes, the thread safety of this class is dependent on the underlying data
+ * store. The developer should be aware that this class works with the Authorization component, whose default
+ * persistence is not thread safe. Threading issues may be avoided by utilizing a thread safe persistence for
+ * Authorization, and proper JDBC configuration. See thread safety for UserDAO as well.
  * </p>
  *
- * <p>
- * For the Time Tracker application, users can only have one assigned role, so this class provides a
- * simplified API for managing roles than the Authorization component (setUserRole, getUserRole
- * methods).
- * </p>
- *
- * <p>
- * Database logic is separated from business logic of the component. UserPersistence and
- * AuthorizationPersistence instances are used to store and load user roles and imported users.
- * These persistence layers are configurable and pluggable so they can be backed by any database
- * system or other data source such as LDAP or Active Directory.
- * </p>
- *
- * <p>
- * See the constructors for more details on how to configure this class.
- * </p>
- *
- * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.0
- * @see #UserManager()
- * @see #UserManager(UserPersistence, AuthorizationPersistence, UserStoreManager)
+ * @author ShindouHikaru
+ * @author kr00tki
+ * @version 2.0
  */
 public class UserManager {
 
     /**
-     * The configuration namespace that is used to configure this class in the default constructor.
-     * It is public so that calling clients can set up the configuration before construction..
+     * The 'create' operation flag. It is used in batch mode.
      */
-    public static final String CONFIG_NAMESPACE = "com.topcoder.timetracker.user";
-
+    private static final int CREATE_OP = 1;
 
     /**
-     * This security role constant represents the "Super Administrator" Role. It must be defined in
-     * whatever Authorization persistence is used by this component.
+     * The 'delete' operation flag. It is used in batch mode.
      */
-    public static final SecurityRole SUPER_ADMIN = new GeneralSecurityRole(1, "Super Administrator");
-
+    private static final int DELETE_OP = 2;
 
     /**
-     * This security role constant represents the "Human Resource" Role. It must be defined in
-     * whatever Authorization persistence is used by this component.
+     * The 'update' operation flag. It is used in batch mode.
      */
-    public static final SecurityRole HUMAN_RESOURCE = new GeneralSecurityRole(2, "Human Resource");
-
-
-    /**
-     * This security role constant represents the "Account Manager" Role. It must be defined in
-     * whatever Authorization persistence is used by this component.
-     */
-    public static final SecurityRole ACCOUNT_MANAGER = new GeneralSecurityRole(3, "Account Manager");
-
-
-    /**
-     * This security role constant represents the "Project Manager" Role. It must be defined in
-     * whatever Authorization persistence is used by this component.
-     */
-    public static final SecurityRole PROJECT_MANAGER = new GeneralSecurityRole(4, "Project Manager");
-
-
-    /**
-     * This security role constant represents the "Internal Employee" Role. It must be defined in
-     * whatever Authorization persistence is used by this component.
-     */
-    public static final SecurityRole EMPLOYEE = new GeneralSecurityRole(5, "Employee");
-
-
-    /**
-     * This security role constant represents the "Contractor" Role. It must be defined in whatever
-     * Authorization persistence is used by this component.
-     */
-    public static final SecurityRole CONTRACTOR = new GeneralSecurityRole(6, "Contractor");
-
-
-    /**
-     * The id generator name used for generating unique IDs for imported users.
-     */
-    private static final String ID_GENERATOR_NAME = "TimeTrackerUser";
-
-
-    /**
-     * The AuthorizationPersistence instance used to retrieve and store Principals and user roles.
-     * It is set by constructors and retrieved by getAuthPersistence method. Will never be null.
-     */
-    private final AuthorizationPersistence authPersistence;
-
-
-    /**
-     * The UserPersistence instance used to import and retrieve imported users. It is set in the
-     * constructor and used by the importUser, removeUser methods. Note that the getUser method does
-     * not use this instance; all the users are pre-loaded into the 'users' map, and are retrieved
-     * from there throughout this class.
-     */
-    private final UserPersistence userPersistence;
-
-
-    /**
-     * The UserStoreManager instance used to maintain, in memory, a list of available user stores.
-     * This instance is set by the constructors, and used by the importUser and authenticate
-     * methods. It can be retrieved by the getUserStores() method.
-     */
-    private final UserStoreManager storeManager;
-
-
-    /**
-     * The IDGenerator instance used to generate unique IDs for imported users. Instantiated in the
-     * constructors using the ID_GENERATOR_NAME. It is used in the importUser method only and cannot
-     * be retrieved by any public method.
-     */
-    private final IDGenerator idGenerator;
-
-
-    /**
-     * This is a cache of all imported users. Each key is a username String, and each value is a
-     * User instance which stores the unique ID, username and the name of user store the user was
-     * originally imported from. This Map is populated by the constructors to include all
-     * previousloy imported users (via the UserPersistence object), and is modified by the
-     * importUser and removeUser metohds. Users can be retrieved from this map by the getUser
-     * method.
-     */
-    private final Map users = new Hashtable();
-
+    private static final int UPDATE_OP = 3;
 
     /**
      * <p>
-     * Creates a new UserManager instance using objects constructed with the default configuration
-     * namespace (CONFIG_NAMESPACE). The following objects will be constructed here:
+     * This is the Data Access Object that is used to perform CRUDE operations on the persistent store.
      * </p>
-     * <ul>
-     * <li>An AuthorizationPersistence, using
-     * <code>new SQLAuthorizationPersistence(CONFIG_NAMESPACE)</code></li>
-     * <li>A UserStoreManager, using <code>new UserStoreManagerImpl(CONFIG_NAMESPACE)</code>
-     * </li>
-     * <li>A UserPersistence, using <code>new UserPersistenceImpl(CONFIG_NAMESPACE)</code></li>
-     * </ul>
-     *
      * <p>
-     * This implies that the CONFIG_NAMESPACE must be defined before calling this constructor, to
-     * contain the proper configuration parameters for a SQLAuthorizationPersistence object, a
-     * UserStoreManagerImpl object and a UserPersistenceImpl object. See those classes for more
-     * details on the configuration.
+     * Initialized In: Constructor
      * </p>
-     *
      * <p>
-     * Also, the namespace "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl" must be
-     * defined as appropriate, for the IDGenerator 3.0 component used to generate user ID numbers.
+     * Modified In: Not Modified
      * </p>
-     *
      * <p>
-     * In addition, this constructor will load all previously imported users into an internal cache
-     * of users, using the UserPersistence implementation above.
+     * Accessed In: Not Accessed
+     * </p>
+     * <p>
+     * Utilized In: createUser, retrieveUser, updateUser, deleteUser, listUsers, searchUsers createUsers,
+     * retrieveUsers, updateUsers, deleteUsers
      * </p>
      *
-     * @throws ConfigurationException if any error occured during initialization. This exception
-     *             will wrap the actual exception that occurred, such as SQLException or an
-     *             exception from instantiating one of the subcomponents.
-     * @see UserPersistenceImpl
-     * @see UserStoreManagerImpl
+     *
      */
-    public UserManager() throws ConfigurationException {
+    private UserDAO userDao;
 
+    /**
+     * <p>
+     * This is an authenticator implementation that is used to authenticate the User given a username/password
+     * combination.
+     * </p>
+     * <p>
+     * Initialized In: Constructor
+     * </p>
+     * <p>
+     * Modified In: Not Modified
+     * </p>
+     * <p>
+     * Accessed In: Not Accessed
+     * </p>
+     * <p>
+     * Utilized In: authenticateUser
+     * </p>
+     *
+     *
+     */
+    private AbstractAuthenticator userAuthenticator;
+
+    /**
+     * <p>
+     * The Authorization Persistence that is responsible for managing the different Roles and access privileges of
+     * the Users.
+     * </p>
+     * <p>
+     * Initialized In: Constructor
+     * </p>
+     * <p>
+     * Modified In: Not Modified
+     * </p>
+     * <p>
+     * Accessed In: Not Accessed
+     * </p>
+     * <p>
+     * Utilized In: addRoleForUser, addRolesForUsers, removeRoleForUser, removeRolesForUsers, clearRolesForUser,
+     * clearRolesForUsers, listRolesForUser, createUser, retrieveUser, updateUser, deleteUser, createUsers,
+     * updateUsers, deleteUsers
+     * </p>
+     */
+    private AuthorizationPersistence authorizationPersistence;
+
+    /**
+     * <p>
+     * Creates a User Manager that will utilize the provided DAO for datastore access, the provided
+     * AbstractAuthenticator for user authentication, and the Authorization Persistence for User-Role management.
+     * </p>
+     *
+     *
+     * @param userDAO The UserDAO implementation that will be used.
+     * @param userAuthenticator The AbstractAuthenticator implementation that will be used to authenticate users
+     *        against their password.
+     * @param authPersistence The authorization persistence to use to manage user Roles.
+     *
+     * @throws IllegalArgumentException if any of the provided arguments is null.
+     */
+    public UserManager(UserDAO userDAO, AbstractAuthenticator userAuthenticator,
+            AuthorizationPersistence authPersistence) {
+
+        Utils.checkNull(userDAO, "userDAO");
+        Utils.checkNull(userAuthenticator, "userAuthenticator");
+        Utils.checkNull(authPersistence, "authPersistence");
+
+        this.authorizationPersistence = authPersistence;
+        this.userAuthenticator = userAuthenticator;
+        this.userDao = userDAO;
+    }
+
+    /**
+     * <p>
+     * Creates a datastore entry for the given user. An id is automatically generated by the DAO and assigned to
+     * the user. The User is also considered to have been created by the specified username.
+     * </p>
+     *
+     * @return The same user Object, with an assigned id.
+     * @param user The user to create within the datastore.
+     * @param username The username of the user responsible for creating the User entry within the datastore.
+     * @throws IllegalArgumentException if the user or username is null, or if username is an empty String.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     */
+    public User createUser(User user, String username) throws UserDAOException {
+        user = userDao.createUser(user, username);
         try {
-            // note, this must be defined here, and not refactored, because
-            // idGenerator is a final
-            this.idGenerator = IDGeneratorFactory.getIDGenerator(ID_GENERATOR_NAME);
-        } catch (IDGenerationException e) {
-            throw new ConfigurationException("Could not configure IDGenerator.", e);
+            authorizationPersistence.addPrincipal(toAuthorizationPrincipal(user));
+        } catch (AuthorizationPersistenceException ex) {
+            // ignore this exception
         }
 
+        return user;
+    }
+
+    /**
+     * <p>
+     * Retrieves a User from the datastore with the provided id. If no User with that id exists, then a null is
+     * returned.
+     * </p>
+     *
+     * @return The User corresponding to the given id, or null if no user with given id was found.
+     * @param id The id of the user to retrieve from the datastore.
+     * @throws IllegalArgumentException if id is <=0
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     */
+    public User retrieveUser(long id) throws UserDAOException {
+        return userDao.retrieveUser(id);
+    }
+
+    /**
+     * <p>
+     * Updates the given User in the data store. The User is considered to have been modified by the specified
+     * username.
+     * </p>
+     *
+     * @param user The User entity to modify.
+     * @param username The username of the user responsible for performing the update.
+     * @throws IllegalArgumentException if the user is null, or the username is null, or the username is an empty
+     *         String.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     * @throws UserNotFoundException if the Time Tracker User to update was not found in the data store.
+     */
+    public void updateUser(User user, String username) throws UserNotFoundException, UserDAOException {
+        userDao.updateUser(user, username);
         try {
-            this.authPersistence = new SQLAuthorizationPersistence(CONFIG_NAMESPACE);
-        } catch (com.topcoder.security.authorization.ConfigurationException e) {
-            throw new ConfigurationException("Could not configure AuthorizationPersistence.", e);
+            authorizationPersistence.updatePrincipal(toAuthorizationPrincipal(user));
+        } catch (AuthorizationPersistenceException ex) {
+            // ignore this exception
         }
-        this.storeManager = new UserStoreManagerImpl(CONFIG_NAMESPACE);
-        this.userPersistence = new UserPersistenceImpl(CONFIG_NAMESPACE);
+    }
 
-        // preload all the users we know about.
+    /**
+     * <p>
+     * Removes the specified User from the data store.
+     * </p>
+     *
+     * @param user The user to delete.
+     * @throws IllegalArgumentException if the user is null.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     * @throws UserNotFoundException if the Time Tracker User to delete was not found in the data store.
+     */
+    public void deleteUser(User user) throws UserNotFoundException, UserDAOException {
+        userDao.deleteUser(user);
         try {
-            populateUsers();
-        } catch (PersistenceException e) {
-            throw new ConfigurationException("Could not load users.", e);
+            authorizationPersistence.removePrincipal(toAuthorizationPrincipal(user));
+        } catch (AuthorizationPersistenceException ex) {
+            // ignore this exception
         }
     }
 
-
     /**
      * <p>
-     * Creates a new UserManager instance with the provided user persistence, authorization
-     * persistence and user store manager implementations. To support the IDGenerator 3.0 component,
-     * the namespace "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl" must be defined as
-     * appropriate.
+     * Enumerates all the Users that are present within the data store.
      * </p>
      *
-     * <p>
-     * In addition, this constructor will load all previously imported users into an internal cache
-     * of users, using the given UserPersistence implementation.
-     * </p>
-     *
-     * @param userPersistence the UserPersistence instance that will be used to retrieve/store
-     *            imported users
-     * @param authPersistence the AuthorizationPersistence instance that will be used to
-     *            retrieve/store Principals and user roles
-     * @param storeManager the UserStoreManager instance that will maintain (in memory) the
-     *            supported UserStores
-     * @throws NullPointerException if userPersistence, authPersistence or storeManager is null
-     * @throws PersistenceException if any error occurred during initialization. This exception will
-     *             wrap the actual exception that occurred, such as SQLException or an exception
-     *             from instantiating one of the subcomponents.
+     * @return A list of all the Users within the data store.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
      */
-    public UserManager(UserPersistence userPersistence, AuthorizationPersistence authPersistence,
-            UserStoreManager storeManager) throws PersistenceException {
-        if (userPersistence == null) {
-            throw new NullPointerException("name cannot be null.");
-        }
-        if (authPersistence == null) {
-            throw new NullPointerException("authPersistence cannot be null.");
-        }
-        if (storeManager == null) {
-            throw new NullPointerException("storeManager cannot be null.");
-        }
-
-
-        try {
-            // note, this must be defined here, and not refactored, because
-            // idGenerator is a final
-            this.idGenerator = IDGeneratorFactory.getIDGenerator(ID_GENERATOR_NAME);
-        } catch (IDGenerationException e) {
-            throw new PersistenceException("Could not configure IDGenerator.", e);
-        }
-        this.authPersistence = authPersistence;
-        this.storeManager = storeManager;
-        this.userPersistence = userPersistence;
-
-        // preload all the users we know about.
-        populateUsers();
+    public User[] listUsers() throws UserDAOException {
+        return userDao.listUsers();
     }
 
-
     /**
-     * Populate the previously-imported users into the internal cache (users Map) using the
-     * userPersistence object.
+     * <p>
+     * Returns a list of all the users within the datastore that satisfy the filters that are provided. The filters
+     * are defined using classes from the Search Builder v1.1 component and com.cronos.timetracker. common.search
+     * package.
+     * </p>
      *
-     * @throws PersistenceException If the users could not be loaded.
+     * @return A list of users that satisfy the search criterion.
+     * @param filter The filter that is used as criterion to facilitate the search..
+     * @throws IllegalArgumentException if the filter is null.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
      */
-    private void populateUsers() throws PersistenceException {
-        Collection userList = userPersistence.getUsers();
-        for (Iterator i = userList.iterator(); i.hasNext();) {
-            User user = (User) i.next();
-            users.put(user.getName(), user);
-        }
+    public User[] searchUsers(Filter filter) throws UserDAOException {
+        return userDao.searchUsers(filter);
     }
-
 
     /**
      * <p>
-     * Returns the AuthorizationPersistence as defined in one of the constructors. Client programs
-     * may use this instance for more fine-grained control over the Authorization Persistence of
-     * Users in the system.
+     * Authenticates the user with the provided username/password combination. This is delegated to the configured
+     * abstract authenticator.
      * </p>
      *
-     * @return authPersistence instance as defined in one of the constructors.
+     * @return The Response to use.
+     * @param username The username of the user being authenticated.
+     * @param password The password that will be authenticated against the username.
+     * @throws IllegalArgumentException if either username or password is null or an empty String.
+     * @throws AuthenticateException if a problem occurs while authenticating.
      */
-    public AuthorizationPersistence getAuthPersistence() {
-        return this.authPersistence;
-    }
+    public Response authenticateUser(String username, String password) throws AuthenticateException {
+        Utils.checkString(username, "username", false);
+        Utils.checkString(password, "password", false);
+        // calculate the id to be used by the authenticator cache
+        // if next request with the same user and pass will be done
+        // the response will be retrieved from the cache to speed thing up
+        int id = username.hashCode() ^ password.hashCode() ^ 7;
+        com.topcoder.security.authenticationfactory.Principal principal = createPrincipal(id, username, password);
 
+        return userAuthenticator.authenticate(principal);
+    }
 
     /**
      * <p>
-     * Returns a userManager which maintains (in memory) the supported UserStore implementations, as
-     * defined in one of the constructors. Client programs may use this instance for more
-     * fine-grained control over the set of UserStores that are managed, or to manipulate the users
-     * via one of the UserStores directly.
+     * Assigns the specified Authorization Role for the given Time Tracker User.
      * </p>
      *
-     * @return supported user stores in the guise of a UserStoreManager instance
+     * @param user The user for which a Role is to be added.
+     * @param role The Role to assign to the user.
+     * @throws IllegalArgumentException if the user or role is null.
+     * @throws AuthorizationPersistenceException if a problem occurs while accessing Authorization persistence.
      */
-    public UserStoreManager getUserStores() {
-        return this.storeManager;
+    public void addRoleForUser(User user, SecurityRole role) throws AuthorizationPersistenceException {
+        Utils.checkNull(user, "user");
+        Utils.checkNull(role, "role");
+
+        Principal principal = toAuthorizationPrincipal(user);
+        createIfNotExist(principal);
+        authorizationPersistence.addRoleForPrincipal(principal, role);
     }
 
-
     /**
-     * <p>
-     * Imports the given user from the given user store. The method does the following:
-     * <ul>
-     * <li>If the given user name has already been imported, return false.</li>
-     * <li>Generate a unique (numeric) ID for this user using the IdGenerator component</li>
-     * <li>Create User instance with generated ID, name and userStore</li>
-     * <li>Add the user via the userPersistence object defined in the constructor</li>
-     * <li>Add the user via the authPersistence (as a principal) object defined in the constructor
-     * </li>
-     * <li>Add the user to the internal cache of users</li>
-     * </ul>
-     * </p>
+     * Checks if given <code>principal</code> exists in the database and if not, creates it.
      *
-     * @return true if user iswas imported, false if user already existed according to the
-     *         UserPersistence
-     * @param name unique name of the user to import
-     * @param userStore name of user store from which to import this user
-     * @throws PersistenceException if any error occurred during user persistence; this will wrap
-     *             the original exception (e.g., SQLException, AuthorizationPersistenceException)
-     * @throws UnknownUserStoreException if the requested userStore is not present within the
-     *             UserStoreManager defined in the constructor
-     * @throws UnknownUserException if the requested user doesn't exist according to the requested
-     *             userStore (as managed by the UserStoreManager)
-     * @throws NullPointerException if name or userStore is null
-     * @throws IllegalArgumentException if name or userStore is the empty String
+     * @param principal the principal to be add.
+     * @throws AuthorizationPersistenceException if any error occurs.
+     * @return <code>false</code> if the principal not exists and was added to list; <code>true</code> if
+     *         exists.
      */
-    public boolean importUser(String name, String userStore) throws UnknownUserException,
-            UnknownUserStoreException, PersistenceException {
-        if (name == null) {
-            throw new NullPointerException("name cannot be null.");
-        }
-        if (name.length() == 0) {
-            throw new IllegalArgumentException("name cannot be empty.");
-        }
-        if (userStore == null) {
-            throw new NullPointerException("userStore cannot be null.");
-        }
-        if (userStore.length() == 0) {
-            throw new IllegalArgumentException("userStore cannot be empty.");
-        }
+    private boolean createIfNotExist(com.topcoder.security.authorization.Principal principal)
+            throws AuthorizationPersistenceException {
 
-        // user was already imported.
-        if (getUser(name) != null) {
+        if (!authorizationPersistence.getPrincipals().contains(principal)) {
+            authorizationPersistence.addPrincipal(principal);
             return false;
         }
 
-        // throws UnknownUserStoreException for us
-        UserStore store = storeManager.getUserStore(userStore);
-        // make sure user is in store
-        if (!store.contains(name)) {
-            throw new UnknownUserException("User " + name + " not found in user store " + userStore + ".");
-        }
-
-        // generate ID
-        long id = 0;
-        try {
-            id = idGenerator.getNextID();
-        } catch (IDGenerationException e) {
-            throw new PersistenceException("Could not generate ID.", e);
-        }
-
-        // Generate a new User object.
-        // cast the ID to int so it is compatible with the rest of the Time Tracker project
-        User user = new User((int) id, name, userStore, store.getEmail(name));
-
-        // add user to the User store (this is probably the database table "Users")
-        userPersistence.addUser(user);
-
-        try {
-            // add the user as a principal
-            authPersistence.addPrincipal(user);
-        } catch (AuthorizationPersistenceException e) {
-            throw new PersistenceException("Could not add principal.", e);
-        }
-
-        // add it to the cache.
-        users.put(name, user);
         return true;
     }
 
-
     /**
-     * Returns all usernames that have been imported into the UserPersistence store, in this session
-     * and all previous sessions.
+     * Creates the authorization principal from the given user object.
      *
-     * @return an unmodifiable Collection all imported usernames as Strings
+     * @param user the user to be converted.
+     * @return the authorization principal.
      */
-    public Collection getNames() {
-
-        return Collections.unmodifiableSet(users.keySet());
+    private static Principal toAuthorizationPrincipal(User user) {
+        return new GeneralPrincipal(user.getId(), user.getUsername());
     }
 
-
     /**
      * <p>
-     * Returns a User instance for given username from the internal cache of imported Users. If no
-     * such user has been imported, null is returned.
+     * Assigns the specified set of Authorization Roles for the given set of Time Tracker Users. All the user(s)
+     * will have the provided roles after this method call has finished.
      * </p>
      *
-     * @param name username of user to retrieve
-     * @return User instance for the given username. If no such user exists, null is returned.
-     * @throws NullPointerException if name is null
-     * @throws IllegalArgumentException if name is the empty String
+     * @param users An array of users to which the roles will be assigned.
+     * @param roles The roles to assign to the users.
+     * @throws IllegalArgumentException if the users or roles is null, or contains null elements.
+     * @throws AuthorizationPersistenceException if a problem occurs while accessing Authorization persistence.
      */
-    public User getUser(String name) {
-        if (name == null) {
-            throw new NullPointerException("name cannot be null.");
-        }
-        if (name.length() == 0) {
-            throw new IllegalArgumentException("name cannot be empty.");
-        }
+    public void addRolesForUsers(User[] users, SecurityRole[] roles) throws AuthorizationPersistenceException {
+        Utils.checkNull(users, "users");
+        checkRoleArray(roles, "roles");
 
-        return (User) users.get(name);
+        // get the principals
+        com.topcoder.security.authorization.Principal[] principals = toPrincipalArray(users);
+        // for each principal
+        for (int i = 0; i < principals.length; i++) {
+            // check if principal exists and if not, add it
+            createIfNotExist(principals[i]);
+            // for each role
+            for (int j = 0; j < roles.length; j++) {
+                // add role to principal
+                authorizationPersistence.addRoleForPrincipal(principals[i], roles[j]);
+            }
+        }
     }
 
-
     /**
      * <p>
-     * Removes the user with the given username from this UserManager. It is actually removed from
-     * three places (if it existed at all): the internal cache of imported users, the
-     * userPersistence implementation defined in the constructor, and the AuthorizationPersistence
-     * implementation also defined in the onstructor. The latter two will remove the user from their
-     * respective underlying storage (e.g., a database.)
+     * Checks if given roles array contains <code>null</code>. If so, IllegalArgumentException will be thrown.
      * </p>
      *
-     * @param name username of te user to remove
-     * @return true if the user was removed, false if the user didnt't exist in the first place
-     * @throws NullPointerException if name is null
-     * @throws IllegalArgumentException if name is the empty String
-     * @throws PersistenceException if any error occurred while removing from any of the locations
-     *             mentioned above. This exception will wrap the underlying exception (e.g.,
-     *             SQLException)
+     * @param roles the roles array.
+     * @param name the name of the method argument.
      */
-    public boolean removeUser(String name) throws PersistenceException {
-        if (name == null) {
-            throw new NullPointerException("name cannot be null.");
+    private static void checkRoleArray(SecurityRole[] roles, String name) {
+        Utils.checkNull(roles, name);
+        for (int i = 0; i < roles.length; i++) {
+            if (roles[i] == null) {
+                throw new IllegalArgumentException("The " + name + " array contains null at: " + i);
+            }
         }
-        if (name.length() == 0) {
-            throw new IllegalArgumentException("name cannot be empty.");
-        }
-
-        // user was never imported.
-        User user = getUser(name);
-        if (user == null) {
-            return false;
-        }
-
-        try {
-            authPersistence.removePrincipal(user);
-        } catch (AuthorizationPersistenceException e) {
-            throw new PersistenceException("Could not remove principal.", e);
-        }
-
-        userPersistence.removeUser(user);
-        users.remove(name);
-        return true;
     }
 
+    /**
+     * <p>
+     * Removes the given Authorization Role for the specified User. The User will no longer be assigned that Role
+     * after this method call. If the user initially did not have the role that needed to be removed, then it is
+     * ignored for that Role.
+     * </p>
+     *
+     * @param user The user whose role is to be removed.
+     * @param role The Authorization role to remove from the user.
+     * @throws IllegalArgumentException if user or role is null.
+     * @throws AuthorizationPersistenceException if a problem occurs while accessing Authorization persistence.
+     */
+    public void removeRoleForUser(User user, SecurityRole role) throws AuthorizationPersistenceException {
+        Utils.checkNull(user, "user");
+        Utils.checkNull(role, "role");
+
+        com.topcoder.security.authorization.Principal principal = toAuthorizationPrincipal(user);
+        createIfNotExist(principal);
+        authorizationPersistence.removeRoleForPrincipal(principal, role);
+    }
 
     /**
      * <p>
-     * Returns the first defined security role for this given user, as reported by the
-     * AuthorizationPersistence implementation defined in the onstructor. This method is actually a
-     * facade to the call
-     *
-     * <pre>
-     * authPersistence.getRolesForPrincipal(getUser(name))
-     * </pre>
-     *
-     * and returns the first element from the resulting list, because a user can only have one role
-     * in the Time Tracker Application. This method returns null if no role was assigned for the
-     * given user.
+     * Removes the given Authorization Roles for the specified User(s). The User(s) will no longer be assigned any
+     * of the given Roles after this method call. If the user initially did not have the role that needed to be
+     * removed, then it is ignored for that Role.
      * </p>
      *
-     * <p>
-     * Note that even though there are Security roles defined in this class as final static entries,
-     * the SecurityRole returned here may not in fact be one of them. Also, the object returned may
-     * be "equal" but not "==" to one of those predefined roles.
-     * </p>
      *
-     * @param name the username of user whose role we are interested in.
-     * @return security role for the given user.
-     * @throws NullPointerException if name is null
-     * @throws IllegalArgumentException if name is the empty String
-     * @throws PersistenceException if any error occurs while getting the role from the
-     *             Authorization Persistence; it will wrap the underlying exception.
-     * @throws UnknownUserException if the requested user was never imported.
+     * @param users The users whose roles are to be removed.
+     * @param roles The roles to be removed.
+     * @throws IllegalArgumentException if users or roles are null or contain null elements.
+     * @throws AuthorizationPersistenceException if a problem occurs while accessing Authorization persistence.
      */
-    public SecurityRole getUserRole(String name) throws PersistenceException, UnknownUserException {
-        if (name == null) {
-            throw new NullPointerException("name cannot be null.");
-        }
-        if (name.length() == 0) {
-            throw new IllegalArgumentException("name cannot be empty.");
-        }
+    public void removeRolesForUsers(User[] users, SecurityRole[] roles) throws AuthorizationPersistenceException {
+        Utils.checkNull(users, "users");
+        checkRoleArray(roles, "roles");
 
-        // find user
-        User user = getUser(name);
-        if (user == null) {
-            throw new UnknownUserException("User " + name + " was never imported.");
+        // get the principals
+        com.topcoder.security.authorization.Principal[] principals = toPrincipalArray(users);
+        // for each principal
+        for (int i = 0; i < principals.length; i++) {
+            // check if principal exists and if not, add it
+            createIfNotExist(principals[i]);
+
+            // for each role
+            for (int j = 0; j < roles.length; j++) {
+                // add role to principal
+                authorizationPersistence.removeRoleForPrincipal(principals[i], roles[j]);
+            }
         }
+    }
 
-        // get all roles from the Authentication component.
-        try {
-            Collection roles = authPersistence.getRolesForPrincipal(user);
+    /**
+     * <p>
+     * Removes all Roles for the provided User. After this method call, the User will no longer have any
+     * Authorization Roles.
+     * </p>
+     *
+     * @param user The user whose roles are to be cleared.
+     * @throws IllegalArgumentException if the user is null.
+     * @throws AuthorizationPersistenceException if a problem occurs while accessing Authorization persistence.
+     */
+    public void clearRolesForUser(User user) throws AuthorizationPersistenceException {
+        Utils.checkNull(user, "user");
+        com.topcoder.security.authorization.Principal principal = toAuthorizationPrincipal(user);
+        // get all user roles
+        Collection roles = authorizationPersistence.getRolesForPrincipal(principal);
+        // and remove them
+        for (Iterator it = roles.iterator(); it.hasNext();) {
+            SecurityRole role = (SecurityRole) it.next();
+            authorizationPersistence.removeRoleForPrincipal(principal, role);
+        }
+    }
 
-            // this is the first role we find (if any)
-            SecurityRole role = null;
-            if (roles != null) {
-                Iterator iterator = roles.iterator();
-                if (iterator.hasNext()) {
-                    // only get the role if the iterator says we can.
-                    role = (SecurityRole) iterator.next();
-                }
+    /**
+     * <p>
+     * Removes all Roles for the provided Users. After this method call, the User will no longer have any
+     * Authorization Roles.
+     * </p>
+     *
+     * @param users The users whose roles are to be removed.
+     * @throws IllegalArgumentException if users array is null or contains null elements.
+     * @throws AuthorizationPersistenceException if a problem occurs while accessing Authorization persistence.
+     */
+    public void clearRolesForUsers(User[] users) throws AuthorizationPersistenceException {
+        Utils.checkNull(users, "users");
+        com.topcoder.security.authorization.Principal[] principals = toPrincipalArray(users);
+
+        // for each principal
+        for (int i = 0; i < principals.length; i++) {
+            // get all user roles
+            Collection roles = authorizationPersistence.getRolesForPrincipal(principals[i]);
+            // and remove them
+            for (Iterator it = roles.iterator(); it.hasNext();) {
+                SecurityRole role = (SecurityRole) it.next();
+                authorizationPersistence.removeRoleForPrincipal(principals[i], role);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Converts given array of users to authorization principals.
+     * </p>
+     *
+     * @param users the <code>User</code> array to convert.
+     * @return the array of principals of the same length as the input <code>user</code> array.
+     * @throws IllegalArgumentException if any object in array is <code>null</code>.
+     */
+    private com.topcoder.security.authorization.Principal[] toPrincipalArray(User[] users) {
+        com.topcoder.security.authorization.Principal[] principals =
+            new com.topcoder.security.authorization.Principal[users.length];
+        // convert to principals array and check if not null
+        for (int i = 0; i < users.length; i++) {
+            if (users[i] == null) {
+                throw new IllegalArgumentException("Null element in users array at index: " + i);
             }
 
-            // return the role (possibly none, if there were none)
-            return role;
-        } catch (AuthorizationPersistenceException e) {
-            throw new PersistenceException("Could not retrieve roles.", e);
+            principals[i] = toAuthorizationPrincipal(users[i]);
         }
+        return principals;
     }
-
 
     /**
      * <p>
-     * Assigns a security role for the given user using the Authorization Persistence implementation
-     * defined in the constructor. This method is actually a facade to
-     *
-     * <pre>
-     * authPersistence.addRoleForPrincipal(getUser(name), role)
-     * </pre>
-     *
-     * If this user had <b>any </b> existing roles, they are removed before adding this role. This
-     * preserves the contract that a User can only have one role.
+     * Provides a list of all the Authorization Roles that have been assigned to the provided user.
      * </p>
      *
-     * @param name username of the user to whom we are setting a role.
-     * @param role the security role to set for given user.
-     * @throws NullPointerException if name or role is null
-     * @throws IllegalArgumentException if name is the empty String
-     * @throws PersistenceException if any error occurs while removing the old roles, or adding the
-     *             new role. This exception will wrap the underlying exception
-     * @throws UnknownUserException if the requested user was never imported.
+     * @return An array of Security Roles that have been assigned to the specified user.
+     * @param user The user whose roles are to be listed.
+     * @throws IllegalArgumentException if the user is null.
+     * @throws AuthorizationPersistenceException if a problem occurs while accessing Authorization persistence.
      */
-    public void setUserRole(String name, SecurityRole role) throws PersistenceException,
-            UnknownUserException {
-        if (name == null) {
-            throw new NullPointerException("name cannot be null.");
-        }
-        if (role == null) {
-            throw new NullPointerException("role cannot be null.");
-        }
-        if (name.length() == 0) {
-            throw new IllegalArgumentException("name cannot be empty.");
-        }
+    public SecurityRole[] listRolesForUser(User user) throws AuthorizationPersistenceException {
+        Utils.checkNull(user, "user");
+        Principal principal = toAuthorizationPrincipal(user);
+        createIfNotExist(principal);
+        return (SecurityRole[]) new ArrayList(authorizationPersistence.getRolesForPrincipal(principal))
+                .toArray(new SecurityRole[0]);
+    }
 
-        // find user
-        User user = getUser(name);
-        if (user == null) {
-            throw new UnknownUserException("User " + name + " was never imported.");
-        }
+    /**
+     * <p>
+     * Creates a datastore entry for each of the given Users. An id is automatically generated by the DAO and
+     * assigned to the user. The User is also considered to have been created by the specified username. While in
+     * batch mode, the operation can be done atomically, or separately. If done atomically, then a failure at any
+     * one of the specified entries will mean that the entire batch will be rolled back. Otherwise, only the user
+     * where a failure occurred will be rolled back.
+     * </p>
+     *
+     * @param users The users to create.
+     * @param username The username of the one responsible for creating the users.
+     * @param atomicBatchMode While in batch mode, the operation can be done atomically, or separately. If done
+     *        atomically, then a failure at any one of the specified entries will mean that the entire batch will
+     *        be rolled back. Otherwise, only the user where a failure occurred will be rolled back.
+     * @throws IllegalArgumentException if users is null, or username is null, or username is an empty String.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     * @throws BatchUserDAOException if a problem occurs with multiple entities while processing them in batch
+     *         mode.
+     */
+    public void createUsers(User[] users, String username, boolean atomicBatchMode) throws UserDAOException,
+            BatchUserDAOException {
 
+        batchOperation(users, username, atomicBatchMode, CREATE_OP);
+    }
+
+    /**
+     * </p>
+     * It executes the given operation in the batch mode. It means, that depending of the
+     * <code>atomicBatchMode</code> flag value, all operations are rolled back or only the
+     * failure one.
+     * </p>
+     *
+     * @param users the users to process.
+     * @param username the name of the user which call this operation.
+     * @param atomicBatchMode flag indicating if all rows must be processed.
+     * @param operation the operation to do.
+     * @throws UserDAOException if persistence error occrs.
+     * @throws BatchUserDAOException if batch persistence error occurs.
+     */
+    private void batchOperation(User[] users, String username, boolean atomicBatchMode, int operation)
+            throws UserDAOException, BatchUserDAOException {
+
+        Throwable[] causes = null;
+        boolean wasError = false;
         try {
-            // remove all old roles, if they existed.
-            Collection roles = authPersistence.getRolesForPrincipal(user);
-            if (roles != null) {
-                for (Iterator i = roles.iterator(); i.hasNext();) {
-                    SecurityRole oldRole = (SecurityRole) i.next();
-                    authPersistence.removeRoleForPrincipal(user, oldRole);
-                }
+            if (operation == CREATE_OP) {
+                userDao.createUsers(users, username, atomicBatchMode);
+            } else if (operation == UPDATE_OP) {
+                userDao.updateUsers(users, username, atomicBatchMode);
+            } else if (operation == DELETE_OP) {
+                userDao.deleteUsers(users, atomicBatchMode);
             }
-        } catch (AuthorizationPersistenceException e) {
-            throw new PersistenceException("Could not remove old roles from user " + name + ".", e);
+        } catch (BatchUserDAOException ex) {
+            // if in atomic mode - the just rethrow the exception since nothing to add
+            if (atomicBatchMode) {
+                throw ex;
+            }
+            causes = ex.getCauses();
+            wasError = true;
         }
 
-        try {
-            // add the one new role
-            authPersistence.addRoleForPrincipal(user, role);
-        } catch (AuthorizationPersistenceException e) {
-            throw new PersistenceException("Could not add new role to user " + name + ".", e);
-        }
-    }
-
-
-    /**
-     * <p>
-     * Authenticate the user with the given username against the provided password. Note that the
-     * password has Object type, because it can have different structures for various user stores
-     * (for example, an encrypted password may be presented as array of bytes). This method is a
-     * facade to the UserStore.authenticate method; the userStore is retrieved from the
-     * UserStoreManager defined in the constructor and the given User.
-     * </p>
-     *
-     * @return a Response instance (from Authentication Factory component) with the 'successful
-     *         flag' set to true if authentication was successful, false otherwise. Nothing else in
-     *         the Response object is required to be filled in.
-     * @param name username of user to authenticate
-     * @param password the password of the user to authenticate with
-     * @throws NullPointerException if name or password is null
-     * @throws IllegalArgumentException if name is the empty String
-     * @throws AuthenticateException if any error occurs during authentication, which will wrap the
-     *             underlying exception (e.g., SQLException)
-     * @throws UnknownUserStoreException if the given user contains a user store name that is not
-     *             recognized by the userManager defined in the constructor.
-     * @see UserStore#authenticate(String, Object)
-     */
-    public Response authenticate(String name, Object password) throws UnknownUserStoreException,
-            AuthenticateException {
-        if (name == null) {
-            throw new NullPointerException("name cannot be null.");
-        }
-        if (name.length() == 0) {
-            throw new IllegalArgumentException("name cannot be empty.");
-        }
-        if (password == null) {
-            throw new NullPointerException("password cannot be null.");
+        if (causes == null) {
+            causes = new Throwable[users.length];
         }
 
-        // find user
-        User user = (User) users.get(name);
-        if (user == null) {
-            // iterate thru all the stores and try to get one containing the specified user
-            for (Iterator iter = storeManager.getUserStoreNames().iterator(); iter.hasNext();) {
-                String storeName = (String) iter.next();
-                UserStore store = storeManager.getUserStore(storeName);
+        for (int i = 0; i < users.length; i++) {
+            // if there were no error for the user
+            if (causes[i] == null) {
                 try {
-                    if (store.contains(name)) {
-                        Response response = store.authenticate(name, password);
-                        if (response.isSuccessful()) {
-                            importUser(name, storeName);
-                            return response;
-                        }
+                    Principal principal = toAuthorizationPrincipal(users[i]);
+                    if (operation == CREATE_OP) {
+                        // add it to persistence
+                        authorizationPersistence.addPrincipal(principal);
+                    } else if (operation == UPDATE_OP) {
+                        authorizationPersistence.updatePrincipal(principal);
+                    } else if (operation == DELETE_OP) {
+                        authorizationPersistence.removePrincipal(principal);
                     }
-                } catch (PersistenceException e) {
-                    throw new AuthenticateException("Fail to access the persistence", e);
-                } catch (UnknownUserException e) {
-                    throw new AuthenticateException("The specified user can not be found", e);
+
+                } catch (AuthorizationPersistenceException ex) {
+                    causes[i] = ex;
+                    if (atomicBatchMode) {
+                        throw new BatchUserDAOException("Error occurs during batch operation.", causes, users);
+                    }
+
+                    wasError = true;
                 }
             }
-
-            throw new AuthenticateException("User " + name + " was never imported.");
         }
 
-        // will throw the UnknownUserStoreException for us
-        UserStore store = storeManager.getUserStore(user.getUserStoreName());
+        if (wasError) {
+            throw new BatchUserDAOException("An error occurs during batch operation.", causes, users);
+        }
+    }
 
-        // will throw AuthenticateException for us (sometimes)
-        return store.authenticate(name, password);
+    /**
+     * <p>
+     * Retrieves the users with the specified ids from the datastore.
+     * </p>
+     * <p>
+     * Note: The size of the returned array my be different that the <code>ids</code> array, in case, any of
+     * <code>is</code> not exist in database.
+     * </p>
+     *
+     * @return the array of user with specified id.
+     * @param ids The ids of the Users to retrieve.
+     * @throws IllegalArgumentException if the ids is null.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     */
+    public User[] retrieveUsers(long[] ids) throws UserDAOException {
+        return userDao.retrieveUsers(ids);
+    }
+
+    /**
+     * <p>
+     * Updates the given Users in the data store. The companies are considered to have been modified by the
+     * specified username. While in batch mode, the operation can be done atomically, or separately. If done
+     * atomically, then a failure at any one of the specified entries will mean that the entire batch will be
+     * rolled back. Otherwise, only the user where a failure occurred will be rolled back.
+     * </p>
+     *
+     * @param users The Users to update.
+     * @param username The username of the one responsible for modifying the users.
+     * @param atomicBatchMode While in batch mode, the operation can be done atomically, or separately. If done
+     *        atomically, then a failure at any one of the specified entries will mean that the entire batch will
+     *        be rolled back. Otherwise, only the user where a failure occurred will be rolled back.
+     * @throws IllegalArgumentException if the users is null, or the username is null or an empty String.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     * @throws BatchUserDAOException if a problem occurs with multiple entities while processing them in batch
+     *         mode.
+     */
+    public void updateUsers(User[] users, String username, boolean atomicBatchMode) throws UserDAOException,
+        BatchUserDAOException {
+
+        batchOperation(users, username, atomicBatchMode, UPDATE_OP);
+    }
+
+    /**
+     * <p>
+     * Deletes the specified Users from the data store. While in batch mode, the operation can be done atomically,
+     * or separately. If done atomically, then a failure at any one of the specified entries will mean that the
+     * entire batch will be rolled back. Otherwise, only the user where a failure occurred will be rolled back.
+     * </p>
+     *
+     * @param users The users to delete.
+     * @param atomicBatchMode While in batch mode, the operation can be done atomically, or separately. If done
+     *        atomically, then a failure at any one of the specified entries will mean that the entire batch will
+     *        be rolled back. Otherwise, only the user where a failure occurred will be rolled back.
+     * @throws IllegalArgumentException if users is null.
+     * @throws UserDAOException if a problem occurs while accessing the datastore.
+     * @throws BatchUserDAOException if a problem occurs with multiple entities while processing them in batch
+     *         mode.
+     */
+    public void deleteUsers(User[] users, boolean atomicBatchMode) throws UserDAOException, BatchUserDAOException {
+        batchOperation(users, null, atomicBatchMode, DELETE_OP);
+    }
+
+    /**
+     * <p>
+     * This is a convenience method that is provided to convert a Time Tracker User into an authorization Principal
+     * It is provided so that other operations that involve the Authorization component can be conveniently done
+     * without having to deal with the User identifiers and names.
+     * </p>
+     * </p>
+     * <p>
+     * The returned principal will have an id equal to that of the user, and name equal to the User's username.
+     * </p>
+     *
+     * @return the authentication principa object.
+     * @param user This is a convenience method that is provided to convert a Time Tracker User into an
+     *        authorization Principal It is provided so that other operations that involve the Authorization
+     *        component can be conveniently done without having to deal with the User identifiers and names.
+     *        </p>
+     *        <p>
+     *        The returned principal will have an id equal to that of the user, and name equal to the User's
+     *        username.
+     * @throws IllegalArgumentException if user is null.
+     */
+    public com.topcoder.security.authenticationfactory.Principal convertUserToPrincipal(User user) {
+        Utils.checkNull(user, "user");
+
+        return createPrincipal(user.getId(), user.getUsername(), user.getPassword());
+    }
+
+    /**
+     * <p>
+     * This is a convenience method that is provided to convert a Time Tracker User into an authorization Principal
+     * It is provided so that other operations that involve the Authorization component can be conveniently done
+     * without having to deal with the User identifiers and names.
+     * </p>
+     * </p>
+     * <p>
+     * The returned principal will have an id equal to that of the user, and name equal to the User's username.
+     * </p>
+     *
+     * @return the authorization principal.
+     * @param id the id of the principal.
+     * @param username the name of the principal.
+     * @param password the password of the principal.
+     */
+    private com.topcoder.security.authenticationfactory.Principal createPrincipal(long id, String username,
+            String password) {
+
+        com.topcoder.security.authenticationfactory.Principal principal =
+            new com.topcoder.security.authenticationfactory.Principal(new Long(id));
+        principal.addMapping(DbUserAuthenticator.USERNAME_KEY, username);
+        principal.addMapping(DbUserAuthenticator.PASSWORD_KEY, password);
+
+        return principal;
+    }
+
+    /**
+     * <p>
+     * This is a convenience method that resolves an Authorization Principal to an actual Time Tracker User object.
+     * This will make dealing with the Authorization component a bit simpler by easily allowing the User to be
+     * retrieved if necessary. If the user not exists, <code>null</code> will be returned.
+     * </p>
+     *
+     * @return The principal to convert.
+     * @param principal The Principal to convert to a Time Tracker User, or <code>null</code> if user not exist.
+     * @throws UserDAOException if error occrs during database operation.
+     * @throws IllegalArgumentException if the principal is null.
+     */
+    public User convertPrincipalToUser(com.topcoder.security.authenticationfactory.Principal principal)
+        throws UserDAOException {
+
+        Utils.checkNull(principal, "principal");
+        return userDao.retrieveUser(((Long) principal.getId()).longValue());
     }
 }

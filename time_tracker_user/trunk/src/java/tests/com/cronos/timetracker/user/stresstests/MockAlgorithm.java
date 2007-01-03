@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
  */
-package com.cronos.timetracker.stresstests;
+package com.cronos.timetracker.user.stresstests;
 
 import java.io.InputStream;
 import java.io.OutputStream;

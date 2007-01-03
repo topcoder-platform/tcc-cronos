@@ -1,4 +1,4 @@
-package com.cronos.timetracker.stresstests;
+package com.cronos.timetracker.user.stresstests;
 
 import junit.framework.TestCase;
 

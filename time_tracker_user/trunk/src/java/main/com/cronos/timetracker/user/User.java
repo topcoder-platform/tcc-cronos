@@ -1,90 +1,568 @@
 /*
- * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+ * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
  */
+package com.cronos.timetracker.user;
 
-package com.topcoder.timetracker.user;
-
-import com.topcoder.security.authorization.persistence.GeneralPrincipal;
+import com.cronos.timetracker.common.Address;
+import com.cronos.timetracker.common.Contact;
+import com.cronos.timetracker.common.EncryptionRepository;
+import com.cronos.timetracker.common.TimeTrackerBean;
+import com.cronos.timetracker.common.Utils;
+import com.topcoder.encryption.AbstractEncryptionAlgorithm;
 
 /**
  * <p>
- * The class represents an imported user entity for the Time Tracker application. It extends
- * GeneralPrincipal from the Authorization Component but adds one more parameter - the name of user
- * store where this user was imported from.
+ * This bean contains the account information of a Time Tracker user. The User password is stored within the bean
+ * in encrypted form.
  * </p>
- *
  * <p>
- * This way, the relationship between the imported users and the original user store can be
- * maintained and stored within a data source (specifically, using a UserPersistence implementation.)
+ * Thread Safety: - This class is mutable, and not thread-safe. Multiple threads are advised to work with their own
+ * instance.
  * </p>
  *
- * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.0
+ * @author ShindouHikaru
+ * @author kr00tki
+ * @version 2.0
  */
-public class User extends GeneralPrincipal {
-
-    /**
-     * The user store name this user was imported from; this value is set by the constructor, and
-     * retrieved by the getUserStoreName() method. Will never be null.
-     */
-    private final String storeName;
-
-    /** The email address of this user. */
-    private final String email;
-
+public class User extends TimeTrackerBean {
 
     /**
      * <p>
-     * Creates a new User entity with the given ID, username, user store name and email.
+     * This is id of the company with which the User is associated with.
      * </p>
      *
-     * @param id unique ID for this User. Uniqueness is not maintained internally, but in the
-     *  persistent store (databases) itself.
-     * @param name the username of this User
-     * @param storeName the user store name this user was imported from
-     * @param email the email address of this user, which can be null if not provided
-     * @throws NullPointerException if name or storeName is null
-     * @throws IllegalArgumentException if id is non-positive or name is the empty String (after trim)
-     *  or storeName is the empty String (no trim)
      */
-    public User(int id, String name, String storeName, String email) {
-        // handles IAE of ID and name.length; down-cast to int so that the
-        // database table will be OK.
-        super(id, name);
-
-        // the super constructor does not detect null names. bug?
-        if (name == null) {
-            throw new NullPointerException("name cannot be null.");
-        }
-
-        if (storeName == null) {
-            throw new NullPointerException("storeName cannot be null.");
-        }
-
-        if (storeName.length() == 0) {
-            throw new IllegalArgumentException("storeName cannot be empty.");
-        }
-
-        this.storeName = storeName;
-        this.email = email;
-    }
-
+    private long companyId;
 
     /**
-     * Returns the user store that this user was imported from.
+     * <p>
+     * This is the User's username. It may be null when the User object is initially constructed, but it may not be
+     * set to a null or empty String afterwards.
+     * </p>
+     * <p>
+     * Initialized In: setUsername
+     * </p>
+     * <p>
+     * Modified In: setUsername
+     * </p>
+     * <p>
+     * Accessed In: setUsername
+     * </p>
      *
-     * @return the user store that this user was imported from.
+     *
      */
-    public String getUserStoreName() {
-        return storeName;
+    private String username;
+
+    /**
+     * <p>
+     * The password of the User in encrypted form. When stored as a variable attribute, it will be encrypted to
+     * make it harder to be obtained especially during serialization. When being set and retrieved, it will first
+     * be encrypted/decrypted according to the algorithm specified in algorithmName.
+     * </p>
+     * <p>
+     * It may be null when the User object is initially constructed, but it may not be set to a null or empty
+     * String afterwards.
+     * </p>
+     * <p>
+     * Initialized In: setPassword
+     * </p>
+     * <p>
+     * Modified In: setPassword
+     * </p>
+     * <p>
+     * Accessed In: getPassword
+     * </p>
+     *
+     */
+    private String password;
+
+    /**
+     * <p>
+     * This is the account status of the user. It may be null when the User object is initially constructed, but it
+     * may not be set to a null afterwards.
+     * </p>
+     * <p>
+     * Initialized In: setAccountStatus
+     * </p>
+     * <p>
+     * Modified In: setAccountStatus
+     * </p>
+     * <p>
+     * Accessed In: getAccountStatus
+     * </p>
+     *
+     *
+     */
+    private AccountStatus accountStatus;
+
+    /**
+     * <p>
+     * This is the contact information of the user, including real name, phone number, etc. It may be null when the
+     * User object is initially constructed, but it may not be set to a null afterwards.
+     * </p>
+     * <p>
+     * Initialized In: setContactInfo
+     * </p>
+     * <p>
+     * Modified In: setContactInfo
+     * </p>
+     * <p>
+     * Accessed In: getContactInfo
+     * </p>
+     *
+     */
+    private Contact contact;
+
+    /**
+     * <p>
+     * This is the address of the user. It may be null when the User object is initially constructed, but it may
+     * not be set to a null afterwards.
+     * </p>
+     * <p>
+     * Initialized In: setAddress
+     * </p>
+     * <p>
+     * Modified In: setAddress
+     * </p>
+     * <p>
+     * Accessed In: getAddress
+     * </p>
+     *
+     */
+    private Address address;
+
+    /**
+     * <p>
+     * This is the algorithm name for the encryption algorithm to be used when setting the user's password. The
+     * algorithm name is used to retrieve the encryption algorithm from the Encryption component. It is expected
+     * that the Encryption component would have been initialized with the encryption keys (if necessary) prior to
+     * using this component.
+     * </p>
+     * <p>
+     * It may be null when the User object is initially constructed, but it may not be set to a null or empty
+     * String afterwards.
+     * </p>
+     * <p>
+     * Initialized In: setAlgorithmName
+     * </p>
+     * <p>
+     * Modified In: setAlgorithmName
+     * </p>
+     * <p>
+     * Accessed In: getAlgorithmName
+     * </p>
+     * <p>
+     * Utilized In: getPassword/setPassword
+     * </p>
+     *
+     */
+    private String algorithmName;
+
+    /**
+     * <p>
+     * The default constructor.
+     * </p>
+     *
+     */
+    public User() {
+        // your code here
     }
 
     /**
-     * Returns the email address of this user.
+     * <p>
+     * Retrieves the id of the company with which the User is associated with.
+     * </p>
      *
-     * @return the email address of this user.
+     *
+     *
+     * @return the id of the company with which the User is associated with.
      */
-    public String getEmail() {
-        return email;
+    public long getCompanyId() {
+        return companyId;
+    }
+
+    /**
+     * <p>
+     * Sets the id of the company with which the User is assocaited with.
+     * </p>
+     * <p>
+     * Implementation Notes: - If the current value that was added is not equal to the previous value, then call
+     * setChanged(true).
+     * </p>
+     *
+     *
+     *
+     * @param companyId the id of the company with which the User is associated with.
+     * @throws IllegalArgumentException if the companyId is <=0.
+     */
+    public void setCompanyId(long companyId) {
+        Utils.checkPositive(companyId, "companyId");
+        if (companyId != this.companyId) {
+            this.companyId = companyId;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves the User's username. It may be null when the User object is initially constructed, but it may not
+     * be set to a null or empty String afterwards.
+     * </p>
+     *
+     *
+     *
+     * @return the User's username.
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * <p>
+     * Sets the User's username. It may be null when the User object is initially constructed, but it may not be
+     * set to a null or empty String afterwards.
+     * </p>
+     * <p>
+     * Implementation Notes: - If the current value that was added is not equal to the previous value, then call
+     * setChanged(true).
+     * </p>
+     *
+     *
+     *
+     * @param username The user's username.
+     * @throws IllegalArgumentException if username is null or an empty String.
+     */
+    public void setUsername(String username) {
+        Utils.checkString(username, "username", false);
+        if (!username.equals(this.username)) {
+            this.username = username;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves the password of the User. When stored as a variable attribute, it will be encrypted to make it
+     * harder to be obtained especially during serialization. When being set and retrieved, it will first be
+     * encrypted/decrypted according to the algorithm specified in algorithmName.
+     * </p>
+     * <p>
+     * It may be null when the User object is initially constructed, but it may not be set to a null or empty
+     * String afterwards.
+     * </p>
+     *
+     * @return The password of the user.
+     * @throws EncryptionException if a problem occurs while decrypting the password.
+     * @throws IllegalStateException if its necessary to decrypt the password, but algorithmName is not specified.
+     */
+    public String getPassword() {
+        if (password != null) {
+            return new String(getAlgorithm().decrypt(password.getBytes()));
+        }
+        return password;
+    }
+
+    /**
+     * <p>
+     * Sets the password of the User in encrypted form. When stored as a variable attribute, it will be encrypted
+     * to make it harder to be obtained especially during serialization. When being set and retrieved, it will
+     * first be encrypted/decrypted according to the algorithm specified in algorithmName.
+     * </p>
+     * <p>
+     * It may be null when the User object is initially constructed, but it may not be set to a null or empty
+     * String afterwards.
+     * </p>
+     *
+     * @param password The password of the user, in plaintext.
+     * @throws IllegalArgumentException if the password is null or an empty String.
+     * @throws EncryptionException if a problem occurs while encryting the password.
+     * @throws IllegalStateException if its necessary to encrypt the password, but algorithmName is not specified.
+     */
+    public void setPassword(String password) {
+        Utils.checkString(password, "password", false);
+        String newPassword = new String(getAlgorithm().encrypt(password.getBytes()));
+        if (!newPassword.equals(this.password)) {
+            this.password = newPassword;
+            setChanged(true);
+        }
+
+    }
+
+    /**
+     * Returns the algorithm from the EncryptionRepository.
+     *
+     * @return the algorithm instance.
+     */
+    private AbstractEncryptionAlgorithm getAlgorithm() {
+        if (algorithmName == null) {
+            throw new IllegalStateException("The algorithm name is not specified.");
+        }
+
+        return EncryptionRepository.getInstance().retrieveAlgorithm(algorithmName);
+    }
+
+    /**
+     * <p>
+     * Retrieves the account status of the user. It may be null when the User object is initially constructed, but
+     * it may not be set to a null afterwards.
+     * </p>
+     *
+     *
+     *
+     * @return the account status of the user.
+     */
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    /**
+     * <p>
+     * Sets the account status of the user. It may be null when the User object is initially constructed, but it
+     * may not be set to a null afterwards.
+     * </p>
+     *
+     * @param accountStatus The account status of the user.
+     * @throws IllegalArgumentException if the accountStatus is null.
+     */
+    public void setAccountStatus(AccountStatus accountStatus) {
+        Utils.checkNull(accountStatus, "accountStatus");
+        if (!accountStatus.equals(this.accountStatus)) {
+            this.accountStatus = accountStatus;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves the contact information of the user, including real name, phone number, etc. It may be null when
+     * the User object is initially constructed, but it may not be set to a null afterwards.
+     * </p>
+     *
+     *
+     *
+     * @return the contact information of the user.
+     */
+    public Contact getContactInfo() {
+        return contact;
+    }
+
+    /**
+     * <p>
+     * Sets the contact information of the user, including real name, phone number, etc. It may be null when the
+     * User object is initially constructed, but it may not be set to a null afterwards.
+     * </p>
+     *
+     * @param contact the contact information of the user.
+     * @throws IllegalArgumentException if contact is null.
+     */
+    public void setContactInfo(Contact contact) {
+        Utils.checkNull(contact, "contact");
+        if (!contact.equals(this.contact)) {
+            this.contact = contact;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves the address of the user. It may be null when the User object is initially constructed, but it may
+     * not be set to a null afterwards.
+     * </p>
+     *
+     *
+     *
+     * @return the address of the user.
+     */
+    public Address getAddress() {
+        return address;
+    }
+
+    /**
+     * <p>
+     * Sets the address of the user. It may be null when the User object is initially constructed, but it may not
+     * be set to a null afterwards.
+     * </p>
+     *
+     * @param address The address of the user.
+     * @throws IllegalArgumentException if address is null.
+     */
+    public void setAddress(Address address) {
+        Utils.checkNull(address, "address");
+        if (!address.equals(this.address)) {
+            this.address = address;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves the algorithm name for the encryption algorithm to be used when setting the company password. The
+     * algorithm name is used to retrieve the encryption algorithm from the Encryption component. It is expected
+     * that the Encryption component would have been initialized with the encryption keys (if necessary) prior to
+     * using this component.
+     * </p>
+     * <p>
+     * It may be null when the User object is initially constructed, but it may not be set to a null or empty
+     * String afterwards.
+     * </p>
+     *
+     *
+     *
+     * @return the algorithm name for the encryption algorithm to be used when setting the company passcode.
+     */
+    public String getAlgorithmName() {
+        return algorithmName;
+    }
+
+    /**
+     * <p>
+     * This is the name of the encryption algorithm to be used when setting the company password. The
+     * algorithm name is used to retrieve the encryption algorithm from the EncryptionRepository.
+     * </p>
+     * <p>
+     * It may be null when the User object is initially constructed, but it may not be set to a null or empty
+     * String afterwards.
+     * </p>
+     *
+     * @param algorithmName the algorithm name for the encryption algorithm to be used when setting the company
+     *        passcode.
+     * @throws IllegalArgumentException if the algorithmName is null, an empty String, or it doesn't exist within
+     *         the EncryptionRepository.
+     */
+    public void setAlgorithmName(String algorithmName) {
+        Utils.checkString(algorithmName, "algorithmName", false);
+        if (EncryptionRepository.getInstance().retrieveAlgorithm(algorithmName) == null) {
+            throw new IllegalArgumentException("The encryption algorithm not exists. Name: " + algorithmName);
+        }
+
+        this.algorithmName = algorithmName;
+    }
+
+    /**
+     * <p>
+     * Retrieves the first name of the User. This is equivalent to calling getContact().getFirstName().
+     * </p>
+     *
+     *
+     * @return The first name of the user.
+     */
+    public String getFirstName() {
+        if (contact != null) {
+            return contact.getFirstName();
+        }
+        return null;
+    }
+
+    /**
+     * <p>
+     * Sets the first name of the User. This is equivalent to calling getContact().setFirstName().
+     * </p>
+     *
+     *
+     *
+     * @param firstName The first name of the user.
+     * @throws IllegalArgumentException if the firstName is null or an empty String.
+     */
+    public void setFirstName(String firstName) {
+        getContactInt().setFirstName(firstName);
+    }
+
+    /**
+     * <p>
+     * Gets the last name of the User. This is equivalent to calling getContact().getLastName().
+     * </p>
+     *
+     *
+     *
+     * @return the last name of the User.
+     */
+    public String getLastName() {
+        if (contact != null) {
+            return contact.getLastName();
+        }
+        return null;
+    }
+
+    /**
+     * <p>
+     * Sets the last name of the User. This is equivalent to calling getContact().setLastName().
+     * </p>
+     *
+     *
+     * @param lastName The last name of the User.
+     * @throws IllegalArgumentException if lastName is null or an empty String.
+     */
+    public void setLastName(String lastName) {
+        getContactInt().setLastName(lastName);
+    }
+
+    /**
+     * <p>
+     * Gets the phone number of the User. This is equivalent to calling getContact().getPhoneNumber().
+     * </p>
+     *
+     *
+     * @return The phone number of the user.
+     */
+    public String getPhoneNumber() {
+        if (contact != null) {
+            return contact.getPhoneNumber();
+        }
+        return null;
+    }
+
+    /**
+     * <p>
+     * Sets the phone number of the User. This is equivalent to calling getContact().setPhoneNumber().
+     * </p>
+     *
+     * @param phoneNumber The phone number of the user.
+     * @throws IllegalArgumentException if phoneNumber is null or an empty String.
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        getContactInt().setPhoneNumber(phoneNumber);
+    }
+
+    /**
+     * <p>
+     * Gets the email address of the User. This is equivalent to calling getContact().getEmailAddress().
+     * </p>
+     *
+     *
+     *
+     * @return The email address of the user.
+     */
+    public String getEmailAddress() {
+        if (contact != null) {
+            return contact.getEmailAddress();
+        }
+        return null;
+    }
+
+    /**
+     * <p>
+     * Sets the email address of the User. This is equivalent to calling getContact().setEmailAddress().
+     * </p>
+     *
+     *
+     * @param email The email address of the user.
+     * @throws IllegalArgumentException if the email address is null or an empty String.
+     */
+    public void setEmailAddress(String email) {
+        getContactInt().setEmailAddress(email);
+    }
+
+    /**
+     * This method returns the Contact object that belongs to the user. If the contact is not already set,
+     * the new instance will be created.
+     *
+     * @return the current Contact or new one if none exists.
+     */
+    private Contact getContactInt() {
+        if (contact == null) {
+            contact = new Contact();
+        }
+
+        return contact;
     }
 }

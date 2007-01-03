@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.stresstests;
+package com.cronos.timetracker.user.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -621,7 +621,7 @@ public class UserManagerFailureTests extends TestCase {
         }
     }
 
-    
+
     /**
      * <p>
      * Tests updateUser(User, String) for failure. Passes null user, IllegalArgumentException is expected.

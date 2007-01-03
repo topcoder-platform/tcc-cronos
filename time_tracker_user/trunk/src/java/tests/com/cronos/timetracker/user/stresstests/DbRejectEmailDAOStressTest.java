@@ -1,4 +1,4 @@
-package com.cronos.timetracker.stresstests;
+package com.cronos.timetracker.user.stresstests;
 
 import junit.framework.TestCase;
 
@@ -49,7 +49,10 @@ public class DbRejectEmailDAOStressTest extends TestCase {
         emailDAO = new DbRejectEmailDAO(factory,
                 StressTestHelper.CONNECTION_NAME,
                 StressTestHelper.IDGEN_NAME);
-    }
+
+        StressTestHelper.clearData(factory);
+        StressTestHelper.unloadConfig();
+}
 
     /**
      * Clean up test environment.

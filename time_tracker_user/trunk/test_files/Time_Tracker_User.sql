@@ -1,101 +1,207 @@
-CREATE TABLE DefaultUsers (
-       DefaultUsersID       integer NOT NULL,
-       UserName             varchar(64) NOT NULL,
-       Password             varchar(64) NOT NULL,
-       FirstName            varchar(64),
-       LastName             varchar(64),
-       Phone                varchar(20),
-       Email                varchar(64),
-       CreationDate         datetime year to second NOT NULL,
-       CreationUser         varchar(64) NOT NULL,
-       ModificationDate     datetime year to second NOT NULL,
-       ModificationUser     varchar(64) NOT NULL,
-       PRIMARY KEY (DefaultUsersID)
+
+CREATE TABLE account_status (
+       account_status_id    integer NOT NULL,
+       description          varchar(64) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (account_status_id)
 );
 
 
-CREATE TABLE Users (
-       UsersID              integer NOT NULL,
-       Name                 varchar(64) NOT NULL,
-       Email                varchar(255),
-       CreationDate         datetime year to second,
-       CreationUser         varchar(64),
-       ModificationDate     datetime year to second,
-       ModificationUser     varchar(64),
-       UserStore            varchar(255),
-       PRIMARY KEY (UsersID)
+CREATE TABLE state_name (
+       state_name_id        integer NOT NULL,
+       name                 varchar(64) NOT NULL,
+       abbreviation         varchar(2) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (state_name_id)
 );
 
 
-
-CREATE TABLE id_sequences (
-	name			VARCHAR(255) NOT NULL,
-	next_block_start	INT8 NOT NULL,
-	block_size		INT NOT NULL,
-	exhausted		INT default 0,
-	PRIMARY KEY (name)
-);
-
-create table principal(
-           principal_id INT8 not null primary key,
-		   principal_name varchar(255));
-
-
-create table role(
-           role_id INT8 not null primary key,
-		   role_name varchar(255));
-
-
-create table principal_role(
-           principal_id INT8 not null,
-		   role_id INT8 not null,
-		   primary key(principal_id, role_id),
-		   foreign key (principal_id) references principal(principal_id),
-		   foreign key (role_id) references role(role_id));
-
-
-create table action(
-           action_id INT8 not null primary key,
-           class_name VARCHAR(255) not null,
-		   action_name varchar(255)
+CREATE TABLE reject_reason (
+       reject_reason_id     integer NOT NULL,
+       description          varchar(64) NOT NULL,
+       active               smallint NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (reject_reason_id)
 );
 
 
-create table action_context(
-           action_context_id INT8 not null primary key,
-		   action_context_name varchar(255),
-		   action_context_parent_id INT8 references action_context(action_context_id),
-           class_name VARCHAR(255) not null);
+CREATE TABLE address (
+       address_id           integer NOT NULL,
+       line1                varchar(100) NOT NULL,
+       line2                varchar(100),
+       city                 varchar(30) NOT NULL,
+       state_name_id        integer NOT NULL,
+       zip_code             varchar(10) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (address_id)
+);
+
+ALTER TABLE address ADD CONSTRAINT FOREIGN KEY (state_name_id) REFERENCES state_name CONSTRAINT fk_address_state;
+
+
+CREATE TABLE company (
+       company_id           integer NOT NULL,
+       name                 varchar(64),
+       passcode             varchar(64) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (company_id)
+--       UNIQUE ( passcode   )
+);
+
+ALTER TABLE company ADD CONSTRAINT UNIQUE (passcode) CONSTRAINT unique_passcode;
+
+
+CREATE TABLE company_address (
+       company_id           integer NOT NULL,
+       address_id           integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (company_id, address_id)
+       -- FOREIGN KEY (address_id) REFERENCES address,
+       -- FOREIGN KEY (company_id) REFERENCES company
+);
+ALTER TABLE company_address ADD CONSTRAINT FOREIGN KEY (address_id) REFERENCES address CONSTRAINT fk_address;
+ALTER TABLE company_address ADD CONSTRAINT FOREIGN KEY (company_id) REFERENCES company CONSTRAINT fk_company;
+
+CREATE TABLE user_account (
+       user_account_id      integer NOT NULL,
+       company_id           integer,
+       account_status_id    integer NOT NULL,
+       user_name            varchar(64) NOT NULL,
+       password             varchar(64) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (user_account_id)
+--       FOREIGN KEY (account_status_id) REFERENCES account_status,
+--       FOREIGN KEY (company_id)   REFERENCES company
+);
+
+ALTER TABLE user_account ADD CONSTRAINT FOREIGN KEY (account_status_id) REFERENCES account_status CONSTRAINT fk_user_account_status;
+ALTER TABLE user_account ADD CONSTRAINT FOREIGN KEY (company_id) REFERENCES company CONSTRAINT fk_user_comany;
+
+CREATE TABLE user_address (
+       user_account_id      integer NOT NULL,
+       address_id           integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (user_account_id, address_id)
+   --    FOREIGN KEY (address_id)                             REFERENCES address,
+   --    FOREIGN KEY (user_account_id)                             REFERENCES user_account
+);
+
+ALTER TABLE user_address ADD CONSTRAINT FOREIGN KEY (address_id) REFERENCES address CONSTRAINT fk_user_addess;
+ALTER TABLE user_address ADD CONSTRAINT FOREIGN KEY (user_account_id) REFERENCES user_account CONSTRAINT fk_user_account;
+
+CREATE TABLE contact (
+       contact_id           integer NOT NULL,
+       first_name           varchar(64) NOT NULL,
+       last_name            varchar(64) NOT NULL,
+       phone                varchar(30) NOT NULL,
+       email                varchar(64) NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (contact_id)
+);
+
+
+CREATE TABLE user_contact (
+       user_account_id      integer NOT NULL,
+       contact_id           integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (user_account_id, contact_id)
+--       FOREIGN KEY (contact_id)  REFERENCES contact,
+--       FOREIGN KEY (user_account_id)  REFERENCES user_account
+);
+
+ALTER TABLE user_contact ADD CONSTRAINT FOREIGN KEY (contact_id) REFERENCES contact CONSTRAINT fk_user_contact;
+ALTER TABLE user_contact ADD CONSTRAINT FOREIGN KEY (user_account_id) REFERENCES user_account CONSTRAINT fk_user_account_con;
 
 
 
-create table role_action_context_permission(
-           role_id INT8 not null,
-		   action_id INT8 not null,
-		   action_context_id INT8 not null,
-                   permission INT8 not null,
-		   primary key(role_id, action_id, action_context_id),
-                   foreign key (role_id) references role(role_id),
-                   foreign key (action_id) references action(action_id),
-		   foreign key (action_context_id) references action_context(action_context_id));
+CREATE TABLE company_contact (
+       company_id           integer NOT NULL,
+       contact_id           integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (company_id, contact_id)
+--       FOREIGN KEY (contact_id) REFERENCES contact,
+--       FOREIGN KEY (company_id) REFERENCES company
+);
+
+ALTER TABLE company_contact ADD CONSTRAINT FOREIGN KEY (contact_id) REFERENCES contact CONSTRAINT fk_company_contact;
+ALTER TABLE company_contact ADD CONSTRAINT FOREIGN KEY (company_id) REFERENCES company CONSTRAINT fk_comp;
 
 
-create table principal_action_context_permission(
-                   principal_id INT8 not null,
-		   action_id INT8 not null,
-		   action_context_id INT8 not null,
-                   permission INT8 not null,
-		   primary key(principal_id, action_id, action_context_id),
-                   foreign key (principal_id) references principal(principal_id),
-                   foreign key (action_id) references action(action_id),
-		   foreign key (action_context_id) references action_context(action_context_id));
 
-INSERT INTO role(role_id, role_name) VALUES(1, 'Super Administrator');
-INSERT INTO role(role_id, role_name) VALUES(2, 'Human Resource');
-INSERT INTO role(role_id, role_name) VALUES(3, 'Account Manager');
-INSERT INTO role(role_id, role_name) VALUES(4, 'Project Manager');
-INSERT INTO role(role_id, role_name) VALUES(5, 'Employee');
-INSERT INTO role(role_id, role_name) VALUES(6, 'Contractor');
+CREATE TABLE comp_rej_reason (
+       company_id           integer NOT NULL,
+       reject_reason_id     integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (company_id, reject_reason_id)
+--       FOREIGN KEY (reject_reason_id)    REFERENCES reject_reason,
+--       FOREIGN KEY (company_id)   REFERENCES company
+);
 
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)
-VALUES ('TimeTrackerUser', 1, 10000000, 0);
+ALTER TABLE comp_rej_reason ADD CONSTRAINT FOREIGN KEY (reject_reason_id) REFERENCES reject_reason CONSTRAINT fk_rej_reason;
+ALTER TABLE comp_rej_reason ADD CONSTRAINT FOREIGN KEY (company_id) REFERENCES company CONSTRAINT fk_rej_comp;
+
+
+
+CREATE TABLE reject_email (
+       reject_email_id      integer NOT NULL,
+       body                 text NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (reject_email_id)
+);
+
+
+CREATE TABLE comp_reject_email (
+       company_id           integer NOT NULL,
+       reject_email_id      integer NOT NULL,
+       creation_date        datetime year to second NOT NULL,
+       creation_user        varchar(64) NOT NULL,
+       modification_date    datetime year to second NOT NULL,
+       modification_user    varchar(64) NOT NULL,
+       PRIMARY KEY (company_id, reject_email_id)
+--       FOREIGN KEY (reject_email_id)    REFERENCES reject_email,
+--       FOREIGN KEY (company_id)         REFERENCES company
+);
+
+ALTER TABLE comp_reject_email ADD CONSTRAINT FOREIGN KEY (reject_email_id) REFERENCES reject_email CONSTRAINT fk_rej_email;
+ALTER TABLE comp_reject_email ADD CONSTRAINT FOREIGN KEY (company_id) REFERENCES company CONSTRAINT fk_email_comp;
+
+

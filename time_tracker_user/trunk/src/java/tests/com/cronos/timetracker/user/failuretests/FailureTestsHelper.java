@@ -11,7 +11,7 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * Helper class that defines shared helper methods used during testing of this component.
  * </p>
- * @author TCSDEVELOPER
+ * @author kr00tki
  * @version 1.0
  */
 final class FailureTestsHelper {

@@ -1,13 +1,10 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.stresstests;
+package com.cronos.timetracker.user.stresstests;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -91,64 +88,39 @@ public class StressTestHelper {
      * @throws Exception to JUnit
      */
     public static void loadConfigAndData() throws Exception {
-        // FINAL REVIEWER (agh) FIX: remove existing namespace before loading
-        unloadConfig();
         ConfigManager.getInstance().add("stress/stress.xml");
 
         EncryptionRepository.getInstance().registerAlgorithm(ALGO_NAME, new MockAlgorithm());
 
         DBConnectionFactory factory = new DBConnectionFactoryImpl(
             "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
-        // FINAL REVIEWER (agh) FIX: clear data before insertion
-        clearData(factory);                        
-
-
         Connection conn = factory.createConnection("stress");
-
-        // FINAL REVIEWER (agh) FIX : use preapared statement to insert date values
-        PreparedStatement insertState = null;
-        PreparedStatement insertCompany = null;
-        PreparedStatement insertStatus = null;
         Statement stat = null;
         try {
-            insertState = conn.prepareStatement("insert into state_name (state_name_id, name, abbreviation, "
+            stat = conn.createStatement();
+
+            // insert a state
+            stat.execute("insert into state_name (state_name_id, name, abbreviation,"
                     + "creation_date, creation_user, modification_date, modification_user) "
-                    + "values (1, 'NC', 'NC', ?, 'user', ?, 'user')");
-            insertCompany = conn.prepareStatement("insert into company (company_id, name, passcode, "
+                    + "values (1, 'NC', 'NC', DATE(06/05/2006), 'user', DATE(06/05/2006), 'user')");
+
+            // insert a company
+            stat.execute("insert into company (company_id, name, passcode,"
                     + "creation_date, creation_user, modification_date, modification_user) "
-                    + "values (1, 'TopCoder', 'passcode1', ?, 'user', ?, 'user')");
-            insertStatus = conn.prepareStatement("insert into account_status (account_status_id, description, "
+                    + "values (1, 'TopCoder', 'passcode1', DATE(06/05/2006), 'user', DATE(06/05/2006), 'user')");
+
+            // insert an account status
+            stat.execute("insert into account_status (account_status_id, description, "
                     + "creation_date, creation_user, modification_date, modification_user) "
-                    + "values (1, 'Active', ?, 'user', ?, 'user')");
+                    + "values (1, 'Active', DATE(06/05/2006), 'user', DATE(06/05/2006), 'user')");
 
-            Timestamp t = new Timestamp((new GregorianCalendar(2006, 06, 05)).getTimeInMillis());
-
-            insertState.setTimestamp(1, t);
-            insertState.setTimestamp(2, t);
-            insertState.executeUpdate();
-
-            insertCompany.setTimestamp(1, t);
-            insertCompany.setTimestamp(2, t);
-            insertCompany.executeUpdate();
-
-            insertStatus.setTimestamp(1, t);
-            insertStatus.setTimestamp(2, t);
-            insertStatus.executeUpdate();
         } finally {
-            try {
-                if (insertState != null) {
-                    insertState.close();
-                }
-                if (insertCompany != null) {
-                    insertCompany.close();
-                }
-                if (insertStatus != null) {
-                    insertStatus.close();
-                }    
-            } finally {
-                conn.close();
+            if (stat != null) {
+                stat.close();
             }
+            conn.close();
         }
+
     }
 
     /**
@@ -192,7 +164,7 @@ public class StressTestHelper {
      */
     public static void clearData(DBConnectionFactory factory) throws Exception {
         // clear the databases
-        Connection conn = factory.createConnection("stress");        
+        Connection conn = factory.createConnection("stress");
 
         try {
             for (int i = 0; i < TRUNCATE_TABLES.length; i++) {
@@ -209,7 +181,7 @@ public class StressTestHelper {
             }
         } finally {
             conn.close();
-        }        
+        }
     }
 
     /**
@@ -264,9 +236,9 @@ public class StressTestHelper {
     public static Company createCompany(int num) {
         Company company = new Company();
         company.setAlgorithmName(ALGO_NAME);
-        company.setPasscode("Passcode" + num + "p" + new Random().nextInt(1000));
+        company.setPasscode("Passcode" + num + new Random().nextInt(1000));
         company.setCompanyName("TopCoder");
-        
+
         company.setAddress(createAddress());
         company.setContact(createContact());
         return company;
@@ -295,7 +267,7 @@ public class StressTestHelper {
         user.setPassword("test");
         user.setUsername("username");
 
-        return user;   
+        return user;
     }
 
     /**
