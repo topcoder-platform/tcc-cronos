@@ -23,7 +23,7 @@ public class AuctionListenerImplUnitTests extends ServletTestCase {
 
     /**
      * <p>
-     * AuctionListenerImpl used for testing.
+     * AuctionListenerImpl used for testing.s
      * </p>
      */
     private AuctionListenerImpl listener;
@@ -118,6 +118,8 @@ public class AuctionListenerImplUnitTests extends ServletTestCase {
     public void testAuctionComplete2() throws Exception {
         MockGameDataManager gameDataManager = new MockGameDataManager();
         MockAdministrationManager administrationManager = new MockAdministrationManager();
+        MockAuctionManager auctionManager = new MockAuctionManager();
+        MockAuctionStrategy auctionStrategy = new MockAuctionStrategy();
 
         // add GameDataManager
         request.getSession().getServletContext().setAttribute(KeyConstants.GAME_DATA_MANAGER_KEY,
@@ -125,6 +127,10 @@ public class AuctionListenerImplUnitTests extends ServletTestCase {
         // add AdministrationManager
         request.getSession().getServletContext().setAttribute(
             KeyConstants.ADMINISTRATION_MANAGER_KEY, administrationManager);
+        // add AuctionManager
+        request.getSession().getServletContext().setAttribute(KeyConstants.AUCTION_MANAGER_KEY,
+            auctionManager);
+        auctionManager.setAuctionStrategy(auctionStrategy);
 
         // prepare bids
         CustomBid[] bids = new CustomBid[3];
@@ -135,7 +141,7 @@ public class AuctionListenerImplUnitTests extends ServletTestCase {
         // prepare auction
         MockAuction auction = new MockAuction();
         auction.setId(35);
-        auction.setBids(bids);
+        auctionStrategy.setLeadingBids(bids);
 
         listener.auctionComplete(auction);
 

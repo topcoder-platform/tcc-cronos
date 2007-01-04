@@ -12,6 +12,7 @@ import com.orpheus.game.GameDataException;
 import com.orpheus.game.GameDataManager;
 import com.topcoder.util.auction.Auction;
 import com.topcoder.util.auction.AuctionListener;
+import com.topcoder.util.auction.AuctionManager;
 import com.topcoder.util.auction.Bid;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 
@@ -92,8 +93,22 @@ public class AuctionListenerImpl implements AuctionListener {
             throw new AuctionListenerImplException("Unable to retrieve AdministrationManager from the context");
         }
 
+        // get auction manager from the servlet context
+        AuctionManager auctionManager;
+        try {
+            auctionManager = (AuctionManager) Helper.getServletContextAttribute(context,
+                KeyConstants.AUCTION_MANAGER_KEY, AuctionManager.class);
+        } catch (HandlerExecutionException e) {
+            throw new AuctionListenerImplException(
+                "Unable to retrieve AuctionManager from the context");
+        }
+        // if auction strategy is null then throw exception
+        if (auctionManager.getAuctionStrategy() == null) {
+            throw new AuctionListenerImplException("Auction strategy couldn't be null");
+        }
+
         // get array of ids of winning bids
-        Bid[] bids = auction.getBids();
+        Bid[] bids = auctionManager.getAuctionStrategy().selectLeadingBids(auction);
         // if bids is null throw Exception
         if (bids == null) {
             throw new AuctionListenerImplException("Bids array couldn't be null");
