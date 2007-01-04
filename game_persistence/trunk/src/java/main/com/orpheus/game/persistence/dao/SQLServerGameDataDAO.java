@@ -85,7 +85,7 @@ import java.util.Map;
  * <p>
  * <b>Thread Safety:</b>This class is mutable and thread-safe.
  * </p>
- * @author argolite, waits
+ * @author argolite, TCSDEVELOPER
  * @version 1.0
  */
 public class SQLServerGameDataDAO implements GameDataDAO {
@@ -715,6 +715,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /**
      * <p>
      * Creates hosting slots associates with the specified Bid IDs in the specified hosting block.
+     * 
+     * This method will persist the slots in hosting_slot table and return the appropiate hosting slots.
      * </p>
      *
      * @param blockId the block id the slot add to
@@ -788,8 +790,18 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                     close(rs);
 
+                    //persist the hosting slot
+                    this.update(conn, "INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start,hosting_end)" +
+                            "values(?,?,null,null)", new Object[] {new Long(bidIds[i]), new Long(sequenceNumber)});
+                    Long id = null;
+                    rs = query(conn,"SELECT id FROM hosting_slot WHERE bid_id = ? AND sequence_number = ?", new Object[] {new Long(bidIds[i]), new Long(sequenceNumber)});
+                    if ( rs.next()){
+                        id = new Long(rs.getLong("id"));
+                    }
+                    close(rs);
+                    
                     // create the HostingSlotImpl instance
-                    slots[i] = new HostingSlotImpl(null, domain, imageId, new long[0], null, sequenceNumber++,
+                    slots[i] = new HostingSlotImpl(id, domain, imageId, new long[0], null, sequenceNumber++,
                             new DomainTarget[0], currentAmount, null, null);
                 }
             }

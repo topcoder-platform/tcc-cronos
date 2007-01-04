@@ -531,7 +531,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         Domain persisted = dao.createDomain(toPersist);
 
         //create a domain with the persited id and two new images
-        Domain toUpdate = new DomainImpl(persisted.getId(), sponsorId, "domainName", new Boolean(false), images);
+        Domain toUpdate = new DomainImpl(persisted.getId(), sponsorId, "domainName", null, images);
 
         //update the domain
         dao.updateDomain(toUpdate);
@@ -540,7 +540,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         Domain updated = dao.getDomain(toUpdate.getId().longValue());
 
         //verify 
-        assertFalse("The approved does not changed.", updated.isApproved().booleanValue());
+        assertNull("The approved does not changed.", updated.isApproved());
         assertEquals("The size of image should be four.", 4, updated.getImages().length);
     }
 
@@ -689,6 +689,11 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         assertEquals("The domainTarget is not empty.", 0, slots[0].getDomainTargets().length);
         assertEquals("The brainTeaserIds is not empty.", 0, slots[0].getBrainTeaserIds().length);
         assertEquals("The image id does not match.", imageId, slots[0].getImageId());
+        assertNotNull("The id is not null.", slots[0].getId());
+        
+        List ids = TestHelper.getIds("hosting_slot");
+        assertEquals("The size in db in incorrect.", 1, ids.size());
+        assertEquals("The size in db in incorrect.", slots[0].getId().longValue(), ((Long)ids.get(0)).longValue());
     }
 
     /**

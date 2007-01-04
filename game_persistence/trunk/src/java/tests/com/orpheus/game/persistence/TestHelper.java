@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -29,14 +30,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-
 /**
  * Defines helper methods used in unit tests of this component.
- * @author waits
+ * 
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public final class TestHelper {
-    
 
     /** constant represents the dbfactory config file. */
     public static final String DBFACTORY_CONFIG_XML = "DBFactory.xml";
@@ -49,19 +49,22 @@ public final class TestHelper {
 
     /** namespace for SQLServerGameDataDao. */
     public static final String DAO_NAMESPACE = "com.orpheus.game.persistence.SQLServerGameDataDAO";
+
     /**
      * local custom download namespace.
      */
     public static final String LOCAL_NAMESPACE = "com.orpheus.game.persistence.CustomDownloadSource.local";
-    
+
     /**
      * remote custom download namespace.
      */
     public static final String REMOTE_NAMESPACE = "com.orpheus.game.persistence.CustomDownloadSource.remote";
+
     /**
      * database factory namespace.
      */
     public static final String DB_FACTORY_NAMESPACE = "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
+
     /**
      * This private constructor prevents the creation of a new instance.
      */
@@ -69,14 +72,16 @@ public final class TestHelper {
     }
 
     /**
-     * Gets the value of a private field in the given class. The field has the given name. The value is retrieved
-     * from the given instance. If the instance is null, the field is a static field. If any error occurs, null is
-     * returned.
-     *
-     * @param type the class which the private field belongs to
-     * @param instance the instance which the private field belongs to
-     * @param name the name of the private field to be retrieved
-     *
+     * Gets the value of a private field in the given class. The field has the given name. The value is retrieved from
+     * the given instance. If the instance is null, the field is a static field. If any error occurs, null is returned.
+     * 
+     * @param type
+     *            the class which the private field belongs to
+     * @param instance
+     *            the instance which the private field belongs to
+     * @param name
+     *            the name of the private field to be retrieved
+     * 
      * @return the value of the private field
      */
     public static Object getPrivateField(Class type, Object instance, String name) {
@@ -108,11 +113,15 @@ public final class TestHelper {
 
     /**
      * Sets the value of a private field in the given class.
-     *
-     * @param type the class which the private field belongs to
-     * @param instance the instance which the private field belongs to
-     * @param name the name of the private field to be retrieved
-     * @param value the value to set
+     * 
+     * @param type
+     *            the class which the private field belongs to
+     * @param instance
+     *            the instance which the private field belongs to
+     * @param name
+     *            the name of the private field to be retrieved
+     * @param value
+     *            the value to set
      */
     public static void setPrivateField(Class type, Object instance, String name, Object value) {
         Field field = null;
@@ -142,10 +151,12 @@ public final class TestHelper {
      * <p>
      * Add the config file.
      * </p>
-     *
-     * @param fileName the config file to add
-     *
-     * @throws Exception into JUnit
+     * 
+     * @param fileName
+     *            the config file to add
+     * 
+     * @throws Exception
+     *             into JUnit
      */
     public static void addConfigFile(String fileName) throws Exception {
         ConfigManager.getInstance().add(fileName);
@@ -153,8 +164,9 @@ public final class TestHelper {
 
     /**
      * This method clears all the namespaces from ConfigManager.
-     *
-     * @throws Exception if any error occurs when clearing ConfigManager
+     * 
+     * @throws Exception
+     *             if any error occurs when clearing ConfigManager
      */
     public static void clearConfigManager() throws Exception {
         ConfigManager manager = ConfigManager.getInstance();
@@ -166,8 +178,9 @@ public final class TestHelper {
 
     /**
      * clear the database.
-     *
-     * @throws Exception into JUnit
+     * 
+     * @throws Exception
+     *             into JUnit
      */
     public static void clearDatabase() throws Exception {
         Connection conn = null;
@@ -190,10 +203,12 @@ public final class TestHelper {
 
     /**
      * clear the database.
-     *
-     * @param conn database connection
-     *
-     * @throws SQLException fail to update database
+     * 
+     * @param conn
+     *            database connection
+     * 
+     * @throws SQLException
+     *             fail to update database
      */
     private static void clearDB(Connection conn) throws SQLException {
         conn.createStatement().execute("DELETE FROM plugin_downloads");
@@ -226,19 +241,20 @@ public final class TestHelper {
      * <p>
      * Insert a record into the 'contact_info' table.
      * </p>
-     *
-     * @param conn Database connection
-     *
+     * 
+     * @param conn
+     *            Database connection
+     * 
      * @return the new added record's id
-     *
-     * @throws Exception fails to update database
+     * 
+     * @throws Exception
+     *             fails to update database
      */
-    public static long persistContactInfo(Connection conn)
-        throws Exception {
-        //insert a record into the contact_info table
-        PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO contact_info(first_name,last_name,address_1,city,state,postal_code, telephone)"
-                + " VALUES(?,?,?,?,?,?,?)");
+    public static long persistContactInfo(Connection conn) throws Exception {
+        // insert a record into the contact_info table
+        PreparedStatement stmt = conn
+                .prepareStatement("INSERT INTO contact_info(first_name,last_name,address_1,city,state,postal_code, telephone)"
+                        + " VALUES(?,?,?,?,?,?,?)");
         stmt.setString(1, "javier");
         stmt.setString(2, "invern");
         stmt.setString(3, "Topcoder");
@@ -250,7 +266,7 @@ public final class TestHelper {
 
         stmt.close();
 
-        //find the new added record's id
+        // find the new added record's id
         long contactInfoId = 0;
         stmt = conn.prepareStatement("SELECT id FROM contact_info");
 
@@ -267,19 +283,21 @@ public final class TestHelper {
     }
 
     /**
-     * add a record into the any_user table  with the given id.
-     *
-     * @param conn database connection
-     * @param id the id
-     *
+     * add a record into the any_user table with the given id.
+     * 
+     * @param conn
+     *            database connection
+     * @param id
+     *            the id
+     * 
      * @return the id
-     *
-     * @throws SQLException fails to update database
+     * 
+     * @throws SQLException
+     *             fails to update database
      */
-    public static long persistAnyUser(Connection conn, long id)
-        throws SQLException {
+    public static long persistAnyUser(Connection conn, long id) throws SQLException {
         PreparedStatement stmt;
-        //add record into 'any_user' table
+        // add record into 'any_user' table
         stmt = conn.prepareStatement("INSERT INTO any_user(handle,e_mail,passwd,is_active,id) VALUES(?,?,?,?,?)");
         stmt.setString(1, "ivern");
         stmt.setString(2, "ivern@topcoder.com");
@@ -293,18 +311,21 @@ public final class TestHelper {
 
     /**
      * Insert a record into 'player' table.
-     *
-     * @param conn database connection
-     * @param contactInfoId 'contact_info_id'
-     * @param anyUserId 'any_user_id'
-     *
-     * @throws Exception fail to update database
+     * 
+     * @param conn
+     *            database connection
+     * @param contactInfoId
+     *            'contact_info_id'
+     * @param anyUserId
+     *            'any_user_id'
+     * 
+     * @throws Exception
+     *             fail to update database
      */
-    public static void persistPlayer(Connection conn, long contactInfoId, long anyUserId)
-        throws Exception {
-        //add record into 'player' table
-        PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO player(any_user_id,contact_info_id,payment_pref) VALUES(?,?,?)");
+    public static void persistPlayer(Connection conn, long contactInfoId, long anyUserId) throws Exception {
+        // add record into 'player' table
+        PreparedStatement stmt = conn
+                .prepareStatement("INSERT INTO player(any_user_id,contact_info_id,payment_pref) VALUES(?,?,?)");
         stmt.setLong(2, contactInfoId);
         stmt.setLong(1, anyUserId);
         stmt.setString(3, "wire transfer");
@@ -316,17 +337,20 @@ public final class TestHelper {
      * <p>
      * Insert a record into the the sponsor table. and return the new added record id.
      * </p>
-     *
-     * @param conn database connection
-     * @param contactInfoId contact_info_id
-     * @param anyUserId any_user_id
-     *
+     * 
+     * @param conn
+     *            database connection
+     * @param contactInfoId
+     *            contact_info_id
+     * @param anyUserId
+     *            any_user_id
+     * 
      * @return the sponsorId
-     *
-     * @throws SQLException fail to query database
+     * 
+     * @throws SQLException
+     *             fail to query database
      */
-    public static long persistSponsor(Connection conn, long contactInfoId, long anyUserId)
-        throws SQLException {
+    public static long persistSponsor(Connection conn, long contactInfoId, long anyUserId) throws SQLException {
         PreparedStatement stmt;
         stmt = conn.prepareStatement("INSERT INTO sponsor(any_user_id,contact_info_id)VALUES(?,?)");
         stmt.setLong(1, anyUserId);
@@ -349,15 +373,16 @@ public final class TestHelper {
      * <p>
      * Persist the two records into the 'download_obj' table.
      * </p>
-     *
-     * @param conn database connection
-     *
+     * 
+     * @param conn
+     *            database connection
+     * 
      * @return List of downloadId
-     *
-     * @throws SQLException fails to update database
+     * 
+     * @throws SQLException
+     *             fails to update database
      */
-    public static List persistDownloadObj(Connection conn)
-        throws SQLException {
+    public static List persistDownloadObj(Connection conn) throws SQLException {
         PreparedStatement stmt;
         stmt = conn.prepareStatement("INSERT INTO download_obj(media_type,suggested_name,content) VALUES(?,?,?)");
         stmt.setString(1, "html/text");
@@ -388,16 +413,18 @@ public final class TestHelper {
 
     /**
      * persist two records into the ball_color table.
-     *
-     * @param conn database connection
-     * @param downloadId List of download ids
-     *
+     * 
+     * @param conn
+     *            database connection
+     * @param downloadId
+     *            List of download ids
+     * 
      * @return List of BallColor
-     *
-     * @throws SQLException fails to update database
+     * 
+     * @throws SQLException
+     *             fails to update database
      */
-    public static List persistColor(Connection conn, List downloadId)
-        throws SQLException {
+    public static List persistColor(Connection conn, List downloadId) throws SQLException {
         PreparedStatement stmt;
         stmt = conn.prepareStatement("INSERT INTO ball_color(name,download_obj_id)VALUES(?,?)");
 
@@ -409,15 +436,15 @@ public final class TestHelper {
 
         stmt.close();
 
-        //query database to get the colors
+        // query database to get the colors
         List colors = new ArrayList();
         stmt = conn.prepareStatement("SELECT * FROM ball_color");
 
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            colors.add(new BallColorImpl(new Long(rs.getLong("id")), rs.getString("name"),
-                    rs.getLong("download_obj_id")));
+            colors.add(new BallColorImpl(new Long(rs.getLong("id")), rs.getString("name"), rs
+                    .getLong("download_obj_id")));
         }
 
         rs.close();
@@ -428,10 +455,11 @@ public final class TestHelper {
 
     /**
      * insert data for testing.
-     *
+     * 
      * @return List of data used in test
-     *
-     * @throws Exception into Junit
+     * 
+     * @throws Exception
+     *             into Junit
      */
     public static List prepareDatabase() throws Exception {
         Connection conn = null;
@@ -443,27 +471,27 @@ public final class TestHelper {
 
             DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
             conn = dbFactory.createConnection();
-            //clear the database first
+            // clear the database first
             clearDB(conn);
 
-            //add record into 'contact_info' table
+            // add record into 'contact_info' table
             long contactInfoId = persistContactInfo(conn);
 
-            //add record into 'any_user' table
+            // add record into 'any_user' table
             long anyUserId = persistAnyUser(conn, 1);
 
-            //add record into 'player' table
+            // add record into 'player' table
             persistPlayer(conn, contactInfoId, anyUserId);
 
             results.add(new Long(anyUserId));
 
-            //add record into 'sponsor' table
+            // add record into 'sponsor' table
             results.add(new Long(persistSponsor(conn, contactInfoId, anyUserId)));
 
-            //insert into the download_obj table
+            // insert into the download_obj table
             List downloadId = persistDownloadObj(conn);
 
-            //insert into the ball_Color table
+            // insert into the ball_Color table
             results.add(persistColor(conn, downloadId));
 
             return results;
@@ -480,18 +508,22 @@ public final class TestHelper {
      * <p>
      * It is going to persist a record into the 'bid' table.
      * </p>
-     *
-     * @param blockId the block id which the bid refers to
-     * @param imageId image_id
-     * @param maxAmount max_amount
-     * @param date start_date
-     *
+     * 
+     * @param blockId
+     *            the block id which the bid refers to
+     * @param imageId
+     *            image_id
+     * @param maxAmount
+     *            max_amount
+     * @param date
+     *            start_date
+     * 
      * @return a array contains the bid id
-     *
-     * @throws Exception fails to persist the bid
+     * 
+     * @throws Exception
+     *             fails to persist the bid
      */
-    public static long[] persistBid(long blockId, long imageId, int maxAmount, Date date)
-        throws Exception {
+    public static long[] persistBid(long blockId, long imageId, int maxAmount, Date date) throws Exception {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -501,9 +533,9 @@ public final class TestHelper {
 
             DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
             conn = dbFactory.createConnection();
-            stmt = conn.prepareStatement(
-                    "INSERT INTO auction(hosting_block_id,start_time,end_time,min_bid,bid_increment,item_count)"
-                    + " VALUES(?,?,?,?,?,?)");
+            stmt = conn
+                    .prepareStatement("INSERT INTO auction(hosting_block_id,start_time,end_time,min_bid,bid_increment,item_count)"
+                            + " VALUES(?,?,?,?,?,?)");
             stmt.setLong(1, blockId);
             stmt.setDate(2, new java.sql.Date(date.getTime()));
             stmt.setDate(3, new java.sql.Date(date.getTime()));
@@ -552,16 +584,18 @@ public final class TestHelper {
 
     /**
      * Persist a record into 'puzzle' table.
-     *
-     * @param downloadId download_obj_id
-     * @param puzzleName name of puzzle
-     *
+     * 
+     * @param downloadId
+     *            download_obj_id
+     * @param puzzleName
+     *            name of puzzle
+     * 
      * @return puzzleid
-     *
-     * @throws Exception fail to update database
+     * 
+     * @throws Exception
+     *             fail to update database
      */
-    public static long persistPuzzle(long downloadId, String puzzleName)
-        throws Exception {
+    public static long persistPuzzle(long downloadId, String puzzleName) throws Exception {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -571,7 +605,7 @@ public final class TestHelper {
 
             DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
             conn = dbFactory.createConnection();
-            //insert a record into the puzzle table
+            // insert a record into the puzzle table
             stmt = conn.prepareStatement("INSERT INTO puzzle(name) VALUES(?)");
             stmt.setString(1, puzzleName);
 
@@ -590,7 +624,7 @@ public final class TestHelper {
             rs.close();
             stmt.close();
 
-            //insert a record into the puzzle_attribute table
+            // insert a record into the puzzle_attribute table
             stmt = conn.prepareStatement("INSERT INTO puzzle_attribute(puzzle_id,name,value)VALUES(?,?,?)");
             stmt.setLong(1, puzzleId);
             stmt.setString(2, "att1");
@@ -599,7 +633,7 @@ public final class TestHelper {
             stmt.execute();
             stmt.close();
 
-            //insert a record into the puzzle_resource table
+            // insert a record into the puzzle_resource table
             stmt = conn.prepareStatement("INSERT INTO puzzle_resource(puzzle_id,name,download_obj_id)VALUES(?,?,?)");
             stmt.setLong(1, puzzleId);
             stmt.setString(2, "resource1");
@@ -619,13 +653,14 @@ public final class TestHelper {
 
     /**
      * insert a record into 'plugin_download' table.
-     *
-     * @param pluginName plugin_name table
-     *
-     * @throws Exception fail to update database
+     * 
+     * @param pluginName
+     *            plugin_name table
+     * 
+     * @throws Exception
+     *             fail to update database
      */
-    public static void persistPluginDownload(String pluginName)
-        throws Exception {
+    public static void persistPluginDownload(String pluginName) throws Exception {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -635,7 +670,7 @@ public final class TestHelper {
 
             DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
             conn = dbFactory.createConnection();
-            //insert a record into the plugin_download  table
+            // insert a record into the plugin_download table
             stmt = conn.prepareStatement("INSERT INTO plugin_downloads(plugin_name, count) VALUES(?,?)");
             stmt.setString(1, pluginName);
             stmt.setLong(2, 1);
@@ -653,19 +688,25 @@ public final class TestHelper {
 
     /**
      * insert a record into 'hosting_slot' table.
-     *
-     * @param bidId bid_id
-     * @param sequenceNumber sequence_number
-     * @param date hosting_start
-     * @param puzzleId puzzle_id
-     * @param downloadId download_id
-     *
+     * 
+     * @param bidId
+     *            bid_id
+     * @param sequenceNumber
+     *            sequence_number
+     * @param date
+     *            hosting_start
+     * @param puzzleId
+     *            puzzle_id
+     * @param downloadId
+     *            download_id
+     * 
      * @return slot_id
-     *
-     * @throws Exception fails to update database
+     * 
+     * @throws Exception
+     *             fails to update database
      */
     public static long persistSlot(long bidId, int sequenceNumber, java.util.Date date, long puzzleId, long downloadId)
-        throws Exception {
+            throws Exception {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -675,9 +716,9 @@ public final class TestHelper {
 
             DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
             conn = dbFactory.createConnection();
-            //insert a record into the puzzle table
-            stmt = conn.prepareStatement(
-                    "INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start) VALUES(?,?,?)");
+            // insert a record into the puzzle table
+            stmt = conn
+                    .prepareStatement("INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start) VALUES(?,?,?)");
             stmt.setLong(1, bidId);
             stmt.setInt(2, 1);
             stmt.setTimestamp(3, new Timestamp(date.getTime()));
@@ -685,7 +726,7 @@ public final class TestHelper {
             stmt.execute();
             stmt.close();
 
-            //find the added record's id
+            // find the added record's id
             long slotId = 0;
             stmt = conn.prepareStatement("SELECT * FROM hosting_slot");
 
@@ -695,33 +736,33 @@ public final class TestHelper {
                 slotId = rs.getLong("id");
             }
 
-            //insert a record into 'effective_bid' table
+            // insert a record into 'effective_bid' table
             stmt = conn.prepareStatement("INSERT INTO effective_bid(bid_id,current_amount)VALUES(?,?)");
             stmt.setLong(1, bidId);
             stmt.setInt(2, 2);
             stmt.execute();
             stmt.close();
 
-            //inset a record into 'brn_tsr_for_slot' table
-            stmt = conn.prepareStatement(
-                    "INSERT INTO brn_tsr_for_slot(hosting_slot_id,sequence_number,puzzle_id)VALUES(?,?,?)");
+            // inset a record into 'brn_tsr_for_slot' table
+            stmt = conn
+                    .prepareStatement("INSERT INTO brn_tsr_for_slot(hosting_slot_id,sequence_number,puzzle_id)VALUES(?,?,?)");
             stmt.setLong(1, slotId);
             stmt.setInt(2, 1);
             stmt.setLong(3, puzzleId);
             stmt.execute();
             stmt.close();
 
-            //insert a record into 'puzzle_for_slot' table
+            // insert a record into 'puzzle_for_slot' table
             stmt = conn.prepareStatement("INSERT INTO puzzle_for_slot(hosting_slot_id, puzzle_id)VALUES(?,?)");
             stmt.setLong(1, slotId);
             stmt.setLong(2, puzzleId);
             stmt.execute();
             stmt.close();
 
-            //insert a record into the 'target_object' table
-            stmt = conn.prepareStatement(
-                    "INSERT INTO target_object (hosting_slot_id,sequence_number,uri_path,identifier_text,"
-                    + "identifier_hash,clue_img_id)VALUES(?,?,?,?,?,?)");
+            // insert a record into the 'target_object' table
+            stmt = conn
+                    .prepareStatement("INSERT INTO target_object (hosting_slot_id,sequence_number,uri_path,identifier_text,"
+                            + "identifier_hash,clue_img_id)VALUES(?,?,?,?,?,?)");
             stmt.setLong(1, slotId);
             stmt.setInt(2, 1);
             stmt.setString(3, "path");
@@ -742,30 +783,70 @@ public final class TestHelper {
     }
 
     /**
+     * Return the ids of the table name.
+     * 
+     * @param conn
+     *            Connection
+     * @param tableName
+     *            table name
+     * @return the id of the table name
+     */
+    public static List getIds(String tableName) throws Exception {
+        List ids = new ArrayList();
+        Connection conn = null;
+        try {
+            clearConfigManager();
+            addConfigFile(DBFACTORY_CONFIG_XML);
+
+            DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
+            conn = dbFactory.createConnection();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select id from " + tableName);
+            while (rs.next()) {
+                ids.add(new Long(rs.getLong("id")));
+            }
+            rs.close();
+            stmt.close();
+            return ids;
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+            clearConfigManager();
+        }
+
+    }
+
+    /**
      * create an array of ImageInfo.
-     *
-     * @param colors array of BallColor
-     *
+     * 
+     * @param colors
+     *            array of BallColor
+     * 
      * @return array of ImageInfo
      */
     public static ImageInfo[] getImages(BallColor[] colors) {
         ImageInfo[] images = new ImageInfo[2];
-        images[0] = new ImageInfoImpl(null, colors[0].getImageId(), ImageInfoImplUnitTests.DESCRIPTION,
-                ImageInfoImplUnitTests.APPROVED);
-        images[1] = new ImageInfoImpl(null, colors[1].getImageId(), ImageInfoImplUnitTests.DESCRIPTION,
-                ImageInfoImplUnitTests.APPROVED);
+        images[0] = new ImageInfoImpl(null, colors[0].getImageId(), ImageInfoImplUnitTests.DESCRIPTION, new Boolean(
+                true));
+        images[1] = new ImageInfoImpl(null, colors[1].getImageId(), ImageInfoImplUnitTests.DESCRIPTION, null);
 
         return images;
     }
 
     /**
      * create an instance of Domain.
-     *
-     * @param sponsorId sponsorId
-     * @param domainName domainName
-     * @param isApproved isApproved
-     * @param images images
-     *
+     * 
+     * @param sponsorId
+     *            sponsorId
+     * @param domainName
+     *            domainName
+     * @param isApproved
+     *            isApproved
+     * @param images
+     *            images
+     * 
      * @return instance of domain
      */
     public static Domain getDomain(long sponsorId, String domainName, Boolean isApproved, ImageInfo[] images) {
@@ -774,7 +855,7 @@ public final class TestHelper {
 
     /**
      * create instance of HostingBlock array.
-     *
+     * 
      * @return blocks
      */
     public static HostingBlock[] getBlocks() {
@@ -790,12 +871,16 @@ public final class TestHelper {
 
     /**
      * create instance of game for testing.
-     *
-     * @param color color
-     * @param keyCount keys_required
-     * @param startDate start_date
-     * @param blocks blocks
-     *
+     * 
+     * @param color
+     *            color
+     * @param keyCount
+     *            keys_required
+     * @param startDate
+     *            start_date
+     * @param blocks
+     *            blocks
+     * 
      * @return instance of game
      */
     public static Game getGameImplInstance(BallColor color, int keyCount, Date startDate, HostingBlock[] blocks) {

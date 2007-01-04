@@ -21,13 +21,13 @@
                 <Value>com.microsoft.sqlserver.jdbc.SQLServerDriver</Value>
               </Property>
               <Property name="jdbc_url">
-                <Value>jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=tcsdev</Value>
+                <Value>jdbc:sqlserver://127.0.0.1:1433;DatabaseName=tcs</Value>
               </Property>
               <Property name="user">
-                <Value>sa</Value>
+                <Value>tcs</Value>
               </Property>
               <Property name="password">
-                <Value>test</Value>
+                <Value></Value>
               </Property>
             </Property>
         </Property>
