@@ -19,6 +19,7 @@ import com.topcoder.web.frontcontroller.results.DownloadData;
 import junit.framework.TestCase;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Accuracy test cases for <code>SQLServerGameDataDAO</code> class.
@@ -241,10 +242,13 @@ public class SQLServerGameDataDAOAccTests extends TestCase {
         dao.createSlots(1, new long[]{2});
 
         // get result
-        HostingSlot result = dao.getSlot(1);
+        List slotIds = AccuracyHelper.getHostingSlotIds();
 
-        assertNotNull("Cannot retrieve slot.", result);
-        assertEquals("Not the expected id.", 1, result.getId().longValue());
+        assertNotNull("Cannot retrieve slot ids.", slotIds);
+        assertEquals("Not the expected number of slot ids.", 2, slotIds.size());
+
+        long bidId = AccuracyHelper.getBidIdFromSlotId(((Long)slotIds.get(1)).longValue());
+        assertEquals("Bid id is not correctly inserted.", 2, bidId);
     }
 
     /**
