@@ -11,7 +11,6 @@ using Orpheus.Plugin.InternetExplorer.Persistence;
 using MsHtmHstInterop;
 using SHDocVw;
 using TopCoder.Util.BloomFilter;
-using Orpheus.Plugin.InternetExplorer.Mock;
 
 namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
 {

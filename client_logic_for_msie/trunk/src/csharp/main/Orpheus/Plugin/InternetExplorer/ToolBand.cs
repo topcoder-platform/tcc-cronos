@@ -6,6 +6,7 @@
 using System;
 using System.ComponentModel;
 using MsHtmHstInterop;
+using System.Runtime.InteropServices;
 
 namespace Orpheus.Plugin.InternetExplorer
 {
@@ -234,7 +235,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// </summary>
         ///
         /// <param name="ppWnd">Pointer to where to return the window handle.</param>
-        public virtual void GetWindow(out IntPtr ppWnd)
+        public virtual void GetWindow([Out] IntPtr ppWnd)
         {
             ppWnd = Handle;
         }

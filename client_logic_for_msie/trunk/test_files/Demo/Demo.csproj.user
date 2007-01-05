@@ -1,7 +1,7 @@
 <VisualStudioProject>
     <CSHARP LastOpenVersion = "7.10.3077" >
         <Build>
-            <Settings ReferencePath = "D:\TopCoder\Client_Logic_for_MSIE\bin\Debug\;D:\TopCoder\Client_Logic_for_MSIE\lib\;X:\2006\dotnet1.0\Client_Logic_for_MSIE\lib\;X:\2006\dotnet1.0\Client_Logic_for_MSIE\bin\Debug\" >
+            <Settings ReferencePath = "D:\TopCoder\Client_Logic_for_MSIE\bin\Debug\;D:\TopCoder\Client_Logic_for_MSIE\lib\;X:\2006\dotnet1.0\Client_Logic_for_MSIE\lib\;X:\2006\dotnet1.0\Client_Logic_for_MSIE\bin\Debug\;R:\FailureReviewer\msie_client_logic\bin\Debug\" >
                 <Config
                     Name = "Debug"
                     EnableASPDebugging = "false"

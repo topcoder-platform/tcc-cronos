@@ -172,7 +172,7 @@ namespace Orpheus.Plugin.InternetExplorer
         public void TestGetWindow()
         {
             IntPtr ptr = new IntPtr();
-            tester.GetWindow(out ptr);
+            tester.GetWindow(ptr);
         }
 
         /// <summary>

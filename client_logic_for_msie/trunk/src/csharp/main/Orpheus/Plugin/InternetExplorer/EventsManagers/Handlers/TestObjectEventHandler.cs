@@ -168,18 +168,18 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
             {
                 // Gets the IHTMLElement for the params array.
                 IHTMLElement element = (IHTMLElement) args.Parameters[0];
-				if (element == null)
-				{
-					return;
-				}
+                if (element == null)
+                {
+                    return;
+                }
 
                 // here not done as the design said get text one by one,
                 // but just use innerText, which has the same effect.
                 string content = element.innerText;
-				if (content == null)
-				{
-					return;
-				}
+                if (content == null)
+                {
+                    return;
+                }
 
                 string hash = hashAlgorithm.HashToHexString(NormalizeText(content.ToString()), Encoding.UTF8);
                 if (hash == args.Context.Persistence[Helper.KEY_HASH])

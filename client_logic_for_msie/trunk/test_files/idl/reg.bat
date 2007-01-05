@@ -1,0 +1,1 @@
+regasm /codebase R:\FailureReviewer\msie_client_logic\test_files\Demo\bin\Release\Demo.dll

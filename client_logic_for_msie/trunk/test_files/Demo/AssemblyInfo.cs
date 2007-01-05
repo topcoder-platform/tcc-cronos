@@ -54,5 +54,5 @@ using System.Runtime.CompilerServices;
 //       ÎÄµµ¡£
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"D:\TopCoder\Client_Logic_for_MSIE\test_files\idl\msie.snk")]
+[assembly: AssemblyKeyFile(@"lib\msie.snk")]
 [assembly: AssemblyKeyName("")]

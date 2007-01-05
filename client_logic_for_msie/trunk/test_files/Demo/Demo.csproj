@@ -140,9 +140,9 @@
                     HintPath = "..\..\lib\TopCoder.Util.ConfigurationManager.dll"
                 />
                 <Reference
-                    Name = "Client_Logic_for_MSIE"
-                    AssemblyName = "Client_Logic_for_MSIE"
-                    HintPath = "..\..\bin\Debug\Client_Logic_for_MSIE.dll"
+                    Name = "Orpheus.Plugin.InternetExplorer"
+                    AssemblyName = "Orpheus.Plugin.InternetExplorer"
+                    HintPath = "..\..\bin\Debug\Orpheus.Plugin.InternetExplorer.dll"
                 />
             </References>
         </Build>
@@ -160,7 +160,7 @@
                 />
                 <File
                     RelPath = "MyToolBand.cs"
-                    SubType = "UserControl"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File

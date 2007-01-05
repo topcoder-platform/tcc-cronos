@@ -236,7 +236,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
                             popupWindow.Visible = true;
                         }
                     }
-                   
+
                 }
                 else
                 {

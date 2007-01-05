@@ -8,6 +8,7 @@ using System;
 using MsHtmHstInterop;
 using Mshtml;
 using SHDocVw;
+using System.Runtime.InteropServices;
 
 namespace Orpheus.Plugin.InternetExplorer
 {
@@ -202,10 +203,11 @@ namespace Orpheus.Plugin.InternetExplorer
         /// interface used to query command status and execute commands on this object.</param>
         /// <param name="pdispReserved">Pointer to an <c>IDispatch</c> interface of the object
         /// at the screen coordinates specified in ppt</param>
-        public int ShowContextMenu(uint dwID, ref MsHtmHstInterop.tagPOINT ppt,
+        public void ShowContextMenu(uint dwID, ref MsHtmHstInterop.tagPOINT ppt,
             object pcmdtReserved, object pdispReserved)
         {
-			return -1;
+            // let mshtml to display the context menu.
+            Marshal.ThrowExceptionForHR(1);
         }
 
         /// <summary>
@@ -238,7 +240,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// <param name="pguidCmdGroup">Pointer to a GUID for the command group identifier.</param>
         /// <param name="nCmdID">specifies a command identifier.</param>
         public virtual void TranslateAccelerator(ref tagMSG lpmsg, ref Guid pguidCmdGroup, uint nCmdID)
-		{
+        {
         }
 
         /// <summary>
