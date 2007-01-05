@@ -26,6 +26,7 @@ public class Demo extends TestCase {
      */
     protected void setUp() throws Exception {
         TestHelper.prepareTest();
+        MockGameDataBean.setSlots(null);
     }
 
     /**

@@ -342,6 +342,10 @@ public class MockGameDataBean implements SessionBean {
                     .setDomainTargets(new DomainTarget[] {domainTargetImpl});
             DomainImpl domain = new DomainImpl();
             domain.setDomainName(TestHelper.DOMAIN_NAME);
+            ImageInfoImpl image = new ImageInfoImpl();
+            image.setId(new Long(0));
+            image.setDownloadId(1);
+            domain.setImages(new ImageInfo[] {image});
             hostingSlotImpl.setDomain(domain);
             return hostingSlotImpl;
         } else {
