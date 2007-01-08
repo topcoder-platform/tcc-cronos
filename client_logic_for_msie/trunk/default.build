@@ -11,14 +11,13 @@
 
     <property name="component_version" value="1.0" />
 
-    <property name="copyright" value="Copyright (c) 2006, TopCoder, Inc. All
-rights reserved." />
+    <property name="copyright" value="Copyright (c) 2006, TopCoder, Inc. All rights reserved." />
 
     <!-- NUnit reference. -->
-    <property name="Nunit" value="D:\06_Dotnet\Tools\For1.1\NUnit-2.2.5-net-1.1\bin\nunit.framework.dll"/>
+    <property name="Nunit" value="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll"/>
 
     <!-- NDoc reference. -->
-    <property name="NDoc" value="C:\Program Files\NDoc 1.3\bin\net\1.1\NDocConsole.exe"/>
+    <property name="NDoc" value="C:\Program Files\NDoc\1.2\bin\.net-1.1\NDocConsole.exe"/>
 
     <property name="debug" value="true"/>
     <property name="verbose" value="true" />
@@ -48,27 +47,20 @@ rights reserved." />
     <include buildfile="../topcoder_global.build" failonerror="false" />
 
     <!-- 3rd party -->
-    <!--
-    <property name="log4net" value="${ext_bin}\log4net.dll" />
-    -->
 
     <!-- ZIPS -->
-    <property name="TopCoder.Util.BloomFilter.dll"
-	        value="${tcs_bin}\bloom_filter\1.0\TopCoder.Util.BloomFilter.dll"/>
-    <property name="TopCoder.Util.ConfigurationManager.dll"
-            value="${tcs_bin}\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll"/>
-    <property name="TopCoder.Util.Hash.dll"
-            value="${tcs_bin}\hashing_utility\1.0\TopCoder.Util.Hash.dll"/>
-    <property name="TopCoder.Util.ObjectFactory.dll"
-            value="${tcs_bin}\object_factory\1.0\TopCoder.Util.ObjectFactory.dll"/>
-    <property name="TopCoder.Util.RSS.dll"
-            value="${tcs_bin}\rss_library\1.1\TopCoder.Util.RSS.dll"/>
+    <property name="object_factory.dll" value="${tcs_bin}\object_factory\1.0\TopCoder.Util.ObjectFactory.dll"/>
+    <property name="configuration_manager.dll" value="${tcs_bin}\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll"/>
+    <property name="hashing_utility.dll" value="${tcs_bin}\hashing_utility\1.0\TopCoder.Util.Hash.dll"/>
+    <property name="bloom_filter.dll" value="${tcs_bin}\bloom_filter\1.0\TopCoder.Util.BloomFilter.dll"/>
+    <property name="rss_library.dll" value="${tcs_bin}\rss_library\1.1\TopCoder.Util.RSS.dll"/>
 
     <!-- Locally-built secondary DLLs -->
-    <property name="Interop.mshtml.dll" value="${build_classdir}\Mshtml.dll"/>
-    <property name="Interop.shdocvw.dll" value="${build_classdir}\SHDocVw.dll"/>
+    <property name="interop_mshtmhst.dll" value="${build_classdir}\MsHtmHstInterop.dll"/>
+    <property name="interop_mshtml.dll" value="${build_classdir}\Mshtml.dll"/>
+    <property name="interop_shdocvw.dll" value="${build_classdir}\SHDocVw.dll"/>
+    <property name="interop_msxml2.dll" value="${build_classdir}\MSXML2.dll"/>
     <property name="AxSHDocVw.dll" value="${build_classdir}\AxSHDocVw.dll"/>
-    <property name="Orpheus.Plugin.InternetExplorer.Interop.dll" value="${build_classdir}\MsHtmHstInterop.dll"/>
 
 
     <!--   ****************************************************  -->
@@ -150,33 +142,38 @@ rights reserved." />
                 <include name="${srcdir}\idl" />
             </includedirs>
         </midl>
+        <tlbimp typelib="${builddir}\MsHtmHstInterop.tlb" output="${interop_mshtmhst.dll}"
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
+        <tlbimp typelib="${sys.env.windir}\system32\shdocvw.dll" output="${interop_shdocvw.dll}"
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
+        <tlbimp typelib="${sys.env.windir}\system32\mshtml.tlb" output="${interop_mshtml.dll}"
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
+        <tlbimp typelib="${sys.env.windir}\System32\MSXML2.dll" output="${interop_msxml2.dll}"
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
         <aximp ocx="${sys.env.windir}\System32\SHDocVw.dll" output="${AxSHDocVw.dll}"
                 keyfile="${ext_bin}\TopCoder.snk" />
-        <tlbimp typelib="${builddir}\MsHtmHstInterop.tlb" output="${Orpheus.Plugin.InternetExplorer.Interop.dll}"
-                keyfile="${ext_bin}\TopCoder.snk" />
-        <tlbimp typelib="${sys.env.windir}\system32\shdocvw.dll" output="${Interop.shdocvw.dll}"
-                keyfile="${ext_bin}\TopCoder.snk" />
-        <tlbimp typelib="${sys.env.windir}\system32\mshtml.tlb" output="${Interop.mshtml.dll}"
-                keyfile="${ext_bin}\TopCoder.snk" />
     </target>
+
 
     <target name="compile" depends="interop_dlls">
         <mkdir dir="${build_docsdir}"/>
         <csc target="library" output="${build_classdir}\${namespace_file}.dll"
                 doc="${build_classdir}\${namespace_file}.xml" >
             <sources>
-                <includes name="${dotnetmain}\**.cs"/>
+                <include name="${dotnetmain}\**.cs"/>
             </sources>
             <references>
-                <include name="${Interop.mshtml.dll}"/>
-                <include name="${Interop.shdocvw.dll}"/>
-                <include name="${Orpheus.Plugin.InternetExplorer.Interop.dll}"/>
+                <include name="${object_factory.dll}"/>
+                <include name="${configuration_manager.dll}"/>
+                <include name="${hashing_utility.dll}"/>
+                <include name="${bloom_filter.dll}"/>
+                <include name="${rss_library.dll}"/>
+
+                <include name="${interop_mshtml.dll}"/>
+                <include name="${interop_shdocvw.dll}"/>
+                <include name="${interop_mshtmhst.dll}"/>
+                <include name="${interop_msxml2.dll}"/>
                 <include name="${AxSHDocVw.dll}"/>
-                <include name="${TopCoder.Util.BloomFilter.dll}"/>
-                <include name="${TopCoder.Util.ConfigurationManager.dll}"/>
-                <include name="${TopCoder.Util.Hash.dll}"/>
-                <include name="${TopCoder.Util.ObjectFactory.dll}"/>
-                <include name="${TopCoder.Util.RSS.dll}"/>
             </references>
         </csc>
         <copy file="${build_classdir}\${namespace_file}.xml" todir="${build_docsdir}" />
@@ -202,23 +199,23 @@ rights reserved." />
         <echo message="If this is incorrect please adjust the Nunit property to point to the correct location."/>
 
         <csc target="library" doc="${build_classdir}\${namespace_file}.Test.xml"
-                              output="${build_classdir}\${namespace_file}.Test.dll"
-                              failonerror="true">
+                output="${build_classdir}\${namespace_file}.Test.dll" failonerror="true">
             <sources>
-                <includes name="${dotnetmain}\**.cs" />
-                <includes name="${dotnettests}\**.cs" />
+                <include name="${dotnetmain}\**.cs" />
+                <include name="${dotnettests}\**.cs" />
             </sources>
             <references>
-                <includes name="${Nunit}"/>
-                <includes name="${Interop.mshtml.dll}"/>
-                <includes name="${Interop.shdocvw.dll}"/>
-                <includes name="${Orpheus.Plugin.InternetExplorer.Interop.dll}"/>
-                <includes name="${AxSHDocVw.dll}"/>
-                <includes name="${TopCoder.Util.BloomFilter.dll}"/>
-                <includes name="${TopCoder.Util.ConfigurationManager.dll}"/>
-                <includes name="${TopCoder.Util.Hash.dll}"/>
-                <includes name="${TopCoder.Util.ObjectFactory.dll}"/>
-                <includes name="${TopCoder.Util.RSS.dll}"/>
+                <include name="${Nunit}"/>
+                <include name="${object_factory.dll}"/>
+                <include name="${configuration_manager.dll}"/>
+                <include name="${hashing_utility.dll}"/>
+                <include name="${bloom_filter.dll}"/>
+                <include name="${rss_library.dll}"/>
+                <include name="${interop_mshtmhst.dll}"/>
+                <include name="${interop_mshtml.dll}"/>
+                <include name="${interop_shdocvw.dll}"/>
+                <include name="${interop_msxml2.dll}"/>
+                <include name="${AxSHDocVw.dll}"/>
             </references>
         </csc>
         <copy file="${build_classdir}\${namespace_file}.Test.xml" todir="${build_docsdir}" />
@@ -226,13 +223,17 @@ rights reserved." />
 
     <target name="copy_dependencies">
         <mkdir dir="${build_classdir}" />
-        <copy file="${Nunit}" todir="${build_classdir}" />
-        <copy file="${TopCoder.Util.BloomFilter.dll}" todir="${build_classdir}" />
-        <copy file="${Orpheus.Plugin.InternetExplorer.Interop.dll}" todir="${build_classdir}" />
-        <copy file="${TopCoder.Util.ConfigurationManager.dll}" todir="${build_classdir}" />
-        <copy file="${TopCoder.Util.Hash.dll}" todir="${build_classdir}" />
-        <copy file="${TopCoder.Util.ObjectFactory.dll}" todir="${build_classdir}" />
-        <copy file="${TopCoder.Util.RSS.dll}" todir="${build_classdir}" />
+        <copy file="${object_factory.dll}" todir="${build_classdir}" />
+        <copy file="${configuration_manager.dll}" todir="${build_classdir}" />
+        <copy file="${hashing_utility.dll}" todir="${build_classdir}" />
+        <copy file="${bloom_filter.dll}" todir="${build_classdir}" />
+        <copy file="${rss_library.dll}" todir="${build_classdir}" />
+
+        <copy file="${interop_mshtmhst.dll}" todir="${build_classdir}" />
+        <copy file="${interop_mshtml.dll}" todir="${build_classdir}" />
+        <copy file="${interop_shdocvw.dll}" todir="${build_classdir}" />
+        <copy file="${interop_msxml2.dll}" todir="${build_classdir}" />
+        <copy file="${AxSHDocVw.dll}" todir="${build_classdir}" />
     </target>
 
     <target name="test" depends="compile_tests,copy_dependencies">
@@ -325,10 +326,18 @@ rights reserved." />
     </target>
 
 
+    <target name="gac-update" depends="compile">
+        <loadtasks assembly="${ext_bin}/third-party/nantcontrib/0.85/bin/NAnt.Contrib.Tasks.dll" />
+        <gac-install force="true">
+        <assemblies>
+            <include name="${build_classdir}\${namespace_file}.dll" />
+        </assemblies>
+        </gac-install>
+    </target>
+
     <!-- ************************************************************************** -->
     <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
     <!-- ************************************************************************** -->
-
 
     <target name="design_dist">
         <zip zipfile="${design_dist.zip}">
@@ -391,6 +400,11 @@ rights reserved." />
         <mkdir dir="${tcs_bin}\${distfilename}\${component_version}\dist" />
         <copy file="${component.dist.zip}" todir="${tcs_bin}\${component_path}\dist" />
         <copy file="${build_classdir}\${namespace_file}.dll" todir="${tcs_bin}\${component_path}" />
+        <copy file="${interop_mshtmhst.dll}" todir="${tcs_bin}\${component_path}" />
+        <copy file="${interop_mshtml.dll}" todir="${tcs_bin}\${component_path}" />
+        <copy file="${interop_shdocvw.dll}" todir="${tcs_bin}\${component_path}" />
+        <copy file="${interop_msxml2.dll}" todir="${tcs_bin}\${component_path}" />
+        <copy file="${AxSHDocVw.dll}" todir="${tcs_bin}\${component_path}" />
     </target>
 
     <target name="package_docs" depends="msdn">
@@ -475,4 +489,3 @@ rights reserved." />
     <!-- ************************************************************************** -->
 
 </project>
-

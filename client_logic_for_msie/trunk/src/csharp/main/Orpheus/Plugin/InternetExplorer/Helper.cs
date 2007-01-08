@@ -4,6 +4,9 @@
  * Helper.cs
  */
 
+using MSXML2;
+using System.IO;
+using System.Text;
 namespace Orpheus.Plugin.InternetExplorer
 {
     /// <summary>
@@ -59,5 +62,22 @@ namespace Orpheus.Plugin.InternetExplorer
         /// The event name used in ScriptingObject.SetWorkingGame
         /// </summary>
         public const string EVENT_GAME_CHANGED = "WorkingGameChanged";
+
+        /// <summary>
+        /// Gets the url content by xml http.
+        /// </summary>
+        /// <param name="url">the url to retrieve document content</param>
+        /// <returns>the document content</returns>
+        public static Stream GetDocumentContent(string url)
+        {
+            XMLHTTP xmlHttp = new XMLHTTP();
+            xmlHttp.open("GET", url, false, null, null);
+            xmlHttp.send(null);
+            Stream stream = new MemoryStream();
+            byte[] buf = Encoding.Default.GetBytes(xmlHttp.responseText);
+            stream.Write(buf, 0, buf.Length);
+            stream.Seek(0, SeekOrigin.Begin);
+            return stream;
+        }
     }
 }

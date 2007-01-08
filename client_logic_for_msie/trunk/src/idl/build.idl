@@ -29,5 +29,5 @@ library MsHtmHstInterop
 	interface IServiceProvider;
 
 	// from ShObjIdl.idl  -- need change
-	interface IDeskBand;
+	//interface IDeskBand;
 };

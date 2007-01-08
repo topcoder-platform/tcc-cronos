@@ -119,6 +119,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         {
             Validator.ValidateNull(sender, "sender");
             Validator.ValidateNull(args, "args");
+
             Stream stream = null;
             try
             {

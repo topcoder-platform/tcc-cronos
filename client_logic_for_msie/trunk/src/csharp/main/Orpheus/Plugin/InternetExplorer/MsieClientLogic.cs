@@ -13,6 +13,7 @@ using TopCoder.Util.ObjectFactory;
 
 using MsHtmHstInterop;
 using SHDocVw;
+using System.Collections;
 
 namespace Orpheus.Plugin.InternetExplorer
 {
@@ -77,8 +78,9 @@ namespace Orpheus.Plugin.InternetExplorer
     /// </summary>
     ///
     /// <author>TCSDESIGNER</author>
-    /// <author>TCSDEVELOPER</author>
-    /// <version>1.0</version>
+    /// <author>arylio</author>
+    /// <author>kr00tki</author>
+    /// <version>1.1</version>
     /// <copyright>Copyright (C) 2006 TopCoder Inc., All Rights Reserved.</copyright>
     public class MsieClientLogic
     {
@@ -206,24 +208,15 @@ namespace Orpheus.Plugin.InternetExplorer
         private readonly object scriptingObject;
 
         /// <summary>
-        /// Returns the web browser.
+        /// Represents the list of all browser objects that are active and open.
         /// </summary>
-        ///
-        /// <value>Represents the web browser.</value>
-        public WebBrowserClass WebBrowser
-        {
-            get
-            {
-                return webBrowser;
-            }
-        }
+        private readonly IList browserWindows = new ArrayList();
 
         /// <summary>
         /// Returns or sets the bloom filter.
         /// </summary>
         ///
         /// <value>Represents the bloom filter.</value>
-        ///
         /// <exception cref="ArgumentNullException">if set to null.</exception>
         public BloomFilter BloomFilter
         {
@@ -323,6 +316,19 @@ namespace Orpheus.Plugin.InternetExplorer
         }
 
         /// <summary>
+        /// Returns the web browser.
+        /// </summary>
+        ///
+        /// <value>Represents the web browser.</value>
+        public WebBrowserClass WebBrowser
+        {
+            get
+            {
+                return webBrowser;
+            }
+        }
+
+        /// <summary>
         /// Represents the singleton instance of this class.
         /// Set in the <c>GetInstance</c> method with a new instance of this class
         /// and returned afterwards by the <c>GetInstance</c> method.
@@ -350,6 +356,18 @@ namespace Orpheus.Plugin.InternetExplorer
         {
         }
 
+        /// <summary>
+        /// This constructor creates using the object factory all the required objects.
+        /// It then hooks the Timer Tick event.
+        /// </summary>
+        ///
+        /// <exception cref="ConfigurationException">to signal problems with the configuration
+        /// file missing properties or if it can not create the objects using the Object
+        /// Factory.</exception>
+        public MsieClientLogic()
+            : this(DefaultConfigurationNamepsace, DefaultObjectFactoryNamespace)
+        {
+        }
 
 
         /// <summary>
@@ -371,13 +389,35 @@ namespace Orpheus.Plugin.InternetExplorer
         /// <param name="objectFactoryNamespace">Custom object factory configuration namespace.</param>
         public MsieClientLogic(WebBrowserClass webBrowser,
             string configurationNamsepace, string objectFactoryNamespace)
+            : this(configurationNamsepace, objectFactoryNamespace)
         {
             Validator.ValidateNull(webBrowser, "webBrowser");
-            Validator.ValidateNullOrEmptyString(configurationNamsepace, "configurationNamsepace");
-            Validator.ValidateNullOrEmptyString(objectFactoryNamespace, "objectFactoryNamespace");
 
             // Sets the class field to the parameter value.
             this.webBrowser = webBrowser;
+
+            // Attaches the OnDocumentCompleted event handler to the webBrowser.
+            WebBrowser.DocumentComplete += new DWebBrowserEvents2_DocumentCompleteEventHandler(OnDocumentCompleted);
+        }
+
+
+        /// <summary>
+        /// This constructor creates using the object factory all the required objects.
+        /// It then hooks the Timer Tick event. <br />
+        /// </summary>
+        ///
+        /// <exception cref="ConfigurationException">to signal problems with the configuration file
+        /// like missing properties or if it can not create the objects using the Object Factory.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">if any parameter is null.</exception>
+        /// <exception cref="ArgumentException">if any parameter is empty string.</exception>
+        ///
+        /// <param name="configurationNamsepace">Custom configuration namespace.</param>
+        /// <param name="objectFactoryNamespace">Custom object factory configuration namespace.</param>
+        public MsieClientLogic(string configurationNamsepace, string objectFactoryNamespace)
+        {
+            Validator.ValidateNullOrEmptyString(configurationNamsepace, "configurationNamsepace");
+            Validator.ValidateNullOrEmptyString(objectFactoryNamespace, "objectFactoryNamespace");
 
             // get config manager
             ConfigManager cm = ConfigManager.GetInstance();
@@ -452,7 +492,7 @@ namespace Orpheus.Plugin.InternetExplorer
             try
             {
                 browserCustomization = (DefaultDocHostUIHandler)factory.CreateDefinedObject(value,
-                    new MsieClientLogic[] {this});
+                    new MsieClientLogic[] { this });
             }
             catch (Exception e)
             {
@@ -467,16 +507,13 @@ namespace Orpheus.Plugin.InternetExplorer
             {
                 //scriptingObject = (ScriptingObject)factory.CreateDefinedObject(value,
                 //    new MsieClientLogic[] {this});
-                scriptingObject = factory.CreateDefinedObject(value, new MsieClientLogic[] {this});
+                scriptingObject = factory.CreateDefinedObject(value, new MsieClientLogic[] { this });
             }
             catch (Exception e)
             {
                 throw new ConfigurationException(
                     string.Format("Failed to create scripting object by {0}", value), e);
             }
-
-            // Attaches the OnDocumentCompleted event handler to the webBrowser.
-            WebBrowser.DocumentComplete += new DWebBrowserEvents2_DocumentCompleteEventHandler(OnDocumentCompleted);
 
             // Instantiates the Timer, sets the interval to the configured "poll_interval" value
             // and attaches the OnUpdatesPolling handler method to the Tick event.
@@ -523,7 +560,7 @@ namespace Orpheus.Plugin.InternetExplorer
             this.scriptingObject = scriptingObject;
 
             // Attaches the OnDocumentCompleted event handler to the webBrowser
-            WebBrowser.DocumentComplete +=new DWebBrowserEvents2_DocumentCompleteEventHandler(OnDocumentCompleted);
+            //WebBrowser.DocumentComplete +=new DWebBrowserEvents2_DocumentCompleteEventHandler(OnDocumentCompleted);
 
             // Instantiates the Timer, sets the interval to the configured value and attaches the handler method.
             updatesPollingTimer = new Timer();
@@ -576,7 +613,15 @@ namespace Orpheus.Plugin.InternetExplorer
         /// </summary>
         public virtual void OnDocumentCompleted(object pDisp, ref object url)
         {
-            FireEvent(Helper.EVENT_PAGE_CHANGED);
+            // Gets from the factory all the handlers for eventName
+            ExtensionEventHandlerDelegate[] handlers = eventsManager.GetEventHandlers(Helper.EVENT_PAGE_CHANGED);
+
+            // creates a new ExtensionEventArgs class and invokes the handlers.
+            ExtensionEventArgs args = new ExtensionEventArgs(Helper.EVENT_PAGE_CHANGED, this, new object[] { url });
+            for (int i = 0; i < handlers.Length; i++)
+            {
+                handlers[i](this, args);
+            }
         }
 
         /// <summary>
@@ -658,20 +703,46 @@ namespace Orpheus.Plugin.InternetExplorer
         /// </summary>
         ///
         /// <exception cref="ArgumentNullException">if parameter is null.</exception>
-        ///
-        /// <param name="webBrowser">The web browser reference to pass to the constructor.</param>
         /// <returns>The singleton instance.</returns>
-        public static MsieClientLogic GetInstance(WebBrowserClass webBrowser)
+        public static MsieClientLogic GetInstance()
         {
-            Validator.ValidateNull(webBrowser, "webBrowser");
-
             lock (lockojbect)
             {
                 if (null == instance)
                 {
-                    instance = new MsieClientLogic(webBrowser);
+                    instance = new MsieClientLogic();
                 }
                 return instance;
+            }
+        }
+
+        /// <summary>
+        /// This methods add the given browser object to internal list and also adds the DocumentCompleteEventHandler
+        /// to the browser object.
+        /// </summary>
+        /// <param name="browser">The browser object</param>
+        /// <exception cref="ArgumentNullException">if parameter is null.</exception>
+        public void AddBrowser(WebBrowserClass browser)
+        {
+            Validator.ValidateNull(browser, "browser");
+            if (!browserWindows.Contains(browser))
+            {
+                browserWindows.Add(browser);
+                browser.DocumentComplete += new DWebBrowserEvents2_DocumentCompleteEventHandler(OnDocumentCompleted);
+            }
+        }
+
+        /// <summary>
+        /// Removes the browser from interna list.
+        /// </summary>
+        /// <param name="browser">The browser object.</param>
+        /// <exception cref="ArgumentNullException">if parameter is null.</exception>
+        public void RemoveBrowser(WebBrowserClass browser)
+        {
+            Validator.ValidateNull(browser, "browser");
+            if (browserWindows.Contains(browser))
+            {
+                browserWindows.Remove(browser);
             }
         }
     }

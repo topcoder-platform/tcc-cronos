@@ -92,13 +92,13 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         /// <exception cref="HandleEventException">to signal problems in handling the event.</exception>
         public void HandleEvent(object sender, ExtensionEventArgs args)
         {
+
             Validator.ValidateNull(sender, "sender");
             Validator.ValidateNull(args, "args");
-
             try
             {
                 // get the url of the current page
-                Uri uri = new Uri(args.Context.WebBrowser.LocationURL);
+                Uri uri = new Uri(args.Parameters[0] as string);
                 string host = uri.Host;
 
                 if (args.Context.BloomFilter.Contains(host))
@@ -113,10 +113,9 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                     // property), set the host parameter using string.Format.
                     string url = string.Format(cm.GetValue(configurationNamespace,
                         PROPERTY_DOCUMENT_COMPLETED_URL), host);
-                    WebRequest request = WebRequest.Create(url);
 
                     byte[] buffer = null;
-                    using(Stream stream = request.GetResponse().GetResponseStream())
+                    using (Stream stream = Helper.GetDocumentContent(url))
                     {
                         using (Stream tmpStream = new MemoryStream())
                         {

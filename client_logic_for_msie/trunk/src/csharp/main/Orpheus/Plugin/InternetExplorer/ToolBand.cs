@@ -235,7 +235,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// </summary>
         ///
         /// <param name="ppWnd">Pointer to where to return the window handle.</param>
-        public virtual void GetWindow([Out] IntPtr ppWnd)
+        public virtual void GetWindow(out IntPtr ppWnd)
         {
             ppWnd = Handle;
         }

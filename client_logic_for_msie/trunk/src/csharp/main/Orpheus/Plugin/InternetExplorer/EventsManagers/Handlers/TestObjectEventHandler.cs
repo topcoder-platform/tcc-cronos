@@ -11,8 +11,8 @@ using Microsoft.Win32;
 using TopCoder.Util.Hash.Algorithm;
 using TopCoder.Util.ConfigurationManager;
 using TopCoder.Util.ObjectFactory;
-using MsHtmHstInterop;
 using Mshtml;
+//using Orpheus.Plugin.InternetExplorer.Interop.Mshtml;
 
 namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
 {
@@ -168,10 +168,6 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
             {
                 // Gets the IHTMLElement for the params array.
                 IHTMLElement element = (IHTMLElement) args.Parameters[0];
-                if (element == null)
-                {
-                    return;
-                }
 
                 // here not done as the design said get text one by one,
                 // but just use innerText, which has the same effect.
@@ -180,8 +176,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 {
                     return;
                 }
-
-                string hash = hashAlgorithm.HashToHexString(NormalizeText(content.ToString()), Encoding.UTF8);
+                string hash = hashAlgorithm.HashToHexString(NormalizeText(content.ToString()));
                 if (hash == args.Context.Persistence[Helper.KEY_HASH])
                 {
                     string gameId = args.Context.Persistence[Helper.KEY_GAME_ID];
@@ -194,7 +189,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                         // string domain = GetDomain(testObjectUrl);
                         string domain = new Uri(testObjectUrl).Host;
 
-                        string url = string.Format(testObjectUrl, gameId, domain, seq, hash);
+                        string url = string.Format(testObjectUrl, gameId, domain, seq);
                         args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, url, true);
                     }
                     catch (Exception e)
@@ -206,7 +201,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
             }
             catch (Exception e)
             {
-                throw new HandleEventException("Failed to handle the event.", e);
+                throw new HandleEventException("Failed to handle the event." + e, e);
             }
         }
 

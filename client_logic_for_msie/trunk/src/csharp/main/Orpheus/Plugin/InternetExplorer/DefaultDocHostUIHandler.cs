@@ -207,7 +207,8 @@ namespace Orpheus.Plugin.InternetExplorer
             object pcmdtReserved, object pdispReserved)
         {
             // let mshtml to display the context menu.
-            Marshal.ThrowExceptionForHR(1);
+            //Marshal.ThrowExceptionForHR(0);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -241,6 +242,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// <param name="nCmdID">specifies a command identifier.</param>
         public virtual void TranslateAccelerator(ref tagMSG lpmsg, ref Guid pguidCmdGroup, uint nCmdID)
         {
+            throw new NotImplementedException();
         }
 
         /// <summary>

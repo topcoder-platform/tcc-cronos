@@ -119,6 +119,10 @@ namespace Orpheus.Plugin.InternetExplorer
             try
             {
                 string gameId = context.Persistence[Helper.KEY_GAME_ID];
+                if (gameId.Length == 0)
+                {
+                    return -1;
+                }
                 return long.Parse(gameId);
             }
             catch (PersistenceException)
@@ -183,9 +187,12 @@ namespace Orpheus.Plugin.InternetExplorer
             // the design don't required.
 
             // Gets the host browser document:
-            IHTMLDocument2 document = (IHTMLDocument2)context.WebBrowser.Document;
+            //IHTMLDocument2 document = (IHTMLDocument2)context.WebBrowser.Document;
 
-            return (null != document.location) && (window == document.parentWindow);
+            //return (null != document.location) && (window == document.parentWindow);
+
+            // TODO: how to check if window is popup??
+            return window.parent != null;
         }
 
         /// <summary>

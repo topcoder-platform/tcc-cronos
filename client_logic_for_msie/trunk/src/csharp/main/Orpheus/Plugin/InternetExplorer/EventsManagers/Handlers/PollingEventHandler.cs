@@ -174,21 +174,24 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         {
             Validator.ValidateNull(sender, "sender");
             Validator.ValidateNull(args, "args");
-
+            String value = null;
             try
             {
                 // get config manager
                 ConfigManager cm = ConfigManager.GetInstance();
 
+                string lastPollingDate = args.Context.Persistence[Helper.KEY_TIMESTAMP];
+                if (lastPollingDate.Length == 0) {
+                    lastPollingDate = DateTime.UtcNow.ToString("s") + "Z";
+                }
+
                 // Reads from the configuration file the configured URL(polling_url property).
                 // Reads the "events" property and for each event name:
-                string value = string.Format(cm.GetValue(configurationNamespace, PROPERTY_POLLING_URL),
-                    args.Context.Persistence[Helper.KEY_TIMESTAMP]);
-
+                value = string.Format(cm.GetValue(configurationNamespace, PROPERTY_POLLING_URL),
+                    lastPollingDate);
                 // get the content of url and parse it into rss feed.
-                WebRequest request = WebRequest.Create(value);
                 RSSFeed rssFeed = null;
-                using (Stream stream = request.GetResponse().GetResponseStream())
+                using (Stream stream = Helper.GetDocumentContent(value))
                 {
                     rssFeed = rssParser.Parse(stream);
                 }
@@ -209,32 +212,30 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                         // args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser,
                         using(Stream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(item.Description.Text)))
                         {
-                            args.Context.WebBrowserWindowNavigator.Navigate(
-                                args.Context.WebBrowser, stream, true);
+                            args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, stream, true);
                         }
                     }
                     else
                     {
-                        if (item.Description is AtomBaseContentItem)
+                        AtomMultimediaContentItem multi = item.Description as AtomMultimediaContentItem;
+                        if ((multi != null) && multi.MimeType.Equals(MIME_BLOOM_FILTER))
                         {
-                            if (((AtomBaseContentItem) item.Description).MimeType.Equals(MIME_BLOOM_FILTER))
-                            {
                                 // If the content is of type "application/x-tc-bloom-filter" restore the bloom filter
                                 // from the serialized content of the feed item.
                                 // args.Context.BloomFilter
-                                args.Context.BloomFilter = new BloomFilter(item.Description.Text);
-                            }
+                            args.Context.BloomFilter = new BloomFilter(Encoding.UTF8.GetString(multi.RawData));
                         }
                     }
                 }
 
                 // Persist the feed timestamp.
-                args.Context.Persistence[Helper.KEY_TIMESTAMP] = rssFeed.PublicationDate.ToLongTimeString();
+                args.Context.Persistence[Helper.KEY_TIMESTAMP] =
+                    rssFeed.PublicationDate.ToUniversalTime().ToString("s") + "Z";
             }
             catch (Exception e)
             {
                 throw new HandleEventException(
-                    string.Format("Failed to handle the event : {0})", args.EventName), e);
+                    string.Format("Failed to handle the event : {0}\n{1}\n{2}", args.EventName, e, value), e);
             }
         }
     }

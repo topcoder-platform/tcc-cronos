@@ -88,13 +88,12 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         /// while navigating to the new location.</exception>
         public void Navigate(WebBrowserClass webBrowser, string url, bool newWindow)
         {
-            Validator.ValidateNull(webBrowser, "webBrowser");
             Validator.ValidateNullOrEmptyString(url, "url");
 
             object address = url;
             try
             {
-                if (newWindow)
+                if (newWindow || (webBrowser == null))
                 {
                     lock (newWindowLock)
                     {
@@ -182,7 +181,6 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         /// while navigating to the new location.</exception>
         public void Navigate(WebBrowserClass webBrowser, Stream content, bool newWindow)
         {
-            Validator.ValidateNull(webBrowser, "webBrowser");
             Validator.ValidateNull(content, "content");
             // Read the content into stream.
             // we don't close the stream here.
@@ -202,7 +200,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
 
             try
             {
-                if (newWindow)
+                if (newWindow || (webBrowser == null))
                 {
                     lock (newWindowLock)
                     {
