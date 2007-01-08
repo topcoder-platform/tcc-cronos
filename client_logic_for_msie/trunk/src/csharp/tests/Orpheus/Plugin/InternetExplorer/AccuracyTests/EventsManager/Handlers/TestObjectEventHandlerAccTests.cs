@@ -5,7 +5,7 @@
 using NUnit.Framework;
 using Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers;
 
-namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Factories
+namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Hanlders
 {
     /// <summary>
     /// Accuracy tests for <c>TestObjectEventHandler</c> class.
@@ -28,7 +28,7 @@ namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Factories
         [SetUp]
         public void SetUp()
         {
-            TestHelper.LoadConfigFile();
+            AccuracyHelper.LoadConfiguration();
 
             handler = new TestObjectEventHandler();
         }
@@ -39,7 +39,7 @@ namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Factories
         [TearDown]
         public void TearDown()
         {
-            TestHelper.ClearNamespace();
+            AccuracyHelper.ClearConfiguration();
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Factories
             string configNS = (string) AccuracyHelper.GetPrivateFieldValue(handler, "configurationNamespace");
 
             Assert.AreEqual("Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers", configNS,
-                            "Not the expected configuration namespace.");;
+                            "Not the expected configuration namespace.");
         }
 
         /// <summary>

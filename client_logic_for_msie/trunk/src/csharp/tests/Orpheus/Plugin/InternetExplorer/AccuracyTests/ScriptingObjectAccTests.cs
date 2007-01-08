@@ -3,6 +3,7 @@
  */
 
 using NUnit.Framework;
+using MsHtmHstInterop;
 using SHDocVw;
 using Orpheus.Plugin.InternetExplorer.Persistence;
 

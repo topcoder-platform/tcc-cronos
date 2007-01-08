@@ -2,6 +2,7 @@
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 
+using System;
 using System.Drawing;
 using NUnit.Framework;
 using MsHtmHstInterop;
@@ -55,8 +56,7 @@ namespace Orpheus.Plugin.InternetExplorer.AccuracyTests
 
             // get desk band info
             DESKBANDINFO info = new DESKBANDINFO();
-            info.wszTitle = new ushort[100];
-
+			info.wszTitle = new ushort[100];
             toolBand.GetBandInfo(1, 1, ref info);
 
             Assert.AreEqual((ushort) 't', info.wszTitle[0], "Not the expected title.");

@@ -132,7 +132,7 @@ namespace Orpheus.Plugin.InternetExplorer
             MsieClientLogic logic = new MsieClientLogic(new WebBrowserClass());
 
             //or as a singleton
-            logic = MsieClientLogic.GetInstance(new WebBrowserClass());
+            logic = MsieClientLogic.GetInstance();
 
             // or using custom configuration namespaces
             logic = new MsieClientLogic(new WebBrowserClass(),

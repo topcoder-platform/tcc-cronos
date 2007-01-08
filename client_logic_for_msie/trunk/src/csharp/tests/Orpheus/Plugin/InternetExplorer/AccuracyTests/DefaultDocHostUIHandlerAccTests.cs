@@ -2,6 +2,8 @@
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 
+using System;
+using System.IO;
 using NUnit.Framework;
 using MsHtmHstInterop;
 using SHDocVw;

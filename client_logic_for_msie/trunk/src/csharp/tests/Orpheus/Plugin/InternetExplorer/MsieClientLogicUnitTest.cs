@@ -463,23 +463,13 @@ namespace Orpheus.Plugin.InternetExplorer
         }
 
         /// <summary>
-        /// Test GetInstance(WebBrowserClass webBrowser), when webBrowser is null,
-        /// ArgumentNullException is expected.
-        /// </summary>
-        [Test, ExpectedException(typeof(ArgumentNullException))]
-        public void TestGetInstance_WebBroswerIsNull()
-        {
-            MsieClientLogic.GetInstance(null);
-        }
-
-        /// <summary>
         /// Test GetInstance(WebBrowserClass webBrowser), it should return the singleton.
         /// </summary>
         [Test]
         public void TestGetInstance()
         {
-            Assert.AreEqual(MsieClientLogic.GetInstance(webBrowser),
-                MsieClientLogic.GetInstance(webBrowser),
+            Assert.AreEqual(MsieClientLogic.GetInstance(),
+                MsieClientLogic.GetInstance(),
                 "It should be singleton");
         }
 

@@ -2,13 +2,14 @@
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 
+using System;
 using NUnit.Framework;
-using Orpheus.Plugin.InternetExplorer.EventsManagers;
 using MsHtmHstInterop;
-using SHDocVw;
 using Orpheus.Plugin.InternetExplorer.Persistence;
 using Orpheus.Plugin.InternetExplorer.WindowNavigators;
+using Orpheus.Plugin.InternetExplorer.EventsManagers;
 using TopCoder.Util.BloomFilter;
+using SHDocVw;
 
 namespace Orpheus.Plugin.InternetExplorer.AccuracyTests
 {

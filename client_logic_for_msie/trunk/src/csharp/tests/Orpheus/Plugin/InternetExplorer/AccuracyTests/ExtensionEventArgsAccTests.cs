@@ -4,6 +4,7 @@
 
 using System;
 using NUnit.Framework;
+using MsHtmHstInterop;
 using SHDocVw;
 
 namespace Orpheus.Plugin.InternetExplorer.AccuracyTests

@@ -4,9 +4,10 @@
 
 using NUnit.Framework;
 using Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers;
+using MsHtmHstInterop;
 using SHDocVw;
 
-namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Factories
+namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Hanlders
 {
     /// <summary>
     /// Accuracy tests for <c>HttpRequestUserInterfaceEventHandler</c> class.
@@ -34,7 +35,7 @@ namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Factories
         [SetUp]
         public void SetUp()
         {
-            TestHelper.LoadConfigFile();
+            AccuracyHelper.LoadConfiguration();
             mcl = new MsieClientLogic(new WebBrowserClass());
 
             handler = new HttpRequestUserInterfaceEventHandler();
@@ -46,7 +47,7 @@ namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager.Factories
         [TearDown]
         public void TearDown()
         {
-            TestHelper.ClearNamespace();
+            AccuracyHelper.ClearConfiguration();
         }
 
         /// <summary>

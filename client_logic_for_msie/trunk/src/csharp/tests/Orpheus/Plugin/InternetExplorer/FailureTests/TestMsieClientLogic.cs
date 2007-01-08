@@ -86,6 +86,7 @@ namespace Orpheus.Plugin.InternetExplorer.FailureTests
         /// <summary>
         /// Tests <c>BloomFilter</c> property set with null value.
         /// ArgumentNullException should be thrown.
+        /// </summary>
         [Test, ExpectedException(typeof (ArgumentNullException))]
         public void TestBloomFilterSetNullValue()
         {
@@ -247,15 +248,6 @@ namespace Orpheus.Plugin.InternetExplorer.FailureTests
         public void TestCustomizeWebBrowser_NullWebBrowser()
         {
             logic.CustomizeWebBrowser(null);
-        }
-        /// <summary>
-        /// Tests <c>GetInstance(WebBrowserClass webBrowser)</c> method with null WebBrowserClass webBrowser
-        /// ArgumentNullException should be thrown.
-        /// </summary>
-        [Test, ExpectedException(typeof (ArgumentNullException))]
-        public void TestGetInstance_NullWebBrowser()
-        {
-            MsieClientLogic.GetInstance(null);
         }
     }
 }

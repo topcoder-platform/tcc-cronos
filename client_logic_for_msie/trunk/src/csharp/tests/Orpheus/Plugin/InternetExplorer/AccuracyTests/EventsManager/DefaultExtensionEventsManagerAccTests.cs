@@ -5,6 +5,7 @@
 using NUnit.Framework;
 using Orpheus.Plugin.InternetExplorer.EventsManagers;
 using Orpheus.Plugin.InternetExplorer.EventsManagers.Factories;
+using MsHtmHstInterop;
 using SHDocVw;
 
 namespace Orpheus.Plugin.InternetExplorer.AccuracyTests.EventsManager
