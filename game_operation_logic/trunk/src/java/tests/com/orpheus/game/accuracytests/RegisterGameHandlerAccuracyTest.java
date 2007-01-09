@@ -152,9 +152,9 @@ public class RegisterGameHandlerAccuracyTest extends TestCase {
 		mockRequest.setParameter("game_id","1");
         
 		assertEquals("execute failed.", null, handler.execute(context));
-		System.out.println(context.getAttribute("message-to"));
-		System.out.println(context.getAttribute("message-subject"));
-		System.out.println(context.getAttribute("message-body"));
+		System.out.println(context.getAttribute("to"));
+		System.out.println(context.getAttribute("subject"));
+		System.out.println(context.getAttribute("body"));
 	}
 
 

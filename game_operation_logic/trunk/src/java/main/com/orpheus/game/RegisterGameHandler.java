@@ -273,9 +273,9 @@ public class RegisterGameHandler implements Handler {
             
             ///////////////////////////////////////////////////////////
             // Added by Zulander to fix BALL-4675
-            context.setAttribute("message-to", 
-                            user.getProperty(BaseProfileType.EMAIL_ADDRESS));
-            context.setAttribute("message-subject",
+            context.setAttribute("to", new String[] {
+                            (String) user.getProperty(BaseProfileType.EMAIL_ADDRESS) });
+            context.setAttribute("subject",
                             "You are registered for " + game.getName());
             // Fill parameters for document generator
             Map parameters = new TreeMap();
@@ -283,7 +283,7 @@ public class RegisterGameHandler implements Handler {
             parameters.put("START_DATE", game.getStartDate().toString());
             parameters.put("FIRST_DOMAIN",
                             game.getBlocks()[0].getSlots()[0].getDomain().getDomainName());
-            context.setAttribute("message-body", generateEmailBody(parameters));
+            context.setAttribute("body", generateEmailBody(parameters));
             ///////////////////////////////////////////////////////////
         } catch (Exception e) {
             throw new HandlerExecutionException("error occurs while recording user registation", e);

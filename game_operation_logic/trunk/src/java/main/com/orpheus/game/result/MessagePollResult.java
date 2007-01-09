@@ -22,8 +22,11 @@ import com.topcoder.util.rssgenerator.RSSFeed;
 import com.topcoder.util.rssgenerator.RSSItem;
 import com.topcoder.util.rssgenerator.SearchCriteria;
 import com.topcoder.util.rssgenerator.datastore.SearchCriteriaImpl;
-import com.topcoder.util.rssgenerator.impl.RSSFeedImpl;
+import com.topcoder.util.rssgenerator.RSSEntity;
 import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
+import com.topcoder.util.rssgenerator.impl.RSSEntityImpl;
+import com.topcoder.util.rssgenerator.impl.atom10.Atom10Content;
+import com.topcoder.util.rssgenerator.impl.atom10.Atom10Feed;
 import com.topcoder.util.rssgenerator.io.RSSWriteException;
 import com.topcoder.util.rssgenerator.io.atom10.Atom10Writer;
 
@@ -365,35 +368,55 @@ public class MessagePollResult implements Result {
      */
     private void writeAtom10Feed(HttpServletResponse response, RSSItem[] items)
         throws ResultExecutionException {
+
         response.setContentType(RESPONSE_CONTENT_TYPE);
 
-        PrintWriter responseWriter = null;
-
         try {
-            responseWriter = response.getWriter();
+            PrintWriter responseWriter = response.getWriter();
 
-            Atom10Writer writer = new Atom10Writer();
+	    // Revised fix to bug BALL-4783, based on isv's interim fix:
+	    try {
+                Atom10Writer writer = new Atom10Writer();
+                Atom10Feed rssFeed = new Atom10Feed(new RSSObjectImpl());
+                Atom10Content title = new Atom10Content(new RSSObjectImpl());
+                RSSEntity author = new RSSEntityImpl(new RSSObjectImpl());
+                RSSEntity name = new RSSEntityImpl(new RSSObjectImpl());
+		Date updateDate = new Date(0);
 
-            ////////////////////////////////////////////////////
-            // Modified by Zulander to fix BALL-4783
-            // Before change: Write items invidually
-            // After change: Embeded to an RSSFeed and write it
-            //for (int i = 0; i < items.length; i++) {
-            //    writer.writeItem(items[i], responseWriter);
-            //}
-            RSSFeed feed = new RSSFeedImpl(new RSSObjectImpl());
-            feed.setItems(items);
-            writer.writeFeed(feed, responseWriter);
+                // Feed Title
+                title.setElementText("The Ball periodic update");
+                rssFeed.setTitle(title);
 
-            responseWriter.close();
+                // Feed Author
+                name.setElementText("Orpheus Game Server");
+                author.addChildElement("name", name);
+                rssFeed.addAuthor(author);
+
+                rssFeed.setId("there-can-be-only-one");
+
+                for (int i = 0; i < items.length; i++) {
+		    Date itemUpdate = items[i].getUpdatedDate();
+
+		    if (itemUpdate == null) {
+			itemUpdate = items[i].getPublishedDate();
+		    }
+		    if (itemUpdate != null
+                            && itemUpdate.compareTo(updateDate) > 0) {
+			 updateDate = itemUpdate;
+		    }
+                    rssFeed.addItem(items[i]);
+                }
+                rssFeed.setUpdatedDate(updateDate);
+
+                writer.writeFeed(rssFeed, responseWriter);
+            } finally {
+                responseWriter.close();
+	    }
+	    // end of BALL-4783 fix
         } catch (IOException e) {
             throw new ResultExecutionException("failed to write content to response", e);
         } catch (RSSWriteException e) {
             throw new ResultExecutionException("failed to write RSSItme to response", e);
-        } finally {
-            if (responseWriter != null) {
-                responseWriter.close();
-            }
         }
     }
 }
