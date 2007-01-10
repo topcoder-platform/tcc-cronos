@@ -2,22 +2,22 @@
 
 <project name="Time Tracker Project" default="dist" basedir=".">
 
-    <property file="f:\topcoder\topcoder_global.properties"/>
+    <property file="\topcoder\topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Time_Tracker_Project" />
-    <property name="package" value="com.cronos.timetracker.project" />
-    <property name="packagedir" value="com/cronos/timetracker/project" />
+    <property name="package" value="com.topcoder.timetracker.project" />
+    <property name="packagedir" value="com/topcoder/timetracker/project" />
     <property name="distfilename" value="time_tracker_project" />
     <property name="component_version" value="1.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
-    <property name="tcs_libdir" value="lib/tcs" />
-    <property name="ext_libdir" value="lib/third_party" />
-    <property name="jar_tcs_libdir" value="lib/tcs" />
-    <property name="jar_ext_libdir" value="lib/third_party" />
+    <property name="tcs_libdir" value="/jtcs/lib/tcs" />
+    <property name="ext_libdir" value="/jtcs/lib/third_party" />
+    <property name="jar_tcs_libdir" value="/jtcs/lib/tcs" />
+    <property name="jar_ext_libdir" value="/jtcs/lib/third_party" />
     <property name="docsdir" value="docs" />
     <property name="configdir" value="conf" />
     <property name="testlogdir" value="log" />

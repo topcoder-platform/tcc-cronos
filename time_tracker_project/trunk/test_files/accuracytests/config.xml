@@ -4,12 +4,12 @@
 
     <!-- the class name of the persistence (required) -->
     <Property name="persistence_class">
-      <Value>com.cronos.timetracker.project.persistence.InformixTimeTrackerProjectPersistence</Value>
+      <Value>com.topcoder.timetracker.project.persistence.InformixTimeTrackerProjectPersistence</Value>
     </Property>
 
     <!-- the namespace of the DB Connection Factory configuration file (required) -->
     <Property name="connection_factory_namespace">
-      <Value>com.cronos.timetracker.project.accuracytests.db</Value>
+      <Value>com.topcoder.timetracker.project.accuracytests.db</Value>
     </Property>
 
     <!-- the name identifying a ConnectionProducer instance (optional) -->
@@ -19,12 +19,12 @@
     
         <!-- the ConfigManager namespace of DatabaseSearchUtility used to search projects (optional) -->
     <Property name="project_search_utility_namespace">
-      <Value>com.cronos.timetracker.project.accuraytests.DatabaseSearchUtility.projects</Value>
+      <Value>com.topcoder.timetracker.project.accuraytests.DatabaseSearchUtility.projects</Value>
     </Property>
 
     <!-- the ConfigManager namespace of DatabaseSearchUtility used to search clients (optional) -->
     <Property name="client_search_utility_namespace">
-      <Value>com.cronos.timetracker.project.accuraytests.DatabaseSearchUtility.clients</Value>
+      <Value>com.topcoder.timetracker.project.accuraytests.DatabaseSearchUtility.clients</Value>
     </Property>
   </Config>
 </CMConfig>

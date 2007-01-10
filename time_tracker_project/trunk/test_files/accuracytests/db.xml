@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CMConfig>
-  <Config name="com.cronos.timetracker.project.accuracytests.db">
+  <Config name="com.topcoder.timetracker.project.accuracytests.db">
     <Property name="connections">
         <Property name="default">
             <Value>Informix_Connection_Producer</Value>

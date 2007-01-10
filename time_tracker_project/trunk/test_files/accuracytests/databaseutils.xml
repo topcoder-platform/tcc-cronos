@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CMConfig>
-  <Config name="com.cronos.timetracker.project.accuraytests.DatabaseSearchUtility.clients">
+  <Config name="com.topcoder.timetracker.project.accuraytests.DatabaseSearchUtility.clients">
 
     <!-- The SQL query template, required -->
     <Property name="query_template">
@@ -31,7 +31,7 @@
 
   </Config>
   
-    <Config name="com.cronos.timetracker.project.accuraytests.DatabaseSearchUtility.projects">
+    <Config name="com.topcoder.timetracker.project.accuraytests.DatabaseSearchUtility.projects">
 
     <!-- The SQL query template, required -->
     <Property name="query_template">
