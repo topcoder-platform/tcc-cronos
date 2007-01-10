@@ -6,18 +6,18 @@
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Expense_Entry" />
-    <property name="package" value="com.cronos.timetracker.entry.expense" />
-    <property name="packagedir" value="com/cronos/timetracker/entry/expense" />
+    <property name="package" value="com.topcoder.timetracker.entry.expense" />
+    <property name="packagedir" value="com/topcoder/timetracker/entry/expense" />
     <property name="distfilename" value="expense_entry" />
     <property name="component_version" value="1.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
-    <property name="tcs_libdir" value="lib/tcs" />
-    <property name="ext_libdir" value="lib/third_party" />
-    <property name="jar_tcs_libdir" value="lib/tcs" />
-    <property name="jar_ext_libdir" value="lib/third_party" />
+    <property name="tcs_libdir" value="/jtcs/lib/tcs" />
+    <property name="ext_libdir" value="/jtcs/lib/third_party" />
+    <property name="jar_tcs_libdir" value="/jtcs/lib/tcs" />
+    <property name="jar_ext_libdir" value="/jtcs/lib/third_party" />
     <property name="docsdir" value="docs" />
     <property name="configdir" value="conf" />
     <property name="testlogdir" value="log" />
