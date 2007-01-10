@@ -27,6 +27,7 @@ import com.orpheus.user.persistence.ejb.UserProfileBean;
 import com.orpheus.user.persistence.ejb.UserProfileDTO;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.util.cache.Cache;
+import com.topcoder.user.profile.BaseProfileType;
 
 /**
  * <p>
@@ -1254,13 +1255,15 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * <p>
      * The keys in the criteria map must be one of the user profile property
      * constants defined in the {@link UserConstants} interface (those that are
-     * not named <code>XXX_TYPE_NAME</code>). These property constants
+     * not named <code>XXX_TYPE_NAME</code>), or one of</p>
+     * <ul>
+     * <li><code>BaseProfileType.EMAIL_ADDRESS</code>,</li>
+     * <li><code>BaseProfileType.FIRST_NAME</code>, or</li>
+     * <li><code>BaseProfileType.LAST_NAME</code></li>
+     * </ul>. These property constants
      * correspond to table columns in the database. If a key is not equal to one
      * of the property constants, an <code>IllegalArgumentException</code> is
-     * thrown. Note that this means that the user's email address, first name or
-     * last name cannot be used as search criteria, because they do not
-     * correspond to any property constants defined in the
-     * <code>UserConstants</code> interface.
+     * thrown.
      * </p>
      * <p>
      * The values in the criteria map should be <code>String</code> instances,
@@ -1423,7 +1426,9 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      *         table column name
      */
     private String resolveCriterion(String criterion) {
-        if (criterion.equals(UserConstants.PLAYER_PAYMENT_PREF)
+	if (criterion.equals(BaseProfileType.EMAIL_ADDRESS)) {
+            return "e_mail";
+	} else if (criterion.equals(UserConstants.PLAYER_PAYMENT_PREF)
                 || criterion.endsWith(UserConstants.SPONSOR_PAYMENT_PREF)) {
             return "payment_pref";
         } else if (criterion.equals(UserConstants.SPONSOR_FAX_NUMBER)) {
@@ -1448,6 +1453,10 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
             return "passwd";
         } else if (criterion.equals(UserConstants.CREDENTIALS_IS_ACTIVE)) {
             return "is_active";
+        } else if (criterion.equals(BaseProfileType.FIRST_NAME)) {
+            return "first_name";
+        } else if (criterion.equals(BaseProfileType.LAST_NAME)) {
+            return "last_name";
         }
 
         // No table column mapping.
@@ -1657,7 +1666,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      *         <code>false</code> otherwise
      */
     private boolean isUserTableColumn(String tableColumn) {
-        if (tableColumn.equals("handle") || tableColumn.equals("passwd") || tableColumn.equals("is_active")) {
+        if (tableColumn.equals("handle") || tableColumn.equals("passwd") || tableColumn.equals("is_active") || tableColumn.equals("e_mail")) {
             return true;
         }
         return false;
@@ -1673,7 +1682,9 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      *         contact_info table; <code>false</code> otherwise
      */
     private boolean isContactInfoTableColumn(String tableColumn) {
-        if (tableColumn.equals("address_1")
+        if (tableColumn.equals("first_name")
+                || tableColumn.equals("last_name")
+                || tableColumn.equals("address_1")
                 || tableColumn.equals("address_2")
                 || tableColumn.equals("city")
                 || tableColumn.equals("state")
@@ -2003,11 +2014,9 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      */
     private boolean convertStringToBoolean(String s) {
         // If the string is equal to BOOLEAN_TRUE_STRINg (i.e. "Y") or "true",
-        // then return true.
-        if (s.toUpperCase().equals(BOOLEAN_TRUE_STRING) || Boolean.valueOf(s).booleanValue()) {
-            return true;
-        }
-        return false;
+        // then return true.  Otherwise return false.
+        return ((s != null) && (s.toUpperCase().equals(BOOLEAN_TRUE_STRING)
+                || Boolean.valueOf(s).booleanValue()));
     }
 
     /**
