@@ -6,18 +6,18 @@
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Time_Tracker_User" />
-    <property name="package" value="com.topcoder.timetracker.user" />
-    <property name="packagedir" value="com/topcoder/timetracker/user" />
+    <property name="package" value="com.topcoder.timetracker" />
+    <property name="packagedir" value="com/topcoder/timetracker" />
     <property name="distfilename" value="time_tracker_user" />
     <property name="component_version" value="2.0" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
-    <property name="tcs_libdir" value="lib/tcs" />
-    <property name="ext_libdir" value="lib/third_party" />
-    <property name="jar_tcs_libdir" value="lib/tcs" />
-    <property name="jar_ext_libdir" value="lib/third_party" />
+    <property name="tcs_libdir" value="/jtcs/lib/tcs" />
+    <property name="ext_libdir" value="/jtcs/lib/third_party" />
+    <property name="jar_tcs_libdir" value="/jtcs/lib/tcs" />
+    <property name="jar_ext_libdir" value="/jtcs/lib/third_party" />
     <property name="docsdir" value="docs" />
     <property name="configdir" value="conf" />
     <property name="testlogdir" value="log" />
@@ -65,7 +65,7 @@
     <property name="design_dist.jar" value="${component}_${component_version}_design_dist.jar"/>
 
     <!-- TCS Dependencies -->
-    <property name="configmanager.version" value="2.1.4"/>
+    <property name="configmanager.version" value="2.1.5"/>
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
@@ -121,7 +121,7 @@
     <property name="encryption.jar" value="${tcs_libdir}/${encryption.path}/${encryption.jar.name}"/>
     
     <!-- 3rd Party Dependencies  -->
-    <property name="junit.jar" value="${ext_libdir}/junit.jar"/>
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
     <property name="xerces.jar" location="${ext_libdir}/xerces/1.4.4/xerces.jar"/>
 
@@ -140,6 +140,7 @@
         <pathelement location="${base_exception.jar}" />
         <pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${simple_cache.jar}" />
+        <pathelement location="${search_builder.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
         <!--
         <pathelement location="${search_builder.jar}" />
