@@ -1,24 +1,24 @@
 <CMConfig>
-	<Config name="com.cronos.timetracker.entry.time.myconfig">
-		<Property name="com.cronos.timetracker.entry.time.TimeEntry">
+	<Config name="com.topcoder.timetracker.entry.time.myconfig">
+		<Property name="com.topcoder.timetracker.entry.time.TimeEntry">
 			<Property name="class">
-				<Value>com.cronos.timetracker.entry.time.TimeEntryDAO</Value>
+				<Value>com.topcoder.timetracker.entry.time.TimeEntryDAO</Value>
 			</Property>
 			<Property name="connectionName">
 				<Value>informix</Value>
 			</Property>
 		</Property>
-		<Property name="com.cronos.timetracker.entry.time.TaskType">
+		<Property name="com.topcoder.timetracker.entry.time.TaskType">
 			<Property name="class">
-				<Value>com.cronos.timetracker.entry.time.TaskTypeDAO</Value>
+				<Value>com.topcoder.timetracker.entry.time.TaskTypeDAO</Value>
 			</Property>
 			<Property name="connectionName">
 				<Value>informix</Value>
 			</Property>
 		</Property>
-		<Property name="com.cronos.timetracker.entry.time.TimeStatus">
+		<Property name="com.topcoder.timetracker.entry.time.TimeStatus">
 			<Property name="class">
-				<Value>com.cronos.timetracker.entry.time.TimeStatusDAO</Value>
+				<Value>com.topcoder.timetracker.entry.time.TimeStatusDAO</Value>
 			</Property>
 			<Property name="connectionName">
 				<Value>informix</Value>
