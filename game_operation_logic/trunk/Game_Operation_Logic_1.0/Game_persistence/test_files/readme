@@ -1,7 +1,0 @@
-1. the mock class are in the lib folder, that is frontcontroller.jar, gameLogicInterface.jar,puzzleframework.jar
-2. test_Files\Game_Persistence_Tables.sql are the sql to create table in MYSQL, the version i used is sqlserver2005 express
-   and the jdbc driver is also in the lib, that is sqlserver.jar
-   after create table, plz create the stored procedures in database,test_files\Stored Procedures are the sql clauses
-3. Some problems are not get sloved according to the designer's suggestion, plz refers to the forum more detail
-4. use the MockEJB/MockRunner to test the ejb. The version is mockejb-0.6-beta2, and latest MockRunner
-   plz download from sourceforge
