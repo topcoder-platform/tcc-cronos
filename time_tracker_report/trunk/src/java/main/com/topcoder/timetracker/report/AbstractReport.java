@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report;
+package com.topcoder.timetracker.report;
 
-import com.cronos.timetracker.report.dbhandler.DBHandlerFactory;
+import com.topcoder.timetracker.report.dbhandler.DBHandlerFactory;
 import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
@@ -25,12 +25,12 @@ public abstract class AbstractReport implements Report {
     /**
      * This is the namespace from which the column type configuration is looked up in {@link ConfigManager}.
      */
-    private static final String COLUMNS_CONFIG_NAMESPACE = "com.cronos.timetracker.report.ColumnsConfiguration";
+    private static final String COLUMNS_CONFIG_NAMESPACE = "com.topcoder.timetracker.report.ColumnsConfiguration";
     /**
      * This is the namespace from which the filters configuration is looked up in {@link ConfigManager}.
      */
     private static final String FILTERS_CONFIGURATION_NAMESPACE
-        = "com.cronos.timetracker.report.FiltersConfiguration";
+        = "com.topcoder.timetracker.report.FiltersConfiguration";
 
     /**
      * This is a prefix used to construct the {@link ConfigManager} property name for default column configuration for a

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report;
+package com.topcoder.timetracker.report;
 
 import java.util.Collections;
 import java.util.HashSet;

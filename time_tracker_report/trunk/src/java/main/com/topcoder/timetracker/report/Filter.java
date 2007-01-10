@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report;
+package com.topcoder.timetracker.report;
 
 /**
  * This interface defines the behavior of a Filter. A Filter is responsible for a particular {@link Column} and a Filter

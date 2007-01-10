@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report;
+package com.topcoder.timetracker.report;
 
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
@@ -28,7 +28,7 @@ public class ReportFactory {
     /**
      * This is the name of the {@link ConfigManager} namespace from which to lookup the Reports configuration.
      */
-    private static final String NAMESPACE = "com.cronos.timetracker.report.Reports";
+    private static final String NAMESPACE = "com.topcoder.timetracker.report.Reports";
     /**
      * This is the name of the {@link ConfigManager} property from which to lookup the Reports configuration.
      */

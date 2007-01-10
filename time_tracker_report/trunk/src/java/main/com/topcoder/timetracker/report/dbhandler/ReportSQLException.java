@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.dbhandler;
+package com.topcoder.timetracker.report.dbhandler;
 
-import com.cronos.timetracker.report.ReportException;
+import com.topcoder.timetracker.report.ReportException;
 
 
 /**

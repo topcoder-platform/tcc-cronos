@@ -1,17 +1,17 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.htmlreport;
+package com.topcoder.timetracker.report.htmlreport;
 
-import com.cronos.timetracker.report.Column;
-import com.cronos.timetracker.report.ColumnDecorator;
-import com.cronos.timetracker.report.ReportConfiguration;
-import com.cronos.timetracker.report.ReportConfigurationException;
-import com.cronos.timetracker.report.StyleConstant;
-import com.cronos.timetracker.report.dbhandler.DBHandler;
-import com.cronos.timetracker.report.dbhandler.DBHandlerFactory;
-import com.cronos.timetracker.report.dbhandler.DBHandlerNotFoundException;
-import com.cronos.timetracker.report.dbhandler.ReportSQLException;
+import com.topcoder.timetracker.report.Column;
+import com.topcoder.timetracker.report.ColumnDecorator;
+import com.topcoder.timetracker.report.ReportConfiguration;
+import com.topcoder.timetracker.report.ReportConfigurationException;
+import com.topcoder.timetracker.report.StyleConstant;
+import com.topcoder.timetracker.report.dbhandler.DBHandler;
+import com.topcoder.timetracker.report.dbhandler.DBHandlerFactory;
+import com.topcoder.timetracker.report.dbhandler.DBHandlerNotFoundException;
+import com.topcoder.timetracker.report.dbhandler.ReportSQLException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
@@ -29,7 +29,7 @@ import java.util.Map;
  * DBHandler#getReportData(ReportConfiguration)} into a HTML table.
  * <p/>
  * This class has been introduced to extract and centralize the otherwise duplicate code from the {@link
- * com.cronos.timetracker.report.AbstractReport#executeReport(ReportConfiguration)} implementations of {@link
+ * com.topcoder.timetracker.report.AbstractReport#executeReport(ReportConfiguration)} implementations of {@link
  * ExpenseReport}, {@link TimeExpenseReport} and {@link TimeReport}.
  * <p/>
  * This class is completely thread safe as it has only static methods and cannot be instantiated.
@@ -48,6 +48,11 @@ final class HTMLRenderUtil {
      * This is needed because the SELECT NULL is not supported by all databases.
      */
     private static final BigDecimal NULL_VALUE_PLACEHOLDER = new BigDecimal("-1");
+
+    /**
+     * Maximum Length to display for a description.
+     */
+    private static final int MAX_DESC_LENGTH = 45;
 
     /**
      * This is a private constructor that has been added to avoid instantiation of this utility class.
@@ -196,11 +201,11 @@ final class HTMLRenderUtil {
                             // as this is actually meant to be a null value, render it to '*' also
                             // As the string value also can be "-1.00", checking the string
                             // value is not sufficient.
-                            try {
-                                intValue = rs.getInt(columnDecorator.getColumnName());
-                            } catch (SQLException e) {
-                                //ignored, can occur on non-numeric columns
-                            }
+//                            try {
+//                                intValue = rs.getInt(columnDecorator.getColumnName());
+//                            } catch (SQLException e) {
+//                                //ignored, can occur on non-numeric columns
+//                            }
 
                             // if the value returned was a null value, render it as '*'
                             if (string == null || rs.wasNull() || intValue == -1) {
@@ -208,7 +213,13 @@ final class HTMLRenderUtil {
                             }
 
                             // let the decorator render the value
-                            ret.append(escapeForHTMLTagContent(columnDecorator.decorateColumn(string)));
+                            String actualData = escapeForHTMLTagContent(columnDecorator.decorateColumn(string));
+                            String wrapper = actualData;
+                            if (columnDecorator.getColumnName().equalsIgnoreCase("description"))    {
+
+                                wrapper = getShortenedVersion(actualData) + "<img border=\"0\" src=\"../images/icon_plus.gif\" width=\"12\" height=\"12\" style=\"margin-bottom:-3px;padding-left:5px;\" onmouseover=\"return escape('" + actualData + "');\">";
+                            }
+                            ret.append(wrapper);
                         } catch (SQLException e) {
                             throw new ReportSQLException("Unable to read a value for column ["
                                 + columnDecorator.getColumnName() + "] from the ResultSet.", e);
@@ -262,6 +273,17 @@ final class HTMLRenderUtil {
         return ret.toString();
     }
 
+    /**
+     * shortens a string for display
+     * @param text
+     * @return the substring from the beginning to the max allowable characters
+     */
+    private static String getShortenedVersion(String text) {
+        if (text.length() > MAX_DESC_LENGTH)   {
+            return text.substring(0, MAX_DESC_LENGTH - 1) + "...";
+        }
+        return text;
+    }
     /**
      * This method safely retrieves a String value to be used as HTML style fragment from the given map for the given
      * key, i.e. when an non-<tt>null</tt>, non-empty String is found,<tt> STYLE=&quot;&lt;the value
@@ -353,6 +375,7 @@ final class HTMLRenderUtil {
             }
             character = iterator.next();
         }
+
         return result.toString();
     }
 

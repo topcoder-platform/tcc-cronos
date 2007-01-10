@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.htmlreport;
+package com.topcoder.timetracker.report.htmlreport;
 
-import com.cronos.timetracker.report.AbstractReport;
-import com.cronos.timetracker.report.Column;
-import com.cronos.timetracker.report.ReportCategory;
-import com.cronos.timetracker.report.ReportConfiguration;
-import com.cronos.timetracker.report.ReportConfigurationException;
-import com.cronos.timetracker.report.ReportException;
+import com.topcoder.timetracker.report.AbstractReport;
+import com.topcoder.timetracker.report.Column;
+import com.topcoder.timetracker.report.ReportCategory;
+import com.topcoder.timetracker.report.ReportConfiguration;
+import com.topcoder.timetracker.report.ReportConfigurationException;
+import com.topcoder.timetracker.report.ReportException;
 
 
 /**

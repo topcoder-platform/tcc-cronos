@@ -1,22 +1,22 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.dbhandler;
+package com.topcoder.timetracker.report.dbhandler;
 
 import com.topcoder.db.connectionfactory.ConfigurationException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
-import com.cronos.timetracker.report.EqualityFilter;
-import com.cronos.timetracker.report.Filter;
-import com.cronos.timetracker.report.FilterType;
-import com.cronos.timetracker.report.InFilter;
-import com.cronos.timetracker.report.RangeFilter;
-import com.cronos.timetracker.report.ReportCategory;
-import com.cronos.timetracker.report.ReportConfiguration;
-import com.cronos.timetracker.report.ReportConfigurationException;
-import com.cronos.timetracker.report.ReportType;
+import com.topcoder.timetracker.report.EqualityFilter;
+import com.topcoder.timetracker.report.Filter;
+import com.topcoder.timetracker.report.FilterType;
+import com.topcoder.timetracker.report.InFilter;
+import com.topcoder.timetracker.report.RangeFilter;
+import com.topcoder.timetracker.report.ReportCategory;
+import com.topcoder.timetracker.report.ReportConfiguration;
+import com.topcoder.timetracker.report.ReportConfigurationException;
+import com.topcoder.timetracker.report.ReportType;
 import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
@@ -54,7 +54,7 @@ public class InformixDBHandler implements DBHandler {
      * of {@link #loadConfiguration()}.
      */
     private static final String QUERIES_CONFIGURATION_NAMESPACE
-        = "com.cronos.timetracker.report.QueriesConfiguration";
+        = "com.topcoder.timetracker.report.QueriesConfiguration";
     /**
      * This is the prefix from which the {@link ConfigManager} property names used for lookup of {@link #baseQueries}
      * during invocation of {@link #loadConfiguration()} are constructed.
@@ -63,7 +63,7 @@ public class InformixDBHandler implements DBHandler {
     /**
      * This is the name of the {@link ConfigManager} namespace used for lookup of column types by column name.
      */
-    private static final String COLUMN_TYPES_NAMESPACE = "com.cronos.timetracker.report.ColumnTypes";
+    private static final String COLUMN_TYPES_NAMESPACE = "com.topcoder.timetracker.report.ColumnTypes";
     /**
      * This is the suffix from which the {@link ConfigManager} property names used for lookup of column types by column
      * name are constructed.
@@ -96,7 +96,7 @@ public class InformixDBHandler implements DBHandler {
     /**
      * This is Map contains all the Base-Queries, for all the different Reports possible by the {@link ReportType} and
      * the {@link ReportCategory} defined. The Base-Queries for all the type and category of the {@link
-     * com.cronos.timetracker.report.Report}, are specified in the configuration that is loaded via the {@link
+     * com.topcoder.timetracker.report.Report}, are specified in the configuration that is loaded via the {@link
      * com.topcoder.util.config.ConfigManager} an then put into in the Map.
      * <p/>
      * The key for the Map will be a string which is combination of {@link ReportType} and the {@link ReportCategory}.
