@@ -1424,7 +1424,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
             while (rs.next()) {
                 resources.put(rs.getString(FIELD_NAME),
-                    new GeneralPuzzleResource(rs.getString(FIELD_SUGGESTED_NAME), rs.getString(FIELD_MEDIA_TYPE),
+                    new GeneralPuzzleResource(rs.getString(FIELD_NAME), rs.getString(FIELD_MEDIA_TYPE),
                         rs.getBytes(FIELD_CONTENT)));
             }
 
