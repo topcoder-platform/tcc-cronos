@@ -196,6 +196,16 @@
     <property name="auction_framework.path" value="auction_framework/${auction_framework.version}"/>
     <property name="auction_framework.jar" value="${tcs_libdir}/${auction_framework.path}/${auction_framework.jar.name}"/>
 
+    <property name="random_string_image.version" value="1.0"/>
+    <property name="random_string_image.jar.name" value="random_string_image.jar"/>
+    <property name="random_string_image.path" value="random_string_image/${random_string_image.version}"/>
+    <property name="random_string_image.jar" value="${tcs_libdir}/${random_string_image.path}/${random_string_image.jar.name}"/>
+
+    <property name="hashing_utility.version" value="1.0"/>
+    <property name="hashing_utility.jar.name" value="hashing_utility.jar"/>
+    <property name="hashing_utility.path" value="hashing_utility/${hashing_utility.version}"/>
+    <property name="hashing_utility.jar" value="${tcs_libdir}/${hashing_utility.path}/${hashing_utility.jar.name}"/>
+
     <!-- Custom Component Dependencies -->
 
     <property name="administration_persistence.version" value="1.0" />
@@ -267,6 +277,8 @@
 	<pathelement location="${image_manipulation.jar}" />
 	<pathelement location="${puzzle_framework.jar}" />
 	<pathelement location="${auction_framework.jar}" />
+	<pathelement location="${random_string_image.jar}" />
+	<pathelement location="${hashing_utility.jar}" />
 
 	<pathelement location="${administration_persistence.jar}" />
 	<pathelement location="${game_persistence.jar}" />
