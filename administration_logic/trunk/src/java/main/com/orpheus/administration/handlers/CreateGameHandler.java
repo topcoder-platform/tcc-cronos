@@ -3,15 +3,6 @@
  */
 package com.orpheus.administration.handlers;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.administration.Helper;
 import com.orpheus.administration.entities.GameImpl;
 import com.orpheus.administration.entities.HostingBlockImpl;
@@ -31,6 +22,13 @@ import com.topcoder.util.auction.impl.AuctionImpl;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Provides a Handler implementation that accepts general information about one
@@ -452,7 +450,10 @@ public class CreateGameHandler implements Handler {
                 return false;
             }
 
-            Auction auction = new AuctionImpl(null, summary, description,
+            // ISV : FINAL FIX : Auction ID must be same as hosting block ID
+//            Auction auction = new AuctionImpl(null, summary, description,
+//                    itemCount, this.minimumBid, startDate, endDate, new Bid[0]);
+            Auction auction = new AuctionImpl(newHBlock[i].getId(), summary, description,
                     itemCount, this.minimumBid, startDate, endDate, new Bid[0]);
             try {
                 auctionMgr.createAuction(auction);

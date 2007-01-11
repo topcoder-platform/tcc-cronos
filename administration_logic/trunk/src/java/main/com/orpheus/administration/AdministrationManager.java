@@ -3,22 +3,13 @@
  */
 package com.orpheus.administration;
 
-import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import javax.ejb.CreateException;
-import javax.imageio.ImageIO;
-
 import com.orpheus.administration.entities.DomainTargetImpl;
 import com.orpheus.administration.entities.HostingSlotImpl;
 import com.orpheus.administration.entities.PuzzleConfig;
 import com.orpheus.administration.entities.PuzzleTypeEnum;
 import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.administration.persistence.AdminDataHome;
+import com.orpheus.game.GameDataException;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.EntryNotFoundException;
@@ -28,6 +19,13 @@ import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.ImageInfo;
 import com.orpheus.game.persistence.PersistenceException;
+import com.topcoder.randomstringimg.Configuration;
+import com.topcoder.randomstringimg.InvalidConfigException;
+import com.topcoder.randomstringimg.ObfuscationAlgorithm;
+import com.topcoder.randomstringimg.ObfuscationException;
+import com.topcoder.randomstringimg.RandomStringImage;
+import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
+import com.topcoder.util.algorithm.hash.algorithm.HashAlgorithm;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.image.manipulation.Image;
 import com.topcoder.util.image.manipulation.image.MutableMemoryImage;
@@ -43,6 +41,19 @@ import com.topcoder.web.frontcontroller.results.DownloadData;
 import com.topcoder.webspider.web.WebAddressContext;
 import com.topcoder.webspider.web.WebCrawler;
 import com.topcoder.webspider.web.WebPageData;
+
+import javax.ejb.CreateException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * <p>
@@ -262,6 +273,16 @@ public class AdministrationManager {
     private final String objectFactory;
 
     /**
+     * The singleton HashAlgorithmManager, cached here for convenience
+     */
+    private final HashAlgorithmManager hashAlgManager;
+
+    /**
+     * A RandomStringImage onject for use generating images of text
+     */
+    private final RandomStringImage randomStringImage;
+
+    /**
      * Creates a AdministrationManager instance with given PuzzleTypeSource to
      * use when generating puzzles and brain teasers and set up with
      * configuration values from given namespace.
@@ -310,6 +331,43 @@ public class AdministrationManager {
         preferredDistinctPages = Helper.getPropertyInt(namespace,
                 "PreferredDistinctPages");
         objectFactory = Helper.getPropertyString(namespace, "objFactoryNS");
+
+        
+
+        try {
+            hashAlgManager = HashAlgorithmManager.getInstance();
+        } catch (com.topcoder.util.algorithm.hash.ConfigurationException ce) {
+            throw new ConfigurationException("Could not obtain HashAlgorithmManager instance", ce);
+        }
+
+        try {
+            Configuration config;
+            // ISV : FINAL FIX : SHOULD BETTER NOT USE NON-ARG CONSTRUCTOR
+            randomStringImage = new RandomStringImage(Helper.getPropertyString(namespace, "RandomStringImageFile"));
+            config = randomStringImage.getConfiguration();
+            config.clearAlgorithms();
+            config.addAlgorithm(new ObfuscationAlgorithm() {
+                public int getType() {
+                    return ObfuscationAlgorithm.AFTER_TEXT;
+                }
+
+                public void obfuscate(BufferedImage image, Color textColor, Color backgroundColor) {
+                    /* does nothing */
+                }
+            });
+            config.clearColors();
+            config.addColorPair(Color.WHITE, Color.BLUE.brighter());
+            config.setFormat("JPEG");
+            config.setMaxFontSize(10);
+            config.setMinFontSize(10);
+            config.setImageSize(144, 14);
+            config.setMinWordLength(1);
+            config.setMaxWordLength(100);
+        } catch (InvalidConfigException ice) {
+            throw new ConfigurationException("Could not obtain a RandomStringImage instance", ice);
+        } catch (IOException ioe) {
+            throw new ConfigurationException("Could not obtain a RandomStringImage instance", ioe);
+        }
     }
 
     /**
@@ -488,8 +546,7 @@ public class AdministrationManager {
      * Initializes all the slots in the specified hosting block by generating
      * minihunt targets, brain teasers, and game-win puzzles for them. It will
      * retrieve the slot ids for the given block and call regeneratePuzzle(),
-     * regenerateBrainTeaser() and generateHuntTargets() for each slot id.<br/>
-     *
+     * regenerateBrainTeaser() and generateHuntTargets() for each slot id.
      *
      * @param blockId
      *            block id.
@@ -509,10 +566,12 @@ public class AdministrationManager {
             HostingBlock block = gameData.getBlock(blockId);
             HostingSlot[] slots = block.getSlots();
             for (int i = 0; i < slots.length; i++) {
-                Long slotId = slots[i].getId();
-                regeneratePuzzle(slotId.longValue(), adminData, gameData);
-                regenerateBrainTeaser(slotId.longValue(), adminData, gameData);
-                generateHuntTargets(slotId.longValue(), gameData);
+                long slotId = slots[i].getId().longValue();
+                // ISV : FINAL FIX : HUNT TARGETS SHOULD BETTER BE INITIALIZED AFTER PUZZLES BUT BEFORE BRAINTEASERS
+//                generateHuntTargets(slotId, gameData);
+                regeneratePuzzle(slotId, adminData, gameData);
+                generateHuntTargets(slotId, gameData);
+                regenerateBrainTeaser(slotId, adminData, gameData);
             }
         } catch (AdministrationException e) {
             // re-throw
@@ -549,11 +608,14 @@ public class AdministrationManager {
             Image image = new MutableMemoryImage(ImageIO.read(imageData
                     .getContent()));
             int chosenPuzzle = new Random().nextInt(PUZZLE_TYPES.length);
+
+            // ISV : TODO : REMOVE THIS LINE
+            chosenPuzzle = 0;
+
             // Get puzzle config for the type
             PuzzleConfig config = null;
             synchronized (puzzleConfigMap) {
-                config = (PuzzleConfig) puzzleConfigMap
-                        .get(PUZZLE_TYPES[chosenPuzzle]);
+                config = (PuzzleConfig) puzzleConfigMap.get(PUZZLE_TYPES[chosenPuzzle]);
             }
             // Set puzzle generator configuration
             PuzzleType puzzleType = puzzleTypeSource.getPuzzleType(config
@@ -656,6 +718,10 @@ public class AdministrationManager {
             }
             String puzzleText = targets[0].getIdentifierText();
             int chosenPuzzle = new Random().nextInt(BRAINTEASER_TYPES.length);
+
+            // ISV : TODO : REMOVE THIS LINE
+            chosenPuzzle = 0;
+
             // Get puzzle config for the type
             PuzzleConfig config = null;
             synchronized (puzzleConfigMap) {
@@ -716,8 +782,8 @@ public class AdministrationManager {
             // use ObjectFactory to create an instance of SiteStatistics
             SiteStatistics siteStatistics;
             try {
-                siteStatistics = (SiteStatistics) of
-                        .createObject("SiteStatistics");
+                siteStatistics = (SiteStatistics) of.createObject(
+                        "SiteStatistics");
             } catch (ClassCastException e) {
                 throw new AdministrationException(
                         "Failed to create SiteStatistics instance via objectFactory.",
@@ -745,23 +811,31 @@ public class AdministrationManager {
             // generate domainTargets
             DomainTarget[] domainTargets = new DomainTarget[preferredTargetLength];
             for (int cnt = 0; cnt < preferredTargetLength && cnt < stats.length; cnt++) {
-                TextStatistics textStatistics = selectStatisatics(selected,
-                        stats, rd, cnt);
+                TextStatistics textStatistics = selectStatisatics(selected, stats, rd, cnt);
+
                 if (textStatistics.getDocuments().length >= minDistinctPages
                         && textStatistics.getDocuments().length <= maxDistinctPages) {
                     String[] docs = textStatistics.getDocuments();
                     int chosenDocId = rd.nextInt(docs.length);
+		    HashAlgorithm hasher = hashAlgManager.getAlgorithm("SHA-1");
+
                     // create a DomainTargetImpl instance
                     DomainTargetImpl domainTarget = new DomainTargetImpl();
-                    domainTarget.setUriPath((String) docUrlMap
-                            .get(docs[chosenDocId]));
+
+		    domainTarget.setSequenceNumber(cnt);
+                    domainTarget.setUriPath((String) docUrlMap.get(
+			    docs[chosenDocId]));
                     domainTarget.setIdentifierText(textStatistics.getText());
+		    domainTarget.setIdentifierHash(hasher.hashToHexString(
+			    textStatistics.getText(), "UTF-8"));
+		    domainTarget.setClueImageId(createClueImage(
+			    textStatistics.getText(), gameData));
+
                     domainTargets[cnt] = domainTarget;
                 }
             }
             // Create a new HostingSlotImpl instance
-            HostingSlotImpl newSlot = Helper.copySlot(slot, slot
-                    .getSequenceNumber());
+            HostingSlotImpl newSlot = Helper.copySlot(slot, slot.getSequenceNumber());
             // Set the new domain targets
             newSlot.setDomainTargets(domainTargets);
             // Update slot
@@ -769,6 +843,36 @@ public class AdministrationManager {
         } catch (Exception e) {
             throw new AdministrationException("Failed to regenerate puzzle.", e);
         }
+    }
+
+    /*
+     * Creates an image representation of the specified text, records it as a
+     * downloadable object, and returns the download object ID
+     *
+     * @param  imageText a String containing the text to be rendered as an image
+     * @param  gameData a GameData with which to record the generated image
+     *
+     * @return the downloadable object ID of the generated image
+     *
+     * @throws AdministrationException if an error occurs while generating 
+     *         or recording the image
+     */
+    private long createClueImage(String imageText, GameData gameData)
+	    throws AdministrationException {
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+	try {
+	    randomStringImage.generate(imageText, stream);
+            return gameData.recordBinaryObject("clue_image.jpeg", "image/jpeg", stream.toByteArray());
+	} catch (IOException ioe) {
+            throw new AdministrationException("Could not generate clue image", ioe);
+	} catch (ObfuscationException oe) {
+            throw new AdministrationException("Could not generate clue image", oe);
+	} catch (InvalidConfigException ice) {
+            throw new AdministrationException("Could not generate clue image", ice);
+	} catch (GameDataException gde) {
+            throw new AdministrationException("Could not generate clue image", gde);
+	}
     }
 
     /**
