@@ -249,8 +249,8 @@ public class ReorderSlotsHandler implements Handler {
      *  slotId:               1,  2,  3,  4,  5
      *  old Sequence Number:  1,  2,  3,  4,  5
      *  &lt;strong&gt;to&lt;/strong&gt;
-     *  slotId:               1,  2,  3,  4,  5
-     *  new Sequence Number:  1,  2,  5,  3,  4
+     *  slotId:               1,  4,  3,  2,  5
+     *  new Sequence Number:  1,  2,  3,  4,  5
      * </pre>
      * 
      * 
@@ -271,38 +271,37 @@ public class ReorderSlotsHandler implements Handler {
     private String reorder(GameData gameData, Integer offset,
             int currentSlotIndex, HostingBlock block, HostingSlot[] slots,
             HttpServletRequest request) {
-        if (currentSlotIndex + offset.intValue() >= block.getSlots().length) {
-            Helper.processFailureCannotMoveSlotBeyondLast(request,
-                    failRequestAttrName, "the slot index is:"
-                            + currentSlotIndex + " offset is:" + offset);
-            return failedResult;
-        }
-        // collect the updated HostingSlot instances in an array HostingSlot[]
-        HostingSlot[] newHostingSlots = new HostingSlot[slots.length];
-        // the slot whose array index before currentSlotIndex
-        for (int i = 0; i < currentSlotIndex; i++) {
-            newHostingSlots[i] = Helper.copySlot(slots[i], slots[i]
-                    .getSequenceNumber());
-        }
-        // the current slot
-        newHostingSlots[currentSlotIndex] = Helper.copySlot(
-                slots[currentSlotIndex], slots[currentSlotIndex]
-                        .getSequenceNumber()
-                        + offset.intValue());
-        for (int i = currentSlotIndex + 1; i < slots.length; i++) {
-            newHostingSlots[i] = Helper.copySlot(slots[i], slots[i]
-                    .getSequenceNumber() - 1);
-        }
 
+        HostingSlot currSlot = slots[currentSlotIndex];
+        if (currSlot.getHostingStart() != null) {
+        	return failedResult;
+        }
+        
+        int targetSeqNum = currSlot.getSequenceNumber() + offset.intValue();
+        HostingSlot targetSlot = null;
+        int i = 0;
+        for (; i < slots.length; ++i) {
+        	if (slots[i].getSequenceNumber() == targetSeqNum) {
+        		targetSlot = slots[i];
+        		break;
+        	}
+        }
+        if (targetSlot == null || targetSlot.getHostingEnd() != null) {
+        	return failedResult;
+        }
+        slots[currentSlotIndex] = Helper.copySlot(targetSlot, currSlot.getSequenceNumber());
+        slots[i] = Helper.copySlot(currSlot, targetSlot.getSequenceNumber());
+        
         // Update the slots
         try {
-            gameData.updateSlots(newHostingSlots);
+        	// gameData.updateSlots(newHostingSlots);
+            gameData.updateSlots(slots);
         } catch (Exception e) {
             Helper.processFailureExceptionOccur(request,
                     "Failed to update slots", failRequestAttrName, e);
             return failedResult;
         }
-
+        
         // return null in case of successful execution.
         return null;
     }
