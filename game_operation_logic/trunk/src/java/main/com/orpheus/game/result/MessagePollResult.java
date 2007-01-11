@@ -259,7 +259,8 @@ public class MessagePollResult implements Result {
             cal.setTimeZone(TimeZone.getTimeZone(timeZoneValue));
         }
 
-        return cal.getTime();
+        //return cal.getTime();
+        return new java.sql.Date(cal.getTime().getTime());
     }
 
     /**
