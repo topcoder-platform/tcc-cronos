@@ -286,16 +286,18 @@ public class ReorderSlotsHandler implements Handler {
         		break;
         	}
         }
-        if (targetSlot == null || targetSlot.getHostingEnd() != null) {
+        if (targetSlot == null) {
         	return failedResult;
         }
-        slots[currentSlotIndex] = Helper.copySlot(targetSlot, currSlot.getSequenceNumber());
-        slots[i] = Helper.copySlot(currSlot, targetSlot.getSequenceNumber());
+        //slots[currentSlotIndex] = Helper.copySlot(targetSlot, currSlot.getSequenceNumber());
+        //slots[i] = Helper.copySlot(currSlot, targetSlot.getSequenceNumber());
         
+        HostingSlot[] newSlots = new HostingSlot[2];
+        newSlots[0] = Helper.copySlot(targetSlot, currSlot.getSequenceNumber());
+        newSlots[1] =  Helper.copySlot(currSlot, targetSlot.getSequenceNumber());
         // Update the slots
         try {
-        	// gameData.updateSlots(newHostingSlots);
-            gameData.updateSlots(slots);
+        	gameData.updateSlots(newSlots);
         } catch (Exception e) {
             Helper.processFailureExceptionOccur(request,
                     "Failed to update slots", failRequestAttrName, e);
