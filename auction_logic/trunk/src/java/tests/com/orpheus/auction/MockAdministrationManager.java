@@ -5,7 +5,7 @@ package com.orpheus.auction;
 
 import com.orpheus.administration.AdministrationException;
 import com.orpheus.administration.AdministrationManager;
-import com.topcoder.util.auction.ConfigurationException;
+import com.orpheus.administration.ConfigurationException;
 import com.topcoder.util.puzzle.PuzzleTypeSource;
 
 /**

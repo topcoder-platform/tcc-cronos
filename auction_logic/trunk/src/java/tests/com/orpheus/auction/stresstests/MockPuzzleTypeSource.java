@@ -3,6 +3,7 @@
  */
 package com.orpheus.auction.stresstests;
 
+import com.topcoder.util.puzzle.PuzzleType;
 import com.topcoder.util.puzzle.PuzzleTypeSource;
 
 /**
@@ -14,5 +15,13 @@ import com.topcoder.util.puzzle.PuzzleTypeSource;
  * @version 1.0
  */
 public class MockPuzzleTypeSource implements PuzzleTypeSource {
+
+    public boolean hasPuzzleType(String puzzleType) {
+	return false;
+    }
+
+    public PuzzleType getPuzzleType(String typeName) {
+	return null;
+    }
 
 }

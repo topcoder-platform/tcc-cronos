@@ -5,6 +5,7 @@ package com.orpheus.auction.accuracytests;
 
 import com.orpheus.game.GameDataException;
 import com.orpheus.game.GameDataManager;
+import com.orpheus.game.persistence.HostingSlot;
 
 /**
  * Dummy GameDataManager implementation used in tests.
@@ -54,5 +55,9 @@ public class DummyGameDataManager implements GameDataManager {
     public long getBlockId() {
         return blockId;
     }
+
+    public void advanceHostingSlot(long slotId) {}
+
+    public boolean testUpcomingDomain(HostingSlot slot) { return true; }
 
 }

@@ -5,6 +5,7 @@ package com.orpheus.auction;
 
 import com.orpheus.game.GameDataException;
 import com.orpheus.game.GameDataManager;
+import com.orpheus.game.persistence.HostingSlot;
 
 /**
  * <p>
@@ -59,4 +60,8 @@ public class MockGameDataManager implements GameDataManager {
     public long[] getLastBidIds() {
         return bidIds;
     }
+
+    public void advanceHostingSlot(long slotId) {}
+
+    public boolean testUpcomingDomain(HostingSlot slot) { return true; }
 }
