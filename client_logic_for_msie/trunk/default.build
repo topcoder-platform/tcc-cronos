@@ -143,15 +143,15 @@
             </includedirs>
         </midl>
         <tlbimp typelib="${builddir}\MsHtmHstInterop.tlb" output="${interop_mshtmhst.dll}"
-                keyfile="orpheus.snk" verbose="true"/>
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
         <tlbimp typelib="${sys.env.windir}\system32\shdocvw.dll" output="${interop_shdocvw.dll}"
-                keyfile="orpheus.snk" verbose="true"/>
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
         <tlbimp typelib="${sys.env.windir}\system32\mshtml.tlb" output="${interop_mshtml.dll}"
-                keyfile="orpheus.snk" verbose="true"/>
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
         <tlbimp typelib="${sys.env.windir}\System32\MSXML2.dll" output="${interop_msxml2.dll}"
-                keyfile="orpheus.snk" verbose="true"/>
+                keyfile="${ext_bin}\TopCoder.snk" verbose="true"/>
         <aximp ocx="${sys.env.windir}\System32\SHDocVw.dll" output="${AxSHDocVw.dll}"
-                keyfile="orpheus.snk" />
+                keyfile="${ext_bin}\TopCoder.snk" />
     </target>
 
 

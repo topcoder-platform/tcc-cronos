@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006, 2007 TopCoder Inc., All Rights Reserved.
  *
  * DefaultWebBrowserWindowNavigator.cs
  */
@@ -10,6 +10,7 @@ using System.IO;
 using MsHtmHstInterop;
 using Mshtml;
 using SHDocVw;
+using TopCoder.Util.ConfigurationManager;
 
 namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
 {
@@ -31,8 +32,8 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
     /// </summary>
     ///
     /// <author>kr00tki</author>
-    /// <version>1.0.1</version>
-    /// <copyright>Copyright (C) 2006 TopCoder Inc., All Rights Reserved.</copyright>
+    /// <version>1.0.2</version>
+    /// <copyright>Copyright (C) 2006, 2007 TopCoder Inc., All Rights Reserved.</copyright>
     public class DefaultWebBrowserWindowNavigator : IWebBrowserWindowNavigator
     {
         /// <summary>
@@ -42,7 +43,6 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         /// It can be null if no new window is displayed.
         /// Once a new one is displayed it will point to this one.
         /// </summary>
-        //private IHTMLWindow2 popupWindow = null;
         private SHDocVw.InternetExplorer popupWindow = null;
 
         /// <summary>
@@ -55,6 +55,37 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         /// propmting user. Default value to false.
         /// </summary>
         private bool allowJSCloseWindow = false;
+
+        /// <summary>
+        /// The popup window height.
+        /// </summary>
+        private int windowHeight = 100;
+
+        /// <summary>
+        /// The popup window width.
+        /// </summary>
+        private int windowWidth = 100;
+
+        /// <summary>
+        /// This flag indicates if address bar should be displayed in popup window.
+        /// </summary>
+        private bool addressBarEnabled = false;
+
+        /// <summary>
+        /// This flag indicates if manu bar should be displayed in popup window.
+        /// </summary>
+        private bool menuBarEnabled = false;
+
+        /// <summary>
+        /// This flag indicates if status bar should be displayed in popup window.
+        /// </summary>
+        private bool statusBarEnabled = false;
+
+        /// <summary>
+        /// This value indicates if toolabe bar should be displayed in popup window. If value is 0, then the
+        /// toolbars won't be displayed.
+        /// </summary>
+        private int toolbarEnabled = 0;
 
         /// <summary>
         /// Empty constructor.
@@ -74,6 +105,65 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         }
 
         /// <summary>
+        /// This constructor loads configuration paramteres and sets them to internal fields.
+        /// <list type="bullet">
+        /// <item>window_width - the popup window width</item>
+        /// <item>window_height - the popup window height</item>
+        /// <item>allow_window_close - indicates if popup window can be closed from JS</item>
+        /// <item>addressbar - indicates if address bar should be displayed.</item>
+        /// <item>menubar - indicates if menu bar should be displayed.</item>
+        /// <item>statusbar - indicates if status bar should be displayed.</item>
+        /// <item>toolbar - indicates if toolbar should be displayed.</item>
+        /// </list>
+        /// </summary>
+        /// <param name="confNamespace">the configuration namespace.</param>
+        /// <exception cref="ArgumentNullException">if any parameter is null.</exception>
+        /// <exception cref="ArgumentException">if any parameter is empty string.</exception>
+        public DefaultWebBrowserWindowNavigator(String confNamespace)
+        {
+            Validator.ValidateNullOrEmptyString(confNamespace, "confNamespace");
+
+            ConfigManager cm = ConfigManager.GetInstance();
+            windowWidth = cm.GetIntValue(confNamespace, "window_width");
+            windowHeight = cm.GetIntValue(confNamespace, "window_height");
+            allowJSCloseWindow = bool.Parse(cm.GetValue(confNamespace, "allow_window_close"));
+            addressBarEnabled = bool.Parse(cm.GetValue(confNamespace, "addressbar"));
+            menuBarEnabled = bool.Parse(cm.GetValue(confNamespace, "menubar"));
+            statusBarEnabled = bool.Parse(cm.GetValue(confNamespace, "statusbar"));
+            toolbarEnabled = cm.GetIntValue(confNamespace, "toolbar");
+        }
+
+        /// <summary>
+        /// Creates new browser window using configured properties.
+        /// </summary>
+        /// <returns>new browser window.</returns>
+        private SHDocVw.InternetExplorer CreateWindow()
+        {
+            // create new IE COM object
+            SHDocVw.InternetExplorer popupWindow = new InternetExplorerClass();
+            // hide the bars
+            popupWindow.AddressBar = addressBarEnabled;
+            popupWindow.MenuBar = menuBarEnabled;
+            popupWindow.StatusBar = statusBarEnabled;
+            // hide the nagivation and others toolbars - unfortunately it will hide also our bar
+            popupWindow.ToolBar = toolbarEnabled;
+
+            popupWindow.Width = windowWidth;
+            popupWindow.Height = windowHeight;
+
+            // add the quit delegate - it's used for releasing our popup window on close
+            popupWindow.OnQuit += new DWebBrowserEvents2_OnQuitEventHandler(ReleasePopupWindow);
+
+            if (allowJSCloseWindow)
+            {
+                popupWindow.WindowClosing += new DWebBrowserEvents2_WindowClosingEventHandler(
+                    WindowClosingHandler);
+            }
+            popupWindow.PutProperty("nnaame", "Popup");
+            return popupWindow;
+        }
+
+        /// <summary>
         /// This method directs the browser or the new window to the specified URL.
         /// </summary>
         ///
@@ -89,7 +179,6 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         public void Navigate(WebBrowserClass webBrowser, string url, bool newWindow)
         {
             Validator.ValidateNullOrEmptyString(url, "url");
-
             object address = url;
             try
             {
@@ -99,23 +188,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
                     {
                         if (popupWindow == null)
                         {
-                            // create new IE COM object
-                            popupWindow = new InternetExplorerClass();
-                            // hide the bars
-                            popupWindow.AddressBar = false;
-                            popupWindow.MenuBar = false;
-                            popupWindow.StatusBar = false;
-                            // hide the nagivation and others toolbars - unfortunately it will hide also our bar
-                            popupWindow.ToolBar = 0;
-
-                            // add the quit delegate - it's used for releasing our popup window on close
-                            popupWindow.OnQuit += new DWebBrowserEvents2_OnQuitEventHandler(ReleasePopupWindow);
-
-                            if (allowJSCloseWindow)
-                            {
-                                popupWindow.WindowClosing += new DWebBrowserEvents2_WindowClosingEventHandler(
-                                    WindowClosingHandler);
-                            }
+                            popupWindow = CreateWindow();
                         }
 
                         // navigate to requested location
@@ -194,8 +267,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
             }
             catch (Exception e)
             {
-                throw new WebBrowserNavigationException(
-                    "Failed to read content from the input stream.", e);
+                throw new WebBrowserNavigationException("Failed to read content from the input stream.", e);
             }
 
             try
@@ -206,17 +278,8 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
                     {
                         if (popupWindow == null)
                         {
-                            // create new IE COM object
-                            popupWindow = new InternetExplorerClass();
-                            // hide the bars
-                            popupWindow.AddressBar = false;
-                            popupWindow.MenuBar = false;
-                            popupWindow.StatusBar = false;
-                            // hide the nagivation and others toolbars - unfortunately it will hide also our bar
-                            popupWindow.ToolBar = 0;
+                            popupWindow = CreateWindow();
 
-                            // add the quit delegat - it's used for realing our popup window on close
-                            popupWindow.OnQuit += new DWebBrowserEvents2_OnQuitEventHandler(ReleasePopupWindow);
                             ContentLoader loader = new ContentLoader(popupWindow, output);
                             DWebBrowserEvents2_DocumentCompleteEventHandler docHandler =
                                 new DWebBrowserEvents2_DocumentCompleteEventHandler(loader.LoadWindowContent);

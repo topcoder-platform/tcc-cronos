@@ -16,5 +16,5 @@ of a context tool bar to appropriately handle various UI events.")]
 // executable use the NAnt build file.  To build under Visual Studio just
 // exclude this file from the build.
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"..\..\orpheus.snk")]
+[assembly: AssemblyKeyFile(@"..\..\..\tcs\bin\TopCoder.snk")]
 [assembly: AssemblyKeyName("")]

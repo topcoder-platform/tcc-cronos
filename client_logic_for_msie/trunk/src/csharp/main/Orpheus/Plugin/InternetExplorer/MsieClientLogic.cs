@@ -14,6 +14,7 @@ using TopCoder.Util.ObjectFactory;
 using MsHtmHstInterop;
 using SHDocVw;
 using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace Orpheus.Plugin.InternetExplorer
 {
@@ -687,8 +688,11 @@ namespace Orpheus.Plugin.InternetExplorer
             Validator.ValidateNull(webBrowser, "webBrowser");
             try
             {
-                ICustomDoc customDoc = (ICustomDoc)webBrowser.Document;
-                customDoc.SetUIHandler(browserCustomization);
+                ICustomDoc customDoc = webBrowser.Document as ICustomDoc;
+                if (customDoc != null)
+                {
+                    customDoc.SetUIHandler(browserCustomization);
+                }
             }
             catch (Exception e)
             {

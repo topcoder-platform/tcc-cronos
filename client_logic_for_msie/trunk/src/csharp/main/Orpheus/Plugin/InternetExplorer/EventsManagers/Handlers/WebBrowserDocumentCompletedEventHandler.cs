@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006, 2007 TopCoder Inc., All Rights Reserved.
  *
  * WebBrowserDocumentCompletedEventHandler.cs
  */
@@ -31,8 +31,9 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
     ///
     /// <author>TCSDESIGNER</author>
     /// <author>TCSDEVELOPER</author>
-    /// <version>1.0</version>
-    /// <copyright>Copyright (C) 2006 TopCoder Inc., All Rights Reserved.</copyright>
+    /// <author>kr00tki</author>
+    /// <version>1.0.2</version>
+    /// <copyright>Copyright (C) 2006, 2007 TopCoder Inc., All Rights Reserved.</copyright>
     public class WebBrowserDocumentCompletedEventHandler : IExtensionEventHandler
     {
         /// <summary>
@@ -114,34 +115,15 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                     string url = string.Format(cm.GetValue(configurationNamespace,
                         PROPERTY_DOCUMENT_COMPLETED_URL), host);
 
-                    byte[] buffer = null;
+                    string numberStr = null;
+                    // the number recieved from the server will be in text form
                     using (Stream stream = Helper.GetDocumentContent(url))
                     {
-                        using (Stream tmpStream = new MemoryStream())
-                        {
-                            BinaryReader reader = new BinaryReader(stream);
-                            try
-                            {
-                                while (true)
-                                {
-                                    tmpStream.WriteByte(reader.ReadByte());
-                                }
-                            }
-                            catch (EndOfStreamException)
-                            {
-                                // ok
-                            }
-                            buffer = new byte[tmpStream.Length];
-                            tmpStream.Seek(0, SeekOrigin.Begin);
-                            tmpStream.Read(buffer, 0, buffer.Length);
-                        }
-                    }
-                    int number = 0;
-                    for (int i = 0; i < buffer.Length; i++)
-                    {
-                        number = (number << 8) | buffer[i];
+                        TextReader reader = new StreamReader(stream);
+                        numberStr = reader.ReadToEnd().Trim();
                     }
 
+                    int number = int.Parse(numberStr);
                     if (number != 0)
                     {
                         // the number is not 0
