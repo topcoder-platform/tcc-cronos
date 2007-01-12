@@ -827,24 +827,18 @@ public class Helper {
      * @param request the HttpServletRequest
      * @param slot the slot
      * @param failRequestAttrName the failRequestAttrName
-     * @return false if not started or finished, or return true
+     * @return true if not started, otherwise return false
      */
     public static final boolean checkSlotForStartedOrFinished(HostingSlot slot,
             HttpServletRequest request, String failRequestAttrName) {
-        Long slotId = slot.getId();
-        if (slot.getHostingEnd() != null) {
-        	// hosting end is not null when slot is finished
-            Helper.processFailureSlotFinishedHosting(request,
-                    failRequestAttrName, slotId);
-            return false;
-        }
+        //Long slotId = slot.getId();
         if (slot.getHostingStart() == null) {
-        	// hosting start is null when slot is not started
-            Helper.processFailureSlotStartedHosting(request,
-                    failRequestAttrName, slotId);
-            return false;
+        	return true;
         }
-        return true;
+        if (slot.getHostingStart().compareTo(new Date()) <= 0) {
+        	return true;
+        }
+        return false;
     }
     /**
      * Check is sponsor is approval.
