@@ -832,20 +832,15 @@ public class Helper {
     public static final boolean checkSlotForStartedOrFinished(HostingSlot slot,
             HttpServletRequest request, String failRequestAttrName) {
         Long slotId = slot.getId();
-        if (slot.getHostingStart() == null) {
-        	return true;
-        }
-
-        if (slot.getHostingStart().compareTo(new Date()) <= 0) {
-        	// hosting start is null when slot is not started
-            Helper.processFailureSlotStartedHosting(request,
+        if (slot.getHostingEnd() != null) {
+        	// hosting end is not null when slot is finished
+            Helper.processFailureSlotFinishedHosting(request,
                     failRequestAttrName, slotId);
             return false;
         }
-        
-        if ((slot.getHostingEnd() != null) && slot.getHostingEnd().compareTo(new Date()) <= 0) {
-        	// hosting end is not null when slot is finished
-            Helper.processFailureSlotFinishedHosting(request,
+        if (slot.getHostingStart() == null) {
+        	// hosting start is null when slot is not started
+            Helper.processFailureSlotStartedHosting(request,
                     failRequestAttrName, slotId);
             return false;
         }
