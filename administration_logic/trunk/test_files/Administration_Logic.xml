@@ -178,6 +178,10 @@
     <Property name="objFactoryNS">
         <Value>objFactoryNS</Value>
     </Property>
+    
+    <Property name="RandomStringImageFile">
+        <Value>accuracy/RandomStringImage.xml</Value>
+    </Property>
   </Config>
   
 </CMConfig>

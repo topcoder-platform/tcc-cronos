@@ -23,7 +23,7 @@
 
   <!-- Configuration of Object Factory Component -->
   <Config name="com.topcoder.util.web.sitestatistics.inclusion.rule">
-  	<Property name="com/topcoder/util/web/sitestatistics/impl/InclusionRule:WordInclusionRule">
+  	<Property name="WordInclusionRule">
 		<Property name="type">
 			<Value>com.topcoder.util.web.sitestatistics.impl.rules.LengthRule</Value>
 		</Property>
@@ -47,7 +47,7 @@
       </Property>
   	</Property>
 
-  	<Property name="com/topcoder/util/web/sitestatistics/impl/InclusionRule:ElementInclusionRule">
+  	<Property name="ElementInclusionRule">
 		<Property name="type">
 			<Value>com.topcoder.util.web.sitestatistics.impl.rules.TextOnlyElementRule</Value>
 		</Property>

@@ -155,11 +155,21 @@
     <property name="compression_utility.jar.name" value="compression_utility.jar"/>
     <property name="compression_utility.path" value="compression_utility/${compression_utility.version}"/>
     <property name="compression_utility.jar" value="${tcs_libdir}/${compression_utility.path}/${compression_utility.jar.name}"/>
-    
+
     <property name="memory_usage.version" value="1.0"/>
     <property name="memory_usage.jar.name" value="memory_usage.jar"/>
     <property name="memory_usage.path" value="memory_usage/${memory_usage.version}"/>
     <property name="memory_usage.jar" value="${tcs_libdir}/${memory_usage.path}/${memory_usage.jar.name}"/>
+
+    <property name="spell_check.version" value="1.0"/>
+    <property name="spell_check.jar.name" value="spell_check.jar"/>
+    <property name="spell_check.path" value="spell_check/${spell_check.version}"/>
+    <property name="spell_check.jar" value="${tcs_libdir}/${spell_check.path}/${spell_check.jar.name}"/>
+
+    <property name="command_line_utility.version" value="1.0"/>
+    <property name="command_line_utility.jar.name" value="command_line_utility.jar"/>
+    <property name="command_line_utility.path" value="command_line_utility/${command_line_utility.version}"/>
+	<property name="command_line_utility.jar" value="${tcs_libdir}/${command_line_utility.path}/${command_line_utility.jar.name}"></property>
     
     <property name="site_validation.version" value="1.0"/>
     <property name="site_validation.jar.name" value="site_validation.jar"/>
@@ -226,9 +236,9 @@
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="j2ee.jar" value="${ext_libdir}/j2ee.jar"/>
-    <property name="tidy.jar" value="${ext_libdir}/jtidy/04Aug200r7/Tidy.jar"/>
+    <property name="tidy.jar" value="${ext_libdir}/jtidy/04Aug2000r7/Tidy.jar"/>
     <property name="xerces.jar" value="${ext_libdir}/xerces/1.4.4/xerces.jar"/>
-    <property name="mockrunner.jar" value="${ext_libdir}/mockrunner/0.3.7/lib/mockrunner.jar"/>
+    <property name="mockrunner.jar" value="${ext_libdir}/mockrunner/0.3.8/lib/mockrunner.jar"/>
     
     <!--    
     <property name="msbase.jar" value="${ext_libdir}/SQLServerJDBC/SP3/msbase.jar"/>
@@ -241,6 +251,8 @@
     <property name="mockejb.jar" value="${mockejb_dir}/mockejb.jar"/>
     <property name="cglib-full-2.0-RC2.jar" value="${mockejb_dir}/cglib-full-2.0-RC2.jar"/>
     <property name="commons-logging.jar" value="${mockejb_dir}/commons-logging.jar"/>
+	
+	<property name="jai.dir" value="${ext_libdir}/jai/1.1.2"></property>
 
     <property name="jakarta-oro-2.0.8.jar" value="${ext_libdir}/jakarta-oro/2.0.8/jakarta-oro-2.0.8.jar"/>
     
@@ -251,7 +263,9 @@
         <pathelement location="${j2ee.jar}" />
 	<!--        <pathelement location="${xerces.jar}" />  -->
         <pathelement location="${tidy.jar}" />
-        
+    	<fileset dir="${jai.dir}" includes="**/*.jar"></fileset>
+
+        <pathelement location="${command_line_utility.jar}"/>
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${user_profile.jar}" />
@@ -268,6 +282,7 @@
         <pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${html_document_parser.jar}" />
         <pathelement location="${simple_cache.jar}" />
+    	<pathelement location="${spell_check.jar}"/>
         <pathelement location="${compression_utility.jar}" />
         <pathelement location="${memory_usage.jar}" />
         <pathelement location="${site_validation.jar}" />
@@ -362,6 +377,17 @@
         <junit fork="true" haltonerror="false">
             <classpath refid="test.build.classpath"/>
             <test name="${package}.AllTests" todir="${testlogdir}">
+                <formatter type="plain" usefile="true"/>
+                <formatter type="xml" usefile="true"/>
+            </test>
+        </junit>
+    </target>
+
+    <target name="test_hunt_targets" depends="compile_tests">
+        <mkdir dir="${testlogdir}"/>
+        <junit fork="true" haltonerror="false" printsummary="yes">
+            <classpath refid="test.build.classpath"/>
+            <test name="${package}.GenerateHuntTargetsUnitTests" todir="${testlogdir}">
                 <formatter type="plain" usefile="true"/>
                 <formatter type="xml" usefile="true"/>
             </test>
@@ -554,6 +580,12 @@
         <copy file="${puzzle_framework.jar}" todir="${jar_tcs_libdir}/${puzzle_framework.path}" />
         <mkdir dir="${jar_tcs_libdir}/${auction_framework.path}"/>
         <copy file="${auction_framework.jar}" todir="${jar_tcs_libdir}/${auction_framework.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${auction_framework.path}"/>
+        <copy file="${auction_framework.jar}" todir="${jar_tcs_libdir}/${auction_framework.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${command_line_utility.path}"/>
+        <copy file="${command_line_utility.jar}" todir="${jar_tcs_libdir}/${command_line_utility.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${spell_check.path}"/>
+        <copy file="${spell_check.jar}" todir="${jar_tcs_libdir}/${spell_check.path}" />
         
         <jar jarfile="${dev_dist.jar}"
              basedir="."
