@@ -1,20 +1,18 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
 package com.orpheus.game;
 
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-
+import java.util.Map;
 
 /**
  * <p>
@@ -32,20 +30,20 @@ import java.util.List;
  */
 public abstract class BaseGameDataManager implements GameDataManager,
     GameStartListener, NewGameAvailableListener {
+
     /**
      * <p>
-     * Represents the list of currently known not-yet-started games.
+     * Represents the collection of currently known not-yet-started games.
      * </p>
      *
      * <p>
      * This is initialized in all ctors, and is then changed through:
-     * <li>The gameStatusChangedToStarted method when we removes the game from this list.</li>
-     * <li>The newGameAvailable method when we add a new entry into the list.</li>
-     * It can NOT be null, but can be empty. No elememnts of the list can be null.
+     * <li>The gameStatusChangedToStarted method when we remove an entry</li>
+     * <li>The newGameAvailable method when we add a new entry</li>
+     * It can NOT be null, but can be empty. None of the values may be null.
      * </p>
-     *
      */
-    private final List notYetStartedGames;
+    private final Map notYetStartedGames;
 
     /**
      * <p>
@@ -54,14 +52,14 @@ public abstract class BaseGameDataManager implements GameDataManager,
      *
      */
     protected BaseGameDataManager() {
-        notYetStartedGames = new ArrayList();
+        notYetStartedGames = new HashMap();
     }
 
     /**
      * <p>
      * This is a listener implementation method that simply takes the game to start, starts the game physically,
      * and removes it from that list.
-     * All of these steps must be synchronized to achieve an atomic trasnaction and thread-safety.
+     * All of these steps must be synchronized to achieve an atomic transaction and thread-safety.
      * Simply synchronize on the <code>notYetStartedGames</code> instance.
      * </p>
      *
@@ -92,17 +90,15 @@ public abstract class BaseGameDataManager implements GameDataManager,
             }
 
             //remove from the not started games
-            notYetStartedGames.remove(game);
+            notYetStartedGames.remove(game.getId());
         }
     }
 
     /**
      * <p>
      * This is a listener implementation method that simply takes the new game,
-     * and places this game on into the list of notYetStartedGames list.
-     * We have to ensure that the list is properly sorted after insertion, closest start times to current
-     * time should be closer to the beginning of the list.
-     * All of these steps must be synchronized to achieve an atomic trasnaction and thread-safety.
+     * and places this game into the notYetStartedGames map.
+     * This must be synchronized to achieve an atomic transaction and thread-safety.
      * Simply synchronize on the <code>notYetStartedGames</code> instance.
      * </p>
      *
@@ -115,10 +111,7 @@ public abstract class BaseGameDataManager implements GameDataManager,
         checkStopped();
 
         synchronized (notYetStartedGames) {
-            notYetStartedGames.add(game);
-
-            //resort the whole collections
-            Collections.sort(notYetStartedGames, new GameComparator());
+            notYetStartedGames.put(game.getId(), game);
         }
     }
 
@@ -129,14 +122,14 @@ public abstract class BaseGameDataManager implements GameDataManager,
      * Simply synchronize on the <code>notYetStartedGames</code> instance.
      * </p>
      *
-     * @return an array of games that have not yet started
+     * @return an array of games that have not yet started, in no particular order
      * @throws IllegalStateException if the manager has been stopped.
      */
     public Game[] getAllCurrentNotStartedGames() {
         checkStopped();
 
         synchronized (notYetStartedGames) {
-            return (Game[]) notYetStartedGames.toArray(new Game[0]);
+            return (Game[]) notYetStartedGames.values().toArray(new Game[0]);
         }
     }
 
@@ -163,17 +156,20 @@ public abstract class BaseGameDataManager implements GameDataManager,
         checkStopped();
 
         synchronized (this.notYetStartedGames) {
-            //firstly clear the init ones
+            // first clear the current games
             this.notYetStartedGames.clear();
-            this.notYetStartedGames.addAll(Arrays.asList(notYetStartedGames));
+
+            // then insert the specified ones
+            for (int i = 0; i < notYetStartedGames.length; i++) {
+                    this.notYetStartedGames.put(notYetStartedGames[i].getId(),
+                            notYetStartedGames[i]);
+            }
         }
     }
 
     /**
      * <p>
      * Add a new game to the list of notYetStartedGames.
-     * We have to ensure that the list is properly sorted after insertion, closest start times to current
-     * time should be closer to the beginning of the list.
      * All of these steps must be synchronized to achieve an atomic trasnaction and thread-safety.
      * Simply synchronize on the notYetStartedGames instance.
      * </p>
@@ -187,8 +183,7 @@ public abstract class BaseGameDataManager implements GameDataManager,
         checkStopped();
 
         synchronized (notYetStartedGames) {
-            notYetStartedGames.add(game);
-            Collections.sort(notYetStartedGames, new GameComparator());
+            notYetStartedGames.put(game.getId(), game);
         }
     }
 
@@ -206,16 +201,7 @@ public abstract class BaseGameDataManager implements GameDataManager,
         checkStopped();
 
         synchronized (notYetStartedGames) {
-            for (Iterator it = notYetStartedGames.iterator(); it.hasNext();) {
-                Game game = (Game) it.next();
-
-                //remove the game with the same id in the list
-                if ((game.getId() != null) && (game.getId().longValue() == gameId)) {
-                    it.remove();
-
-                    return;
-                }
-            }
+            notYetStartedGames.remove(new Long(gameId));
         }
     }
 
@@ -253,37 +239,5 @@ public abstract class BaseGameDataManager implements GameDataManager,
      */
     public abstract boolean isStopped();
 
-    /**
-     * The comparator used to compare two games.
-     *
-     * @author TCSDEVELOPER
-     * @version 1.0
-     */
-    private class GameComparator implements Comparator {
-        /**
-         * Compares two games objects.
-         * @param obj1
-         *            the first object.
-         * @param obj2
-         *            the second object.
-         * @return a negative integer, zero, or a positive integer as the date of the first
-         *         argument is less than, equal to, or greater than the second.
-         */
-        public int compare(Object obj1, Object obj2) {
-            Game game1 = (Game) obj1;
-            Game game2 = (Game) obj2;
-            Date date1 = game1.getStartDate();
-            Date date2 = game2.getStartDate();
-
-            if (date1.after(date2)) {
-                return -1;
-            }
-
-            if (date1.before(date2)) {
-                return 1;
-            }
-
-            return 0;
-        }
-    }
 }
+

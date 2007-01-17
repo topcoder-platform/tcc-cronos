@@ -17,12 +17,17 @@ import com.orpheus.game.persistence.HostingSlot;
 
 import com.topcoder.bloom.BloomFilter;
 import com.topcoder.message.messenger.MessageAPI;
+import com.topcoder.util.compression.CompressionUtility;
 import com.topcoder.util.generator.guid.UUIDType;
 import com.topcoder.util.url.validation.SiteValidationResults;
 import com.topcoder.util.url.validation.SiteValidator;
 
 import java.net.MalformedURLException;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -76,6 +81,30 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      */
     private static final String JNDI_NAMES = "jndi_names";
 
+    /**
+     * The name of the GUID message property to use when generating a Bloom Filter update message
+     */
+    private static final String ADMIN_MESSAGE_GUID = "guid";
+
+    /**
+     * The name of the CATEGORY message property to use when generating a Bloom Filter update message
+     */
+    private static final String ADMIN_MESSAGE_CATEGORY = "category";
+
+    /**
+     * The name of the CONTENT TYPE message property to use when generating a Bloom Filter update message
+     */
+    private static final String ADMIN_MESSAGE_CONTENT_TYPE = "contentType";
+
+    /**
+     * The name of the MESSAGE CONTENT message property to use when generating a Bloom Filter update message
+     */
+    private static final String ADMIN_MESSAGE_CONTENT = "content";
+
+    /**
+     * The name of the TIMESTAMP message property to use when generating a Bloom Filter update message
+     */
+    private static final String ADMIN_MESSAGE_TIMESTAMP = "timestamp";
 
     /**
      * <p>
@@ -434,7 +463,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * <p>
      * Tests whether an upcoming domain is ready to begin hosting a specific slot.
      * Bascially we need to ensure that the
-     * domain¡¯s document root and the documents hosting all the slot¡¯s domain targets are all reachable.
+     * domain's document root and the documents hosting all the slot's domain targets are all reachable.
      * Note that this implementation is inherently thread-safe since it
      * delegates to an EJB and container will ensure thread-safe invocation.
      * </p>
@@ -759,41 +788,77 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             Game[] games = getAllCurrentNotStartedGames();
 
             // for each game see if it needs to be started
-            for (int i = 0; (i < games.length) && games[i].getStartDate().before(new Date()); i++) {
-                Domain [] domains = null;
+            for (int i = 0; i < games.length; i++) {
+                 if (games[i].getStartDate().after(new Date())) {
+                     continue;
+                 }
+
+                // start the game
+                gameStatusChangedToStarted(games[i]);
+
+                // broadcast a Bloom Filter update, if possible
                 try {
-                    if(gameDataPersistenceRemote != null) {
+                    Domain [] domains;
+
+                    if (gameDataPersistenceRemote != null) {
                         domains = gameDataPersistenceRemote.findActiveDomains();
                     } else {
                         domains = gameDataPersistenceLocal.findActiveDomains();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                gameStatusChangedToStarted(games[i]);
-                //after start a game, broadcast to a BloomFilter update
-                BloomFilter bloomFilter = new BloomFilter(capacity, errorRate);
-                if(domains != null) {
-                    //add the names of the domain to the BloomFilter
-                    for(int j = 0; j < domains.length; j ++) {
-                        bloomFilter.add(domains[i].getDomainName());
-                    }
-                }
-                try {
-                    OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
-                    MessageAPI message = plugin.createMessage();
 
-                    //set the parameters, TODO
-                    message.setParameterValue("GUID", UUIDUtility.getNextUUID(UUIDType.TYPE1));
-                    message.setParameterValue("category", category);
-                    message.setParameterValue("bloom_filter", "application/x-tc-bloom-filter");
-                    message.setParameterValue("body", bloomFilter.getSerialized());
-                    message.setParameterValue("time", new Date());
-                    plugin.sendMessage(message);
+                    if (domains != null) {
+                        BloomFilter bloomFilter = new BloomFilter(capacity, errorRate);
+
+                        //add the names of the domain to the Bloom Filter
+                        for(int j = 0; j < domains.length; j++) {
+                            bloomFilter.add(domains[j].getDomainName());
+                        }
+
+                        OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
+                        MessageAPI message = plugin.createMessage();
+
+                        message.setParameterValue(ADMIN_MESSAGE_GUID,
+                                UUIDUtility.getNextUUID(UUIDType.TYPE1));
+                        message.setParameterValue(ADMIN_MESSAGE_CATEGORY,
+                                category);
+                        message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE,
+                                "application/x-tc-bloom-filter");
+                        message.setParameterValue(ADMIN_MESSAGE_CONTENT,
+                                toBase64(bloomFilter.getSerialized()));
+                        message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP,
+                                new Date());
+                        plugin.sendMessage(message);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+        }
+
+        /**
+         * Creates a String containing a BASE-64 encoding of the UTF-8 encoding of the characters in the
+         * specified string
+         *
+         * @param  s a <code>String</code> containing the source characters
+         *
+         * @return a <code>String</code> containing the BASE-64 encoding
+         *
+         * @throws UnsupportedEncodingException if the VM is non-compliant by not supporting UTF-8 or US-ASCII
+         * @throws ClassNotFoundException if the TopCoder Base64Codec class is not founf in the ClassPath
+         * @throws IllegalAccessException if the version of the Base64Codec class found in the classpath has been
+         *         modified so that the class itself or the required constructor is not accessible
+         * @throws InstantiationException if the Base64Codec class's constructor throws any exception
+         * @throws IOException if an I/O error occurs during internal I/O to perform the encoding
+         */
+        private String toBase64(String s) throws UnsupportedEncodingException, ClassNotFoundException,
+                IllegalAccessException, InstantiationException, IOException {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            CompressionUtility utility = new CompressionUtility("com.topcoder.util.compression.Base64Codec", stream);
+    
+            utility.compress(new ByteArrayInputStream(s.getBytes("UTF-8")));
+            utility.close();
+
+            return stream.toString("US-ASCII");
         }
 
         /**
