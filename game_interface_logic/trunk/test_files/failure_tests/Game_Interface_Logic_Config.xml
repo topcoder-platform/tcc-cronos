@@ -10,7 +10,20 @@
     <Property name="game_started_poll_interval">
 				<Value>1000</Value>
     </Property>
+    <Property name="capacity">
+				<Value>1000</Value>
+    </Property>
+    <Property name="errorRate">
+				<Value>0.5</Value>
+    </Property>
+    <Property name="messengerPluginNS">
+				<Value>messengerPluginNS</Value>
+    </Property>
+    <Property name="category">
+				<Value>category</Value>
+    </Property>
   </Config>
+  
   <Config name="com.orpheus.game.GameDataManager_ObjectFactory">
     <Property name="manager">
 				<Property name="type">
