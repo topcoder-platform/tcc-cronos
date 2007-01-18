@@ -79,4 +79,11 @@ public class AccuracyTestBaseGameDataManager extends BaseGameDataManager {
     public boolean isStopped() {
         return isStopped;
     }
+
+    /**
+     * Noting.
+     * @see com.orpheus.game.BaseGameDataManager#persistSlot(com.orpheus.game.persistence.HostingSlot)
+     */
+    protected void persistSlot(HostingSlot slot) {
+    }
 }

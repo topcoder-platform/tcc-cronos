@@ -57,12 +57,15 @@ public class BaseGameDataManagerTests extends TestCase {
 	 */
 	public void testGameStatusChangedToStarted() throws Exception {
         AccuracyTestGame game1 = new AccuracyTestGame();
+        game1.setId(new Long(1));
         game1.setStartDate(new Date(new Date().getTime() + 1000));
 
         AccuracyTestGame game2 = new AccuracyTestGame();
+        game2.setId(new Long(2));
         game2.setStartDate(new Date(new Date().getTime() + 1000));
 
         AccuracyTestGame game3 = new AccuracyTestGame();
+        game3.setId(new Long(3));
         game3.setStartDate(new Date(new Date().getTime() + 1000));
 
         manager.newGameAvailable(game1);
@@ -88,12 +91,15 @@ public class BaseGameDataManagerTests extends TestCase {
     	Date date3 = new Date(new Date().getTime() + 1000);
 
     	AccuracyTestGame game1 = new AccuracyTestGame();
+        game1.setId(new Long(1));
         game1.setStartDate(date1);
 
         AccuracyTestGame game2 = new AccuracyTestGame();
+        game2.setId(new Long(2));
         game2.setStartDate(date2);
 
         AccuracyTestGame game3 = new AccuracyTestGame();
+        game3.setId(new Long(3));
         game3.setStartDate(date3);
 
         manager.newGameAvailable(game1);
@@ -119,12 +125,15 @@ public class BaseGameDataManagerTests extends TestCase {
     	Date date3 = new Date(new Date().getTime() + 1000);
 
     	AccuracyTestGame game1 = new AccuracyTestGame();
+        game1.setId(new Long(2));
         game1.setStartDate(date1);
 
         AccuracyTestGame game2 = new AccuracyTestGame();
+        game2.setId(new Long(22));
         game2.setStartDate(date2);
 
         AccuracyTestGame game3 = new AccuracyTestGame();
+        game3.setId(new Long(13));
         game3.setStartDate(date3);
 
         manager.newGameAvailable(game1);
@@ -135,9 +144,9 @@ public class BaseGameDataManagerTests extends TestCase {
         assertEquals("The games are not sorted properly.",
             games[0].getStartDate(), date3);
         assertEquals("The games are not sorted properly.",
-            games[1].getStartDate(), date2);
+            games[1].getStartDate(), date1);
         assertEquals("The games are not sorted properly.",
-            games[2].getStartDate(), date1);	
+            games[2].getStartDate(), date2);	
     }
     /**
      * The accuracy test of the method setCurrentNotStartedGames.
@@ -148,13 +157,16 @@ public class BaseGameDataManagerTests extends TestCase {
     	Date date2 = new Date(new Date().getTime() + 1000);
     	Date date3 = new Date(new Date().getTime() + 1000);
 
-    	AccuracyTestGame game1 = new AccuracyTestGame();
+        AccuracyTestGame game1 = new AccuracyTestGame();
+        game1.setId(new Long(2));
         game1.setStartDate(date1);
 
         AccuracyTestGame game2 = new AccuracyTestGame();
+        game2.setId(new Long(22));
         game2.setStartDate(date2);
 
         AccuracyTestGame game3 = new AccuracyTestGame();
+        game3.setId(new Long(13));
         game3.setStartDate(date3);
 
         Game[] games = new Game[] {game2, game1, game3};

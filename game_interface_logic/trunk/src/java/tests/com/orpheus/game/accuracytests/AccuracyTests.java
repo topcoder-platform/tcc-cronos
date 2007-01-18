@@ -22,7 +22,6 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(JndiLookupDesignationTests.class);
         suite.addTestSuite(BaseGameDataManagerTests.class);
         suite.addTestSuite(GameDataExceptionTests.class);
-        suite.addTestSuite(GameDataExceptionTests.class);
         suite.addTestSuite(GameDataManagerImplTests.class);
         return suite;
     }

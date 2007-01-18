@@ -78,4 +78,11 @@ public class BaseGameDataManagerMock extends BaseGameDataManager {
     public boolean isStopped() {
         return isStopped;
     }
+
+    /**
+     * Nothing.
+     * @see com.orpheus.game.BaseGameDataManager#persistSlot(com.orpheus.game.persistence.HostingSlot)
+     */
+    protected void persistSlot(HostingSlot slot) {
+    }
 }
