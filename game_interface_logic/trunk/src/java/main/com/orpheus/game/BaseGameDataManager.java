@@ -56,6 +56,14 @@ public abstract class BaseGameDataManager implements GameDataManager,
     }
 
     /**
+     * <p>Update the hosting slot in database. The impl class need to call game data ejb to update the slot to db.
+     * Basically, the start date of slot will be updated.</p>
+     * 
+     * @param slot HostingSlot with new start date
+     */
+    protected abstract void persistSlot(HostingSlot slot);
+    
+    /**
      * <p>
      * This is a listener implementation method that simply takes the game to start, starts the game physically,
      * and removes it from that list.
@@ -75,17 +83,16 @@ public abstract class BaseGameDataManager implements GameDataManager,
             //get the blocks of the game
             HostingBlock[] blocks = game.getBlocks();
 
-            if (blocks != null) {
+            if (blocks != null && blocks.length != 0) {
                 Date current = new Date();
+                HostingSlot[] slots = blocks[0].getSlots();
 
-                for (int i = 0; i < blocks.length; i++) {
-                    HostingSlot[] slots = blocks[i].getSlots();
-
-                    //if slot exists for the block
-                    if ((slots != null) && (slots.length != 0)) {
-                        //set the first slot's start date to current date to start the game
-                        slots[0] = Helper.copyToSetStartDate(slots[0], current);
-                    }
+                //if slot exists for the block
+                if ((slots != null) && (slots.length != 0)) {
+                    //set the first slot's start date to current date to start the game
+                    slots[0] = Helper.copyToSetStartDate(slots[0], current);
+                    //update the db
+                    persistSlot(slots[0]);
                 }
             }
 

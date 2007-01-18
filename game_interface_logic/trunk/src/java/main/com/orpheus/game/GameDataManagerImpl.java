@@ -715,6 +715,23 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     }
 
     /**
+     * <p>Update the slot in db, that is to set the start date of slot.</p>
+     * @see com.orpheus.game.BaseGameDataManager#startGameInDB(com.orpheus.game.persistence.HostingSlot)
+     */
+    protected void persistSlot(HostingSlot slot) {
+        Helper.checkObjectNotNull(slot, "hostingSlot to update");
+        try{
+            if ( this.gameDataPersistenceRemote != null){
+                this.gameDataPersistenceRemote.updateSlots(new HostingSlot[]{slot});
+            } else{
+                this.gameDataPersistenceLocal.updateSlots(new HostingSlot[]{slot});
+            }
+        }catch(Exception e){
+            //ignore
+        }
+    }
+    
+    /**
      * <p>
      * This is a simple inner class, which runs as a worker thread and checks,
      * at specified intervals, if games (which have not yet started) should be started.
@@ -751,7 +768,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * </p>
          *
          */
-        private boolean stopped = false;
+        private Boolean stopped = new Boolean(false);
 
         /**
          * <p>
@@ -775,64 +792,73 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          *
          */
         public void run() {
-            //wait for the manager to stop
-            while (!stopped) {
+            //it will not stop until the manager stops it
+            while (!stopped.booleanValue()) {
                 try {
                     Thread.sleep(sleepInterval);
                 } catch (InterruptedException e) {
                     //ignore
                 }
-            }
 
-            //get the current games
-            Game[] games = getAllCurrentNotStartedGames();
-
-            // for each game see if it needs to be started
-            for (int i = 0; i < games.length; i++) {
-                 if (games[i].getStartDate().after(new Date())) {
-                     continue;
-                 }
-
-                // start the game
-                gameStatusChangedToStarted(games[i]);
-
-                // broadcast a Bloom Filter update, if possible
-                try {
-                    Domain [] domains;
-
-                    if (gameDataPersistenceRemote != null) {
-                        domains = gameDataPersistenceRemote.findActiveDomains();
-                    } else {
-                        domains = gameDataPersistenceLocal.findActiveDomains();
-                    }
-
-                    if (domains != null) {
-                        BloomFilter bloomFilter = new BloomFilter(capacity, errorRate);
-
-                        //add the names of the domain to the Bloom Filter
-                        for(int j = 0; j < domains.length; j++) {
-                            bloomFilter.add(domains[j].getDomainName());
+                //get the current games
+                Game[] games = getAllCurrentNotStartedGames();
+    
+                // for each game see if it needs to be started
+                for (int i = 0; i < games.length; i++) {
+                    try {
+                        //reload the game
+                        if (gameDataPersistenceRemote != null){
+                            games[i] = gameDataPersistenceRemote.getGame(games[i].getId().longValue());
+                        } else {
+                            games[i] = gameDataPersistenceLocal.getGame(games[i].getId().longValue());
                         }
-
-                        OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
-                        MessageAPI message = plugin.createMessage();
-
-                        message.setParameterValue(ADMIN_MESSAGE_GUID,
-                                UUIDUtility.getNextUUID(UUIDType.TYPE1));
-                        message.setParameterValue(ADMIN_MESSAGE_CATEGORY,
-                                category);
-                        message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE,
-                                "application/x-tc-bloom-filter");
-                        message.setParameterValue(ADMIN_MESSAGE_CONTENT,
-                                toBase64(bloomFilter.getSerialized()));
-                        message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP,
-                                new Date());
-                        plugin.sendMessage(message);
+                        //checks this game need to be started
+                        if (games[i].getStartDate().after(new Date())) {
+                             continue;
+                        }
+        
+                        // start the game
+                        gameStatusChangedToStarted(games[i]);
+    
+                        // broadcast a Bloom Filter update, if possible
+                        Domain [] domains;
+    
+                        if (gameDataPersistenceRemote != null) {
+                            domains = gameDataPersistenceRemote.findActiveDomains();
+                        } else {
+                            domains = gameDataPersistenceLocal.findActiveDomains();
+                        }
+    
+                        if (domains != null) {
+                            BloomFilter bloomFilter = new BloomFilter(capacity, errorRate);
+    
+                            //add the names of the domain to the Bloom Filter
+                            for(int j = 0; j < domains.length; j++) {
+                                bloomFilter.add(domains[j].getDomainName());
+                            }
+    
+                            OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
+                            MessageAPI message = plugin.createMessage();
+    
+                            message.setParameterValue(ADMIN_MESSAGE_GUID,
+                                    UUIDUtility.getNextUUID(UUIDType.TYPE1));
+                            message.setParameterValue(ADMIN_MESSAGE_CATEGORY,
+                                    category);
+                            message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE,
+                                    "application/x-tc-bloom-filter");
+                            message.setParameterValue(ADMIN_MESSAGE_CONTENT,
+                                    toBase64(bloomFilter.getSerialized()));
+                            message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP,
+                                    new Date());
+                            plugin.sendMessage(message);
+                        }
+                    } catch (Exception e) {
+                        //ignore
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
+               }
+
+        
         }
 
         /**
@@ -868,7 +894,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          *
          */
         public void stopNotifier() {
-            this.stopped = true;
+            synchronized(this.stopped){
+                this.stopped = Boolean.TRUE;
+            }
         }
     }
 
@@ -935,7 +963,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * </p>
          *
          */
-        private boolean stopped = false;
+        private Boolean stopped = Boolean.FALSE;
 
         /**
          * <p>
@@ -1029,40 +1057,41 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          *
          */
         public void run() {
-            //wait for the manager to stop
-            while (!stopped) {
+            //it stops if the stop signal is received
+            while (!stopped.booleanValue()) {
                 try {
                     Thread.sleep(sleepInterval);
                 } catch (InterruptedException e) {
                     //ignore
                 }
-            }
-
-            Game[] games = null;
-
-            try {
-                //get the array of games by remote or local
-                if (gameDataPersistenceLocal != null) {
-                    games = gameDataPersistenceLocal.findGames(Boolean.FALSE,
-                            null);
-                } else {
-                    games = gameDataPersistenceRemote.findGames(Boolean.FALSE,
-                            null);
+    
+                Game[] games = null;
+    
+                try {
+                    //get the array of games by remote or local
+                    if (gameDataPersistenceLocal != null) {
+                        games = gameDataPersistenceLocal.findGames(Boolean.FALSE,
+                                null);
+                    } else {
+                        games = gameDataPersistenceRemote.findGames(Boolean.FALSE,
+                                null);
+                    }
+                } catch (Exception e) {
+                    //ignore
                 }
-            } catch (Exception e) {
-                //ignore
-            }
-
-            if (games != null) {
-                for (int i = 0; i < games.length; i++) {
-                    //once we have the games, we now check against the cached data
-                    //and we only consider games with assigned ids.
-                    if (!cachedGameIds.contains(games[i].getId()) && (games[i].getId() != null)) {
-                        newGameAvailableListener.newGameAvailable(games[i]);
-                        cachedGameIds.add(games[i].getId());
+    
+                if (games != null) {
+                    for (int i = 0; i < games.length; i++) {
+                        //once we have the games, we now check against the cached data
+                        //and we only consider games with assigned ids.
+                        if (!cachedGameIds.contains(games[i].getId()) && (games[i].getId() != null)) {
+                            newGameAvailableListener.newGameAvailable(games[i]);
+                            cachedGameIds.add(games[i].getId());
+                        }
                     }
                 }
             }
+                
         }
 
         /**
@@ -1073,7 +1102,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          *
          */
         public void stopNotifier() {
-            this.stopped = true;
+            synchronized(stopped){
+                this.stopped = Boolean.TRUE;
+            }
         }
     }
 }
