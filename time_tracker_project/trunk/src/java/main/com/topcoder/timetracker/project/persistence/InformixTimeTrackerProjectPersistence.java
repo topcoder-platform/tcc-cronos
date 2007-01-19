@@ -1129,8 +1129,8 @@ public class InformixTimeTrackerProjectPersistence implements
             // Added in version 2.0
             pstmt.setInt(1, project.getCompanyId());
 
-            pstmt.setString(2, project.getName());
-            pstmt.setString(3, project.getDescription());
+            pstmt.setString(2, project.getDescription());
+            pstmt.setString(3, project.getName());
             pstmt.setTimestamp(4, DBUtil.toSQLDate(project.getStartDate()));
             pstmt.setTimestamp(5, DBUtil.toSQLDate(project.getEndDate()));
             pstmt.setTimestamp(6, DBUtil.toSQLDate(date));
@@ -3681,8 +3681,8 @@ public class InformixTimeTrackerProjectPersistence implements
             // populate the fields of the client
             // added/modified in version 2.0
             client.setId(rs.getInt(1));
-            client.setCompanyId(rs.getInt(2));
-            client.setName(rs.getString(3));
+            client.setName(rs.getString(2));
+            client.setCompanyId(rs.getInt(3));            
             client.setCreationDate(DBUtil.toUtilDate(rs.getTimestamp(4)));
             client.setCreationUser(rs.getString(5));
             client.setModificationDate(DBUtil.toUtilDate(rs.getTimestamp(6)));
@@ -3734,8 +3734,8 @@ public class InformixTimeTrackerProjectPersistence implements
             PreparedStatement pstmt = getPreparedStatement(SQL_INS_PROJECT);
 
             pstmt.setInt(1, project.getId());
-            pstmt.setInt(2, project.getCompanyId());
-            pstmt.setString(3, project.getName());
+            pstmt.setString(2, project.getName());
+            pstmt.setInt(3, project.getCompanyId());
             pstmt.setString(4, project.getDescription());
             pstmt.setTimestamp(5, DBUtil.toSQLDate(project.getStartDate()));
             pstmt.setTimestamp(6, DBUtil.toSQLDate(project.getEndDate()));
@@ -4024,8 +4024,8 @@ public class InformixTimeTrackerProjectPersistence implements
 
             // modified in version 2.0
             pstmt.setInt(1, client.getId());
-            pstmt.setInt(2, client.getCompanyId());
-            pstmt.setString(3, client.getName());
+            pstmt.setString(2, client.getName());
+            pstmt.setInt(3, client.getCompanyId());
             pstmt.setTimestamp(4, DBUtil.toSQLDate(date));
             pstmt.setString(5, client.getCreationUser());
             pstmt.setTimestamp(6, DBUtil.toSQLDate(date));
