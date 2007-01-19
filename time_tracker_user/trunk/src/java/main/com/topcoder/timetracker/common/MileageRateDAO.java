@@ -7,7 +7,7 @@ import com.topcoder.search.builder.filter.Filter;
 
 /**
  * <p>
- * This interface defines the necessary methods that a MileageRate DAO should support. Create, Retrieve, Update,
+ * This interface defines the necessary methods that a rate DAO should support. Create, Retrieve, Update,
  * Delete and Enumerate (CRUDE) methods are provided. There is also a search method that utilizes Filter classes
  * from the Search Builder 1.2 component.
  * </p>
@@ -20,16 +20,16 @@ import com.topcoder.search.builder.filter.Filter;
  * @author TheCois
  * @version 2.0
  */
-public interface MileageRateDAO {
+public interface rateDAO {
 
     /**
      * <p>
-     * This is a constant for a search filter field name for the Company Id which a MileageRate belongs to.
+     * This is a constant for a search filter field name for the Company Id which a rate belongs to.
      * </p>
      * <p>
      * Filters from the Search Builder component may use this constant when building their search parameters.
-     * Implementations of the MileageRateDAO interface should be able to recognize search filters bearing the
-     * provided constant and adjust their searches according to the searchMileageRates method.
+     * Implementations of the RateDAO interface should be able to recognize search filters bearing the
+     * provided constant and adjust their searches according to the searchRates method.
      * </p>
      *
      */
@@ -37,12 +37,12 @@ public interface MileageRateDAO {
 
     /**
      * <p>
-     * This is a constant for a search filter field name for the Description of the MileageRate.
+     * This is a constant for a search filter field name for the Description of the rate.
      * </p>
      * <p>
      * Filters from the Search Builder component may use this constant when building their search parameters.
-     * Implementations of the MileageRateDAO interface should be able to recognize search filters bearing the
-     * provided constant and adjust their searches according to the searchMileageRates method.
+     * Implementations of the RateDAO interface should be able to recognize search filters bearing the
+     * provided constant and adjust their searches according to the searchRates method.
      * </p>
      *
      */
@@ -50,12 +50,12 @@ public interface MileageRateDAO {
 
     /**
      * <p>
-     * This is a constant for a search filter field name for the Mileage Rate's Date of Creation.
+     * This is a constant for a search filter field name for the  rate's Date of Creation.
      * </p>
      * <p>
      * Filters from the Search Builder component may use this constant when building their search parameters.
-     * Implementations of the MileageRateDAO interface should be able to recognize search filters bearing the
-     * provided constant and adjust their searches according to the searchMileageRates method.
+     * Implementations of the RateDAO interface should be able to recognize search filters bearing the
+     * provided constant and adjust their searches according to the searchRates method.
      * </p>
      *
      */
@@ -63,12 +63,12 @@ public interface MileageRateDAO {
 
     /**
      * <p>
-     * This is a constant for a search filter field name for the Mileage Rate's User Creator.
+     * This is a constant for a search filter field name for the  rate's User Creator.
      * </p>
      * <p>
      * Filters from the Search Builder component may use this constant when building their search parameters.
-     * Implementations of the MileageRateDAO interface should be able to recognize search filters bearing the
-     * provided constant and adjust their searches according to the searchMileageRates method.
+     * Implementations of the RateDAO interface should be able to recognize search filters bearing the
+     * provided constant and adjust their searches according to the searchRates method.
      * </p>
      *
      */
@@ -76,12 +76,12 @@ public interface MileageRateDAO {
 
     /**
      * <p>
-     * This is a constant for a search filter field name for the Mileage Rate's Last Date of Modification.
+     * This is a constant for a search filter field name for the  rate's Last Date of Modification.
      * </p>
      * <p>
      * Filters from the Search Builder component may use this constant when building their search parameters.
-     * Implementations of the MileageRateDAO interface should be able to recognize search filters bearing the
-     * provided constant and adjust their searches according to the searchMileageRates method.
+     * Implementations of the RateDAO interface should be able to recognize search filters bearing the
+     * provided constant and adjust their searches according to the searchRates method.
      * </p>
      *
      */
@@ -89,12 +89,12 @@ public interface MileageRateDAO {
 
     /**
      * <p>
-     * This is a constant for a search filter field name for the Mileage Rate's Last User of Modification.
+     * This is a constant for a search filter field name for the  rate's Last User of Modification.
      * </p>
      * <p>
      * Filters from the Search Builder component may use this constant when building their search parameters.
-     * Implementations of the MileageRateDAO interface should be able to recognize search filters bearing the
-     * provided constant and adjust their searches according to the searchMileageRates method.
+     * Implementations of the RateDAO interface should be able to recognize search filters bearing the
+     * provided constant and adjust their searches according to the searchRates method.
      * </p>
      *
      */
@@ -102,80 +102,80 @@ public interface MileageRateDAO {
 
     /**
      * <p>
-     * Creates a datastore entry for the given Mileage Rate. An id is automatically generated by the DAO and
-     * assigned to the Email. The MileageRate is also considered to have been created by the specified username.
+     * Creates a datastore entry for the given  rate. An id is automatically generated by the DAO and
+     * assigned to the Email. The rate is also considered to have been created by the specified username.
      * </p>
      *
      *
      *
-     * @return The same mileageRate Object, with an assigned id, creationDate, modificationDate, creationUser and
+     * @return The same Rate Object, with an assigned id, creationDate, modificationDate, creationUser and
      *         modificationUser assigned appropriately.
-     * @param mileageRate The mileageRate to create within the datastore.
-     * @param username The username of the user responsible for creating the MileageRate entry within the
+     * @param rate The rate to create within the datastore.
+     * @param username The username of the user responsible for creating the rate entry within the
      *        datastore.
-     * @throws IllegalArgumentException if the mileageRate or username is null, or if username is an empty String.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @throws IllegalArgumentException if the rate or username is null, or if username is an empty String.
+     * @throws RateDAOException if a problem occurs while accessing the datastore.
      */
-    MileageRate createMileageRate(MileageRate mileageRate, String username) throws MileageRateDAOException;
+    Rate createRate(Rate rate, String username) throws RateDAOException;
 
     /**
      * <p>
-     * Retrieves a MileageRate from the datastore with the provided id. If no MileageRate with that id exists, then
+     * Retrieves a rate from the datastore with the provided id. If no rate with that id exists, then
      * a null is returned.
      * </p>
      *
      *
      *
-     * @return the Mileage rate.
-     * @param id The id of the MileageRate to retrieve from the datastore.
+     * @return the  rate.
+     * @param id The id of the rate to retrieve from the datastore.
      * @throws IllegalArgumentException if id is <=0
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @throws RateDAOException if a problem occurs while accessing the datastore.
      */
-    MileageRate retrieveMileageRate(long id) throws MileageRateDAOException;
+    Rate retrieveRate(long id) throws RateDAOException;
 
     /**
      * <p>
-     * Updates the given MileageRate in the data store. The MileageRate is considered to have been modified by the
+     * Updates the given rate in the data store. The rate is considered to have been modified by the
      * specified username.
      * </p>
      *
      *
      *
-     * @param mileageRate The MileageRate entity to modify.
+     * @param rate The rate entity to modify.
      * @param username The username of the user responsible for performing the update.
-     * @throws IllegalArgumentException if the mileageRate is null, or the username is null, or the username is an
+     * @throws IllegalArgumentException if the rate is null, or the username is null, or the username is an
      *         empty String.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
-     * @throws MileageRateNotFoundException if the MileageRate to update was not found in the data store.
+     * @throws RateDAOException if a problem occurs while accessing the datastore.
+     * @throws RateNotFoundException if the rate to update was not found in the data store.
      */
-    void updateMileageRate(MileageRate mileageRate, String username) throws MileageRateDAOException,
-            MileageRateNotFoundException;
+    void updateRate(Rate rate, String username) throws RateDAOException,
+            RateNotFoundException;
 
     /**
      * <p>
-     * Removes the specified MileageRate from the data store.
+     * Removes the specified rate from the data store.
      * </p>
      *
      *
      *
-     * @param mileageRate The mileageRate to delete.
-     * @throws IllegalArgumentException if the mileageRate is null.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
-     * @throws MileageRateNotFoundException if the MileageRate to delete was not found in the data store.
+     * @param rate The rate to delete.
+     * @throws IllegalArgumentException if the rate is null.
+     * @throws RateDAOException if a problem occurs while accessing the datastore.
+     * @throws RateNotFoundException if the rate to delete was not found in the data store.
      */
-    void deleteMileageRate(MileageRate mileageRate) throws MileageRateDAOException, MileageRateNotFoundException;
+    void deleteRate(Rate rate) throws RateDAOException, RateNotFoundException;
 
     /**
      * <p>
-     * Enumerates all the MileageRates that are present within the data store.
+     * Enumerates all the rates that are present within the data store.
      * </p>
      *
      *
      *
-     * @return A list of all the MileageRates within the data store.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @return A list of all the rates within the data store.
+     * @throws RateDAOException if a problem occurs while accessing the datastore.
      */
-    MileageRate[] listMileageRates() throws MileageRateDAOException;
+    Rate[] listRates() throws RateDAOException;
 
     /**
      * <p>
@@ -189,7 +189,7 @@ public interface MileageRateDAO {
      * @return A list of RejectReasons that satisfy the search criterion.
      * @param filter The filter that is used as criterion to facilitate the search..
      * @throws IllegalArgumentException if the filter is null.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @throws RateDAOException if a problem occurs while accessing the datastore.
      */
-    MileageRate[] searchMileageRates(Filter filter) throws MileageRateDAOException;
+    Rate[] searchRates(Filter filter) throws RateDAOException;
 }

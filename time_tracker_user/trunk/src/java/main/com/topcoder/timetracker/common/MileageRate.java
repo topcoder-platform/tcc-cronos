@@ -5,8 +5,8 @@ package com.topcoder.timetracker.common;
 
 /**
  * <p>
- * This bean represents the set value of the mileage rate used to compute auto transportation expenses
- * Each company has a different mileage rate.
+ * This bean represents the set value of a rate used to compute some sort of expenses
+ * Each company has different rates.
  * </p>
  * <p>
  * Thread Safety: - This class is mutable, and not thread-safe. Multiple threads are advised to work with their own
@@ -17,11 +17,11 @@ package com.topcoder.timetracker.common;
  * @author TheCois
  * @version 2.0
  */
-public class MileageRate extends TimeTrackerBean {
+public class Rate extends TimeTrackerBean {
 
     /**
      * <p>
-     * The id of the company with which this MileageRate is associated with.
+     * The id of the company with which this Rate is associated with.
      * </p>
      * <p>
      * Initialized In: setCompanyId
@@ -39,21 +39,32 @@ public class MileageRate extends TimeTrackerBean {
 
     /**
      * <p>
-     * The numeric value of the MileageRate. It may be null when the MileageRateob ject is initially constructed,.
+     * Represents the description of an entity.
      * </p>
      * <p>
-     * Initialized In: setRate
+     * If the size is actually longer than 64, then in the <code>create</code> and <code>update</code> methods in
+     * all 3 <code>DAO</code> implementations will truncate this to 64.
+     * </p>
+     */
+    private String description = null;
+
+    /**
+     * <p>
+     * The numeric value of the Rate. It may be null when the Rate object is initially constructed,.
      * </p>
      * <p>
-     * Modified In: setRate
+     * Initialized In: setValue
      * </p>
      * <p>
-     * Accessed In: getRate
+     * Modified In: setValue
+     * </p>
+     * <p>
+     * Accessed In: getValue
      * </p>
      *
      *
      */
-    private double rate;
+    private double value;
 
     /**
      * <p>
@@ -61,18 +72,18 @@ public class MileageRate extends TimeTrackerBean {
      * </p>
      *
      */
-    public MileageRate() {
+    public Rate() {
         // your code here
     }
 
     /**
      * <p>
-     * Retrieves the id of the company with which this MileageRate is associated with.
+     * Retrieves the id of the company with which this Rate is associated with.
      * </p>
      *
      *
      *
-     * @return the id of the company with which this MileageRate is associated with.
+     * @return the id of the company with which this Rate is associated with.
      */
     public long getCompanyId() {
         return companyId;
@@ -80,7 +91,7 @@ public class MileageRate extends TimeTrackerBean {
 
     /**
      * <p>
-     * Sets the id of the company with which this MileageRate is associated with.
+     * Sets the id of the company with which this Rate is associated.
      * </p>
      * <p>
      * Implementation Notes: - If the current value that was added is not equal to the previous value, then call
@@ -88,7 +99,7 @@ public class MileageRate extends TimeTrackerBean {
      * </p>
      *
      *
-     * @param companyId the id of the company with which this MileageRate is associated with.
+     * @param companyId the id of the company with which this Rate is associated with.
      * @throws IllegalArgumentException if the companyId is <=0.
      */
     public void setCompanyId(long companyId) {
@@ -101,20 +112,42 @@ public class MileageRate extends TimeTrackerBean {
 
     /**
      * <p>
-     * Retrieves the mileage rate.
+     * Gets the description of this data object.
      * </p>
      *
-     *
-     *
-     * @return the mileage rate.
+     * @return the description of this data object.
      */
-    public double getRate() {
-        return rate;
+    public String getDescription() {
+        return this.description;
     }
 
     /**
      * <p>
-     * Sets the mileage rate.
+     * Sets the description. Size schould be limited to length of 64 but is not enforced here.
+     * </p>
+     *
+     * @param description The description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * <p>
+     * Retrieves the value of the rate.
+     * </p>
+     *
+     *
+     *
+     * @return the value of the rate.
+     */
+    public double getValue() {
+        return value;
+    }
+
+    /**
+     * <p>
+     * Sets the value of the rate.
      * </p>
      *
      * <p>
@@ -123,12 +156,12 @@ public class MileageRate extends TimeTrackerBean {
      * </p>
      *
      *
-     * @param rate the mileage rate.
+     * @param rate the  rate.
      */
-    public void setRate(double rate) {
-        Utils.checkPositive(rate, "rate");
-        if (rate != this.rate) {
-            this.rate = rate;
+    public void setValue(double value) {
+        Utils.checkPositive(value, "value");
+        if (value != this.value) {
+            this.value = value;
             setChanged(true);
         }
     }

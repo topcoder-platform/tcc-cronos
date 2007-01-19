@@ -7,54 +7,54 @@ import com.topcoder.util.errorhandling.BaseException;
 
 /**
  * <p>
- * This exception is thrown when a problem occurs while working with the MileageRate DAOs.
+ * This exception is thrown when a problem occurs while working with the Rate DAOs.
  * </p>
  *
  * @author TheCois
  * @author TheCois
  * @version 2.0
  */
-public class MileageRateDAOException extends BaseException {
+public class RateDAOException extends BaseException {
 
     /**
      * <p>
-     * The MileageRate that the DAO was working with when a problem occurred.
+     * The Rate that the DAO was working with when a problem occurred.
      * </p>
      * <p>
      * Initialized In: Constructor (may be null).
      * </p>
      * <p>
-     * Accessed In: getProblemMileageRate
+     * Accessed In: getProblemRate
      * </p>
      *
      */
-    private final MileageRate problemMileageRate;
+    private final Rate problemRate;
 
     /**
      * <p>
-     * Constructor accepting a message, cause and ProblemMileageRate.
+     * Constructor accepting a message, cause and ProblemRate.
      * </p>
      *
      *
      *
      * @param message The message of the exception.
      * @param cause The cause of the exception.
-     * @param problemMileageRate The MileageRate that the DAO was working on when the exception occurred.
+     * @param problemRate The Rate that the DAO was working on when the exception occurred.
      * @throws IllegalArgumentException if the message is null or an empty String.
      */
-    public MileageRateDAOException(String message, Throwable cause, MileageRate problemMileageRate) {
+    public RateDAOException(String message, Throwable cause, Rate problemRate) {
         super(message, cause);
         Utils.checkString(message, "message", false);
-        this.problemMileageRate = problemMileageRate;
+        this.problemRate = problemRate;
     }
 
     /**
-     * Retrieves the MileageRate that the DAO was working with when a problem occurred.
+     * Retrieves the Rate that the DAO was working with when a problem occurred.
      *
      *
-     * @return the MileageRate that the DAO was working with when a problem occurred.
+     * @return the Rate that the DAO was working with when a problem occurred.
      */
-    public MileageRate getProblemMileageRate() {
-        return problemMileageRate;
+    public Rate getProblemRate() {
+        return problemRate;
     }
 }

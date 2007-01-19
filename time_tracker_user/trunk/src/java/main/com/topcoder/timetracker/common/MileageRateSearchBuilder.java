@@ -13,7 +13,7 @@ import com.topcoder.search.builder.filter.Filter;
 
 /**
  * <p>
- * This is a convenience class that may be used to build filters for performing searches in the MileageRateDAO.
+ * This is a convenience class that may be used to build filters for performing searches in the RateDAO.
  * Users may call the different methods to set the criteria for the filter and finally retrieve the filter for use
  * via the buildFilter() method.
  * </p>
@@ -26,7 +26,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @author kr00tki
  * @version 2.0
  */
-public class MileageRateSearchBuilder {
+public class RateSearchBuilder {
 
     /**
      * <p>
@@ -56,19 +56,19 @@ public class MileageRateSearchBuilder {
      * </p>
      *
      */
-    public MileageRateSearchBuilder() {
+    public RateSearchBuilder() {
         // empty
     }
 
     /**
      * <p>
-     * This method is called to indicate that the built search filter should restrict the search to MileageRates
+     * This method is called to indicate that the built search filter should restrict the search to Rates
      * that are related to the company with provided id.
      * </p>
      * <p>
      * Implementation Notes:
      *  - Build the following filter and add it to the andFilter: -> EqualsFilter with
-     * MileageRateDAO.SEARCH_COMPANY_ID as the field name and the provided value as the search value.
+     * RateDAO.SEARCH_COMPANY_ID as the field name and the provided value as the search value.
      *  - If the andFilter is not initialized, then initialize it with an AndFilter containing the built filter.
      * </p>
      *
@@ -76,7 +76,7 @@ public class MileageRateSearchBuilder {
      * @param companyId The related company id to search for.
      */
     public void hasCompanyId(long companyId) {
-        addToFilter(new EqualToFilter(MileageRateDAO.SEARCH_COMPANY_ID, new Long(companyId)));
+        addToFilter(new EqualToFilter(RateDAO.SEARCH_COMPANY_ID, new Long(companyId)));
     }
 
     /**
@@ -100,14 +100,14 @@ public class MileageRateSearchBuilder {
 
     /**
      * <p>
-     * This method is called to indicate that the built search filter should restrict the search to MileageRates
+     * This method is called to indicate that the built search filter should restrict the search to Rates
      * that were created within the given Date Range. Nulls may be provided to either the upper or lower bounds to
      * indicate that only one bound needs to be provided.
      * </p>
      * <p>
      * Implementation Notes: - Build the following filter and add it to the andFilter: -> The filter that is built
      * may either be a GreaterThanFilter, LessThanFilter or BetweenFilter depending on whether the startDate or
-     * endDate or none of them are null. The field name to be used is MileageRateDAO.SEARCH_CREATED_DATE. - If the
+     * endDate or none of them are null. The field name to be used is RateDAO.SEARCH_CREATED_DATE. - If the
      * andFilter is not initialized, then initialize it with an AndFilter containing the built filter.
      * </p>
      *
@@ -118,17 +118,17 @@ public class MileageRateSearchBuilder {
      * @throws IllegalArgumentException if BOTH parameters are null, or if endDate is less than startDate.
      */
     public void createdWithinDateRange(java.util.Date startDate, java.util.Date endDate) {
-        addToFilter(Utils.createRangerFilter(MileageRateDAO.SEARCH_CREATED_DATE, startDate, endDate));
+        addToFilter(Utils.createRangerFilter(RateDAO.SEARCH_CREATED_DATE, startDate, endDate));
     }
 
     /**
      * <p>
-     * This method is called to indicate that the built search filter should restrict the search to MileageRates
+     * This method is called to indicate that the built search filter should restrict the search to Rates
      * that were created by the given username.
      * </p>
      * <p>
      * Implementation Notes: - Build the following filter and add it to the andFilter: -> EqualsFilter with
-     * MileageRateDAO.SEARCH_CREATED_USER as the field name and the provided value as the search value. - If the
+     * RateDAO.SEARCH_CREATED_USER as the field name and the provided value as the search value. - If the
      * andFilter is not initialized, then initialize it with an AndFilter containing the built filter.
      * </p>
      *
@@ -139,18 +139,18 @@ public class MileageRateSearchBuilder {
      */
     public void createdByUser(String username) {
         Utils.checkString(username, "username", false);
-        addToFilter(new EqualToFilter(MileageRateDAO.SEARCH_CREATED_USER, username));
+        addToFilter(new EqualToFilter(RateDAO.SEARCH_CREATED_USER, username));
     }
 
     /**
      * <p>
-     * This method is called to indicate that the built search filter should restrict the search to MileageRates
+     * This method is called to indicate that the built search filter should restrict the search to Rates
      * that was last modified within the given date range.
      * </p>
      * <p>
      * Implementation Notes: - Build the following filter and add it to the andFilter: -> The filter that is built
      * may either be a GreaterThanFilter, LessThanFilter or BetweenFilter depending on whether the startDate or
-     * endDate or none of them are null. The field name to be used is MileageRateDAO.SEARCH_MODIFICATION_DATE. - If
+     * endDate or none of them are null. The field name to be used is RateDAO.SEARCH_MODIFICATION_DATE. - If
      * the andFilter is not initialized, then initialize it with an AndFilter containing the built filter.
      * </p>
      *
@@ -161,17 +161,17 @@ public class MileageRateSearchBuilder {
      * @throws IllegalArgumentException if BOTH parameters are null, or if endDate is less than startDate.
      */
     public void modifiedWithinDateRange(Date startDate, Date endDate) {
-        addToFilter(Utils.createRangerFilter(MileageRateDAO.SEARCH_MODIFICATION_DATE, startDate, endDate));
+        addToFilter(Utils.createRangerFilter(RateDAO.SEARCH_MODIFICATION_DATE, startDate, endDate));
     }
 
     /**
      * <p>
-     * This method is called to indicate that the built search filter should restrict the search to MileageRates
+     * This method is called to indicate that the built search filter should restrict the search to Rates
      * that was last modified by the provided user.
      * </p>
      * <p>
      * Implementation Notes: - Build the following filter and add it to the andFilter: -> EqualsFilter with
-     * MileageRateDAO.SEARCH_MODIFICATION_USER as the field name and the provided value as the search value. - If
+     * RateDAO.SEARCH_MODIFICATION_USER as the field name and the provided value as the search value. - If
      * the andFilter is not initialized, then initialize it with an AndFilter containing the built filter.
      * </p>
      *
@@ -182,7 +182,7 @@ public class MileageRateSearchBuilder {
      */
     public void modifiedByUser(String username) {
         Utils.checkString(username, "username", false);
-        addToFilter(new EqualToFilter(MileageRateDAO.SEARCH_MODIFICATION_USER, username));
+        addToFilter(new EqualToFilter(RateDAO.SEARCH_MODIFICATION_USER, username));
     }
 
     /**
