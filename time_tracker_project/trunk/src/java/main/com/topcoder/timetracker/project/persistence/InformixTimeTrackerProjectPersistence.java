@@ -1129,8 +1129,8 @@ public class InformixTimeTrackerProjectPersistence implements
             // Added in version 2.0
             pstmt.setInt(1, project.getCompanyId());
 
-            pstmt.setString(2, project.getDescription());
-            pstmt.setString(3, project.getName());
+            pstmt.setString(2, project.getName());
+            pstmt.setString(3, project.getDescription());
             pstmt.setTimestamp(4, DBUtil.toSQLDate(project.getStartDate()));
             pstmt.setTimestamp(5, DBUtil.toSQLDate(project.getEndDate()));
             pstmt.setTimestamp(6, DBUtil.toSQLDate(date));
@@ -3589,8 +3589,8 @@ public class InformixTimeTrackerProjectPersistence implements
             // populate the fields of project
             // added/modified in version 2.0
             project.setId(rs.getInt(1));
-            project.setCompanyId(rs.getInt(2));
-            project.setName(rs.getString(3));
+            project.setName(rs.getString(2));
+            project.setCompanyId(rs.getInt(3));
             project.setDescription(rs.getString(4));
             project.setStartDate(DBUtil.toUtilDate(rs.getTimestamp(5)));
             project.setEndDate(DBUtil.toUtilDate(rs.getTimestamp(6)));
