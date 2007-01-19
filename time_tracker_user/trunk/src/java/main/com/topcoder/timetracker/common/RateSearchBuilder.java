@@ -81,6 +81,27 @@ public class RateSearchBuilder {
 
     /**
      * <p>
+     * This method is called to indicate that the built search filter should restrict the search to Rates
+     * that have the given description.
+     * </p>
+     * <p>
+     * Implementation Notes: - Build the following filter and add it to the andFilter: -> EqualsFilter with
+     * RateDAO.SEARCH_DESCRIPTION as the field name and the provided value as the search value. - If the
+     * andFilter is not initialized, then initialize it with an AndFilter containing the built filter.
+     * </p>
+     *
+     *
+     *
+     * @param description The description to search for.
+     * @throws IllegalArgumentException if the parameter is null or an empty String.
+     */
+    public void hasDescription(String description) {
+        Utils.checkString(description, "description", false);
+        addToFilter(new EqualToFilter(RateDAO.SEARCH_DESCRIPTION, description));
+    }
+	
+    /**
+     * <p>
      * Adds given filter to <code>andFilter</code>. It <code>andFilter</code> is <code>null</code>, new
      * instance will be created.
      * </p>

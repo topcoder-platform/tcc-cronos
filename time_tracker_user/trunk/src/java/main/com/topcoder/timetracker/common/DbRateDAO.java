@@ -25,7 +25,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
 
 /**
  * <p>
- * Database implementation of the MileageRateDAO interface. It persisting and retrieving MileageRate
+ * Database implementation of the RateDAO interface. It persisting and retrieving Rate
  * information from the database. Create, Retrieve, Update, Delete and Enumerate (CRUDE) methods are provided.
  * There is also a search method that utilizes Filter classes from the Search Builder 1.2 component.
  * </p>
@@ -40,53 +40,53 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * @author kr00tki
  * @version 2.0
  */
-public class DbMileageRateDAO implements MileageRateDAO {
+public class DbRateDAO implements RateDAO {
     /**
-     * The SQL query. Deletes the mileage rate.
+     * The SQL query. Deletes the rate.
      */
-    private static final String DELETE_FROM_MILEAGE_RATE = "DELETE FROM mileage_rate WHERE mileage_rate_id = ?";
+    private static final String DELETE_FROM_RATE = "DELETE FROM rate WHERE rate_id = ?";
 
     /**
-     *The SQL query. Deletes the mileage rate - company mapping.
+     *The SQL query. Deletes the rate - company mapping.
      */
-    private static final String DELETE_FROM_COMP_MILEAGE_RATE =
-        "DELETE FROM comp_mileage_rate WHERE mileage_rate_id = ?";
+    private static final String DELETE_FROM_COMP_RATE =
+        "DELETE FROM comp_rate WHERE rate_id = ?";
 
     /**
-     * The SQL query. Updates the mileage rate - company mapping.
+     * The SQL query. Updates the rate - company mapping.
      */
-    private static final String UPDATE_COMP_MILEAGE_RATE = "UPDATE comp_mileage_rate SET company_id = ?, "
-        + "modification_date = ?, modification_user = ? WHERE mileage_rate_id = ?";
+    private static final String UPDATE_COMP_RATE = "UPDATE comp_rate SET company_id = ?, "
+        + "modification_date = ?, modification_user = ? WHERE rate_id = ?";
 
     /**
-     * The SQL query. Updates the mileage rate.
+     * The SQL query. Updates the rate.
      */
-    private static final String UPDATE_MILEAGE_RATE =
-        "UPDATE mileage_rate SET mileage_rate.rate = ?, mileage_rate.modification_date = ?, "
-        + "mileage_rate.modification_user = ? WHERE mileage_rate_id = ?";
+    private static final String UPDATE_RATE =
+        "UPDATE rate SET rate.rate = ?, rate.description = ?, rate.modification_date = ?, "
+        + "rate.modification_user = ? WHERE rate_id = ?";
 
     /**
-     * The SQL query. Inserts the mileage rate - company mapping.
+     * The SQL query. Inserts the rate - company mapping.
      */
-    private static final String INSERT_COMP_MILEAGE_RATE =
-        "INSERT INTO comp_mileage_rate(mileage_rate_id, company_id, creation_date, creation_user, "
+    private static final String INSERT_COMP_RATE =
+        "INSERT INTO comp_rate(rate_id, company_id, creation_date, creation_user, "
          + "modification_date, modification_user) VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
-     * The SQL query. Inserts the mileage rate.
+     * The SQL query. Inserts the rate.
      */
-    private static final String INSERT_MILEAGE_RATE =
-        "INSERT into mileage_rate(mileage_rate_id, rate, creation_date, creation_user,  "
-        + "modification_date, modification_user) VALUES (?, ?, ?, ?, ? ,?)";
+    private static final String INSERT_RATE =
+        "INSERT into rate(rate_id, description, rate, creation_date, creation_user,  "
+        + "modification_date, modification_user) VALUES (?, ?, ?, ?, ?, ? ,?)";
 
     /**
      * The base SQL query used in this class.
      */
-    private static final String BASE_QUERY = "SELECT mileage_rate.mileage_rate_id, "
-        + "mileage_rate.rate, mileage_rate.creation_date, mileage_rate.creation_user, "
-        + "mileage_rate.modification_date, mileage_rate.modification_user, comp_mileage_rate.company_id "
-        + "FROM mileage_rate, comp_mileage_rate WHERE "
-        + "comp_mileage_rate.mileage_rate_id = mileage_rate.mileage_rate_id ";
+    private static final String BASE_QUERY = "SELECT rate.rate_id, rate.description, "
+        + "rate.rate, rate.creation_date, rate.creation_user, "
+        + "rate.modification_date, rate.modification_user, comp_rate.company_id "
+        + "FROM rate, comp_rate WHERE "
+        + "comp_rate.rate_id = rate.rate_id ";
 
     /**
      * The base filter query. It extends NASE_QUERY by adding AND clause.
@@ -104,8 +104,8 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * Accessed In: No Access.
      * </p>
      * <p>
-     * Utilized In: createMileageRate, retrieveMileageRate, updateMileageRate, deleteMileageRate, listMileageRates,
-     * searchMileageRates.
+     * Utilized In: createRate, retrieveRate, updateRate, deleteRate, listRates,
+     * searchRates.
      * </p>
      *
      */
@@ -126,8 +126,8 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * Accessed In: No Access
      * </p>
      * <p>
-     * Utilized In: createMileageRate, retrieveMileageRate, updateMileageRate, deleteMileageRate, listMileageRates,
-     * searchMileageRates,
+     * Utilized In: createRate, retrieveRate, updateRate, deleteRate, listRates,
+     * searchRates,
      * </p>
      *
      */
@@ -141,7 +141,7 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * Initialized In: Constructor
      * </p>
      * <p>
-     * Utilized In: createMileageRate, updateMileageRate
+     * Utilized In: createRate, updateRate
      * </p>
      *
      */
@@ -163,7 +163,7 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * Modified In: Not modified
      * </p>
      * <p>
-     * Utilized In: searchMileageRates
+     * Utilized In: searchRates
      * </p>
      *
      */
@@ -180,19 +180,19 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * @throws IDGenerationException if ID Generator cannot be created.
      * @throws IllegalArgumentException if connFactory, connName or idGenerator is null or an empty String.
      */
-    public DbMileageRateDAO(DBConnectionFactory connFactory, String connName, String idGenerator)
+    public DbRateDAO(DBConnectionFactory connFactory, String connName, String idGenerator)
             throws IDGenerationException {
         Utils.checkNull(connFactory, "connFactory");
         Utils.checkString(connName, "connName", false);
         Utils.checkString(idGenerator, "idGenerator", false);
 
         Map aliases = new HashMap();
-        aliases.put(MileageRateDAO.SEARCH_COMPANY_ID, "comp_mileage_rate.company_id");
-        aliases.put(MileageRateDAO.SEARCH_DESCRIPTION, "mileage_rate.description");
-        aliases.put(MileageRateDAO.SEARCH_CREATED_DATE, "mileage_rate.creation_date");
-        aliases.put(MileageRateDAO.SEARCH_CREATED_USER, "mileage_rate.creation_user");
-        aliases.put(MileageRateDAO.SEARCH_MODIFICATION_DATE, "mileage_rate.modification_date");
-        aliases.put(MileageRateDAO.SEARCH_MODIFICATION_USER, "mileage_rate.modification_user");
+        aliases.put(RateDAO.SEARCH_COMPANY_ID, "comp_rate.company_id");
+        aliases.put(RateDAO.SEARCH_DESCRIPTION, "rate.description");
+        aliases.put(RateDAO.SEARCH_CREATED_DATE, "rate.creation_date");
+        aliases.put(RateDAO.SEARCH_CREATED_USER, "rate.creation_user");
+        aliases.put(RateDAO.SEARCH_MODIFICATION_DATE, "rate.modification_date");
+        aliases.put(RateDAO.SEARCH_MODIFICATION_USER, "rate.modification_user");
 
         searchStringBuilder = new DatabaseSearchStringBuilder(BASE_FILTER_QUERY, aliases);
         connectionFactory = connFactory;
@@ -202,59 +202,59 @@ public class DbMileageRateDAO implements MileageRateDAO {
 
     /**
      * <p>
-     * Creates a datastore entry for the given Mileage Rate. An id is automatically generated by the DAO and
-     * assigned to the Rate. The MileageRate is also considered to have been created by the specified username.
+     * Creates a datastore entry for the given rate. An id is automatically generated by the DAO and
+     * assigned to the Rate. The Rate is also considered to have been created by the specified username.
      * </p>
      *
-     * @return The same mileageRate Object, with an assigned id, creationDate, modificationDate, creationUser and
+     * @return The same Rate Object, with an assigned id, creationDate, modificationDate, creationUser and
      *         modificationUser assigned appropriately.
-     * @param mileageRate The mileageRate to create within the datastore.
-     * @param username The username of the user responsible for creating the MileageRate entry within the
+     * @param Rate The Rate to create within the datastore.
+     * @param username The username of the user responsible for creating the Rate entry within the
      *        datastore.
-     * @throws IllegalArgumentException if the mileageRate or username is null, or if username is an empty String.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @throws IllegalArgumentException if the Rate or username is null, or if username is an empty String.
+     * @throws RateDAOException if a problem occurs while accessing the datastore.
      */
-    public MileageRate createMileageRate(MileageRate mileageRate, String username) throws MileageRateDAOException {
-        checkMileageRate(mileageRate);
+    public Rate createRate(Rate rate, String username) throws RateDAOException {
+        checkRate(rate);
         Utils.checkString(username, "username", false);
         // get the id
-        long rateId = generateId(mileageRate.getId());
+        long rateId = generateId(rate.getId());
         Connection conn = createConnection();
         try {
-            // insert mileage rate
-            insertMileageRate(conn, mileageRate, rateId, username);
-            // insert mileage rate company mapping
-            DBUtils.execute(conn, INSERT_COMP_MILEAGE_RATE, rateId, mileageRate.getCompanyId(), username);
+            // insert rate
+            insertRate(conn, rate, rateId, username);
+            // insert rate company mapping
+            DBUtils.execute(conn, INSERT_COMP_RATE, rateId, rate.getCompanyId(), username);
 
             conn.commit();
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
-            throw new MileageRateDAOException("Error occurs while creating rate.", ex, mileageRate);
+            throw new RateDAOException("Error occurs while creating rate.", ex, rate);
         } finally {
             DBUtils.close(conn);
         }
 
-        mileageRate.setId(rateId);
-        mileageRate.setChanged(false);
-        return mileageRate;
+        rate.setId(rateId);
+        rate.setChanged(false);
+        return rate;
     }
 
     /**
      * Checks if required rate fields are set.
      *
-     * @param mileageRate the rate to check.
-     * @throws MileageRateDAOException if any of required fields is not set.
+     * @param rate the rate to check.
+     * @throws rateDAOException if any of required fields is not set.
      */
-    private static void checkMileageRate(MileageRate mileageRate) throws MileageRateDAOException {
-        Utils.checkNull(mileageRate, "mileageRate");
+    private static void checkRate(Rate rate) throws RateDAOException {
+        Utils.checkNull(rate, "rate");
 
-        if (mileageRate.getRate() < 0.0) {
-            throw new MileageRateDAOException("The mileage rate should be positive.", null, mileageRate);
+        if (rate.getValue() < 0.0) {
+            throw new RateDAOException("The  rate should be positive.", null, rate);
         }
     }
 
     /**
-     * Inserts the mileage rate into the database.
+     * Inserts the  rate into the database.
      *
      * @param conn the database connection to be used.
      * @param rate the rate to persist.
@@ -262,18 +262,19 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * @param username the creation username.
      * @throws SQLException if error occurs.
      */
-    private static void insertMileageRate(Connection conn, MileageRate rate, long rateId, String username)
+    private static void insertRate(Connection conn, Rate rate, long rateId, String username)
             throws SQLException {
 
         PreparedStatement pstmt = null;
         try {
-            pstmt = conn.prepareStatement(INSERT_MILEAGE_RATE);
+            pstmt = conn.prepareStatement(INSERT_RATE);
 
             // set the id
             pstmt.setLong(1, rateId);
-            pstmt.setDouble(2, rate.getRate());
+			pstmt.setString(2, rate.getDescription());
+            pstmt.setDouble(3, rate.getValue());
             // set creation dates
-            Date now = DBUtils.initUserAndDates(pstmt, username, 3);
+            Date now = DBUtils.initUserAndDates(pstmt, username, 4);
             // execute
             pstmt.executeUpdate();
             DBUtils.setCreationFields(rate, username, now);
@@ -286,9 +287,9 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * Creates the database connection with auto commit set to false.
      *
      * @return the database connection.
-     * @throws MileageRateDAOException if connection cannot be created.
+     * @throws rateDAOException if connection cannot be created.
      */
-    private Connection createConnection() throws MileageRateDAOException {
+    private Connection createConnection() throws RateDAOException {
         try {
             Connection conn = connectionFactory.createConnection(connectionName);
             conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
@@ -296,9 +297,9 @@ public class DbMileageRateDAO implements MileageRateDAO {
 
             return conn;
         } catch (DBConnectionException ex) {
-            throw new MileageRateDAOException("Error occurs while creating exception.", ex, null);
+            throw new RateDAOException("Error occurs while creating exception.", ex, null);
         } catch (SQLException ex) {
-            throw new MileageRateDAOException("Error occurs while creating exception.", ex, null);
+            throw new RateDAOException("Error occurs while creating exception.", ex, null);
         }
     }
 
@@ -307,9 +308,9 @@ public class DbMileageRateDAO implements MileageRateDAO {
      *
      * @param previousId the previously generated or set id.
      * @return the id (new or existing).
-     * @throws MileageRateDAOException if error occur during operation.
+     * @throws rateDAOException if error occur during operation.
      */
-    private long generateId(long previousId) throws MileageRateDAOException {
+    private long generateId(long previousId) throws RateDAOException {
         if (previousId > 0) {
             return previousId;
         }
@@ -317,29 +318,29 @@ public class DbMileageRateDAO implements MileageRateDAO {
         try {
             return idGenerator.getNextID();
         } catch (IDGenerationException ex) {
-            throw new MileageRateDAOException("Error occur while generating the id.", ex, null);
+            throw new RateDAOException("Error occur while generating the id.", ex, null);
         }
     }
 
     /**
      * <p>
-     * Retrieves a MileageRate from the datastore with the provided id. If no MileageRate with that id exists, then
+     * Retrieves a rate from the datastore with the provided id. If no rate with that id exists, then
      * a null is returned.
      * </p>
      *
-     * @return the MileageRate for the id or <code>null</code>, if rate not exists.
-     * @param id The id of the MileageRate to retrieve from the datastore.
+     * @return the rate for the id or <code>null</code>, if rate not exists.
+     * @param id The id of the rate to retrieve from the datastore.
      * @throws IllegalArgumentException if id is <=0
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @throws rateDAOException if a problem occurs while accessing the datastore.
      */
-    public MileageRate retrieveMileageRate(long id) throws MileageRateDAOException {
+    public Rate retrieveRate(long id) throws RateDAOException {
         Utils.checkPositive(id, "id");
 
         // create filter
-        Filter filter = new EqualToFilter("mileage_rate.mileage_rate_id", new Long(id));
+        Filter filter = new EqualToFilter("rate.rate_id", new Long(id));
 
         // execute search
-        MileageRate[] result = searchMileageRates(filter);
+        Rate[] result = searchRates(filter);
         // should be only one or zero, but return the first - just in case
         if (result.length > 0) {
             return result[0];
@@ -349,16 +350,17 @@ public class DbMileageRateDAO implements MileageRateDAO {
     }
 
     /**
-     * Creates <code>MileageRate</code> instance using the values from <code>ResultSet</code>.
+     * Creates <code>rate</code> instance using the values from <code>ResultSet</code>.
      *
      * @param rs the ResultSet object.
-     * @return the MileageRate created from result set.
+     * @return the rate created from result set.
      * @throws SQLException if any database related error occurs.
      */
-    private static MileageRate populateMileageRate(ResultSet rs) throws SQLException {
-        MileageRate rate = new MileageRate();
-        rate.setId(rs.getLong("mileage_rate_id"));
-        rate.setRate(rs.getDouble("rate"));
+    private static Rate populateRate(ResultSet rs) throws SQLException {
+        Rate rate = new Rate();
+        rate.setId(rs.getLong("rate_id"));
+		rate.setDescription(rs.getString("description"));
+        rate.setValue(rs.getDouble("rate"));
         rate.setCompanyId(rs.getLong("company_id"));
         rate.setModificationUser(rs.getString("modification_user"));
         rate.setCreationUser(rs.getString("creation_user"));
@@ -370,23 +372,23 @@ public class DbMileageRateDAO implements MileageRateDAO {
 
     /**
      * <p>
-     * Updates the given MileageRate in the data store. The MileageRate is considered to have been modified by the
+     * Updates the given rate in the data store. The rate is considered to have been modified by the
      * specified username.
      * </p>
      *
-     * @param mileageRate The MileageRate entity to modify.
+     * @param rate The rate entity to modify.
      * @param username The username of the user responsible for performing the update.
-     * @throws IllegalArgumentException if the mileageRate is null, or the username is null, or the username is an
+     * @throws IllegalArgumentException if the rate is null, or the username is null, or the username is an
      *         empty String.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
-     * @throws MileageRateNotFoundException if the MileageRate to update was not found in the data store.
+     * @throws rateDAOException if a problem occurs while accessing the datastore.
+     * @throws rateNotFoundException if the rate to update was not found in the data store.
      */
-    public void updateMileageRate(MileageRate mileageRate, String username) throws MileageRateDAOException {
-        checkMileageRate(mileageRate);
+    public void updateRate(Rate rate, String username) throws RateDAOException {
+        checkRate(rate);
         Utils.checkString(username, "username", false);
 
         // if was not changed - just return
-        if (!mileageRate.isChanged()) {
+        if (!rate.isChanged()) {
             return;
         }
 
@@ -394,30 +396,30 @@ public class DbMileageRateDAO implements MileageRateDAO {
         Connection conn = createConnection();
         try {
             // update rate
-            int result = updateRate(conn, mileageRate, username);
+            int result = updateRate(conn, rate, username);
             // if noting was updated - rate not exists - throw exception
             if (result == 0) {
                 DBUtils.rollback(conn);
-                throw new MileageRateNotFoundException("Mileage rate not exists.", null, mileageRate);
+                throw new RateNotFoundException(" rate not exists.", null, rate);
             }
 
             // update mapping
-            DBUtils.executeUpdate(conn, UPDATE_COMP_MILEAGE_RATE,
-                    mileageRate.getCompanyId(), mileageRate.getId(), username);
+            DBUtils.executeUpdate(conn, UPDATE_COMP_RATE,
+                    rate.getCompanyId(), rate.getId(), username);
             conn.commit();
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
-            throw new MileageRateDAOException("Error occur while updating rate.", ex, mileageRate);
+            throw new RateDAOException("Error occur while updating rate.", ex, rate);
         } finally {
             DBUtils.close(conn);
         }
 
         // is updated, set flag to false.
-        mileageRate.setChanged(false);
+        rate.setChanged(false);
     }
 
     /**
-     * Updates the given MileageRate in the database.
+     * Updates the given rate in the database.
      *
      * @param conn the database connection to be used.
      * @param rate the rate to be updated.
@@ -425,18 +427,19 @@ public class DbMileageRateDAO implements MileageRateDAO {
      * @return the number of affected rows.
      * @throws SQLException if any error occur.
      */
-    private static int updateRate(Connection conn, MileageRate rate, String username) throws SQLException {
+    private static int updateRate(Connection conn, Rate rate, String username) throws SQLException {
         PreparedStatement pstmt = null;
         try {
             // prepare update query
-            pstmt = conn.prepareStatement(UPDATE_MILEAGE_RATE);
+            pstmt = conn.prepareStatement(UPDATE_RATE);
 
             // set variables
             Timestamp time = new Timestamp(System.currentTimeMillis());
-            pstmt.setDouble(1, rate.getRate());
-            pstmt.setTimestamp(2, time);
-            pstmt.setString(3, username);
-            pstmt.setLong(4, rate.getId());
+            pstmt.setDouble(1, rate.getValue());
+			pstmt.setString(2, rate.getDescription());			
+            pstmt.setTimestamp(3, time);
+            pstmt.setString(4, username);
+            pstmt.setLong(5, rate.getId());
 
             int result = pstmt.executeUpdate();
             // update the object status
@@ -449,34 +452,34 @@ public class DbMileageRateDAO implements MileageRateDAO {
 
     /**
      * <p>
-     * Removes the specified MileageRate from the data store.
+     * Removes the specified rate from the data store.
      * </p>
      *
-     * @param mileageRate The mileageRate to delete.
-     * @throws IllegalArgumentException if the mileageRate is null.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
-     * @throws MileageRateNotFoundException if the MileageRate to delete was not found in the data store.
+     * @param rate The rate to delete.
+     * @throws IllegalArgumentException if the rate is null.
+     * @throws rateDAOException if a problem occurs while accessing the datastore.
+     * @throws rateNotFoundException if the rate to delete was not found in the data store.
      */
-    public void deleteMileageRate(MileageRate mileageRate) throws MileageRateDAOException,
-        MileageRateNotFoundException {
+    public void deleteRate(Rate rate) throws RateDAOException,
+        RateNotFoundException {
 
-        Utils.checkNull(mileageRate, "mileageRate");
+        Utils.checkNull(rate, "rate");
 
         Connection conn = createConnection();
         try {
             // delete company - rate mapping first
-            DBUtils.executeDelete(conn, DELETE_FROM_COMP_MILEAGE_RATE, mileageRate.getId());
+            DBUtils.executeDelete(conn, DELETE_FROM_COMP_RATE, rate.getId());
 
             // delete rate
-            int count = DBUtils.executeDelete(conn, DELETE_FROM_MILEAGE_RATE, mileageRate.getId());
+            int count = DBUtils.executeDelete(conn, DELETE_FROM_RATE, rate.getId());
             if (count == 0) {
                 DBUtils.rollback(conn);
-                throw new MileageRateNotFoundException("No rate exists.", null, mileageRate);
+                throw new RateNotFoundException("No rate exists.", null, rate);
             }
             conn.commit();
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
-            throw new MileageRateDAOException("Error occur while retrieving the mileage rate.", ex, mileageRate);
+            throw new RateDAOException("Error occur while retrieving the  rate.", ex, rate);
         } finally {
             DBUtils.close(conn);
         }
@@ -484,55 +487,55 @@ public class DbMileageRateDAO implements MileageRateDAO {
 
     /**
      * <p>
-     * Enumerates all the MileageRates that are present within the data store.
+     * Enumerates all the rates that are present within the data store.
      * </p>
      *
-     * @return A list of all the MileageRates within the data store.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @return A list of all the rates within the data store.
+     * @throws rateDAOException if a problem occurs while accessing the datastore.
      */
-    public MileageRate[] listMileageRates() throws MileageRateDAOException {
-        return listMileageRates(BASE_QUERY, false);
+    public Rate[] listRates() throws RateDAOException {
+        return listRates(BASE_QUERY, false);
     }
 
     /**
      * <p>
-     * Returns a list of all the MileageReasons within the datastore that satisfy the filters that are provided. The
+     * Returns a list of all the Rates within the datastore that satisfy the filters that are provided. The
      * filters are defined using classes from the Search Builder v1.2 component and com.topcoder.timetracker.
      * common.search package.
      * </p>
      * <p>
      * Implementation Notes: - Create a new AND filter that is a conjunction of the baseFilter and the filter
      * parameter. - Use the searchBundle to conduct a search with the built AND filter. - Cast the resulting object
-     * to a CustomResultSet. - Build the resulting MileageRate objects similar to how it would be built from
-     * retrieveMileageRate ResultSet.
+     * to a CustomResultSet. - Build the resulting rate objects similar to how it would be built from
+     * retrieverate ResultSet.
      * </p>
      *
      *
      *
-     * @return A list of MileageReasons that satisfy the search criterion.
+     * @return A list of Rates that satisfy the search criterion.
      * @param filter The filter that is used as criterion to facilitate the search..
      * @throws IllegalArgumentException if the filter is null.
-     * @throws MileageRateDAOException if a problem occurs while accessing the datastore.
+     * @throws rateDAOException if a problem occurs while accessing the datastore.
      */
-    public MileageRate[] searchMileageRates(Filter filter) throws MileageRateDAOException {
+    public Rate[] searchRates(Filter filter) throws RateDAOException {
         Utils.checkNull(filter, "filter");
 
         // since searchStringBuilder is shared between methods, it must be synchronized
         // to make class thread safe
         synchronized(searchStringBuilder) {
-            return listMileageRates(searchStringBuilder.buildSearchString(filter), true);
+            return listRates(searchStringBuilder.buildSearchString(filter), true);
         }
     }
 
     /**
-     * Returns the array of mileage rate that match the query.
+     * Returns the array of  rate that match the query.
      *
      * @param query the search query.
      * @param fillStatement indicates if there are any additional values for query.
-     * @return the array of mileage rate found.
-     * @throws MileageRateDAOException if any error occurs.
+     * @return the array of  rate found.
+     * @throws rateDAOException if any error occurs.
      */
-    private MileageRate[] listMileageRates(String query, boolean fillStatement) throws MileageRateDAOException {
+    private Rate[] listRates(String query, boolean fillStatement) throws RateDAOException {
         Connection conn = createConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -549,13 +552,13 @@ public class DbMileageRateDAO implements MileageRateDAO {
             List result = new ArrayList();
             // create list
             while (rs.next()) {
-                result.add(populateMileageRate(rs));
+                result.add(populateRate(rs));
             }
 
             // return as array/
-            return (MileageRate[]) result.toArray(new MileageRate[result.size()]);
+            return (Rate[]) result.toArray(new Rate[result.size()]);
         } catch (SQLException ex) {
-            throw new MileageRateDAOException("Error occur while retrieving the mileage rate.", ex, null);
+            throw new RateDAOException("Error occur while retrieving the  rate.", ex, null);
         } finally {
             DBUtils.close(rs);
             DBUtils.close(pstmt);

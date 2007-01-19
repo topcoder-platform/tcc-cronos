@@ -20,7 +20,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @author TheCois
  * @version 2.0
  */
-public interface rateDAO {
+public interface RateDAO {
 
     /**
      * <p>
