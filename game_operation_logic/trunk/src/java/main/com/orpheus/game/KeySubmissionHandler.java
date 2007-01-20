@@ -42,13 +42,12 @@ import com.topcoder.web.user.LoginHandler;
  * problem, regardless of the values of the keys.
  * </li>
  * <li>
- * If the keys do not match then the player¡¯s failure count for the game and slot is incremented. The handler then
- * returns a configurable result string characteristic of whether or not the failure count meets or exceeds a
- * configurable  threshold value.
+ * If the keys do not match then the player¡¯s failure count for the game and slot is incremented. The handler will
+ * return null if user exhausts his available attempts, otherwise a configurable result string.
  * </li>
  * <li>
  * If the keys do match then the handler records a game completion for the player in the specified game (via the game
- * data persistence component), then returns null
+ * data persistence component), then returns successResult("success" by default)
  * </li>
  * </ol>
  * This class is thread safe since it does not contain any mutable state.
@@ -57,8 +56,7 @@ import com.topcoder.web.user.LoginHandler;
  * @version 1.0
  */
 public class KeySubmissionHandler implements Handler {
-    /** Represent the result name this handler will return if the max failure is met or exceeded. */
-    private final String failureCountExceededResult;
+    private static final String DEFAULT_SUCCESS_RESULT = "success";
 
     /** Represent the result name this handler will return if the max failure is not met. */
     private final String failureCountNotMetResult;
@@ -68,6 +66,9 @@ public class KeySubmissionHandler implements Handler {
 
     /** Represent the result name this handler will return if the game is inactive. */
     private final String inactiveGameResult;
+    
+    /** Represent the result name this handler will return if user submit the correct keys. */
+    private final String successResult;
 
     /**
      * A configurable param name to retrieve the key submissions from the request parameters(The value retrieved is a
@@ -84,29 +85,29 @@ public class KeySubmissionHandler implements Handler {
      * @param gameIdParamKey the game id param key
      * @param submissionParamKey the submission param key
      * @param inactiveGameResult the inactive game result
-     * @param failureCountExceededResult the failure count exceeded result
+     * @param successResult the returned result when use submits the correct keys, "success" will be used if it's 
+     *  set to be null 
      * @param failureCountNotMetResult the failure count not met result
      * @param maxFailureCount the max failure count
      *
      * @throws IllegalArgumentException if either of arguments is null or empty string
      */
     public KeySubmissionHandler(String gameIdParamKey, String submissionParamKey, String inactiveGameResult,
-        String failureCountExceededResult, String failureCountNotMetResult, int maxFailureCount) {
+        String successResult, String failureCountNotMetResult, int maxFailureCount) {
         ParameterCheck.checkNullEmpty("gameIdParamKey", gameIdParamKey);
         ParameterCheck.checkNullEmpty("submissionParamKey", submissionParamKey);
         ParameterCheck.checkNullEmpty("inactiveGameResult", inactiveGameResult);
-        ParameterCheck.checkNullEmpty("failureCountExceededResult", failureCountExceededResult);
         ParameterCheck.checkNullEmpty("failureCountNotMetResult", failureCountNotMetResult);
         ParameterCheck.checkNotPositive("maxFailureCount", maxFailureCount);
 
         this.gameIdParamKey = gameIdParamKey;
         this.submissionParamKey = submissionParamKey;
         this.inactiveGameResult = inactiveGameResult;
-        this.failureCountExceededResult = failureCountExceededResult;
         this.failureCountNotMetResult = failureCountNotMetResult;
         this.maxFailureCount = maxFailureCount;
+        this.successResult = initSuccessResult(successResult);
     }
-
+    
     /**
      * Create the instance from element. The structure of the Element will be like this:
      * <pre>&lt;handler type=&quot;x&quot;&gt;
@@ -115,7 +116,7 @@ public class KeySubmissionHandler implements Handler {
      *  &lt;max_failure_count&gt;10&lt;/max_failure_count&gt;
      *  &lt;inactive_game_result&gt;inactive_game_result&lt;/inactive_game_result&gt;
      *  &lt;failure_count_not_met_result&gt;count_not_met_result&lt;/failure_count_not_met_result&gt;
-     *  &lt;failure_count_exceeded_result&gt;count_exceeded_result&lt;/failure_count_exceeded_result&gt;
+     *  &lt;success_result&gt;success&lt;/success_result&gt;
      *  &lt;/handler&gt;</pre>
      * <p>
      * <br> Following is simple explanation of the above XML structure.
@@ -128,8 +129,8 @@ public class KeySubmissionHandler implements Handler {
      * with these retrieved from EJB<br>
      * The failure_count_not_met_result node represents the result name this handler will return if the max count is
      * not met<br>
-     * The failure_count_exceeded_result node represents the result name this handler will return if the max count is
-     * met or exceeded.<br>
+     * The success_result node represents the result name this handler will return if user submit the correct keys.
+     * It's an optional property, "success" will be set if it's missing.<br>
      * </p>
      *
      * @param element the xml element to create the handler instance.
@@ -142,8 +143,10 @@ public class KeySubmissionHandler implements Handler {
         this.gameIdParamKey = XMLHelper.getNodeValue(element, "game_id_param_key", true);
         this.submissionParamKey = XMLHelper.getNodeValue(element, "submission_param_key", true);
         this.inactiveGameResult = XMLHelper.getNodeValue(element, "inactive_game_result", true);
-        this.failureCountExceededResult = XMLHelper.getNodeValue(element, "failure_count_exceeded_result", true);
         this.failureCountNotMetResult = XMLHelper.getNodeValue(element, "failure_count_not_met_result", true);
+        
+        String successResult = XMLHelper.getNodeValue(element, "success_result", false);
+        this.successResult = initSuccessResult(successResult);
 
         String failureCountStr = XMLHelper.getNodeValue(element, "max_failure_count", true);
 
@@ -219,8 +222,8 @@ public class KeySubmissionHandler implements Handler {
             }
 
             if (Arrays.equals(submitedKeys, keys)) {
-                // if the submitted keys equal the keys in game data, return null
-                return null;
+                // if the submitted keys equal the keys in game data, return the result string
+                return successResult;
             } else {
                 int count = 0;
                 Integer failureCount = (Integer) request.getSession().getAttribute("current_faliure_count_" + gameId);
@@ -233,7 +236,7 @@ public class KeySubmissionHandler implements Handler {
                 request.getSession().setAttribute("current_faliure_count_" + gameId, new Integer(count));
 
                 if (count > maxFailureCount) {
-                    return this.failureCountExceededResult;
+                    return null;
                 } else {
                     return this.failureCountNotMetResult;
                 }
@@ -249,5 +252,22 @@ public class KeySubmissionHandler implements Handler {
         } catch (Exception e) {
         	 throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
 		}
+    }
+    
+    /**
+     * Set the success result string to the given one. If the argument is null, the default value will be used.
+     *@param result success result string
+     *@return the result string to be set
+     *@throws IllegalArgumentException if the given result is empty string
+     */
+    private String initSuccessResult(String result){
+        if (result != null){
+            if (result.trim().length() == 0){
+                throw new IllegalArgumentException("successResult should not be empty");
+            }
+            return result;
+        }else{
+            return DEFAULT_SUCCESS_RESULT;
+        }
     }
 }
