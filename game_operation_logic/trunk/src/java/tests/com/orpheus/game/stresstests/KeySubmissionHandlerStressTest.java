@@ -45,7 +45,7 @@ public class KeySubmissionHandlerStressTest extends TestCase {
     protected void setUp() throws Exception {
         TestsHelper.removeAllCMNamespaces();
         TestsHelper.loadConfig();
-        handler = new KeySubmissionHandler("gameId", "submissions", "inactive", "failureCountExceededResult",
+        handler = new KeySubmissionHandler("gameId", "submissions", "inactive", "success",
                         "failureCountNotMetResult", 3);
 		ServletContext servletContext = new MockServletContext();
 		servletContext.setAttribute(GameOperationLogicUtility.getInstance()
