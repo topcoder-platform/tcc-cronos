@@ -133,24 +133,11 @@ public class KeySubmissionHandlerTest extends TestCase {
         }
     }
 
-    /**
-     * Test method for KeySubmissionHandler(
-     * java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)}.
-     * In this case, the failureCountExceededResult is null.
-     */
-    public void testKeySubmissionHandler_StringStringStringStringStringInt_NullfailureCountExceededResult() {
-        try {
-            new KeySubmissionHandler("test", "test", "test", null, "test", 1);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
 
     /**
      * Test method for KeySubmissionHandler(
      * java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)}.
-     * In this case, the failureCountExceededResult is empty.
+     * In this case, the successResult is empty.
      */
     public void testKeySubmissionHandler_StringStringStringStringStringInt_EmptyfailureCountExceededResult() {
         try {
@@ -161,19 +148,6 @@ public class KeySubmissionHandlerTest extends TestCase {
         }
     }
 
-    /**
-     * Test method for KeySubmissionHandler(
-     * java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)}.
-     * In this case, the failureCountExceededResult is null.
-     */
-    public void testKeySubmissionHandler_StringStringStringStringStringInt_NullfailureCountNotMetResult() {
-        try {
-            new KeySubmissionHandler("test", "test", "test", "test", null, 1);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // should land here
-        }
-    }
 
     /**
      * Test method for KeySubmissionHandler(
@@ -229,7 +203,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> some result name </inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -251,7 +225,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> some result name </inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -273,7 +247,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> some result name </inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -295,7 +269,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> some result name </inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -317,7 +291,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
 //                + "<inactive_game_result> some result name </inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -339,7 +313,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> </inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -350,7 +324,7 @@ public class KeySubmissionHandlerTest extends TestCase {
 
     /**
      * Test method for KeySubmissionHandler(org.w3c.dom.Element).
-     * In this case, the element has no failureCountExceededResult.
+     * In this case, the element has no success result.
      * @throws Exception to JUnit
      */
     public void testKeySubmissionHandler_Element_NofailureCountExceededResult() throws Exception {
@@ -361,7 +335,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> some result name </inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-//                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+//                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -372,7 +346,7 @@ public class KeySubmissionHandlerTest extends TestCase {
 
     /**
      * Test method for KeySubmissionHandler(org.w3c.dom.Element).
-     * In this case, the element has empty failureCountExceededResult.
+     * In this case, the element has empty success result.
      * @throws Exception to JUnit
      */
     public void testKeySubmissionHandler_Element_EmptyfailureCountExceededResult() throws Exception {
@@ -383,7 +357,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> failureCountExceededResult</inactive_game_result>"
                 + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> </failure_count_exceeded_result>"
+                + "<success_result> </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -405,7 +379,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> some result name </inactive_game_result>"
 //                + "<failure_count_not_met_result> some result name </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> some result name </failure_count_exceeded_result>"
+                + "<success_result> some result name </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -427,7 +401,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> failureCountExceededResult</inactive_game_result>"
                 + "<failure_count_not_met_result> </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> failureCountNotMetResult </failure_count_exceeded_result>"
+                + "<success_result> failureCountNotMetResult </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -449,7 +423,7 @@ public class KeySubmissionHandlerTest extends TestCase {
 //                + "<max_failure_count> 10 </max_failure_count>"
                 + "<inactive_game_result> failureCountExceededResult</inactive_game_result>"
                 + "<failure_count_not_met_result> </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> failureCountNotMetResult </failure_count_exceeded_result>"
+                + "<success_result> failureCountNotMetResult </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -471,7 +445,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> </max_failure_count>"
                 + "<inactive_game_result> failureCountExceededResult</inactive_game_result>"
                 + "<failure_count_not_met_result> </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> failureCountNotMetResult </failure_count_exceeded_result>"
+                + "<success_result> failureCountNotMetResult </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
@@ -493,7 +467,7 @@ public class KeySubmissionHandlerTest extends TestCase {
                 + "<max_failure_count> test </max_failure_count>"
                 + "<inactive_game_result> failureCountExceededResult</inactive_game_result>"
                 + "<failure_count_not_met_result> </failure_count_not_met_result>"
-                + "<failure_count_exceeded_result> failureCountNotMetResult </failure_count_exceeded_result>"
+                + "<success_result> failureCountNotMetResult </success_result>"
                 + "</handler> ";
             new KeySubmissionHandler(FailureTestHelper.parseElement(xml));
             fail("IllegalArgumentException expected.");
