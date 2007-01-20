@@ -33,6 +33,11 @@ import junit.framework.TestCase;
 public class KeySubmissionHandlerAccuracyTest extends TestCase {
 
     /**
+     * String "success", success result.
+     */
+    private static final String SUCCESS_RESULT = "success";
+
+    /**
      * String 'gameId', the game ID.
      */
     private static final String GAME_ID = "gameId";
@@ -50,7 +55,7 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
     /**
      * String 'failureCountExceededResult', message for failure but user can not try again.
      */
-    private static final String FAILURE_OVER = "failureCountExceededResult";
+    private static final String FAILURE_OVER = null;
     
     /**
      * String 'inactive', message for inactive game.
@@ -100,7 +105,7 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
 		ConfigManager configManager = ConfigManager.getInstance();
 		configManager.add("com.topcoder.naming.jndiutility", "com/topcoder/naming/jndiutility/JNDIUtils.properties", ConfigManager.CONFIG_PROPERTIES_FORMAT);
 		configManager.add("GameOperationLogicUtilityTest.xml");
-        handler = new KeySubmissionHandler(GAME_ID, SUBMISSION_PARAM_KEY, GAME_INACTIVE, FAILURE_OVER, FAILURE_CONTINUE, 1);
+        handler = new KeySubmissionHandler(GAME_ID, SUBMISSION_PARAM_KEY, GAME_INACTIVE, SUCCESS_RESULT, FAILURE_CONTINUE, 1);
     }
     
 	/**
@@ -140,7 +145,7 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
 				+ "            <max_failure_count>10</max_failure_count>"
 				+ "            <inactive_game_result>inactive_game_result</inactive_game_result>"
 				+ "            <failure_count_not_met_result>count_not_met_result</failure_count_not_met_result>"
-				+ "            <failure_count_exceeded_result>count_exceeded_result</failure_count_exceeded_result>"
+				+ "            <success_result>success</success_result>"
 				+ "        </handler>"
 				+ "    </config>"
 				+ "</Root>");
@@ -171,7 +176,7 @@ public class KeySubmissionHandlerAccuracyTest extends TestCase {
 		mockRequest.setParameter("submissions","2");
 		mockRequest.setParameter(SUBMISSION_PARAM_KEY, new String[]{"1"});
         
-		assertEquals("execute failed.", null, handler.execute(context));
+		assertEquals("execute failed.", SUCCESS_RESULT, handler.execute(context));
 	}
 
 	/**
