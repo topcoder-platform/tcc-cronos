@@ -13,10 +13,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * <p>
@@ -205,5 +208,61 @@ public class AccuracyHelper {
     public static Date convertStringToDate(String input) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy/M/d");
         return df.parse(input);
+    }
+
+    /**
+     * Return the ids from the hosting_slot table.
+     *
+     * @return the ids from the hosting_slot table.
+     */
+    public static List getHostingSlotIds() throws Exception {
+        List ids = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        try {
+
+            DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
+            conn = dbFactory.createConnection();
+
+            rs = conn.createStatement().executeQuery("SELECT id FROM hosting_slot");
+
+            while (rs.next()) {
+                ids.add(new Long(rs.getLong("id")));
+            }
+            rs.close();
+            return ids;
+        } finally {
+            rs.close();
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    /**
+     * Return the bid id from the hosting_slot table using the slot_id.
+     *
+     * @return the bid id corresponding to the slot_id, or -1 if it does not exist.
+     */
+    public static long getBidIdFromSlotId(long id) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        try {
+
+            DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
+            conn = dbFactory.createConnection();
+
+            rs = conn.createStatement().executeQuery("SELECT bid_id FROM hosting_slot WHERE id=" + id);
+
+            if (rs.next()) {
+                return rs.getLong("bid_id");
+            }
+            return -1;
+        } finally {
+            rs.close();
+            if (conn != null) {
+                conn.close();
+            }
+        }
     }
 }
