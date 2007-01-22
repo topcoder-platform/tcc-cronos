@@ -192,7 +192,7 @@ public class KeySubmissionHandler implements Handler {
 
         try {
             if (golu.isUseLocalInterface()) {
-            	gameDataLocal = golu.getGameDataLocalHome().create();
+                gameDataLocal = golu.getGameDataLocalHome().create();
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }
@@ -201,7 +201,7 @@ public class KeySubmissionHandler implements Handler {
             
             Date currentDate = new Date();
 
-            if (game.getStartDate().before(currentDate) && (game.getEndDate() == null)) {
+            if (game.getStartDate().after(currentDate) || (game.getEndDate() != null)) {
                 //specified game is not active
                 return this.inactiveGameResult;
             }
@@ -215,24 +215,22 @@ public class KeySubmissionHandler implements Handler {
 
             String[] keys = golu.isUseLocalInterface()?gameDataLocal.getKeysForPlayer(userId, slotIds):gameData.getKeysForPlayer(userId, slotIds);
 
-            String[] submitedKeys = request.getParameterValues(this.submissionParamKey);
+            String[] submittedKeys = request.getParameterValues(this.submissionParamKey);
 
-            if (submitedKeys == null) {
+            if (submittedKeys == null) {
                 throw new HandlerExecutionException(submissionParamKey + " does not exist in request parameter");
             }
 
-            if (Arrays.equals(submitedKeys, keys)) {
+            Arrays.sort(keys);
+            Arrays.sort(submittedKeys);
+
+            if (Arrays.equals(submittedKeys, keys)) {
                 // if the submitted keys equal the keys in game data, return the result string
                 return successResult;
             } else {
-                int count = 0;
                 Integer failureCount = (Integer) request.getSession().getAttribute("current_faliure_count_" + gameId);
+                int count = ((failureCount != null) ? (failureCount.intValue() + 1) : 1);
 
-                if (failureCount != null) {
-                    count = failureCount.intValue();
-                }
-
-                count++;
                 request.getSession().setAttribute("current_faliure_count_" + gameId, new Integer(count));
 
                 if (count > maxFailureCount) {
@@ -250,8 +248,8 @@ public class KeySubmissionHandler implements Handler {
         } catch (RemoteException e) {
             throw new HandlerExecutionException("failed to obtain data from GameData", e);
         } catch (Exception e) {
-        	 throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
-		}
+             throw new HandlerExecutionException("failed to obtain GameData from EJB", e);
+        }
     }
     
     /**
