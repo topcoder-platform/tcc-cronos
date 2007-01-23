@@ -217,7 +217,7 @@ final class HTMLRenderUtil {
                             String wrapper = actualData;
                             if (columnDecorator.getColumnName().equalsIgnoreCase("description"))    {
 
-                                wrapper = getShortenedVersion(actualData) + "<img border=\"0\" src=\"../images/icon_plus.gif\" width=\"12\" height=\"12\" style=\"margin-bottom:-3px;padding-left:5px;\" onmouseover=\"return escape('" + actualData + "');\">";
+                                wrapper = getShortenedVersion(actualData) + "<img border=\"0\" src=\"images/icon_plus.gif\" width=\"12\" height=\"12\" style=\"margin-bottom:-3px;padding-left:5px;\" onmouseover=\"return escape('" + actualData + "');\">";
                             }
                             ret.append(wrapper);
                         } catch (SQLException e) {
