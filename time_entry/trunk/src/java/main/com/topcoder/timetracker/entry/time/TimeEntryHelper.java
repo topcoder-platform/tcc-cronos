@@ -63,10 +63,10 @@ class TimeEntryHelper {
      * @return the truncated string
      */
     static String truncatesString(String oldString) {
-        if (oldString.length() <= 64) {
+        if (oldString.length() <= 255) {
             return oldString;
         }
 
-        return oldString.substring(0, 64);
+        return oldString.substring(0, 255);
     }
 }
