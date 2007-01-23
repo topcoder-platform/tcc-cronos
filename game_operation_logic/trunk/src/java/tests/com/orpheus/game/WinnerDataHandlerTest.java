@@ -108,6 +108,7 @@ public class WinnerDataHandlerTest extends TestCase {
         response = new MockHttpResponse();
         context = new ActionContext(request, response);
 
+        request.setParameter(WinnerDataHandler.USER_ID_PROPERTY, "1");
         request.setParameter("firstName", "tom");
         request.setParameter("email", "tom@email.com");
         

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import junit.framework.TestCase;
+
 import org.w3c.dom.Element;
 
 import servlet.MockHttpRequest;
@@ -19,12 +21,11 @@ import servlet.MockHttpSession;
 import servlet.MockServletContext;
 
 import com.orpheus.game.WinnerDataHandler;
+import com.topcoder.user.profile.UserProfile;
 import com.topcoder.user.profile.manager.MockUserProfileManager;
 import com.topcoder.user.profile.manager.ProfileTypeFactory;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.web.frontcontroller.ActionContext;
-
-import junit.framework.TestCase;
 
 /**
  * Accuracy test case for WinnerDataHandler.
@@ -62,6 +63,11 @@ public class WinnerDataHandlerAccuracyTest extends TestCase {
 	 * Default WinnerDataHandler used in the tests.
 	 */
 	private WinnerDataHandler handler;
+	
+	/**
+	 * Default user profile manager used in the tests.
+	 */
+	private MockUserProfileManager userProfileManager; 
 
 	/**
 	 * Loads configuration from files. Gets instance of
@@ -85,7 +91,8 @@ public class WinnerDataHandlerAccuracyTest extends TestCase {
 		configManager.add("ObjectFactory.xml");
 		configManager.add("FrontControllerConfig.xml");
 		configManager.add("com.topcoder.user.profile.ConfigProfileType.base","com/topcoder/user/profile/ConfigProfileType.base.properties",ConfigManager.CONFIG_PROPERTIES_FORMAT);
-		handler = new WinnerDataHandler(new MockUserProfileManager(),
+		userProfileManager = new MockUserProfileManager();
+		handler = new WinnerDataHandler(userProfileManager,
 				profileTypeNames, profilesMap, ProfileTypeFactory
 						.getInstance("com.topcoder.user.profile.manager"));
 	}
@@ -106,9 +113,12 @@ public class WinnerDataHandlerAccuracyTest extends TestCase {
 	 * Test for
 	 * {@link WinnerDataHandler#WinnerDataHandler(com.topcoder.user.profile.manager.UserProfileManager, String[], Map, ProfileTypeFactory)}.
 	 * No exception should be thrown.
+	 * 
+	 * @throws Exception
+	 *             exception thrown to JUnit
 	 */
-	public void testWinnerDataHandler_Constructor1() {
-		// success
+	public void testWinnerDataHandler_Constructor1() throws Exception {
+		testWinnerDataHandler_Execute_CheckUpdated();
 	}
 
 	/**
@@ -150,6 +160,37 @@ public class WinnerDataHandlerAccuracyTest extends TestCase {
 
 	/**
 	 * Test for {@link WinnerDataHandler#execute(ActionContext)}. It should
+	 * return null. Checks the updated user profile in the help of Mock
+	 * UserProfileManager.
+	 * 
+	 * @throws Exception
+	 *             exception thrown to JUnit.
+	 */
+	public void testWinnerDataHandler_Execute_CheckUpdated() throws Exception {
+		servletContext = new MockServletContext();
+
+		session = new MockHttpSession(servletContext);
+		MockHttpRequest mockRequest = new MockHttpRequest(session);
+		request = mockRequest;
+
+		response = new MockHttpResponse();
+		context = new ActionContext(request, response);
+		JNDIHelper.initJNDI();
+
+		mockRequest.setParameter(WinnerDataHandler.USER_ID_PROPERTY, "1");
+		mockRequest.setParameter("firstName", "tom");
+		mockRequest.setParameter("email", "tom@email.com");
+
+		userProfileManager.clearProfile();
+		assertEquals("execute failed.", null, handler.execute(context));
+		
+		UserProfile userProfile = userProfileManager.getUserProfile(1);
+		assertEquals("execute failed.", "tom", userProfile.getProperty("first_name"));
+		assertEquals("execute failed.", "tom@email.com", userProfile.getProperty("email_address"));
+	}
+
+	/**
+	 * Test for {@link WinnerDataHandler#execute(ActionContext)}. It should
 	 * return null.
 	 * 
 	 * @throws Exception
@@ -166,10 +207,11 @@ public class WinnerDataHandlerAccuracyTest extends TestCase {
 		context = new ActionContext(request, response);
 		JNDIHelper.initJNDI();
 
+		mockRequest.setParameter(WinnerDataHandler.USER_ID_PROPERTY, "1");
 		mockRequest.setParameter("firstName", "tom");
 		mockRequest.setParameter("email", "tom@email.com");
 
+		userProfileManager.clearProfile();
 		assertEquals("execute failed.", null, handler.execute(context));
 	}
-
 }

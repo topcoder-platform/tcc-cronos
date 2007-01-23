@@ -3,6 +3,15 @@
  */
 package com.orpheus.game;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.w3c.dom.Element;
+
 import com.topcoder.user.profile.DuplicatePropertyValidatorException;
 import com.topcoder.user.profile.InvalidKeyException;
 import com.topcoder.user.profile.InvalidValueException;
@@ -10,30 +19,18 @@ import com.topcoder.user.profile.ProfileType;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.user.profile.manager.DuplicateProfileException;
 import com.topcoder.user.profile.manager.ProfileTypeFactory;
+import com.topcoder.user.profile.manager.UnknownProfileException;
 import com.topcoder.user.profile.manager.UnknownProfileTypeException;
 import com.topcoder.user.profile.manager.UserProfileManager;
 import com.topcoder.user.profile.manager.UserProfileManagerException;
-
-import com.topcoder.util.config.ConfigManagerException;
-import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
-
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
-
-import org.w3c.dom.Element;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -47,6 +44,14 @@ import javax.servlet.http.HttpServletRequest;
  * @version 1.0
  */
 public class WinnerDataHandler implements Handler {
+	
+	/**
+	 * <p>Added by Zulander to fix BALL-5082</p>
+	 * 
+	 * Property name of user ID value passed in the context
+	 */
+	public static final String USER_ID_PROPERTY = "user_id";
+	
     /**
      * a map from parameter names to corresponding user profile property names, string property name as key and string
      * parameter name as value.
@@ -165,7 +170,7 @@ public class WinnerDataHandler implements Handler {
     }
 
     /**
-     * Records contact information collected from players when they win the game.
+     * Update contact information collected from players when they win the game.
      *
      * @param context the action context
      *
@@ -178,9 +183,13 @@ public class WinnerDataHandler implements Handler {
         ParameterCheck.checkNull("context", context);
 
         UserProfile profile;
-
+        long userId = -1;
+        
         try {
-            profile = new UserProfile();
+            HttpServletRequest request = context.getRequest();
+            userId = RequestHelper.getLongParameter(request,
+            		WinnerDataHandler.USER_ID_PROPERTY); // userId from request parameter
+            profile = profileManager.getUserProfile(userId);
 
             for (int i = 0; i < this.profileTypeNames.length; i++) {
                 ProfileType type = profileTypeFactory.getProfileType(profileTypeNames[i]);
@@ -191,7 +200,6 @@ public class WinnerDataHandler implements Handler {
             Entry entry = null;
             String propertyName;
             String[] propertyValues;
-            HttpServletRequest request = context.getRequest();
 
             while (iter.hasNext()) {
                 entry = (Entry) iter.next();
@@ -205,11 +213,9 @@ public class WinnerDataHandler implements Handler {
                 }
             }
 
-            profileManager.createUserProfile(profile);
-        } catch (ConfigManagerException e) {
-            throw new HandlerExecutionException("error occurred while creating UserProfile", e);
-        } catch (IDGenerationException e) {
-            throw new HandlerExecutionException("error occurred while creating UserProfile", e);
+            profileManager.updateUserProfile(profile);
+        } catch(UnknownProfileException e) {
+        	throw new HandlerExecutionException("User " + String.valueOf(userId) + "doesn't exist.", e);
         } catch (UnknownProfileTypeException e) {
             throw new HandlerExecutionException("error occurred while obtaining ProfileType", e);
         } catch (DuplicatePropertyValidatorException e) {
