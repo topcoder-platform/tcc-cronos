@@ -65,7 +65,7 @@ public class TestHelper {
     /**
      * The domain name used in tests.
      */
-    public static final String DOMAIN_NAME = "domain";
+    public static final String DOMAIN_NAME = "127.0.0.1:8080/www";
 
     /**
      * Represent the file name of insert data sql scripts.

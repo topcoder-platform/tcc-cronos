@@ -3,6 +3,10 @@
  */
 package com.orpheus.administration;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 
 import javax.ejb.SessionBean;
@@ -350,7 +354,7 @@ public class MockGameDataBean implements SessionBean {
             return hostingSlotImpl;
         } else {
             if (slots[0].getDomainTargets() == null
-                    || slots[0].getDomainTargets()[0] == null) {
+                    || slots[0].getDomainTargets().length == 0 || slots[0].getDomainTargets()[0] == null) {
                 DomainTargetImpl domainTargetImpl = new DomainTargetImpl();
                 domainTargetImpl.setIdentifierText("Identifier Text");
                 ((HostingSlotImpl) slots[0])
@@ -603,8 +607,20 @@ public class MockGameDataBean implements SessionBean {
      * @throws IllegalArgumentException
      *             If name or mediaType is null/empty, or content is null
      */
-    public long recordBinaryObject(String name, String mediaType, byte[] content) {
-        return 1;
+    public long recordBinaryObject(String name, String mediaType, byte[] content) throws PersistenceException {
+        try {
+			OutputStream outputStream = new FileOutputStream("test_files/bin_obj/" + name);
+			outputStream.write(content);
+			outputStream.close();
+        }
+        catch (FileNotFoundException e) {
+			throw new PersistenceException("Error happened when writing binary object to file", e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new PersistenceException("Error happened when writing binary object to file", e);			
+		}
+    	
+    	return 1;
     }
 
     /**
@@ -954,7 +970,7 @@ public class MockGameDataBean implements SessionBean {
         return null;
     }
 
-    private class DomainImpl implements Domain {
+    class DomainImpl implements Domain {
 
         private Long id;
 

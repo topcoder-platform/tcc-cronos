@@ -35,6 +35,8 @@ import com.topcoder.util.image.manipulation.Image;
 import com.topcoder.util.image.manipulation.image.MutableMemoryImage;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
+import com.topcoder.util.objectfactory.ObjectFactoryException;
+import com.topcoder.util.objectfactory.SpecificationFactoryException;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
@@ -48,6 +50,8 @@ import com.topcoder.util.web.sitestatistics.TextStatistics;
 
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
+import com.topcoder.webspider.crawling.BreadthFirstCrawlStrategy;
+import com.topcoder.webspider.validators.RegExValidator;
 import com.topcoder.webspider.web.WebAddressContext;
 import com.topcoder.webspider.web.WebCrawler;
 import com.topcoder.webspider.web.WebPageData;
@@ -60,6 +64,7 @@ import java.io.IOException;
 
 import java.rmi.RemoteException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -251,7 +256,16 @@ public class AdministrationManager {
     private final int maxTargetLength;
 
     /**
-     * Preferred number of targets to generate for any particular slot.<br/>
+     * Number of targets to generate for any particular slot.<br/>
+     * This variable is initialized in the constructor and does not change after
+     * that.<br/> Must be positive.
+     *
+     */
+    private final int huntTargetsPerSlot;
+
+    
+    /**
+     * Preferred length of generated targets.<br/>
      * This variable is initialized in the constructor and does not change after
      * that.<br/> Must be positive.
      *
@@ -325,42 +339,35 @@ public class AdministrationManager {
         // Load property "jigsaw"
         initializePuzzleType(namespace, "jigsaw", PuzzleTypeEnum.JIGSAW);
         // Load property "slidingTile"
-        initializePuzzleType(namespace, "slidingTile",
-            PuzzleTypeEnum.SLIDING_TILE);
+        initializePuzzleType(namespace, "slidingTile", PuzzleTypeEnum.SLIDING_TILE);
         // Load property "missingLetter"
-        initializeBrainTeaserType(namespace, "missingLetter",
-            PuzzleTypeEnum.MISSING_LETTER);
+        initializeBrainTeaserType(namespace, "missingLetter", PuzzleTypeEnum.MISSING_LETTER);
         // Load property "letterScramble"
-        initializeBrainTeaserType(namespace, "letterScramble",
-            PuzzleTypeEnum.LETTER_SCRAMBLE);
+        initializeBrainTeaserType(namespace, "letterScramble", PuzzleTypeEnum.LETTER_SCRAMBLE);
 
         // initialize other fields
-        adminDataJndiName = Helper.getPropertyString(namespace,
-                "admin-data-jndi-name");
-        gameDataJndiName = Helper.getPropertyString(namespace,
-                "game-data-jndi-name");
+        adminDataJndiName = Helper.getPropertyString(namespace, "admin-data-jndi-name");
+        gameDataJndiName = Helper.getPropertyString(namespace, "game-data-jndi-name");
         minTargetLength = Helper.getPropertyInt(namespace, "MinTargetLength");
         maxTargetLength = Helper.getPropertyInt(namespace, "MaxTargetLength");
-        preferredTargetLength = Helper.getPropertyInt(namespace,
-                "PreferredTargetLength");
+        huntTargetsPerSlot = Helper.getPropertyInt(namespace, "HuntTargetsPerSlot");
+        preferredTargetLength = Helper.getPropertyInt(namespace, "PreferredTargetLength");
         minDistinctPages = Helper.getPropertyInt(namespace, "MinDistinctPages");
         maxDistinctPages = Helper.getPropertyInt(namespace, "MaxDistinctPages");
-        preferredDistinctPages = Helper.getPropertyInt(namespace,
-                "PreferredDistinctPages");
+        preferredDistinctPages = Helper.getPropertyInt(namespace, "PreferredDistinctPages");
         objectFactory = Helper.getPropertyString(namespace, "objFactoryNS");
 
         try {
             hashAlgManager = HashAlgorithmManager.getInstance();
         } catch (com.topcoder.util.algorithm.hash.ConfigurationException ce) {
-            throw new ConfigurationException("Could not obtain HashAlgorithmManager instance",
-                ce);
+            throw new ConfigurationException("Could not obtain HashAlgorithmManager instance", ce);
         }
 
         try {
             Configuration config;
-            // ISV : FINAL FIX : SHOULD BETTER NOT USE NON-ARG CONSTRUCTOR
-            randomStringImage = new RandomStringImage(Helper.getPropertyString(
-                        namespace, "RandomStringImageFile"));
+
+            randomStringImage = new RandomStringImage(
+                    Helper.getPropertyString(namespace, "RandomStringImageFile"));
             config = randomStringImage.getConfiguration();
             config.clearAlgorithms();
             config.addAlgorithm(new ObfuscationAlgorithm() {
@@ -373,20 +380,10 @@ public class AdministrationManager {
                         /* does nothing */
                     }
                 });
-            config.clearColors();
-            config.addColorPair(Color.WHITE, Color.BLUE.brighter());
-            config.setFormat("JPEG");
-            config.setMaxFontSize(10);
-            config.setMinFontSize(10);
-            config.setImageSize(144, 14);
-            config.setMinWordLength(1);
-            config.setMaxWordLength(100);
         } catch (InvalidConfigException ice) {
-            throw new ConfigurationException("Could not obtain a RandomStringImage instance",
-                ice);
+            throw new ConfigurationException("Could not obtain a RandomStringImage instance", ice);
         } catch (IOException ioe) {
-            throw new ConfigurationException("Could not obtain a RandomStringImage instance",
-                ioe);
+            throw new ConfigurationException("Could not obtain a RandomStringImage instance", ioe);
         }
     }
 
@@ -795,27 +792,40 @@ public class AdministrationManager {
      * @throws AdministrationException
      *             if an error such as RemoteException of GameDataException
      *             occurs.
+     * @throws IllegalReferenceException 
+     * @throws SpecificationConfigurationException 
      */
     private void generateHuntTargets(long slotId, GameData gameData)
         throws AdministrationException {
+        
         try {
             // Get the hosting slot
             HostingSlot slot = gameData.getSlot(slotId);
             String domainName = slot.getDomain().getDomainName();
-
+    
             DomainTarget[] domainTargets = generateDomainTargets(gameData,
                     domainName);
-
+    
             // Create a new HostingSlotImpl instance
             HostingSlotImpl newSlot = Helper.copySlot(slot,
                     slot.getSequenceNumber());
             // Set the new domain targets
             newSlot.setDomainTargets(domainTargets);
             // Update slot
-            gameData.updateSlots(new HostingSlot[] { newSlot });
-        } catch (Exception e) {
-            throw new AdministrationException("Failed to regenerate puzzle.", e);
-        }
+            gameData.updateSlots(new HostingSlot[] { newSlot });            
+        } catch (RemoteException e) {
+            throw new AdministrationException("Failed to generate hunt targets.", e);
+        } catch (PersistenceException e) {
+            throw new AdministrationException("Failed to generate hunt targets.", e);
+        } catch (ObjectFactoryException e) {
+            throw new AdministrationException("Failed to generate hunt targets.", e);
+        } catch (StatisticsException e) {
+            throw new AdministrationException("Failed to generate hunt targets.", e);
+        } catch (HashException e) {
+            throw new AdministrationException("Failed to generate hunt targets.", e);
+        } catch (SpecificationFactoryException e) {
+            throw new AdministrationException("Failed to generate hunt targets.", e);
+        }         
     }
 
     /**
@@ -824,16 +834,24 @@ public class AdministrationManager {
      * </p>
      * @param gameData
      *      GameData EJB instance.
-     * @param domainName
-     *      domain name from which to crawl.
+     * @param domainName domain name from which to crawl -- will be converted to a URL
+     *        by prepending "http://" and appending "/"
      * @return domain targets generated.
+     * @throws AdministrationException 
+     * @throws StatisticsException 
+     * @throws HashException 
+     * @throws ObjectFactoryException
+     * @throws SpecificationFactoryException 
      * @throws Exception - if fail to generate hunt targets for specified domain.
      */
-    private DomainTarget[] generateDomainTargets(GameData gameData,
-        String domainName) throws Exception {
+    private DomainTarget[] generateDomainTargets(GameData gameData, String domainName) throws 
+            ObjectFactoryException, AdministrationException, 
+            StatisticsException, HashException, SpecificationFactoryException {
         // Spider the domain
-        WebCrawler crawler = new WebCrawler();
-        crawler.getStrategy().addAddress(new WebAddressContext(domainName, 0));
+        String baseUrl = "http://" + domainName + "/";
+        WebCrawler crawler = new WebCrawler(new BreadthFirstCrawlStrategy());
+        crawler.getStrategy().addAddress(new WebAddressContext(baseUrl, 10));
+        crawler.setValidator(RegExValidator.inclusionValidator("^\\Q" + baseUrl + "\\E.*"));
 
         List results = crawler.crawl();
 
@@ -862,52 +880,78 @@ public class AdministrationManager {
         }
 
         TextStatistics[] stats = siteStatistics.getElementContentStatistics();
+        // Filter statistics by document number and target length boundaries
+        stats = filterStatistics(stats);
+        
         Random rd = new Random();
         int[] selected = new int[stats.length];
-
         for (int i = 0; i < selected.length; i++) {
             selected[i] = 0;
         }
 
-        // generate domainTargets. in old implementation, if stats length is small,
-        // domainTargets may contain null element.
-        int currentTargetLength = Math.min(preferredTargetLength, stats.length);
-        DomainTarget[] domainTargets = new DomainTarget[currentTargetLength];
+        int numTargetsToGenerate = Math.min(huntTargetsPerSlot, stats.length);
+        DomainTarget[] domainTargets = new DomainTarget[numTargetsToGenerate];
         Map targetsCountOnDoc = new HashMap();
 
-        for (int cnt = 0; cnt < currentTargetLength; cnt++) {
-            // choose textStatistics from result randomly, one textStat can be choosen once.
-            TextStatistics textStatistics = selectStatisatics(selected, stats,
-                    rd, cnt);
-
-            // textStatistics may be null?
-            if ((textStatistics.getDocuments().length >= minDistinctPages) &&
-                    (textStatistics.getDocuments().length <= maxDistinctPages)) {
+        HashAlgorithm hasher = hashAlgManager.getAlgorithm("SHA-1");
+                
+        for (int cnt = 0; cnt < numTargetsToGenerate; cnt++) {
+            boolean tryAnotherStat = false;
+            
+            // create a DomainTargetImpl instance
+            DomainTargetImpl domainTarget = new DomainTargetImpl();
+            
+            do {
+                // choose textStatistics from result randomly, one textStat can be choosen once.
+                TextStatistics textStatistics = selectStatisatics(selected, stats, rd, cnt);
+                if (textStatistics == null) {
+                    // No more targets can be obtained
+                    DomainTarget[] domainTargets2 = new DomainTarget[cnt];
+                    System.arraycopy(domainTargets, 0, domainTargets2, 0, cnt);
+                    return domainTargets2;
+                }
+                
                 String[] docs = textStatistics.getDocuments();
-
+    
                 // choose document id randomly which contains the text.
                 final String docId = randomFindDocId(rd, docs, targetsCountOnDoc);
-                HashAlgorithm hasher = hashAlgManager.getAlgorithm("SHA-1");
-
-                // create a DomainTargetImpl instance
-                DomainTargetImpl domainTarget = new DomainTargetImpl();
-
+                
                 domainTarget.setSequenceNumber(cnt);
                 // get uri from doc id.
                 domainTarget.setUriPath((String) docUrlMap.get(docId));
                 domainTarget.setIdentifierText(textStatistics.getText());
-                domainTarget.setIdentifierHash(hasher.hashToHexString(
-                        textStatistics.getText(), "UTF-8"));
-                domainTarget.setClueImageId(createClueImage(
-                        textStatistics.getText(), gameData));
-
-                domainTargets[cnt] = domainTarget;
-            }
+                domainTarget.setIdentifierHash(hasher.hashToHexString(textStatistics.getText(), "UTF-8"));
+                try {
+                    domainTarget.setClueImageId(createClueImage(textStatistics.getText(), gameData));
+                } catch (Exception e) {
+                    tryAnotherStat = true;
+                }
+                
+            } while (tryAnotherStat);
+            
+            domainTargets[cnt] = domainTarget;            
         }
 
         return domainTargets;
     }
 
+    /**
+     * TODO: Write Docs
+     * 
+     * @param stats
+     * @return
+     */
+    private TextStatistics[] filterStatistics(TextStatistics[] stats) {
+        List results = new ArrayList();
+        for (int i = 0; i < stats.length; i++) {
+            String[] documents = stats[i].getDocuments();        
+            if ((documents.length >= minDistinctPages) && (documents.length <= maxDistinctPages) &&
+                    (stats[i].getText().length() >= minTargetLength) && (stats[i].getText().length() <= maxTargetLength)) {
+                results.add(stats[i]);
+            }    
+        }
+        return (TextStatistics[]) results.toArray(new TextStatistics[results.size()]);      
+    }
     /**
      * <p>
      * Find docId randomly on which to generate target. the targets appear on different
@@ -952,18 +996,20 @@ public class AdministrationManager {
      * Create {@link SiteStatistics} from object factory.
      * </p>
      * @return created {@link SiteStatistics} object.
-     * @throws Exception - if fail to create {@link SiteStatistics} object.
+     * @throws AdministrationException 
+     * @throws SpecificationFactoryException
      */
-    private SiteStatistics createSiteStatistics() throws Exception {
+    private SiteStatistics createSiteStatistics() throws 
+            ObjectFactoryException, AdministrationException, 
+            SpecificationFactoryException {
         // Create an instance of ObjectFactory
         ObjectFactory of = new ObjectFactory(new ConfigManagerSpecificationFactory(
-                    objectFactory), ObjectFactory.BOTH);
+                objectFactory), ObjectFactory.BOTH);
 
         try {
             return (SiteStatistics) of.createObject("SiteStatistics");
         } catch (ClassCastException e) {
-            throw new AdministrationException("Failed to create SiteStatistics instance via objectFactory.",
-                e);
+            throw new AdministrationException("Failed to create SiteStatistics instance via objectFactory.", e);
         }
     }
 
@@ -985,21 +1031,15 @@ public class AdministrationManager {
 
         try {
             randomStringImage.generate(imageText, stream);
-
-            return gameData.recordBinaryObject("clue_image.jpeg", "image/jpeg",
-                stream.toByteArray());
+            return gameData.recordBinaryObject("clue_image.png", "image/png", stream.toByteArray());
         } catch (IOException ioe) {
-            throw new AdministrationException("Could not generate clue image",
-                ioe);
+            throw new AdministrationException("Could not generate clue image", ioe);
         } catch (ObfuscationException oe) {
-            throw new AdministrationException("Could not generate clue image",
-                oe);
+            throw new AdministrationException("Could not generate clue image", oe);
         } catch (InvalidConfigException ice) {
-            throw new AdministrationException("Could not generate clue image",
-                ice);
+            throw new AdministrationException("Could not generate clue image", ice);
         } catch (GameDataException gde) {
-            throw new AdministrationException("Could not generate clue image",
-                gde);
+            throw new AdministrationException("Could not generate clue image", gde);
         }
     }
 

@@ -8,7 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import junit.framework.TestCase;
 
 import com.orpheus.administration.handlers.MockHttpRequest;
+import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.entities.DomainImpl;
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.puzzle.PuzzleTypeSource;
 
 /**
@@ -255,6 +258,33 @@ public class AdministrationManagerUnitTests extends TestCase {
                 gameData.getSlot(1).getDomainTargets());
     }
 
+    /**
+     * <p>
+     * Accuracy test. Tests the <code>generateHuntTargets(long)</code> for
+     * proper behavior.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     */
+    public void testGenerateHuntTargets_2_Accuracy() throws Exception {
+    	target.generateHuntTargets(1);
+    	GameData gameData = Helper.getGameData(TestHelper.GAME_DATA_JNDI_NAME,
+                request, "fail");    	
+    	DomainTarget[] domainTargets = gameData.getSlot(1).getDomainTargets();
+    	assertNotNull("The HuntTargets should be not null", domainTargets);
+        ConfigManager manager = ConfigManager.getInstance();
+        assertEquals("The HuntTargets should have correct length", 
+        		Integer.parseInt(manager.getString(NAMESPACE, "HuntTargetsPerSlot")), domainTargets.length);
+        for (int i = 0; i < domainTargets.length; i++) {
+        	assertTrue("The HuntTargets lengths should correspond to configured constraints", 
+            		(Integer.parseInt(manager.getString(NAMESPACE, "MinTargetLength")) <= 
+            		domainTargets[i].getIdentifierText().length()) &&
+            		(Integer.parseInt(manager.getString(NAMESPACE, "MaxTargetLength")) >= 
+                    		domainTargets[i].getIdentifierText().length()));
+        }
+    }
+    
     /**
      * <p>
      * Accuracy test. Tests the <code>initializeSlotsForBlock(long)</code> for

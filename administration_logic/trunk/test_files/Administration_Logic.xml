@@ -163,6 +163,9 @@
     <Property name="MaxTargetLength">
         <Value>12</Value>
     </Property>
+    <Property name="HuntTargetsPerSlot">
+        <Value>7</Value>
+    </Property>
     <Property name="PreferredTargetLength">
         <Value>5</Value>
     </Property>
@@ -180,7 +183,7 @@
     </Property>
     
     <Property name="RandomStringImageFile">
-        <Value>accuracy/RandomStringImage.xml</Value>
+        <Value>test_files/accuracy/RandomStringImage.xml</Value>
     </Property>
   </Config>
   

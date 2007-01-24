@@ -10,23 +10,28 @@
 				</Property>
 				<Property name="parameters">
 					<Property name="jdbc_driver">
-						<Value>com.mysql.jdbc.Driver</Value>
+						<Value>com.microsoft.sqlserver.jdbc.SQLServerDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:mysql://localhost:3306/test</Value>
+						<Value>jdbc:sqlserver://localhost:1433</Value>
 					</Property>
-					<Property name="DatabaseName">
-						<Value>test</Value>
+					<Property name="databaseName">
+						<Value>orpheus</Value>
 					</Property>
+					
 					<Property name="user">
-						<Value>root</Value>
+						<Value>sa</Value>
 					</Property>
+					
 					<Property name="password">
-						<Value></Value>
+						<Value>topcoder</Value>
 					</Property>
-					<Property name="SelectMethod">
-						<Value>Cursor</Value>
+
+					<Property name="selectMethod">
+						<Value>cursor</Value>
 					</Property>
+
+	
 				</Property>
 			</Property>
 		</Property>

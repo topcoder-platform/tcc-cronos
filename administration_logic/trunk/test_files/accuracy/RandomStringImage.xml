@@ -1,10 +1,10 @@
 <CMConfig>
     <Config name="com.topcoder.randomstringimg">
         <Property name="width">
-            <Value>150</Value>
+            <Value>32</Value>
         </Property>
         <Property name="height">
-            <Value>60</Value>
+            <Value>32</Value>
         </Property>
         <Property name="colorfiles">
             <Value>accuracy/Colors.xml</Value>
@@ -24,19 +24,19 @@
             <Value>com.topcoder.randomstringimg.algorithms.ShearObfuscator</Value>
         </Property>
         <Property name="minlength">
-            <Value>4</Value>
+            <Value>1</Value>
         </Property>
         <Property name="maxlength">
-            <Value>8</Value>
+            <Value>100</Value>                        
         </Property>
         <Property name="format">
             <Value>PNG</Value>
         </Property>
         <Property name="minfontsize">
-            <Value>10</Value>
+            <Value>14</Value>
         </Property>
         <Property name="maxfontsize">
-            <Value>40</Value>
+            <Value>24</Value>
         </Property>
     </Config>
 </CMConfig>
