@@ -22,6 +22,7 @@ import java.text.StringCharacterIterator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.IllegalFormatException;
 
 
 /**
@@ -194,21 +195,21 @@ final class HTMLRenderUtil {
                         ret.append(">");
                         try {
                             String string = rs.getString(columnDecorator.getColumnName());
-                            int intValue = 0;
+                            double doubleValue = 0.0;
 
                             // this is to check whether the dummy '-1' value used as replacement for
                             // the not supported "Select Null" is the value of this row + column
                             // as this is actually meant to be a null value, render it to '*' also
                             // As the string value also can be "-1.00", checking the string
                             // value is not sufficient.
-//                            try {
-//                                intValue = rs.getInt(columnDecorator.getColumnName());
-//                            } catch (SQLException e) {
-//                                //ignored, can occur on non-numeric columns
-//                            }
+                            try {
+                                doubleValue = Double.parseDouble(string);
+                            } catch (Throwable ife) {
+                                //ignored, can occur on non-numeric columns
+                            }
 
                             // if the value returned was a null value, render it as '*'
-                            if (string == null || rs.wasNull() || intValue == -1) {
+                            if (string == null || rs.wasNull() || (doubleValue == -1)) {
                                 string = "0";
                             }
 
