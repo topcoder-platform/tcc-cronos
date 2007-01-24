@@ -148,31 +148,31 @@ final class HTMLRenderUtil {
         final String thStyle = safeGetStyleValue(styles, StyleConstant.TH_STYLE);
 
         //the table
-        ret.append("<TABLE");
+        ret.append("<TABLE ");
         ret.append(tableStyle);
-        ret.append(">");
+        ret.append(">\n");
 
         //the header row
-        ret.append("<TR");
+        ret.append("<TR ");
 
         ret.append(trStyle);
 
-        ret.append(">");
+        ret.append(">\n");
 
         //the table header cells
         for (Iterator iterator = columnDecorators.iterator(); iterator.hasNext();) {
             final ColumnDecorator columnDecorator = (ColumnDecorator) iterator.next();
-            ret.append("<TH");
+            ret.append("<TH ");
             ret.append(thStyle);
             ret.append(">");
 
             ret.append(columnDecorator.getColumnDisplayText());
 
-            ret.append("</TH>");
+            ret.append("</TH>\n");
         }
 
         //end of header row
-        ret.append("</TR>");
+        ret.append("</TR>\n");
 
         //the table body
 
@@ -182,14 +182,14 @@ final class HTMLRenderUtil {
         try {
             try {
                 while (rs.next()) {
-                    ret.append("<TR");
+                    ret.append("<TR ");
                     ret.append(trStyle);
-                    ret.append(">");
+                    ret.append(">\n");
 
                     //the cells
                     for (Iterator iterator = columnDecorators.iterator(); iterator.hasNext();) {
                         final ColumnDecorator columnDecorator = (ColumnDecorator) iterator.next();
-                        ret.append("<TD");
+                        ret.append("<TD ");
                         ret.append(tdStyle);
                         ret.append(">");
                         try {
@@ -217,7 +217,7 @@ final class HTMLRenderUtil {
                             String wrapper = actualData;
                             if (columnDecorator.getColumnName().equalsIgnoreCase("description"))    {
 
-                                wrapper = getShortenedVersion(actualData) + "<img border=\"0\" src=\"images/icon_plus.gif\" width=\"12\" height=\"12\" style=\"margin-bottom:-3px;padding-left:5px;\" onmouseover=\"return escape('" + actualData + "');\">";
+                                wrapper = prepareStringForToolTip(actualData);
                             }
                             ret.append(wrapper);
                         } catch (SQLException e) {
@@ -225,7 +225,7 @@ final class HTMLRenderUtil {
                                 + columnDecorator.getColumnName() + "] from the ResultSet.", e);
                         }
 
-                        ret.append("</TD>");
+                        ret.append("</TD>\n");
 
                     }
 
@@ -248,7 +248,7 @@ final class HTMLRenderUtil {
                         }
                     }
 
-                    ret.append("</TR>");
+                    ret.append("</TR>\n");
                 }
             } catch (SQLException e) {
                 throw new ReportSQLException("An error occurred while iterating over the ResultSet.", e);
@@ -269,7 +269,7 @@ final class HTMLRenderUtil {
             }
         }
 
-        ret.append("</TABLE>");
+        ret.append("</TABLE>\n");
         return ret.toString();
     }
 
@@ -283,6 +283,53 @@ final class HTMLRenderUtil {
             return text.substring(0, MAX_DESC_LENGTH - 1) + "...";
         }
         return text;
+    }
+
+    /**
+     * Breaks a string into chunks of BREAK_LENGTH
+     * characters (depending on spacing).
+     *
+     * @return a string with breaks inserted.
+     */
+    public static String breakIntoChunks(String original, int size) {
+        StringBuilder tooltip = new StringBuilder("");
+        StringBuilder remnant = new StringBuilder(original);
+        while(remnant.length() > size)
+        {
+            int ix = size;
+            while ((ix >= 0)
+                    && (remnant.charAt(ix) != ' ')
+                    && (remnant.charAt(ix) != '\n')
+                    && (remnant.charAt(ix) != '\t')
+                   )
+            {
+                --ix;
+            }
+            if (ix < 0)
+            {
+                ix = size;
+            }
+            tooltip.append(remnant.substring(0, ix + 1));
+            tooltip.append("\\n");
+            remnant.delete(0, ix + 1);
+        }
+        tooltip.append(remnant);
+        return tooltip.toString();
+    }
+
+    /**
+     * turns a string into an HTML block
+     * that will appear as a shortened string followed by an image element
+     * that shows the whole string on Roll-Over
+     * @param actualData the string to display
+     * @return an HTML block
+     */
+    private static String prepareStringForToolTip(String actualData)
+    {
+        return getShortenedVersion(actualData)
+                + "<img border=\"0\" src=\"images/icon_plus.gif\" width=\"12\" height=\"12\" style=\"margin-bottom:-3px;padding-left:5px;\" onmouseover=\"return escape('"
+                + breakIntoChunks(actualData, 50)
+                + "');\">";
     }
     /**
      * This method safely retrieves a String value to be used as HTML style fragment from the given map for the given
@@ -305,7 +352,8 @@ final class HTMLRenderUtil {
         if (s == null || s.trim().length() == 0) {
             return "";
         }
-        return " STYLE=\"" + escapeForHTMLTagAttribute(s) + "\"";
+        //return " STYLE=\"" + escapeForHTMLTagAttribute(s) + "\"";
+        return escapeForHTMLTagAttribute(s);
     }
 
     /**
@@ -327,7 +375,7 @@ final class HTMLRenderUtil {
         char character = iterator.current();
         while (character != StringCharacterIterator.DONE) {
             if (character == '\"') {
-                result.append("&quot;");
+                result.append("'");
             } else if (character == '<') {
                 result.append("&lt;");
             } else if (character == '>') {
