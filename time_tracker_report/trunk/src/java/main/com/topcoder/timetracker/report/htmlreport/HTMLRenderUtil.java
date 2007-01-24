@@ -329,7 +329,7 @@ final class HTMLRenderUtil {
     {
         return getShortenedVersion(actualData)
                 + "<img border=\"0\" src=\"images/icon_plus.gif\" width=\"12\" height=\"12\" style=\"margin-bottom:-3px;padding-left:5px;\" onmouseover=\"return escape('"
-                + breakIntoChunks(actualData, 50)
+                + breakIntoChunks(actualData, 48)
                 + "');\">";
     }
     /**
