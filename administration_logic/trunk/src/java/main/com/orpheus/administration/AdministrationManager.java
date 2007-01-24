@@ -154,6 +154,9 @@ import javax.imageio.ImageIO;
  *  &lt;Property name=&quot;PreferredTargetLength&quot;&gt;
  *  &lt;Value&gt;5&lt;/Value&gt;
  *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;HuntTargetsPerSlot&quot;&gt;
+ *  &lt;Value&gt;5&lt;/Value&gt;
+ *  &lt;/Property&gt;
  *  &lt;Property name=&quot;MinDistinctPages&quot;&gt;
  *  &lt;Value&gt;1&lt;/Value&gt;
  *  &lt;/Property&gt;
@@ -880,7 +883,8 @@ public class AdministrationManager {
         }
 
         TextStatistics[] stats = siteStatistics.getElementContentStatistics();
-        // Filter statistics by document number and target length boundaries
+
+        // Filter statistics by document count and target length boundaries
         stats = filterStatistics(stats);
         
         Random rd = new Random();
@@ -897,13 +901,18 @@ public class AdministrationManager {
                 
         for (int cnt = 0; cnt < numTargetsToGenerate; cnt++) {
             boolean tryAnotherStat = false;
+            int attempts = 10;
             
             // create a DomainTargetImpl instance
             DomainTargetImpl domainTarget = new DomainTargetImpl();
             
             do {
-                // choose textStatistics from result randomly, one textStat can be choosen once.
-                TextStatistics textStatistics = selectStatisatics(selected, stats, rd, cnt);
+                // Choose textStatistics from result randomly, one textStat can be choosen once.
+                // Quit if there are no more stats or if we try too many times without success.
+                TextStatistics textStatistics = ((attempts-- > 0)
+                            ? selectStatistics(selected, stats, rd, cnt)
+                            : null);
+
                 if (textStatistics == null) {
                     // No more targets can be obtained
                     DomainTarget[] domainTargets2 = new DomainTarget[cnt];
@@ -920,7 +929,9 @@ public class AdministrationManager {
                 // get uri from doc id.
                 domainTarget.setUriPath((String) docUrlMap.get(docId));
                 domainTarget.setIdentifierText(textStatistics.getText());
-                domainTarget.setIdentifierHash(hasher.hashToHexString(textStatistics.getText(), "UTF-8"));
+                domainTarget.setIdentifierHash(hasher.hashToHexString(
+                        textStatistics.getText().replaceAll("[\n\r \t\f\u200b]+", ""),
+                        "UTF-8"));
                 try {
                     domainTarget.setClueImageId(createClueImage(textStatistics.getText(), gameData));
                 } catch (Exception e) {
@@ -936,13 +947,17 @@ public class AdministrationManager {
     }
 
     /**
-     * TODO: Write Docs
+     * Chooses from among the provided TextStatistics the ones that satisfy the configured criteria
+     * for target length and number of pages
      * 
-     * @param stats
-     * @return
+     * @param stats a <code>TextStatistics[]</code> containing the statistics to consider
+     *
+     * @return a <code>TextStatistics[]</code> containing those elements of <code>stats</code>
+     *         that satisfy the criteria
      */
     private TextStatistics[] filterStatistics(TextStatistics[] stats) {
         List results = new ArrayList();
+
         for (int i = 0; i < stats.length; i++) {
             String[] documents = stats[i].getDocuments();        
             if ((documents.length >= minDistinctPages) && (documents.length <= maxDistinctPages) &&
@@ -950,8 +965,10 @@ public class AdministrationManager {
                 results.add(stats[i]);
             }    
         }
+
         return (TextStatistics[]) results.toArray(new TextStatistics[results.size()]);      
     }
+
     /**
      * <p>
      * Find docId randomly on which to generate target. the targets appear on different
@@ -1057,7 +1074,7 @@ public class AdministrationManager {
      *            the number of selected textStatistics
      * @return a random un-selected textStatistics
      */
-    private TextStatistics selectStatisatics(int[] selected,
+    private TextStatistics selectStatistics(int[] selected,
         TextStatistics[] stats, Random rd, int num) {
         int rdNum = rd.nextInt(stats.length - num);
 

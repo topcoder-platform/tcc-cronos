@@ -1,10 +1,10 @@
 <CMConfig>
     <Config name="com.topcoder.randomstringimg">
         <Property name="width">
-            <Value>32</Value>
+            <Value>144</Value>
         </Property>
         <Property name="height">
-            <Value>32</Value>
+            <Value>14</Value>
         </Property>
         <Property name="colorfiles">
             <Value>accuracy/Colors.xml</Value>
@@ -27,16 +27,16 @@
             <Value>1</Value>
         </Property>
         <Property name="maxlength">
-            <Value>100</Value>                        
+            <Value>100</Value>
         </Property>
         <Property name="format">
-            <Value>PNG</Value>
+            <Value>JPEG</Value>
         </Property>
         <Property name="minfontsize">
             <Value>14</Value>
         </Property>
         <Property name="maxfontsize">
-            <Value>24</Value>
+            <Value>10</Value>
         </Property>
     </Config>
 </CMConfig>
