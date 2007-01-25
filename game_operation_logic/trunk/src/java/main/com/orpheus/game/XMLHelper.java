@@ -77,7 +77,7 @@ public final class XMLHelper {
 
         for (int i = 0; i < list.getLength(); i++) {
             //values[i] = list.item(0).getFirstChild().getNodeValue();
-            Node node = list.item(0).getFirstChild();
+            Node node = list.item(i).getFirstChild();
 
             if (node == null) {
                 throw new IllegalArgumentException("node is empty:" + name);

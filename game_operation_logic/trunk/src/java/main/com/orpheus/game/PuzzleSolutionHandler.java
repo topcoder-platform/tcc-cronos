@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.w3c.dom.Element;
 
+import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataLocal;
+import com.orpheus.game.persistence.HostingBlock;
+import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.SlotCompletion;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManagerException;
@@ -51,6 +54,8 @@ public class PuzzleSolutionHandler implements Handler {
      * puzzleId.
      */
     private final String solutionTesterBaseName;
+
+    public final static String NEXT_DOMAIN_ATTRIBUTE = "nextDomain";
 
     /**
      * Create the instance from given arguments.
@@ -142,9 +147,7 @@ public class PuzzleSolutionHandler implements Handler {
         }
 
         long userId = ((Long) user.getIdentifier()).longValue();
-
         long gameId = RequestHelper.getLongParameter(request, gameIdParamKey);
-
         long slotId = RequestHelper.getLongParameter(request, this.slotIdParamKey);
 
         // obtains GameData
@@ -154,7 +157,7 @@ public class PuzzleSolutionHandler implements Handler {
 
         try {
             if (golu.isUseLocalInterface()) {
-            	gameDataLocal = golu.getGameDataLocalHome().create();
+                    gameDataLocal = golu.getGameDataLocalHome().create();
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }
@@ -170,23 +173,74 @@ public class PuzzleSolutionHandler implements Handler {
             }
 
             if (tester.testSolution(request.getParameterMap())) {
-            	if (golu.isUseLocalInterface()){
-            		gameDataLocal.recordGameCompletion(userId, gameId);
-            	}else{
-            		gameData.recordGameCompletion(userId, gameId);
-            	}
+                    if (golu.isUseLocalInterface()){
+                            gameDataLocal.recordGameCompletion(userId, gameId);
+                    }else{
+                            gameData.recordGameCompletion(userId, gameId);
+                    }
 
                 return null;
             } else {
-                GameDataManager gdMgr = (GameDataManager) request.getSession().getServletContext().
-                getAttribute(golu.getGameManagerKey());
-                gdMgr.advanceHostingSlot(slotId);
+                GameDataManager gdMgr = (GameDataManager) request.getSession().getServletContext().getAttribute(
+                        golu.getGameManagerKey());
+                Game game;
+
+                gdMgr.advanceHostingSlot(gameId);
 
                 SlotCompletion completion;
                 if (golu.isUseLocalInterface()){
-                	completion = gameDataLocal.recordSlotCompletion(userId, slotId, new Date());
+                        completion = gameDataLocal.recordSlotCompletion(userId, slotId, new Date());
+                        game = gameDataLocal.getGame(gameId);
                 }else{
-                	completion = gameData.recordSlotCompletion(userId, slotId, new Date());
+                        completion = gameData.recordSlotCompletion(userId, slotId, new Date());
+                        game = gameData.getGame(gameId);
+                }
+
+                // find the next domain
+		
+		/*
+		 * This sequence may be over-engineered, but it accounts for the possibility that hosting slots
+		 * will be skipped because of domain inaccessibility, administrative action, or other, unknown
+		 * cause, with the skipped slot(s) nevertheless returned by GameData.getGame().
+		 */
+                HostingBlock[] blocks = game.getBlocks();
+
+                find_block:
+                for (int blockIndex = 0; blockIndex < blocks.length; blockIndex++) {
+                    HostingBlock block = blocks[blockIndex];
+                    HostingSlot[] slots = block.getSlots();
+
+                    find_slot:
+                    for (int slotIndex = 0; slotIndex < slots.length; slotIndex++) {
+                        HostingSlot slot = slots[slotIndex];
+
+                        if (slot.getId().longValue() == slotId) {
+                            // found it
+                            int nextSlotIndex = slotIndex + 1;
+
+                            find_next_block:
+                            for (int nextBlockIndex = blockIndex; nextBlockIndex < blocks.length; nextBlockIndex++) {
+                                HostingSlot[] candidateSlots = blocks[nextBlockIndex].getSlots();
+
+                                /*
+                                 * initially we start at the slot after the one just completed; after that
+                                 * we start at the first slot in each subsequent block that we have to examine
+                                 */
+                                find_next_slot:
+                                for (; nextSlotIndex < candidateSlots.length; nextSlotIndex++) {
+                                    HostingSlot candidateSlot = candidateSlots[nextSlotIndex];
+
+                                    if (candidateSlot.getHostingStart() != null) {
+					// this is the one
+                                        request.setAttribute(NEXT_DOMAIN_ATTRIBUTE, candidateSlot.getDomain());
+                                        break find_block;
+                                    }
+                                }
+                                nextSlotIndex = 0;
+                            }
+                            throw new HandlerExecutionException("No more slots available");
+                        }
+                    }
                 }
                 
                 request.setAttribute(this.slotCompletion, completion);

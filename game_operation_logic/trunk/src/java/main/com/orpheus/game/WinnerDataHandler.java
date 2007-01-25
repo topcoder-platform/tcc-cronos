@@ -31,27 +31,23 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import com.topcoder.web.user.LoginHandler;
 
 
 /**
  * A Handler that records contact information collected from players when they win the game. Information will be stored
- * in the winner¡¯s User Profile, and recorded using the User Profile Manager. The handler¡¯s configuration will specify
+ * in the winner's User Profile (assuming in doing so that the winner is the currently logged-in user), and recorded
+ * using the User Profile Manager. The handler's configuration will specify
  * profile types that the handler must ensure are present in the profile, and will specify a map from parameter names
  * to corresponding user profile property names. The Handler will install the profile type(s) if necessary, then copy
  * the parameter values to the profile and store it. This class is thread safe since it does not contain any mutable
  * state.
+ *
  * @author woodjhon, TCSDEVELOPER
  * @version 1.0
  */
 public class WinnerDataHandler implements Handler {
-	
-	/**
-	 * <p>Added by Zulander to fix BALL-5082</p>
-	 * 
-	 * Property name of user ID value passed in the context
-	 */
-	public static final String USER_ID_PROPERTY = "user_id";
-	
+    
     /**
      * a map from parameter names to corresponding user profile property names, string property name as key and string
      * parameter name as value.
@@ -115,7 +111,7 @@ public class WinnerDataHandler implements Handler {
      *  &lt;/profile_property_names&gt;
      *  &lt;/handler&gt;
      *  Following is simple explanation of the above XML structure.
-     *  The handler¡¯s type attribute is required by Front Controller component, it won¡¯t be used in this design.
+     *  The handler's type attribute is required by Front Controller component, it won't be used in this design.
      *  The object_factory node contains the values to create the UserProfileManager and ProfileTypeFactory
      *  from ObjectFactory.
      *  The profile_type_names node contains the profile type names that will be added to the UserProfile
@@ -139,6 +135,7 @@ public class WinnerDataHandler implements Handler {
 
         try {
             ObjectFactory factory = new ObjectFactory(new ConfigManagerSpecificationFactory(namespace));
+
             this.profileManager = (UserProfileManager) factory.createObject(managerKey);
             this.profileTypeFactory = (ProfileTypeFactory) factory.createObject(factoryKey);
         } catch (SpecificationConfigurationException e) {
@@ -170,41 +167,41 @@ public class WinnerDataHandler implements Handler {
     }
 
     /**
-     * Update contact information collected from players when they win the game.
+     * Update contact information collected from players when they win the game.  The user profile of the currently
+     * logged-in user is updated with property values obtained from the HTTP request.  It is assumed that the logged-in
+     * user's profile is available via <code>LoginHandler.getAuthenticatedUser(HttpSession)</code>
      *
      * @param context the action context
      *
      * @return null always
      *
-     * @throws HandlerExecutionException if any other error ocurred
      * @throws IllegalArgumentException if the context is null
+     * @throws HandlerExecutionException if any other error ocurred
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
         ParameterCheck.checkNull("context", context);
 
-        UserProfile profile;
-        long userId = -1;
-        
         try {
             HttpServletRequest request = context.getRequest();
-            userId = RequestHelper.getLongParameter(request,
-            		WinnerDataHandler.USER_ID_PROPERTY); // userId from request parameter
-            profile = profileManager.getUserProfile(userId);
+            UserProfile profile = LoginHandler.getAuthenticatedUser(request.getSession());
+
+	    if (profile == null) {
+		throw new HandlerExecutionException("No user is logged in");
+	    }
+
+	    Map currentProfileTypes = profile.getProfileTypes();
 
             for (int i = 0; i < this.profileTypeNames.length; i++) {
-                ProfileType type = profileTypeFactory.getProfileType(profileTypeNames[i]);
-                profile.addProfileType(type);
+                if (!currentProfileTypes.containsKey(profileTypeNames[i])) {
+                    ProfileType type = profileTypeFactory.getProfileType(profileTypeNames[i]);
+                    profile.addProfileType(type);
+		}
             }
 
-            Iterator iter = this.propertyNameMap.entrySet().iterator();
-            Entry entry = null;
-            String propertyName;
-            String[] propertyValues;
-
-            while (iter.hasNext()) {
-                entry = (Entry) iter.next();
-                propertyName = (String) entry.getKey();
-                propertyValues = request.getParameterValues((String) entry.getValue());
+            for (Iterator iter = this.propertyNameMap.entrySet().iterator(); iter.hasNext(); ) {
+                Entry entry = (Entry) iter.next();
+                String propertyName = (String) entry.getKey();
+                String[] propertyValues = request.getParameterValues((String) entry.getValue());
 
                 if (propertyValues.length == 1) {
                     profile.setProperty(propertyName, propertyValues[0]);
@@ -214,8 +211,6 @@ public class WinnerDataHandler implements Handler {
             }
 
             profileManager.updateUserProfile(profile);
-        } catch(UnknownProfileException e) {
-        	throw new HandlerExecutionException("User " + String.valueOf(userId) + "doesn't exist.", e);
         } catch (UnknownProfileTypeException e) {
             throw new HandlerExecutionException("error occurred while obtaining ProfileType", e);
         } catch (DuplicatePropertyValidatorException e) {
@@ -233,3 +228,4 @@ public class WinnerDataHandler implements Handler {
         return null;
     }
 }
+
