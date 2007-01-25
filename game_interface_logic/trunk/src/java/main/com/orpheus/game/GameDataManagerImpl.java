@@ -15,10 +15,16 @@ import com.orpheus.game.persistence.GameDataLocalHome;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 
+import com.topcoder.bloom.BitSetSerializer;
 import com.topcoder.bloom.BloomFilter;
+import com.topcoder.bloom.serializers.DefaultBitSetSerializer;
 import com.topcoder.message.messenger.MessageAPI;
 import com.topcoder.util.compression.CompressionUtility;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.generator.guid.UUIDType;
+import com.topcoder.util.objectfactory.ObjectFactory;
+import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.url.validation.SiteValidationResults;
 import com.topcoder.util.url.validation.SiteValidator;
 
@@ -28,12 +34,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
 import com.topcoder.util.generator.guid.UUIDUtility;
@@ -60,12 +66,23 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     /**
      * The property name used to get the new game poll interval.
      */
-    private static final String NEW_GAME_POLL_INTERVAl = "new_game_poll_interval";
+    private static final String NEW_GAME_POLL_INTERVAL = "new_game_poll_interval";
 
     /**
      * The property name used to get the game start poll interval.
      */
-    private static final String GAME_START_POLL_INTERVAl = "game_started_poll_interval";
+    private static final String GAME_START_POLL_INTERVAL = "game_started_poll_interval";
+
+    /**
+     * The property name used to get the BitSetSerializer specification namespace
+     */
+    private static final String BIT_SERIALIZER_SPEC = "bit_serializer_spec";
+
+    /**
+     * The property name used to get the BitSetSerializer object factory key
+     */
+    private static final String BIT_SERIALIZER_KEY = "bit_serializer_key";
+
     /**
      * The constant String Local.
      */
@@ -144,14 +161,15 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
     /**
      * <p>
-     * Represents a flag that signifies if the manager is stopped or working.
+     * Represents a mutable flag that signifies if the manager is stopped or working.
      * It is changed by the stopManager method to true.
      * At any point all methods in the API should test this variable and
-     * if the variable is true IllegalStateException should be thrown.
+     * if the variable is true IllegalStateException should be thrown.  Thread-safety
+     * demands that all tests and updates of this array's element be synchronized on
+     * a common object; the object designated for that purpose is the array itself.
      * </p>
-     *
      */
-    private boolean stopped = false;
+    private final boolean[] stopped = new boolean[] { false };
 
     /**
      * The temporary variable to hold the remote EJB.
@@ -178,6 +196,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * The category of the component.
      */
     private final String category;
+
+    /**
+     * A BitSetSerializer with which to configure BloomFilter objects created by this GameDataManager
+     */
+    private final BitSetSerializer bitSetSerializer;
 
     /**
      * <p>
@@ -233,14 +256,40 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             }
         }
 
+	// initialize the bitSetSerializer
+        String serializerSpecNamespace;
+
+        try {
+            serializerSpecNamespace = ConfigManager.getInstance().getString(
+			namespace, BIT_SERIALIZER_SPEC);
+        } catch (UnknownNamespaceException e) {
+            throw new GameDataManagerConfigurationException("The namespace '"
+                + namespace + "' is missing in configuration.", e);
+        }
+
+        try {
+	    if (serializerSpecNamespace == null || serializerSpecNamespace.length() == 0) {
+		bitSetSerializer = new DefaultBitSetSerializer();
+	    } else {
+		String bitSerializerKey = Helper.getMandatoryProperty(
+                        namespace, BIT_SERIALIZER_KEY);
+                ObjectFactory factory = new ObjectFactory(
+			new ConfigManagerSpecificationFactory(serializerSpecNamespace));
+
+		bitSetSerializer = (BitSetSerializer) factory.createObject(bitSerializerKey);
+	    }
+        } catch (Exception e) {
+            throw new GameDataManagerConfigurationException("Error creating BitSetSerializer", e);
+        }
+
         long gameStartInterval;
         long newGameInterval;
 
         try {
             gameStartInterval = Long.parseLong(Helper.getMandatoryProperty(
-                        namespace, GAME_START_POLL_INTERVAl));
+                        namespace, GAME_START_POLL_INTERVAL));
             newGameInterval = Long.parseLong(Helper.getMandatoryProperty(
-                        namespace, NEW_GAME_POLL_INTERVAl));
+                        namespace, NEW_GAME_POLL_INTERVAL));
 
             capacity = Integer.parseInt(Helper.getMandatoryProperty(namespace, "capacity"));
             errorRate = Float.parseFloat(Helper.getMandatoryProperty(namespace, "errorRate"));
@@ -368,6 +417,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         this.errorRate = errorRate;
         this.messagerPluginNS = messengerPluginNS;
         this.category = category;
+	bitSetSerializer = new DefaultBitSetSerializer();
         lookUpEJB(jndiNames, jndiDesignations);
 
         //if no EJB is looked up successfully
@@ -478,7 +528,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         throws GameDataException {
         Helper.checkObjectNotNull(slot, "slot");
 
-        if (stopped) {
+        if (isStopped()) {
             throw new IllegalStateException(
                 "The game data manager is already stopped.");
         }
@@ -490,7 +540,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         try {
             if (domain != null) {
                 //create the SiteValidator and to the site validation
-                SiteValidator sv = new SiteValidator(domain.getDomainName());
+                SiteValidator sv = new SiteValidator("http://" + domain.getDomainName() + "/");
                 SiteValidationResults result = sv.validateTarget(0);
 
                 //if the domain can not pass the validatiton, return false directly
@@ -511,8 +561,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 }
             }
         } catch (MalformedURLException e) {
-            throw new GameDataException("MalformedURLException occurs when get the SiteValidator.",
-                e);
+            throw new GameDataException("MalformedURLException occurs when get the SiteValidator.", e);
         }
 
         //all right, return true
@@ -541,43 +590,22 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         throws GameDataException {
         Helper.checkObjectNotNull(bidIds, "bidIds");
 
-        if (stopped) {
+        if (isStopped()) {
             throw new IllegalStateException(
                 "The game data manager is already stopped.");
         }
 
-        long[] randomizedBidIds = (long[]) bidIds.clone();
+        long[] randomizedBidIds = new long[bidIds.length];
+        List bidIdList = new ArrayList(bidIds.length);
 
-        //create a Random instance
-        Random random = new Random(0);
-        int length = bidIds.length;
+        for (int i = 0; i < bidIds.length; i++) {
+            bidIdList.add(new Long(bidIds[i]));
+        }
 
-        //we define at most try length * length times
-        final int maxTime = length * length;
+        Collections.shuffle(bidIdList);
 
-        //a set used to store the ids that are already exists
-        Set set = new HashSet();
-
-        int times = 0;
-        int uniqueIdCount = 0;
-
-        while (uniqueIdCount < length) {
-            int next = random.nextInt(length);
-            times++;
-
-            //if the id is not unique and the time is not limited yet, try again
-            if (set.contains(new Integer(next)) && (times < maxTime)) {
-                continue;
-            }
-
-            //add to the set
-            set.add(new Integer(next));
-
-            //do the swap
-            long temp = randomizedBidIds[uniqueIdCount];
-            randomizedBidIds[uniqueIdCount] = randomizedBidIds[next];
-            randomizedBidIds[next] = temp;
-            uniqueIdCount++;
+        for (int i = 0; i < bidIdList.size(); i++) {
+            randomizedBidIds[i] = ((Long) bidIdList.get(i)).longValue();
         }
 
         try {
@@ -587,8 +615,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 gameDataPersistenceRemote.createSlots(blockId, randomizedBidIds);
             }
         } catch (Exception e) {
-            throw new GameDataException("Exception occurs when create slots with EJB.",
-                e);
+            throw new GameDataException("Exception occurs when create slots with EJB.", e);
         }
     }
 
@@ -607,12 +634,12 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws IllegalStateException if the manager has been stopped.
      */
     public void advanceHostingSlot(long gameId) throws GameDataException {
-        if (stopped) {
+        if (isStopped()) {
             throw new IllegalStateException(
                 "The game data manager is already stopped.");
         }
 
-        Game game = null;
+        Game game;
 
         try {
             //get the game with the given id
@@ -624,7 +651,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         } catch (Exception e) {
             throw new GameDataException("can not get the game via the EJB.", e);
         }
-        if( game == null) {
+        if (game == null) {
             throw new GameDataException("No Game can be retrieved with the id.");
         }
 
@@ -633,56 +660,116 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         if (blocks == null) {
             return;
         }
-        Date current = new Date();
 
+        hosting_blocks:
         for (int i = 0; i < blocks.length; i++) {
             HostingSlot[] slots = blocks[i].getSlots();
 
-            //if no slots exists, just go processing
+            // if no slots exist, just go on to the next block
             if (slots == null) {
-                continue;
+                continue hosting_blocks;
             }
 
-            //set all the end date of the ordered slot to now
+            // set the end date of the current slot and the start date of the next slot to now
+            find_current_slot:
             for (int j = 0; j < slots.length; j++) {
-                Date startDate = slots[j].getHostingStart();
-                Date endDate = slots[j].getHostingEnd();
 
-                //find the slot to be advanced
-                if ((startDate != null) || (endDate == null)) {
-                    //set end date of this slot to NOW
-                    slots[j] = Helper.copyToSetEndDate(slots[j], current);
+                // if this is the current slot ...
+                if ((slots[j].getHostingStart() != null) && (slots[j].getHostingEnd() == null)) {
+                    List slotsToUpdate = new ArrayList();
+                    int nextSlotBlockIndex = i;
+                    HostingSlot[] nextSlots = slots;
+                    int searchIndex = j + 1;
+                    Date current = new Date();
+                    int nextSlotIndex;
 
-                    if (j < (slots.length - 1)) {
-                        //set next slot after that by giving it its start date of NOW
-                        slots[j + 1] = Helper.copyToSetStartDate(slots[j + 1],
-                                current);
+                    // set end date of this slot to NOW
+                    slotsToUpdate.add(Helper.copyToSetEndDate(slots[j], current));
+
+                    // find the next slot, and mark any invalid slots between
+                    find_next_slot:
+                    for (nextSlotIndex = findNextSlot(nextSlots, searchIndex); ;
+                            nextSlotIndex = findNextSlot(nextSlots, searchIndex)) {
+                        if (nextSlotIndex < 0) {
+
+                            // all the slots from the search index to the end of the array need to be updated
+                            // (they are invalid)
+                              slotsToUpdate.addAll(Arrays.asList(nextSlots).subList(searchIndex, nextSlots.length));
+
+                            // Try the next block, if there is one
+                            if (++nextSlotBlockIndex < blocks.length) {
+                                 nextSlots = blocks[nextSlotBlockIndex].getSlots();
+                                searchIndex = 0;
+                            } else {
+                                // out of slots
+                                // extra slot generation could be inserted here
+                                break find_next_slot;
+                            }
+                        } else {
+                            // slots from the search index to just before the nextSlotIndex are invalid
+                              slotsToUpdate.addAll(Arrays.asList(nextSlots).subList(searchIndex, nextSlotIndex));
+
+                            // start the next slot by making its start date be NOW
+                            slotsToUpdate.add(Helper.copyToSetStartDate(nextSlots[nextSlotIndex], current));
+                            break find_next_slot;
+                        }
                     }
 
-                    //if not valid, set sequence number to -1
-                    if (!testUpcomingDomain(slots[j])) {
-                        slots[j] = Helper.copyToSequenceNumber(slots[j], -1);
+                    slots = (HostingSlot[]) slotsToUpdate.toArray(new HostingSlot[slotsToUpdate.size()]);
+
+                    // record slot changes to the DB
+                    try {
+                        if (gameDataPersistenceLocal != null) {
+                            gameDataPersistenceLocal.updateSlots(slots);
+                        } else {
+                            gameDataPersistenceRemote.updateSlots(slots);
+                        }
+                    } catch (Exception e) {
+                        throw new GameDataException("Exception occurs when update slots with EJB.", e);
                     }
 
-                    //break this block
-                    break;
+                    // update the Bloom Filter
+                    sendBloomFilterUpdate();
+
+                    // done
+                    break hosting_blocks;
                 }
-            }
-            try {
-                if (gameDataPersistenceLocal != null) {
-                    gameDataPersistenceLocal.updateSlots(slots);
-                } else {
-                    gameDataPersistenceRemote.updateSlots(slots);
-                }
-            } catch (Exception e) {
-                throw new GameDataException("Exception occues when update the slots.", e);
             }
         }
     }
 
     /**
+     * Finds a among the provided slots the first suitable one to which the Ball
+     * may be advanced
+     *
+     * @param  slots a <code>HostingSlot[]</code> containing the candidate
+     *         slots; some or all of the elements starting at the test index
+     *         may be replaced with copies modified to mark them as invalid
+     * @param  testIndex the index into the <code>slots</code> of the first
+     *         candidate
+     *
+     * @return the index into the <code>slots</code> array of the slot that
+     *         should be next, or <code>-1</code> if there is no suitable candidate
+     */
+    private int findNextSlot(HostingSlot[] slots, int testIndex) throws GameDataException {
+        for (; testIndex < slots.length; testIndex++) {
+            if (slots[testIndex].getSequenceNumber() < 0) {
+                continue;
+            } else if (testUpcomingDomain(slots[testIndex])) {
+                return testIndex;
+            } else {
+                // not valid: set the sequence number to a negative number
+                slots[testIndex] = Helper.copyToSequenceNumber(
+                        slots[testIndex], -slots[testIndex].getSequenceNumber() - 1);
+            }
+        }
+
+        return -1;
+    }
+
+    /**
      * <p>
-     * This is a clean up routine or the manager. If the manager uses any kind of remote resources such as
+     * This is a clean up routine for the manager. If the manager uses any kind of remote resources such as
      * db connections, or threads this method would be implemented to call on all the resources to clean up.
      * Once the manager is stopped it is no longer operational and all methods
      * should be throwing IllegalStateException.
@@ -692,6 +779,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws GameDataException if there were any issues with this method call.
      */
     public void stopManager() throws GameDataException {
+        synchronized (stopped) {
+            stopped[0] = true;
+        }
+
         gameStartNotifier.stopNotifier();
         newGameAvailableNotifier.stopNotifier();
         try {
@@ -700,18 +791,95 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         } catch (Exception e) {
             throw new GameDataException("can not stop the threads.", e);
         }
-        stopped = true;
+    }
+
+    /**
+     * Creates a <code>BloomFilter</code> containing all the active domains,
+     * and broadcasts a message containing it to all players via their plug-ins'
+     * messaging channel.
+     */
+    void sendBloomFilterUpdate() throws GameDataException {
+        Domain [] domains;
+
+        try {
+            if (gameDataPersistenceRemote != null) {
+                domains = gameDataPersistenceRemote.findActiveDomains();
+            } else {
+                domains = gameDataPersistenceLocal.findActiveDomains();
+            }
+
+            if (domains != null) {
+                BloomFilter bloomFilter = new BloomFilter(capacity, errorRate, bitSetSerializer);
+
+                //add the names of the domain to the Bloom Filter
+                for(int j = 0; j < domains.length; j++) {
+                    bloomFilter.add(domains[j].getDomainName());
+                }
+
+                OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
+                MessageAPI message = plugin.createMessage();
+
+                message.setParameterValue(ADMIN_MESSAGE_GUID,
+                        UUIDUtility.getNextUUID(UUIDType.TYPE1).toString());
+                message.setParameterValue(ADMIN_MESSAGE_CATEGORY,
+                        category);
+                message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE,
+                        "application/x-tc-bloom-filter");
+                message.setParameterValue(ADMIN_MESSAGE_CONTENT,
+                        toBase64(bloomFilter.getSerialized()));
+                message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP,
+                        new Date());
+                plugin.sendMessage(message);
+            }
+        } catch (Exception e) {
+            throw new GameDataException(
+                    "An exception occurred while broadcasting a Bloom Filter update", e);
+        }
+    }
+
+    /**
+     * Creates a String containing a BASE-64 encoding of the UTF-8 encoding of the characters in the
+     * specified string
+     *
+     * @param  s a <code>String</code> containing the source characters
+     *
+     * @return a <code>String</code> containing the BASE-64 encoding
+     *
+     * @throws UnsupportedEncodingException if the VM is non-compliant by not supporting UTF-8 or US-ASCII
+     * @throws ClassNotFoundException if the TopCoder Base64Codec class is not founf in the ClassPath
+     * @throws IllegalAccessException if the version of the Base64Codec class found in the classpath has been
+     *         modified so that the class itself or the required constructor is not accessible
+     * @throws InstantiationException if the Base64Codec class's constructor throws any exception
+     * @throws IOException if an I/O error occurs during internal I/O to perform the encoding
+     */
+    private String toBase64(String s) throws UnsupportedEncodingException, ClassNotFoundException,
+            IllegalAccessException, InstantiationException, IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        CompressionUtility utility = new CompressionUtility("com.topcoder.util.compression.Base64Codec", stream);
+
+        utility.compress(new ByteArrayInputStream(s.getBytes("UTF-8")));
+        utility.close();
+
+        return stream.toString("US-ASCII");
     }
 
     /**
      * <p>
-     * Check whether the manager is stopped.
+     * Checks whether the manager is stopped.
      * </p>
      *
      * @return true if the manager is stopped, otherwise false.
      */
     public boolean isStopped() {
-        return stopped;
+
+        /*
+         * Implementation Note: this method performs appropriate synchronization when
+         * testing the flag.  It is recommended that internal tests of the stop flag
+         * use this method so as to not have to perform synchronization themselves.
+         */
+        synchronized (stopped) {
+            return stopped[0];
+        }
     }
 
     /**
@@ -720,17 +888,18 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      */
     protected void persistSlot(HostingSlot slot) {
         Helper.checkObjectNotNull(slot, "hostingSlot to update");
-        try{
-            if ( this.gameDataPersistenceRemote != null){
-                this.gameDataPersistenceRemote.updateSlots(new HostingSlot[]{slot});
-            } else{
-                this.gameDataPersistenceLocal.updateSlots(new HostingSlot[]{slot});
+
+        try {
+            if (this.gameDataPersistenceRemote != null) {
+                this.gameDataPersistenceRemote.updateSlots(new HostingSlot[] { slot });
+            } else {
+                this.gameDataPersistenceLocal.updateSlots(new HostingSlot[] { slot });
             }
-        }catch(Exception e){
+        } catch(Exception e) {
             //ignore
         }
     }
-    
+
     /**
      * <p>
      * This is a simple inner class, which runs as a worker thread and checks,
@@ -762,13 +931,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         /**
          * <p>
-         * Represents the flag (used to stop the thread) that tells the thread if it should stop execution or not.
-         * If the flag is set to true then the thread continues to monitor the context;
-         * if it is set to false then the thread will stop.
+         * Represents the flag (used to stop the thread) that is raised to signal the
+         * thread to stop execution.  The flag value is the single element of the array,
+         * and if set to <code>true</code> then the thread will stop.  Thread safety
+         * demands that all reads and updates of the flag value be synchronized on a
+         * common object; the designated object for this purpose is the array object itself.
          * </p>
-         *
          */
-        private Boolean stopped = new Boolean(false);
+        private final boolean[] stopped = new boolean[] { false };
 
         /**
          * <p>
@@ -792,111 +962,66 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          *
          */
         public void run() {
-            //it will not stop until the manager stops it
-            while (!stopped.booleanValue()) {
+            System.err.println("GameStartNotifier started");
+
+            // it will not stop until the manager stops it
+            for (;;) {
                 try {
                     Thread.sleep(sleepInterval);
                 } catch (InterruptedException e) {
                     //ignore
                 }
 
+                synchronized (stopped) {
+                    if (stopped[0]) {
+                        break;
+                    }
+                }
+
                 //get the current games
                 Game[] games = getAllCurrentNotStartedGames();
-    
+
                 // for each game see if it needs to be started
                 for (int i = 0; i < games.length; i++) {
                     try {
+                        Game unstartedGame;
+
                         //reload the game
                         if (gameDataPersistenceRemote != null){
-                            games[i] = gameDataPersistenceRemote.getGame(games[i].getId().longValue());
+                            unstartedGame = gameDataPersistenceRemote.getGame(games[i].getId().longValue());
                         } else {
-                            games[i] = gameDataPersistenceLocal.getGame(games[i].getId().longValue());
+                            unstartedGame = gameDataPersistenceLocal.getGame(games[i].getId().longValue());
                         }
-                        //checks this game need to be started
-                        if (games[i].getStartDate().after(new Date())) {
-                             continue;
-                        }
-        
-                        // start the game
-                        gameStatusChangedToStarted(games[i]);
-    
-                        // broadcast a Bloom Filter update, if possible
-                        Domain [] domains;
-    
-                        if (gameDataPersistenceRemote != null) {
-                            domains = gameDataPersistenceRemote.findActiveDomains();
-                        } else {
-                            domains = gameDataPersistenceLocal.findActiveDomains();
-                        }
-    
-                        if (domains != null) {
-                            BloomFilter bloomFilter = new BloomFilter(capacity, errorRate);
-    
-                            //add the names of the domain to the Bloom Filter
-                            for(int j = 0; j < domains.length; j++) {
-                                bloomFilter.add(domains[j].getDomainName());
-                            }
-    
-                            OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
-                            MessageAPI message = plugin.createMessage();
-    
-                            message.setParameterValue(ADMIN_MESSAGE_GUID,
-                                    UUIDUtility.getNextUUID(UUIDType.TYPE1));
-                            message.setParameterValue(ADMIN_MESSAGE_CATEGORY,
-                                    category);
-                            message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE,
-                                    "application/x-tc-bloom-filter");
-                            message.setParameterValue(ADMIN_MESSAGE_CONTENT,
-                                    toBase64(bloomFilter.getSerialized()));
-                            message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP,
-                                    new Date());
-                            plugin.sendMessage(message);
+
+                        // check whether this game need to be started
+                        if (!unstartedGame.getStartDate().after(new Date())) {
+                            // start the game
+                            gameStatusChangedToStarted(unstartedGame);
+
+                            System.err.println("Starting game " + unstartedGame.getName());
+
+                            // broadcast a Bloom Filter update, if possible
+                            sendBloomFilterUpdate();
                         }
                     } catch (Exception e) {
                         //ignore
                     }
                 }
-               }
+            }
 
-        
+            System.err.println("GameStartNotifier stopped");
         }
 
         /**
-         * Creates a String containing a BASE-64 encoding of the UTF-8 encoding of the characters in the
-         * specified string
-         *
-         * @param  s a <code>String</code> containing the source characters
-         *
-         * @return a <code>String</code> containing the BASE-64 encoding
-         *
-         * @throws UnsupportedEncodingException if the VM is non-compliant by not supporting UTF-8 or US-ASCII
-         * @throws ClassNotFoundException if the TopCoder Base64Codec class is not founf in the ClassPath
-         * @throws IllegalAccessException if the version of the Base64Codec class found in the classpath has been
-         *         modified so that the class itself or the required constructor is not accessible
-         * @throws InstantiationException if the Base64Codec class's constructor throws any exception
-         * @throws IOException if an I/O error occurs during internal I/O to perform the encoding
-         */
-        private String toBase64(String s) throws UnsupportedEncodingException, ClassNotFoundException,
-                IllegalAccessException, InstantiationException, IOException {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            CompressionUtility utility = new CompressionUtility("com.topcoder.util.compression.Base64Codec", stream);
-    
-            utility.compress(new ByteArrayInputStream(s.getBytes("UTF-8")));
-            utility.close();
-
-            return stream.toString("US-ASCII");
-        }
-
-        /**
-         * <p>Singals the thread to stop.
-         * This is simply achieved by changing the value of stopped to true.
+         * <p>
+         * Signals the thread to stop by raising the stop flag and interrupting this thread.
          * </p>
-         *
          */
         public void stopNotifier() {
-            synchronized(this.stopped){
-                this.stopped = Boolean.TRUE;
+            synchronized(stopped){
+                stopped[0] = true;
             }
+            this.interrupt();
         }
     }
 
@@ -957,13 +1082,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         /**
          * <p>
-         * Represents the flag (used to stop the thread) that tells the thread if it should stop execution or not.
-         * If the flag is set to true then the thread continues to monitor the context (i.e. the server for new games);
-         * if it is set to false then the thread will stop.
+         * Represents the flag (used to stop the thread) that is raised to signal the
+         * thread to stop execution.  The flag value is the single element of the array,
+         * and if set to <code>true</code> then the thread will stop.  Thread safety
+         * demands that all reads and updates of the flag value be synchronized on a
+         * common object; the designated object for this purpose is the array object itself.
          * </p>
-         *
          */
-        private Boolean stopped = Boolean.FALSE;
+        private final boolean[] stopped = new boolean[] { false };
 
         /**
          * <p>
@@ -1003,7 +1129,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * @param listener the NewGameAvailableListener instance.
          * @param gameDataLocal Local ejb interface used to get persistence data. Used in looking up the new game data
          * @param knownGames this is a listing of games of which the manager is already aware of
-         * @throws IllegalArgumentException if the interval is <=0; or if we get a null in any of the parameter inputs;
+         * @throws IllegalArgumentException if the interval is non-positive or if any argument is <code>null</code>
          */
         public NewGameAvailableNotifier(long sleepInterval,
             NewGameAvailableListener listener, GameDataLocal gameDataLocal,
@@ -1021,7 +1147,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * @param gameDataLocal Local ejb interface used to get persistence data. Used in looking up the new game data
          * @param knownGames this is a listing of games of which the manager is already aware of
          * @param gameData the Remote EJB interface
-         * @throws IllegalArgumentException if the interval is <=0;,
+         * @throws IllegalArgumentException if the interval is non-positive,
          * or the listener is null,
          * or gameData and gameDataLocal are both null,
          * or knownGames is null
@@ -1057,54 +1183,60 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          *
          */
         public void run() {
+            System.err.println("NewGameAvailableNotifier started");
+
             //it stops if the stop signal is received
-            while (!stopped.booleanValue()) {
+            for (;;) {
                 try {
                     Thread.sleep(sleepInterval);
                 } catch (InterruptedException e) {
                     //ignore
                 }
-    
-                Game[] games = null;
-    
+
+                synchronized (stopped) {
+                    if (stopped[0]) {
+                        break;
+                    }
+                }
+
                 try {
+                    Game[] games;
+
                     //get the array of games by remote or local
                     if (gameDataPersistenceLocal != null) {
-                        games = gameDataPersistenceLocal.findGames(Boolean.FALSE,
-                                null);
+                        games = gameDataPersistenceLocal.findGames(Boolean.FALSE, null);
                     } else {
-                        games = gameDataPersistenceRemote.findGames(Boolean.FALSE,
-                                null);
+                        games = gameDataPersistenceRemote.findGames(Boolean.FALSE, null);
                     }
-                } catch (Exception e) {
-                    //ignore
-                }
-    
-                if (games != null) {
+
                     for (int i = 0; i < games.length; i++) {
                         //once we have the games, we now check against the cached data
                         //and we only consider games with assigned ids.
                         if (!cachedGameIds.contains(games[i].getId()) && (games[i].getId() != null)) {
                             newGameAvailableListener.newGameAvailable(games[i]);
                             cachedGameIds.add(games[i].getId());
+                            System.err.println("Queueing game " + games[i].getName() + " for startup");
                         }
                     }
+                } catch (Exception e) {
+                    //ignore
                 }
             }
-                
+
+            System.err.println("NewGameAvailableNotifier stopped");
         }
 
         /**
          * <p>
-         * Singals the thread to stop.
-         * This is simply achieved by changing the value of stopped to true.
+         * Signals the thread represented by this Thread to stop,
+         * by raising the stop flag and interrupting this thread.
          * </p>
-         *
          */
         public void stopNotifier() {
             synchronized(stopped){
-                this.stopped = Boolean.TRUE;
+                stopped[0] = true;
             }
+            this.interrupt();
         }
     }
 }

@@ -83,20 +83,31 @@ public abstract class BaseGameDataManager implements GameDataManager,
             //get the blocks of the game
             HostingBlock[] blocks = game.getBlocks();
 
-            if (blocks != null && blocks.length != 0) {
-                Date current = new Date();
-                HostingSlot[] slots = blocks[0].getSlots();
+            if (blocks != null) {
+                hosting_blocks:
+                for (int blockNumber = 0; blockNumber < blocks.length; blockNumber++) {
+                    HostingSlot[] slots = blocks[blockNumber].getSlots();
 
-                //if slot exists for the block
-                if ((slots != null) && (slots.length != 0)) {
-                    //set the first slot's start date to current date to start the game
-                    slots[0] = Helper.copyToSetStartDate(slots[0], current);
-                    //update the db
-                    persistSlot(slots[0]);
+                    //if slot exists for the block
+                    if (slots != null) {
+                        for (int slotNumber = 0; slotNumber < slots.length; slotNumber++) {
+                            HostingSlot slot = slots[slotNumber];
+
+                            // look out for deleted slots
+                            if (slot.getSequenceNumber() >= 0) {
+
+                                // set the slot's start date in the DB to the current date to
+                                // start the game
+                                persistSlot(Helper.copyToSetStartDate(slots[0], new Date()));
+
+                                break hosting_blocks;
+                            }
+                        }
+                    }
                 }
             }
 
-            //remove from the not started games
+            // remove from the not started games
             notYetStartedGames.remove(game.getId());
         }
     }
@@ -147,29 +158,28 @@ public abstract class BaseGameDataManager implements GameDataManager,
      * Simply synchronize on the <code>notYetStartedGames</code> instance.
      * </p>
      *
-     * @param notYetStartedGames an array of games that have not yet started
+     * @param games an array of games that have not yet started
      * @throws IllegalArgumentException if the parameter is null or the array contains null element
      * @throws IllegalStateException if the manager has been stopped.
      */
-    public void setCurrentNotStartedGames(Game[] notYetStartedGames) {
-        Helper.checkObjectNotNull(notYetStartedGames, "game");
+    public void setCurrentNotStartedGames(Game[] games) {
+        Helper.checkObjectNotNull(games, "game");
 
         //the elements in the array can not be null
-        for (int i = 0; i < notYetStartedGames.length; i++) {
-            Helper.checkObjectNotNull(notYetStartedGames[i],
-                "notYetStartedGames[" + i + "]");
+        for (int i = 0; i < games.length; i++) {
+            Helper.checkObjectNotNull(games[i],
+                    "games[" + i + "]");
         }
 
         checkStopped();
 
-        synchronized (this.notYetStartedGames) {
+        synchronized (notYetStartedGames) {
             // first clear the current games
-            this.notYetStartedGames.clear();
+            notYetStartedGames.clear();
 
             // then insert the specified ones
-            for (int i = 0; i < notYetStartedGames.length; i++) {
-                    this.notYetStartedGames.put(notYetStartedGames[i].getId(),
-                            notYetStartedGames[i]);
+            for (int i = 0; i < games.length; i++) {
+                notYetStartedGames.put(games[i].getId(), games[i]);
             }
         }
     }
