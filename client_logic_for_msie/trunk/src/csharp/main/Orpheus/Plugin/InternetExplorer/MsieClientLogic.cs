@@ -448,19 +448,6 @@ namespace Orpheus.Plugin.InternetExplorer
                     string.Format("Failed to create window navigator by {0}", value), e);
             }
 
-            // Reads the "bloom_filter" configuration property and passes the value
-            // to the Object Factory to create the required instance.
-            value = cm.GetValue(configurationNamsepace, PROPERTY_BLOOM_FILTER);
-            try
-            {
-                bloomFilter = (BloomFilter)factory.CreateDefinedObject(value);
-            }
-            catch (Exception e)
-            {
-                throw new ConfigurationException(
-                    string.Format("Failed to create bloom filter by {0}", value), e);
-            }
-
             // Reads the "persistence" configuration property and passes the value to
             // the Object Factory to create the required instance.
             value = cm.GetValue(configurationNamsepace, PROPERTY_PERSISTENCE);
@@ -473,6 +460,30 @@ namespace Orpheus.Plugin.InternetExplorer
                 throw new ConfigurationException(
                     string.Format("Failed to create persistence by {0}", value), e);
             }
+
+            // get the Bloom Filter from persistence first
+            string serizlizedForm = persistence[Helper.KEY_BLOOM_FILTER];
+            if (serizlizedForm.Length > 0)
+            {
+                bloomFilter = new BloomFilter(serizlizedForm);
+            }
+            else
+            {
+
+                // Reads the "bloom_filter" configuration property and passes the value
+                // to the Object Factory to create the required instance.
+                value = cm.GetValue(configurationNamsepace, PROPERTY_BLOOM_FILTER);
+                try
+                {
+                    bloomFilter = (BloomFilter)factory.CreateDefinedObject(value);
+                }
+                catch (Exception e)
+                {
+                    throw new ConfigurationException(
+                        string.Format("Failed to create bloom filter by {0}", value), e);
+                }
+            }
+            
 
             // Reads the "extension_events_manager" configuration property
             // and passes the value to the Object Factory to create the required instance.

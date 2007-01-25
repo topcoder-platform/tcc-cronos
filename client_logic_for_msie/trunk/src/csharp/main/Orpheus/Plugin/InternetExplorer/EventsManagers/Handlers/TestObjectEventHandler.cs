@@ -12,6 +12,7 @@ using TopCoder.Util.Hash.Algorithm;
 using TopCoder.Util.ConfigurationManager;
 using TopCoder.Util.ObjectFactory;
 using Mshtml;
+using System.Text.RegularExpressions;
 //using Orpheus.Plugin.InternetExplorer.Interop.Mshtml;
 
 namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
@@ -168,7 +169,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
             {
                 // Gets the IHTMLElement for the params array.
                 IHTMLElement element = (IHTMLElement) args.Parameters[0];
-
+                
                 // here not done as the design said get text one by one,
                 // but just use innerText, which has the same effect.
                 string content = element.innerText;

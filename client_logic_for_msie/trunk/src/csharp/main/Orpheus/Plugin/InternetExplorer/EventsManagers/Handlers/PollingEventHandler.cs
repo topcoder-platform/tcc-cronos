@@ -44,8 +44,9 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
     ///
     /// <author>TCSDESIGNER</author>
     /// <author>TCSDEVELOPER</author>
-    /// <version>1.0</version>
-    /// <copyright>Copyright (C) 2006 TopCoder Inc., All Rights Reserved.</copyright>
+    /// <author>kr00tki</author>
+    /// <version>1.0.3</version>
+    /// <copyright>Copyright (C) 2006, 2007 TopCoder Inc., All Rights Reserved.</copyright>
     public class PollingEventHandler : IExtensionEventHandler
     {
         /// <summary>
@@ -220,10 +221,12 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                         AtomMultimediaContentItem multi = item.Description as AtomMultimediaContentItem;
                         if ((multi != null) && multi.MimeType.Equals(MIME_BLOOM_FILTER))
                         {
-                                // If the content is of type "application/x-tc-bloom-filter" restore the bloom filter
-                                // from the serialized content of the feed item.
-                                // args.Context.BloomFilter
-                            args.Context.BloomFilter = new BloomFilter(Encoding.UTF8.GetString(multi.RawData));
+                            // If the content is of type "application/x-tc-bloom-filter" restore the bloom filter
+                            // from the serialized content of the feed item.
+                            // args.Context.BloomFilter
+                            string serializedForm = Encoding.UTF8.GetString(multi.RawData);
+                            args.Context.BloomFilter = new BloomFilter(serializedForm);
+                            MsieClientLogic.GetInstance().Persistence[Helper.KEY_BLOOM_FILTER] = serializedForm;
                         }
                     }
                 }

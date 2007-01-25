@@ -101,7 +101,6 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 // get the url of the current page
                 Uri uri = new Uri(args.Parameters[0] as string);
                 string host = uri.Host;
-
                 if (args.Context.BloomFilter.Contains(host))
                 {
                     // if found by bloom filter

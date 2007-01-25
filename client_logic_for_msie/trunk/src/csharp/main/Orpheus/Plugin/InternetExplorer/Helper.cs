@@ -34,6 +34,11 @@ namespace Orpheus.Plugin.InternetExplorer
         public const string KEY_GAME_ID = "gameId";
 
         /// <summary>
+        /// The key for serialized Bloom filter.
+        /// </summary>
+        public const string KEY_BLOOM_FILTER = "bloom_filter";
+
+        /// <summary>
         /// The key used in persitece to give value of timestamp.
         /// </summary>
         public const string KEY_TIMESTAMP = "timestamp";

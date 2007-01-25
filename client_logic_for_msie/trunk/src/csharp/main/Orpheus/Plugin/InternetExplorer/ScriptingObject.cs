@@ -185,13 +185,6 @@ namespace Orpheus.Plugin.InternetExplorer
 
             // here we don't consider when the window is invalid
             // the design don't required.
-
-            // Gets the host browser document:
-            //IHTMLDocument2 document = (IHTMLDocument2)context.WebBrowser.Document;
-
-            //return (null != document.location) && (window == document.parentWindow);
-
-            // TODO: how to check if window is popup??
             return window.parent != null;
         }
 
