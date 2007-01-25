@@ -7,6 +7,10 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 
 /**
  * UnitTest for ImplementationHelperUnit class.
@@ -52,8 +56,12 @@ public class ImplementationHelperUnitTest extends TestCase {
      * Accuracy test of <code>getElement(Element element, String key)</code>.
      */
     public void testGetElement() {
-        assertEquals("failed to get key value", ImplementationHelper.getElement(TestHelper.getDomElement(
-                "GameDetailHandler.xml", false), "game_id_param_key"), "gameId");
+	Element documentElement = TestHelper.getDomElement("GameDetailHandler.xml", false);
+	NodeList nodes = documentElement.getElementsByTagName("handler");
+
+	assertTrue("No handlers found in GameDetailHandler.xml", nodes.getLength() > 0);
+        assertEquals("failed to get key value", ImplementationHelper.getElement(
+                (Element) nodes.item(0), "game_id_param_key"), "gameId");
 
         // key not present in the xml.
         try {

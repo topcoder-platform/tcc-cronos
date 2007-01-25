@@ -204,12 +204,12 @@ class GameDataHelper {
                 GameDataHome gameDataHome = (GameDataHome) PortableRemoteObject.narrow(object, GameDataHome.class);
                 gameData = gameDataHome.create();
                 // get the active games from game data.
-                games = gameData.findGames(Boolean.TRUE, null);
+                games = gameData.findGames(Boolean.TRUE, Boolean.FALSE);
             } else {
                 GameDataLocalHome gameDataLocalHome = (GameDataLocalHome) context.lookup(gameDataJNDIName);
                 gameDataLocal = gameDataLocalHome.create();
                 // get the active games from game data local.
-                games = gameDataLocal.findGames(Boolean.TRUE, null);
+                games = gameDataLocal.findGames(Boolean.TRUE, Boolean.FALSE);
             }
             return games;
         } catch (NamingException namingException) {
@@ -465,88 +465,117 @@ class GameDataHelper {
      *             HandlerExecutionException if fail to upcoming domains. It is used to wrap underlying exceptions.
      */
     public Domain[] getUpcomingDomains(long gameId) throws HandlerExecutionException {
-        GameData gameData = null;
-        GameDataLocal gameDataLocal = null;
         try {
             Game game;
             HostingSlot[] completedSlots;
+	    Set completedSlotIds;
+
             // check whether to use remote look up.
             if (useRemoteHome) {
                 Object object = context.lookup(gameDataJNDIName);
                 GameDataHome gameDataHome = (GameDataHome) PortableRemoteObject.narrow(object, GameDataHome.class);
-                gameData = gameDataHome.create();
-                // finds the completed slots for this game id.
-                completedSlots = gameData.findCompletedSlots(gameId);
-                // finds the game for this game id.
-                game = gameData.getGame(gameId);
-            } else {
-                GameDataLocalHome gameDataLocalHome = (GameDataLocalHome) context.lookup(gameDataJNDIName);
-                gameDataLocal = gameDataLocalHome.create();
-                // finds the completed slots for this game id.
-                completedSlots = gameDataLocal.findCompletedSlots(gameId);
-                // finds the game for this game id.
-                game = gameDataLocal.getGame(gameId);
-            }
-            HostingBlock currentBlock = null;
-            HostingBlock[] hostingBlocks = game.getBlocks();
-            // finds the first valid block.
-            for (int i = 0; i < hostingBlocks.length; i++) {
-                HostingSlot currentSlot = null;
-                HostingSlot[] hostingSlots = hostingBlocks[i].getSlots();
-                for (int j = 0; j < hostingSlots.length; j++) {
-                    if (hostingSlots[i].getHostingStart() != null && hostingSlots[i].getHostingEnd() == null) {
-                        currentSlot = hostingSlots[i];
-                        break;
+                GameData gameData = gameDataHome.create();
+
+                try {
+                    // finds the completed slots for this game id.
+                    completedSlots = gameData.findCompletedSlots(gameId);
+                    // finds the game for this game id.
+                    game = gameData.getGame(gameId);
+                } finally {
+                    try {
+                        gameData.remove();
+                    } catch (RemoteException re) {
+                        // ignore it
+                    } catch (RemoveException re) {
+                        // ignore it
                     }
                 }
-                if (currentSlot != null) {
-                    currentBlock = hostingBlocks[i];
-                    break;
+            } else {
+                GameDataLocalHome gameDataLocalHome = (GameDataLocalHome) context.lookup(gameDataJNDIName);
+                GameDataLocal gameDataLocal = gameDataLocalHome.create();
+
+                try {
+                    // finds the completed slots for this game id.
+                    completedSlots = gameDataLocal.findCompletedSlots(gameId);
+                    // finds the game for this game id.
+                    game = gameDataLocal.getGame(gameId);
+                } finally {
+                    try {
+                        gameDataLocal.remove();
+                    } catch (RemoveException re) {
+                        // ignore it
+                    }
                 }
             }
+
+	    completedSlotIds = new HashSet();
+	    for (int i = 0; i < completedSlots.length; i++) {
+		completedSlotIds.add(completedSlots[i].getId());
+	    }
+
+            // sort the hosting block based on sequence number (shouldn't be necessary, but it doesn't hurt)
+            List temp = Arrays.asList(game.getBlocks());
+            Collections.sort(temp, new SequenceNumberComparator());
+            // blocks should be sorted based on the ascending order of sequence number.
+            HostingBlock[] hostingBlocks = (HostingBlock[]) temp.toArray(new HostingBlock[temp.size()]);
+            HostingBlock currentBlock = null;
+
+            // finds the first valid block.
+            find_current_block:
+            for (int i = 0; i < hostingBlocks.length; i++) {
+                HostingSlot[] hostingSlots = hostingBlocks[i].getSlots();
+
+                for (int j = 0; j < hostingSlots.length; j++) {
+                    if (hostingSlots[j].getHostingStart() != null && hostingSlots[j].getHostingEnd() == null) {
+                        currentBlock = hostingBlocks[i];
+                        break find_current_block;
+                    }
+                }
+            }
+
             if (currentBlock == null) {
                 // if no block return an empty Domain array.
                 return new Domain[0];
             } else {
-                Domain[] domains;
-                HostingBlock immediateBlock = null;
-                // sort the hosting block based on sequence number
-                List temp = Arrays.asList(hostingBlocks);
-                Collections.sort(temp, new SequenceNumberComparator());
-                // blocks should be sorted based on the ascending order of sequence number.
-                hostingBlocks = (HostingBlock[]) temp.toArray(new HostingBlock[temp.size()]);
+                HostingBlock nextBlock = null;
 
-                // search for the next immediate block based on sequence number.
+                // search for the next block based on sequence number.
+		// The blocks are in order by ascending sequence number.
                 for (int i = 0; i < hostingBlocks.length; i++) {
                     if (hostingBlocks[i].getSequenceNumber() > currentBlock.getSequenceNumber()) {
-                        immediateBlock = hostingBlocks[i];
+                        nextBlock = hostingBlocks[i];
                         break;
                     }
                 }
-                // gets all slots for current block and immediate block as result slots.
-                List resultSlots = new ArrayList();
+
+                // get the unique domains for all uncompleted slots for current block and immediate block
+		Map resultDomainMap = new HashMap();
                 HostingSlot[] slots = currentBlock.getSlots();
+
                 for (int i = 0; i < slots.length; i++) {
-                    resultSlots.add(slots[i]);
+                    if (!completedSlotIds.contains(slots[i].getId())) {
+			Domain domain = slots[i].getDomain();
+
+			resultDomainMap.put(domain.getId(), domain);
+		    }
                 }
-                if (immediateBlock != null) {
-                    slots = immediateBlock.getSlots();
+                if (nextBlock != null) {
+                    slots = nextBlock.getSlots();
                     for (int i = 0; i < slots.length; i++) {
-                        resultSlots.add(slots[i]);
+                        if (!completedSlotIds.contains(slots[i].getId())) {
+			    Domain domain = slots[i].getDomain();
+
+			    resultDomainMap.put(domain.getId(), domain);
+		        }
                     }
                 }
-                // remove the completed slots from the result slots.
-                for (int i = 0; i < completedSlots.length; i++) {
-                    resultSlots.remove(completedSlots[i]);
-                }
-                // gets the domain from the result slots and return.
-                domains = new Domain[resultSlots.size()];
-                int idx = 0;
-                for (Iterator iter = resultSlots.iterator(); iter.hasNext();) {
-                    HostingSlot slot = (HostingSlot) iter.next();
-                    domains[idx++] = slot.getDomain();
-                }
-                return domains;
+
+		List resultDomains = new ArrayList(resultDomainMap.values());
+
+		// Perhaps this is overkill; the domains will be ordered by ID hashcode as it is:
+		Collections.shuffle(resultDomains);
+
+		return (Domain[]) resultDomains.toArray(new Domain[resultDomains.size()]);
             }
         } catch (NamingException namingException) {
             throw new HandlerExecutionException("Failed to get upcoming domains.", namingException);
@@ -558,8 +587,6 @@ class GameDataHelper {
             throw new HandlerExecutionException("Failed to get upcoming domains.", castException);
         } catch (GameDataException gameDataException) {
             throw new HandlerExecutionException("Failed to get upcoming domains.", gameDataException);
-        } finally {
-            removeGameData(gameData, gameDataLocal);
         }
     }
 
@@ -661,6 +688,7 @@ class GameDataHelper {
             Map playerSlots = new HashMap();
             // local variable to store the player id and the PlayerInfo.
             Map playerInfos = new HashMap();
+
             if (useRemoteHome) {
                 Object object = context.lookup(gameDataJNDIName);
                 GameDataHome gameDataHome = (GameDataHome) PortableRemoteObject.narrow(object, GameDataHome.class);
@@ -677,6 +705,7 @@ class GameDataHelper {
                 // gets the game for this game id.
                 game = gameDataLocal.getGame(gameId);
             }
+
             // iterate through the hosting slots.
             for (int i = 0; i < hostingSlots.length; i++) {
                 if (hostingSlots[i].getId() == null) {
@@ -690,10 +719,12 @@ class GameDataHelper {
                 } else {
                     completions = gameDataLocal.findSlotCompletions(gameId, hostingSlots[i].getId().longValue());
                 }
+
                 // iterates through the slot completions.
                 for (int j = 0; j < completions.length; j++) {
                     // key is the player id.
                     Long key = new Long(completions[j].getPlayerId());
+
                     if (playerSlots.containsKey(key)) {
                         // if the player id already exists, add this hosting slot too.
                         ((List) playerSlots.get(key)).add(hostingSlots[i]);
@@ -701,10 +732,10 @@ class GameDataHelper {
                         PlayerInfo playerInfo = (PlayerInfo) playerInfos.get(key);
                         // if the current hosting slot is the latest set it.
                         if (playerInfo.getLatestSlot() == null
-                                || hostingSlots[i].getHostingStart()
-                                        .after(playerInfo.getLatestSlot().getHostingStart())) {
+                                || hostingSlots[i].getHostingStart().after(
+					playerInfo.getLatestSlot().getHostingStart())) {
                             playerInfo.setLatestSlot(hostingSlots[i]);
-                            playerInfo.setLatestSlotCompletion(completions[i]);
+                            playerInfo.setLatestSlotCompletion(completions[j]);
                         }
                     } else {
                         // new entry into the maps.
@@ -714,12 +745,13 @@ class GameDataHelper {
                         playerSlots.put(key, list);
                         PlayerInfo playerInfo = new PlayerInfo(key.longValue());
                         playerInfo.setLatestSlot(hostingSlots[i]);
-                        playerInfo.setLatestSlotCompletion(completions[i]);
+                        playerInfo.setLatestSlotCompletion(completions[j]);
                         // add the player id and player info.
                         playerInfos.put(key, playerInfo);
                     }
                 }
             }
+
             // gets the hosting blocks for the given game.
             HostingBlock[] blocks = game.getBlocks();
             List temp = Arrays.asList(blocks);
@@ -731,6 +763,7 @@ class GameDataHelper {
             for (int i = 0; i < blocks.length; i++) {
                 slotSeqNos.add(new Integer(blocks[i].getSequenceNumber()));
             }
+
             // iterates through the hosting blocks.
             for (int i = 0; i < blocks.length; i++) {
                 // gets the hosting slots for this block.
@@ -744,6 +777,7 @@ class GameDataHelper {
                     slotSeqNos.add(new Integer(slots[j].getSequenceNumber()));
                 }
             }
+
             Set players = playerSlots.keySet();
             // iterates through the player slots map.
             for (Iterator iter = players.iterator(); iter.hasNext();) {
@@ -784,6 +818,7 @@ class GameDataHelper {
                     }
                 }
             }
+
             // create a list of player info alone from the player infos map.
             List playerInfo = new ArrayList();
             for (Iterator iter = players.iterator(); iter.hasNext();) {
@@ -801,6 +836,7 @@ class GameDataHelper {
             for (int i = 0; i < leaders.length; i++) {
                 leaders[i] = ((PlayerInfo) playerInfo.get(i)).getPlayerId();
             }
+
             return leaders;
         } catch (NamingException namingException) {
             throw new HandlerExecutionException("Failed to get leader board.", namingException);

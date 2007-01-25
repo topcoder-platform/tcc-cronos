@@ -197,7 +197,7 @@ public class TestTargetObjectHandler implements Handler {
             for (int i = 0; i < domainTargets.length; i++) {
                 // if the sequence number and text matches return null.
                 if (Integer.parseInt(seqNum) == domainTargets[i].getSequenceNumber()
-                        && text.equals(domainTargets[i].getIdentifierText())) {
+                        && text.equals(domainTargets[i].getIdentifierText().replaceAll("[\n\r \t\f\u200b]+", ""))) {
                     return null;
                 }
             }
