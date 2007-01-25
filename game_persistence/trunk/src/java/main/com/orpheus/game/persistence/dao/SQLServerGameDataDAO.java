@@ -99,37 +99,55 @@ import java.util.Set;
  * @version 1.0
  */
 public class SQLServerGameDataDAO implements GameDataDAO {
-    /** Constant represents the sql clause to get game id what has winner. */
-    private static final String SQL_SELECT_ALL_PLYR_WON_GAME = "SELECT t2.id FROM plyr_won_game t1, game t2 WHERE t1.game_id = t2.id";
 
-    /** Constant represents the sql clause to get player complete slot. */
-    private static final String SQL_SELECT_PLAYER_COMPLETE_SLOT = "SELECT t2.id FROM plyr_compltd_slot t1, hosting_slot t2 WHERE t1.hosting_slot_id = t2.id AND t1.player_id = ";
+    /*
+     * NOTE: The application in general, and this class in specific, distinguish
+     * between games' _scheduled_ starts and their _actual_ starts.  A game is
+     * scheduled to start on its recorded start date (game.start_date), but does
+     * not actually start until one of its slots starts hosting
+     * (hosting_slot.hosting_start IS NOT NULL).
+     *
+     * The application has many occasions on which it needs to get the hosting
+     * slots associated with a game, which requires a minimum of three JOINs.  It
+     * might be useful to create a view in the DB that provides this function,
+     * both to reduce the complexity of the queries used by this class and to
+     * make them more efficient.
+     */
 
     /**
-     * Constant represents the sql clause get get all game by the domain name.
+     * A String constant containing an SQL prepared statement for retrieving the IDs of the games in which a specified
+     * domain is a current or past Ball host in a slot that the specified player has not yet completed
      */
-    private static final String SQL_SELECT_ALL_GAME_DOMAIN = "SELECT t1.id as gameId,t4.id as slotId "
-            + "FROM game t1, hosting_block t2, bid t3, hosting_slot t4, domain t5,[image] t6 "
-            + "WHERE t3.image_id = t6.id AND t6.domain_id = t5.id AND t4.hosting_start is not null "
-            + "AND t4.bid_id = t3.id AND t3.auction_id = t2.id AND t2.game_id = t1.id AND t1.start_date is not null "
-            + "AND t5.base_url = ?";
-
-    /** Constant represents the field name. */
-    private static final String FIELD_SLOT_ID = "slotId";
+    private static final String SQL_PS_SELECT_PLAYER_GAMES_BY_DOMAIN = "SELECT DISTINCT t1.game_id AS gameId "
+        + "FROM ((hosting_block t1 LEFT JOIN plyr_won_game t2 ON (t1.game_id = t2.game_id)) "
+                + "LEFT JOIN plyr_compltd_game t3 ON (t1.game_id = t3.game_id AND t3.player_id = ?)) "
+        + "INNER JOIN ((hosting_slot t4 LEFT JOIN plyr_compltd_slot t5 ON (t4.id = t5.hosting_slot_id AND t5.player_id = ?)) "
+                + "INNER JOIN bid t6 ON (t4.bid_id = t6.id) "
+                + "INNER JOIN [image] t7 ON (t6.image_id = t7.id) "
+                + "INNER JOIN domain t8 ON (t7.domain_id = t8.id AND t8.base_url = ?)) "
+        + "ON (t1.id = t6.auction_id) "
+        + "WHERE (t2.player_id IS NULL AND t3.sequence_number IS NULL "
+	+ "AND t5.timestamp IS NULL AND t4.hosting_start IS NOT NULL)";
 
     /** Constant represents the sql clause to get complete slot for a game. */
-    private static final String SQL_SELECT_COMPLETE_SLOT_IN_GAME = "SELECT DISTINCT t4.id "
-            + "FROM game t1, hosting_block t2, bid t3, hosting_slot t4, plyr_compltd_slot t5 "
-            + "WHERE t4.bid_id = t3.id AND t3.auction_id = t2.id AND  t2.game_id = t1.id "
-            + "AND t5.hosting_slot_id = t4.id AND t1.id = ";
+    private static final String SQL_SELECT_COMPLETE_SLOT_IN_GAME =
+	    "SELECT t4.hosting_slot_id AS id, MIN(t1.sequence_number) s1, MIN(t3.sequence_number) s2 "
+            + "FROM plyr_compltd_slot t4 "
+            + "INNER JOIN hosting_slot t3 ON (t4.hosting_slot_id = t3.id) "
+            + "INNER JOIN bid t2 ON (t3.bid_id = t2.id) "
+            + "INNER JOIN hosting_block t1 ON (t2.auction_id = t1.id) "
+            + "WHERE t1.game_id = ? "
+	    + "GROUP BY t4.hosting_slot_id ORDER BY s1, s2";
 
     /**
      * Constant represents the sql clause get all complete slot with game and
      * slot id.
      */
-    private static final String SQL_SELECT_COMPLETE_SLOT = "SELECT t5.* FROM game t1, hosting_block t2, bid t3, hosting_slot t4,plyr_compltd_slot t5 "
-            + "WHERE t4.bid_id = t3.id AND t3.auction_id = t2.id AND t2.game_id = t1.id AND t1.id = ? "
-            + "AND t4.id = ? AND t5.hosting_slot_id = t4.id";
+    private static final String SQL_SELECT_COMPLETE_SLOT =
+        "SELECT t5.* FROM hosting_block t2 INNER JOIN bid t3 ON (t2.game_id = ? AND t2.id = t3.auction_id) "
+        + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ?) "
+        + "INNER JOIN plyr_compltd_slot t5 ON (t4.id = t5.hosting_slot_id) "
+        + "ORDER BY t5.timestamp";
 
     /** Constant represents the field name. */
     private static final String FIELD_TIMESTAMP = "timestamp";
@@ -144,28 +162,60 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * Constant represents the sql clause to check if the slot id exists with
      * the game id.
      */
-    private static final String SQL_SELECT_CHECK_GAME_ID_SLOT_ID = "SELECT t4.id FROM game t1, hosting_block t2, bid t3, hosting_slot t4 "
-            + "WHERE t4.bid_id = t3.id AND t3.auction_id = t2.id AND t2.game_id = t1.id AND t1.id = ? "
-            + "AND t4.id = ? ";
+    private static final String SQL_SELECT_CHECK_GAME_ID_SLOT_ID = "SELECT t4.id FROM "
+            + "hosting_block t2 INNER JOIN bid t3 ON (t2.id = t3.auction_id AND t2.game_id = ?) "
+            + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ?) ";
 
-    /** Constant represents the sql clause to get game not start. */
-    private static final String SQL_SELECT_NOT_START = "SELECT id FROM game WHERE start_date is null";
+    /**
+     * Constant represents the sql clause to get unstarted games. Games are
+     * judged to have not been started if none of their slots have been started
+     */
+    private static final String SQL_SELECT_NOT_START_GAME = "SELECT t2.game_id AS id, COUNT(t4.hosting_start) "
+            + "FROM hosting_block t2 "
+            + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) "
+            + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) "
+            + "GROUP BY t2.game_id "
+            + "HAVING (COUNT(t4.hosting_start) = 0)";
 
-    /** Constant represents the sql clause to get game has winner. */
-    private static final String SQL_SELECT_START_NOT_END_GAME = "SELECT t1.id FROM game t1 LEFT JOIN plyr_won_game t2 ON t2.game_id = t1.id "
-            + "WHERE t2.game_id is null AND t1.start_date is not null";
+    /** Constant represents the sql clause to get started games that have no winner. */
+    private static final String SQL_SELECT_START_NOT_END_GAME = "SELECT DISTINCT t2.game_id AS id "
+            + "FROM plyr_won_game t1 "
+            + "RIGHT JOIN hosting_block t2 ON (t1.game_id = t2.game_id) "
+            + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) "
+            + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) "
+            + "WHERE (t4.hosting_start IS NOT NULL AND t1.player_id IS NULL)";
 
-    /** Constant represents the sql clause get game has winner and start. */
-    private static final String SQL_SELECT_START_END_GAME = "SELECT t1.id FROM game t1, plyr_won_game t2 WHERE t2.game_id = t1.id AND t1.start_date is not null";
+    /**
+     * <p>
+     * Constant represents the sql clause get game has winner and start.
+     * </p><p>
+     * Note: in practice, it should be sufficient (and less work) to skip the test for games
+     * that have been started, because it is inconsistent for a game to have ended but not started.
+     * The test for ending only is covered separately, however, so this version tests both start
+     * and end.
+     * </p>
+     */
+    private static final String SQL_SELECT_START_END_GAME = "SELECT DISTINCT t1.game_id AS id "
+            + "FROM plyr_won_game t1 "
+            + "INNER JOIN hosting_block t2 ON (t1.game_id = t2.game_id) "
+            + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) "
+            + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) "
+            + "WHERE (t4.hosting_start IS NOT NULL)";
 
-    /** Constant represents the sql clause to get game started. */
-    private static final String SQL_SELECT_START_GAME = "SELECT id FROM game WHERE start_date is not null";
+    /** Constant represents the sql clause to get games that have started. */
+    private static final String SQL_SELECT_START_GAME = "SELECT DISTINCT t2.game_id AS id "
+            + "FROM hosting_block t2 "
+            + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) "
+            + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) "
+            + "WHERE (t4.hosting_start IS NOT NULL)";
 
-    /** Constant represents the sql clause to get game has winner. */
-    private static final String SQL_SELECT_NOT_END_GAME = "SELECT t1.id FROM game t1 LEFT JOIN plyr_won_game t2 ON t2.game_id = t1.id WHERE t2.game_id is null";
+    /** Constant represents the sql clause to get games that have no winner. */
+    private static final String SQL_SELECT_NOT_END_GAME = "SELECT t1.id FROM game t1 "
+            + "LEFT JOIN plyr_won_game t2 ON (t2.game_id = t1.id) "
+            + "WHERE (t2.player_id IS NULL)";
 
-    /** Constant represents the sql clause to get game has winner. */
-    private static final String SQL_SELECT_END_GAME = "SELECT t1.id FROM game t1, plyr_won_game t2 WHERE t2.game_id = t1.id";
+    /** Constant represents the sql clause to get games that have a winner. */
+    private static final String SQL_SELECT_END_GAME = "SELECT game_id AS id FROM plyr_won_game";
 
     /** Constant represents the sql clause to get all the game id. */
     private static final String SQL_SELECT_GAME = "SELECT id FROM game";
@@ -187,7 +237,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String SQL_DELETE_BRN_TSR_FOR_SLOT = "DELETE FROM brn_tsr_for_slot WHERE hosting_slot_id = ?";
 
     /** Constant represents the sql clause game has winner. */
-    private static final String SQL_SELECT_PLYR_WON_GAME = "SELECT t2.id FROM plyr_won_game t1, game t2 WHERE t2.id = t1.game_id";
+    private static final String SQL_SELECT_PLYR_WON_GAME = "SELECT t1.game_id FROM plyr_won_game t1";
 
     /** Constant represents the field name. */
     private static final String FIELD_GAME_ID = "gameId";
@@ -195,11 +245,14 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /** Constant represents the field name. */
     private static final String FIELD_DOMAINID = "domainId";
 
-    /** Constant represents the sql clause get all active game. */
-    private static final String SQL_SELECT_ALL_GAME_ID = "SELECT t3.id as domainId, t6.id as gameId "
-            + "FROM bid t1,[image] t2, domain t3, hosting_slot t4, hosting_block t5,game t6 "
-            + "WHERE t1.image_id = t2.id AND t2.domain_id = t3.id AND t4.bid_id = t1.id AND t1.auction_id = t5.id "
-            + "AND t5.game_id = t6.id AND t4.hosting_start is not null";
+    /** Constant represents the sql clause get the IDs of all active domain entities. */
+    private static final String SQL_SELECT_ACTIVE_DOMAINS = "SELECT DISTINCT t3.id AS domainId "
+            + "FROM hosting_block t5 LEFT JOIN plyr_won_game t6 ON (t5.game_id = t6.game_id) "
+            + "INNER JOIN bid t1 ON (t5.id = t1.auction_id) "
+            + "INNER JOIN [image] t2 ON (t1.image_id = t2.id) "
+            + "INNER JOIN domain t3 ON (t2.domain_id = t3.id) "
+            + "INNER JOIN hosting_slot t4 ON (t1.id = t4.bid_id AND t4.hosting_start IS NOT NULL) "
+            + "WHERE (t6.player_id IS NULL)";
 
     /** Constant represents the sql clause to delete slot with the id. */
     private static final String SQL_DELET_HOSTING_SLOT = "DELETE FROM hosting_slot WHERE id = ?";
@@ -373,6 +426,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String SQL_SELECT_HOSTING_SLOT_WITH_BLOCK_ID = "SELECT hosting_slot.id as id FROM hosting_slot, bid "
             + "WHERE hosting_slot.bid_id = bid.id AND bid.auction_id =";
 
+    /** Constant representing the SQL clause for ordering hosting slots by their sequence numbers */
+    private static final String SQL_ORDER_SLOTS_BY_SEQUENCE = " ORDER BY hosting_slot.sequence_number";
+
     /** Constant represents the field name. */
     private static final String FIELD_MAX_TIME_PER_SLOT = "max_time_per_slot";
 
@@ -382,11 +438,17 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /** Constant represents the sql clause get block for a game. */
     private static final String SQL_SELECT_HOSTING_BLOCK_WITH_GAME_ID = "SELECT * FROM hosting_block WHERE game_id = ";
 
+    /** Constant representing the SQL clause for ordering hosting blocks by their sequence numbers */
+    private static final String SQL_ORDER_BY_SEQUENCE = " ORDER BY sequence_number";
+
     /** Constant represents the field name. */
     private static final String FIELD_KEY_REQUIRED = "keys_required";
 
     /** Constant represents the sql clause. */
     private static final String SQL_START_DATE = "start_date";
+
+    /** Constant represents the sql clause. */
+    private static final String SQL_END_DATE = "end_date";
 
     /** Constant represents the field name. */
     private static final String FIELD_BALL_COLOR_ID = "ball_color_id";
@@ -436,14 +498,22 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /** Constant represents the sql clause get domain for a sponsor. */
     private static final String SQL_SELECT_DOMAIN_WITH_SPONSOR_ID = "SELECT * FROM domain WHERE sponsor_id = ";
 
-    /** Constant represents the sql clause get slot. */
-    private static final String SQL_SELECT_DISTINCT_SLOT = "SELECT DISTINCT t5.id ,t5.sequence_number, t2.sequence_number "
-            + "FROM game t1, hosting_block t2, bid t3, [image] t4, hosting_slot t5, domain t6 "
-            + "WHERE t6.base_url = ? AND t1.id = ? AND t5.bid_id = t3.id AND t3.image_id = t4.id "
-            + "AND t4.domain_id = t6.id AND t3.auction_id = t2.id ORDER BY  t5.sequence_number, t2.sequence_number";
-
     /** Constant represents the sql clause get slot has complete player. */
     private static final String SQL_SELECT_PLYR_COMPLTD_SLOT = "SELECT * FROM plyr_compltd_slot WHERE hosting_slot_id  = ? AND player_id = ?";
+
+    /**
+     * An SQL prepared statement string for selecting the ID of the first hosting_slot in the hosting sequence for the
+     * specified game, subject to the constraints that the specified domain be assigned to the slot and that the slot
+     * not have been completed by the specified player
+     */
+    private static final String SQL_PS_SELECT_SLOT_FOR_DOMAIN = "SELECT TOP (1) t5.id FROM hosting_block t1 "
+            + "INNER JOIN bid t2 ON (t1.game_id = ? AND t1.id = t2.auction_id) "
+            + "INNER JOIN [image] t3 ON (t2.image_id = t3.id) "
+            + "INNER JOIN domain t4 ON (t4.base_url = ? AND t3.domain_id = t4.id) "
+            + "INNER JOIN hosting_slot t5 ON (t5.sequence_number >= 0 AND t2.id = t5.bid_id) "
+            + "LEFT JOIN plyr_compltd_slot t6 ON (t5.id = t6.hosting_slot_id AND t6.player_id = ?) "
+            + "WHERE (t6.timestamp IS NULL) "
+            + "ORDER BY t1.sequence_number, t5.sequence_number";
 
     /** Constant represents the field name. */
     private static final String FIELD_DOWNLOAD_OBJ_ID = "download_obj_id";
@@ -505,7 +575,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * SQL clause to query the game table with id.
      * </p>
      */
-    private static final String SQL_SELECT_GAME_WITH_ID = "SELECT * FROM game WHERE id = ";
+    private static final String SQL_SELECT_GAME_WITH_ID = "SELECT t1.*, t2.player_id AS winner_id, t2.date AS end_date "
+	   + "FROM game t1 LEFT JOIN plyr_won_game t2 ON (t1.id = t2.game_id) "
+	   + "WHERE t1.id = ";
 
     /**
      * <p>
@@ -611,8 +683,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     public SQLServerGameDataDAO(String namespace) throws InstantiationException {
         Helper.checkNotNullOrEmpty(namespace, "namespace");
 
-        Connection conn = null;
-
         try {
             ObjectFactory factory = new ObjectFactory(
                     new ConfigManagerSpecificationFactory(Helper.getString(
@@ -621,27 +691,22 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             randomStringImage = (RandomStringImage) factory.createObject(Helper
                     .getString(namespace, RANDOM_STRING_IMAGE_KEY, true));
 
-            connectionFactory = (DBConnectionFactory) factory
-                    .createObject(Helper
-                            .getString(namespace, FACTORY_KEY, true));
+            connectionFactory = (DBConnectionFactory) factory.createObject(
+		    Helper.getString(namespace, FACTORY_KEY, true));
             // the connectioName is optional
             connectionName = Helper.getString(namespace, NAME, false);
+
             // test the connection
-            conn = getConnection();
+            getConnection().close();
 
             keyLength = Helper.getInt(namespace, KEY_LENGTH, true);
             mediaType = Helper.getString(namespace, MEDIA_TYPE, true);
-        } catch (InstantiationException e) {
-            throw e;
         } catch (DBConnectionException e) {
             throw new InstantiationException(
-                    "The database connection factory can not be instantiated.",
-                    e);
+                    "The database connection factory can not be instantiated.", e);
         } catch (Exception e) {
             throw new InstantiationException(
                     "Error in instantiate SQLServerGameDataDAO.", e);
-        } finally {
-            close(conn);
         }
     }
 
@@ -669,65 +734,66 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     public Game createGame(Game game) throws PersistenceException {
         Helper.checkNotNull(game, "Game");
 
-        Connection conn = null;
-        CallableStatement stmt = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            // checks if the game already exists
-            if ((game.getId() != null)
-                    && exist(conn, SQL_SELECT_GAME_WITH_ID
-                            + game.getId().longValue(), null)) {
-                throw new DuplicateEntryException("The game with id :"
-                        + game.getId() + " already exists.", game.getId());
-            }
+	    try {
+                CallableStatement stmt;
+		long gameId;
 
-            // checks if the game's ballColor exists
-            if (!exist(conn, SQL_SELECT_BALL_COLOR_WITH_ID
-                    + game.getBallColor().getId().longValue(), null)) {
-                throw new EntryNotFoundException(
-                        "The game's ballColor to create does not exist.", game
-                                .getBallColor().getId());
-            }
+                // checks if the game already exists
+                if ((game.getId() != null)
+                        && exist(conn, SQL_SELECT_GAME_WITH_ID
+                                + game.getId().longValue(), null)) {
+                    throw new DuplicateEntryException("The game with id :"
+                            + game.getId() + " already exists.", game.getId());
+                }
 
-            // call the stored procedure to persist the game record into the
-            // 'game' table
-            stmt = callableStatement(SP_CREATE_GAME, new Object[] {
-                    game.getId(), game.getBallColor().getId(),
-                    new Integer(game.getKeyCount()),
-                    toSQLDate(game.getStartDate()), FIELD_ID }, conn);
+                // checks if the game's ballColor exists
+                if (!exist(conn, SQL_SELECT_BALL_COLOR_WITH_ID
+                        + game.getBallColor().getId().longValue(), null)) {
+                    throw new EntryNotFoundException(
+                            "The game's ballColor to create does not exist.",
+                            game.getBallColor().getId());
+                }
 
-            long gameId = stmt.getLong(5);
-            close(stmt);
+                // call the stored procedure to persist the game record into the
+                // 'game' table
+                stmt = callableStatement(SP_CREATE_GAME, new Object[] {
+                        game.getId(), game.getBallColor().getId(),
+                        new Integer(game.getKeyCount()),
+                        toSQLDate(game.getStartDate()), FIELD_ID }, conn);
 
-            // get the next sequence_number of the table hosting_block
-            int sequenceNumber = getNextSequenceNumber(conn,
-                    TABLE_HOSTING_BLOCK);
+                gameId = stmt.getLong(5);
+		close(stmt);
 
-            // persist the game's HostingBlock array into the
-            // 'hosting_block'
-            // table
-            HostingBlock[] blocks = game.getBlocks();
-            HostingBlock[] updatedBlocks = new HostingBlock[blocks.length];
+                // get the next sequence_number of the table hosting_block
+                int sequenceNumber = getNextSequenceNumber(conn,
+                        TABLE_HOSTING_BLOCK);
 
-            for (int i = 0; i < blocks.length; i++) {
-                stmt = callableStatement(SP_CREATE_HOSTING_BLOCK, new Object[] {
-                        new Long(gameId), new Integer(sequenceNumber),
-                        new Integer(blocks[i].getMaxHostingTimePerSlot()),
-                        FIELD_ID }, conn);
-                updatedBlocks[i] = new HostingBlockImpl(new Long(stmt
-                        .getLong(4)), sequenceNumber++, blocks[i].getSlots(),
-                        blocks[i].getMaxHostingTimePerSlot());
-                close(stmt);
-            }
+                // persist the game's HostingBlock array into the 'hosting_block'
+                // table
+                HostingBlock[] blocks = game.getBlocks();
+                HostingBlock[] updatedBlocks = new HostingBlock[blocks.length];
 
-            // return the updated game instance
-            return new GameImpl(new Long(gameId), game.getBallColor(), game
-                    .getKeyCount(), game.getStartDate(), game.getEndDate(),
-                    updatedBlocks);
-        } catch (PersistenceException e) {
-            throw e;
+                for (int i = 0; i < blocks.length; i++) {
+                    stmt = callableStatement(SP_CREATE_HOSTING_BLOCK, new Object[] {
+                            new Long(gameId), new Integer(sequenceNumber),
+                            new Integer(blocks[i].getMaxHostingTimePerSlot()),
+                            FIELD_ID }, conn);
+                    updatedBlocks[i] = new HostingBlockImpl(new Long(stmt
+                            .getLong(4)), sequenceNumber++, blocks[i].getSlots(),
+                            blocks[i].getMaxHostingTimePerSlot());
+                    close(stmt);
+                }
+
+                // return the updated game instance
+                return new GameImpl(new Long(gameId), game.getBallColor(),
+			game.getKeyCount(), game.getStartDate(), game.getEndDate(),
+                        updatedBlocks);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -737,9 +803,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in persisting Game instance to database.", e);
-        } finally {
-            close(stmt);
-            close(conn);
         }
     }
 
@@ -768,108 +831,107 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throws PersistenceException {
         Helper.checkNotNull(bidIds, "bidIds");
 
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = this.getConnection();
+            Connection conn = this.getConnection();
 
-            // checks if the blockId exists in the 'hosting_block' table
-            if (!exist(conn, SQL_SELECT_HOSTING_BLOCK_WITH_ID + blockId, null)) {
-                throw new EntryNotFoundException("The block with the id: "
-                        + blockId + " does not exist.", new Long(blockId));
-            }
-
-            HostingSlot[] slots = new HostingSlot[bidIds.length];
-
-            // get the next sequenceNumber of the hosting_slot table
-            int sequenceNumber = getNextSequenceNumber(conn, TABLE_HOSTING_SLOT);
-
-            for (int i = 0; i < bidIds.length; i++) {
-                // checks if earch bid exists in the 'bid' table
-                if (!exist(conn, SQL_SELECT_BID_WITH_ID + bidIds[i], null)) {
-                    throw new EntryNotFoundException("The bid with the id: "
-                            + bidIds[i] + " does not exist.", new Long(
-                            bidIds[i]));
-                } else {
-                    long imageId = 0;
-                    // checks if the 'bid.auction_id' matches the blockId
-                    rs = query(conn, SQL_SELECT_BID_WITH_ID_AND_AUTION_ID,
-                            new Object[] { new Long(bidIds[i]),
-                                    new Long(blockId) });
-
-                    if (!rs.next()) {
-                        throw new InvalidEntryException(
-                                "The bid to persistence is illegal, "
-                                        + "its blockID id and the auction_id in database does not match.",
-                                new Long(bidIds[i]));
-                    } else {
-                        imageId = rs.getLong(FIELD_IMAGE_ID);
-                    }
-
-                    close(rs);
-
-                    // retrieve the domain_id from the 'image' table
-                    Domain domain = null;
-                    rs = query(conn, SQL_SELECT_IMAGE_WITH_ID + imageId, null);
-
-                    if (rs.next()) {
-                        domain = getDomain(rs.getLong(FIELD_DOMAIN_ID));
-                    }
-
-                    close(rs);
-
-                    // retrieve the 'current_amount' from 'effective_bid'
-                    // table
-                    int currentAmount = 0;
-                    rs = query(conn, SQL_SELECT_EFFECTIVE_BID_WITH_BID_ID
-                            + bidIds[i], null);
-
-                    if (rs.next()) {
-                        currentAmount = rs.getInt(FIELD_CURRENT_AMOUNT);
-                    }
-
-                    close(rs);
-
-                    // persist the hosting slot
-                    this.update(conn,
-                            "INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start,hosting_end)"
-                                    + "values(?,?,null,null)", new Object[] {
-                                    new Long(bidIds[i]),
-                                    new Long(sequenceNumber) });
-                    Long id = null;
-                    rs = query(
-                            conn,
-                            "SELECT id FROM hosting_slot WHERE bid_id = ? AND sequence_number = ?",
-                            new Object[] { new Long(bidIds[i]),
-                                    new Long(sequenceNumber) });
-                    if (rs.next()) {
-                        id = new Long(rs.getLong("id"));
-                    }
-                    close(rs);
-
-                    // create the HostingSlotImpl instance
-                    slots[i] = new HostingSlotImpl(id, domain, imageId,
-                            new long[0], null, sequenceNumber++,
-                            new DomainTarget[0], currentAmount, null, null);
+	    try {
+                // checks if the blockId exists in the 'hosting_block' table
+                if (!exist(conn, SQL_SELECT_HOSTING_BLOCK_WITH_ID + blockId, null)) {
+                    throw new EntryNotFoundException("The block with the id: "
+                            + blockId + " does not exist.", new Long(blockId));
                 }
-            }
 
-            return slots;
-        } catch (PersistenceException e) {
-            throw e;
+                HostingSlot[] slots = new HostingSlot[bidIds.length];
+
+                // get the next sequenceNumber of the hosting_slot table
+                int sequenceNumber = getNextSequenceNumber(conn, TABLE_HOSTING_SLOT);
+
+                for (int i = 0; i < bidIds.length; i++) {
+                    // checks if earch bid exists in the 'bid' table
+                    if (!exist(conn, SQL_SELECT_BID_WITH_ID + bidIds[i], null)) {
+                        throw new EntryNotFoundException("The bid with the id: "
+                                + bidIds[i] + " does not exist.", new Long(bidIds[i]));
+                    } else {
+                        long imageId = 0;
+
+                        // checks if the 'bid.auction_id' matches the blockId
+                        ResultSet rs = query(conn, SQL_SELECT_BID_WITH_ID_AND_AUTION_ID,
+                                new Object[] { new Long(bidIds[i]), new Long(blockId) });
+
+			try {
+                            if (!rs.next()) {
+                                throw new InvalidEntryException(
+                                        "The bid to persistence is illegal, "
+                                                + "its blockID id and the auction_id in database does not match.",
+                                        new Long(bidIds[i]));
+                            } else {
+                                imageId = rs.getLong(FIELD_IMAGE_ID);
+                            }
+			} finally {
+			    close(rs);
+			}
+
+                        // retrieve the domain_id from the 'image' table
+                        Domain domain = null;
+
+                        rs = query(conn, SQL_SELECT_IMAGE_WITH_ID + imageId, null);
+		        try {
+                            if (rs.next()) {
+				// will throw an exception if no such domain is found:
+                                domain = getDomain(rs.getLong(FIELD_DOMAIN_ID));
+                            }
+			} finally {
+                            close(rs);
+			}
+
+                        // retrieve the 'current_amount' from 'effective_bid'
+                        // table
+                        int currentAmount;
+
+                        rs = query(conn, SQL_SELECT_EFFECTIVE_BID_WITH_BID_ID
+                                + bidIds[i], null);
+			try {
+                            currentAmount = (rs.next() ? rs.getInt(FIELD_CURRENT_AMOUNT) : 0);
+			} finally {
+			    close(rs);
+			}
+
+                        // persist the hosting slot
+                        this.update(conn,
+                                "INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start,hosting_end)"
+                                        + "values(?,?,null,null)", new Object[] {
+                                        new Long(bidIds[i]),
+                                        new Long(sequenceNumber) });
+                        Long id;
+                        rs = query(conn,
+                                "SELECT id FROM hosting_slot WHERE bid_id = ? AND sequence_number = ?",
+                                new Object[] { new Long(bidIds[i]), new Long(sequenceNumber) });
+
+			try {
+                            id = (rs.next() ? new Long(rs.getLong("id")) : null);
+			} finally {
+                            close(rs);
+			}
+
+                        // create the HostingSlotImpl instance
+                        slots[i] = new HostingSlotImpl(id, domain, imageId,
+                                new long[0], null, sequenceNumber++,
+                                new DomainTarget[0], currentAmount, null, null);
+                    }
+                }
+    
+                return slots;
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query/update database when creating HostingSlot.",
-                    e);
+                    "Error in query/update database when creating HostingSlot.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in creating Slot.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -897,82 +959,77 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     public Domain createDomain(Domain domain) throws PersistenceException {
         Helper.checkNotNull(domain, "Domain");
 
-        Connection conn = null;
-        CallableStatement stmt = null;
-
         try {
-            conn = this.getConnection();
+            Connection conn = this.getConnection();
 
-            // checks if the domain already exists
-            if ((domain.getId() != null)
-                    && exist(conn, SQL_SELECT_DOMAIN_WITH_ID
-                            + domain.getId().longValue(), null)) {
-                throw new DuplicateEntryException("The domain with the id: "
-                        + domain.getId().longValue() + " already exists.",
-                        domain.getId());
-            }
-
-            // checks if the domain's sponsorId exists or not
-            if (!exist(conn,
-                    SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
-                throw new EntryNotFoundException(
-                        "The dmain.sponsorId does not exist.", new Long(domain
-                                .getSponsorId()));
-            }
-
-            // persist the Domain into the 'domain' table
-            stmt = callableStatement(SP_CREATE_DOMAIN, new Object[] {
-                    domain.getId(), new Long(domain.getSponsorId()),
-                    domain.getDomainName(), domain.isApproved(), FIELD_ID },
-                    conn);
-
-            long domainId = stmt.getLong(5);
-            close(stmt);
-
-            // persist the ImageInfo array into 'image' table
-            ImageInfo[] images = domain.getImages();
-            ImageInfo[] updatedImages = new ImageInfo[images.length];
-
-            for (int i = 0; i < images.length; i++) {
-                if ((images[i].getId() != null)
-                        && exist(conn, SQL_SELECT_IMAGE_WITH_ID
-                                + images[i].getId().longValue(), null)) {
-                    throw new DuplicateEntryException("The image with the id:"
-                            + images[i].getId().longValue()
-                            + " already exists.", images[i].getId());
+	    try {
+                // checks if the domain already exists
+                if ((domain.getId() != null)
+                        && exist(conn, SQL_SELECT_DOMAIN_WITH_ID
+                                + domain.getId().longValue(), null)) {
+                    throw new DuplicateEntryException("The domain with the id: "
+                            + domain.getId().longValue() + " already exists.",
+                            domain.getId());
                 }
 
-                // checks if the download id exist or not,
-                checkDownloadDataNotExist(images[i].getDownloadId(), conn);
+                // checks if the domain's sponsorId exists or not
+                if (!exist(conn,
+                        SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
+                    throw new EntryNotFoundException(
+                            "The dmain.sponsorId does not exist.", new Long(domain
+                                    .getSponsorId()));
+                }
 
-                // persist the image into image table
-                stmt = callableStatement(SP_CREATE_IMAGE_INFO, new Object[] {
-                        images[i].getId(), new Long(domainId),
-                        new Long(images[i].getDownloadId()),
-                        domain.isApproved(), images[i].getDescription(),
-                        FIELD_ID }, conn);
-                updatedImages[i] = new ImageInfoImpl(new Long(stmt.getLong(6)),
-                        images[i].getDownloadId(), images[i].getDescription(),
-                        images[i].isApproved());
+                // persist the Domain into the 'domain' table
+                CallableStatement stmt = callableStatement(SP_CREATE_DOMAIN, new Object[] {
+                        domain.getId(), new Long(domain.getSponsorId()),
+                        domain.getDomainName(), domain.isApproved(), FIELD_ID },
+                        conn);
+
+                long domainId = stmt.getLong(5);
                 close(stmt);
-            }
 
-            return new DomainImpl(new Long(domainId), domain.getSponsorId(),
-                    domain.getDomainName(), domain.isApproved(), updatedImages);
-        } catch (PersistenceException e) {
-            throw e;
+                // persist the ImageInfo array into 'image' table
+                ImageInfo[] images = domain.getImages();
+                ImageInfo[] updatedImages = new ImageInfo[images.length];
+
+                for (int i = 0; i < images.length; i++) {
+                    if ((images[i].getId() != null)
+                            && exist(conn, SQL_SELECT_IMAGE_WITH_ID
+                                    + images[i].getId().longValue(), null)) {
+                        throw new DuplicateEntryException("The image with the id:"
+                                + images[i].getId().longValue()
+                                + " already exists.", images[i].getId());
+                    }
+
+                    // checks if the download id exist or not,
+                    checkDownloadDataNotExist(images[i].getDownloadId(), conn);
+
+                    // persist the image into image table
+                    stmt = callableStatement(SP_CREATE_IMAGE_INFO, new Object[] {
+                            images[i].getId(), new Long(domainId),
+                            new Long(images[i].getDownloadId()),
+                            domain.isApproved(), images[i].getDescription(),
+                            FIELD_ID }, conn);
+                    updatedImages[i] = new ImageInfoImpl(new Long(stmt.getLong(6)),
+                            images[i].getDownloadId(), images[i].getDescription(),
+                            images[i].isApproved());
+                    close(stmt);
+                }
+
+                return new DomainImpl(new Long(domainId), domain.getSponsorId(),
+                        domain.getDomainName(), domain.isApproved(), updatedImages);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query/update database when persisting domain/images",
-                    e);
+                    "Error in query/update database when persisting domain/images", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in creating Domain.", e);
-        } finally {
-            close(stmt);
-            close(conn);
         }
     }
 
@@ -996,37 +1053,36 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     public HostingBlock addBlock(long gameId, int slotMaxHostingTime)
             throws PersistenceException {
-        Connection conn = null;
-        CallableStatement stmt = null;
-
         try {
-            conn = this.getConnection();
-            // checks if the gameid exist or not, if not throw exception
-            checkGameNotExist(gameId, conn);
+            Connection conn = this.getConnection();
 
-            // call a stored procedure to add a block
-            int sequenceNumber = getNextSequenceNumber(conn, TABLE_HOSTING_SLOT);
-            stmt = callableStatement(SP_CREATE_HOSTING_BLOCK, new Object[] {
-                    new Long(gameId), new Integer(sequenceNumber),
-                    new Integer(slotMaxHostingTime), FIELD_ID }, conn);
+	    try {
+                // checks if the gameid exist or not, if not throw exception
+                checkGameNotExist(gameId, conn);
 
-            return new HostingBlockImpl(new Long(stmt.getLong(4)),
-                    sequenceNumber, new HostingSlot[0], slotMaxHostingTime);
-        } catch (PersistenceException e) {
-            throw e;
+                // call a stored procedure to add a block; immediately close the statement
+                int sequenceNumber = getNextSequenceNumber(conn, TABLE_HOSTING_SLOT);
+                CallableStatement stmt = callableStatement(SP_CREATE_HOSTING_BLOCK, new Object[] {
+                        new Long(gameId), new Integer(sequenceNumber),
+                        new Integer(slotMaxHostingTime), FIELD_ID }, conn);
+
+		try {
+                    return new HostingBlockImpl(new Long(stmt.getLong(4)),
+                            sequenceNumber, new HostingSlot[0], slotMaxHostingTime);
+		} finally {
+		    close(stmt);
+		}
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query/update database when add HostingBlock to a game.",
-                    e);
+                    "Error in query/update database when add HostingBlock to a game.", e);
         } catch (Exception e) {
-            throw new PersistenceException(
-                    "Error in add HostingBlock to database.", e);
-        } finally {
-            close(stmt);
-            close(conn);
+            throw new PersistenceException("Error in add HostingBlock to database.", e);
         }
     }
 
@@ -1044,58 +1100,64 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public Game getGame(long gameId) throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            long ballColorId = 0;
-            Timestamp startDate = null;
-            int keyCount = 0;
+	    try {
+                long ballColorId;
+                Timestamp startDate;
+                Timestamp endDate;
+                int keyCount;
 
-            // query the game record, if not exist, throw exception
-            rs = query(conn, SQL_SELECT_GAME_WITH_ID + gameId, null);
+                // query the game record, if not exist, throw exception
+                ResultSet rs = query(conn, SQL_SELECT_GAME_WITH_ID + gameId, null);
 
-            if (!rs.next()) {
-                throw new EntryNotFoundException("The game with the gameID:"
-                        + gameId + " does not exist.", new Long(gameId));
-            } else {
-                ballColorId = rs.getLong(FIELD_BALL_COLOR_ID);
-                startDate = rs.getTimestamp(SQL_START_DATE);
-                keyCount = rs.getInt(FIELD_KEY_REQUIRED);
-            }
+		try {
+                    if (!rs.next()) {
+                        throw new EntryNotFoundException("The game with the gameID:"
+                                + gameId + " does not exist.", new Long(gameId));
+                    } else {
+                        ballColorId = rs.getLong(FIELD_BALL_COLOR_ID);
+                        startDate = rs.getTimestamp(SQL_START_DATE);
+                        endDate = rs.getTimestamp(SQL_END_DATE);
+                        keyCount = rs.getInt(FIELD_KEY_REQUIRED);
+                    }
+		} finally {
+	            close(rs);
+		}
 
-            close(rs);
+                // get the game's BallColor from the 'ball_color' table
+                BallColor color;
 
-            // get the game's BallColor from the 'ball_color' table
-            BallColor color = null;
-            rs = query(conn, SQL_SELECT_BALL_COLOR_WITH_ID + ballColorId, null);
+                rs = query(conn, SQL_SELECT_BALL_COLOR_WITH_ID + ballColorId, null);
+		try {
+		    color = (rs.next() ? new BallColorImpl(new Long(ballColorId),
+			    rs.getString(FIELD_NAME), rs.getLong(FIELD_DOWNLOAD_OBJ_ID))
+			    : null);
+		} finally {
+		    close(rs);
+		}
 
-            if (rs.next()) {
-                color = new BallColorImpl(new Long(ballColorId), rs
-                        .getString(FIELD_NAME), rs
-                        .getLong(FIELD_DOWNLOAD_OBJ_ID));
-            }
+                // get the game's HostingBlock array from the 'hosting_block'
+                // table
+                List blocks = new ArrayList();
 
-            // get the game's HostingBlock array from the 'hosting_block'
-            // table
-            List blocks = new ArrayList();
-            rs = query(conn, SQL_SELECT_HOSTING_BLOCK_WITH_GAME_ID + gameId,
-                    null);
+                rs = query(conn, SQL_SELECT_HOSTING_BLOCK_WITH_GAME_ID + gameId
+                            + SQL_ORDER_BY_SEQUENCE, null);
+		try {
+                    while (rs.next()) {
+                        blocks.add(getBlock(rs.getLong(FIELD_ID)));
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            while (rs.next()) {
-                blocks.add(getBlock(rs.getLong(FIELD_ID)));
-            }
-
-            close(rs);
-
-            // return the game instance with the retrieved data
-            return new GameImpl(new Long(gameId), color, keyCount,
-                    toUtilDate(startDate), null, (HostingBlock[]) blocks
-                            .toArray(new HostingBlock[blocks.size()]));
-        } catch (PersistenceException e) {
-            throw e;
+                // return the game instance with the retrieved data
+                return new GameImpl(new Long(gameId), color, keyCount, startDate, endDate,
+		        (HostingBlock[]) blocks.toArray(new HostingBlock[blocks.size()]));
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -1103,11 +1165,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throw new PersistenceException(
                     "Error in query database when retrieve game instance", e);
         } catch (Exception e) {
-            throw new PersistenceException("Error in get game from database.",
-                    e);
-        } finally {
-            close(rs);
-            close(conn);
+            throw new PersistenceException("Error in get game from database.", e);
         }
     }
 
@@ -1126,61 +1184,58 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public HostingBlock getBlock(long blockId) throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            int sequenceNumber = 0;
-            int maxHostingTimePerSlot = 0;
+	    try {
+                int sequenceNumber;
+                int maxHostingTimePerSlot;
 
-            // query the hosting_block record, if not exist, throw exception
-            rs = query(conn, SQL_SELECT_HOSTING_BLOCK_WITH_ID + blockId, null);
+                // query the hosting_block record, if not exist, throw exception
+                ResultSet rs = query(conn, SQL_SELECT_HOSTING_BLOCK_WITH_ID + blockId, null);
 
-            if (!rs.next()) {
-                throw new EntryNotFoundException(
-                        "The HostingBlock with the id:" + blockId
-                                + " does not exist.", new Long(blockId));
-            } else {
-                sequenceNumber = rs.getInt(FIELD_SEQUENCE_NUMBER);
-                maxHostingTimePerSlot = rs.getInt(FIELD_MAX_TIME_PER_SLOT);
-            }
+		try {
+                    if (!rs.next()) {
+                        throw new EntryNotFoundException(
+                                "The HostingBlock with the id:" + blockId
+                                        + " does not exist.", new Long(blockId));
+                    } else {
+                        sequenceNumber = rs.getInt(FIELD_SEQUENCE_NUMBER);
+                        maxHostingTimePerSlot = rs.getInt(FIELD_MAX_TIME_PER_SLOT);
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            close(rs);
+                // get the game's HostingSlot array from the 'hosting_slot' table
+                List slots = new ArrayList();
 
-            // get the game's HostingSlot array from the 'hosting_slot'
-            // table
-            List slots = new ArrayList();
-            rs = query(conn, SQL_SELECT_HOSTING_SLOT_WITH_BLOCK_ID + blockId,
-                    null);
+                rs = query(conn, SQL_SELECT_HOSTING_SLOT_WITH_BLOCK_ID + blockId
+                            + SQL_ORDER_SLOTS_BY_SEQUENCE, null);
+		try {
+                    while (rs.next()) {
+                        slots.add(getSlot(rs.getLong(FIELD_ID)));
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            while (rs.next()) {
-                slots.add(getSlot(rs.getLong(FIELD_ID)));
-            }
-
-            close(rs);
-
-            // return the HostingBlock instance with the retrieved data
-            return new HostingBlockImpl(new Long(blockId), sequenceNumber,
-                    (HostingSlot[]) slots
-                            .toArray(new HostingSlot[slots.size()]),
-                    maxHostingTimePerSlot);
-        } catch (PersistenceException e) {
-            throw e;
+                // return the HostingBlock instance with the retrieved data
+                return new HostingBlockImpl(new Long(blockId), sequenceNumber,
+                        (HostingSlot[]) slots.toArray(new HostingSlot[slots.size()]),
+                        maxHostingTimePerSlot);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query database when retrieve HostingBlock instance",
-                    e);
+                    "Error in query database when retrieve HostingBlock instance", e);
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in get HostingBlock from database.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -1199,118 +1254,123 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public HostingSlot getSlot(long slotId) throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            int sequenceNumber = 0;
-            Timestamp hostingStart = null;
-            Timestamp hostingEnd = null;
+	    try {
+                int sequenceNumber;
+                Timestamp hostingStart;
+                Timestamp hostingEnd;
 
-            // query the hosting_slot record, if not exist, throw exception
-            rs = query(conn, SQL_SELECT_HOSTING_SLOT_WITH_ID + slotId, null);
+                // query the hosting_slot record, if not exist, throw exception
+                ResultSet rs = query(conn, SQL_SELECT_HOSTING_SLOT_WITH_ID + slotId, null);
 
-            if (!rs.next()) {
-                throw new EntryNotFoundException("The HostingSlot with the id:"
-                        + slotId + " does not exist.", new Long(slotId));
-            } else {
-                sequenceNumber = rs.getInt(FIELD_SEQUENCE_NUMBER);
-                hostingStart = rs.getTimestamp(FIELD_HOSTING_START);
-                hostingEnd = rs.getTimestamp(FIELD_HOSTING_END);
-            }
+		try {
+                    if (!rs.next()) {
+                        throw new EntryNotFoundException("The HostingSlot with the id:"
+                                + slotId + " does not exist.", new Long(slotId));
+                    } else {
+                        sequenceNumber = rs.getInt(FIELD_SEQUENCE_NUMBER);
+                        hostingStart = rs.getTimestamp(FIELD_HOSTING_START);
+                        hostingEnd = rs.getTimestamp(FIELD_HOSTING_END);
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            close(rs);
+                // get the domain and the imageId
+                Domain domain = null;
+                long imageId = -1;
 
-            // get the domain and the imageId
-            Domain domain = null;
-            long imageId = 0;
-            rs = query(conn, SQL_SELECT_IMAGE_DOMAIN + slotId, null);
+                rs = query(conn, SQL_SELECT_IMAGE_DOMAIN + slotId, null);
+                try {
+                    if (rs.next()) {
+                        imageId = rs.getLong(FIELD_IMAGE_ID);
+                        domain = getDomain(rs.getLong(FIELD_DOMAIN_ID));
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            if (rs.next()) {
-                imageId = rs.getLong(FIELD_IMAGE_ID);
-                domain = getDomain(rs.getLong(FIELD_DOMAIN_ID));
-            }
+                // get the winningBid, if not exist, its default value is 0
+                int winningBid = 0;
 
-            close(rs);
+                rs = query(conn, SQL_SELECT_WINNING_BID + slotId, null);
+                try {
+                    if (rs.next()) {
+                        winningBid = rs.getInt(FIELD_CURRENT_AMOUNT);
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            // get the winningBid, if not exist, its default value is 0
-            int winningBid = 0;
-            rs = query(conn, SQL_SELECT_WINNING_BID + slotId, null);
+                // Get brainTeaserIds
+                List brainTeaserIds = new ArrayList();
 
-            if (rs.next()) {
-                winningBid = rs.getInt(FIELD_CURRENT_AMOUNT);
-            }
+                rs = query(conn, SQL_SELECT_BREA_IDS, new Object[] { new Long(slotId) });
+		try {
+                    while (rs.next()) {
+                        brainTeaserIds.add(new Long(rs.getLong(FIELD_PUZZLE_ID)));
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            close(rs);
+                // List to array
+                long[] btids = new long[brainTeaserIds.size()];
 
-            // Get brainTeaserIds
-            List brainTeaserIds = new ArrayList();
-            rs = query(conn, SQL_SELECT_BREA_IDS, new Object[] { new Long(
-                    slotId) });
+                for (int i = 0; i < brainTeaserIds.size(); i++) {
+                    btids[i] = ((Long) brainTeaserIds.get(i)).longValue();
+                }
 
-            while (rs.next()) {
-                brainTeaserIds.add(new Long(rs.getLong(FIELD_PUZZLE_ID)));
-            }
+                // get the puzzleId
+                Long puzzleId = null;
 
-            close(rs);
+                rs = query(conn, SQL_SELECT_PUZZLE_ID + slotId, null);
+		try {
+                    if (rs.next()) {
+                        puzzleId = new Long(rs.getLong(FIELD_PUZZLE_ID));
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            // List to array
-            long[] btids = new long[brainTeaserIds.size()];
+                // Get domain targets
+                List targets = new ArrayList();
 
-            for (int i = 0; i < brainTeaserIds.size(); i++) {
-                btids[i] = ((Long) brainTeaserIds.get(i)).longValue();
-            }
+                rs = query(conn, SQL_SELECT_TARGET_OBJECT, new Object[] { new Long(slotId) });
 
-            // get the puzzleId
-            Long puzzleId = null;
-            rs = query(conn, SQL_SELECT_PUZZLE_ID + slotId, null);
+		try {
+                    while (rs.next()) {
+                        targets.add(new DomainTargetImpl(
+                                new Long(rs.getLong(FIELD_ID)),
+                                rs.getInt(FIELD_SEQUENCE_NUMBER),
+                                rs.getString(FIELD_URI_PATH),
+                                rs.getString(FIELD_IDENTIFIER_TEXT),
+                                rs.getString(FIELD_IDENTIFIER_HASH),
+                                rs.getLong(FIELD_CULE_IMG_ID)));
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            if (rs.next()) {
-                puzzleId = new Long(rs.getLong(FIELD_PUZZLE_ID));
-            }
-
-            close(rs);
-
-            // Get domain targets
-            List targets = new ArrayList();
-            rs = query(conn, SQL_SELECT_TARGET_OBJECT, new Object[] { new Long(
-                    slotId) });
-
-            while (rs.next()) {
-                targets.add(new DomainTargetImpl(
-                        new Long(rs.getLong(FIELD_ID)), rs
-                                .getInt(FIELD_SEQUENCE_NUMBER), rs
-                                .getString(FIELD_URI_PATH), rs
-                                .getString(FIELD_IDENTIFIER_TEXT), rs
-                                .getString(FIELD_IDENTIFIER_HASH), rs
-                                .getLong(FIELD_CULE_IMG_ID)));
-            }
-
-            close(rs);
-
-            // return the HostingBlock instance with the retrieved data
-            return new HostingSlotImpl(new Long(slotId), domain, imageId,
-                    btids, puzzleId, sequenceNumber, (DomainTarget[]) targets
-                            .toArray(new DomainTarget[targets.size()]),
-                    winningBid, toUtilDate(hostingStart),
-                    toUtilDate(hostingEnd));
-        } catch (EntryNotFoundException e) {
-            throw e;
+                // return the HostingBlock instance with the retrieved data
+                return new HostingSlotImpl(new Long(slotId), domain, imageId,
+                        btids, puzzleId, sequenceNumber,
+		        (DomainTarget[]) targets.toArray(new DomainTarget[targets.size()]),
+                        winningBid, hostingStart, hostingEnd);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query database when retrieve HostingSlot instance",
-                    e);
+                    "Error in query database when retrieve HostingSlot instance", e);
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in get HostingSlot from database.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -1328,44 +1388,43 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public DownloadData getDownloadData(long id) throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = this.getConnection();
+            Connection conn = this.getConnection();
 
-            DownloadData data = null;
-            // query the 'download_obj' table with the downloadId, if not
-            // found
-            // throw exception
-            rs = query(conn, SQL_SELECT_DOWNLOAD_OBJ_WITH_ID + id, null);
+	    try {
+                DownloadData data = null;
 
-            if (!rs.next()) {
-                throw new EntryNotFoundException(
-                        "The DownloadData with the id:" + id
-                                + " does not exist.", new Long(id));
-            } else {
-                data = new DownloadDataImpl(rs.getBytes(FIELD_CONTENT), rs
-                        .getString(FIELD_MEDIA_TYPE), rs
-                        .getString(FIELD_SUGGESTED_NAME));
-            }
+                // query the 'download_obj' table with the downloadId, if not
+                // found throw exception
+                ResultSet rs = query(conn, SQL_SELECT_DOWNLOAD_OBJ_WITH_ID + id, null);
 
-            return data;
-        } catch (EntryNotFoundException e) {
-            throw e;
+		try {
+                    if (!rs.next()) {
+                        throw new EntryNotFoundException(
+                                "The DownloadData with the id:" + id
+                                        + " does not exist.", new Long(id));
+                    } else {
+                        data = new DownloadDataImpl(rs.getBytes(FIELD_CONTENT),
+                                rs.getString(FIELD_MEDIA_TYPE),
+                                rs.getString(FIELD_SUGGESTED_NAME));
+                    }
+		} finally {
+		    close(rs);
+		}
+
+                return data;
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query database when retrieve DownloadData instance",
-                    e);
+                    "Error in query database when retrieve DownloadData instance", e);
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in get DownloadData from database.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -1384,60 +1443,60 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public Domain getDomain(long domainId) throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = this.getConnection();
+            Connection conn = this.getConnection();
 
-            long sponsorId = 0;
-            String domainName = null;
-            Boolean approved = null;
-            // checks if the domain id exist or not, if not , throw
-            // exception
-            rs = query(conn, SQL_SELECT_DOMAIN_WITH_ID + domainId, null);
+	    try {
+                long sponsorId;
+                String domainName;
+                Boolean approved;
 
-            if (!rs.next()) {
-                throw new EntryNotFoundException(
-                        "The domain record with the id: " + domainId
-                                + " does not exist", new Long(domainId));
-            } else {
-                sponsorId = rs.getLong(FIELD_SPONSOR_ID);
-                domainName = rs.getString(FIELD_BASE_URL);
-                approved = (Boolean) rs.getObject(FIELD_IS_APPROVED);
-            }
+                // checks if the domain id exist or not, if not , throw exception
+                ResultSet rs = query(conn, SQL_SELECT_DOMAIN_WITH_ID + domainId, null);
 
-            close(rs);
+		try {
+                    if (!rs.next()) {
+                        throw new EntryNotFoundException(
+                                "The domain record with the id: " + domainId
+                                        + " does not exist", new Long(domainId));
+                    } else {
+                        sponsorId = rs.getLong(FIELD_SPONSOR_ID);
+                        domainName = rs.getString(FIELD_BASE_URL);
+                        approved = (Boolean) rs.getObject(FIELD_IS_APPROVED);
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            // find all the domain's image list
-            List images = new ArrayList();
-            rs = query(conn, SQL_SELECT_IMAGE_WITH_DOMAIN_ID + domainId, null);
+                // find all the domain's image list
+                List images = new ArrayList();
+                rs = query(conn, SQL_SELECT_IMAGE_WITH_DOMAIN_ID + domainId, null);
 
-            while (rs.next()) {
-                images.add(new ImageInfoImpl(new Long(rs.getLong(FIELD_ID)), rs
-                        .getLong(FIELD_DOWNLOAD_OBJ_ID), rs
-                        .getString(FIELD_DESCRIPTION), (Boolean) rs
-                        .getObject(FIELD_IS_APPROVED)));
-            }
+		try {
+                    while (rs.next()) {
+                        images.add(new ImageInfoImpl(new Long(rs.getLong(FIELD_ID)),
+                                rs.getLong(FIELD_DOWNLOAD_OBJ_ID),
+                                rs.getString(FIELD_DESCRIPTION),
+			        (Boolean) rs.getObject(FIELD_IS_APPROVED)));
+                    }
+		} finally {
+		    close(rs);
+		}
 
-            return new DomainImpl(new Long(domainId), sponsorId, domainName,
-                    approved, (ImageInfo[]) images.toArray(new ImageInfo[images
-                            .size()]));
-        } catch (PersistenceException e) {
-            throw e;
+                return new DomainImpl(new Long(domainId), sponsorId, domainName, approved,
+		        (ImageInfo[]) images.toArray(new ImageInfo[images.size()]));
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Error in query the database while get the domain.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in get domain with the id:"
                     + domainId, e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -1468,44 +1527,46 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throws PersistenceException {
         Helper.checkNotNull(slotIds, "SlotIds");
 
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = this.getConnection();
-            // checks if the playerId exist or not
-            checkPlayerNotExist(playerId, conn);
+            Connection conn = this.getConnection();
 
-            // checks if the slotIds exist or not
-            for (int i = 0; i < slotIds.length; i++) {
-                checkSlotNotExist(slotIds[i], conn);
-            }
+	    try {
 
-            // get the keyTexts, if not exist, use null value
-            String[] keyTexts = new String[slotIds.length];
+                // checks if the playerId exist or not
+                checkPlayerNotExist(playerId, conn);
 
-            for (int i = 0; i < slotIds.length; i++) {
-                rs = query(conn, SQL_SELECT_PLYR_COMPLTD_SLOT, new Object[] {
-                        new Long(slotIds[i]), new Long(playerId) });
-                keyTexts[i] = rs.next() ? rs.getString(FIELD_KEY_TEXT) : null;
-            }
+                // checks if the slotIds exist or not
+                for (int i = 0; i < slotIds.length; i++) {
+                    checkSlotNotExist(slotIds[i], conn);
+                }
 
-            return keyTexts;
-        } catch (PersistenceException e) {
-            throw e;
+                // get the keyTexts, if not exist, use null value
+                String[] keyTexts = new String[slotIds.length];
+
+                for (int i = 0; i < slotIds.length; i++) {
+                    ResultSet rs = query(conn, SQL_SELECT_PLYR_COMPLTD_SLOT, new Object[] {
+                            new Long(slotIds[i]), new Long(playerId) });
+
+		    try {
+                        keyTexts[i] = rs.next() ? rs.getString(FIELD_KEY_TEXT) : null;
+		    } finally {
+			close(rs);
+		    }
+                }
+
+                return keyTexts;
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query database when retrieve keyText for player.",
-                    e);
+                    "Error in query database when retrieve keyText for player.", e);
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in getKeysForPlayer from database.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -1523,54 +1584,58 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public PuzzleData getPuzzle(long puzzleId) throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = this.getConnection();
+            Connection conn = this.getConnection();
 
-            // 1.get the puzzle name, if not exist, throw exception
-            String name = null;
-            rs = query(conn, SQL_SELECT_PUZZLE_WITH_ID + puzzleId, null);
+	    try {
 
-            if (!rs.next()) {
-                throw new EntryNotFoundException("The puzzle with the id:"
-                        + puzzleId + " does not exist.", new Long(puzzleId));
-            } else {
-                name = rs.getString(FIELD_NAME);
-            }
+                // 1.get the puzzle name, if not exist, throw exception
+                String name;
+                ResultSet rs = query(conn, SQL_SELECT_PUZZLE_WITH_ID + puzzleId, null);
 
-            close(rs);
+                try {
+                    if (!rs.next()) {
+                        throw new EntryNotFoundException("The puzzle with the id:"
+                                + puzzleId + " does not exist.", new Long(puzzleId));
+                    } else {
+                        name = rs.getString(FIELD_NAME);
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            // 2.get puzzle attributes map from 'puzzle_attribute' table
-            Map attributes = new HashMap();
-            rs = query(conn, SQL_SELECT_PUZZLE_ATTRIBUTE_WITH_ID + puzzleId,
-                    null);
+                // 2.get puzzle attributes map from 'puzzle_attribute' table
+                Map attributes = new HashMap();
 
-            while (rs.next()) {
-                attributes.put(rs.getString(FIELD_NAME), rs
-                        .getString(FIELD_ATTRIBUTE_VALUE));
-            }
+                rs = query(conn, SQL_SELECT_PUZZLE_ATTRIBUTE_WITH_ID + puzzleId, null);
+                try {
+                    while (rs.next()) {
+                        attributes.put(rs.getString(FIELD_NAME), rs.getString(FIELD_ATTRIBUTE_VALUE));
+                    }
+		} finally {
+                    close(rs);
+		}
 
-            close(rs);
+                // 3.get the puzzle resource map from 'puzzle_resource' table
+                Map resources = new HashMap();
+                rs = query(conn, SQL_SELECT_PUZZLE_RESOURCE_WITH_ID + puzzleId, null);
 
-            // 3.get the puzzle resource map from 'puzzle_resource' table
-            Map resources = new HashMap();
-            rs = query(conn, SQL_SELECT_PUZZLE_RESOURCE_WITH_ID + puzzleId,
-                    null);
+		try {
+                    while (rs.next()) {
+                        resources.put(rs.getString(FIELD_NAME),
+                                new GeneralPuzzleResource(rs.getString(FIELD_NAME),
+                                        rs.getString(FIELD_MEDIA_TYPE),
+                                        rs.getBytes(FIELD_CONTENT)));
+                    }
+		} finally {
+		    close(rs);
+		}
 
-            while (rs.next()) {
-                resources.put(rs.getString(FIELD_NAME),
-                        new GeneralPuzzleResource(rs.getString(FIELD_NAME), rs
-                                .getString(FIELD_MEDIA_TYPE), rs
-                                .getBytes(FIELD_CONTENT)));
-            }
-
-            // return the puzzleData instance with the name,attributes and
-            // resources
-            return new GeneralPuzzleData(name, attributes, resources);
-        } catch (PersistenceException e) {
-            throw e;
+                // return the puzzleData instance with the name,attributes and resources
+                return new GeneralPuzzleData(name, attributes, resources);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -1578,11 +1643,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throw new PersistenceException(
                     "Error in query database when retrieve puzzle.", e);
         } catch (Exception e) {
-            throw new PersistenceException("Error in getPuzzle from database.",
-                    e);
-        } finally {
-            close(rs);
-            close(conn);
+            throw new PersistenceException("Error in getPuzzle from database.", e);
         }
     }
 
@@ -1603,25 +1664,23 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throws PersistenceException {
         Helper.checkNotNullOrEmpty(pluginName, "PluginName");
 
-        Connection conn = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            // checks if the pluginName exists in the 'plugin_downloads'
-            // table,
-            // if not throw exception
-            if (!exist(conn, SQL_SELECT_PLUGIN_DOWNLOADS,
-                    new Object[] { pluginName })) {
-                throw new EntryNotFoundException("The plugin with the name:"
-                        + pluginName + " does not exist.", pluginName);
-            }
+	    try {
+                // checks if the pluginName exists in the 'plugin_downloads'
+                // table, if not throw exception
+                if (!exist(conn, SQL_SELECT_PLUGIN_DOWNLOADS,
+                        new Object[] { pluginName })) {
+                    throw new EntryNotFoundException("The plugin with the name:"
+                            + pluginName + " does not exist.", pluginName);
+                }
 
-            // increase the count filed in the 'plugin_downloads' table
-            update(conn, SQL_UPDATE_PLUGIN_DOWNLOADS,
-                    new Object[] { pluginName });
-        } catch (EntryNotFoundException e) {
-            throw e;
+                // increase the count filed in the 'plugin_downloads' table
+                update(conn, SQL_UPDATE_PLUGIN_DOWNLOADS, new Object[] { pluginName });
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -1631,8 +1690,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in recordPluginDownload in database.", e);
-        } finally {
-            close(conn);
         }
     }
 
@@ -1653,32 +1710,34 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     public void recordRegistration(long playerId, long gameId)
             throws PersistenceException {
-        Connection conn = null;
-
         try {
-            conn = getConnection();
-            // checks if the playerId exist in 'player' table, if not throw
-            // exception
-            checkPlayerNotExist(playerId, conn);
-            // checks if the gameId exist in 'game' table ,if not throw
-            // exception
-            checkGameNotExist(gameId, conn);
+            Connection conn = getConnection();
 
-            // checks if the gameId and the playerId already registered, if
-            // yes
-            // throw exception
-            if (exist(conn, SQL_SELECT_PLYR_REGSTRD_GAME_TWO_ID, new Object[] {
-                    new Long(gameId), new Long(playerId) })) {
-                throw new DuplicateEntryException("The gameId/playerId :"
-                        + gameId + "/" + playerId + " already registered.",
-                        new Long(gameId));
-            }
+	    try {
 
-            // register the gameId/playerId into 'plyr_regstrd_game' table
-            update(conn, SQL_INSERT_PLYR_REGSTRD_GAME, new Object[] {
-                    new Long(gameId), new Long(playerId) });
-        } catch (PersistenceException e) {
-            throw e;
+                // checks if the playerId exist in 'player' table, if not throw
+                // exception
+                checkPlayerNotExist(playerId, conn);
+
+                // checks if the gameId exist in 'game' table ,if not throw
+                // exception
+                checkGameNotExist(gameId, conn);
+
+                // checks if the gameId and the playerId already registered, if
+                // yes throw exception
+                if (exist(conn, SQL_SELECT_PLYR_REGSTRD_GAME_TWO_ID, new Object[] {
+                        new Long(gameId), new Long(playerId) })) {
+                    throw new DuplicateEntryException("The gameId/playerId :"
+                            + gameId + "/" + playerId + " already registered.",
+                            new Long(gameId));
+                }
+
+                // register the gameId/playerId into 'plyr_regstrd_game' table
+                update(conn, SQL_INSERT_PLYR_REGSTRD_GAME, new Object[] {
+                        new Long(gameId), new Long(playerId) });
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -1688,8 +1747,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in recordRegistration in database.", e);
-        } finally {
-            close(conn);
         }
     }
 
@@ -1718,44 +1775,45 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             java.util.Date date) throws PersistenceException {
         Helper.checkNotNull(date, "date");
 
-        Connection conn = null;
-
         try {
-            conn = getConnection();
-            // checks if the playerId exist in 'player' table, if not throw
-            // exception
-            checkPlayerNotExist(playerId, conn);
+            Connection conn = getConnection();
 
-            // checks if the slotId exist in 'hosting_slot' table ,if not
-            // throw
-            // exception
-            checkSlotNotExist(slotId, conn);
+	    try {
 
-            // check if the slot has already been completed for this player
-            if (exist(conn, SQL_SELECT_PLYR_COMPLTD_SLOT, new Object[] {
-                    new Long(slotId), new Long(playerId) })) {
-                throw new DuplicateEntryException(
-                        "The slot has already been completed for this player",
-                        new Long(slotId));
-            }
+                // checks if the playerId exist in 'player' table, if not throw
+                // exception
+                checkPlayerNotExist(playerId, conn);
 
-            // generate the keyText and fill the stream
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            String name = randomStringImage.generateRandom(this.keyLength,
-                    this.keyLength, stream);
-            long keyImageId = recordBinaryObject(name, mediaType, stream
-                    .toByteArray());
+                // checks if the slotId exist in 'hosting_slot' table ,if not
+                // throw exception
+                checkSlotNotExist(slotId, conn);
 
-            // insert a record into plyr_compltd_slot to complete the
-            // registration
-            update(conn, SQL_INSERT_PLYR_COMPLTD_SLOT, new Object[] {
-                    new Long(slotId), new Long(playerId), toSQLDate(date),
-                    name, new Long(keyImageId) });
+                // check if the slot has already been completed for this player
+                if (exist(conn, SQL_SELECT_PLYR_COMPLTD_SLOT, new Object[] {
+                        new Long(slotId), new Long(playerId) })) {
+                    throw new DuplicateEntryException(
+                            "The slot has already been completed for this player",
+                            new Long(slotId));
+                }
 
-            return new SlotCompletionImpl(slotId, playerId, date, name,
-                    keyImageId);
-        } catch (PersistenceException e) {
-            throw e;
+                // generate the keyText and fill the stream
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                String name = randomStringImage.generateRandom(this.keyLength,
+                        this.keyLength, stream);
+                long keyImageId = recordBinaryObject(name, mediaType,
+			stream.toByteArray());
+
+                // insert a record into plyr_compltd_slot to complete the
+                // registration
+                update(conn, SQL_INSERT_PLYR_COMPLTD_SLOT, new Object[] {
+                        new Long(slotId), new Long(playerId), toSQLDate(date),
+                        name, new Long(keyImageId) });
+
+                return new SlotCompletionImpl(slotId, playerId, date, name,
+                        keyImageId);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -1765,8 +1823,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in recordSlotCompletion in database.", e);
-        } finally {
-            close(conn);
         }
     }
 
@@ -1790,32 +1846,33 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     public void recordGameCompletion(long playerId, long gameId)
             throws PersistenceException {
-        Connection conn = null;
-
         try {
-            conn = getConnection();
-            // checks if the playerId exist in 'player' table, if not throw
-            // exception
-            checkPlayerNotExist(playerId, conn);
+            Connection conn = getConnection();
 
-            // checks if the gameId exist in 'game' table ,if not throw
-            // exception
-            checkGameNotExist(gameId, conn);
+	    try {
+                // checks if the playerId exist in 'player' table, if not throw
+                // exception
+                checkPlayerNotExist(playerId, conn);
 
-            // if the game for the player already complete(has record in
-            // plyr_compltd_game table), throw exception
-            if (exist(conn, SQL_SELECT_PLYR_COMPLTD_GAME, new Object[] {
-                    new Long(gameId), new Long(playerId) })) {
-                throw new DuplicateEntryException(
-                        "The game for the player is complete.",
-                        new Long(gameId));
-            }
+                // checks if the gameId exist in 'game' table ,if not throw
+                // exception
+                checkGameNotExist(gameId, conn);
 
-            // insert a record into plyr_compltd_game
-            update(conn, SQL_INSERT_PLYR_COMPLTD_GAME, new Object[] {
-                    new Long(gameId), new Long(playerId) });
-        } catch (PersistenceException e) {
-            throw e;
+                // if the game for the player already complete(has record in
+                // plyr_compltd_game table), throw exception
+                if (exist(conn, SQL_SELECT_PLYR_COMPLTD_GAME, new Object[] {
+                        new Long(gameId), new Long(playerId) })) {
+                    throw new DuplicateEntryException(
+                            "The game for the player is complete.",
+                            new Long(gameId));
+                }
+
+                // insert a record into plyr_compltd_game
+                update(conn, SQL_INSERT_PLYR_COMPLTD_GAME, new Object[] {
+                        new Long(gameId), new Long(playerId) });
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -1825,8 +1882,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in recordGameCompletion in database.", e);
-        } finally {
-            close(conn);
         }
     }
 
@@ -1854,15 +1909,21 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         Helper.checkNotNullOrEmpty(mediaType, FIELD_MEDIA_TYPE);
         Helper.checkNotNull(content, FIELD_CONTENT);
 
-        Connection conn = null;
-        CallableStatement stmt = null;
-
         try {
-            conn = getConnection();
-            stmt = callableStatement(SP_RECORD_BINARY_OBJECT, new Object[] {
-                    name, mediaType, content, FIELD_ID }, conn);
+            Connection conn = getConnection();
 
-            return stmt.getLong(4);
+	    try {
+                CallableStatement stmt = callableStatement(SP_RECORD_BINARY_OBJECT, new Object[] {
+                        name, mediaType, content, FIELD_ID }, conn);
+
+                try {
+                    return stmt.getLong(4);
+		} finally {
+		    close(stmt);
+		}
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error in create connection from database factory.", e);
@@ -1872,9 +1933,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in recordBinaryObject in database.", e);
-        } finally {
-            close(stmt);
-            close(conn);
         }
     }
 
@@ -1911,127 +1969,109 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             return slots;
         }
 
-        Connection conn = null;
-        CallableStatement stmt = null;
-
         try {
-            conn = getConnection();
-            // iterate the slot array and checks if any of the slotId does
-            // not
-            // exist
-            for (int i = 0; i < slots.length; i++) {
-                checkSlotNotExist(slots[i].getId().longValue(), conn);
-            }
+            Connection conn = getConnection();
 
-            //this.executeSQL("drop INDEX target_obj_slot_seq_inx on target_object", conn);
-            // the updated slots to return
-            HostingSlot[] updatedSlots = new HostingSlot[slots.length];
-            // iterate the slots and update the database
-            for (int i = 0; i < slots.length; i++) {
-                // 1.update the hosting_slot table
-                update(conn, SQL_UPDATE_HOSTING_SLOT, new Object[] {
-                        new Long(slots[i].getSequenceNumber()),
-                        toSQLDate(slots[i].getHostingStart()),
-                        toSQLDate(slots[i].getHostingEnd()), slots[i].getId() });
-
-                // 2.update puzzle
-                this.deletePuzzle(slots[i].getId().longValue(), conn);
-                if (slots[i].getPuzzleId() != null) {
-                    update(conn, SQL_INSERT_PUZZLE_FOR_SLOT, new Object[] {
-                            slots[i].getId(), slots[i].getPuzzleId() });
+	    try {
+                // iterate the slot array and checks if any of the slotId does
+                // not exist
+                for (int i = 0; i < slots.length; i++) {
+                    checkSlotNotExist(slots[i].getId().longValue(), conn);
                 }
 
-                // 3. update brainteaser
-                long[] brainTeaserIds = slots[i].getBrainTeaserIds();
-                this.deleteBrainteaser(slots[i].getId().longValue(), conn);
-                if (brainTeaserIds != null) {
-                    for (int j = 0; j < brainTeaserIds.length; j++) {
-                        update(conn, SQL_INSERT_BRN_TSR_FOR_SLOT, new Object[] {
-                                slots[i].getId(), new Long(j),
-                                new Long(brainTeaserIds[j]) });
+                // the updated slots to return
+                HostingSlot[] updatedSlots = new HostingSlot[slots.length];
 
-                    }
-                }
-                // update DomainTarget array
-                DomainTarget[] targets = slots[i].getDomainTargets();
-                DomainTarget[] updatedTargets = slots[i].getDomainTargets();
+                // iterate the slots and update the database
+                for (int i = 0; i < slots.length; i++) {
+                    // 1.update the hosting_slot table
+                    update(conn, SQL_UPDATE_HOSTING_SLOT, new Object[] {
+                            new Long(slots[i].getSequenceNumber()),
+                            toSQLDate(slots[i].getHostingStart()),
+                            toSQLDate(slots[i].getHostingEnd()), slots[i].getId() });
 
-                Set targetIds = this.getTargetObjectIds(slots[i].getId().longValue(), conn);
-                for (int fix = 0; fix < targets.length; ++fix) {
-                    if ((targets[fix].getId() != null)
-                            && !exist(conn, SQL_SELECT_TARGET_OBJECT_WITH_ID
-                                    + targets[fix].getId().longValue(), null)) {
-                        throw new EntryNotFoundException(
-                                "The slot's DomainTarget with the id:"
-                                        + targets[fix].getId().longValue()
-                                        + " does not exist.", targets[fix]
-                                        .getId());
-                    } else {
-                        targetIds.remove(targets[fix].getId());
-                    }
-                }
-                // delete the remaining targets
-                this.deleteDomainTarget(targetIds, conn);
-
-                for (int j = 0; j < targets.length; j++) {
-
-                    stmt = callableStatement(
-                            SP_CREATE_DOMAIN_TARGET,
-                            new Object[] {
-                                    targets[j].getId(),
-                                    slots[i].getId(),
-                                    new Integer(targets[j].getSequenceNumber()),
-                                    targets[j].getUriPath(),
-                                    targets[j].getIdentifierText(),
-                                    targets[j].getIdentifierHash(),
-                                    new Long(targets[j].getClueImageId()),
-                                    FIELD_ID }, conn);
-
-                    if (targets[j].getId() == null) {
-                        updatedTargets[j] = new DomainTargetImpl(new Long(stmt
-                                .getLong(8)), targets[j].getSequenceNumber(),
-                                targets[j].getUriPath(), targets[j]
-                                        .getIdentifierText(), targets[j]
-                                        .getIdentifierHash(), targets[j]
-                                        .getClueImageId());
+                    // 2.update puzzle
+                    this.deletePuzzle(slots[i].getId().longValue(), conn);
+                    if (slots[i].getPuzzleId() != null) {
+                        update(conn, SQL_INSERT_PUZZLE_FOR_SLOT, new Object[] {
+                                slots[i].getId(), slots[i].getPuzzleId() });
                     }
 
-                }
+                    // 3. update brainteaser
+                    long[] brainTeaserIds = slots[i].getBrainTeaserIds();
+                    this.deleteBrainteaser(slots[i].getId().longValue(), conn);
+                    if (brainTeaserIds != null) {
+                        for (int j = 0; j < brainTeaserIds.length; j++) {
+                            update(conn, SQL_INSERT_BRN_TSR_FOR_SLOT, new Object[] {
+                                    slots[i].getId(), new Long(j),
+                                    new Long(brainTeaserIds[j]) });
+    
+                        }
+                    }
+
+                    // update DomainTarget array
+                    DomainTarget[] targets = slots[i].getDomainTargets();
+                    DomainTarget[] updatedTargets = slots[i].getDomainTargets();
+                    Set targetIds = this.getTargetObjectIds(slots[i].getId().longValue(), conn);
+
+                    for (int fix = 0; fix < targets.length; ++fix) {
+                        if ((targets[fix].getId() != null)
+                                && !exist(conn, SQL_SELECT_TARGET_OBJECT_WITH_ID
+                                        + targets[fix].getId().longValue(), null)) {
+                            throw new EntryNotFoundException(
+                                    "The slot's DomainTarget with the id:"
+                                            + targets[fix].getId().longValue()
+                                            + " does not exist.",
+			            targets[fix].getId());
+                        } else {
+                            targetIds.remove(targets[fix].getId());
+                        }
+                    }
+
+                    // delete the remaining targets
+                    this.deleteDomainTarget(targetIds, conn);
+    
+                    for (int j = 0; j < targets.length; j++) {
+                        CallableStatement stmt = callableStatement(
+                                SP_CREATE_DOMAIN_TARGET,
+                                new Object[] {
+                                        targets[j].getId(),
+                                        slots[i].getId(),
+                                        new Integer(targets[j].getSequenceNumber()),
+                                        targets[j].getUriPath(),
+                                        targets[j].getIdentifierText(),
+                                        targets[j].getIdentifierHash(),
+                                        new Long(targets[j].getClueImageId()), FIELD_ID },
+				conn);
+   
+		        try {	
+                            if (targets[j].getId() == null) {
+                                updatedTargets[j] = new DomainTargetImpl(
+				        new Long(stmt.getLong(8)), targets[j].getSequenceNumber(),
+                                        targets[j].getUriPath(), targets[j].getIdentifierText(),
+					targets[j].getIdentifierHash(), targets[j].getClueImageId());
+                            }
+			} finally {
+		            close(stmt);
+			}
+                    }
                 
-                updatedSlots[i] = new HostingSlotImpl(slots[i].getId(),
-                        slots[i].getDomain(), slots[i].getImageId(), slots[i]
-                                .getBrainTeaserIds(), slots[i].getPuzzleId(),
-                        slots[i].getSequenceNumber(), updatedTargets, slots[i]
-                                .getWinningBid(), slots[i].getHostingStart(),
-                        slots[i].getHostingEnd());
-            }
-            //this.executeSQL("CREATE UNIQUE INDEX target_obj_slot_seq_inx ON " +
-                    //"target_object(hosting_slot_id, sequence_number)", conn);
-            return updatedSlots;
+                    updatedSlots[i] = new HostingSlotImpl(slots[i].getId(),
+                            slots[i].getDomain(), slots[i].getImageId(), slots[i].getBrainTeaserIds(),
+			    slots[i].getPuzzleId(), slots[i].getSequenceNumber(), updatedTargets,
+			    slots[i].getWinningBid(), slots[i].getHostingStart(), slots[i].getHostingEnd());
+                }
+
+                return updatedSlots;
+	    } finally {
+		close(conn);
+	    }
         } catch (Exception e) {
             e.printStackTrace();
             throw new PersistenceException("Failed to update slots", e);
-        } finally {
-            close(stmt);
-            close(conn);
         }
     }
 
-    /**
-     * Execute the given sql statement
-     * @param sql the sql statement
-     * @param conn the connection 
-     * @throws SQLException to environment
-     */
-    private void executeSQL(String sql, Connection conn) throws SQLException {
-        PreparedStatement ps = null;
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.execute();
-        } finally {
-            close(ps);
-        }
-    }
     /**
      * get all target object ids with given slot id
      * 
@@ -2042,22 +2082,18 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private Set getTargetObjectIds(long slotId, Connection conn)
             throws SQLException {
+        String sql = "SELECT id FROM target_object WHERE hosting_slot_id=?";
+        ResultSet rs = query(conn, sql, new Object[] { new Long(slotId) });
         Set ret = new HashSet();
-        String sql = "select id from target_object where hosting_slot_id=?";
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setLong(1, slotId);
 
-            rs = ps.executeQuery();
+        try {
             while (rs.next()) {
                 ret.add(new Long(rs.getLong(1)));
             }
         } finally {
             close(rs);
-            close(ps);
         }
+
         return ret;
     }
 
@@ -2073,18 +2109,20 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         if (targetIds == null || targetIds.isEmpty()) {
             return;
         }
-        String sql = "delete from target_object where id in (";
-        StringBuffer sb = new StringBuffer();
-        sb.append(sql);
+
+        StringBuffer sql = new StringBuffer("DELETE FROM target_object WHERE id IN (");
+
         for (Iterator it = targetIds.iterator(); it.hasNext();) {
-            sb.append(it.next().toString());
-            sb.append(",");
+            sql.append(it.next().toString());
+            sql.append(",");
         }
-        sql = sb.toString().substring(0, sb.toString().length() - 1) + ")";
-        System.out.println(sql);
-        PreparedStatement ps = null;
+	sql.deleteCharAt(sql.length() - 1);
+	sql.append(')');
+        // System.out.println(sql.toString());
+
+        PreparedStatement ps = conn.prepareStatement(sql.toString());
+
         try {
-            ps = conn.prepareStatement(sql);
             ps.execute();
         } finally {
             close(ps);
@@ -2101,10 +2139,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private void deletePuzzle(long slotId, Connection conn) throws SQLException {
         String sql = "delete from puzzle_for_slot where hosting_slot_id=?";
-        PreparedStatement ps = null;
+        PreparedStatement ps = conn.prepareStatement(sql);
 
         try {
-            ps = conn.prepareStatement(sql);
             ps.setLong(1, slotId);
             ps.execute();
         } finally {
@@ -2123,10 +2160,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private void deleteBrainteaser(long slotId, Connection conn)
             throws Exception {
         String sql = "delete from brn_tsr_for_slot where hosting_slot_id=?";
-        PreparedStatement ps = null;
+        PreparedStatement ps = conn.prepareStatement(sql);
 
         try {
-            ps = conn.prepareStatement(sql);
             ps.setLong(1, slotId);
             ps.execute();
         } finally {
@@ -2155,71 +2191,67 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         Helper.checkNotNull(domain, "Domain");
         Helper.checkNotNull(domain.getId(), "Domain.Id");
 
-        Connection conn = null;
-
         try {
-            conn = this.getConnection();
-            // checks if the domain to update exist , if not throw exception
-            checkDomainNotExist(domain, conn);
+            Connection conn = this.getConnection();
 
-            // if domain.sponsorId does not exist, throw
-            // EntryNotFoundException
-            if (!exist(conn,
-                    SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
-                throw new EntryNotFoundException(
-                        "The sponsorId in the domain does not exist.",
-                        new Long(domain.getSponsorId()));
-            }
+	    try {
+                // checks if the domain to update exist , if not throw exception
+                checkDomainNotExist(domain, conn);
 
-            // update domain table
-            updateWithNullApprove(conn, SQL_UPDATE_DOMAIN,
-                    new Object[] { domain.getDomainName(), domain.isApproved(),
-                            domain.getId() });
-
-            // update or insert the the imageInfo into the 'image' table
-            ImageInfo[] images = domain.getImages();
-
-            for (int i = 0; i < images.length; i++) {
-                // checks if the downloadID exist, if not, throw exception
-                checkDownloadDataNotExist(images[i].getDownloadId(), conn);
-
-                // if the imageId is not null, update it, else insert a new
-                // record
-                if (images[i].getId() != null) {
-                    // if the image id to update does not exist, throw
-                    // exception
-                    if (!exist(conn, SQL_SELECT_IMAGE_WITH_ID
-                            + images[i].getId().longValue(), null)) {
-                        throw new EntryNotFoundException(
-                                "The image of the domain does not exist.",
-                                images[i].getId());
-                    }
-
-                    updateWithNullApprove(conn, SQL_UPDATE_IMAGE, new Object[] {
-                            images[i].isApproved(), images[i].getDescription(),
-                            images[i].getId() });
-                } else {
-                    updateWithNullApprove(conn, SQL_INSERT_IMAGE,
-                            new Object[] { domain.getId(),
-                                    new Long(images[i].getDownloadId()),
-                                    images[i].isApproved(),
-                                    images[i].getDescription() });
+                // if domain.sponsorId does not exist, throw EntryNotFoundException
+                if (!exist(conn,
+                        SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
+                    throw new EntryNotFoundException(
+                            "The sponsorId in the domain does not exist.",
+                            new Long(domain.getSponsorId()));
                 }
-            }
-        } catch (PersistenceException e) {
-            throw e;
+
+                // update domain table
+                updateWithNullApprove(conn, SQL_UPDATE_DOMAIN,
+                        new Object[] { domain.getDomainName(), domain.isApproved(),
+                                domain.getId() });
+
+                // update or insert the the imageInfo into the 'image' table
+                ImageInfo[] images = domain.getImages();
+
+                for (int i = 0; i < images.length; i++) {
+                    // checks if the downloadID exist, if not, throw exception
+                    checkDownloadDataNotExist(images[i].getDownloadId(), conn);
+
+                    // if the imageId is not null, update it, else insert a new
+                    // record
+                    if (images[i].getId() != null) {
+                        // if the image id to update does not exist, throw
+                        // exception
+                        if (!exist(conn, SQL_SELECT_IMAGE_WITH_ID
+                                + images[i].getId().longValue(), null)) {
+                            throw new EntryNotFoundException(
+                                    "The image of the domain does not exist.",
+                                    images[i].getId());
+                        }
+
+                        updateWithNullApprove(conn, SQL_UPDATE_IMAGE, new Object[] {
+                                images[i].isApproved(), images[i].getDescription(),
+                                images[i].getId() });
+                    } else {
+                        updateWithNullApprove(conn, SQL_INSERT_IMAGE,
+                                new Object[] { domain.getId(),
+                                        new Long(images[i].getDownloadId()),
+                                        images[i].isApproved(),
+                                        images[i].getDescription() });
+                    }
+                }
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in operation the database while update the domain.",
-                    e);
+                    "Error in operation the database while update the domain.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in update domain.", e);
-        } finally {
-            close(conn);
         }
     }
 
@@ -2234,52 +2266,57 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public void deleteSlot(long slotId) throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = this.getConnection();
+            Connection conn = this.getConnection();
 
-            // get the key_image_id array from plyr_compltd_slot and then
-            // delete
-            // from download_obj
-            List keyImageIds = new ArrayList();
-            rs = query(conn, SQL_SELECT_PLYR_COMPLTD_SLOT_WITH_HOSTING_SLOT_ID
-                    + slotId, null);
+	    try {
+                // get the key_image_id array from plyr_compltd_slot and then
+                // delete from download_obj
+                List keyImageIds = new ArrayList();
 
-            while (rs.next()) {
-                keyImageIds.add(new Long(rs.getLong(FIELD_KEY_IMAGE_ID)));
-            }
+                ResultSet rs = query(conn, SQL_SELECT_PLYR_COMPLTD_SLOT_WITH_HOSTING_SLOT_ID
+                        + slotId, null);
 
-            // delete the download_obj records
-            for (Iterator it = keyImageIds.iterator(); it.hasNext();) {
-                update(conn, SQL_DELETE_DOWNLOAD_OBJ, new Object[] { (Long) it
-                        .next() });
-            }
+		try {
+                    while (rs.next()) {
+                        keyImageIds.add(new Long(rs.getLong(FIELD_KEY_IMAGE_ID)));
+                    }
+		} finally {
+	            close(rs);
+		}
 
-            Object[] param = new Object[] { new Long(slotId) };
-            // delete from 'brn_tsr_for_slot' table
-            update(conn, SQL_DELETE_BRN_TSR_FOR_SLOT, param);
-            // delete the plyr_compltd_slot records with the hosting_slot_id
-            update(conn, SQL_DELETE_PLYR_COMPLTD_SLOT, param);
-            // delete from puzzle_for_slot table
-            update(conn, SQL_DELETE_PUZZLE_FOR_SLOT, param);
-            // delete from target_object table
-            update(conn, SQL_DELETE_TARGET_OBJECT, param);
-            // delete the hosting_slot records
-            update(conn, SQL_DELET_HOSTING_SLOT, param);
+                // delete the download_obj records
+                for (Iterator it = keyImageIds.iterator(); it.hasNext();) {
+                    update(conn, SQL_DELETE_DOWNLOAD_OBJ, new Object[] { (Long) it.next() });
+                }
+
+                Object[] param = new Object[] { new Long(slotId) };
+
+                // delete from 'brn_tsr_for_slot' table
+                update(conn, SQL_DELETE_BRN_TSR_FOR_SLOT, param);
+
+                // delete the plyr_compltd_slot records with the hosting_slot_id
+                update(conn, SQL_DELETE_PLYR_COMPLTD_SLOT, param);
+
+                // delete from puzzle_for_slot table
+                update(conn, SQL_DELETE_PUZZLE_FOR_SLOT, param);
+
+                // delete from target_object table
+                update(conn, SQL_DELETE_TARGET_OBJECT, param);
+
+                // delete the hosting_slot records
+                update(conn, SQL_DELET_HOSTING_SLOT, param);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Error in operation the database while delete the slot.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in delete the slot.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2295,62 +2332,37 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public Domain[] findActiveDomains() throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            List domainIds = new ArrayList();
-            List gameIds = new ArrayList();
+            try {
+                // get all the active domain IDs
+                ResultSet rs = query(conn, SQL_SELECT_ACTIVE_DOMAINS, null);
 
-            // get all records for the gameId
-            rs = query(conn, SQL_SELECT_ALL_GAME_ID, null);
+                try {
 
-            while (rs.next()) {
-                domainIds.add(new Long(rs.getLong(FIELD_DOMAINID)));
-                gameIds.add(new Long(rs.getLong(FIELD_GAME_ID)));
-            }
+                    // Load the Domain objects
+                    List domains = new ArrayList();
 
-            close(rs);
-
-            // filter the gameIds which as been recorded as won game
-            rs = query(conn, SQL_SELECT_PLYR_WON_GAME, null);
-
-            while (rs.next()) {
-                long gameId = rs.getLong(FIELD_ID);
-
-                for (int i = 0; i < gameIds.size(); i++) {
-                    if (((Long) gameIds.get(i)).longValue() == gameId) {
-                        gameIds.remove(i);
-                        domainIds.remove(i);
+                    while (rs.next()) {
+                        domains.add(getDomain(rs.getLong(FIELD_DOMAINID)));
                     }
+
+                    return (Domain[]) domains.toArray(new Domain[domains.size()]);
+                } finally {
+                    close(rs);
                 }
+            } finally {
+                close(conn);
             }
-
-            close(rs);
-
-            // get the distinct domainIds and get the domain
-            List domains = new ArrayList();
-
-            for (Iterator it = distinct(domainIds).iterator(); it.hasNext();) {
-                domains.add(getDomain(((Long) it.next()).longValue()));
-            }
-
-            return (Domain[]) domains.toArray(new Domain[domains.size()]);
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in operation the database while get the active domain.",
-                    e);
+                    "Error in operation the database while get the active domain.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in get the active domain.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2376,85 +2388,49 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throws PersistenceException {
         Helper.checkNotNullOrEmpty(domain, "Domain");
 
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
-
-            // checks if the domain exist ,if not throw exception
-            checkDomainNotExist(domain, conn);
-
-            // checks if the player exist, if not throw exception
-            checkPlayerNotExist(playerId, conn);
-
-            List slotIds = new ArrayList();
             List gameIds = new ArrayList();
+            Connection conn = getConnection();
+            List games;
 
-            // get all game id by the domain name
-            rs = query(conn, SQL_SELECT_ALL_GAME_DOMAIN,
-                    new Object[] { domain });
+            try {
 
-            while (rs.next()) {
-                slotIds.add(new Long(rs.getLong(FIELD_SLOT_ID)));
-                gameIds.add(new Long(rs.getLong(FIELD_GAME_ID)));
-            }
+                // checks if the domain exist ,if not throw exception
+                checkDomainNotExist(domain, conn);
 
-            close(rs);
+                // checks if the player exist, if not throw exception
+                checkPlayerNotExist(playerId, conn);
 
-            // remove the gameId by the slot that has been completed
-            rs = query(conn, SQL_SELECT_PLAYER_COMPLETE_SLOT + playerId, null);
+                ResultSet rs = query(conn, SQL_PS_SELECT_PLAYER_GAMES_BY_DOMAIN, new Object[] {
+                        new Long(playerId), new Long(playerId), domain });
 
-            while (rs.next()) {
-                long slotId = rs.getLong(FIELD_ID);
-
-                for (int i = 0; i < slotIds.size(); i++) {
-                    if (((Long) slotIds.get(i)).longValue() == slotId) {
-                        slotIds.remove(i);
-                        gameIds.remove(i);
+                try {
+                    while (rs.next()) {
+                        gameIds.add(new Long(rs.getLong(FIELD_GAME_ID)));
                     }
+                } finally {
+                    close(rs);
                 }
+            } finally {
+                close(conn);
             }
-
-            close(rs);
-
-            // remove the gameId which has been recorded as won game
-            rs = query(conn, SQL_SELECT_ALL_PLYR_WON_GAME, null);
-
-            while (rs.next()) {
-                long gameId = rs.getLong(FIELD_ID);
-
-                for (int i = 0; i < gameIds.size(); i++) {
-                    if (((Long) gameIds.get(i)).longValue() == gameId) {
-                        gameIds.remove(i);
-                    }
-                }
-            }
-
-            close(rs);
 
             // get the distinct gameId and get the games array
-            List games = new ArrayList();
+            games = new ArrayList();
 
-            for (Iterator it = distinct(gameIds).iterator(); it.hasNext();) {
+            for (Iterator it = gameIds.iterator(); it.hasNext(); ) {
                 games.add(getGame(((Long) it.next()).longValue()));
             }
 
             return (Game[]) games.toArray(new Game[games.size()]);
-        } catch (PersistenceException e) {
-            throw e;
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Error in operation the database while delete the slot.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in delete the slot.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2477,42 +2453,41 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     public HostingSlot[] findCompletedSlots(long gameId)
             throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
-            // checks if the game exists, if not throw exception
-            checkGameNotExist(gameId, conn);
-
             List slots = new ArrayList();
+            Connection conn = getConnection();
 
-            // to get the distinct slotIds that has complete records with
-            // the
-            // given gameId
-            rs = query(conn, SQL_SELECT_COMPLETE_SLOT_IN_GAME + gameId, null);
+            try {
 
-            while (rs.next()) {
-                slots.add(this.getSlot(rs.getLong(FIELD_ID)));
+                // checks if the game exists, if not throw exception
+                checkGameNotExist(gameId, conn);
+
+                // to get the distinct slotIds that has complete records with
+                // the given gameId
+                ResultSet rs = query(conn, SQL_SELECT_COMPLETE_SLOT_IN_GAME,
+			new Object[] { new Long(gameId) });
+
+                try {
+                    while (rs.next()) {
+                        slots.add(this.getSlot(rs.getLong(FIELD_ID)));
+                    }
+                } finally {
+                    close(rs);
+                }
+            } finally {
+                close(conn);
             }
 
             // return the records
             return (HostingSlot[]) slots.toArray(new HostingSlot[slots.size()]);
-        } catch (PersistenceException e) {
-            throw e;
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in operation the database while get completed slot.",
-                    e);
+                    "Error in operation the database while get completed slot.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in find Completed Slots.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2535,60 +2510,61 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     public SlotCompletion[] findSlotCompletions(long gameId, long slotId)
             throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
-            // checks if the gameId exists in the 'game' table
-            checkGameNotExist(gameId, conn);
-            // checks if the slotId exists in the 'hosting_slot' table
-            checkSlotNotExist(slotId, conn);
+            Connection conn = getConnection();
 
-            // checks if the slot is related to the game
-            rs = query(conn, SQL_SELECT_CHECK_GAME_ID_SLOT_ID, new Object[] {
-                    new Long(gameId), new Long(slotId) });
+            try {
 
-            if (!rs.next()) {
-                throw new InvalidEntryException("The slotId:" + slotId
-                        + " is not part of the game indicated by the gameId:"
-                        + gameId, new Long(slotId));
+                // checks if the gameId exists in the 'game' table
+                checkGameNotExist(gameId, conn);
+                // checks if the slotId exists in the 'hosting_slot' table
+                checkSlotNotExist(slotId, conn);
+
+                // checks if the slot is related to the game
+                ResultSet rs = query(conn, SQL_SELECT_CHECK_GAME_ID_SLOT_ID, new Object[] {
+                        new Long(gameId), new Long(slotId) });
+
+                try {
+                    if (!rs.next()) {
+                        throw new InvalidEntryException("The slotId:" + slotId
+                                + " is not part of the game indicated by the gameId:"
+                                + gameId, new Long(slotId));
+                    }
+                } finally {
+                    close(rs);
+                }
+
+                // query all Slot Completion records with the given gameId and slotId
+                List slotCompletions = new ArrayList();
+                rs = query(conn, SQL_SELECT_COMPLETE_SLOT, new Object[] {
+                        new Long(gameId), new Long(slotId) });
+
+                try {
+                    while (rs.next()) {
+                        slotCompletions.add(new SlotCompletionImpl(
+                                rs.getLong(FIELD_HOSTING_SLOT_ID),
+                                rs.getLong(FIELD_PLAYER_ID),
+                                rs.getTimestamp(FIELD_TIMESTAMP),
+                                rs.getString(FIELD_KEY_TEXT),
+                                rs.getLong(FIELD_KEY_IMAGE_ID)));
+                    }
+                } finally {
+                    close(rs);
+                }
+
+                return (SlotCompletion[]) slotCompletions.toArray(
+                        new SlotCompletion[slotCompletions.size()]);
+            } finally {
+                close(conn);
             }
-
-            close(rs);
-
-            // query all Slot Completion records with the given gameId and
-            // slotId
-            List slotCompletions = new ArrayList();
-            rs = query(conn, SQL_SELECT_COMPLETE_SLOT, new Object[] {
-                    new Long(gameId), new Long(slotId) });
-
-            while (rs.next()) {
-                slotCompletions.add(new SlotCompletionImpl(rs
-                        .getLong(FIELD_HOSTING_SLOT_ID), rs
-                        .getLong(FIELD_PLAYER_ID), toUtilDate(rs
-                        .getTimestamp(FIELD_TIMESTAMP)), rs
-                        .getString(FIELD_KEY_TEXT), rs
-                        .getLong(FIELD_KEY_IMAGE_ID)));
-            }
-
-            return (SlotCompletion[]) slotCompletions
-                    .toArray(new SlotCompletion[slotCompletions.size()]);
-        } catch (PersistenceException e) {
-            throw e;
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in operation the database while get completed slot.",
-                    e);
+                    "Error in operation the database while get completed slot.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in find Completed Slots.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2620,58 +2596,57 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                     "Not started but already ended. Impossible Combo.");
         }
 
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            // find sql to query the game ids
-            String sql = null;
+	    try {
+                // find sql to query the game ids
+                String sql;
 
-            if (isStarted == null) {
-                if (isEnded == null) {
-                    sql = SQL_SELECT_GAME;
-                } else if (isEnded.booleanValue()) {
-                    sql = SQL_SELECT_END_GAME;
+                if (isStarted == null) {
+                    if (isEnded == null) {
+                        sql = SQL_SELECT_GAME;
+                    } else if (isEnded.booleanValue()) {
+                        sql = SQL_SELECT_END_GAME;
+                    } else {
+                        sql = SQL_SELECT_NOT_END_GAME;
+                    }
+                } else if (isStarted.booleanValue()) {
+                    if (isEnded == null) {
+                        sql = SQL_SELECT_START_GAME;
+                    } else if (isEnded.booleanValue()) {
+                        sql = SQL_SELECT_START_END_GAME;
+                    } else {
+                        sql = SQL_SELECT_START_NOT_END_GAME;
+                    }
                 } else {
-                    sql = SQL_SELECT_NOT_END_GAME;
+                    sql = SQL_SELECT_NOT_START_GAME;
                 }
-            } else if (isStarted.booleanValue()) {
-                if (isEnded == null) {
-                    sql = SQL_SELECT_START_GAME;
-                } else if (isEnded.booleanValue()) {
-                    sql = SQL_SELECT_START_END_GAME;
-                } else {
-                    sql = SQL_SELECT_START_NOT_END_GAME;
-                }
-            } else {
-                sql = SQL_SELECT_NOT_START;
-            }
 
-            // query the database
-            List games = new ArrayList();
-            rs = query(conn, sql, null);
+                // query the database
+                List games = new ArrayList();
+                ResultSet rs = query(conn, sql, null);
 
-            while (rs.next()) {
-                games.add(getGame(rs.getLong(FIELD_ID)));
-            }
+		try {
+                    while (rs.next()) {
+                        games.add(getGame(rs.getLong(FIELD_ID)));
+                    }
+		} finally {
+		    close(rs);
+		}
 
-            return (Game[]) games.toArray(new Game[games.size()]);
-        } catch (PersistenceException e) {
-            throw e;
+                return (Game[]) games.toArray(new Game[games.size()]);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Error in operation the database while find games.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in find Games.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2691,32 +2666,36 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     public long[] findGameRegistrations(long playerId)
             throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
-            // checks if the playerId exists in the 'player' table
-            checkPlayerNotExist(playerId, conn);
+            Connection conn = getConnection();
 
-            // query the registered game id from 'plyr_regstrd_game' table
-            List gameIds = new ArrayList();
-            rs = query(conn, SQL_SELECT_PLYR_REGSTRD_GAME + playerId, null);
+	    try {
+                // checks if the playerId exists in the 'player' table
+                checkPlayerNotExist(playerId, conn);
 
-            while (rs.next()) {
-                gameIds.add(new Long(rs.getLong(FIELD_ID)));
-            }
+                // query the registered game id from 'plyr_regstrd_game' table
+                List gameIds = new ArrayList();
+                ResultSet rs = query(conn, SQL_SELECT_PLYR_REGSTRD_GAME + playerId, null);
 
-            // return the game id array
-            long[] ids = new long[gameIds.size()];
+		try {
+                    while (rs.next()) {
+                        gameIds.add(new Long(rs.getLong(FIELD_ID)));
+                    }
+		} finally {
+		    close(rs);
+		}
 
-            for (int i = 0; i < ids.length; i++) {
-                ids[i] = ((Long) gameIds.get(i)).longValue();
-            }
+                // return the game id array
+                long[] ids = new long[gameIds.size()];
 
-            return ids;
-        } catch (PersistenceException e) {
-            throw e;
+                for (int i = 0; i < ids.length; i++) {
+                    ids[i] = ((Long) gameIds.get(i)).longValue();
+                }
+
+                return ids;
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error create the connection from db connection factory.",
@@ -2727,9 +2706,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                     e);
         } catch (Exception e) {
             throw new PersistenceException("Error in findGameRegistrations.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2749,30 +2725,33 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     public Domain[] findDomainsForSponsor(long sponsorId)
             throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            // checks if the sponsorId exists in 'sponsor' table
-            if (!exist(conn, SQL_SELECT_SPONSOR_WITH_ID + sponsorId, null)) {
-                throw new EntryNotFoundException("The sponsor with the id:"
-                        + sponsorId + " does not exist.", new Long(sponsorId));
-            }
+	    try {
+                // checks if the sponsorId exists in 'sponsor' table
+                if (!exist(conn, SQL_SELECT_SPONSOR_WITH_ID + sponsorId, null)) {
+                    throw new EntryNotFoundException("The sponsor with the id:"
+                            + sponsorId + " does not exist.", new Long(sponsorId));
+                }
 
-            // query domain with the sponsorId
-            List domains = new ArrayList();
-            rs = this.query(conn,
-                    SQL_SELECT_DOMAIN_WITH_SPONSOR_ID + sponsorId, null);
+                // query domain with the sponsorId
+                List domains = new ArrayList();
+                ResultSet rs = this.query(conn,
+                        SQL_SELECT_DOMAIN_WITH_SPONSOR_ID + sponsorId, null);
 
-            while (rs.next()) {
-                domains.add(getDomain(rs.getLong(FIELD_ID)));
-            }
+		try {
+                    while (rs.next()) {
+                        domains.add(getDomain(rs.getLong(FIELD_ID)));
+                    }
+		} finally {
+	            close(rs);
+		}
 
-            return (Domain[]) domains.toArray(new Domain[domains.size()]);
-        } catch (PersistenceException e) {
-            throw e;
+                return (Domain[]) domains.toArray(new Domain[domains.size()]);
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error create the connection from db connection factory.",
@@ -2784,9 +2763,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         } catch (Exception e) {
             throw new PersistenceException(
                     "Error in get domains with the sponsor:" + sponsorId, e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -2813,64 +2789,40 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             String domain) throws PersistenceException {
         Helper.checkNotNullOrEmpty(domain, "Domain");
 
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
-            // checks if the domain name exists in 'domain' table
-            checkDomainNotExist(domain, conn);
-            // checks if the playerId exists in 'player' table
-            checkPlayerNotExist(playerId, conn);
-            // checks if the gameId exists in the 'game' table or npt
-            checkGameNotExist(gameId, conn);
+            Connection conn = getConnection();
 
-            // find all slots
-            List slotIds = new ArrayList();
-            rs = query(conn, SQL_SELECT_DISTINCT_SLOT, new Object[] { domain,
-                    new Long(gameId) });
+            try {
 
-            while (rs.next()) {
-                slotIds.add(new Long(rs.getLong(FIELD_ID)));
-            }
+                // check if the domain name exists in 'domain' table
+                checkDomainNotExist(domain, conn);
 
-            close(rs);
+                // check if the playerId exists in 'player' table
+                checkPlayerNotExist(playerId, conn);
 
-            // find the slot that has not been completed
-            long slotId = -1;
+                // check if the gameId exists in the 'game' table or npt
+                checkGameNotExist(gameId, conn);
 
-            for (int i = 0; i < slotIds.size(); i++) {
-                rs = query(conn, SQL_SELECT_PLYR_COMPLTD_SLOT, new Object[] {
-                        (Long) slotIds.get(i), new Long(playerId) });
+                ResultSet rs = query(conn, SQL_PS_SELECT_SLOT_FOR_DOMAIN,
+                        new Object[] { new Long(gameId), domain, new Long(playerId) });
 
-                if (!rs.next()) {
-                    slotId = ((Long) slotIds.get(i)).longValue();
-
-                    break;
+                try {
+                    return rs.next() ? this.getSlot(rs.getLong(1)) : null;
+                } finally {
+                    close(rs);
                 }
-
-                close(rs);
+            } finally {
+                close(conn);
             }
-
-            // return the slot,null if all slot has been completed
-            return (slotId == -1) ? null : this.getSlot(slotId);
-        } catch (PersistenceException e) {
-            throw e;
         } catch (DBConnectionException e) {
             throw new PersistenceException(
-                    "Error create the connection from db connection factory.",
-                    e);
+                    "Error create the connection from db connection factory.", e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                    "Error in query the database while find the slot for the domain",
-                    e);
+                    "Error in query the database while find the slot for the domain", e);
         } catch (Exception e) {
-            throw new PersistenceException("Error in find slot for the domain",
-                    e);
-        } finally {
-            close(rs);
-            close(conn);
-        }
+            throw new PersistenceException("Error in find slot for the domain", e);
+        } 
     }
 
     /**
@@ -2884,23 +2836,28 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         layer.
      */
     public BallColor[] findAllBallColors() throws PersistenceException {
-        Connection conn = null;
-        ResultSet rs = null;
-
         try {
-            conn = getConnection();
+            Connection conn = getConnection();
 
-            // find all the ball_color records
-            List colors = new ArrayList();
-            rs = query(conn, SQL_SELECT_FROM_BALL_COLOR, null);
+	    try {
+                // find all the ball_color records
+                List colors = new ArrayList();
+                ResultSet rs = query(conn, SQL_SELECT_FROM_BALL_COLOR, null);
 
-            while (rs.next()) {
-                colors.add(new BallColorImpl(new Long(rs.getLong(FIELD_ID)), rs
-                        .getString(FIELD_NAME), rs
-                        .getLong(FIELD_DOWNLOAD_OBJ_ID)));
-            }
+		try {
+                    while (rs.next()) {
+                        colors.add(new BallColorImpl(new Long(rs.getLong(FIELD_ID)),
+                                rs.getString(FIELD_NAME),
+                                rs.getLong(FIELD_DOWNLOAD_OBJ_ID)));
+                    }
 
-            return (BallColor[]) colors.toArray(new BallColor[colors.size()]);
+                    return (BallColor[]) colors.toArray(new BallColor[colors.size()]);
+		} finally {
+		    close(rs);
+		}
+	    } finally {
+		close(conn);
+	    }
         } catch (DBConnectionException e) {
             throw new PersistenceException(
                     "Error create the connection from db connection factory.",
@@ -2910,9 +2867,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                     "Error in operation the database while find ballColor.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in find ball color.", e);
-        } finally {
-            close(rs);
-            close(conn);
         }
     }
 
@@ -3052,52 +3006,13 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private int getNextSequenceNumber(Connection conn, String table)
             throws SQLException {
-        Statement statement = null;
+        ResultSet rs = query(conn, "SELECT MAX(sequence_number) FROM " + table, null);
 
-        try {
-            statement = conn.createStatement();
-
-            ResultSet rs = statement
-                    .executeQuery("SELECT MAX(sequence_number) FROM " + table);
-
-            if (rs.next()) {
-                return rs.getInt(1) + 1;
-            } else {
-                return 1;
-            }
-        } finally {
-            close(statement);
-        }
-    }
-
-    /**
-     * remove the duplicated ids.
-     * 
-     * @param ids the List of Long to filter
-     * 
-     * @return distinct values List
-     */
-    private List distinct(List ids) {
-        List distinctIds = new ArrayList();
-
-        for (int i = 0; i < ids.size(); i++) {
-            Long id = (Long) ids.get(i);
-            boolean exist = false;
-
-            for (int j = 0; j < distinctIds.size(); j++) {
-                if (((Long) distinctIds.get(j)).longValue() == id.longValue()) {
-                    exist = true;
-
-                    break;
-                }
-            }
-
-            if (!exist) {
-                distinctIds.add(id);
-            }
-        }
-
-        return distinctIds;
+	try {
+            return (rs.next() ? rs.getInt(1) + 1 : 1);
+	} finally {
+	    close(rs);
+	}
     }
 
     /**
@@ -3112,30 +3027,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *         is null
      */
     private Timestamp toSQLDate(java.util.Date date) {
-        if (date != null) {
-            return new Timestamp(date.getTime());
-        }
-
-        return null;
-    }
-
-    /**
-     * <p>
-     * This method is going to convert the java.sql.Date into java.util.Date,
-     * the value should be same.
-     * </p>
-     * 
-     * @param date java.sql.Date to convert
-     * 
-     * @return java.util.Date instance of the java.sql.Date or null if the param
-     *         is null
-     */
-    private java.util.Date toUtilDate(Timestamp date) {
-        if (date != null) {
-            return new java.util.Date(date.getTime());
-        }
-
-        return null;
+	return (date == null) ? null : new Timestamp(date.getTime());
     }
 
     /**
@@ -3242,15 +3134,15 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private boolean exist(Connection conn, String sql, Object[] parameters)
             throws SQLException {
-        ResultSet rs = null;
+        ResultSet rs;
+
+        if (parameters != null) {
+            rs = prepareStatement(sql, parameters, conn).executeQuery();
+        } else {
+            rs = conn.createStatement().executeQuery(sql);
+        }
 
         try {
-            if (parameters != null) {
-                rs = prepareStatement(sql, parameters, conn).executeQuery();
-            } else {
-                rs = conn.createStatement().executeQuery(sql);
-            }
-
             return rs.next();
         } finally {
             close(rs);
@@ -3272,11 +3164,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private int update(Connection conn, String sql, Object[] parameters)
             throws SQLException {
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt = this.prepareStatement(sql, parameters, conn);
 
         try {
-            pstmt = this.prepareStatement(sql, parameters, conn);
-
             return pstmt.executeUpdate();
         } finally {
             close(pstmt);
@@ -3298,11 +3188,11 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private int updateWithNullApprove(Connection connection, String sql,
             Object[] params) throws SQLException {
-        PreparedStatement pstmt = null;
+
+        // create the prepareStatement with the clause
+        PreparedStatement pstmt = connection.prepareStatement(sql);
 
         try {
-            // create the prepareStatement with the clause
-            pstmt = connection.prepareStatement(sql);
 
             // set the parameter for statement
             if (params != null) {
@@ -3317,7 +3207,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
             return pstmt.executeUpdate();
         } finally {
-            close(pstmt);
+            pstmt.close();
         }
     }
 
@@ -3346,6 +3236,27 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /**
      * <p>
+     * Try to close the Resultset object if it is not null. Returns silently if
+     * any SQL error occurs.
+     * </p>
+     * 
+     * @param rs the ResultSet object.
+     */
+    private void close(ResultSet rs) {
+        if (rs != null) {
+            try {
+                Statement stmt = rs.getStatement();
+
+		rs.close();
+		close(stmt);
+            } catch (SQLException e) {
+                // silently go on
+            }
+        }
+    }
+
+    /**
+     * <p>
      * Try to close the statement object if it is not null. Returns silently if
      * any SQL error occurs.
      * </p>
@@ -3356,30 +3267,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         if (stmt != null) {
             try {
                 stmt.close();
-            } catch (SQLException e) {
-                // silently go on
-            }
-        }
-    }
-
-    /**
-     * <p>
-     * Try to close the Resultset object if it is not null. Returns silently if
-     * any SQL error occurs.
-     * </p>
-     * 
-     * @param rs the ResultSet object.
-     */
-    private void close(ResultSet rs) {
-        if (rs != null) {
-            try {
-                Statement stmt = (Statement) rs.getStatement();
-
-                if (stmt != null) {
-                    stmt.close();
-                }
-
-                rs.close();
             } catch (SQLException e) {
                 // silently go on
             }
@@ -3404,3 +3291,4 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         }
     }
 }
+

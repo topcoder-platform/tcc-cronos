@@ -35,7 +35,7 @@ CREATE TABLE message (
 CREATE TABLE download_obj (
 	id BIGINT NOT NULL identity(1,1),
 	media_type VARCHAR(255) NOT NULL,
-	suggested_name VARCHAR(255) NOT NULL,
+	suggested_name VARCHAR(255) NULL,
 	content image NOT NULL,
 	PRIMARY KEY(id)
 );
