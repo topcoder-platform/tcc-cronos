@@ -71,11 +71,14 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     /**
      * The query used to retrieve the set of pending winners.
      */
-    private static final String PENDING_WINNER_QUERY =
-        "SELECT plyr_compltd_game.player_id, plyr_compltd_game.game_id FROM (game JOIN plyr_compltd_game ON game.id = "
-        + "plyr_compltd_game.game_id) LEFT OUTER JOIN plyr_won_game ON plyr_compltd_game.game_id = "
-        + "plyr_won_game.game_id WHERE plyr_won_game.player_id IS NULL AND game.start_date <= GETDATE() AND "
-        + "is_handled = 0 ORDER BY plyr_compltd_game.sequence_number";
+    private static final String PENDING_WINNER_QUERY = "SELECT t1.player_id, t1.game_id "
+        + "FROM plyr_compltd_game t1 INNER JOIN "
+            + "(SELECT t2.game_id AS compltd_game_id, MIN(t2.sequence_number) as min_sequence_number "
+                   + "FROM plyr_compltd_game t2 LEFT JOIN plyr_won_game t3 ON (t2.game_id = t3.game_id) "
+            + "WHERE (t3.player_id IS NULL AND t2.is_handled = 0) "
+            + "GROUP BY t2.game_id) t4 "
+        + "ON (t1.game_id = t4.compltd_game_id AND t1.sequence_number = t4.min_sequence_number) "
+        + "ORDER BY t1.sequence_number ";
 
     /**
      * The query used to determine the pending winner count.
@@ -363,7 +366,7 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     }
 
     /**
-     * Retrieves the current set of pending winners.
+     * Retrieves the current set of pending winners, in game completion order.
      *
      * @return the current set of pending winners
      * @throws PersistenceException if a persistence error occurs

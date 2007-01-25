@@ -9,15 +9,14 @@ import com.orpheus.administration.persistence.MessageTranslator;
 
 import com.topcoder.util.rssgenerator.RSSCategory;
 import com.topcoder.util.rssgenerator.RSSItem;
-import com.topcoder.util.rssgenerator.RSSLink;
 import com.topcoder.util.rssgenerator.RSSText;
 
 import com.topcoder.util.rssgenerator.impl.RSSCategoryImpl;
-import com.topcoder.util.rssgenerator.impl.RSSLinkImpl;
 import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
 import com.topcoder.util.rssgenerator.impl.RSSTextImpl;
 
 import com.topcoder.util.rssgenerator.impl.atom10.Atom10Item;
+import com.topcoder.util.rssgenerator.impl.atom10.Atom10Content;
 
 import java.util.Date;
 
@@ -52,28 +51,30 @@ public class RSSItemTranslator implements MessageTranslator {
             throw new IllegalArgumentException("message DTO must not be null");
         }
 
-        RSSItem item = new Atom10Item(new RSSObjectImpl());
+        Atom10Item item = new Atom10Item(new RSSObjectImpl());
 
         // GUID
         item.setId(messageDataTransferObject.getGuid());
+
+	// Artificial title
+	RSSText titleText = new RSSTextImpl(new RSSObjectImpl());
+	titleText.setElementText("Server Message");
+	item.setTitle(titleText);
 
         // category
         RSSCategory category = new RSSCategoryImpl(new RSSObjectImpl());
         category.setName(messageDataTransferObject.getCategory());
         item.addCategory(category);
 
-        // content type
-        RSSLink link = new RSSLinkImpl(new RSSObjectImpl());
-        link.setMimeType(messageDataTransferObject.getContentType());
-        item.setSelfLink(link);
-
         // content
-        RSSText text = new RSSTextImpl(new RSSObjectImpl());
-        text.setElementText(messageDataTransferObject.getContent());
-        item.setDescription(text);
+        Atom10Content content = new Atom10Content(new RSSObjectImpl());
+        content.setType(messageDataTransferObject.getContentType());
+        content.setElementText(messageDataTransferObject.getContent());
+        item.setContent(content);
 
         // timestamp
         item.setPublishedDate(messageDataTransferObject.getTimestamp());
+        item.setUpdatedDate(messageDataTransferObject.getTimestamp());
 
         return item;
     }
@@ -92,12 +93,17 @@ public class RSSItemTranslator implements MessageTranslator {
         }
 
         if (valueObject instanceof RSSItem) {
-            RSSItem item = (RSSItem) valueObject;
+            Atom10Item item = new Atom10Item((RSSItem) valueObject);
+            Atom10Content content = item.getContent();
+            RSSText itemText = (content != null) ? content : item.getDescription();
+            String contentType = itemText.getType();
 
-            return new MessageImpl(item.getId(), item.getCategories()[0].getName(), item.getSelfLink().getMimeType(),
-                                   item.getDescription().getElementText(), item.getPublishedDate());
+            return new MessageImpl(item.getId(), item.getCategories()[0].getName(),
+                    (contentType != null) ? contentType : "text",
+                    itemText.getElementText(), item.getPublishedDate());
         } else if (valueObject instanceof AdminMessage) {
             AdminMessage message = (AdminMessage) valueObject;
+
             if (!message.check()) {
                 throw new IllegalArgumentException("invalid message passed to assembleMessageDTO");
             }

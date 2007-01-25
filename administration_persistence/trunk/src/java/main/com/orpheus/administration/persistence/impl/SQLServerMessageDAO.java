@@ -193,70 +193,67 @@ public class SQLServerMessageDAO implements MessageDAO {
             throw new IllegalArgumentException("message to create must not be null");
         }
 
-        String guid = message.getGuid();
-
-        Connection connection = getConnection();
-        PreparedStatement statement = null;
-        ResultSet results = null;
-
         try {
-            // check to ensure that the message does not already exist
-            statement = connection.prepareStatement(MESSAGES_BY_ID);
+            String guid = message.getGuid();
+            Connection connection = getConnection();
 
-            statement.setString(1, guid);
+            try {
+                // check to ensure that the message does not already exist
+                PreparedStatement statement
+                        = connection.prepareStatement(MESSAGES_BY_ID);
 
-            results = statement.executeQuery();
-            if (results.next()) {
-                if (results.getLong(1) > 0) {
-                    throw new DuplicateEntryException("message with guid '" + guid + "' already exists",
-                                                      message);
+                try {
+                    ResultSet results;
+
+                    statement.setString(1, guid);
+                    results = statement.executeQuery();
+                    try {
+                        if (results.next()) {
+                            if (results.getLong(1) > 0) {
+                                throw new DuplicateEntryException(
+                                        "message with guid '" + guid
+                                        + "' already exists",
+                                        message);
+                            }
+                        }
+                    } finally {
+                        results.close();
+                    }
+                } finally {
+                    statement.close();
                 }
-            }
 
-            results.close();
-            results = null;
-            statement.close();
-            statement = null;
+                // insert the new message
+                statement = connection.prepareStatement(INSERT_MESSAGE);
+                try {
+                    int idx = 1;
 
-            // insert the new message
-            statement = connection.prepareStatement(INSERT_MESSAGE);
+                    statement.setString(idx++, guid);
+                    statement.setString(idx++, message.getCategory());
+                    statement.setString(idx++, message.getContentType());
+                    statement.setTimestamp(idx++, new Timestamp(
+                            message.getTimestamp().getTime()));
+                    statement.setString(idx++, message.getContent());
 
-            int idx = 1;
-            statement.setString(idx++, guid);
-            statement.setString(idx++, message.getCategory());
-            statement.setString(idx++, message.getContentType());
-            statement.setTimestamp(idx++, new Timestamp(message.getTimestamp().getTime()));
-            statement.setString(idx++, message.getContent());
-
-            if (statement.executeUpdate() < 1) {
-                throw new PersistenceException("failed to insert message");
+                    if (statement.executeUpdate() < 1) {
+                        throw new PersistenceException("failed to insert message");
+                    }
+                } finally {
+                    try {
+                        statement.close();
+                    } catch (SQLException sqle) {
+                        // do nothing
+                    }
+                }
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException sqle) {
+                    // do nothing
+                }
             }
         } catch (SQLException ex) {
             throw new PersistenceException("error updating message: " + ex.getMessage(), ex);
-        } finally {
-            closeResources(results, statement);
-        }
-    }
-
-    /**
-     * Closes a result set and prepared statement and converts <code>SQLException</code> to
-     * <code>PersistenceException</code>.
-     *
-     * @param results the result set to close (or <code>null</code>)
-     * @param statement the prepared statement to close (or <code>null</code>)
-     * @throws PersistenceException if an <code>SQLException</code> occurs
-     */
-    private void closeResources(ResultSet results, PreparedStatement statement) throws PersistenceException {
-        try {
-            if (results != null) {
-                results.close();
-            }
-
-            if (statement != null) {
-                statement.close();
-            }
-        } catch (SQLException ex) {
-            throw new PersistenceException("failed to close resources: " + ex.getMessage(), ex);
         }
     }
 
