@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+/*
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.timetracker.project.persistence;
 
 import java.sql.Connection;
@@ -110,7 +113,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * id.
      * </p>
      */
-    private static final String SQL_SEL_TIME_ENTRY = "SELECT * FROM project_time WHERE time_entry_id = ? AND "
+    private static final String SQL_SEL_TIME_ENTRY = "SELECT project_id,time_entry_id,creation_date,creation_user,modification_date,modification_user FROM project_time WHERE time_entry_id = ? AND "
             + "project_id = ?";
 
     /**
@@ -118,14 +121,14 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the time entries by project id.
      * </p>
      */
-    private static final String SQL_SEL_TIME_ENTRIES = "SELECT * FROM project_time WHERE project_id = ?";
+    private static final String SQL_SEL_TIME_ENTRIES = "SELECT project_id,time_entry_id,creation_date,creation_user,modification_date,modification_user FROM project_time WHERE project_id = ?";
 
     /**
      * <p>
      * The SQL statement to insert a time entry.
      * </p>
      */
-    private static final String SQL_INS_TIME_ENTRY = "INSERT INTO project_time VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_TIME_ENTRY = "INSERT INTO project_time (project_id,time_entry_id,creation_date,creation_user,modification_date,modification_user) VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -156,7 +159,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * project id.
      * </p>
      */
-    private static final String SQL_SEL_EXPENSE_ENTRY = "SELECT * FROM project_expense WHERE expense_entry_id = ? AND "
+    private static final String SQL_SEL_EXPENSE_ENTRY = "SELECT project_id,expense_entry_id,creation_date,creation_user,modification_date,modification_user FROM project_expense WHERE expense_entry_id = ? AND "
             + "project_id = ?";
 
     /**
@@ -164,14 +167,14 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the expense entries by project id.
      * </p>
      */
-    private static final String SQL_SEL_EXPENSE_ENTRIES = "SELECT * FROM project_expense WHERE project_id = ?";
+    private static final String SQL_SEL_EXPENSE_ENTRIES = "SELECT project_id,expense_entry_id,creation_date,creation_user,modification_date,modification_user FROM project_expense WHERE project_id = ?";
 
     /**
      * <p>
      * The SQL statement to insert an expense entry.
      * </p>
      */
-    private static final String SQL_INS_EXPENSE_ENTRY = "INSERT INTO project_expense VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_EXPENSE_ENTRY = "INSERT INTO project_expense (project_id,expense_entry_id,creation_date,creation_user,modification_date,modification_user) VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -201,7 +204,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the project manager by project id.
      * </p>
      */
-    private static final String SQL_SEL_PROJECT_MANAGER = "SELECT * FROM project_manager WHERE project_id = ?";
+    private static final String SQL_SEL_PROJECT_MANAGER = "SELECT project_id,user_account_id,creation_date,creation_user,modification_date,modification_user FROM project_manager WHERE project_id = ?";
 
     /**
      * <p>
@@ -216,7 +219,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to insert a project manager.
      * </p>
      */
-    private static final String SQL_INS_PROJECT_MANAGER = "INSERT INTO project_manager VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_PROJECT_MANAGER = "INSERT INTO project_manager (project_id,user_account_id,creation_date,creation_user,modification_date,modification_user) VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -247,7 +250,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * id.
      * </p>
      */
-    private static final String SQL_SEL_PROJECT_WORKER = "SELECT * FROM project_worker WHERE user_account_id = ? AND "
+    private static final String SQL_SEL_PROJECT_WORKER = "SELECT project_id,user_account_id,start_date,end_date,pay_rate,creation_date,creation_user,modification_date,modification_user FROM project_worker WHERE user_account_id = ? AND "
             + "project_id = ?";
 
     /**
@@ -255,7 +258,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the project workers by project id.
      * </p>
      */
-    private static final String SQL_SEL_PROJECT_WORKERS = "SELECT * FROM project_worker WHERE project_id = ?";
+    private static final String SQL_SEL_PROJECT_WORKERS = "SELECT project_id,user_account_id,start_date,end_date,pay_rate,creation_date,creation_user,modification_date,modification_user FROM project_worker WHERE project_id = ?";
 
     /**
      * <p>
@@ -270,7 +273,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to insert a project worker.
      * </p>
      */
-    private static final String SQL_INS_PROJECT_WORKER = "INSERT INTO project_worker VALUES "
+    private static final String SQL_INS_PROJECT_WORKER = "INSERT INTO project_worker (project_id,user_account_id,start_date,end_date,pay_rate,creation_date,creation_user,modification_date,modification_user) VALUES "
             + "(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
@@ -310,21 +313,21 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the project by project id.
      * </p>
      */
-    private static final String SQL_SEL_PROJECT = "SELECT * FROM project WHERE project_id = ?";
+    private static final String SQL_SEL_PROJECT = "SELECT project_id,name,company_id,description,start_date,end_date,creation_date,creation_user,modification_date,modification_user FROM project WHERE project_id = ?";
 
     /**
      * <p>
      * The SQL statement to select all project.
      * </p>
      */
-    private static final String SQL_SEL_ALL_PROJECTS = "SELECT * FROM project";
+    private static final String SQL_SEL_ALL_PROJECTS = "SELECT project_id,name,company_id,description,start_date,end_date,creation_date,creation_user,modification_date,modification_user FROM project";
 
     /**
      * <p>
      * The SQL statement to insert a project.
      * </p>
      */
-    private static final String SQL_INS_PROJECT = "INSERT INTO project VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_PROJECT = "INSERT INTO project (project_id,name,company_id,description,start_date,end_date,creation_date,creation_user,modification_date,modification_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -353,7 +356,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the client project by project id.
      * </p>
      */
-    private static final String SQL_SEL_CLIENT_PROJECT = "SELECT * FROM client_project WHERE project_id = ?";
+    private static final String SQL_SEL_CLIENT_PROJECT = "SELECT client_id,project_id,creation_date,creation_user,modification_date,modification_user FROM client_project WHERE project_id = ?";
 
     /**
      * <p>
@@ -361,7 +364,7 @@ public class InformixTimeTrackerProjectPersistence implements
      * id.
      * </p>
      */
-    private static final String SQL_SEL_CLIENT_PROJECT_BY_BOTH = "SELECT * FROM client_project WHERE client_id = ?"
+    private static final String SQL_SEL_CLIENT_PROJECT_BY_BOTH = "SELECT client_id,project_id,creation_date,creation_user,modification_date,modification_user FROM client_project WHERE client_id = ?"
             + " AND project_id = ?";
 
     /**
@@ -369,14 +372,14 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the client projects by client id.
      * </p>
      */
-    private static final String SQL_SEL_CLIENT_PROJECTS = "SELECT * FROM client_project WHERE client_id = ?";
+    private static final String SQL_SEL_CLIENT_PROJECTS = "SELECT client_id,project_id,creation_date,creation_user,modification_date,modification_user FROM client_project WHERE client_id = ?";
 
     /**
      * <p>
      * The SQL statement to insert a client project.
      * </p>
      */
-    private static final String SQL_INS_CLIENT_PROJECT = "INSERT INTO client_project VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_CLIENT_PROJECT = "INSERT INTO client_project (client_id,project_id,creation_date,creation_user,modification_date,modification_user) VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -414,21 +417,21 @@ public class InformixTimeTrackerProjectPersistence implements
      * The SQL statement to select the client by client id.
      * </p>
      */
-    private static final String SQL_SEL_CLIENT = "SELECT * FROM client WHERE client_id = ?";
+    private static final String SQL_SEL_CLIENT = "SELECT client_id,name,company_id,creation_date,creation_user,modification_date,modification_user FROM client WHERE client_id = ?";
 
     /**
      * <p>
      * The SQL statement to select all clients.
      * </p>
      */
-    private static final String SQL_SEL_ALL_CLIENTS = "SELECT * FROM client";
+    private static final String SQL_SEL_ALL_CLIENTS = "SELECT client_id,name,company_id,creation_date,creation_user,modification_date,modification_user FROM client";
 
     /**
      * <p>
      * The SQL statement to insert a client.
      * </p>
      */
-    private static final String SQL_INS_CLIENT = "INSERT INTO client VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INS_CLIENT = "INSERT INTO client (client_id,name,company_id,creation_date,creation_user,modification_date,modification_user) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
