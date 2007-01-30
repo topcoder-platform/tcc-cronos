@@ -45,7 +45,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
     /// <author>TCSDESIGNER</author>
     /// <author>TCSDEVELOPER</author>
     /// <author>kr00tki</author>
-    /// <version>1.0.3</version>
+    /// <version>1.0.4</version>
     /// <copyright>Copyright (C) 2006, 2007 TopCoder Inc., All Rights Reserved.</copyright>
     public class PollingEventHandler : IExtensionEventHandler
     {
@@ -73,6 +73,11 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         /// The mime type of bloom filter.
         /// </summary>
         private const string MIME_BLOOM_FILTER = "application/x-tc-bloom-filter";
+
+        /// <summary>
+        /// The default timestamp value that is used on first polling request.
+        /// </summary>
+        private const string DEFAULT_TIMESTAMP = "2007-01-01T00:00:01Z";
 
         /// <summary>
         /// Represents the configuration namespace to use.
@@ -182,10 +187,11 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 ConfigManager cm = ConfigManager.GetInstance();
 
                 string lastPollingDate = args.Context.Persistence[Helper.KEY_TIMESTAMP];
-                if (lastPollingDate.Length == 0) {
-                    lastPollingDate = DateTime.UtcNow.ToString("s") + "Z";
+                if (lastPollingDate.Length == 0)
+                {
+                    lastPollingDate = DEFAULT_TIMESTAMP;
                 }
-
+                
                 // Reads from the configuration file the configured URL(polling_url property).
                 // Reads the "events" property and for each event name:
                 value = string.Format(cm.GetValue(configurationNamespace, PROPERTY_POLLING_URL),
@@ -197,6 +203,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                     rssFeed = rssParser.Parse(stream);
                 }
 
+                RSSItem updateItem = null;
                 foreach (RSSItem item in rssFeed.Items)
                 {
                     if (item.Description == null)
@@ -210,8 +217,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                     {
                         // If the content is of type text, HTML or XHTML sets the content
                         // to be displayed in the new window using the web browser window navigator.
-                        // args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser,
-                        using(Stream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(item.Description.Text)))
+                        using (Stream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(item.Description.Text)))
                         {
                             args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, stream, true);
                         }
@@ -219,21 +225,34 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                     else
                     {
                         AtomMultimediaContentItem multi = item.Description as AtomMultimediaContentItem;
+                        
                         if ((multi != null) && multi.MimeType.Equals(MIME_BLOOM_FILTER))
                         {
-                            // If the content is of type "application/x-tc-bloom-filter" restore the bloom filter
-                            // from the serialized content of the feed item.
-                            // args.Context.BloomFilter
-                            string serializedForm = Encoding.UTF8.GetString(multi.RawData);
-                            args.Context.BloomFilter = new BloomFilter(serializedForm);
-                            MsieClientLogic.GetInstance().Persistence[Helper.KEY_BLOOM_FILTER] = serializedForm;
+                            if (updateItem == null)
+                            {
+                                updateItem = item;
+                            }
+                            else if (updateItem.UpdatedDate.CompareTo(item.UpdatedDate) <= 0)
+                            {
+                                updateItem = item;
+                            }
                         }
                     }
                 }
 
+                if (updateItem != null)
+                {
+                    // If the content is of type "application/x-tc-bloom-filter" restore the bloom filter
+                    // from the serialized content of the feed item.
+                    AtomMultimediaContentItem multi = updateItem.Description as AtomMultimediaContentItem;
+                    string serializedForm = Encoding.UTF8.GetString(multi.RawData);
+                    args.Context.BloomFilter = new BloomFilter(serializedForm);
+                    MsieClientLogic.GetInstance().Persistence[Helper.KEY_BLOOM_FILTER] = serializedForm;
+                }
+
                 // Persist the feed timestamp.
-                args.Context.Persistence[Helper.KEY_TIMESTAMP] =
-                    rssFeed.PublicationDate.ToUniversalTime().ToString("s") + "Z";
+                args.Context.Persistence[Helper.KEY_TIMESTAMP] = 
+                    rssFeed.UpdatedDate.ToUniversalTime().ToString("s") + "Z";
             }
             catch (Exception e)
             {
