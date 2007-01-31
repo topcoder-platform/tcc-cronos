@@ -295,7 +295,8 @@ public abstract class AbstractReport implements Report {
                 }
             }
             if (current.equals(requiredDefaultFilter)) {
-                header = ((EqualityFilter) filter).getFilterValues().get(0).toString();
+                //header = ((EqualityFilter) filter).getFilterValues().get(0).toString(); //removed to fix misc. numbers appearing in front of date ranges in reports (replaced by line below)
+                header = "";
                 defaultFilterExist = true;
             }
         }
