@@ -509,7 +509,7 @@ public class DbCompanyDAO implements CompanyDAO {
     private Connection createConnection() throws CompanyDAOException {
         try {
             Connection conn = connectionFactory.createConnection(connectionName);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+ //           conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             conn.setAutoCommit(false);
 
             return conn;

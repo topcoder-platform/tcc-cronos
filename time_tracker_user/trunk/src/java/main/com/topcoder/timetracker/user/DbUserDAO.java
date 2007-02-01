@@ -402,7 +402,7 @@ public class DbUserDAO implements UserDAO {
     private Connection createConnection() throws UserDAOException {
         try {
             Connection conn = connectionFactory.createConnection(connectionName);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+ //           conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             conn.setAutoCommit(false);
 
             return conn;

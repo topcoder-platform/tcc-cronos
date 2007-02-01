@@ -298,7 +298,7 @@ public class DbRejectReasonDAO implements RejectReasonDAO {
     private Connection createConnection() throws RejectReasonDAOException {
         try {
             Connection conn = connectionFactory.createConnection(connectionName);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+ //           conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             conn.setAutoCommit(false);
 
             return conn;

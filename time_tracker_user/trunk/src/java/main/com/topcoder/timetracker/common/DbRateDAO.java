@@ -292,7 +292,7 @@ public class DbRateDAO implements RateDAO {
     private Connection createConnection() throws RateDAOException {
         try {
             Connection conn = connectionFactory.createConnection(connectionName);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+ //           conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             conn.setAutoCommit(false);
 
             return conn;

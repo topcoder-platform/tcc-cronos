@@ -291,7 +291,7 @@ public class DbRejectEmailDAO implements RejectEmailDAO {
     private Connection createConnection() throws RejectEmailDAOException {
         try {
             Connection conn = connectionFactory.createConnection(connectionName);
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+ //           conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             conn.setAutoCommit(false);
 
             return conn;
