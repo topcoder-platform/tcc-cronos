@@ -61,6 +61,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
     /** playerId. */
     private long playerId = 0;
 
+    private List downloadIds = null;
     /**
      * create instance.
      *
@@ -73,6 +74,8 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         playerId = ((Long) results.get(0)).longValue();
         sponsorId = ((Long) results.get(1)).longValue();
         colors = (List) results.get(2);
+        this.downloadIds = (List) results.get(3);
+        
         gameStartDate = new Date();
 
         TestHelper.addConfigFile(TestHelper.DBFACTORY_CONFIG_XML);
@@ -263,10 +266,10 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testCreateDomain() throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images);
         Domain persisted = dao.createDomain(toPersist);
         assertEquals("The sponsorId is not the one set.", sponsorId, persisted.getSponsorId());
-        assertEquals("The domain name is not the one set.", "domainName", persisted.getDomainName());
+        assertEquals("The domain name is not the one set.", "domainName2", persisted.getDomainName());
         assertEquals("The images length is wrong.", images.length, persisted.getImages().length);
     }
 
@@ -279,7 +282,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testCreateDomain_duplicatedDomain() throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images);
         Domain persisted = dao.createDomain(toPersist);
 
         try {
@@ -299,7 +302,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testCreateDomain_notExistSponsor() throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId + 1, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId + 1, "domainName2", new Boolean(true), images);
 
         try {
             dao.createDomain(toPersist);
@@ -318,10 +321,10 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testCreateDomain_imageAlreadyExist() throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         try {
-            dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), persisted.getImages()));
+            dao.createDomain(TestHelper.getDomain(sponsorId, "domainName3", new Boolean(true), persisted.getImages()));
             fail("The domain's image array has duplicated item.");
         } catch (DuplicateEntryException e) {
             //good
@@ -353,7 +356,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testGetDomain() throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images);
 
         //persiste the domain
         Domain persisted = dao.createDomain(toPersist);
@@ -362,7 +365,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         Domain getValue = dao.getDomain(persisted.getId().longValue());
 
         //verify the result
-        assertEquals("The domain Name is not the one saved.", "domainName", getValue.getDomainName());
+        assertEquals("The domain Name is not the one saved.", "domainName2", getValue.getDomainName());
         assertEquals("The domain.sponsorId is not the one saved.", sponsorId, getValue.getSponsorId());
         assertEquals("The domain.images's size is invalid.", images.length, getValue.getImages().length);
         assertEquals("the domain.images.0.downloadId is invalid.", persisted.getImages()[0].getDownloadId(),
@@ -394,7 +397,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testuUpdateDomain_nullDomainId() throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images);
 
         try {
             dao.updateDomain(toPersist);
@@ -413,11 +416,11 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testuUpdateDomain_notExistDomain() throws Exception {
         //persist a domain first
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true),
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true),
                     TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]))));
 
         //create a domain with a not exist id
-        Domain notExist = new DomainImpl(new Long(persisted.getId().longValue() + 1), sponsorId, "domainName",
+        Domain notExist = new DomainImpl(new Long(persisted.getId().longValue() + 1), sponsorId, "domainName3",
                 new Boolean(true), persisted.getImages());
 
         try {
@@ -439,11 +442,11 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
     public void testuUpdateDomain_notExistDomainSponsor()
         throws Exception {
         //persist a domain first
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true),
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true),
                     TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]))));
 
         //create a domain with a not exist sponsorId
-        Domain notExist = new DomainImpl(persisted.getId(), sponsorId + 1, "domainName", new Boolean(true),
+        Domain notExist = new DomainImpl(persisted.getId(), sponsorId + 1, "domainName3", new Boolean(true),
                 persisted.getImages());
 
         try {
@@ -465,7 +468,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
     public void testuUpdateDomain_notExistDomainImageDownloadId()
         throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images);
 
         //persiste the domain
         Domain persisted = dao.createDomain(toPersist);
@@ -474,7 +477,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
                 images[0].getDescription(), images[0].isApproved());
 
         //create a domain with a not exist downloadId
-        Domain notExist = new DomainImpl(persisted.getId(), sponsorId, "domainName", new Boolean(true), images);
+        Domain notExist = new DomainImpl(persisted.getId(), sponsorId, "domainName3", new Boolean(true), images);
 
         try {
             dao.updateDomain(notExist);
@@ -494,7 +497,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
     public void testuUpdateDomain_notExistDomainImage()
         throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images);
 
         //persiste the domain
         Domain persisted = dao.createDomain(toPersist);
@@ -506,7 +509,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
                 images[0].isApproved());
 
         //create a domain with a not exist image
-        Domain notExist = new DomainImpl(persisted.getId(), sponsorId, "domainName", new Boolean(true), images);
+        Domain notExist = new DomainImpl(persisted.getId(), sponsorId, "domainName3", new Boolean(true), images);
 
         try {
             dao.updateDomain(notExist);
@@ -525,13 +528,13 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
      */
     public void testuUpdateDomain() throws Exception {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
-        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
+        Domain toPersist = TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images);
 
         //persiste the domain
         Domain persisted = dao.createDomain(toPersist);
 
         //create a domain with the persited id and two new images
-        Domain toUpdate = new DomainImpl(persisted.getId(), sponsorId, "domainName", null, images);
+        Domain toUpdate = new DomainImpl(persisted.getId(), sponsorId, "domainName3", null, images);
 
         //update the domain
         dao.updateDomain(toUpdate);
@@ -575,7 +578,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
                     blocks));
 
         //persist the domain
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true),
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true),
                     TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]))));
 
         //create a not exist block id
@@ -633,7 +636,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
                     blocks));
 
         //persist the domain
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true),
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true),
                     TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]))));
 
         //the persisted block id
@@ -668,7 +671,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
                     blocks));
 
         //persist the domain
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true),
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true),
                     TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]))));
 
         //the persisted block id
@@ -728,7 +731,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -805,7 +808,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -890,7 +893,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -937,7 +940,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -981,7 +984,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -992,7 +995,8 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist a bid record for testing
         long[] bidIds = TestHelper.persistBid(blockId, imageId, 1, new Date());
 
-        long downloadId = ((BallColor) this.colors.get(0)).getImageId();
+        
+        long downloadId = ((Long)downloadIds.get(0)).longValue();
 
         //persist the puzzle
         long puzzleId = TestHelper.persistPuzzle(downloadId, "puzzleName");
@@ -1026,7 +1030,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -1080,7 +1084,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -1132,7 +1136,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -1235,7 +1239,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         //persist the domain
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
 
-        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images));
+        Domain persisted = dao.createDomain(TestHelper.getDomain(sponsorId, "domainName2", new Boolean(true), images));
 
         //the persisted block id
         long blockId = game.getBlocks()[0].getId().longValue();
@@ -1346,7 +1350,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
         assertEquals("The attribute size is invalid.", 2, data.getAllAttributes().size());
         assertEquals("The attribute att1 does not exist.", "value1", data.getAttribute("att1"));
         assertEquals("The resource size is invalid.", 1, data.getAllResources().size());
-        assertEquals("The resource'name is invalid.", "html", data.getResource("resource1").getName());
+        assertEquals("The resource'name is invalid.", "resource1", data.getResource("resource1").getName());
     }
 
     /**
@@ -2257,7 +2261,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
 
         //start games
         games = dao.findGames(new Boolean(true), null);
-        assertEquals("The size of games is zero.", 1, games.length);
+        assertEquals("The size of games is zero.", 0, games.length);
 
         //not start games
         games = dao.findGames(new Boolean(false), null);
@@ -2267,7 +2271,7 @@ public class SQLServerGameDataDAOUnitTests extends TestCase {
 
         //start but not end games
         games = dao.findGames(new Boolean(true), new Boolean(false));
-        assertEquals("The size of games is zero.", 1, games.length);
+        assertEquals("The size of games is zero.", 0, games.length);
 
         //start and end games
         games = dao.findGames(new Boolean(true), new Boolean(true));
