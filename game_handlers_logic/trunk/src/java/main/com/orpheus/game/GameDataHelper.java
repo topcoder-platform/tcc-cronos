@@ -408,9 +408,9 @@ class GameDataHelper {
         GameData gameData = null;
         GameDataLocal gameDataLocal = null;
         try {
-            Set domainIds = new HashSet();
-            List domains = new ArrayList();
             HostingSlot[] hostingSlots;
+            Domain[] domains;
+
             // check whether to use remote look up.
             if (useRemoteHome) {
                 Object object = context.lookup(gameDataJNDIName);
@@ -424,14 +424,15 @@ class GameDataHelper {
                 // finds the completed slots.
                 hostingSlots = gameDataLocal.findCompletedSlots(gameId);
             }
+
+	    domains = new Domain[hostingSlots.length];
+
             // gets the domains without adding duplicates based on domain id.
             for (int i = 0; i < hostingSlots.length; i++) {
-                if (!domainIds.contains(hostingSlots[i].getDomain().getId())) {
-                    domainIds.add(hostingSlots[i].getDomain().getId());
-                    domains.add(hostingSlots[i].getDomain());
-                }
+                domains[i] = hostingSlots[i].getDomain();
             }
-            return (Domain[]) domains.toArray(new Domain[domains.size()]);
+
+            return domains;
         } catch (NamingException namingException) {
             throw new HandlerExecutionException("Failed to get unlocked domains.", namingException);
         } catch (RemoteException remoteException) {
