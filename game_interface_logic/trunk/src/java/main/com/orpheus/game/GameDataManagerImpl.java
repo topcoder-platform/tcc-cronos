@@ -22,6 +22,7 @@ import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.ImageInfo;
 import com.orpheus.game.persistence.PersistenceException;
+import com.orpheus.game.persistence.entities.DomainTargetImpl;
 
 import com.topcoder.bloom.BitSetSerializer;
 import com.topcoder.bloom.BloomFilter;
@@ -1219,10 +1220,18 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         //and generate the puzzle and brainteaser list
         for(int j = 0 ; j < newSlots.length; j++){
             //get the domain targets of the old slots and shuffle randomly
-            List targets = Arrays.asList(findSlotByBid(oldSlots, newSlots[j].getBidId()).getDomainTargets());
+            List targets = Arrays.asList(findSlotByDomainId(oldSlots, newSlots[j].getDomain().getId().longValue()).getDomainTargets());
             Collections.shuffle(targets);
+            
+            //create new DomainTargets with null id objects.
+            List newTargets = new ArrayList();
+            for(int fix = 0 ;  fix < targets.size(); fix ++){
+                DomainTarget target = (DomainTarget)targets.get(fix);
+                newTargets.add(new DomainTargetImpl(null,target.getSequenceNumber(),target.getUriPath(),
+                        target.getIdentifierText(),target.getIdentifierHash(),target.getClueImageId()));
+            }
             //copy the slot to set the hosting start, hosting end and shuffled randomly targets
-            HostingSlot copiedSlot = Helper.copySlot(newSlots[j], null,null,(DomainTarget[])targets.toArray(new DomainTarget[0]));
+            HostingSlot copiedSlot = Helper.copySlot(newSlots[j], null,null,(DomainTarget[])newTargets.toArray(new DomainTarget[0]));
             //update the slot
             HostingSlot updatedSlot = ((gameDataPersistenceLocal != null)? gameDataPersistenceLocal.updateSlots(new HostingSlot[]{copiedSlot}):
                 this.gameDataPersistenceRemote.updateSlots(new HostingSlot[]{copiedSlot}))[0];
@@ -1233,15 +1242,15 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
     }
     /**
-     * Find the slot that the bid id is equal to the given bid id.
+     * Find the slot that the domain id is equal to the given domainId.
      * 
      * @param slots the slots array
-     * @param bidId the bid id
+     * @param domainId the domain id
      * @return the HostingSlot
      */
-    private HostingSlot findSlotByBid(HostingSlot [] slots, long bidId){
+    private HostingSlot findSlotByDomainId(HostingSlot [] slots, long domainId){
         for(int i = 0 ; i < slots.length; i++){
-            if ( slots[i].getBidId() == bidId){
+            if ( slots[i].getDomain().getId().longValue() == domainId){
                 return slots[i];
             }
         }
