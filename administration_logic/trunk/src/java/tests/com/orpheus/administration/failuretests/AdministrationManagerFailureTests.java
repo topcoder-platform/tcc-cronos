@@ -45,7 +45,7 @@ public class AdministrationManagerFailureTests extends TestCase {
         FailureHelper.setupDatabase();
 
         pts = new MockPuzzleTypeSource();
-        manager = new AdministrationManager(pts, NAMESPACE);
+        manager = new AdministrationManager(NAMESPACE);
     }
 
     /**
@@ -60,22 +60,22 @@ public class AdministrationManagerFailureTests extends TestCase {
         FailureHelper.clearAllConfigurationNS();
     }
 
-    /**
-     * <p>
-     * Failure test of the constructor.
-     * In this test case the 'puzzleTypeSource' parameter is null. IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testConstructorNullPTS() throws Exception {
-        try {
-            new AdministrationManager(null, NAMESPACE);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // fine
-        }
-    }
+//    /**
+//     * <p>
+//     * Failure test of the constructor.
+//     * In this test case the 'puzzleTypeSource' parameter is null. IllegalArgumentException is expected.
+//     * </p>
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void testConstructorNullPTS() throws Exception {
+//        try {
+//            new AdministrationManager(null, NAMESPACE);
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            // fine
+//        }
+//    }
 
     /**
      * <p>
@@ -87,7 +87,7 @@ public class AdministrationManagerFailureTests extends TestCase {
      */
     public void testConstructorNullNamespace() throws Exception {
         try {
-            new AdministrationManager(pts, null);
+            new AdministrationManager(null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // fine
@@ -104,7 +104,7 @@ public class AdministrationManagerFailureTests extends TestCase {
      */
     public void testConstructorEmptyNamespace() throws Exception {
         try {
-            new AdministrationManager(pts, " ");
+            new AdministrationManager( " ");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // fine
@@ -121,46 +121,46 @@ public class AdministrationManagerFailureTests extends TestCase {
      */
     public void testConstructorInvalidNamespace() throws Exception {
         try {
-            new AdministrationManager(pts, "invalid_NS");
+            new AdministrationManager("invalid_NS");
             fail("ConfigurationException should be thrown.");
         } catch (ConfigurationException e) {
             // fine
         }
     }
 
-    /**
-     * <p>
-     * Failure test of the method <code>regeneratePuzzle()</code>.
-     * In this test case the id parameter is invalid. AdministrationException is expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testRegeneratePuzzleInvalidId() throws Exception {
-        try {
-            manager.regeneratePuzzle(13567);
-            fail("AdministrationException should be thrown.");
-        } catch (AdministrationException e) {
-            // fine
-        }
-    }
+//    /**
+//     * <p>
+//     * Failure test of the method <code>regeneratePuzzle()</code>.
+//     * In this test case the id parameter is invalid. AdministrationException is expected.
+//     * </p>
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void testRegeneratePuzzleInvalidId() throws Exception {
+//        try {
+//            manager.regeneratePuzzle(13567);
+//            fail("AdministrationException should be thrown.");
+//        } catch (AdministrationException e) {
+//            // fine
+//        }
+//    }
 
-    /**
-     * <p>
-     * Failure test of the method <code>regenerateBrainTeaser()</code>.
-     * In this test case the id parameter is invalid. AdministrationException is expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testRegenerateBrainTeaserInvalidId() throws Exception {
-        try {
-            manager.regenerateBrainTeaser(13567);
-            fail("AdministrationException should be thrown.");
-        } catch (AdministrationException e) {
-            // fine
-        }
-    }
+//    /**
+//     * <p>
+//     * Failure test of the method <code>regenerateBrainTeaser()</code>.
+//     * In this test case the id parameter is invalid. AdministrationException is expected.
+//     * </p>
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void testRegenerateBrainTeaserInvalidId() throws Exception {
+//        try {
+//            manager.regenerateBrainTeaser(13567);
+//            fail("AdministrationException should be thrown.");
+//        } catch (AdministrationException e) {
+//            // fine
+//        }
+//    }
 
     /**
      * <p>

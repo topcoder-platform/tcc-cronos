@@ -8,9 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.w3c.dom.Element;
 
-import com.orpheus.administration.AdministrationException;
-import com.orpheus.administration.AdministrationManager;
 import com.orpheus.administration.Helper;
+import com.orpheus.game.GameDataException;
+import com.orpheus.game.GameDataManager;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.HostingSlot;
 import com.topcoder.web.frontcontroller.ActionContext;
@@ -64,7 +64,7 @@ abstract class RegenerateBrainteaserOrPuzzleHandler implements Handler {
      * It will never be null or empty.<br/>
      * 
      */
-    private final String adminMgrAttrName;
+    private final String gameDataMgrAttrName;
 
     /**
      * This holds the name of the result (as configured in Front Controller
@@ -123,8 +123,11 @@ abstract class RegenerateBrainteaserOrPuzzleHandler implements Handler {
                 "/handler/slot-id-request-param");
         gameDataJndiName = Helper.getValue(handlerElement,
                 "/handler/game-data-jndi-name");
-        adminMgrAttrName = Helper.getValue(handlerElement,
-                "/handler/admin-mgr-app-attr");
+        //FIXME regenerate puzzle and braintearser is shifting to the gamedata
+        //adminMgrAttrName = Helper.getValue(handlerElement,
+        //        "/handler/admin-mgr-app-attr");
+        gameDataMgrAttrName = Helper.getValue(handlerElement,
+                "/handler/game-data--mgr-app-attr");
         failedResult = Helper.getValue(handlerElement, "/handler/fail-result");
         failRequestAttrName = Helper.getValue(handlerElement,
                 "/handler/fail-request-attribute");
@@ -191,14 +194,14 @@ abstract class RegenerateBrainteaserOrPuzzleHandler implements Handler {
         }
 
         HttpSession session = Helper.getSession(request);
-        // Get the AdministrationManager instance from application context
-        AdministrationManager adminMgr = (AdministrationManager) session
-                .getServletContext().getAttribute(adminMgrAttrName);
+        // Get the GameDataManager instance from application context
+        GameDataManager gameDataMgr = (GameDataManager) session
+                .getServletContext().getAttribute(gameDataMgrAttrName);
         if (generatePuzzle()) {
             // generate puzzle
             try {
-                adminMgr.regeneratePuzzle(slotId.longValue());
-            } catch (AdministrationException e) {
+                gameDataMgr.regeneratePuzzle(slotId.longValue());
+            } catch (GameDataException e) {
                 Helper.processFailureExceptionOccur(request,
                         "failed to regenerate puzzle", failRequestAttrName, e);
                 return failedResult;
@@ -206,8 +209,8 @@ abstract class RegenerateBrainteaserOrPuzzleHandler implements Handler {
         } else {
             // Regenerate brain teasers
             try {
-                adminMgr.regenerateBrainTeaser(slotId.longValue());
-            } catch (AdministrationException e) {
+                gameDataMgr.regenerateBrainTeaser(slotId.longValue());
+            } catch (GameDataException e) {
                 Helper.processFailureExceptionOccur(request,
                         "failed to regenerate brain teaser",
                         failRequestAttrName, e);

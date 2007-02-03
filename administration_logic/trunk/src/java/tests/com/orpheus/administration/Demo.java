@@ -54,12 +54,11 @@ public class Demo extends TestCase {
         // Creating a manager instance
         PuzzleTypeSource puzzleTypeSource = new MockPuzzleTypeSource();
         String namespace = AdministrationManager.class.getName();
-        AdministrationManager mgr = new AdministrationManager(puzzleTypeSource,
-                namespace);
-        // Regenerating a puzzle for a slot id
-        mgr.regeneratePuzzle(1);
-        // Regenerating brain teasers for a slot id
-        mgr.regenerateBrainTeaser(1);
+        AdministrationManager mgr = new AdministrationManager(namespace);
+//        // Regenerating a puzzle for a slot id
+//        mgr.regeneratePuzzle(1);
+//        // Regenerating brain teasers for a slot id
+//        mgr.regenerateBrainTeaser(1);
     }
 
     /**
@@ -71,8 +70,7 @@ public class Demo extends TestCase {
         // Creating a manager instance
         PuzzleTypeSource puzzleTypeSource = new MockPuzzleTypeSource();
         String namespace = AdministrationManager.class.getName();
-        AdministrationManager mgr = new AdministrationManager(puzzleTypeSource,
-                namespace);
+        AdministrationManager mgr = new AdministrationManager(namespace);
         MockGameDataBean.setSlots(null);
         // Regenerating mini hunt targets for a slot id
         mgr.generateHuntTargets(1);
@@ -86,8 +84,7 @@ public class Demo extends TestCase {
         // Creating a manager instance
         PuzzleTypeSource puzzleTypeSource = new MockPuzzleTypeSource();
         String namespace = AdministrationManager.class.getName();
-        AdministrationManager mgr = new AdministrationManager(puzzleTypeSource,
-                namespace);
+        AdministrationManager mgr = new AdministrationManager(namespace);
         MockGameDataBean.setSlots(null);
         // Initializing all slots for a particular block id.
         mgr.initializeSlotsForBlock(1);

@@ -25,7 +25,7 @@ public class RegeneratePuzzleHandlerStressTest extends AbstractHandlerStressTest
         context = new ActionContext(request, response);
         ((MockHttpRequest) request).setParameter("slotId", "1");
         ((MockHttpRequest) request).getSession(false).getServletContext().setAttribute("adminMgr",
-            new AdministrationManager(new MockPuzzleTypeSource(), "com.orpheus.administration.AdministrationManager"));
+            new AdministrationManager("com.orpheus.administration.AdministrationManager"));
     }
 
     protected void assertAfterExecute() {

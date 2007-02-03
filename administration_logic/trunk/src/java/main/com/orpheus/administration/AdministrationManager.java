@@ -5,20 +5,15 @@ package com.orpheus.administration;
 
 import com.orpheus.administration.entities.DomainTargetImpl;
 import com.orpheus.administration.entities.HostingSlotImpl;
-import com.orpheus.administration.entities.PuzzleConfig;
-import com.orpheus.administration.entities.PuzzleTypeEnum;
-import com.orpheus.administration.persistence.AdminData;
-import com.orpheus.administration.persistence.AdminDataHome;
+
 
 import com.orpheus.game.GameDataException;
-import com.orpheus.game.persistence.Domain;
+import com.orpheus.game.GameDataManager;
 import com.orpheus.game.persistence.DomainTarget;
-import com.orpheus.game.persistence.EntryNotFoundException;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataHome;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
-import com.orpheus.game.persistence.ImageInfo;
 import com.orpheus.game.persistence.PersistenceException;
 
 import com.topcoder.randomstringimg.Configuration;
@@ -30,25 +25,16 @@ import com.topcoder.randomstringimg.RandomStringImage;
 import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
 import com.topcoder.util.algorithm.hash.HashException;
 import com.topcoder.util.algorithm.hash.algorithm.HashAlgorithm;
-import com.topcoder.util.config.Property;
-import com.topcoder.util.image.manipulation.Image;
-import com.topcoder.util.image.manipulation.image.MutableMemoryImage;
-import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.ObjectFactoryException;
 import com.topcoder.util.objectfactory.SpecificationFactoryException;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
-import com.topcoder.util.puzzle.PuzzleData;
-import com.topcoder.util.puzzle.PuzzleGenerator;
-import com.topcoder.util.puzzle.PuzzleType;
-import com.topcoder.util.puzzle.PuzzleTypeSource;
 import com.topcoder.util.web.sitestatistics.SiteStatistics;
 import com.topcoder.util.web.sitestatistics.StatisticsException;
 import com.topcoder.util.web.sitestatistics.TextStatistics;
 
-import com.topcoder.web.frontcontroller.results.DownloadData;
 
 import com.topcoder.webspider.crawling.BreadthFirstCrawlStrategy;
 import com.topcoder.webspider.validators.RegExValidator;
@@ -73,7 +59,6 @@ import java.util.Random;
 
 import javax.ejb.CreateException;
 
-import javax.imageio.ImageIO;
 
 
 /**
@@ -183,38 +168,7 @@ import javax.imageio.ImageIO;
  * @version 1.0
  */
 public class AdministrationManager {
-    /**
-     * <p>
-     * Holds the puzzle types to choose from when regenerating puzzles. One of
-     * the puzzle types will be chosen at random in the method
-     * regeneratePuzzle().
-     * </p>
-     *
-     */
-    private static final PuzzleTypeEnum[] PUZZLE_TYPES = new PuzzleTypeEnum[] {
-            PuzzleTypeEnum.JIGSAW, PuzzleTypeEnum.SLIDING_TILE
-        };
-
-    /**
-     * <p>
-     * Holds the puzzle types to choose from when regenerating brain teasers.
-     * One of the puzzle types will be chosen at random in the method
-     * regenerateBrainTeaser().
-     * </p>
-     *
-     */
-    private static final PuzzleTypeEnum[] BRAINTEASER_TYPES = new PuzzleTypeEnum[] {
-            PuzzleTypeEnum.MISSING_LETTER, PuzzleTypeEnum.LETTER_SCRAMBLE
-        };
-
-    /**
-     * Represents the PuzzleTypeSource instance to generate puzzles and
-     * brainteasers with.<br/> This variable is initialized in the constructor
-     * and does not change after that.<br/> It will never be null.<br/>
-     *
-     */
-    private final PuzzleTypeSource puzzleTypeSource;
-
+   
     /**
      * This holds the JNDI name to use to look up the GameDataHome service.<br/>
      * This variable is initialized in the constructor and does not change after
@@ -222,25 +176,6 @@ public class AdministrationManager {
      *
      */
     private final String gameDataJndiName;
-
-    /**
-     * This holds the JNDI name to use to look up the AdminDataHome service.<br/>
-     * This variable is initialized in the constructor and does not change after
-     * that.<br/> It will never be null or empty.<br/>
-     *
-     */
-    private final String adminDataJndiName;
-
-    /**
-     * This contains configuration to use when regenerating puzzles and
-     * brainteasers. The key is an instance of PuzzleTypeEnum and value is an
-     * instance of PuzzleConfig. Hence this is a mapping of configuration values
-     * per puzzle type.<br/> This variable is initialized in the constructor
-     * and does not change after that.<br/> It will never be null or empty, nor
-     * will contain null keys or values.<br/>
-     *
-     */
-    private final Map puzzleConfigMap;
 
     /**
      * Minimum number of targets to generate for any particular slot.<br/> This
@@ -317,6 +252,11 @@ public class AdministrationManager {
     private final RandomStringImage randomStringImage;
 
     /**
+     * GameDataManager for regeneratepuzzle and brainteaser.
+     */
+    private GameDataManager gameDataManager = null;
+    
+    /**
      * Creates a AdministrationManager instance with given PuzzleTypeSource to
      * use when generating puzzles and brain teasers and set up with
      * configuration values from given namespace.
@@ -333,23 +273,10 @@ public class AdministrationManager {
      *             if puzzleTypeSource is null, or if namespace is null or
      *             empty.
      */
-    public AdministrationManager(PuzzleTypeSource puzzleTypeSource,
-        String namespace) throws ConfigurationException {
-        Helper.checkNull(puzzleTypeSource, "puzzleTypeSource");
+    public AdministrationManager(String namespace) throws ConfigurationException {
         Helper.checkString(namespace, "namespace");
-        this.puzzleTypeSource = puzzleTypeSource;
-        puzzleConfigMap = new HashMap();
-        // Load property "jigsaw"
-        initializePuzzleType(namespace, "jigsaw", PuzzleTypeEnum.JIGSAW);
-        // Load property "slidingTile"
-        initializePuzzleType(namespace, "slidingTile", PuzzleTypeEnum.SLIDING_TILE);
-        // Load property "missingLetter"
-        initializeBrainTeaserType(namespace, "missingLetter", PuzzleTypeEnum.MISSING_LETTER);
-        // Load property "letterScramble"
-        initializeBrainTeaserType(namespace, "letterScramble", PuzzleTypeEnum.LETTER_SCRAMBLE);
-
+        
         // initialize other fields
-        adminDataJndiName = Helper.getPropertyString(namespace, "admin-data-jndi-name");
         gameDataJndiName = Helper.getPropertyString(namespace, "game-data-jndi-name");
         minTargetLength = Helper.getPropertyInt(namespace, "MinTargetLength");
         maxTargetLength = Helper.getPropertyInt(namespace, "MaxTargetLength");
@@ -390,103 +317,8 @@ public class AdministrationManager {
         }
     }
 
-    /**
-     * Initialize brain teaser type parameters.
-     *
-     * @param namespace
-     *            the namespace
-     * @param name
-     *            the name of brain teaser property
-     * @param type
-     *            the type of the brain teaser
-     * @throws ConfigurationException
-     *             if any sub-property miss or is valid
-     */
-    private void initializeBrainTeaserType(String namespace, String name,
-        PuzzleTypeEnum type) throws ConfigurationException {
-        Property property = Helper.getProperty(namespace, name);
-        String typeName = Helper.getSubPropertyString(property, "puzzleTypeName");
-        int seriesSize = Helper.getSubPropertyInt(property, "seriesSize");
-        PuzzleConfig config = new PuzzleConfig(typeName, null, null, seriesSize);
-        puzzleConfigMap.put(type, config);
-    }
-
-    /**
-     * Initialize puzzle type parameters.
-     *
-     * @param namespace
-     *            the namespace
-     * @param name
-     *            the name of puzzle property
-     * @param type
-     *            the type of the puzzle
-     * @throws ConfigurationException
-     *             if any sub-property miss or is valid
-     */
-    private void initializePuzzleType(String namespace, String name,
-        PuzzleTypeEnum type) throws ConfigurationException {
-        Property property = Helper.getProperty(namespace, name);
-        String typeName = Helper.getSubPropertyString(property, "puzzleTypeName");
-        int width = Helper.getSubPropertyInt(property, "width");
-        int height = Helper.getSubPropertyInt(property, "height");
-        PuzzleConfig config = new PuzzleConfig(typeName, new Integer(width),
-                new Integer(height), 0);
-        puzzleConfigMap.put(type, config);
-    }
-
-    /**
-     * (Re)generates the game-win puzzle for the specified hosting slot. This
-     * method does the following.
-     * <ol>
-     * <li>Get the download data for slot's associated image id.</li>
-     * <li>Choose between jigsaw and sliding tyle puzzles randomly.</li>
-     * <li>Generate a puzzle for the chosen type.</li>
-     * <li>Store the puzzle using AdminData.</li>
-     * <li>Update the puzzle information for the slot using GameData.</li>
-     * </ol>
-     *
-     *
-     * @param slotId
-     *            the slot id.
-     * @throws AdministrationException
-     *             if a checked exception prevents this method from completing
-     *             normally.
-     */
-    public void regeneratePuzzle(long slotId) throws AdministrationException {
-        ServiceLocator sl = new ServiceLocator();
-
-        // Create the AdminData EJB instance
-        AdminData adminData = getAdminData(sl);
-
-        // Create the GameData EJB instance
-        GameData gameData = getGameData(sl);
-        regeneratePuzzle(slotId, adminData, gameData);
-    }
-
-    /**
-     * This method try to get remote AdminData.
-     *
-     * @param sl
-     *            the ServiceLocator
-     * @return a AdminData
-     * @throws AdministrationException
-     *             if any exception occur
-     */
-    private AdminData getAdminData(ServiceLocator sl)
-        throws AdministrationException {
-        AdminDataHome adminDataHome = (AdminDataHome) sl.getRemoteHome(adminDataJndiName,
-                AdminDataHome.class);
-
-        try {
-            return adminDataHome.create();
-        } catch (RemoteException e) {
-            throw new AdministrationException("Failed to get AdminData ejb instance.",
-                e);
-        } catch (CreateException e) {
-            throw new AdministrationException("Failed to get AdminData ejb instance.",
-                e);
-        }
-    }
+    
+   
 
     /**
      * This method try to get remote GameData.
@@ -513,35 +345,7 @@ public class AdministrationManager {
         }
     }
 
-    /**
-     * (Re)generates the brain teaser for the specified hosting slot. This
-     * method does the following.
-     * <ol>
-     * <li>Get the text for the slot's first domain target.</li>
-     * <li>Choose between missing letter and letter scramble puzzles randomly.</li>
-     * <li>Generate a puzzle series for the chosen type.</li>
-     * <li>Store the puzzle using AdminData.</li>
-     * <li>Update the puzzle information for the slot using GameData.</li>
-     * </ol>
-     *
-     *
-     * @param slotId
-     *            slot id.
-     * @throws AdministrationException
-     *             if a checked exception prevents this method from completing
-     *             normally
-     */
-    public void regenerateBrainTeaser(long slotId)
-        throws AdministrationException {
-        ServiceLocator sl = new ServiceLocator();
-
-        // Create the AdminData EJB instance
-        AdminData adminData = getAdminData(sl);
-
-        // Create the GameData EJB instance
-        GameData gameData = getGameData(sl);
-        regenerateBrainTeaser(slotId, adminData, gameData);
-    }
+   
 
     /**
      * (Re)generates the mini-hunt targets for the specified hosting slot. It
@@ -583,9 +387,6 @@ public class AdministrationManager {
         throws AdministrationException {
         ServiceLocator sl = new ServiceLocator();
 
-        // Create the AdminData EJB instance
-        AdminData adminData = getAdminData(sl);
-
         // Create the GameData EJB instance
         GameData gameData = getGameData(sl);
 
@@ -597,9 +398,9 @@ public class AdministrationManager {
             for (int i = 0; i < slots.length; i++) {
                 long slotId = slots[i].getId().longValue();
 
-                regeneratePuzzle(slotId, adminData, gameData);
+                this.gameDataManager.regeneratePuzzle(slotId);
                 generateHuntTargets(slotId, gameData);
-                regenerateBrainTeaser(slotId, adminData, gameData);
+                this.gameDataManager.regenerateBrainTeaser(slotId);
             }
         } catch (AdministrationException e) {
             // re-throw
@@ -610,178 +411,9 @@ public class AdministrationManager {
         }
     }
 
-    /**
-     * This helper method is called to actually regenerate puzzle for particular
-     * slot. It is called by the regeneratePuzzle(slotId) and
-     * initializeSlotsForBlock(blockId) methods.<br/>
-     *
-     *
-     * @param slotId
-     *            slot id.
-     * @param adminData
-     *            AdminData EJB instance.
-     * @param gameData
-     *            GameData EJB instance.
-     * @throws AdministrationException
-     *             if an error such as RemoteException of GameDataException
-     *             occurs.
-     */
-    private void regeneratePuzzle(long slotId, AdminData adminData,
-        GameData gameData) throws AdministrationException {
-        try {
-            // Get the hosting slot
-            HostingSlot slot = gameData.getSlot(slotId);
+    
 
-            // Get the image for the puzzle
-            DownloadData imageData = getDownloadData(gameData, slot);
-            Image image = new MutableMemoryImage(ImageIO.read(
-                        imageData.getContent()));
-            int chosenPuzzle = new Random().nextInt(PUZZLE_TYPES.length);
-
-            // Get puzzle config for the type
-            PuzzleConfig config = null;
-
-            synchronized (puzzleConfigMap) {
-                config = (PuzzleConfig) puzzleConfigMap.get(PUZZLE_TYPES[chosenPuzzle]);
-            }
-
-            // Set puzzle generator configuration
-            PuzzleType puzzleType = puzzleTypeSource.getPuzzleType(config.getPuzzleTypeName());
-            PuzzleGenerator puzzleGenerator = puzzleType.createGenerator();
-            puzzleGenerator.setAttribute("image", image);
-            puzzleGenerator.setAttribute("width", config.getWidth());
-            puzzleGenerator.setAttribute("height", config.getHeight());
-
-            // Generate puzzle
-            PuzzleData puzzleData = puzzleGenerator.generatePuzzle();
-
-            // Store the puzzle and get id
-            long[] puzzleIds = adminData.storePuzzles(new PuzzleData[] {
-                        puzzleData
-                    });
-
-            // Create a new HostingSlotImpl instance
-            HostingSlotImpl newSlot = Helper.copySlot(slot,
-                    slot.getSequenceNumber());
-            // Set the new puzzle id
-            newSlot.setPuzzleId(new Long(puzzleIds[0]));
-            // Update slot
-            gameData.updateSlots(new HostingSlot[] { newSlot });
-        } catch (AdministrationException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new AdministrationException("Failed to regenerate puzzle.", e);
-        }
-    }
-
-    /**
-     * Get download data from gamedata.
-     *
-     * @param gameData
-     *            GameData EJB instance.
-     * @param slot
-     *            the slot to get download data id
-     * @return download data
-     * @throws AdministrationException
-     *             if any exception occur, or there is no corresponding download
-     *             exist in domain.
-     */
-    private DownloadData getDownloadData(GameData gameData, HostingSlot slot)
-        throws AdministrationException {
-        Domain domain = slot.getDomain();
-        ImageInfo[] images = domain.getImages();
-        long imageId = slot.getImageId();
-
-        for (int i = 0; i < images.length; i++) {
-            if (images[i].getId().longValue() == imageId) {
-                try {
-                    return gameData.getDownloadData(images[i].getDownloadId());
-                } catch (EntryNotFoundException e) {
-                    throw new AdministrationException(
-                        "Failed to get download data. (slot id is " +
-                        slot.getId() + ")", e);
-                } catch (PersistenceException e) {
-                    throw new AdministrationException(
-                        "Failed to get download data. (slot id is " +
-                        slot.getId() + ")", e);
-                } catch (RemoteException e) {
-                    throw new AdministrationException(
-                        "Failed to get download data. (slot id is " +
-                        slot.getId() + ")", e);
-                }
-            }
-        }
-
-        // throw exception if download data do not exist
-        throw new AdministrationException(
-            "Failed to get download data for there is no corresponding" +
-            " download image exist in domain. (slot id is " + slot.getId() +
-            ", expected game id is " + imageId + ")");
-    }
-
-    /**
-     * This helper method is called to actually regenerate brainteasers for
-     * particular slot. It is called by the regenerateBrainTeaser(slotId) and
-     * initializeSlotsForBlock(blockId) methods.
-     *
-     *
-     * @param slotId
-     *            slot id.
-     * @param adminData
-     *            AdminData EJB instance.
-     * @param gameData
-     *            GameData EJB instance.
-     * @throws AdministrationException
-     *             if an error such as RemoteException of GameDataException
-     *             occurs.
-     */
-    private void regenerateBrainTeaser(long slotId, AdminData adminData,
-        GameData gameData) throws AdministrationException {
-        try {
-            // Get the hosting slot
-            HostingSlot slot = gameData.getSlot(slotId);
-
-            // Get text for puzzle
-            DomainTarget[] targets = slot.getDomainTargets();
-
-            if (targets.length == 0) {
-                throw new AdministrationException(
-                    "Failed to regenerate BrainTeaser for slot(slotId:" +
-                    slotId +
-                    "), caused by there is no DomainTargets set for that slot.");
-            }
-
-            String puzzleText = targets[0].getIdentifierText();
-            int chosenPuzzle = new Random().nextInt(BRAINTEASER_TYPES.length);
-
-            // Get puzzle config for the type
-            PuzzleConfig config = null;
-
-            synchronized (puzzleConfigMap) {
-                config = (PuzzleConfig) puzzleConfigMap.get(BRAINTEASER_TYPES[chosenPuzzle]);
-            }
-
-            // Generate the puzzle series
-            PuzzleType puzzleType = puzzleTypeSource.getPuzzleType(config.getPuzzleTypeName());
-            PuzzleGenerator puzzleGenerator = puzzleType.createGenerator();
-            puzzleGenerator.setAttribute("text", puzzleText);
-
-            PuzzleData[] puzzleDatas = puzzleGenerator.generatePuzzleSeries(config.getPuzzleSeriesSize());
-
-            // Store the puzzles and get ids
-            long[] puzzleIds = adminData.storePuzzles(puzzleDatas);
-
-            // Create a new HostingSlotImpl instance
-            HostingSlotImpl newSlot = Helper.copySlot(slot,
-                    slot.getSequenceNumber());
-            // Set the new brainteaser ids
-            newSlot.setBrainTeaserIds(puzzleIds);
-            // Update slot
-            gameData.updateSlots(new HostingSlot[] { newSlot });
-        } catch (Exception e) {
-            throw new AdministrationException("Failed to regenerate puzzle.", e);
-        }
-    }
+    
 
     /**
      * This helper method is called to actually generates the mini-hunt targets
@@ -1091,5 +723,21 @@ public class AdministrationManager {
         }
 
         return null;
+    }
+
+    /**
+     * Return the GameDataManager instance.
+     * @return the gameDataManager
+     */
+    public GameDataManager getGameDataManager() {
+        return gameDataManager;
+    }
+
+    /**
+     * Set the GameDataManager instance.
+     * @param gameDataManager the gameDataManager to set
+     */
+    public void setGameDataManager(GameDataManager gameDataManager) {
+        this.gameDataManager = gameDataManager;
     }
 }

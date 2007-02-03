@@ -98,6 +98,8 @@ public class HostingSlotImpl implements HostingSlot {
      *
      */
     private Date hostingEnd;
+    
+    private long bidId;
 
     /**
      * Empty constructor.
@@ -320,5 +322,21 @@ public class HostingSlotImpl implements HostingSlot {
      */
     public void setWinningBid(int winningBid) {
         this.winningBid = winningBid;
+    }
+
+    /**
+     * return the bid id.
+     * @see com.orpheus.game.persistence.HostingSlot#getBidId()
+     */
+    public long getBidId() {
+        return this.bidId;
+    }
+
+    /**
+     * set the bid id.
+     * @see com.orpheus.game.persistence.HostingSlot#setBidId(long)
+     */
+    public void setBidId(long bidId) {
+        this.bidId = bidId;
     }
 }
