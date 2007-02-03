@@ -828,6 +828,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         // create the HostingSlotImpl instance
                         slots[i] = new HostingSlotImpl(id, domain, imageId, new long[0], null, sequenceNumber++,
                                 new DomainTarget[0], currentAmount, null, null);
+                        slots[i].setBidId(bidIds[i]);
                     }
                 }
 
@@ -1154,6 +1155,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 Timestamp hostingStart;
                 Timestamp hostingEnd;
 
+                long bidId;
                 // query the hosting_slot record, if not exist, throw exception
                 ResultSet rs = query(conn, SQL_SELECT_HOSTING_SLOT_WITH_ID + slotId, null);
 
@@ -1165,6 +1167,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         sequenceNumber = rs.getInt(FIELD_SEQUENCE_NUMBER);
                         hostingStart = rs.getTimestamp(FIELD_HOSTING_START);
                         hostingEnd = rs.getTimestamp(FIELD_HOSTING_END);
+                        bidId = rs.getLong("bid_id");
                     }
                 } finally {
                     close(rs);
@@ -1247,8 +1250,10 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 }
 
                 // return the HostingBlock instance with the retrieved data
-                return new HostingSlotImpl(new Long(slotId), domain, imageId, btids, puzzleId, sequenceNumber,
+                HostingSlot slot = new HostingSlotImpl(new Long(slotId), domain, imageId, btids, puzzleId, sequenceNumber,
                     (DomainTarget[]) targets.toArray(new DomainTarget[targets.size()]), winningBid, hostingStart, hostingEnd);
+                slot.setBidId(bidId);
+                return slot;
             } finally {
                 close(conn);
             }
