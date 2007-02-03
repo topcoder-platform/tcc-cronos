@@ -1,6 +1,6 @@
-<action name="UnlockedDomains" type="default" url-pattern="/ulockedDomains" priority="10">
+<!--<action name="UnlockedDomains" type="default" url-pattern="/ulockedDomains" priority="10">-->
     <handler type="x">
         <game_id_param_key>gameId</game_id_param_key>
         <domains_key>domains</domains_key>    
     </handler>
-</action>
+<!--</action>-->

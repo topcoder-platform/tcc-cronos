@@ -166,7 +166,7 @@ public class GameDataHelperUnitTest extends TestCase {
         GameDataHelper helper = GameDataHelper.getInstance();
         Domain[] domains = helper.getUpcomingDomains(101);
         assertNotNull("failed to get unlocked domains", domains);
-        assertEquals("failed to get unlocked domains", domains.length, 3);
+        assertEquals("failed to get unlocked domains", domains.length, 6);
     }
 
     /**

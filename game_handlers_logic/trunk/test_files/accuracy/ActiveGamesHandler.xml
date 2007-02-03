@@ -1,5 +1,5 @@
-<action name="ActiveGames" type="default" url-pattern="/activeGames" priority="10">
+<!--<action name="ActiveGames" type="default" url-pattern="/activeGames" priority="10">-->
     <handler type="x">
       <games_key>games</games_key>
     </handler>
-</action>
+<!--</action>-->

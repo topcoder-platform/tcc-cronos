@@ -3,6 +3,10 @@
  */
 package com.orpheus.game.accuracytests;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -135,9 +139,14 @@ public class UpcomingDomainsHandlerAccuracyTest extends TestCase {
         
         assertNull("failed to execute handler", new UpcomingDomainsHandler(ID_KEY, DOMAIN_KEY).execute(context));
         Domain[] domains = (Domain[]) wrapper.getAttribute(DOMAIN_KEY);
-        assertEquals("failed to execute handler", 3, domains.length);
-        assertEquals("failed to execute handler", 7, domains[0].getId().longValue());
-        assertEquals("failed to execute handler", 8, domains[1].getId().longValue());
-        assertEquals("failed to execute handler", 9, domains[2].getId().longValue());
+        assertEquals("failed to execute handler", 6, domains.length);
+        List ids = new ArrayList();
+        for (int i = 0; i < 6; i++) {
+            ids.add(new Long(7 + i));
+        }
+        for (int i = 0; i < 6; i++) {
+            ids.remove(domains[i].getId());
+        }
+        assertEquals("failed to execute handler", 0, ids.size());
     }
 }

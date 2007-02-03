@@ -59,9 +59,8 @@ public class ImplementationHelperUnitTest extends TestCase {
 	Element documentElement = TestHelper.getDomElement("GameDetailHandler.xml", false);
 	NodeList nodes = documentElement.getElementsByTagName("handler");
 
-	assertTrue("No handlers found in GameDetailHandler.xml", nodes.getLength() > 0);
         assertEquals("failed to get key value", ImplementationHelper.getElement(
-                (Element) nodes.item(0), "game_id_param_key"), "gameId");
+                (Element) documentElement, "game_id_param_key"), "gameId");
 
         // key not present in the xml.
         try {
