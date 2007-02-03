@@ -1,9 +1,58 @@
 <CMConfig>
   <Config name="com.orpheus.game.GameDataManagerImpl">
-    <Property name="jndi_names">
+    <Property name="game_data_ejb_jndi_names">
 				<Value>localjbossBean, Local</Value>
 				<Value>remotejbossBean, Remote</Value>
     </Property>
+    <!-- the jndi names for admin data ejb -->
+    <Property name="admin_data_ejb_jndi_names">
+    	<Value>localAdminDataBean, Local</Value>
+		<Value>remoteAdminDataBean, Remote</Value>
+    </Property>
+    
+    <!-- config shifting from admin logic -->
+     <Property name="jigsaw">
+      <Property name="puzzleTypeName">
+        <Value>jigsaw</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    <!-- config shifting from admin logic -->
+    <Property name="slidingTile">
+      <Property name="puzzleTypeName">
+        <Value>slidingTile</Value>
+      </Property>
+      <Property name="width">
+        <Value>120</Value>
+      </Property>
+      <Property name="height">
+        <Value>100</Value>
+      </Property>
+    </Property>
+    <!-- config shifting from admin logic -->
+    <Property name="missingLetter">
+      <Property name="puzzleTypeName">
+        <Value>missingLetter</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    <!-- config shifting from admin logic -->
+    <Property name="letterScramble">
+      <Property name="puzzleTypeName">
+        <Value>letterScramble</Value>
+      </Property>
+      <Property name="seriesSize">
+        <Value>12</Value>
+      </Property>
+    </Property>
+    
     <Property name="new_game_poll_interval">
 				<Value>1000</Value>
     </Property>
