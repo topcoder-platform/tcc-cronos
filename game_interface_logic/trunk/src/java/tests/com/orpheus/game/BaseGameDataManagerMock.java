@@ -85,4 +85,18 @@ public class BaseGameDataManagerMock extends BaseGameDataManager {
      */
     protected void persistSlot(HostingSlot slot) {
     }
+
+    /**
+     * Nothing.
+     * @see com.orpheus.game.GameDataManager#regenerateBrainTeaser(long)
+     */
+    public void regenerateBrainTeaser(long slotId) throws GameDataException {
+    }
+
+    /**
+     * Nothing.
+     * @see com.orpheus.game.GameDataManager#regeneratePuzzle(long)
+     */
+    public void regeneratePuzzle(long slotId) throws GameDataException {
+    }
 }

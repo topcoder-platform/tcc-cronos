@@ -15,6 +15,7 @@ import org.mockejb.jndi.MockContextFactory;
 import com.orpheus.game.GameDataException;
 import com.orpheus.game.GameDataManagerConfigurationException;
 import com.orpheus.game.GameDataManagerImpl;
+import com.orpheus.game.MockPuzzleTypeSource;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataHome;
 import com.orpheus.game.persistence.GameDataLocal;
@@ -77,7 +78,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
      */
     public void testCtor_emptyNamespace() throws Exception {
         try {
-            new GameDataManagerImpl("");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "");
             fail("The namespace is empty.");
         } catch (IllegalArgumentException e) {
             //good
@@ -92,7 +93,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
      */
     public void testCtor_notExistNamespace() throws Exception {
         try {
-            new GameDataManagerImpl("notExistNamespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "notExistNamespace");
             fail("The namespace does not exist.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -110,7 +111,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_missingJNDINames.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'jndi_names' property is missing.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -128,7 +129,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_missingInterval.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'new_game_poll_interval' property is missing.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -146,7 +147,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_missingInterval2.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'game_started_poll_interval' property is missing.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -164,7 +165,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_invalidInterval2.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'new_game_poll_interval' property is not number.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -182,7 +183,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_invalidInterval.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'game_started_poll_interval' property is not number.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -200,7 +201,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_invalidJNDINames.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'jndi_names' property is not number.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -218,7 +219,7 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_invalidJNDINames3.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'jndi_names' property is not number.");
         } catch (GameDataManagerConfigurationException e) {
             //good
@@ -236,193 +237,193 @@ public class GameDataManagerImplCtorFailureTests extends TestCase {
         TestHelper.addConfigFile("failure_tests/Game_Interface_Logic_Config_invalidJNDINames2.xml");
 
         try {
-            new GameDataManagerImpl();
+            new GameDataManagerImpl(new MockPuzzleTypeSource());
             fail(" the 'jndi_names' property is not number.");
         } catch (GameDataManagerConfigurationException e) {
             //good
         }
     }
 
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiNames is null, iae expected.
-     */
-    public void testCtor_nullJNDINames() throws Exception {
-        try {
-            new GameDataManagerImpl(null, this.jndiDesignations, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiNames array is null, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiNames is null, iae expected.
+//     */
+//    public void testCtor_nullJNDINames() throws Exception {
+//        try {
+//            new GameDataManagerImpl(null, this.jndiDesignations, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiNames array is null, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
 
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiNames contains null element, iae expected.
-     */
-    public void testCtor_nullJNDINamesElement() throws Exception {
-        try {
-            jndiNames = new String[] { "game/GameDataBean", null };
-            new GameDataManagerImpl(jndiNames, this.jndiDesignations, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiNames array contains null element, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiNames contains empty element, iae expected.
-     */
-    public void testCtor_emptyJNDINamesElement() throws Exception {
-        try {
-            jndiNames = new String[] { "game/GameDataBean", " " };
-            new GameDataManagerImpl(jndiNames, this.jndiDesignations, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiNames array contains empty element, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiDesignations is null, iae expected.
-     */
-    public void testCtor_nullJndiDesignations() throws Exception {
-        try {
-            new GameDataManagerImpl(this.jndiNames, null, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiDesignations array is null, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiDesignations contains null element, iae expected.
-     */
-    public void testCtor_nullJndiDesignationsElement() throws Exception {
-        try {
-            jndiDesignations = new String[] { "Local", null };
-            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiDesignations array is null, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiDesignations contains empty string, iae expected.
-     */
-    public void testCtor_emptyJndiDesignationsElement() throws Exception {
-        try {
-            jndiDesignations = new String[] { "Local", " " };
-            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiDesignations array is null, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiDesignations contains invalid String, iae expected.
-     */
-    public void testCtor_invalidJndiDesignationsElement() throws Exception {
-        try {
-            jndiDesignations = new String[] { "Local", "notLocal" };
-            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiDesignations array is null, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndiDesignations contains invalid String, iae expected.
-     */
-    public void testCtor_notSameLength() throws Exception {
-        try {
-            jndiDesignations = new String[] { "Local" };
-            jndiNames = new String[] { "game/GameDataBean", "java:comp/env/ejb/game/GameDataEJB" };
-            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
-                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndiDesignations array is null, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The newGameDiscoveryPollInterval is not positive, iae expected.
-     */
-    public void testCtor_notPostitiveInterval() throws Exception {
-        try {
-            new GameDataManagerImpl(jndiNames, jndiDesignations, 0, this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The newGameDiscoveryPollInterval is not positive, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The gameStartedPollInterval is not positive, iae expected.
-     */
-    public void testCtor_notPostitiveInterval2() throws Exception {
-        try {
-            new GameDataManagerImpl(jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
-                    0, 1000, (float)0.5, "namespace", "c");
-            fail("The gameStartedPollInterval is not positive, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-
-    /**
-     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
-     * long gameStartedPollInterval).  The jndi does not bind, iae expected.
-     */
-    public void testCtor_notBindJNDI() throws Exception {
-    	
-        try {
-            jndiNames = new String[] { "game/GameDataBeanNotExist", "game/GameDataBeanNotExist" };
-
-            new GameDataManagerImpl(jndiNames, jndiDesignations, newGameDiscoveryPollInterval,
-                    gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-            fail("The jndi does not bind, iae expected.");
-        } catch (IllegalArgumentException e) {
-            //good
-        }
-    }
-    
-    /**
-     * Fails to call ejb, GameDataException expected.
-     * @throws Exception into Junit
-     */
-    public void testCtor_gameDataManagerException() throws Exception{
-    	//bind jndi
-    	bindBothJNDI_Invalid();
-    	jndiNames = new String[]{"java:comp/env/ejb/game/GameDataEJBInvalid"};
-    	jndiDesignations = new String[]{"Remote"};
-    	try{ 
-    		new GameDataManagerImpl(jndiNames, jndiDesignations, newGameDiscoveryPollInterval,
-                    gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
-    		fail("Fails to get games.");
-    	} catch(GameDataException e){
-    		//good
-    	}
-    }
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiNames contains null element, iae expected.
+//     */
+//    public void testCtor_nullJNDINamesElement() throws Exception {
+//        try {
+//            jndiNames = new String[] { "game/GameDataBean", null };
+//            new GameDataManagerImpl(jndiNames, this.jndiDesignations, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiNames array contains null element, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiNames contains empty element, iae expected.
+//     */
+//    public void testCtor_emptyJNDINamesElement() throws Exception {
+//        try {
+//            jndiNames = new String[] { "game/GameDataBean", " " };
+//            new GameDataManagerImpl(jndiNames, this.jndiDesignations, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiNames array contains empty element, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiDesignations is null, iae expected.
+//     */
+//    public void testCtor_nullJndiDesignations() throws Exception {
+//        try {
+//            new GameDataManagerImpl(this.jndiNames, null, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiDesignations array is null, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiDesignations contains null element, iae expected.
+//     */
+//    public void testCtor_nullJndiDesignationsElement() throws Exception {
+//        try {
+//            jndiDesignations = new String[] { "Local", null };
+//            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiDesignations array is null, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiDesignations contains empty string, iae expected.
+//     */
+//    public void testCtor_emptyJndiDesignationsElement() throws Exception {
+//        try {
+//            jndiDesignations = new String[] { "Local", " " };
+//            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiDesignations array is null, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiDesignations contains invalid String, iae expected.
+//     */
+//    public void testCtor_invalidJndiDesignationsElement() throws Exception {
+//        try {
+//            jndiDesignations = new String[] { "Local", "notLocal" };
+//            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiDesignations array is null, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndiDesignations contains invalid String, iae expected.
+//     */
+//    public void testCtor_notSameLength() throws Exception {
+//        try {
+//            jndiDesignations = new String[] { "Local" };
+//            jndiNames = new String[] { "game/GameDataBean", "java:comp/env/ejb/game/GameDataEJB" };
+//            new GameDataManagerImpl(this.jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
+//                this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndiDesignations array is null, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The newGameDiscoveryPollInterval is not positive, iae expected.
+//     */
+//    public void testCtor_notPostitiveInterval() throws Exception {
+//        try {
+//            new GameDataManagerImpl(jndiNames, jndiDesignations, 0, this.gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The newGameDiscoveryPollInterval is not positive, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The gameStartedPollInterval is not positive, iae expected.
+//     */
+//    public void testCtor_notPostitiveInterval2() throws Exception {
+//        try {
+//            new GameDataManagerImpl(jndiNames, jndiDesignations, this.newGameDiscoveryPollInterval,
+//                    0, 1000, (float)0.5, "namespace", "c");
+//            fail("The gameStartedPollInterval is not positive, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//
+//    /**
+//     * Test  GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations, long newGameDiscoveryPollInterval,
+//     * long gameStartedPollInterval).  The jndi does not bind, iae expected.
+//     */
+//    public void testCtor_notBindJNDI() throws Exception {
+//    	
+//        try {
+//            jndiNames = new String[] { "game/GameDataBeanNotExist", "game/GameDataBeanNotExist" };
+//
+//            new GameDataManagerImpl(jndiNames, jndiDesignations, newGameDiscoveryPollInterval,
+//                    gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//            fail("The jndi does not bind, iae expected.");
+//        } catch (IllegalArgumentException e) {
+//            //good
+//        }
+//    }
+//    
+//    /**
+//     * Fails to call ejb, GameDataException expected.
+//     * @throws Exception into Junit
+//     */
+//    public void testCtor_gameDataManagerException() throws Exception{
+//    	//bind jndi
+//    	bindBothJNDI_Invalid();
+//    	jndiNames = new String[]{"java:comp/env/ejb/game/GameDataEJBInvalid"};
+//    	jndiDesignations = new String[]{"Remote"};
+//    	try{ 
+//    		new GameDataManagerImpl(jndiNames, jndiDesignations, newGameDiscoveryPollInterval,
+//                    gameStartedPollInterval, 1000, (float)0.5, "namespace", "c");
+//    		fail("Fails to get games.");
+//    	} catch(GameDataException e){
+//    		//good
+//    	}
+//    }
 
     /**
      * clear the environment.

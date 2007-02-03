@@ -4,8 +4,8 @@
 package com.orpheus.game.failuretests;
 
 import com.orpheus.game.GameDataException;
-import com.orpheus.game.GameDataManager;
 import com.orpheus.game.GameDataManagerImpl;
+import com.orpheus.game.MockPuzzleTypeSource;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataHome;
@@ -44,7 +44,7 @@ public class GameDataManagerImplFailureTests extends TestCase {
 
         this.bindBothJNDI();
         //create instance
-        manager = new GameDataManagerImpl();
+        manager = new GameDataManagerImpl(new MockPuzzleTypeSource());
     }
 
     /**

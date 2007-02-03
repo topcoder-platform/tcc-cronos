@@ -96,7 +96,7 @@ public class Demo extends TestCase {
      */
     public void testDemo_GameDataManagerImpl() throws Exception {
         //create the manager with the namespace
-        GameDataManagerImpl manager = new GameDataManagerImpl(GameDataManagerImpl.class.getName());
+        GameDataManagerImpl manager = new GameDataManagerImpl(new MockPuzzleTypeSource(),GameDataManagerImpl.class.getName());
 
         //this is a mocked game
         GameImpl game = new GameImpl();

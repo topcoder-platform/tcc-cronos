@@ -3,10 +3,16 @@
  */
 package com.orpheus.game;
 
+
+import com.orpheus.administration.persistence.AdminData;
+import com.orpheus.administration.persistence.AdminDataHome;
+import com.orpheus.administration.persistence.AdminDataLocal;
+import com.orpheus.administration.persistence.AdminDataLocalHome;
 import com.orpheus.administration.persistence.OrpheusMessengerPlugin;
 import com.orpheus.administration.persistence.RemoteOrpheusMessengerPlugin;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.DomainTarget;
+import com.orpheus.game.persistence.EntryNotFoundException;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataHome;
@@ -14,17 +20,28 @@ import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.persistence.GameDataLocalHome;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
+import com.orpheus.game.persistence.ImageInfo;
+import com.orpheus.game.persistence.PersistenceException;
 
 import com.topcoder.bloom.BitSetSerializer;
 import com.topcoder.bloom.BloomFilter;
 import com.topcoder.bloom.serializers.DefaultBitSetSerializer;
 import com.topcoder.message.messenger.MessageAPI;
+import com.topcoder.util.auction.Auction;
+import com.topcoder.util.auction.AuctionManager;
+import com.topcoder.util.auction.Bid;
+import com.topcoder.util.auction.impl.AuctionImpl;
 import com.topcoder.util.compression.CompressionUtility;
 import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.Property;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.generator.guid.UUIDType;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
+import com.topcoder.util.puzzle.PuzzleData;
+import com.topcoder.util.puzzle.PuzzleGenerator;
+import com.topcoder.util.puzzle.PuzzleType;
+import com.topcoder.util.puzzle.PuzzleTypeSource;
 import com.topcoder.util.url.validation.SiteValidationResults;
 import com.topcoder.util.url.validation.SiteValidator;
 
@@ -39,10 +56,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import javax.ejb.EJBHome;
+import javax.ejb.EJBLocalHome;
+import javax.imageio.ImageIO;
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
 import com.topcoder.util.generator.guid.UUIDUtility;
+import com.topcoder.util.image.manipulation.Image;
+import com.topcoder.util.image.manipulation.image.MutableMemoryImage;
+import com.topcoder.web.frontcontroller.results.DownloadData;
 
 
 /**
@@ -63,6 +90,28 @@ import com.topcoder.util.generator.guid.UUIDUtility;
  * @version 1.0
  */
 public class GameDataManagerImpl extends BaseGameDataManager {
+    /**
+     * <p>
+     * Holds the puzzle types to choose from when regenerating puzzles. One of
+     * the puzzle types will be chosen at random in the method
+     * regeneratePuzzle().
+     * </p>
+     *
+     */
+    private static final PuzzleTypeEnum[] PUZZLE_TYPES = new PuzzleTypeEnum[] {
+            PuzzleTypeEnum.JIGSAW, PuzzleTypeEnum.SLIDING_TILE
+        };
+    /**
+     * <p>
+     * Holds the puzzle types to choose from when regenerating brain teasers.
+     * One of the puzzle types will be chosen at random in the method
+     * regenerateBrainTeaser().
+     * </p>
+     *
+     */
+    private static final PuzzleTypeEnum[] BRAINTEASER_TYPES = new PuzzleTypeEnum[] {
+            PuzzleTypeEnum.MISSING_LETTER, PuzzleTypeEnum.LETTER_SCRAMBLE
+        };
     /**
      * The property name used to get the new game poll interval.
      */
@@ -96,7 +145,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     /**
      * The property name used to load the jndi names from the configuration.
      */
-    private static final String JNDI_NAMES = "jndi_names";
+    private static final String GAME_DATA_EJB_JNDI_NAMES = "game_data_ejb_jndi_names";
+    /**
+     * The property name used to load the jndi names from the configuration.
+     */
+    private static final String ADMIN_DATA_EJB_JNDI_NAMES = "admin_data_ejb_jndi_names";
 
     /**
      * The name of the GUID message property to use when generating a Bloom Filter update message
@@ -161,6 +214,44 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
     /**
      * <p>
+     * Represents the remote ejb interface used for persistence.
+     * </p>
+     *
+     */
+    private final AdminData adminDataPersistenceRemote;
+
+    /**
+     * <p>
+     * Represents the local ejb interface used for persistence.
+     * This is set based on the fact that a JndiLookupDesignation.LOCAL was used when looking up the ejb.
+     * It can be null, which would mean that the local interface must be set.
+     * We can not have a situation where both this and the gameDataPersistenceRemote variable are both null.
+     * </p>
+     *
+     */
+    private final AdminDataLocal adminDataPersistenceLocal;
+    
+    /**
+     * This contains configuration to use when regenerating puzzles and
+     * brainteasers. The key is an instance of PuzzleTypeEnum and value is an
+     * instance of PuzzleConfig. Hence this is a mapping of configuration values
+     * per puzzle type.<br/> This variable is initialized in the constructor
+     * and does not change after that.<br/> It will never be null or empty, nor
+     * will contain null keys or values.<br/>
+     *
+     */
+    private final Map puzzleConfigMap;
+    
+    /**
+     * Represents the PuzzleTypeSource instance to generate puzzles and
+     * brainteasers with.<br/> This variable is initialized in the constructor
+     * and does not change after that.<br/> It will never be null.<br/>
+     *
+     */
+    private final PuzzleTypeSource puzzleTypeSource;
+    
+    /**
+     * <p>
      * Represents a mutable flag that signifies if the manager is stopped or working.
      * It is changed by the stopManager method to true.
      * At any point all methods in the API should test this variable and
@@ -172,14 +263,19 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     private final boolean[] stopped = new boolean[] { false };
 
     /**
+     * AuctionManager is used to auto-creation of the exhausted hosting blocks and hosting slots.
+     */
+    private AuctionManager auctionManager = null;
+    
+    /**
      * The temporary variable to hold the remote EJB.
      */
-    private GameData remoteEJB = null;
+    private EJBHome remoteEJB = null;
 
     /**
      * The temporary variable to hold the local EJB.
      */
-    private GameDataLocal localEJB = null;
+    private EJBLocalHome localEJB = null;
     /**
      * The capacity of the Bloom Filter.
      */
@@ -210,9 +306,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws GameDataManagerConfigurationException if there are any issues with configuration
      * @throws GameDataException if any other error occurs
      */
-    public GameDataManagerImpl()
+    public GameDataManagerImpl(PuzzleTypeSource puzzleTypeSource)
         throws GameDataManagerConfigurationException, GameDataException {
-        this(GameDataManagerImpl.class.getName());
+        this(puzzleTypeSource,GameDataManagerImpl.class.getName());
     }
 
     /**
@@ -225,71 +321,70 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws GameDataManagerConfigurationException if there are any issues with configuration
      * @throws GameDataException if any other error occurs
      */
-    public GameDataManagerImpl(String namespace)
+    public GameDataManagerImpl(PuzzleTypeSource puzzleTypeSource,String namespace)
         throws GameDataManagerConfigurationException, GameDataException {
+        Helper.checkObjectNotNull(puzzleTypeSource, "puzzleTypeSource");
         Helper.checkStringNotNullOrEmpty(namespace, "namespace");
 
-        String[] jndiNameValues = Helper.getMandatoryPropertyArray(namespace,
-                JNDI_NAMES);
-
-        String[] jndiNames = new String[jndiNameValues.length];
-        String[] jndiDesignations = new String[jndiNameValues.length];
-
-        //parse the values, the format should be 'jndiname,Remote' or 'jndiname,Local'
-        for (int i = 0; i < jndiDesignations.length; i++) {
-            int index = jndiNameValues[i].lastIndexOf(",");
-
-            if (index < 0) {
-                throw new GameDataManagerConfigurationException(
-                    "The value for property jndi_names should be "
-                    + " 'jndiname,Remote' or 'jndiname,Local'.");
-            }
-
-            jndiNames[i] = jndiNameValues[i].substring(0, index).trim();
-            jndiDesignations[i] = jndiNameValues[i].substring(index + 1).trim();
-
-            //check the jndi names should not be empty, and the designations should be 'local' or 'remote'
-            if ((jndiNames[i].length() == 0) || (!LOCAL.equalsIgnoreCase(jndiDesignations[i])
-                    && !REMOTE.equalsIgnoreCase(jndiDesignations[i]))) {
-                throw new GameDataManagerConfigurationException(
-                    "The value for property jndi_names should be  'jndiname,Remote' or 'jndiname,Local'.");
-            }
+        this.puzzleTypeSource = puzzleTypeSource;
+        try{
+            InitialContext ctx = new InitialContext();
+            
+            readEJBConfig(namespace,GAME_DATA_EJB_JNDI_NAMES,ctx,GameDataHome.class);
+            //init the game data EJB instance
+            this.gameDataPersistenceLocal = (localEJB!= null) ? ((GameDataLocalHome)localEJB).create() : null;
+            this.gameDataPersistenceRemote = (remoteEJB !=null)? ((GameDataHome)remoteEJB).create() : null;
+        
+            readEJBConfig(namespace,ADMIN_DATA_EJB_JNDI_NAMES,ctx,AdminDataHome.class);
+            this.adminDataPersistenceLocal = (localEJB!= null) ?((AdminDataLocalHome)localEJB).create():null;
+            this.adminDataPersistenceRemote = (remoteEJB !=null)? ((AdminDataHome)remoteEJB).create():null;
+            
+        } catch(GameDataManagerConfigurationException e){
+            throw e;
+        } catch(Exception e){
+            throw new GameDataManagerConfigurationException("Fails to create EJB through the configuration.",e);
         }
+        
+        puzzleConfigMap = new HashMap();
+        // Load property "jigsaw"
+        initializePuzzleType(namespace, "jigsaw", PuzzleTypeEnum.JIGSAW);
+        // Load property "slidingTile"
+        initializePuzzleType(namespace, "slidingTile", PuzzleTypeEnum.SLIDING_TILE);
+        // Load property "missingLetter"
+        initializeBrainTeaserType(namespace, "missingLetter", PuzzleTypeEnum.MISSING_LETTER);
+        // Load property "letterScramble"
+        initializeBrainTeaserType(namespace, "letterScramble", PuzzleTypeEnum.LETTER_SCRAMBLE);
+        
 
-	// initialize the bitSetSerializer
+        //initialize the bitSetSerializer
         String serializerSpecNamespace;
 
         try {
-            serializerSpecNamespace = ConfigManager.getInstance().getString(
-			namespace, BIT_SERIALIZER_SPEC);
+            serializerSpecNamespace = ConfigManager.getInstance().getString(namespace, BIT_SERIALIZER_SPEC);
         } catch (UnknownNamespaceException e) {
-            throw new GameDataManagerConfigurationException("The namespace '"
-                + namespace + "' is missing in configuration.", e);
+            throw new GameDataManagerConfigurationException("The namespace '" + namespace + "' is missing in configuration.", e);
         }
 
         try {
-	    if (serializerSpecNamespace == null || serializerSpecNamespace.length() == 0) {
-		bitSetSerializer = new DefaultBitSetSerializer();
-	    } else {
-		String bitSerializerKey = Helper.getMandatoryProperty(
-                        namespace, BIT_SERIALIZER_KEY);
-                ObjectFactory factory = new ObjectFactory(
-			new ConfigManagerSpecificationFactory(serializerSpecNamespace));
-
-		bitSetSerializer = (BitSetSerializer) factory.createObject(bitSerializerKey);
-	    }
+            if (serializerSpecNamespace == null || serializerSpecNamespace.length() == 0) {
+                bitSetSerializer = new DefaultBitSetSerializer();
+            } else {
+                String bitSerializerKey = Helper.getMandatoryProperty(namespace, BIT_SERIALIZER_KEY);
+                ObjectFactory factory = new ObjectFactory(new ConfigManagerSpecificationFactory(serializerSpecNamespace));
+                bitSetSerializer = (BitSetSerializer) factory.createObject(bitSerializerKey);
+            }
         } catch (Exception e) {
             throw new GameDataManagerConfigurationException("Error creating BitSetSerializer", e);
         }
+        
+        
 
         long gameStartInterval;
         long newGameInterval;
 
         try {
-            gameStartInterval = Long.parseLong(Helper.getMandatoryProperty(
-                        namespace, GAME_START_POLL_INTERVAL));
-            newGameInterval = Long.parseLong(Helper.getMandatoryProperty(
-                        namespace, NEW_GAME_POLL_INTERVAL));
+            gameStartInterval = Long.parseLong(Helper.getMandatoryProperty(namespace, GAME_START_POLL_INTERVAL));
+            newGameInterval = Long.parseLong(Helper.getMandatoryProperty(namespace, NEW_GAME_POLL_INTERVAL));
 
             capacity = Integer.parseInt(Helper.getMandatoryProperty(namespace, "capacity"));
             errorRate = Float.parseFloat(Helper.getMandatoryProperty(namespace, "errorRate"));
@@ -309,21 +404,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             throw new GameDataManagerConfigurationException("The value of interval properties should be numbers.",
                 e);
         }
-
-        lookUpEJB(jndiNames, jndiDesignations);
-
-        //if no EJB is looked up successfully
-        if ((remoteEJB == null) && (localEJB == null)) {
-            throw new GameDataManagerConfigurationException(
-                "No EJB can be looked up via the JNDI names configed.");
-        }
+       
 
         Game[] games = null;
-
-        //init the EJB instance
-        this.gameDataPersistenceLocal = localEJB;
-        this.gameDataPersistenceRemote = remoteEJB;
-
         try {
             if (gameDataPersistenceLocal != null) {
                 games = gameDataPersistenceLocal.findGames(Boolean.FALSE, null);
@@ -359,13 +442,15 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         newGameAvailableNotifier.start();
     }
 
+    
+
     /**
      * <p>
      * Creates a new GameDataManagerImpl instance based on input parameters.
      * </p>
      *
-     * @param jndiNames an array of jndi names to use when looking up the ejb
-     * @param jndiDesignations jndi designations such as Local or Remote
+     * @param gameDataJndiNames an array of jndi names to use when looking up the ejb
+     * @param gameDataJndiDesignations jndi designations such as Local or Remote
      * @param newGameDiscoveryPollInterval interval used to configure the poll frequency (ms)
      * @param gameStartedPollInterval interval used to configure the poll frequency (ms)
      * @throws IllegalArgumentException if any array is null or contains null element,
@@ -376,30 +461,54 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * or no EJB can be looked up with the given jndis
      * @throws GameDataException if any other error occurs
      */
-    public GameDataManagerImpl(String[] jndiNames, String[] jndiDesignations,
+    public GameDataManagerImpl(PuzzleTypeSource puzzleTypeSource, Map puzzleConfigMap,String[] gameDataJndiNames, String[] gameDataJndiDesignations,
+            String[] adminDataJndiNames, String[] adminDataJndiDesignations,
         long newGameDiscoveryPollInterval, long gameStartedPollInterval,
         int capacity, float errorRate, String messengerPluginNS, String category)
         throws GameDataException {
-        Helper.checkObjectNotNull(jndiNames, "jndiNames");
-        Helper.checkObjectNotNull(jndiDesignations, "jndiDesignations");
+        Helper.checkObjectNotNull(puzzleTypeSource, "puzzleTypeSource");
+        Helper.checkObjectNotNull(puzzleConfigMap, "puzzleConfigMap");
+        Helper.checkObjectNotNull(gameDataJndiNames, "gameDataJndiNames");
+        Helper.checkObjectNotNull(gameDataJndiDesignations, "gameDataJndiDesignations");
+        Helper.checkObjectNotNull(adminDataJndiNames, "adminDataJndiNames");
+        Helper.checkObjectNotNull(adminDataJndiDesignations, "adminDataJndiDesignations");
         Helper.checkStringNotNullOrEmpty(messengerPluginNS, "messengerPluginNS");
 
-        if (jndiNames.length != jndiDesignations.length) {
+        this.puzzleTypeSource = puzzleTypeSource;
+        
+        this.puzzleConfigMap = puzzleConfigMap;
+        
+        if (adminDataJndiNames.length != adminDataJndiDesignations.length) {
             throw new IllegalArgumentException(
                 "The jndiNames and jndiDesignations should be of same length.");
         }
-
+        
+        if (gameDataJndiNames.length != gameDataJndiDesignations.length) {
+            throw new IllegalArgumentException(
+                "The jndiNames and jndiDesignations should be of same length.");
+        }
+        
         //each jndi name can not be null or empty string and the Designation should be either Remote or Local
-        for (int i = 0; i < jndiNames.length; i++) {
-            Helper.checkStringNotNullOrEmpty(jndiNames[i],
+        for (int i = 0; i < adminDataJndiNames.length; i++) {
+            Helper.checkStringNotNullOrEmpty(adminDataJndiNames[i],
                 "jndiNames[" + i + "]");
 
-            if ((!LOCAL.equalsIgnoreCase(jndiDesignations[i]) && !REMOTE.equalsIgnoreCase(jndiDesignations[i]))) {
+            if ((!LOCAL.equalsIgnoreCase(adminDataJndiDesignations[i]) && !REMOTE.equalsIgnoreCase(adminDataJndiDesignations[i]))) {
                 throw new IllegalArgumentException(
-                    "The value for property jndi_names should be  'jndiname,Remote' or 'jndiname,Local'.");
+                    "The value for property admin_data_ejb_jndi_names should be  'jndiname,Remote' or 'jndiname,Local'.");
             }
         }
+        //each jndi name can not be null or empty string and the Designation should be either Remote or Local
+        for (int i = 0; i < gameDataJndiNames.length; i++) {
+            Helper.checkStringNotNullOrEmpty(gameDataJndiNames[i],
+                "jndiNames[" + i + "]");
 
+            if ((!LOCAL.equalsIgnoreCase(gameDataJndiDesignations[i]) && !REMOTE.equalsIgnoreCase(gameDataJndiDesignations[i]))) {
+                throw new IllegalArgumentException(
+                    "The value for property game_data_ejb_jndi_names should be  'jndiname,Remote' or 'jndiname,Local'.");
+            }
+        }
+        
         if (newGameDiscoveryPollInterval <= 0) {
             throw new IllegalArgumentException(
                 "The new game interval should be > 0.");
@@ -417,21 +526,33 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         this.errorRate = errorRate;
         this.messagerPluginNS = messengerPluginNS;
         this.category = category;
-	bitSetSerializer = new DefaultBitSetSerializer();
-        lookUpEJB(jndiNames, jndiDesignations);
+        bitSetSerializer = new DefaultBitSetSerializer();
+        
+        try{
+            InitialContext ctx = new InitialContext();
+            locateEJB(gameDataJndiNames, gameDataJndiDesignations,ctx,GameDataHome.class);
+            //if no EJB is looked up successfully
+            if ((remoteEJB == null) && (localEJB == null)) {
+                throw new IllegalArgumentException(
+                    "No EJB can be looked up via the JNDI names configed.");
+            }
+            //init the game data EJB instance
+            this.gameDataPersistenceLocal = (localEJB!= null) ? ((GameDataLocalHome)localEJB).create() : null;
+            this.gameDataPersistenceRemote = (remoteEJB !=null)? ((GameDataHome)remoteEJB).create() : null;
+    
 
-        //if no EJB is looked up successfully
-        if ((remoteEJB == null) && (localEJB == null)) {
-            throw new IllegalArgumentException(
-                "No EJB can be looked up via the JNDI names configed.");
+            locateEJB(adminDataJndiNames, adminDataJndiDesignations,ctx,AdminDataHome.class);
+            this.adminDataPersistenceLocal = (localEJB!= null) ?((AdminDataLocalHome)localEJB).create():null;
+            this.adminDataPersistenceRemote = (remoteEJB !=null)? ((AdminDataHome)remoteEJB).create():null;
+            
+        } catch(IllegalArgumentException e){
+            throw e;
+        } catch(Exception e){
+            throw new IllegalArgumentException("The configuration for ejb seems not right.");
         }
-
+        
+        
         Game[] games = null;
-
-        //init the EJB instance
-        this.gameDataPersistenceLocal = localEJB;
-        this.gameDataPersistenceRemote = remoteEJB;
-
         try {
             if (gameDataPersistenceLocal != null) {
                 games = gameDataPersistenceLocal.findGames(Boolean.FALSE, null);
@@ -468,6 +589,51 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     }
 
     /**
+     * 
+     * Read the configuration for the ejb's local and remote jndi. And also try to lookup the ejb through the
+     * jndi in the context.
+     *
+     * @param namespace the namespace to read the configuration
+     * @param property the property name in the namespace
+     * @param ctx the context to lookup the ejb
+     * @param classType the remote Ejb class type
+     * @throws GameDataManagerConfigurationException any fails in configuration or fails to read ejb
+     */
+    private void readEJBConfig(String namespace,String property,InitialContext ctx, Class classType) throws GameDataManagerConfigurationException {
+        String[] jndiNameValues = Helper.getMandatoryPropertyArray(namespace, property);
+
+        String[] jndiNames = new String[jndiNameValues.length];
+        String[] jndiDesignations = new String[jndiNameValues.length];
+
+        //parse the values, the format should be 'jndiname,Remote' or 'jndiname,Local'
+        for (int i = 0; i < jndiDesignations.length; i++) {
+            int index = jndiNameValues[i].lastIndexOf(",");
+
+            if (index < 0) {
+                throw new GameDataManagerConfigurationException(
+                    "The value for property " + property  + " should be "
+                    + " 'jndiname,Remote' or 'jndiname,Local'.");
+            }
+
+            jndiNames[i] = jndiNameValues[i].substring(0, index).trim();
+            jndiDesignations[i] = jndiNameValues[i].substring(index + 1).trim();
+
+            //check the jndi names should not be empty, and the designations should be 'local' or 'remote'
+            if ((jndiNames[i].length() == 0) || (!LOCAL.equalsIgnoreCase(jndiDesignations[i])
+                    && !REMOTE.equalsIgnoreCase(jndiDesignations[i]))) {
+                throw new GameDataManagerConfigurationException(
+                    "The value for property " + property  + " should be  'jndiname,Remote' or 'jndiname,Local'.");
+            }
+        }
+       this.locateEJB(jndiNames, jndiDesignations, ctx, classType);
+       //if no EJB is looked up successfully
+       if ((remoteEJB == null) && (localEJB == null)) {
+           throw new GameDataManagerConfigurationException(
+               "No EJB can be looked up via the JNDI names configed.");
+       }
+    }
+    
+    /**
      * <p>
      * Look up the EJB with the given names and desigantions.
      * Once a local or a remote EJB is looked up successfully,
@@ -476,28 +642,19 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *
      * @param jndiNames the names of the JNDI
      * @param jndiDesignations the designations denote remote or local
+     * @param ctx the context to lookup the ejb
+     * @param classType the remote Ejb class type
      */
-    private void lookUpEJB(String[] jndiNames, String[] jndiDesignations) {
-        InitialContext ctx = null;
-
-        //look up the EJB via the JNDI
-        try {
-            ctx = new InitialContext();
-        } catch (Exception e) {
-            //ignore
-        }
-
+    private void locateEJB(String[] jndiNames, String[] jndiDesignations,InitialContext ctx, Class classType) {
+        //try to lookup the ejb
         for (int i = 0; i < jndiNames.length; i++) {
             try {
                 //if the JNDI is expected to be local, init the localEJB
                 if (LOCAL.equalsIgnoreCase(jndiDesignations[i])) {
-                    GameDataLocalHome home = (GameDataLocalHome) ctx.lookup(jndiNames[i]);
-                    localEJB = (GameDataLocal) home.create();
+                    localEJB =  (EJBLocalHome) ctx.lookup(jndiNames[i]);
                 } else {
                     Object lookup = ctx.lookup(jndiNames[i]);
-                    GameDataHome home = (GameDataHome) PortableRemoteObject.narrow(lookup, GameDataHome.class);
-                    //init the remote EJB otherwise
-                    remoteEJB = (GameData) home.create();
+                    remoteEJB =  (EJBHome) PortableRemoteObject.narrow(lookup, classType);
                 }
             } catch (Exception e) {
                 //go and continue to find a Remote or Local EJB
@@ -509,6 +666,50 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
     }
 
+    /**
+     * Initialize brain teaser type parameters.
+     *
+     * @param namespace
+     *            the namespace
+     * @param name
+     *            the name of brain teaser property
+     * @param type
+     *            the type of the brain teaser
+     * @throws ConfigurationException
+     *             if any sub-property miss or is valid
+     */
+    private void initializeBrainTeaserType(String namespace, String name,
+        PuzzleTypeEnum type) throws GameDataManagerConfigurationException {
+        Property property = Helper.getProperty(namespace, name);
+        String typeName = Helper.getSubPropertyString(property, "puzzleTypeName");
+        int seriesSize = Helper.getSubPropertyInt(property, "seriesSize");
+        PuzzleConfig config = new PuzzleConfig(typeName, null, null, seriesSize);
+        puzzleConfigMap.put(type, config);
+    }
+
+    /**
+     * Initialize puzzle type parameters.
+     *
+     * @param namespace
+     *            the namespace
+     * @param name
+     *            the name of puzzle property
+     * @param type
+     *            the type of the puzzle
+     * @throws ConfigurationException
+     *             if any sub-property miss or is valid
+     */
+    private void initializePuzzleType(String namespace, String name,
+        PuzzleTypeEnum type) throws GameDataManagerConfigurationException {
+        Property property = Helper.getProperty(namespace, name);
+        String typeName = Helper.getSubPropertyString(property, "puzzleTypeName");
+        int width = Helper.getSubPropertyInt(property, "width");
+        int height = Helper.getSubPropertyInt(property, "height");
+        PuzzleConfig config = new PuzzleConfig(typeName, new Integer(width),
+                new Integer(height), 0);
+        puzzleConfigMap.put(type, config);
+    }
+    
     /**
      * <p>
      * Tests whether an upcoming domain is ready to begin hosting a specific slot.
@@ -568,6 +769,201 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         return true;
     }
 
+    
+    /**
+     * (Re)generates the brain teaser for the specified hosting slot. This
+     * method does the following.
+     * <ol>
+     * <li>Get the text for the slot's first domain target.</li>
+     * <li>Choose between missing letter and letter scramble puzzles randomly.</li>
+     * <li>Generate a puzzle series for the chosen type.</li>
+     * <li>Store the puzzle using AdminData.</li>
+     * <li>Update the puzzle information for the slot using GameData.</li>
+     * </ol>
+     *
+     *
+     * @param slotId
+     *            slot id.
+     * @throws GameDataException
+     *             if a checked exception prevents this method from completing
+     *             normally
+     */
+    public void regenerateBrainTeaser(long slotId) throws GameDataException {
+        try {
+            HostingSlot slot = null;
+            // Get the hosting slot
+            if ( gameDataPersistenceLocal != null){
+                slot = gameDataPersistenceLocal.getSlot(slotId);
+            } else{
+                slot = gameDataPersistenceRemote.getSlot(slotId);
+            }
+
+            // Get text for puzzle
+            DomainTarget[] targets = slot.getDomainTargets();
+
+            if (targets.length == 0) {
+                throw new GameDataException(
+                    "Failed to regenerate BrainTeaser for slot(slotId:" +
+                    slotId +
+                    "), caused by there is no DomainTargets set for that slot.");
+            }
+
+            String puzzleText = targets[0].getIdentifierText();
+            int chosenPuzzle = new Random().nextInt(BRAINTEASER_TYPES.length);
+
+            // Get puzzle config for the type
+            PuzzleConfig config = null;
+
+            synchronized (puzzleConfigMap) {
+                config = (PuzzleConfig) puzzleConfigMap.get(BRAINTEASER_TYPES[chosenPuzzle]);
+            }
+
+            // Generate the puzzle series
+            PuzzleType puzzleType = puzzleTypeSource.getPuzzleType(config.getPuzzleTypeName());
+            PuzzleGenerator puzzleGenerator = puzzleType.createGenerator();
+            puzzleGenerator.setAttribute("text", puzzleText);
+
+            PuzzleData[] puzzleDatas = puzzleGenerator.generatePuzzleSeries(config.getPuzzleSeriesSize());
+
+            // Store the puzzles and get ids
+            long[] puzzleIds = (adminDataPersistenceLocal != null)? adminDataPersistenceLocal.storePuzzles(puzzleDatas):
+                this.adminDataPersistenceRemote.storePuzzles(puzzleDatas);
+
+            // Create a new HostingSlotImpl instance
+            HostingSlotImpl newSlot = Helper.doCopy(slot);
+            // Set the new brainteaser ids
+            newSlot.setBrainTeaserIds(puzzleIds);
+            // Update slot
+            if ( this.gameDataPersistenceLocal != null){
+                gameDataPersistenceLocal.updateSlots(new HostingSlot[] { newSlot });
+            } else{
+                gameDataPersistenceRemote.updateSlots(new HostingSlot[] { newSlot });
+            }
+            
+        } catch (Exception e) {
+            throw new GameDataException("Failed to regenerate puzzle.", e);
+        }
+    }
+
+    
+    
+    /**
+     * (Re)generates the game-win puzzle for the specified hosting slot. This
+     * method does the following.
+     * <ol>
+     * <li>Get the download data for slot's associated image id.</li>
+     * <li>Choose between jigsaw and sliding tyle puzzles randomly.</li>
+     * <li>Generate a puzzle for the chosen type.</li>
+     * <li>Store the puzzle using AdminData.</li>
+     * <li>Update the puzzle information for the slot using GameData.</li>
+     * </ol>
+     *
+     *
+     * @param slotId
+     *            the slot id.
+     * @throws GameDataException
+     *             if a checked exception prevents this method from completing
+     *             normally.
+     */
+    public void regeneratePuzzle(long slotId) throws GameDataException {
+        try {
+            HostingSlot slot = null;
+            // Get the hosting slot
+            if ( gameDataPersistenceLocal != null){
+                slot = gameDataPersistenceLocal.getSlot(slotId);
+            } else{
+                slot = gameDataPersistenceRemote.getSlot(slotId);
+            }
+
+            // Get the image for the puzzle
+            DownloadData imageData = getDownloadData(slot);
+            Image image = new MutableMemoryImage(ImageIO.read(
+                        imageData.getContent()));
+            int chosenPuzzle = new Random().nextInt(PUZZLE_TYPES.length);
+
+            // Get puzzle config for the type
+            PuzzleConfig config = null;
+
+            synchronized (puzzleConfigMap) {
+                config = (PuzzleConfig) puzzleConfigMap.get(PUZZLE_TYPES[chosenPuzzle]);
+            }
+
+            // Set puzzle generator configuration
+            PuzzleType puzzleType = puzzleTypeSource.getPuzzleType(config.getPuzzleTypeName());
+            PuzzleGenerator puzzleGenerator = puzzleType.createGenerator();
+            puzzleGenerator.setAttribute("image", image);
+            puzzleGenerator.setAttribute("width", config.getWidth());
+            puzzleGenerator.setAttribute("height", config.getHeight());
+
+            // Generate puzzle
+            PuzzleData puzzleData = puzzleGenerator.generatePuzzle();
+
+            // Store the puzzle and get id
+            long[] puzzleIds = (adminDataPersistenceLocal != null)? adminDataPersistenceLocal.storePuzzles(new PuzzleData[] {
+                        puzzleData}): adminDataPersistenceRemote.storePuzzles(new PuzzleData[] {puzzleData});
+
+            // Create a new HostingSlotImpl instance
+            HostingSlotImpl newSlot = Helper.doCopy(slot);
+            // Set the new puzzle id
+            newSlot.setPuzzleId(new Long(puzzleIds[0]));
+            // Update slot
+            if ( this.gameDataPersistenceLocal != null){
+                this.gameDataPersistenceLocal.updateSlots(new HostingSlot[] { newSlot });
+            } else{
+                this.gameDataPersistenceRemote.updateSlots(new HostingSlot[] { newSlot });
+            }
+        } catch (GameDataException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new GameDataException("Failed to regenerate puzzle.", e);
+        }
+    }
+    
+    /**
+     * Get download data from gamedata.
+     *
+     * @param gameData
+     *            GameData EJB instance.
+     * @param slot
+     *            the slot to get download data id
+     * @return download data
+     * @throws GameDataException
+     *             if any exception occur, or there is no corresponding download
+     *             exist in domain.
+     */
+    private DownloadData getDownloadData(HostingSlot slot)
+        throws GameDataException {
+        Domain domain = slot.getDomain();
+        ImageInfo[] images = domain.getImages();
+        long imageId = slot.getImageId();
+
+        for (int i = 0; i < images.length; i++) {
+            if (images[i].getId().longValue() == imageId) {
+                try {
+                    return (gameDataPersistenceLocal != null)? gameDataPersistenceLocal.getDownloadData(images[i].getDownloadId()):
+                        gameDataPersistenceRemote.getDownloadData(images[i].getDownloadId());
+                } catch (EntryNotFoundException e) {
+                    throw new GameDataException(
+                        "Failed to get download data. (slot id is " +
+                        slot.getId() + ")", e);
+                } catch (PersistenceException e) {
+                    throw new GameDataException(
+                        "Failed to get download data. (slot id is " +
+                        slot.getId() + ")", e);
+                } catch (RemoteException e) {
+                    throw new GameDataException(
+                        "Failed to get download data. (slot id is " +
+                        slot.getId() + ")", e);
+                }
+            }
+        }
+
+        // throw exception if download data do not exist
+        throw new GameDataException(
+            "Failed to get download data for there is no corresponding" +
+            " download image exist in domain. (slot id is " + slot.getId() +
+            ", expected game id is " + imageId + ")");
+    }
     /**
      * <p>
      * Records the IDs of the winning bids for the slots in the specified hosting block.
@@ -657,8 +1053,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         //get the blocks of the game
         HostingBlock[] blocks = game.getBlocks();
-        if (blocks == null) {
-            return;
+        if (blocks == null || blocks.length == 0) {
+            throw new GameDataException("The game to be advanced has HostingBlock array or empty HostingBlock.");
         }
 
         hosting_blocks:
@@ -667,13 +1063,16 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
             // if no slots exist, just go on to the next block
             if (slots == null) {
-                continue hosting_blocks;
+                continue ;
             }
 
             // set the end date of the current slot and the start date of the next slot to now
             find_current_slot:
             for (int j = 0; j < slots.length; j++) {
 
+                if ( slots[j] == null){
+                    throw new GameDataException("Null slots in HostingBlock of the game.");
+                }
                 // if this is the current slot ...
                 if ((slots[j].getHostingStart() != null) && (slots[j].getHostingEnd() == null)) {
                     List slotsToUpdate = new ArrayList();
@@ -703,6 +1102,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                             } else {
                                 // out of slots
                                 // extra slot generation could be inserted here
+                                autoCreateHostingBlocks(gameId);
                                 break find_next_slot;
                             }
                         } else {
@@ -738,6 +1138,116 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
     }
 
+    /**
+     * Specifically, each of the game's existing blocks will be used as the basis for a new block.
+     * @param gameId the game to re create the hosting block and hosting slots.
+     *
+     */
+    private void autoCreateHostingBlocks(long gameId) throws GameDataException{
+        Game game = null;
+        try{
+            //get the game with the given id
+            if (gameDataPersistenceLocal != null) {
+                game = gameDataPersistenceLocal.getGame(gameId);
+            } else {
+                game = gameDataPersistenceRemote.getGame(gameId);
+            }
+            HostingBlock[] blocks = game.getBlocks();
+            for(int i = 0 ; i < blocks.length; i++){
+                HostingBlock block = blocks[i];
+                
+                //copy the block, add it to database
+                HostingBlock newBlock = null;
+                if (gameDataPersistenceLocal != null) {
+                    newBlock = gameDataPersistenceLocal.addBlock(gameId, block.getMaxHostingTimePerSlot());
+                } else {
+                    newBlock = gameDataPersistenceRemote.addBlock(gameId, block.getMaxHostingTimePerSlot());
+                }
+                //get the corresponding auction of the hosting block
+                Auction oldAuction = auctionManager.getAuctionPersistence().getAuction(block.getId().longValue());
+                Bid [] bids = oldAuction.getBids();
+                
+                //create a new "Fake Auction" for the new HostingBlock, copy the attribute from the old Auctions
+                Auction fakeAuction = new AuctionImpl(newBlock.getId(), oldAuction.getSummary(), oldAuction.getDescription(),
+                        oldAuction.getItemCount(), oldAuction.getMinimumBid(), oldAuction.getStartDate(), oldAuction.getEndDate(), bids);
+                auctionManager.getAuctionPersistence().createAuction(fakeAuction);
+                
+                // copy the bids array for slots creation, each bid has corresponding slots
+                List bidIds = new ArrayList();
+                if ( bids != null){
+                    for(int j = 0 ; j < bids.length ; j++){
+                        bidIds.add(new Long( bids[j].getBidderId()));
+                    }
+                }
+                //copy the slots and auto create it
+                autoCreateHostingSlots(block.getSlots(), newBlock.getId().longValue(), bidIds);
+                
+               
+            }
+            
+        }catch(Exception e){
+            throw new GameDataException("Error in auto-creation hosting blocks and slots.");
+        }
+    }
+
+    /**
+     * <p>
+     * Auto Create HostingSlots for the new hosting block.
+     * For each new slots, copy the domain targets, set the hostingstart and hosting end
+     * and generate the puzzle and brainteaser list.
+     * </p>
+     * @param oldSlots the old slots
+     * @param newBlockId the new HostingBlock id
+     * @param bidIds the bidIds of the old block
+     * @throws PersistenceException fail to update db
+     * @throws RemoteException fail to call ejb
+     * @throws GameDataException fail to auto create hosting slots
+     */
+    private void autoCreateHostingSlots(HostingSlot [] oldSlots, long newBlockId, List bidIds) throws PersistenceException, RemoteException, GameDataException {
+        //shuffle randomly the bid(slots) list
+        Collections.shuffle(bidIds);
+        long  [] copiedBidIds = new long[bidIds.size()];
+        for(int j = 0 ; j < bidIds.size(); j++){
+            copiedBidIds[j] = ((Long)bidIds.get(j)).longValue();
+        }
+        
+        //create new HostingSlots array
+        HostingSlot [] newSlots = (gameDataPersistenceLocal != null)? gameDataPersistenceLocal.createSlots(newBlockId, copiedBidIds):
+           gameDataPersistenceRemote.createSlots(newBlockId, copiedBidIds);
+        
+        //for each new slots, copy the domain targets, set the hostingstart and hosting end
+        //and generate the puzzle and brainteaser list
+        for(int j = 0 ; j < newSlots.length; j++){
+            //get the domain targets of the old slots and shuffle randomly
+            List targets = Arrays.asList(findSlotByBid(oldSlots, newSlots[j].getBidId()).getDomainTargets());
+            Collections.shuffle(targets);
+            //copy the slot to set the hosting start, hosting end and shuffled randomly targets
+            HostingSlot copiedSlot = Helper.copySlot(newSlots[j], null,null,(DomainTarget[])targets.toArray(new DomainTarget[0]));
+            //update the slot
+            HostingSlot updatedSlot = ((gameDataPersistenceLocal != null)? gameDataPersistenceLocal.updateSlots(new HostingSlot[]{copiedSlot}):
+                this.gameDataPersistenceRemote.updateSlots(new HostingSlot[]{copiedSlot}))[0];
+            //regenerate Puzzle array
+            regeneratePuzzle(updatedSlot.getId().longValue());
+            //regenerate BrainTeaser array
+            regenerateBrainTeaser(updatedSlot.getId().longValue());
+        }
+    }
+    /**
+     * Find the slot that the bid id is equal to the given bid id.
+     * 
+     * @param slots the slots array
+     * @param bidId the bid id
+     * @return the HostingSlot
+     */
+    private HostingSlot findSlotByBid(HostingSlot [] slots, long bidId){
+        for(int i = 0 ; i < slots.length; i++){
+            if ( slots[i].getBidId() == bidId){
+                return slots[i];
+            }
+        }
+        return null;
+    }
+    
     /**
      * Finds a among the provided slots the first suitable one to which the Ball
      * may be advanced
@@ -863,6 +1373,22 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         return stream.toString("US-ASCII");
     }
 
+    /**
+     * Get the AuctionManager.
+     * @return the auctionManager
+     */
+    public AuctionManager getAuctionManager() {
+        return auctionManager;
+    }
+
+    /**
+     * Set the auctionManager instance.
+     * @param auctionManager the auctionManager to set
+     */
+    public void setAuctionManager(AuctionManager auctionManager) {
+        this.auctionManager = auctionManager;
+    }
+    
     /**
      * <p>
      * Checks whether the manager is stopped.
@@ -1029,7 +1555,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * <p>
      * This is a simple class, which runs as a worker thread and checks, at specified intervals,
      * if new game data is available on
-     * the server. This class is ¡®smart¡¯ enough to work with both
+     * the server. This class is ï¿½ï¿½smartï¿½ï¿½ enough to work with both
      * local and remote ejb interfaces transparently.
      * This class accepts a registered listener,
      * which gets notified whenever a new game has indeed been found on the server.
@@ -1239,4 +1765,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             this.interrupt();
         }
     }
+
+    
 }

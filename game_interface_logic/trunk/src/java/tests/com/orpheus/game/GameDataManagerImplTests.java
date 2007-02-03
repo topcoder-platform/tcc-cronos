@@ -70,7 +70,7 @@ public class GameDataManagerImplTests extends TestCase {
             cm.removeNamespace((String) it.next());
         }
         cm.add("config.xml");
-        manager = new GameDataManagerImpl();
+        manager = new GameDataManagerImpl(new MockPuzzleTypeSource());
     }
 
     /**
@@ -90,24 +90,24 @@ public class GameDataManagerImplTests extends TestCase {
         MockContextFactory.revertSetAsInitial();
     }
 
-    /**
-     * The accuracy test of the constructor with parameters.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_accuracy1() throws Exception {
-        GameDataManagerImpl instance = new GameDataManagerImpl(
-                new String[] {"localjbossBean"}, new String[]{"local"}, 1000, 1000, 1000, (float)0.5, "namespace", "c");
-        assertNotNull("create failed", instance);
-        instance.stopManager();
-    }
+//    /**
+//     * The accuracy test of the constructor with parameters.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_accuracy1() throws Exception {
+//        GameDataManagerImpl instance = new GameDataManagerImpl(
+//                new String[] {"localjbossBean"}, new String[]{"local"}, 1000, 1000, 1000, (float)0.5, "namespace", "c");
+//        assertNotNull("create failed", instance);
+//        instance.stopManager();
+//    }
     /**
      * The accuracy test of the constructor with namespace.
      *
      * @throws Exception to JUnit
      */
     public void test_ctor_accuracy2() throws Exception {
-        GameDataManagerImpl instance = new GameDataManagerImpl(GameDataManagerImpl.class.getName());
+        GameDataManagerImpl instance = new GameDataManagerImpl(new MockPuzzleTypeSource(),GameDataManagerImpl.class.getName());
         assertNotNull("create failed", instance);
         instance.stopManager();
     }
@@ -143,7 +143,7 @@ public class GameDataManagerImplTests extends TestCase {
      */
     public void test_ctor_failure2() throws Exception {
         try {
-            new GameDataManagerImpl(" ");
+            new GameDataManagerImpl(new MockPuzzleTypeSource()," ");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             //pass
@@ -159,146 +159,146 @@ public class GameDataManagerImplTests extends TestCase {
      */
     public void test_ctor_failure3() throws Exception {
         try {
-            new GameDataManagerImpl("no such namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(),"no such namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
         }
     }
 
-    /**
-     * The failure test of the constructor with parameters,
-     * the jndiNames is null,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure4() throws Exception {
-        try {
-            new GameDataManagerImpl(null, new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the jndiNames is null,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure4() throws Exception {
+//        try {
+//            new GameDataManagerImpl(null, new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
 
-    /**
-     * The failure test of the constructor with parameters,
-     * the jndiNames contains null,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure5() throws Exception {
-        try {
-            new GameDataManagerImpl(new String[] {null},
-                new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
-
-    /**
-     * The failure test of the constructor with parameters,
-     * the jndiDesignations is null,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure6() throws Exception {
-        try {
-            new GameDataManagerImpl(new String[] {"name"}, null, 5000, 5000, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
-
-    /**
-     * The failure test of the constructor with parameters,
-     * the jndiDesignations contains invalid String, not local or remote,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure7() throws Exception {
-        try {
-            new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"not local or remote"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
-
-    /**
-     * The failure test of the constructor with parameters,
-     * the jndiNames contains empty String,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure8() throws Exception {
-        try {
-            new GameDataManagerImpl(new String[] {" "},
-                new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
-
-    /**
-     * The failure test of the constructor with parameters,
-     * the jndiNames and jndiDesignations are not of the same length,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure9() throws Exception {
-        try {
-            new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"local", "remote"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
-
-    /**
-     * The failure test of the constructor with parameters,
-     * the interval <= 0,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure10() throws Exception {
-        try {
-            new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"local"}, 0, 5000, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
-
-    /**
-     * The failure test of the constructor with parameters,
-     * the interval <= 0,
-     * so IllegalArgumentException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void test_ctor_failure11() throws Exception {
-        try {
-            new GameDataManagerImpl(new String[] {"name"},
-                new String[] {"local"}, 5000, 0, 1000, (float)0.5, "namespace", "c");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-    }
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the jndiNames contains null,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure5() throws Exception {
+//        try {
+//            new GameDataManagerImpl(new String[] {null},
+//                new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
+//
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the jndiDesignations is null,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure6() throws Exception {
+//        try {
+//            new GameDataManagerImpl(new String[] {"name"}, null, 5000, 5000, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
+//
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the jndiDesignations contains invalid String, not local or remote,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure7() throws Exception {
+//        try {
+//            new GameDataManagerImpl(new String[] {"name"},
+//                new String[] {"not local or remote"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
+//
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the jndiNames contains empty String,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure8() throws Exception {
+//        try {
+//            new GameDataManagerImpl(new String[] {" "},
+//                new String[] {"local"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
+//
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the jndiNames and jndiDesignations are not of the same length,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure9() throws Exception {
+//        try {
+//            new GameDataManagerImpl(new String[] {"name"},
+//                new String[] {"local", "remote"}, 5000, 5000, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
+//
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the interval <= 0,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure10() throws Exception {
+//        try {
+//            new GameDataManagerImpl(new String[] {"name"},
+//                new String[] {"local"}, 0, 5000, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
+//
+//    /**
+//     * The failure test of the constructor with parameters,
+//     * the interval <= 0,
+//     * so IllegalArgumentException is expected.
+//     *
+//     * @throws Exception to JUnit
+//     */
+//    public void test_ctor_failure11() throws Exception {
+//        try {
+//            new GameDataManagerImpl(new String[] {"name"},
+//                new String[] {"local"}, 5000, 0, 1000, (float)0.5, "namespace", "c");
+//            fail("IllegalArgumentException should be thrown.");
+//        } catch (IllegalArgumentException e) {
+//            //pass
+//        }
+//    }
 
     /**
      * The failure test of the constructor with namespace,
@@ -311,7 +311,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_no_JNDI.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
@@ -329,7 +329,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_wrong_JNDI1.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
@@ -347,7 +347,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_wrong_JNDI2.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
@@ -365,7 +365,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_wrong_JNDI3.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
@@ -383,7 +383,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_no_interval1.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
@@ -401,7 +401,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_no_interval2.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
@@ -419,7 +419,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_wrong_interval1.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass
@@ -437,7 +437,7 @@ public class GameDataManagerImplTests extends TestCase {
         ConfigManager.getInstance().add("invalid_config_wrong_interval2.xml");
 
         try {
-            new GameDataManagerImpl("Invalid_namespace");
+            new GameDataManagerImpl(new MockPuzzleTypeSource(), "Invalid_namespace");
             fail("GameDataManagerConfigurationException should be thrown.");
         } catch (GameDataManagerConfigurationException e) {
             //pass

@@ -24,7 +24,7 @@ public interface GameDataManager {
     /**
      * <p>
      * Tests whether an upcoming domain is ready to begin hosting a specific slot.  Bascially we need to ensure that the
-     * domain¡¯s document root and the documents hosting all the slot¡¯s domain targets are all reachable
+     * domainï¿½ï¿½s document root and the documents hosting all the slotï¿½ï¿½s domain targets are all reachable
      * </p>
      *
      * @param slot Hosting slot to test for validity
@@ -64,4 +64,44 @@ public interface GameDataManager {
      * @throws GameDataException if a checked exception prevents this method from completing successfully.
      */
     public void advanceHostingSlot(long gameId) throws GameDataException;
+    
+    /**
+     * (Re)generates the brain teaser for the specified hosting slot. This
+     * method does the following.
+     * <ol>
+     * <li>Get the text for the slot's first domain target.</li>
+     * <li>Choose between missing letter and letter scramble puzzles randomly.</li>
+     * <li>Generate a puzzle series for the chosen type.</li>
+     * <li>Store the puzzle using AdminData.</li>
+     * <li>Update the puzzle information for the slot using GameData.</li>
+     * </ol>
+     *
+     *
+     * @param slotId
+     *            slot id.
+     * @throws GameDataException
+     *             if a checked exception prevents this method from completing
+     *             normally
+     */
+    public void regenerateBrainTeaser(long slotId) throws GameDataException ;
+    
+    /**
+     * (Re)generates the game-win puzzle for the specified hosting slot. This
+     * method does the following.
+     * <ol>
+     * <li>Get the download data for slot's associated image id.</li>
+     * <li>Choose between jigsaw and sliding tyle puzzles randomly.</li>
+     * <li>Generate a puzzle for the chosen type.</li>
+     * <li>Store the puzzle using AdminData.</li>
+     * <li>Update the puzzle information for the slot using GameData.</li>
+     * </ol>
+     *
+     *
+     * @param slotId
+     *            the slot id.
+     * @throws GameDataException
+     *             if a checked exception prevents this method from completing
+     *             normally.
+     */
+    public void regeneratePuzzle(long slotId) throws GameDataException ;
 }
