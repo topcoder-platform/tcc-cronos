@@ -102,6 +102,13 @@ public class HostingSlotImpl implements HostingSlot {
      * </p>
      */
     private final Domain domain;
+    
+    /**
+     * <p>
+     * The bid id.//FIXME for fix ball 5242, add the bid id.
+     * </p>
+     */
+    private long bidId = 0;
 
     /**
      * <p>
@@ -281,5 +288,20 @@ public class HostingSlotImpl implements HostingSlot {
      */
     public Date getHostingEnd() {
         return this.hostingEnd;
+    }
+
+    /**
+     * set the bid id.
+     * @param bidId the bid id
+     */
+    public void setBidId(long bidId){
+        this.bidId = bidId;
+    }
+    /**
+     * get bid id.
+     * @see com.orpheus.game.persistence.HostingSlot#getBidId()
+     */
+    public long getBidId() {
+        return this.bidId;
     }
 }
