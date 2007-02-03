@@ -93,17 +93,4 @@ public interface HostingSlot extends Serializable {
      * @return the end date of the hosting
      */
     Date getHostingEnd();
-    
-    /**
-     * Returns the corresponding bid id of the slot.
-     * 
-     * @return the corresponding bid id
-     */
-    long getBidId();
-    
-    /**
-     * Set bid id.
-     * 
-     */
-    void setBidId(long bidId);
 }

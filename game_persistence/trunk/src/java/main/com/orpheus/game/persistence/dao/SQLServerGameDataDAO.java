@@ -828,7 +828,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         // create the HostingSlotImpl instance
                         slots[i] = new HostingSlotImpl(id, domain, imageId, new long[0], null, sequenceNumber++,
                                 new DomainTarget[0], currentAmount, null, null);
-                        slots[i].setBidId(bidIds[i]);
                     }
                 }
 
@@ -1250,10 +1249,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 }
 
                 // return the HostingBlock instance with the retrieved data
-                HostingSlot slot = new HostingSlotImpl(new Long(slotId), domain, imageId, btids, puzzleId, sequenceNumber,
+                return new HostingSlotImpl(new Long(slotId), domain, imageId, btids, puzzleId, sequenceNumber,
                     (DomainTarget[]) targets.toArray(new DomainTarget[targets.size()]), winningBid, hostingStart, hostingEnd);
-                slot.setBidId(bidId);
-                return slot;
+                
             } finally {
                 close(conn);
             }
