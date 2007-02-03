@@ -24,11 +24,7 @@ class HostingSlotImpl implements HostingSlot {
      * The id of the slot.
      */
     private Long id;
-    
-    /**
-     * the bidId.
-     */
-    private long bidId;
+
 
     /**
      * The domain of the slot.
@@ -261,19 +257,4 @@ class HostingSlotImpl implements HostingSlot {
         this.winningBid = winningBid;
     }
 
-    /**
-     * the bid id.
-     * @see com.orpheus.game.persistence.HostingSlot#getBidId()
-     */
-    public long getBidId() {
-        return this.bidId;
-    }
-
-    /**
-     * the bid id.
-     * @see com.orpheus.game.persistence.HostingSlot#setBidId(long)
-     */
-    public void setBidId(long bidId) {
-        this.bidId = bidId;
-    }
 }
