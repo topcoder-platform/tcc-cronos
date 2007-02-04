@@ -10,6 +10,7 @@ import com.orpheus.administration.persistence.AdminDataLocal;
 import com.orpheus.administration.persistence.AdminDataLocalHome;
 import com.orpheus.administration.persistence.OrpheusMessengerPlugin;
 import com.orpheus.administration.persistence.RemoteOrpheusMessengerPlugin;
+import com.orpheus.auction.persistence.CustomBid;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.EntryNotFoundException;
@@ -1166,26 +1167,29 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 }
                 //get the corresponding auction of the hosting block
                 Auction oldAuction = auctionManager.getAuctionPersistence().getAuction(block.getId().longValue());
-                Bid [] bids = oldAuction.getBids();
                 
-                //create a new "Fake Auction" for the new HostingBlock, copy the attribute from the old Auctions
+                //create new bid for the fake auction
+                Bid [] bids = oldAuction.getBids();
+                Bid [] newBids = new Bid[bids != null ? bids.length:0];
+                for(int j = 0 ; j < newBids.length; j++){
+                    newBids[j] = new CustomBid(bids[j].getBidderId(),((CustomBid)bids[j]).getImageId(),bids[j].getMaxAmount(),bids[j].getTimestamp());
+                }
+                
+                //create a new "Fake Auction" for the new HostingBlock, copy the attribute from the old Auctions,
+                //the new bids will also be persisted
                 Auction fakeAuction = new AuctionImpl(newBlock.getId(), oldAuction.getSummary(), oldAuction.getDescription(),
-                        oldAuction.getItemCount(), oldAuction.getMinimumBid(), oldAuction.getStartDate(), oldAuction.getEndDate(), bids);
+                        oldAuction.getItemCount(), oldAuction.getMinimumBid(), oldAuction.getStartDate(), oldAuction.getEndDate(), newBids);
                 auctionManager.getAuctionPersistence().createAuction(fakeAuction);
                 
-                // copy the bids array for slots creation, each bid has corresponding slots
-                List bidIds = new ArrayList();
-                if ( bids != null){
-                    for(int j = 0 ; j < bids.length ; j++){
-                        bidIds.add(new Long( bids[j].getBidderId()));
-                    }
-                }
-                //copy the slots and auto create it
-                autoCreateHostingSlots(block.getSlots(), newBlock.getId().longValue(), bidIds);
+                //reload the auction from persistence in order to get all the things with newIds.
+                fakeAuction = auctionManager.getAuctionPersistence().getAuction(newBlock.getId().longValue());
+                //reload the new bids
+                newBids = fakeAuction.getBids();
                 
+                //copy the slots and auto create it
+                autoCreateHostingSlots(block.getSlots(), newBlock.getId().longValue(), newBids);
                
             }
-            
         }catch(Exception e){
             throw new GameDataException("Error in auto-creation hosting blocks and slots.");
         }
@@ -1199,20 +1203,22 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * </p>
      * @param oldSlots the old slots
      * @param newBlockId the new HostingBlock id
-     * @param bidIds the bidIds of the old block
+     * @param newBids the new Bid array to create slots
      * @throws PersistenceException fail to update db
      * @throws RemoteException fail to call ejb
      * @throws GameDataException fail to auto create hosting slots
      */
-    private void autoCreateHostingSlots(HostingSlot [] oldSlots, long newBlockId, List bidIds) throws PersistenceException, RemoteException, GameDataException {
-        //shuffle randomly the bid(slots) list
-        Collections.shuffle(bidIds);
-        long  [] copiedBidIds = new long[bidIds.size()];
-        for(int j = 0 ; j < bidIds.size(); j++){
-            copiedBidIds[j] = ((Long)bidIds.get(j)).longValue();
+    private void autoCreateHostingSlots(HostingSlot [] oldSlots, long newBlockId, Bid [] newBids) throws PersistenceException, RemoteException, GameDataException {
+        //shuffle randomly the newBids array
+        List newBidsList = Arrays.asList(newBids);
+        Collections.shuffle(newBidsList);
+        //get the bid id array
+        long  [] copiedBidIds = new long[newBidsList.size()];
+        for(int j = 0 ; j < newBidsList.size(); j++){
+            copiedBidIds[j] = ((CustomBid)newBidsList.get(j)).getId().longValue();
         }
         
-        //create new HostingSlots array
+        //create new HostingSlots array with the new block id and the new bid ids
         HostingSlot [] newSlots = (gameDataPersistenceLocal != null)? gameDataPersistenceLocal.createSlots(newBlockId, copiedBidIds):
            gameDataPersistenceRemote.createSlots(newBlockId, copiedBidIds);
         
