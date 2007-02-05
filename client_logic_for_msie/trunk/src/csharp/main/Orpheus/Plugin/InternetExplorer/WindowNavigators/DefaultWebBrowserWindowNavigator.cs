@@ -147,7 +147,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
             popupWindow.StatusBar = statusBarEnabled;
             // hide the nagivation and others toolbars - unfortunately it will hide also our bar
             popupWindow.ToolBar = toolbarEnabled;
-
+            
             popupWindow.Width = windowWidth;
             popupWindow.Height = windowHeight;
 
@@ -159,7 +159,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
                 popupWindow.WindowClosing += new DWebBrowserEvents2_WindowClosingEventHandler(
                     WindowClosingHandler);
             }
-            popupWindow.PutProperty("nnaame", "Popup");
+            popupWindow.PutProperty("window_name", "orpheus_popup");
             return popupWindow;
         }
 
