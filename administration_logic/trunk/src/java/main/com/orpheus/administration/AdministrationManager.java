@@ -6,7 +6,6 @@ package com.orpheus.administration;
 import com.orpheus.administration.entities.DomainTargetImpl;
 import com.orpheus.administration.entities.HostingSlotImpl;
 
-
 import com.orpheus.game.GameDataException;
 import com.orpheus.game.GameDataManager;
 import com.orpheus.game.persistence.DomainTarget;
@@ -25,6 +24,7 @@ import com.topcoder.randomstringimg.RandomStringImage;
 import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
 import com.topcoder.util.algorithm.hash.HashException;
 import com.topcoder.util.algorithm.hash.algorithm.HashAlgorithm;
+import com.topcoder.util.datavalidator.AndValidator;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.ObjectFactoryException;
 import com.topcoder.util.objectfactory.SpecificationFactoryException;
@@ -35,14 +35,14 @@ import com.topcoder.util.web.sitestatistics.SiteStatistics;
 import com.topcoder.util.web.sitestatistics.StatisticsException;
 import com.topcoder.util.web.sitestatistics.TextStatistics;
 
-
 import com.topcoder.webspider.crawling.BreadthFirstCrawlStrategy;
+import com.topcoder.webspider.validators.DepthValidator;
 import com.topcoder.webspider.validators.RegExValidator;
 import com.topcoder.webspider.web.WebAddressContext;
 import com.topcoder.webspider.web.WebCrawler;
 import com.topcoder.webspider.web.WebPageData;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import java.io.ByteArrayOutputStream;
@@ -58,8 +58,6 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.ejb.CreateException;
-
-
 
 /**
  * <p>
@@ -168,6 +166,13 @@ import javax.ejb.CreateException;
  * @version 1.0
  */
 public class AdministrationManager {
+
+    /**
+     * The maximum depth to which the Web Spider will descend when crawling a
+     * target site for the purpose of extracting hunt targets.  This should
+     * probably be externally-configurable in some future version.
+     */
+    private final static int MAX_SPIDERING_DEPTH = 10;
    
     /**
      * This holds the JNDI name to use to look up the GameDataHome service.<br/>
@@ -485,8 +490,11 @@ public class AdministrationManager {
         // Spider the domain
         String baseUrl = "http://" + domainName + "/";
         WebCrawler crawler = new WebCrawler(new BreadthFirstCrawlStrategy());
-        crawler.getStrategy().addAddress(new WebAddressContext(baseUrl, 10));
-        crawler.setValidator(RegExValidator.inclusionValidator("^\\Q" + baseUrl + "\\E.*"));
+        crawler.getStrategy().addAddress(new WebAddressContext(baseUrl, 0));
+        crawler.setValidator(new AndValidator(
+                RegExValidator.inclusionValidator(
+                        "(?i)http://\\Q" + domainName + "\\E/.*"),
+                new DepthValidator(MAX_SPIDERING_DEPTH)));
 
         List results = crawler.crawl();
 

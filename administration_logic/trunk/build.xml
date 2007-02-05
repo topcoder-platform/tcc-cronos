@@ -222,7 +222,6 @@
     <property name="http_utility.jar" value="${tcs_libdir}/${http_utility.path}/${http_utility.jar.name}" />
 
 
-
     <!-- Custom Component Dependencies -->
 
     <property name="administration_persistence.version" value="1.0" />
@@ -255,14 +254,14 @@
     <property name="sqljdbc.jar" value="${ext_libdir}/sqljdbc.jar"/>
     <!--<property name="mysql.jar" value="${ext_libdir}/mysql/3.1.12/mysql-connector-java-3.1.12-bin.jar"/>
     -->
-    <property name="mockejb_dir" value="${ext_libdir}/mockejb/0.6b2" />    
+    <property name="mockejb_dir" value="${ext_libdir}/mockejb/0.6-beta2" />    
     <property name="mockejb.jar" value="${mockejb_dir}/mockejb.jar"/>
     <property name="cglib-full-2.0-RC2.jar" value="${mockejb_dir}/cglib-full-2.0-RC2.jar"/>
     <property name="commons-logging.jar" value="${mockejb_dir}/commons-logging.jar"/>
         
     <property name="jai.dir" value="${ext_libdir}/jai/1.1.3" />
 
-    <property name="jakarta-oro-2.0.8.jar" value="${mockejb_dir}//jakarta-oro-2.0.8.jar"/>
+    <property name="jakarta-oro-2.0.8.jar" value="${mockejb_dir}/jakarta-oro-2.0.8.jar"/>
     
     <!-- Java Locations -->
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
@@ -303,7 +302,6 @@
         <pathelement location="${command_line_utility.jar}" />
         <pathelement location="${spell_check.jar}" />
         <pathelement location="${http_utility.jar}" />
-
 
         <pathelement location="${administration_persistence.jar}" />
         <pathelement location="${game_persistence.jar}" />
@@ -587,7 +585,25 @@
         <copy file="${command_line_utility.jar}" todir="${jar_tcs_libdir}/${command_line_utility.path}" />
         <mkdir dir="${jar_tcs_libdir}/${spell_check.path}"/>
         <copy file="${spell_check.jar}" todir="${jar_tcs_libdir}/${spell_check.path}" />
-        
+        <mkdir dir="${jar_tcs_libdir}/${object_factory.path}"/>
+        <copy file="${object_factory.jar}" todir="${jar_tcs_libdir}/${object_factory.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${site_validation.path}"/>
+        <copy file="${site_validation.jar}" todir="${jar_tcs_libdir}/${site_validation.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${web_site_statistics.path}"/>
+        <copy file="${web_site_statistics.jar}" todir="${jar_tcs_libdir}/${web_site_statistics.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${front_controller.path}"/>
+        <copy file="${front_controller.jar}" todir="${jar_tcs_libdir}/${front_controller.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${random_string_image.path}"/>
+        <copy file="${random_string_image.jar}" todir="${jar_tcs_libdir}/${random_string_image.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${hashing_utility.path}"/>
+        <copy file="${hashing_utility.jar}" todir="${jar_tcs_libdir}/${hashing_utility.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${administration_persistence.path}"/>
+        <copy file="${administration_persistence.jar}" todir="${jar_tcs_libdir}/${administration_persistence.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${game_persistence.path}"/>
+        <copy file="${game_persistence.jar}" todir="${jar_tcs_libdir}/${game_persistence.path}" />
+        <mkdir dir="${jar_tcs_libdir}/${game_interface_logic.path}"/>
+        <copy file="${game_interface_logic.jar}" todir="${jar_tcs_libdir}/${game_interface_logic.path}" />
+
         <jar jarfile="${dev_dist.jar}"
              basedir="."
              includes="build.xml,
