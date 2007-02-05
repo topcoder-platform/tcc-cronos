@@ -151,6 +151,12 @@
     <property name="base64_codec.path" value="base64_codec/${base64_codec.version}"/>
     <property name="base64_codec.jar" value="${tcs_libdir}/${base64_codec.path}/${base64_codec.jar.name}"/>
 
+    <property name="auction_framework.version" value="1.0"/>
+    <property name="auction_framework.jar.name" value="auction_framework.jar"/>
+    <property name="auction_framework.path" value="auction_framework/${auction_framework.version}"/>
+    <property name="auction_framework.jar" value="${tcs_libdir}/${auction_framework.path}/${auction_framework.jar.name}"/>
+
+
     <!-- Custom Component Dependencies -->
     <property name="game_persistence.version" value="1.0" />
     <property name="game_persistence.jar.name" value="game_persistence.jar" />
@@ -166,6 +172,11 @@
     <property name="administration_logic.jar.name" value="administration_logic.jar" />
     <property name="administration_logic.path" value="administration_logic/${administration_logic.version}" />
     <property name="administration_logic.jar" value="${custom_libdir}/${administration_logic.path}/${administration_logic.jar.name}" />
+
+    <property name="auction_persistence.version" value="1.0" />
+    <property name="auction_persistence.jar.name" value="auction_persistence.jar" />
+    <property name="auction_persistence.path" value="auction_persistence/${auction_persistence.version}" />
+    <property name="auction_persistence.jar" value="${custom_libdir}/${auction_persistence.path}/${auction_persistence.jar.name}" />
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit.jar"/>
@@ -186,9 +197,11 @@
         <pathelement location="${messenger_framework.jar}" />
         <pathelement location="${bloom_filter.jar}" />
         <pathelement location="${base64_codec.jar}" />
+        <pathelement location="${auction_framework.jar}" />
         <pathelement location="${game_persistence.jar}" />
         <pathelement location="${administration_persistence.jar}" />
         <pathelement location="${administration_logic.jar}" />
+        <pathelement location="${auction_persistence.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${object_factory.jar}" />
         <pathelement location="${base_exception.jar}" />
