@@ -270,15 +270,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     private AuctionManager auctionManager = null;
     
     /**
-     * The temporary variable to hold the remote EJB.
-     */
-    private EJBHome remoteEJB = null;
-
-    /**
-     * The temporary variable to hold the local EJB.
-     */
-    private EJBLocalHome localEJB = null;
-    /**
      * The capacity of the Bloom Filter.
      */
     private final int capacity;
@@ -331,18 +322,21 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         this.puzzleTypeSource = puzzleTypeSource;
         try{
             InitialContext ctx = new InitialContext();
+	    EJBHomes homes;
             
-            readEJBConfig(namespace,GAME_DATA_EJB_JNDI_NAMES,ctx,GameDataHome.class);
+            homes = readEJBConfig(namespace,GAME_DATA_EJB_JNDI_NAMES,ctx,GameDataHome.class);
             //init the game data EJB instance
-            this.gameDataPersistenceLocal = (localEJB!= null) ? ((GameDataLocalHome)localEJB).create() : null;
-            this.gameDataPersistenceRemote = (remoteEJB !=null)? ((GameDataHome)remoteEJB).create() : null;
+            this.gameDataPersistenceLocal = (homes.localHome != null)
+		    ? ((GameDataLocalHome) homes.localHome).create() : null;
+            this.gameDataPersistenceRemote = (homes.remoteHome != null)
+		    ? ((GameDataHome) homes.remoteHome).create() : null;
         
-            readEJBConfig(namespace,ADMIN_DATA_EJB_JNDI_NAMES,ctx,AdminDataHome.class);
-            this.adminDataPersistenceLocal = (localEJB!= null) ?((AdminDataLocalHome)localEJB).create():null;
-            this.adminDataPersistenceRemote = (remoteEJB !=null)? ((AdminDataHome)remoteEJB).create():null;
+            homes = readEJBConfig(namespace,ADMIN_DATA_EJB_JNDI_NAMES,ctx,AdminDataHome.class);
+            this.adminDataPersistenceLocal = (homes.localHome != null)
+		    ? ((AdminDataLocalHome) homes.localHome).create() : null;
+            this.adminDataPersistenceRemote = (homes.remoteHome != null)
+		    ? ((AdminDataHome) homes.remoteHome).create() : null;
             
-        } catch(GameDataManagerConfigurationException e){
-            throw e;
         } catch(Exception e){
             throw new GameDataManagerConfigurationException("Fails to create EJB through the configuration.",e);
         }
@@ -532,27 +526,34 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         
         try{
             InitialContext ctx = new InitialContext();
-            locateEJB(gameDataJndiNames, gameDataJndiDesignations,ctx,GameDataHome.class);
+            EJBHomes homes;
+	   
             //if no EJB is looked up successfully
-            if ((remoteEJB == null) && (localEJB == null)) {
+            homes = locateEJB(gameDataJndiNames, gameDataJndiDesignations,ctx,GameDataHome.class);
+            if ((homes.remoteHome == null) && (homes.localHome == null)) {
                 throw new IllegalArgumentException(
                     "No EJB can be looked up via the JNDI names configed.");
             }
-            //init the game data EJB instance
-            this.gameDataPersistenceLocal = (localEJB!= null) ? ((GameDataLocalHome)localEJB).create() : null;
-            this.gameDataPersistenceRemote = (remoteEJB !=null)? ((GameDataHome)remoteEJB).create() : null;
-    
 
-            locateEJB(adminDataJndiNames, adminDataJndiDesignations,ctx,AdminDataHome.class);
-            this.adminDataPersistenceLocal = (localEJB!= null) ?((AdminDataLocalHome)localEJB).create():null;
-            this.adminDataPersistenceRemote = (remoteEJB !=null)? ((AdminDataHome)remoteEJB).create():null;
-            
-        } catch(IllegalArgumentException e){
-            throw e;
+            //init the game data EJB instance
+            this.gameDataPersistenceLocal = (homes.localHome != null)
+		    ? ((GameDataLocalHome) homes.localHome).create() : null;
+            this.gameDataPersistenceRemote = (homes.remoteHome != null)
+		    ? ((GameDataHome) homes.remoteHome).create() : null;
+        
+            homes = locateEJB(adminDataJndiNames, adminDataJndiDesignations,ctx,AdminDataHome.class);
+            if ((homes.remoteHome == null) && (homes.localHome == null)) {
+                throw new IllegalArgumentException(
+                    "No EJB can be looked up via the JNDI names configed.");
+            }
+            //init the admin data EJB instance
+            this.adminDataPersistenceLocal = (homes.localHome != null)
+		    ? ((AdminDataLocalHome) homes.localHome).create() : null;
+            this.adminDataPersistenceRemote = (homes.remoteHome != null)
+		    ? ((AdminDataHome) homes.remoteHome).create() : null;
         } catch(Exception e){
             throw new IllegalArgumentException("The configuration for ejb seems not right.");
         }
-        
         
         Game[] games = null;
         try {
@@ -601,11 +602,12 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @param classType the remote Ejb class type
      * @throws GameDataManagerConfigurationException any fails in configuration or fails to read ejb
      */
-    private void readEJBConfig(String namespace,String property,InitialContext ctx, Class classType) throws GameDataManagerConfigurationException {
+    private EJBHomes readEJBConfig(String namespace,String property,InitialContext ctx, Class classType) throws GameDataManagerConfigurationException {
         String[] jndiNameValues = Helper.getMandatoryPropertyArray(namespace, property);
 
         String[] jndiNames = new String[jndiNameValues.length];
         String[] jndiDesignations = new String[jndiNameValues.length];
+	EJBHomes result;
 
         //parse the values, the format should be 'jndiname,Remote' or 'jndiname,Local'
         for (int i = 0; i < jndiDesignations.length; i++) {
@@ -626,12 +628,16 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 throw new GameDataManagerConfigurationException(
                     "The value for property " + property  + " should be  'jndiname,Remote' or 'jndiname,Local'.");
             }
-        }
-       this.locateEJB(jndiNames, jndiDesignations, ctx, classType);
+       }
+
+       result = this.locateEJB(jndiNames, jndiDesignations, ctx, classType);
+
        //if no EJB is looked up successfully
-       if ((remoteEJB == null) && (localEJB == null)) {
+       if ((result.remoteHome == null) && (result.localHome == null)) {
            throw new GameDataManagerConfigurationException(
                "No EJB can be looked up via the JNDI names configed.");
+       } else {
+           return result;
        }
     }
     
@@ -647,19 +653,18 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @param ctx the context to lookup the ejb
      * @param classType the remote Ejb class type
      */
-    private void locateEJB(String[] jndiNames, String[] jndiDesignations,InitialContext ctx, Class classType) {
-	localEJB = null;
-	remoteEJB = null;
+    private EJBHomes locateEJB(String[] jndiNames, String[] jndiDesignations,InitialContext ctx, Class classType) {
+	EJBHomes result = new EJBHomes();
 
         //try to lookup the ejb
         for (int i = 0; i < jndiNames.length; i++) {
             try {
                 //if the JNDI is expected to be local, init the localEJB
                 if (LOCAL.equalsIgnoreCase(jndiDesignations[i])) {
-                    localEJB =  (EJBLocalHome) ctx.lookup(jndiNames[i]);
+                    result.localHome = (EJBLocalHome) ctx.lookup(jndiNames[i]);
                 } else {
                     Object lookup = ctx.lookup(jndiNames[i]);
-                    remoteEJB =  (EJBHome) PortableRemoteObject.narrow(lookup, classType);
+                    result.remoteHome =  (EJBHome) PortableRemoteObject.narrow(lookup, classType);
                 }
             } catch (Exception e) {
                 //go and continue to find a Remote or Local EJB
@@ -669,6 +674,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             //if any type of ejb is looked successfully, break;
             break;
         }
+
+	return result;
     }
 
     /**
@@ -1793,5 +1800,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
     }
 
-    
+    private class EJBHomes {
+	EJBHome remoteHome;
+	EJBLocalHome localHome;
+
+	public EJBHomes() {}
+    }   
 }
