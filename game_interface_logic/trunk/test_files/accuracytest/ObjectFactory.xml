@@ -6,6 +6,11 @@
             </Property>
             <Property name="params">
                 <Property name="param1">
+                    <Property name="name">
+                        <Value>puzzle_type_source</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
                     <Property name="type">
                         <Value>String</Value>
                     </Property>
@@ -13,7 +18,12 @@
                         <Value>com.orpheus.game.GameDataManagerImpl</Value>
                     </Property>
                 </Property>
-            </Property>
+                </Property>
+        </Property>
+        <Property name="puzzle_type_source">
+          <Property name="type">
+            <Value>com.orpheus.game.MockPuzzleTypeSource</Value>
+          </Property>
         </Property>
     </Config>
 
@@ -24,6 +34,11 @@
             </Property>
             <Property name="params">
                 <Property name="param1">
+                    <Property name="name">
+                        <Value>puzzle_type_source</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
                     <Property name="type">
                         <Value>String</Value>
                     </Property>
@@ -32,6 +47,11 @@
                     </Property>
                 </Property>
             </Property>
+        </Property>
+        <Property name="puzzle_type_source">
+          <Property name="type">
+            <Value>com.orpheus.game.MockPuzzleTypeSource</Value>
+          </Property>
         </Property>
     </Config>
 </CMConfig>

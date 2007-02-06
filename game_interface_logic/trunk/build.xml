@@ -168,11 +168,6 @@
     <property name="administration_persistence.path" value="administration_persistence/${administration_persistence.version}" />
     <property name="administration_persistence.jar" value="${custom_libdir}/${administration_persistence.path}/${administration_persistence.jar.name}" />
 
-    <property name="administration_logic.version" value="1.0" />
-    <property name="administration_logic.jar.name" value="administration_logic.jar" />
-    <property name="administration_logic.path" value="administration_logic/${administration_logic.version}" />
-    <property name="administration_logic.jar" value="${custom_libdir}/${administration_logic.path}/${administration_logic.jar.name}" />
-
     <property name="auction_persistence.version" value="1.0" />
     <property name="auction_persistence.jar.name" value="auction_persistence.jar" />
     <property name="auction_persistence.path" value="auction_persistence/${auction_persistence.version}" />
@@ -200,7 +195,6 @@
         <pathelement location="${auction_framework.jar}" />
         <pathelement location="${game_persistence.jar}" />
         <pathelement location="${administration_persistence.jar}" />
-        <pathelement location="${administration_logic.jar}" />
         <pathelement location="${auction_persistence.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${object_factory.jar}" />

@@ -14,6 +14,9 @@ import org.mockejb.MockContainer;
 import org.mockejb.SessionBeanDescriptor;
 import org.mockejb.jndi.MockContextFactory;
 
+import com.orpheus.administration.persistence.AdminDataLocal;
+import com.orpheus.administration.persistence.AdminDataLocalHome;
+import com.orpheus.game.MockAdminDataBean;
 import com.orpheus.game.GameDataManagerImpl;
 import com.orpheus.game.MockPuzzleTypeSource;
 import com.orpheus.game.persistence.DomainTarget;
@@ -89,6 +92,10 @@ public class GameDataManagerImplTests extends TestCase {
                 GameDataHome.class, GameData.class, new GameDataBean());
 
         // Deploy operation creates Home and binds it to JNDI
+        mockContainer.deploy(sampleServiceDescriptor);
+
+        sampleServiceDescriptor = new SessionBeanDescriptor("localAdminDataBean",
+                AdminDataLocalHome.class, AdminDataLocal.class, new MockAdminDataBean());
         mockContainer.deploy(sampleServiceDescriptor);
 
         GameDataLocalHome home = (GameDataLocalHome) context.lookup("GameDataLocal");

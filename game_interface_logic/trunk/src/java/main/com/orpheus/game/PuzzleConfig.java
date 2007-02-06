@@ -3,8 +3,6 @@
  */
 package com.orpheus.game;
 
-import com.orpheus.administration.Helper;
-
 /**
  * Encapsulates configuration data for various puzzle types. This class holds
  * the name of the puzzle type as configured in the Puzzle Framework component.
@@ -68,7 +66,7 @@ public class PuzzleConfig {
      */
     public PuzzleConfig(String puzzleTypeName, Integer width, Integer height,
             int puzzleSeriesSize) {
-        Helper.checkString(puzzleTypeName, "puzzleTypeName");
+        Helper.checkStringNotNullOrEmpty(puzzleTypeName, "puzzleTypeName");
 
         this.puzzleTypeName = puzzleTypeName;
         this.width = width;

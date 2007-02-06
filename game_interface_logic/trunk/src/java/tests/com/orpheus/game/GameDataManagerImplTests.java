@@ -3,6 +3,8 @@
  */
 package com.orpheus.game;
 
+import com.orpheus.administration.persistence.AdminDataLocal;
+import com.orpheus.administration.persistence.AdminDataLocalHome;
 import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.persistence.GameDataLocalHome;
 import com.topcoder.util.config.ConfigManager;
@@ -61,6 +63,10 @@ public class GameDataManagerImplTests extends TestCase {
             = new SessionBeanDescriptor("localjbossBean",
                     GameDataLocalHome.class, GameDataLocal.class, new GameDataBean());
         // Deploy operation creates Home and binds it to JNDI
+        mockContainer.deploy(sampleServiceDescriptor);
+
+        sampleServiceDescriptor = new SessionBeanDescriptor("localAdminDataBean",
+                AdminDataLocalHome.class, AdminDataLocal.class, new MockAdminDataBean());
         mockContainer.deploy(sampleServiceDescriptor);
 
         ConfigManager cm = ConfigManager.getInstance();

@@ -20,6 +20,9 @@ import org.mockejb.MockContainer;
 import org.mockejb.SessionBeanDescriptor;
 import org.mockejb.jndi.MockContextFactory;
 
+import com.orpheus.administration.persistence.AdminDataLocal;
+import com.orpheus.administration.persistence.AdminDataLocalHome;
+import com.orpheus.game.MockAdminDataBean;
 import com.orpheus.game.GameDataManagerImpl;
 import com.orpheus.game.GameDataUtility;
 import com.orpheus.game.persistence.BallColor;
@@ -96,11 +99,14 @@ public class GameInterfaceLogicStressTest extends TestCase {
         MockContainer container = new MockContainer(context);
         SessionBeanDescriptor localDescriptor = new SessionBeanDescriptor("GameDataLocal",
                 GameDataLocalHome.class, GameDataLocal.class, new MockGameDataBean());
-
         SessionBeanDescriptor remoteDescriptor = new SessionBeanDescriptor("GameDataRemote", GameDataHome.class,
                 GameData.class, new MockGameDataBean());
+        SessionBeanDescriptor adminDescriptor = new SessionBeanDescriptor("localAdminDataBean",
+                AdminDataLocalHome.class, AdminDataLocal.class, new MockAdminDataBean());
+
         container.deploy(localDescriptor);
         container.deploy(remoteDescriptor);
+        container.deploy(adminDescriptor);
     }
 
     /**
@@ -215,6 +221,9 @@ public class GameInterfaceLogicStressTest extends TestCase {
         }
         for (int i = 0; i < THREAD_COUNT; i++) {
             threads[i].start();
+        }
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            threads[i].join();
         }
         manager.stopManager();
 

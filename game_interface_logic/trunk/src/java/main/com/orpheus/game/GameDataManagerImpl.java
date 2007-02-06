@@ -648,6 +648,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @param classType the remote Ejb class type
      */
     private void locateEJB(String[] jndiNames, String[] jndiDesignations,InitialContext ctx, Class classType) {
+	localEJB = null;
+	remoteEJB = null;
+
         //try to lookup the ejb
         for (int i = 0; i < jndiNames.length; i++) {
             try {
@@ -1208,7 +1211,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws RemoteException fail to call ejb
      * @throws GameDataException fail to auto create hosting slots
      */
-    private void autoCreateHostingSlots(HostingSlot [] oldSlots, long newBlockId, Bid [] newBids) throws PersistenceException, RemoteException, GameDataException {
+    private void autoCreateHostingSlots(HostingSlot [] oldSlots, long newBlockId, Bid [] newBids)
+	   throws PersistenceException, RemoteException, GameDataException {
         //shuffle randomly the newBids array
         List newBidsList = Arrays.asList(newBids);
         Collections.shuffle(newBidsList);
@@ -1224,10 +1228,13 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         
         //for each new slots, copy the domain targets, set the hostingstart and hosting end
         //and generate the puzzle and brainteaser list
+        oldSlots = (HostingSlot[]) oldSlots.clone();  // this array gets modified by the procedure that follows
         for(int j = 0 ; j < newSlots.length; j++){
-            //get the domain targets of the old slots and shuffle randomly
+            //get the domain targets of the old slots and shuffle randomly, except for the last target
             List targets = Arrays.asList(findSlotByDomainId(oldSlots, newSlots[j].getDomain().getId().longValue()).getDomainTargets());
-            Collections.shuffle(targets);
+            if (targets.size() > 2) {  // no point in shuffling one (or fewer) objects; must in any case test for an empty list
+                Collections.shuffle(targets.subList(0, targets.size() - 1));
+            }
             
             //create new DomainTargets with null id objects.
             List newTargets = new ArrayList();
@@ -1247,17 +1254,22 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             regenerateBrainTeaser(updatedSlot.getId().longValue());
         }
     }
+
     /**
-     * Find the slot that the domain id is equal to the given domainId.
+     * Find a slot for which the domain id is equal to the given domainId.
      * 
-     * @param slots the slots array
+     * @param slots the slots array; members are set to null as they are used by this method
      * @param domainId the domain id
      * @return the HostingSlot
      */
     private HostingSlot findSlotByDomainId(HostingSlot [] slots, long domainId){
         for(int i = 0 ; i < slots.length; i++){
-            if ( slots[i].getDomain().getId().longValue() == domainId){
-                return slots[i];
+            if (slots[i] != null && slots[i].getDomain().getId().longValue() == domainId){
+                HostingSlot slot = slots[i];
+
+                slots[i] = null;
+
+                return slot;
             }
         }
         return null;

@@ -1,13 +1,13 @@
 <CMConfig>
   <Config name="com.orpheus.game.GameDataManagerImpl">
     <Property name="game_data_ejb_jndi_names">
-				<Value>localjbossBean, Local</Value>
-				<Value>remotejbossBean, Remote</Value>
+      <Value>localjbossBean, Local</Value>
+      <Value>remotejbossBean, Remote</Value>
     </Property>
     <!-- the jndi names for admin data ejb -->
     <Property name="admin_data_ejb_jndi_names">
-    	<Value>localAdminDataBean, Local</Value>
-		<Value>remoteAdminDataBean, Remote</Value>
+      <Value>localAdminDataBean, Local</Value>
+      <Value>remoteAdminDataBean, Remote</Value>
     </Property>
     
     <!-- config shifting from admin logic -->
@@ -54,22 +54,22 @@
     </Property>
     
     <Property name="new_game_poll_interval">
-				<Value>1000</Value>
+      <Value>1000</Value>
     </Property>
     <Property name="game_started_poll_interval">
-				<Value>1000</Value>
+      <Value>1000</Value>
     </Property>
     <Property name="capacity">
-				<Value>1000</Value>
+      <Value>1000</Value>
     </Property>
     <Property name="errorRate">
-				<Value>0.5</Value>
+      <Value>0.5</Value>
     </Property>
     <Property name="messengerPluginNS">
-				<Value>messengerPluginNS</Value>
+      <Value>messengerPluginNS</Value>
     </Property>
     <Property name="category">
-				<Value>category</Value>
+      <Value>category</Value>
     </Property>
   </Config>
 </CMConfig>
