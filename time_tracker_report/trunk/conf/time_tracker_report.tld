@@ -6,12 +6,12 @@
     <tlib-version>1.0</tlib-version>
     <jsp-version>1.2</jsp-version>
     <short-name>cr</short-name>
-    <uri>com.topcoder.timetracker.report</uri>
+    <uri>com.cronos.timetracker.report</uri>
     <description>Tag Library for Displaying Time Tracker Reports</description>
 
     <tag>
         <name>reportdisplay</name>
-        <tag-class>com.topcoder.timetracker.report.ReportDisplayTag</tag-class>
+        <tag-class>com.cronos.timetracker.report.ReportDisplayTag</tag-class>
         <body-content>empty</body-content>
         <description>Display Time Tracker Report with CSS support</description>
 
@@ -87,6 +87,21 @@
                 value specifies the End range for the Date Entries that need be considered for the Report.</description>
         </attribute>
 
+        <attribute>
+            <name>companyFilter</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the comany ids that need be considered for the Report.</description>
+        </attribute>
+
+        <attribute>
+            <name>sortColumns</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>The parameter name in the HttpRequest object or the attribute in the HttpSession object, whose
+                value specifies the report result should sort by the columns specified.</description>
+        </attribute>
     </tag>
 
 </taglib>

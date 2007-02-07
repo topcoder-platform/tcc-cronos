@@ -341,7 +341,7 @@ public class InformixDBHandler implements DBHandler {
                 if (config.getSortBy() == null) {
                     sql = baseQuery + (sortBy == null ? "" : " Order By " + sortBy);
                 } else {
-                    sql = baseQuery + " Order By " + config.getSortBy();
+                	sql = baseQuery + " Order By " + config.getSortBy();
                 }
                 statement = con.prepareStatement(sql);
                 int counter = 0;

@@ -2,15 +2,15 @@
  * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
  */
 
-package com.cronos.timetracker.report.failuretests;
+package com.topcoder.timetracker.report.failuretests;
 
-import com.cronos.timetracker.report.BasicColumnDecorator;
-import com.cronos.timetracker.report.Column;
-import com.cronos.timetracker.report.FilterCategory;
-import com.cronos.timetracker.report.RangeFilter;
-import com.cronos.timetracker.report.ReportCategory;
-import com.cronos.timetracker.report.ReportType;
-import com.cronos.timetracker.report.StyleConstant;
+import com.topcoder.timetracker.report.BasicColumnDecorator;
+import com.topcoder.timetracker.report.Column;
+import com.topcoder.timetracker.report.FilterCategory;
+import com.topcoder.timetracker.report.RangeFilter;
+import com.topcoder.timetracker.report.ReportCategory;
+import com.topcoder.timetracker.report.ReportType;
+import com.topcoder.timetracker.report.StyleConstant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,7 +172,8 @@ public class TestDataFactory {
     /**
      *
      */
-    public static final String VALID_REPORT_CONFIGURATION_NAMESPACE = "com.topcoder.timetracker.report.ReportConfiguration";
+    public static final String VALID_REPORT_CONFIGURATION_NAMESPACE =
+        "com.topcoder.timetracker.report.ReportConfiguration";
 
     /**
      *

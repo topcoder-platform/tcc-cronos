@@ -4,11 +4,14 @@
 package com.topcoder.timetracker.report;
 
 import com.topcoder.timetracker.report.dbhandler.DBHandlerFactory;
+import com.topcoder.timetracker.report.htmlreport.ExpenseReport;
+import com.topcoder.timetracker.report.htmlreport.TimeReport;
 import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +34,11 @@ public abstract class AbstractReport implements Report {
      */
     private static final String FILTERS_CONFIGURATION_NAMESPACE
         = "com.topcoder.timetracker.report.FiltersConfiguration";
+    
+    /**
+     * The sort columns property.
+     */
+    private static final String SORT_COLUMNS_PROPERTY = "SORT_COLUMNS"; 
 
     /**
      * This is a prefix used to construct the {@link ConfigManager} property name for default column configuration for a
@@ -295,8 +303,7 @@ public abstract class AbstractReport implements Report {
                 }
             }
             if (current.equals(requiredDefaultFilter)) {
-                //header = ((EqualityFilter) filter).getFilterValues().get(0).toString(); //removed to fix misc. numbers appearing in front of date ranges in reports (replaced by line below)
-                header = "";
+                header = ((EqualityFilter) filter).getFilterValues().get(0).toString();
                 defaultFilterExist = true;
             }
         }
@@ -308,12 +315,19 @@ public abstract class AbstractReport implements Report {
 
         // create the styles map
         try {
+            List style = new ArrayList();
+            int styleCount = category.equals(ReportCategory.TIMEEXPENSE) ? 4 : 3;
+            for (int i = 0 ; i < styleCount ; i++) {
+            	style.add(ConfigManager.getInstance().getString(namespace, 
+                    "TD_STYLE_" +  type.getType() + "_" +  category.toString() + "_STATISTIC" + "_" + (i + 1)));
+            }
             final ReportConfiguration reportConfiguration = new ReportConfiguration(category, type, namespace);
             reportConfiguration.setColumnDecorators(lookupColumnConfiguration(type, namespace));
             reportConfiguration.setStyles(lookupStyleConfiguration(namespace));
             reportConfiguration.setFilters(filters);
             reportConfiguration.setHeader(header + (dateInfo == null ? "" : dateInfo));
             reportConfiguration.setSortBy(sortBy);
+            reportConfiguration.setStatisticStyles(style);
             return reportConfiguration;
         } catch (UnknownNamespaceException e) {
             throw new ReportConfigurationException(
@@ -370,11 +384,22 @@ public abstract class AbstractReport implements Report {
             // else use default columns defined for report
             columnsOfReport = defaultColumns;
         }
-
+        List sortedColumns = Arrays.asList(ConfigManager.getInstance().getStringArray(
+        	namespace, SORT_COLUMNS_PROPERTY));
+        
+        String categoryType = "TIMEEXPENSE";
+        if (this instanceof TimeReport) {
+        	categoryType = "TIME";
+        } else if (this instanceof ExpenseReport) {
+        	categoryType = "EXPENSE";
+        }
+        
         for (Iterator iterator = columnsOfReport.iterator(); iterator.hasNext();) {
             final Column column = (Column) iterator.next();
             final String key = "COLUMN_" + column.getName();
             final String customColName = ConfigManager.getInstance().getString(namespace, key);
+            final String styleKey = "TD_STYLE_" + type.getType() + "_" + categoryType + "_" + column.getName();
+            final String style = ConfigManager.getInstance().getString(namespace, styleKey);
 
             // check whether column is allowed
             if (!defaultColumns.contains(column)) {
@@ -385,9 +410,9 @@ public abstract class AbstractReport implements Report {
             }
             //add column with custom or default name depending whether custom name was found
             if (customColName != null) {
-                ret.add(new BasicColumnDecorator(column.getName(), customColName));
+                ret.add(new BasicColumnDecorator(column.getName(), customColName, sortedColumns.contains(column.getName()), style));
             } else {
-                ret.add(new BasicColumnDecorator(column.getName(), column.getName()));
+                ret.add(new BasicColumnDecorator(column.getName(), column.getName(), sortedColumns.contains(column.getName()), style));
             }
         }
 

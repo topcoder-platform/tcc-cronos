@@ -22,7 +22,6 @@ import java.text.StringCharacterIterator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.IllegalFormatException;
 
 
 /**
@@ -54,6 +53,11 @@ final class HTMLRenderUtil {
      * Maximum Length to display for a description.
      */
     private static final int MAX_DESC_LENGTH = 45;
+
+    /**
+     * Maximum Length of a line in the tooltip.
+     */
+    private static final int MAX_TOOLTIP_CHUNK = 48;
 
     /**
      * This is a private constructor that has been added to avoid instantiation of this utility class.
@@ -144,58 +148,37 @@ final class HTMLRenderUtil {
         //lookup the styles to be used
         // these values are never null, so no checking here
         final String trStyle = safeGetStyleValue(styles, StyleConstant.TR_STYLE);
-        final String tdStyle = safeGetStyleValue(styles, StyleConstant.TD_STYLE);
-        final String tableStyle = safeGetStyleValue(styles, StyleConstant.TABLE_STYLE);
+        final String tdStyle = (String) styles.get(StyleConstant.TD_STYLE);
+        final String tableStyle = (String) styles.get(StyleConstant.TABLE_STYLE);
         final String thStyle = safeGetStyleValue(styles, StyleConstant.TH_STYLE);
-
-        //the table
-        ret.append("<TABLE ");
-        ret.append(tableStyle);
-        ret.append(">\n");
-
-        //the header row
-        ret.append("<TR ");
-
-        ret.append(trStyle);
-
-        ret.append(">\n");
-
-        //the table header cells
+		
+        String tableId = "tbl" + config.hashCode();
+        ret.append("<SCRIPT language=\"JavaScript\" type=\"text/javascript\">\r\n");
+        ret.append("var "+ tableId + " = new SortTable(\"" + tableId + "\");\r\n");
         for (Iterator iterator = columnDecorators.iterator(); iterator.hasNext();) {
-            final ColumnDecorator columnDecorator = (ColumnDecorator) iterator.next();
-            ret.append("<TH ");
-            ret.append(thStyle);
-            ret.append(">");
-
-            ret.append(columnDecorator.getColumnDisplayText());
-
-            ret.append("</TH>\n");
+            iterator.next();
+            ret.append(tableId + ".AddColumn(\"\",'");//bgColor=\"#FFFFFF\" ");
+            ret.append(tdStyle);
+            //ret.append(columnDecorator.getStyle());
+            ret.append("',\"\",\"\");\r\n");
         }
-
-        //end of header row
-        ret.append("</TR>\n");
-
-        //the table body
-
-        //execute the query
+        
+        // execute the query
         final ResultSet rs = dbHandler.getReportData(config);
-
         try {
             try {
+            	int li = 0;
                 while (rs.next()) {
-                    ret.append("<TR ");
-                    ret.append(trStyle);
-                    ret.append(">\n");
-
+                	li++;
+                    ret.append(tableId + ".AddLine(");
+                    boolean first = true;                    
                     //the cells
                     for (Iterator iterator = columnDecorators.iterator(); iterator.hasNext();) {
                         final ColumnDecorator columnDecorator = (ColumnDecorator) iterator.next();
-                        ret.append("<TD ");
-                        ret.append(tdStyle);
-                        ret.append(">");
                         try {
                             String string = rs.getString(columnDecorator.getColumnName());
-                            double doubleValue = 0.0;
+                            int intValue = 1;
+                            float floatValue = 0.0f;
 
                             // this is to check whether the dummy '-1' value used as replacement for
                             // the not supported "Select Null" is the value of this row + column
@@ -203,39 +186,53 @@ final class HTMLRenderUtil {
                             // As the string value also can be "-1.00", checking the string
                             // value is not sufficient.
                             try {
-                                doubleValue = Double.parseDouble(string);
-                            } catch (Throwable ife) {
+                                intValue = Integer.parseInt(string);
+                            } catch (Exception e) {
+                                //ignored, can occur on non-numeric columns
+                            }
+                            try {
+                            	floatValue = Float.parseFloat(string);
+                            } catch (Exception e) {
                                 //ignored, can occur on non-numeric columns
                             }
 
                             // if the value returned was a null value, render it as '*'
-                            if (string == null || rs.wasNull() || (doubleValue == -1)) {
+                            if (string == null || rs.wasNull() || intValue <= 0 || floatValue < 0) {
                                 string = "0";
                             }
-
+                            if (!first) {
+                            	ret.append(",");
+                            }
+                            first = false;
                             // let the decorator render the value
+                            //ret.append("\"" + escapeForHTMLTagContent(escapeForQuote(columnDecorator.decorateColumn(string)))); //replace by block below
+
                             String actualData = escapeForHTMLTagContent(columnDecorator.decorateColumn(string));
-                            String wrapper = actualData;
+                            String wrapper = "\"" + escapeForQuote(actualData);
+
                             if (columnDecorator.getColumnName().equalsIgnoreCase("description"))    {
 
-                                wrapper = prepareStringForToolTip(actualData);
+                                wrapper = "\"" + escapeForQuote(prepareStringForToolTip(actualData));
                             }
+                            
                             ret.append(wrapper);
+
+                            if (li == 1) {
+                            	ret.append("<br>");
+                            	ret.append("<" + columnDecorator.getStyle() + ">");
+                            }
+                            ret.append("\"");
                         } catch (SQLException e) {
                             throw new ReportSQLException("Unable to read a value for column ["
                                 + columnDecorator.getColumnName() + "] from the ResultSet.", e);
-                        }
-
-                        ret.append("</TD>\n");
-
+                        }                        
                     }
-
+                    ret.append(");\r\n");
                     //update all aggregators with their column's data of the current row
                     if (aggregators != null) {
                         for (int i = 0; i < aggregators.length; i++) {
                             final Aggregator aggregator = aggregators[i];
                             try {
-
                                 final BigDecimal value = rs.getBigDecimal(aggregator.getColumn().getName());
                                 if (!rs.wasNull() && NULL_VALUE_PLACEHOLDER.compareTo(value) != 0) {
                                     aggregator.add(value);
@@ -248,11 +245,9 @@ final class HTMLRenderUtil {
                             }
                         }
                     }
-
-                    ret.append("</TR>\n");
                 }
             } catch (SQLException e) {
-                throw new ReportSQLException("An error occurred while iterating over the ResultSet.", e);
+                throw new ReportSQLException("An error occurred while iterating over the ResultSet." + e.getMessage(), e);
             }
         } finally {
             // release the resultSet no matter whether there was an exception
@@ -269,8 +264,45 @@ final class HTMLRenderUtil {
                 // or already have an exception
             }
         }
+        ret.append("</SCRIPT>");
+		
+        //the table
+        ret.append("<TABLE ");
+        ret.append(tableStyle);
+        ret.append(">\r\n");
 
-        ret.append("</TABLE>\n");
+        //the header row
+        ret.append("<TBODY><TR");
+
+        ret.append(trStyle);
+
+        ret.append(">\r\n");
+
+        //the table header cells
+        int i = 0;
+        for (Iterator iterator = columnDecorators.iterator(); iterator.hasNext();) {
+            final ColumnDecorator columnDecorator = (ColumnDecorator) iterator.next();
+            ret.append("<TH>");
+            ret.append(columnDecorator.getColumnDisplayText());
+            if (columnDecorator.isSortable()) {
+            	ret.append("<a href=\"javascript:SortRows(document," + tableId + "," + i + ")\">");
+            	ret.append("<img src=\"images/icon_down.gif\" width=\"11\" height=\"8\"></a>");
+            }
+            ret.append("<br>");
+    		ret.append("<" + columnDecorator.getStyle() + ">");
+            ret.append("</TH>\r\n");
+            ++i;
+        }
+        //end of header row
+        //ret.append("</TR></TBODY></TABLE>"); //we stop putting the header in its own table
+        //ret.append("<table class='results_table' name=\"" + tableId); // we remove the beginning of data table
+        //ret.append( "\" id=\"" + tableId + "\" width='100%'" + ">");
+        ret.append("</TR>");
+        
+
+
+        ret.append("<SCRIPT>" +tableId + ".WriteRows();</SCRIPT>");	   
+        ret.append("</TABLE>");
         return ret.toString();
     }
 
@@ -311,7 +343,7 @@ final class HTMLRenderUtil {
                 ix = size;
             }
             tooltip.append(remnant.substring(0, ix + 1));
-            tooltip.append("\\n");
+            tooltip.append("\\\\n");
             remnant.delete(0, ix + 1);
         }
         tooltip.append(remnant);
@@ -329,9 +361,10 @@ final class HTMLRenderUtil {
     {
         return getShortenedVersion(actualData)
                 + "<img border=\"0\" src=\"images/icon_plus.gif\" width=\"12\" height=\"12\" style=\"margin-bottom:-3px;padding-left:5px;\" onmouseover=\"return escape('"
-                + breakIntoChunks(actualData, 48)
+                + breakIntoChunks(actualData, MAX_TOOLTIP_CHUNK)
                 + "');\">";
     }
+    
     /**
      * This method safely retrieves a String value to be used as HTML style fragment from the given map for the given
      * key, i.e. when an non-<tt>null</tt>, non-empty String is found,<tt> STYLE=&quot;&lt;the value
@@ -353,8 +386,7 @@ final class HTMLRenderUtil {
         if (s == null || s.trim().length() == 0) {
             return "";
         }
-        //return " STYLE=\"" + escapeForHTMLTagAttribute(s) + "\"";
-        return escapeForHTMLTagAttribute(s);
+        return " STYLE=\"" + escapeForHTMLTagAttribute(s) + "\"";
     }
 
     /**
@@ -376,13 +408,39 @@ final class HTMLRenderUtil {
         char character = iterator.current();
         while (character != StringCharacterIterator.DONE) {
             if (character == '\"') {
-                result.append("'");
+                result.append("&quot;");
             } else if (character == '<') {
                 result.append("&lt;");
             } else if (character == '>') {
                 result.append("&gt;");
             } else if (character == '&') {
                 result.append("&amp;");
+            } else {
+                //the char is not a special one
+                //add it to the result as is
+                result.append(character);
+            }
+            character = iterator.next();
+        }
+        return result.toString();
+    }
+
+    /**
+     * Replace characters having special meaning <em>inside</em> HTML tags with their escaped equivalents, using
+     * character entities such as <tt>'&amp;amp;'</tt>.
+     *
+     * @param string the String to be escaped
+     *
+     * @return the escaped version of the given String
+     */
+    private static String escapeForQuote(final String string) {
+        final StringBuffer result = new StringBuffer();
+
+        final StringCharacterIterator iterator = new StringCharacterIterator(string);
+        char character = iterator.current();
+        while (character != StringCharacterIterator.DONE) {
+            if (character == '\"') {
+                result.append("\\\"");
             } else {
                 //the char is not a special one
                 //add it to the result as is
@@ -424,7 +482,6 @@ final class HTMLRenderUtil {
             }
             character = iterator.next();
         }
-
         return result.toString();
     }
 

@@ -43,6 +43,24 @@ public interface ColumnDecorator {
      * @return the decorated value of the columnData, may be <tt>null</tt>
      */
     public String decorateColumn(String columnData);
+    
+    /**
+     * <p>
+     * Indicates this column can be sorted.
+     * </p>
+     * 
+     * @return true for sorted, false for otherwise.
+     */
+    public boolean isSortable();
+    
+    /**
+     * <p>
+     * Gets the style of the column.
+     * </p>
+     * 
+     * @return the style for the column.
+     */
+    public String getStyle();
 }
 
 

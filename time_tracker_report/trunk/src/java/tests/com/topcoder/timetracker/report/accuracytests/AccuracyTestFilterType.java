@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.accuracytests;
+package com.topcoder.timetracker.report.accuracytests;
 
-import com.cronos.timetracker.report.FilterType;
+import com.topcoder.timetracker.report.FilterType;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

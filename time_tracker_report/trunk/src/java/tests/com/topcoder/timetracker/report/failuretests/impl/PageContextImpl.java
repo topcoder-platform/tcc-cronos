@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests.impl;
+package com.topcoder.timetracker.report.failuretests.impl;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -30,7 +30,9 @@ public class PageContextImpl extends PageContext {
 
     private Map attributes= new HashMap();
 
-    public void initialize(Servlet servlet, ServletRequest servletRequest, ServletResponse servletResponse, String string, boolean b, int i, boolean b1) throws IOException, IllegalStateException, IllegalArgumentException {
+    public void initialize(Servlet servlet, ServletRequest servletRequest, ServletResponse servletResponse,
+        String string, boolean b, int i, boolean b1) throws IOException, IllegalStateException,
+        IllegalArgumentException {
     }
 
     public void release() {
@@ -113,14 +115,14 @@ public class PageContextImpl extends PageContext {
     public void handlePageException(Throwable throwable) throws ServletException, IOException {
     }
 
-	public void include(String arg0, boolean arg1) throws ServletException, IOException {
-	}
+    public void include(String arg0, boolean arg1) throws ServletException, IOException {
+    }
 
-	public ExpressionEvaluator getExpressionEvaluator() {
-		return null;
-	}
+    public ExpressionEvaluator getExpressionEvaluator() {
+        return null;
+    }
 
-	public VariableResolver getVariableResolver() {
-		return null;
-	}
+    public VariableResolver getVariableResolver() {
+        return null;
+    }
 }

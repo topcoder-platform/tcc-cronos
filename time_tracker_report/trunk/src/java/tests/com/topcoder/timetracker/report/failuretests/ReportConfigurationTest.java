@@ -1,17 +1,21 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests;
+package com.topcoder.timetracker.report.failuretests;
+
+import com.topcoder.timetracker.report.ReportConfiguration;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.cronos.timetracker.report.ReportConfiguration;
+import java.util.List;
+import java.util.Map;
+import java.io.File;
 
 /**
- * <p>A failure test for {@link com.cronos.timetracker.report.ReportConfiguration} class.</p>
+ * <p>A failure test for {@link com.topcoder.timetracker.report.ReportConfiguration} class.</p>
  *
  * @author  isv
  * @version 2.0
@@ -19,15 +23,16 @@ import com.cronos.timetracker.report.ReportConfiguration;
 public class ReportConfigurationTest extends TestCase {
 
     /**
-     * <p>An instance of {@link com.cronos.timetracker.report.ReportConfiguration} which is tested. This instance is
+     * <p>An instance of {@link com.topcoder.timetracker.report.ReportConfiguration} which is tested. This instance is
      * initialized in {@link #setUp()} method and released in {@link #tearDown()} method.<p>
      */
     private ReportConfiguration testedInstance = null;
 
     /**
-     * <p>Gets the test suite for {@link com.cronos.timetracker.report.ReportConfiguration} class.</p>
+     * <p>Gets the test suite for {@link com.topcoder.timetracker.report.ReportConfiguration} class.</p>
      *
-     * @return a <code>TestSuite</code> providing the tests for {@link com.cronos.timetracker.report.ReportConfiguration} class.
+     * @return a <code>TestSuite</code> providing the tests for
+     * {@link com.topcoder.timetracker.report.ReportConfiguration} class.
      */
     public static Test suite() {
         return new TestSuite(ReportConfigurationTest.class);
@@ -40,7 +45,7 @@ public class ReportConfigurationTest extends TestCase {
      */
     protected void setUp() throws Exception {
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration("failure/FailureTestsConfig.xml");
+        ConfigHelper.loadConfiguration(new File("failure/FailureTestsConfig.xml"));
         this.testedInstance = new ReportConfiguration(TestDataFactory.VALID_REPORT_CATEGORY,
             TestDataFactory.VALID_REPORT_TYPE,
             TestDataFactory.VALID_REPORT_CONFIGURATION_NAMESPACE);
@@ -57,7 +62,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#ReportConfiguration(com.cronos.timetracker.report.ReportCategory,com.cronos.timetracker.report.ReportType,String)}
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#ReportConfiguration(
+     * com.topcoder.timetracker.report.ReportCategory,com.topcoder.timetracker.report.ReportType,String)}
      * constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>category</code> and expects the <code>NullPointerException</code>
@@ -65,7 +71,8 @@ public class ReportConfigurationTest extends TestCase {
      */
     public void testConstructor_ReportCategory_ReportType_String_category_NULL() {
         try {
-            new ReportConfiguration(null, TestDataFactory.VALID_REPORT_TYPE, TestDataFactory.VALID_REPORT_CONFIGURATION_NAMESPACE);
+            new ReportConfiguration(null, TestDataFactory.VALID_REPORT_TYPE,
+                TestDataFactory.VALID_REPORT_CONFIGURATION_NAMESPACE);
             Assert.fail("NullPointerException should have been thrown");
         } catch (NullPointerException e) {
             // expected behavior
@@ -75,7 +82,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#ReportConfiguration(com.cronos.timetracker.report.ReportCategory,com.cronos.timetracker.report.ReportType,String)}
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#ReportConfiguration(
+     * com.topcoder.timetracker.report.ReportCategory,com.topcoder.timetracker.report.ReportType,String)}
      * constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>type</code> and expects the <code>NullPointerException</code> to
@@ -83,7 +91,8 @@ public class ReportConfigurationTest extends TestCase {
      */
     public void testConstructor_ReportCategory_ReportType_String_type_NULL() {
         try {
-            new ReportConfiguration(TestDataFactory.VALID_REPORT_CATEGORY, null, TestDataFactory.VALID_REPORT_CONFIGURATION_NAMESPACE);
+            new ReportConfiguration(TestDataFactory.VALID_REPORT_CATEGORY, null,
+                TestDataFactory.VALID_REPORT_CONFIGURATION_NAMESPACE);
             Assert.fail("NullPointerException should have been thrown");
         } catch (NullPointerException e) {
             // expected behavior
@@ -93,7 +102,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#ReportConfiguration(com.cronos.timetracker.report.ReportCategory,com.cronos.timetracker.report.ReportType,String)}
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#ReportConfiguration(
+     * com.topcoder.timetracker.report.ReportCategory,com.topcoder.timetracker.report.ReportType,String)}
      * constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>namespace</code> and expects the
@@ -111,7 +121,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#ReportConfiguration(com.cronos.timetracker.report.ReportCategory,com.cronos.timetracker.report.ReportType,String)}
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#ReportConfiguration(
+     * com.topcoder.timetracker.report.ReportCategory,com.topcoder.timetracker.report.ReportType,String)}
      * constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>namespace</code> and expects the
@@ -119,7 +130,8 @@ public class ReportConfigurationTest extends TestCase {
      */
     public void testConstructor_ReportCategory_ReportType_String_namespace_ZERO_LENGTH_STRING() {
         try {
-            new ReportConfiguration(TestDataFactory.VALID_REPORT_CATEGORY, TestDataFactory.VALID_REPORT_TYPE, TestDataFactory.ZERO_LENGTH_STRING);
+            new ReportConfiguration(TestDataFactory.VALID_REPORT_CATEGORY, TestDataFactory.VALID_REPORT_TYPE,
+                TestDataFactory.ZERO_LENGTH_STRING);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
@@ -129,7 +141,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#ReportConfiguration(com.cronos.timetracker.report.ReportCategory,com.cronos.timetracker.report.ReportType,String)}
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#ReportConfiguration(
+     * com.topcoder.timetracker.report.ReportCategory,com.topcoder.timetracker.report.ReportType,String)}
      * constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>namespace</code> and expects the
@@ -137,7 +150,8 @@ public class ReportConfigurationTest extends TestCase {
      */
     public void testConstructor_ReportCategory_ReportType_String_namespace_WHITESPACE_ONLY_STRING() {
         try {
-            new ReportConfiguration(TestDataFactory.VALID_REPORT_CATEGORY, TestDataFactory.VALID_REPORT_TYPE, TestDataFactory.WHITESPACE_ONLY_STRING);
+            new ReportConfiguration(TestDataFactory.VALID_REPORT_CATEGORY, TestDataFactory.VALID_REPORT_TYPE,
+                TestDataFactory.WHITESPACE_ONLY_STRING);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
@@ -147,8 +161,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setFilters(java.util.List)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setFilters(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>filters</code> and expects the <code>NullPointerException</code>
      * to be thrown.</p>
@@ -165,8 +179,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setFilters(java.util.List)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setFilters(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#EMPTY_LIST} as <code>filters</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -183,8 +197,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setFilters(java.util.List)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setFilters(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getFiltersListWithNullElement} as <code>filters</code> and expects the
      * <code>NullPointerException</code> to be thrown.</p>
@@ -201,8 +215,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setFilters(java.util.List)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setFilters(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getFiltersListWithNonFilterElement} as <code>filters</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -219,8 +233,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setColumnDecorators(java.util.List)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setColumnDecorators(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>columnDecorators</code> and expects the
      * <code>NullPointerException</code> to be thrown.</p>
@@ -237,8 +251,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setColumnDecorators(java.util.List)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setColumnDecorators(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#EMPTY_LIST} as <code>columnDecorators</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -255,8 +269,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setColumnDecorators(java.util.List)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setColumnDecorators(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getColumnDecoratorsListWithNullElement} as <code>columnDecorators</code> and
      * expects the <code>NullPointerException</code> to be thrown.</p>
@@ -273,15 +287,16 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setColumnDecorators(java.util.List)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setColumnDecorators(
+     * java.util.List)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getColumnDecoratorsListWithNonColumnDecoratorElement} as
      * <code>columnDecorators</code> and expects the <code>IllegalArgumentException</code> to be thrown.</p>
      */
     public void testSetColumnDecorators_List_columnDecorators_ColumnDecoratorsListWithNonColumnDecoratorElement() {
         try {
-            this.testedInstance.setColumnDecorators(TestDataFactory.getColumnDecoratorsListWithNonColumnDecoratorElement());
+            this.testedInstance.setColumnDecorators(
+                TestDataFactory.getColumnDecoratorsListWithNonColumnDecoratorElement());
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
@@ -291,8 +306,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setStyles(java.util.Map)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setStyles(java.util.Map)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>styles</code> and expects the <code>NullPointerException</code>
      * to be thrown.</p>
@@ -309,8 +324,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setStyles(java.util.Map)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setStyles(java.util.Map)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#EMPTY_MAP} as <code>styles</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -327,8 +342,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setStyles(java.util.Map)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setStyles(java.util.Map)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getStylesMapWithNullKey} as <code>styles</code> and expects the
      * <code>NullPointerException</code> to be thrown.</p>
@@ -345,8 +360,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setStyles(java.util.Map)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setStyles(java.util.Map)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getStylesMapWithNullValue} as <code>styles</code> and expects the
      * <code>NullPointerException</code> to be thrown.</p>
@@ -363,8 +378,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setStyles(java.util.Map)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setStyles(java.util.Map)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getStylesMapWithNonStyleConstantKey} as <code>styles</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -381,8 +396,8 @@ public class ReportConfigurationTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportConfiguration#setStyles(java.util.Map)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportConfiguration#setStyles(java.util.Map)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#getStylesMapWithNonStringValue} as <code>styles</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>

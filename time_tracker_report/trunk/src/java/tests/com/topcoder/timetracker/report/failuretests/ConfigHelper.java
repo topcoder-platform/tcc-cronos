@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests;
+package com.topcoder.timetracker.report.failuretests;
 
 import java.io.File;
 import java.util.Iterator;
@@ -28,14 +28,14 @@ public class ConfigHelper {
      *
      * @param file a <code>File</code> providing the name of the file to load configuration file from.
      */
-    public static final void loadConfiguration(String file) {
+    public static final void loadConfiguration(File file) {
         ConfigManager configManager = ConfigManager.getInstance();
 
         try {
-            configManager.add(file, ConfigManager.EXCEPTIONS_ALL);
+            configManager.add(file.getPath(), ConfigManager.EXCEPTIONS_ALL);
         } catch (ConfigManagerException e) {
             System.err.println("An error occurred while loading the configuration file '"
-                + file  + "\n\n" + e);
+                + file.getPath()  + "\n\n" + e);
         }
     }
 

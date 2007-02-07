@@ -2,7 +2,7 @@
  *
  * Copyright (c) 2005, TopCoder, Inc. All rights reserved
  */
-package com.cronos.timetracker.report.stresstests;
+package com.topcoder.timetracker.report.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -18,7 +18,7 @@ public class StressTests extends TestCase {
 
     /**
      * Aggregate all stress tests cases.
-     * 
+     *
      * @return all stress tests cases
      */
     public static Test suite() {

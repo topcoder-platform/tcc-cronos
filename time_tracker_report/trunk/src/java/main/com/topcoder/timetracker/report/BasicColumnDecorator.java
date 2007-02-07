@@ -26,6 +26,11 @@ public class BasicColumnDecorator implements ColumnDecorator {
      * in an instantiated object.
      */
     private final String columnDisplayText;
+    
+    /**
+     * Specifies the column can be sorted or not.
+     */
+    private final boolean sortable;
 
     /**
      * The prefix if any for the columnData. This instance member can be <tt>null</tt>, indicating that the column data
@@ -38,17 +43,21 @@ public class BasicColumnDecorator implements ColumnDecorator {
      * should not be suffixed with a value.
      */
     private String suffix = null;
+    
+    private final String style;
 
     /**
      * Constructor. Initializes the corresponding instance member from the argument values passed.
      *
      * @param colName      the name of the Column being decorated.
      * @param displayLabel the Display Label to be used for the column.
+     * @param sortable  the column can be sort or not. 
+     * @param style   the style of the column.
      *
      * @throws NullPointerException     if any argument is <tt>null</tt>
      * @throws IllegalArgumentException if any argument is an empty (trim'd) String
      */
-    public BasicColumnDecorator(final String colName, final String displayLabel) {
+    public BasicColumnDecorator(final String colName, final String displayLabel, final boolean sortable, final String style) {
         if (colName == null) {
             throw new NullPointerException("The argument named [colName] was null.");
         }
@@ -64,6 +73,8 @@ public class BasicColumnDecorator implements ColumnDecorator {
 
         columnName = colName;
         columnDisplayText = displayLabel;
+        this.sortable = sortable;
+        this.style = style;
     }
 
     /**
@@ -144,15 +155,37 @@ public class BasicColumnDecorator implements ColumnDecorator {
         } else {
             final StringBuffer ret = new StringBuffer();
             //we don't want to have the string literal "null", but no prefix
-            if (prefix != null) {
+            if ((prefix != null) && (columnData.length() > 0)) {
                 ret.append(prefix);
             }
             ret.append(columnData);
             //we don't want to have the string literal "null", but no suffix
-            if (suffix != null) {
+            if ((suffix != null) && (columnData.length() > 0)) {
                 ret.append(suffix);
             }
             return ret.toString();
         }
     }
+
+    /**
+     * <p>
+     * Indicates this column can be sorted.
+     * </p>
+     * 
+     * @return true for sorted, false for otherwise.
+     */
+	public boolean isSortable() {
+		return this.sortable;
+	}
+
+    /**
+     * <p>
+     * Gets the style of the column.
+     * </p>
+     * 
+     * @return the style for the column.
+     */
+	public String getStyle() {
+		return this.style;
+	}
 }

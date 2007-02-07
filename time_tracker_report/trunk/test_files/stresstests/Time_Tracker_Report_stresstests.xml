@@ -7,7 +7,7 @@
          data type, then the application level column name can be the same for them, but if the data type differs, then
          the application level column name has to be different.
          For the Time Tracker Report application, the application level column-names are enumerated by the Enumeration
-         class com.topcoder.timetracker.report.Column.
+         class com.cronos.timetracker.report.Column.
 
 -->
 
@@ -16,8 +16,8 @@
 
     <!-- Default Configuration for the reports.
         All reports irrespective of the type or the category they belong to, can use this Configuration.
-        This configuration just specifies the value for the Connection and the DBHandler property
-        (for pluggable persistence), which are the required parameter for the Configuration. All other
+        This configuration just specifies the value for the Connection and the DBHandler property 
+        (for pluggable persistence), which are the required parameter for the Configuration. All other 
         properties are optional for the configuration.
         The namespace attribute in the "reportdisplay" JSP tag can specify this Configuration
         name as its value.
@@ -356,9 +356,9 @@
         </Property>
 
         <!-- introduced in version 2.0, optional.
-		Sorting can be based on single column or multiple columns.
+		Sorting can be based on single column or multiple columns. 
 		Sorting order can be ascending or descending.
-		the property name is is in the form SORT_BY_<REPORT_TYPE>_<REPORT_CATEGORY>
+		the property name is is in the form SORT_BY_<REPORT_TYPE>_<REPORT_CATEGORY> 
 		-->
 		<Property name="SORT_BY_EMPLOYEE_TIME">
 		    <Value>DATE asc, HOURS desc</Value>
@@ -1172,20 +1172,20 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://tygrys:1526/report_2:informixserver=ol_tygrys</Value>
+						<Value>jdbc:informix-sqli://chenqiang:1526/timetrack:informixserver=ol_chenqiang</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>michal</Value>
+						<Value>informix</Value>
 					</Property>
 				</Property>
             </Property>
         </Property>
     </Config>
 
-  <Config name="com.cronos.timetracker.stresstests.data">
+  <Config name="com.topcoder.timetracker.stresstests.data">
     <Property name="project">
         <Value>Project Name 1</Value>
     </Property>
@@ -1210,7 +1210,7 @@
         <Value>delete from project_worker</Value>
         <Value>delete from project_manager</Value>
         <Value>delete from user_account</Value>
-        <Value>delete from account_status</Value>
+        <Value>delete from account_status</Value>		
         <Value>delete from comp_task_type</Value>
         <Value>delete from comp_exp_type</Value>
         <Value>delete from comp_rej_reason</Value>
@@ -1233,7 +1233,7 @@
 	    <Value>insert into company values(2, 'user', 'b', current, 'a', current, 'a')</Value>
 		<Value>insert into account_status values(1, 'desc', current, 'a', current,'a')</Value>
 		<Value>insert into account_status values(2, 'desc', current, 'a', current,'a')</Value>
-		<Value>INSERT INTO user_account VALUES (1, 1, 1, 'admin', 'a', '2006-01-01 00:00:00','admin','2006-01-01 00:00:00','admin')</Value>
+		<Value>INSERT INTO user_account VALUES (1, 1, 1, 'admin', 'a', '2006-01-01 00:00:00','admin','2006-01-01 00:00:00','admin')</Value>		
         <Value>INSERT INTO user_account VALUES (2, 1, 1, 'user', 'a', '2006-01-01 00:00:00','admin','2006-01-01 00:00:00','admin')</Value>
         <Value>INSERT INTO task_type VALUES (1,'Task Type 1', 0, '2006-01-01 00:00:00','admin','2006-01-01 00:00:00','admin')</Value>
         <Value>INSERT INTO task_type VALUES (2,'Task Type 2', 0, '2006-01-01 00:00:00','admin','2006-01-01 00:00:00','admin')</Value>

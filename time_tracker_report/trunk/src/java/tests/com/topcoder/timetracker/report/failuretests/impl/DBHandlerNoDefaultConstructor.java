@@ -1,17 +1,18 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests.impl;
+package com.topcoder.timetracker.report.failuretests.impl;
 
-import com.cronos.timetracker.report.Report;
-import com.cronos.timetracker.report.ReportConfiguration;
-import com.cronos.timetracker.report.dbhandler.DBHandler;
-import com.cronos.timetracker.report.dbhandler.ReportSQLException;
+import com.topcoder.timetracker.report.Report;
+import com.topcoder.timetracker.report.ReportConfiguration;
+import com.topcoder.timetracker.report.dbhandler.DBHandler;
+import com.topcoder.timetracker.report.dbhandler.ReportSQLException;
 
 import java.sql.ResultSet;
 
 /**
- * <p>An implementation of {@link com.cronos.timetracker.report.dbhandler.DBHandler} interface to be utilized for testing purposes.</p>
+ * <p>An implementation of {@link com.topcoder.timetracker.report.dbhandler.DBHandler}
+ * interface to be utilized for testing purposes.</p>
  *
  * @author  isv
  * @version 2.0

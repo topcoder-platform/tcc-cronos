@@ -3,8 +3,12 @@
  */
 package com.topcoder.timetracker.report.htmlreport;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.topcoder.timetracker.report.AbstractReport;
 import com.topcoder.timetracker.report.Column;
+import com.topcoder.timetracker.report.ColumnDecorator;
 import com.topcoder.timetracker.report.ReportCategory;
 import com.topcoder.timetracker.report.ReportConfiguration;
 import com.topcoder.timetracker.report.ReportConfigurationException;
@@ -55,16 +59,33 @@ public class TimeExpenseReport extends AbstractReport {
         //renders the HTML table and cumulates the amount
         final String renderedTable = HTMLRenderUtil.renderTable(config, getDBHandlerFactory(),
             new HTMLRenderUtil.Aggregator[]{totalAmount, totalHours});
+        if (renderedTable.length() == 0) {
+        	return renderedTable;
+        }
         final StringBuffer ret = new StringBuffer();
-        ret.append("<CENTER>");
-        ret.append(config.getHeader());
-        ret.append("</CENTER>");
+        //ret.append("<CENTER>");
+        //ret.append(config.getHeader());
+        //ret.append("</CENTER>");
         ret.append(renderedTable);
 
         //append the hours line
-        ret.append("<BR/><BR/><CENTER>Total Hours: ");
+        List styles = config.getStatisticStyles();
+        ret.append("<TABLE class=\"results_table\" width=\"100%\" " +
+        	"bgColor=#ffffff><TBODY><TR>");
+        final List columnDecorators = config.getColumnDecorators();
+        for (Iterator itor = columnDecorators.iterator(); itor.hasNext();) {
+        	final ColumnDecorator columnDecorator = (ColumnDecorator) itor.next();
+        	ret.append("<TH>");
+        	ret.append("<" + columnDecorator.getStyle() + ">");
+        	ret.append("</TH>");
+        }
+        ret.append("</TR></TBODY><tr><td ");
+        ret.append(styles.get(0));
+        ret.append(">Total : </td><td " );
+        ret.append(styles.get(1));
+        ret.append(">");
         ret.append(totalHours.getCurrentValue());
-        ret.append("</CENTER>");
+        ret.append("</td>");
 
         String amtPrefix = null;
         try {
@@ -76,10 +97,14 @@ public class TimeExpenseReport extends AbstractReport {
         }
 
         //append the amount line
-        ret.append("<BR/><BR/><CENTER>Total Amount: ");
+        ret.append("<td ");
+        ret.append(styles.get(2));
+        ret.append(">");
         if (amtPrefix != null && amtPrefix.length() > 0) ret.append(amtPrefix);
         ret.append(totalAmount.getCurrentValue());
-        ret.append("</CENTER>");
+        ret.append("</td><td ");
+        ret.append(styles.get(3));
+        ret.append(">&nbsp;</td></tr></table>");
 
         return ret.toString();
     }

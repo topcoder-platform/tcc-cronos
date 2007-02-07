@@ -1,21 +1,22 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests;
+package com.topcoder.timetracker.report.failuretests;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
+import com.topcoder.timetracker.report.ReportDisplayTag;
+import com.topcoder.timetracker.report.failuretests.impl.PageContextImpl;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.cronos.timetracker.report.ReportDisplayTag;
-import com.cronos.timetracker.report.failuretests.impl.PageContextImpl;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import java.io.File;
 
 /**
- * <p>A failure test for {@link com.cronos.timetracker.report.ReportDisplayTag} class.</p>
+ * <p>A failure test for {@link com.topcoder.timetracker.report.ReportDisplayTag} class.</p>
  *
  * @author  isv
  * @version 2.0
@@ -23,7 +24,7 @@ import com.cronos.timetracker.report.failuretests.impl.PageContextImpl;
 public class ReportDisplayTagTest extends TestCase {
 
     /**
-     * <p>An instance of {@link com.cronos.timetracker.report.ReportDisplayTag} which is tested. This instance is
+     * <p>An instance of {@link com.topcoder.timetracker.report.ReportDisplayTag} which is tested. This instance is
      * initialized in {@link #setUp()} method and released in {@link #tearDown()} method.<p>
      */
     private ReportDisplayTag testedInstance = null;
@@ -34,9 +35,10 @@ public class ReportDisplayTagTest extends TestCase {
     private PageContext pageContext = null;
 
     /**
-     * <p>Gets the test suite for {@link com.cronos.timetracker.report.ReportDisplayTag} class.</p>
+     * <p>Gets the test suite for {@link com.topcoder.timetracker.report.ReportDisplayTag} class.</p>
      *
-     * @return a <code>TestSuite</code> providing the tests for {@link com.cronos.timetracker.report.ReportDisplayTag} class.
+     * @return a <code>TestSuite</code> providing the tests for
+     * {@link com.topcoder.timetracker.report.ReportDisplayTag} class.
      */
     public static Test suite() {
         return new TestSuite(ReportDisplayTagTest.class);
@@ -49,7 +51,7 @@ public class ReportDisplayTagTest extends TestCase {
      */
     protected void setUp() throws Exception {
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration("failure/FailureTestsConfig.xml");
+        ConfigHelper.loadConfiguration(new File("failure/FailureTestsConfig.xml"));
         this.pageContext = new PageContextImpl();
         this.testedInstance = new ReportDisplayTag();
         this.testedInstance.setPageContext(this.pageContext);
@@ -67,8 +69,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setNamespace(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setNamespace(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>namespace</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -85,8 +87,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setNamespace(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setNamespace(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>namespace</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -103,8 +105,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setType(String)} method for proper handling the invalid input
-     * arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setType(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>type</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -121,8 +123,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setType(String)} method for proper handling the invalid input
-     * arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setType(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>type</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -139,8 +141,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setCategory(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setCategory(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>category</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -157,8 +159,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setCategory(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setCategory(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>category</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -175,8 +177,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setClientFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setClientFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>clientFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -193,8 +195,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setClientFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setClientFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>clientFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -211,8 +213,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setEmployeeFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setEmployeeFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>employeeFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -229,8 +231,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setEmployeeFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setEmployeeFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>employeeFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -247,8 +249,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setProjectFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setProjectFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>projectFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -265,8 +267,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setProjectFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setProjectFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>projectFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -283,8 +285,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setBillableFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setBillableFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>billableFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -301,8 +303,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setBillableFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setBillableFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>billableFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -319,8 +321,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setStartDateFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setStartDateFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>startDateFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -337,8 +339,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setStartDateFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setStartDateFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>startDateFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -355,8 +357,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setEndDateFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setEndDateFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>endDateFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -373,8 +375,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#setEndDateFilter(String)} method for proper handling the
-     * invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#setEndDateFilter(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>endDateFilter</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -391,8 +393,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set.</p>
      *
      * <p>Does not set the <code>namespace</code> property of the tested instance and expects the
      * <code>JspException</code> to be thrown.</p>
@@ -418,8 +420,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set.</p>
      *
      * <p>Does not set the <code>category</code> property of the tested instance and expects the
      * <code>JspException</code> to be thrown.</p>
@@ -445,8 +447,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set.</p>
      *
      * <p>Does not set the <code>type</code> property of the tested instance and expects the <code>JspException</code>
      * to be thrown.</p>
@@ -472,8 +474,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set correctly.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set correctly.</p>
      *
      * <p>Sets the <code>namespace</code> property of the tested instance to value invalid in current context and
      * expects the <code>JspException</code> to be thrown.</p>
@@ -500,8 +502,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set correctly.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set correctly.</p>
      *
      * <p>Sets the <code>category</code> property of the tested instance to value invalid in current context and expects
      * the <code>JspException</code> to be thrown.</p>
@@ -532,8 +534,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set correctly.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set correctly.</p>
      *
      * <p>Sets the <code>type</code> property of the tested instance to value invalid in current context and expects the
      * <code>JspException</code> to be thrown.</p>
@@ -564,8 +566,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set correctly.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set correctly.</p>
      *
      * <p>Sets the <code>category</code> property of the tested instance to value invalid in current context and expects
      * the <code>JspException</code> to be thrown.</p>
@@ -596,8 +598,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set correctly.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set correctly.</p>
      *
      * <p>Sets the <code>type</code> property of the tested instance to value invalid in current context and expects
      * the <code>JspException</code> to be thrown.</p>
@@ -628,8 +630,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set correctly.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set correctly.</p>
      *
      * <p>Sets the <code>category</code> property of the tested instance to value invalid in current context and expects
      * the <code>JspException</code> to be thrown.</p>
@@ -660,8 +662,8 @@ public class ReportDisplayTagTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportDisplayTag#doStartTag} for proper behavior if the required instance
-     * property is not set correctly.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportDisplayTag#doStartTag} for
+     * proper behavior if the required instance property is not set correctly.</p>
      *
      * <p>Sets the <code>category</code> property of the tested instance to value invalid in current context and expects
      * the <code>JspException</code> to be thrown.</p>

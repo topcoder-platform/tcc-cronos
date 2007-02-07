@@ -93,6 +93,13 @@ public class ReportConfiguration {
      * </p>
      */
     private String sortBy = null;
+    
+    /**
+     * <p>
+     * Represents the style of static line.
+     * </p>
+     */
+    private List statisticStyles = new ArrayList(); 
 
     /**
      * Constructor. Simply initializes the corresponding instance members from the values of the parameters passed.
@@ -331,5 +338,26 @@ public class ReportConfiguration {
      */
     public void setSortBy(String sortBy) {
         this.sortBy = sortBy;
+    }
+
+    /**
+     * <p>
+     * Get the sort by clause of the report.
+     * </p>
+     *
+     * @return the sort by clause.
+     */
+    public List getStatisticStyles() {
+        return statisticStyles;
+    }
+
+    /**
+     * <p>
+     * Set the sort by clause for report. Can be null.
+     * </p>
+     * @param sortBy the sort by clause.
+     */
+    public void setStatisticStyles(List statisticStyles) {
+        this.statisticStyles = statisticStyles;
     }
 }

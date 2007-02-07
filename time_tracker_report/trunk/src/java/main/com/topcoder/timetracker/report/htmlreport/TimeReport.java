@@ -3,8 +3,12 @@
  */
 package com.topcoder.timetracker.report.htmlreport;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.topcoder.timetracker.report.AbstractReport;
 import com.topcoder.timetracker.report.Column;
+import com.topcoder.timetracker.report.ColumnDecorator;
 import com.topcoder.timetracker.report.ReportCategory;
 import com.topcoder.timetracker.report.ReportConfiguration;
 import com.topcoder.timetracker.report.ReportConfigurationException;
@@ -46,24 +50,41 @@ public class TimeReport extends AbstractReport {
         if (config == null) {
             throw new NullPointerException("The parameter named [config] was null.");
         }
-
         // the aggregator that is used to calculate the cumulated hours
         // of all rows iterated by the resultSet that is rendered by HTMLRenderUtil
         final HTMLRenderUtil.Aggregator totalHours = new HTMLRenderUtil.Aggregator(Column.HOURS);
 
         //renders the HTML table and cumulates the amount
         final String renderedTable = HTMLRenderUtil.renderTable(config, getDBHandlerFactory(),
-            new HTMLRenderUtil.Aggregator[]{totalHours});
+           new HTMLRenderUtil.Aggregator[]{totalHours});
+        if (renderedTable.length() == 0) {
+        	return renderedTable;
+        }
         final StringBuffer ret = new StringBuffer();
-        ret.append("<CENTER>");
-        ret.append(config.getHeader());
-        ret.append("</CENTER>");
+        //ret.append("<CENTER>");
+        //ret.append(config.getHeader());
+        //ret.append("</CENTER>");
         ret.append(renderedTable);
-
         //append the hours line
-        ret.append("<BR/><BR/><CENTER>Total Hours: ");
+        List styles = config.getStatisticStyles();
+        ret.append("<TABLE class=\"results_table\" width=\"100%\" " +
+        		"bgColor=#ffffff><TBODY><TR>");
+        final List columnDecorators = config.getColumnDecorators();
+        for (Iterator itor = columnDecorators.iterator(); itor.hasNext();) {
+        	final ColumnDecorator columnDecorator = (ColumnDecorator) itor.next();
+        	ret.append("<TH>");
+        	ret.append("<" + columnDecorator.getStyle() + ">");
+        	ret.append("</TH>");
+        }
+        ret.append("</TR></TBODY><tr><td ");
+        ret.append(styles.get(0));
+        ret.append(">Total Hours: </td><td " );
+        ret.append(styles.get(1));
+        ret.append(">");
         ret.append(totalHours.getCurrentValue());
-        ret.append("</CENTER>");
+        ret.append("</td><td ");
+        ret.append(styles.get(2));
+        ret.append(">&nbsp;</td></tr></Table>");
 
         return ret.toString();
     }

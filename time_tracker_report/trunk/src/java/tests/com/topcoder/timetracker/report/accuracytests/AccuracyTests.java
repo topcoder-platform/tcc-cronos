@@ -2,7 +2,7 @@
  *
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
-package com.cronos.timetracker.report.accuracytests;
+package com.topcoder.timetracker.report.accuracytests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -38,7 +38,7 @@ public class AccuracyTests extends TestCase {
         suite.addTest(AccuracyTestStyleConstant.suite());
         suite.addTest(AccuracyTestTimeReport.suite());
         suite.addTest(AccuracyTestTimeExpenseReport.suite());
-        suite.addTestSuite(RenderingTest.class);
+        //suite.addTestSuite(RenderingTest.class);
 
         return suite;
     }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
  */
-package com.cronos.timetracker.report.accuracytests;
+package com.topcoder.timetracker.report.accuracytests;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,9 +18,9 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.w3c.dom.Document;
 
-import com.cronos.timetracker.report.ReportCategory;
-import com.cronos.timetracker.report.ReportDisplayTag;
-import com.cronos.timetracker.report.ReportType;
+import com.topcoder.timetracker.report.ReportCategory;
+import com.topcoder.timetracker.report.ReportDisplayTag;
+import com.topcoder.timetracker.report.ReportType;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -104,7 +104,7 @@ public class RenderingTest extends JspTestCase {
         tag.setStartDateFilter("start");
         tag.setEndDateFilter("end");
         tag.setCompanyFilter("company");
-        tag.setNamespace("Accuracy_render");
+        tag.setNamespace("com.topcoder.timetracker.report.DefaultConfiguration");
     }
 
     /**
@@ -120,7 +120,7 @@ public class RenderingTest extends JspTestCase {
         theRequest.addParameter("company", "1");
         theRequest.addParameter("project", "Self-Service");
         theRequest.addParameter("sort", "DATE DESC");
-        theRequest.addParameter("start", "01-01-2001");
+        theRequest.addParameter("start", "01-01-0001");
         theRequest.addParameter("end", "01-01-2007");
     }
 
@@ -156,7 +156,7 @@ public class RenderingTest extends JspTestCase {
         theRequest.addParameter("company", "1, 2");
         theRequest.addParameter("project", "Self-Service");
         theRequest.addParameter("sort", "HOURS DESC, AMOUNT DESC");
-        theRequest.addParameter("start", "01-01-2001");
+        theRequest.addParameter("start", "01-01-0001");
         theRequest.addParameter("end", "01-01-2007");
     }
 
@@ -192,7 +192,7 @@ public class RenderingTest extends JspTestCase {
         theRequest.addParameter("company", "1, 2");
         theRequest.addParameter("project", "Self-Service");
         theRequest.addParameter("sort", "AMOUNT DESC");
-        theRequest.addParameter("start", "01-01-2001");
+        theRequest.addParameter("start", "01-01-0001");
         theRequest.addParameter("end", "01-01-2007");
     }
 
@@ -223,7 +223,6 @@ public class RenderingTest extends JspTestCase {
      * @throws Exception to JUnit.
      */
     private void checkRenderResult(String rendered, String filename) throws Exception {
-        System.out.println(rendered);
         rendered = "<BODY>" + rendered + "</BODY>";
         String expected = readResourceIntoString("accuracyTests/" + filename);
 

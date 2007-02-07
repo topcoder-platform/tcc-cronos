@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests.htmlreport;
+package com.topcoder.timetracker.report.failuretests.htmlreport;
 
-import com.cronos.timetracker.report.failuretests.ConfigHelper;
-import com.cronos.timetracker.report.htmlreport.TimeReport;
+import com.topcoder.timetracker.report.failuretests.ConfigHelper;
+import com.topcoder.timetracker.report.htmlreport.TimeReport;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -13,7 +13,7 @@ import junit.framework.TestSuite;
 import java.io.File;
 
 /**
- * <p>A failure test for {@link com.cronos.timetracker.report.htmlreport.TimeReport} class.</p>
+ * <p>A failure test for {@link com.topcoder.timetracker.report.htmlreport.TimeReport} class.</p>
  *
  * @author  isv
  * @version 2.0
@@ -21,15 +21,17 @@ import java.io.File;
 public class TimeReportTest extends TestCase {
 
     /**
-     * <p>An instance of {@link com.cronos.timetracker.report.htmlreport.TimeReport} which is tested. This instance is initialized in {@link #setUp()} method and
+     * <p>An instance of {@link com.topcoder.timetracker.report.htmlreport.TimeReport} which is tested.
+     * This instance is initialized in {@link #setUp()} method and
      * released in {@link #tearDown()} method.<p>
      */
     private TimeReport testedInstance = null;
 
     /**
-     * <p>Gets the test suite for {@link com.cronos.timetracker.report.htmlreport.TimeReport} class.</p>
+     * <p>Gets the test suite for {@link com.topcoder.timetracker.report.htmlreport.TimeReport} class.</p>
      *
-     * @return a <code>TestSuite</code> providing the tests for {@link com.cronos.timetracker.report.htmlreport.TimeReport} class.
+     * @return a <code>TestSuite</code> providing the tests for
+     * {@link com.topcoder.timetracker.report.htmlreport.TimeReport} class.
      */
     public static Test suite() {
         return new TestSuite(TimeReportTest.class);
@@ -42,7 +44,7 @@ public class TimeReportTest extends TestCase {
      */
     protected void setUp() throws Exception {
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration("failure/FailureTestsConfig.xml");
+        ConfigHelper.loadConfiguration(new File("failure/FailureTestsConfig.xml"));
         this.testedInstance = new TimeReport();
     }
 
@@ -57,7 +59,8 @@ public class TimeReportTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.htmlreport.TimeReport#executeReport(com.cronos.timetracker.report.ReportConfiguration)}
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.htmlreport.TimeReport#executeReport(
+     * com.topcoder.timetracker.report.ReportConfiguration)}
      * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes <code>null</code> as <code>config</code> and expects the <code>NullPointerException</code> to be

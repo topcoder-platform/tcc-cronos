@@ -14,15 +14,35 @@ import ="java.util.*"%>
 %>
 <HTML>
 <TITLE> Time Tracker Report </TITLE>
+		<!-- due to a netscape bug -->
+	    <script></script>
+	    <script src="js/sorttable.js" type="text/javascript"></script>
 <BODY>
 
 <!%-- Render the Employee Time Report.
      The namespace specifies to use Default Configuration. -->
+<report:reportdisplay
+    namespace="com.cronos.timetracker.report.CustomConfiguration"
+    type="Report_Type"
+    category="Report_Category"
+    employeeFilter="Filter1"/>
+
 <report:reportdisplay
     namespace="com.cronos.timetracker.report.DefaultConfiguration"
     type="Report_Type"
     category="Report_Category"
     employeeFilter="Filter1"/>
 
+<report:reportdisplay
+    namespace="com.cronos.timetracker.report.DefaultConfiguration"
+    type="Report_Type"
+    category="Report_Category"
+    employeeFilter="Filter1"/>
+
+<report:reportdisplay
+    namespace="com.cronos.timetracker.report.DefaultConfiguration"
+    type="Report_Type"
+    category="Report_Category"
+    employeeFilter="Filter1"/>
 </BODY>
 </HTML>

@@ -2,18 +2,18 @@
  *
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
- package com.cronos.timetracker.report.failuretests;
+ package com.topcoder.timetracker.report.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.TestResult;
 
-import com.cronos.timetracker.report.failuretests.dbhandler.DBHandlerFactoryTest;
-import com.cronos.timetracker.report.failuretests.dbhandler.InformixDBHandlerTest;
-import com.cronos.timetracker.report.failuretests.htmlreport.ExpenseReportTest;
-import com.cronos.timetracker.report.failuretests.htmlreport.TimeExpenseReportTest;
-import com.cronos.timetracker.report.failuretests.htmlreport.TimeReportTest;
+import com.topcoder.timetracker.report.failuretests.dbhandler.DBHandlerFactoryTest;
+import com.topcoder.timetracker.report.failuretests.dbhandler.InformixDBHandlerTest;
+import com.topcoder.timetracker.report.failuretests.htmlreport.ExpenseReportTest;
+import com.topcoder.timetracker.report.failuretests.htmlreport.TimeExpenseReportTest;
+import com.topcoder.timetracker.report.failuretests.htmlreport.TimeReportTest;
 
 /**
  * <p>This test case aggregates all Failure test cases.</p>
@@ -25,7 +25,7 @@ public class FailureTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
- 
+
         suite.addTest(BasicColumnDecoratorTest.suite());
         suite.addTest(EqualityFilterTest.suite());
         suite.addTest(RangeFilterTest.suite());

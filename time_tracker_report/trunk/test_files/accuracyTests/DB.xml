@@ -11,17 +11,17 @@
             </Property>
             <Property name="parameters">
                 <Property name="jdbc_driver">
-						<Value>com.informix.jdbc.IfxDriver</Value>
-					</Property>
-					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://tygrys:1526/report_2:informixserver=ol_tygrys</Value>
-					</Property>
-					<Property name="user">
-						<Value>informix</Value>
-					</Property>
-					<Property name="password">
-						<Value>michal</Value>
-					</Property>
+                    <Value>com.informix.jdbc.IfxDriver</Value>
+                </Property>
+                <Property name="jdbc_url">
+                    <Value>jdbc:informix-sqli://chenqiang:1526/timetrack:informixserver=ol_chenqiang</Value>
+                </Property>
+                <Property name="user">
+                    <Value>informix</Value>
+                </Property>
+                <Property name="password">
+                    <Value>informix</Value>
+                </Property>
             </Property>
          </Property>
      </Property>

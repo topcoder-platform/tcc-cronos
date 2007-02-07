@@ -1,17 +1,18 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests.impl;
+package com.topcoder.timetracker.report.failuretests.impl;
 
-import com.cronos.timetracker.report.Report;
-import com.cronos.timetracker.report.ReportCategory;
-import com.cronos.timetracker.report.ReportException;
-import com.cronos.timetracker.report.ReportType;
+import com.topcoder.timetracker.report.Report;
+import com.topcoder.timetracker.report.ReportCategory;
+import com.topcoder.timetracker.report.ReportException;
+import com.topcoder.timetracker.report.ReportType;
 
 import java.util.List;
 
 /**
- * <p>An implementation of {@link com.cronos.timetracker.report.Report} interface to be utilized for testing purposes.</p>
+ * <p>An implementation of {@link com.topcoder.timetracker.report.Report} interface to be utilized
+ * for testing purposes.</p>
  *
  * @author  isv
  * @version 2.0

@@ -1,15 +1,15 @@
 /*
  * Copyright (c) 2005, TopCoder, Inc. All rights reserved.
  */
-package com.cronos.timetracker.report.stresstests;
+package com.topcoder.timetracker.report.stresstests;
 
-import com.cronos.timetracker.report.Column;
-import com.cronos.timetracker.report.EqualityFilter;
-import com.cronos.timetracker.report.FilterCategory;
-import com.cronos.timetracker.report.Report;
-import com.cronos.timetracker.report.ReportCategory;
-import com.cronos.timetracker.report.ReportFactory;
-import com.cronos.timetracker.report.ReportType;
+import com.topcoder.timetracker.report.Column;
+import com.topcoder.timetracker.report.EqualityFilter;
+import com.topcoder.timetracker.report.FilterCategory;
+import com.topcoder.timetracker.report.Report;
+import com.topcoder.timetracker.report.ReportCategory;
+import com.topcoder.timetracker.report.ReportFactory;
+import com.topcoder.timetracker.report.ReportType;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 
 
@@ -34,13 +34,13 @@ public class TimeTrackerReportStressTests extends TestCase {
     private static final String CONFIG_FILE = "stresstests/Time_Tracker_Report_stresstests.xml";
 
     /** Represents the custom namespace. */
-    private static final String CUSTOM_NAMESPACE = "com.cronos.timetracker.report.StressTest.CustomConfiguration";
+    private static final String CUSTOM_NAMESPACE = "com.topcoder.timetracker.report.StressTest.CustomConfiguration";
 
     /** Represents the data namespace. */
-    private static final String DATA_NAMESPACE = "com.cronos.timetracker.stresstests.data";
+    private static final String DATA_NAMESPACE = "com.topcoder.timetracker.stresstests.data";
 
     /** Represents the db namespace. */
-    private static final String DB_NAMESPACE = "com.cronos.timetracker.report.Informix";
+    private static final String DB_NAMESPACE = "com.topcoder.timetracker.report.Informix";
 
     /** Represents the all namespaces. */
     private static final String[] NAMESPACES =

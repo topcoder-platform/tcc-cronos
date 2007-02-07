@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests;
+package com.topcoder.timetracker.report.failuretests;
 
-import com.cronos.timetracker.report.BasicColumnDecorator;
+import com.topcoder.timetracker.report.BasicColumnDecorator;
 
 import junit.framework.Assert;
 import junit.framework.Test;
@@ -13,7 +13,7 @@ import junit.framework.TestSuite;
 import java.io.File;
 
 /**
- * <p>A failure test for {@link com.cronos.timetracker.report.BasicColumnDecorator} class.</p>
+ * <p>A failure test for {@link com.topcoder.timetracker.report.BasicColumnDecorator} class.</p>
  *
  * @author  isv
  * @version 2.0
@@ -21,15 +21,16 @@ import java.io.File;
 public class BasicColumnDecoratorTest extends TestCase {
 
     /**
-     * <p>An instance of {@link com.cronos.timetracker.report.BasicColumnDecorator} which is tested. This instance is
+     * <p>An instance of {@link com.topcoder.timetracker.report.BasicColumnDecorator} which is tested. This instance is
      * initialized in {@link #setUp()} method and released in {@link #tearDown()} method.<p>
      */
     private BasicColumnDecorator testedInstance = null;
 
     /**
-     * <p>Gets the test suite for {@link com.cronos.timetracker.report.BasicColumnDecorator} class.</p>
+     * <p>Gets the test suite for {@link com.topcoder.timetracker.report.BasicColumnDecorator} class.</p>
      *
-     * @return a <code>TestSuite</code> providing the tests for {@link com.cronos.timetracker.report.BasicColumnDecorator} class.
+     * @return a <code>TestSuite</code> providing the tests for
+     * {@link com.topcoder.timetracker.report.BasicColumnDecorator} class.
      */
     public static Test suite() {
         return new TestSuite(BasicColumnDecoratorTest.class);
@@ -42,7 +43,7 @@ public class BasicColumnDecoratorTest extends TestCase {
      */
     protected void setUp() throws Exception {
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration("failure/FailureTestsConfig.xml");
+        ConfigHelper.loadConfiguration(new File("failure/FailureTestsConfig.xml"));
         this.testedInstance
             = new BasicColumnDecorator(TestDataFactory.VALID_COLUMN_NAME, TestDataFactory.VALID_DISPLAY_LABEL);
     }
@@ -58,8 +59,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(String,String)} constructor for
-     * proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(
+     * String,String)} constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>colName</code> and expects the <code>NullPointerException</code>
      * to be thrown.</p>
@@ -76,8 +77,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(String,String)} constructor for
-     * proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(
+     * String,String)} constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>colName</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -94,8 +95,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(String,String)} constructor for
-     * proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(
+     * String,String)} constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>colName</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -112,8 +113,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(String,String)} constructor for
-     * proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(
+     * String,String)} constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>displayLabel</code> and expects the
      * <code>NullPointerException</code> to be thrown.</p>
@@ -130,8 +131,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(String,String)} constructor for
-     * proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(
+     * String,String)} constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>displayLabel</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -148,8 +149,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(String,String)} constructor for
-     * proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#BasicColumnDecorator(
+     * String,String)} constructor for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>displayLabel</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -166,8 +167,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#setPrefix(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#setPrefix(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>prefix</code> and expects the <code>NullPointerException</code>
      * to be thrown.</p>
@@ -184,8 +185,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#setPrefix(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#setPrefix(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>prefix</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -202,8 +203,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#setPrefix(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#setPrefix(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>prefix</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -220,8 +221,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#setSuffix(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#setSuffix(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>suffix</code> and expects the <code>NullPointerException</code>
      * to be thrown.</p>
@@ -238,8 +239,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#setSuffix(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#setSuffix(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>suffix</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -256,8 +257,8 @@ public class BasicColumnDecoratorTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.BasicColumnDecorator#setSuffix(String)} method for proper handling the invalid
-     * input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.BasicColumnDecorator#setSuffix(String)}
+     * method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>suffix</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>

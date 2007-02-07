@@ -1,22 +1,24 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.timetracker.report.failuretests;
+package com.topcoder.timetracker.report.failuretests;
+
+import com.topcoder.timetracker.report.ReportConfigurationException;
+import com.topcoder.timetracker.report.ReportException;
+import com.topcoder.timetracker.report.ReportFactory;
+import com.topcoder.timetracker.report.ReportNotFoundException;
+import com.topcoder.timetracker.report.failuretests.impl.ReportDuplicateFormatCategory1;
+import com.topcoder.timetracker.report.failuretests.impl.ReportDuplicateFormatCategory2;
 
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.cronos.timetracker.report.ReportConfigurationException;
-import com.cronos.timetracker.report.ReportException;
-import com.cronos.timetracker.report.ReportFactory;
-import com.cronos.timetracker.report.ReportNotFoundException;
-import com.cronos.timetracker.report.failuretests.impl.ReportDuplicateFormatCategory1;
-import com.cronos.timetracker.report.failuretests.impl.ReportDuplicateFormatCategory2;
+import java.io.File;
 
 /**
- * <p>A failure test for {@link com.cronos.timetracker.report.ReportFactory} class.</p>
+ * <p>A failure test for {@link com.topcoder.timetracker.report.ReportFactory} class.</p>
  *
  * @author  isv
  * @version 2.0
@@ -24,15 +26,16 @@ import com.cronos.timetracker.report.failuretests.impl.ReportDuplicateFormatCate
 public class ReportFactoryTest extends TestCase {
 
     /**
-     * <p>An instance of {@link com.cronos.timetracker.report.ReportFactory} which is tested. This instance is
+     * <p>An instance of {@link com.topcoder.timetracker.report.ReportFactory} which is tested. This instance is
      * initialized in {@link #setUp()} method and released in {@link #tearDown()} method.<p>
      */
     private ReportFactory testedInstance = null;
 
     /**
-     * <p>Gets the test suite for {@link com.cronos.timetracker.report.ReportFactory} class.</p>
+     * <p>Gets the test suite for {@link com.topcoder.timetracker.report.ReportFactory} class.</p>
      *
-     * @return a <code>TestSuite</code> providing the tests for {@link com.cronos.timetracker.report.ReportFactory} class.
+     * @return a <code>TestSuite</code> providing the tests for
+     * {@link com.topcoder.timetracker.report.ReportFactory} class.
      */
     public static Test suite() {
         return new TestSuite(ReportFactoryTest.class);
@@ -45,7 +48,7 @@ public class ReportFactoryTest extends TestCase {
      */
     protected void setUp() throws Exception {
         ConfigHelper.releaseNamespaces();
-        ConfigHelper.loadConfiguration("failure/FailureTestsConfig.xml");
+        ConfigHelper.loadConfiguration(new File("failure/FailureTestsConfig.xml"));
         this.testedInstance = new ReportFactory();
     }
 
@@ -60,8 +63,8 @@ public class ReportFactoryTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#getReport(String,com.cronos.timetracker.report.ReportCategory)}
-     * method for proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#getReport(
+     * String,com.topcoder.timetracker.report.ReportCategory)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>format</code> and expects the <code>NullPointerException</code>
      * to be thrown.</p>
@@ -78,8 +81,8 @@ public class ReportFactoryTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#getReport(String,com.cronos.timetracker.report.ReportCategory)}
-     * method for proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#getReport(
+     * String,com.topcoder.timetracker.report.ReportCategory)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#ZERO_LENGTH_STRING} as <code>format</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
@@ -96,15 +99,16 @@ public class ReportFactoryTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#getReport(String,com.cronos.timetracker.report.ReportCategory)}
-     * method for proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#getReport(
+     * String,com.topcoder.timetracker.report.ReportCategory)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#WHITESPACE_ONLY_STRING} as <code>format</code> and expects the
      * <code>IllegalArgumentException</code> to be thrown.</p>
      */
     public void testGetReport_String_ReportCategory_format_WHITESPACE_ONLY_STRING() {
         try {
-            this.testedInstance.getReport(TestDataFactory.WHITESPACE_ONLY_STRING, TestDataFactory.VALID_REPORT_CATEGORY);
+            this.testedInstance.getReport(TestDataFactory.WHITESPACE_ONLY_STRING,
+                TestDataFactory.VALID_REPORT_CATEGORY);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
@@ -114,8 +118,8 @@ public class ReportFactoryTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#getReport(String,com.cronos.timetracker.report.ReportCategory)}
-     * method for proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#getReport(
+     * String,com.topcoder.timetracker.report.ReportCategory)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#UNKNOWN_REPORT_FORMAT} as <code>format</code> and expects the
      * <code>ReportNotFoundException</code> to be thrown.</p>
@@ -132,8 +136,8 @@ public class ReportFactoryTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#getReport(String,com.cronos.timetracker.report.ReportCategory)}
-     * method for proper handling the invalid input arguments.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#getReport(
+     * String,com.topcoder.timetracker.report.ReportCategory)} method for proper handling the invalid input arguments.</p>
      *
      * <p>Passes {@link TestDataFactory#NULL} as <code>category</code> and expects the <code>NullPointerException</code>
      * to be thrown.</p>
@@ -150,14 +154,14 @@ public class ReportFactoryTest extends TestCase {
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Removes the <code>ReportClasses</code> configuration property from the configuration namespace and expects the
      * <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_NoReportsProperty() {
-        String[] values = ConfigHelper.removeProperty("com.cronos.timetracker.report.Reports", "ReportClasses");
+        String[] values = ConfigHelper.removeProperty("com.topcoder.timetracker.report.Reports", "ReportClasses");
         try {
             new ReportFactory();
             Assert.fail("ReportConfigurationException should have been thrown");
@@ -166,19 +170,19 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportConfigurationException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Sets the <code>ReportClasses</code> configuration property from the configuration namespace to empty value and
      * expects the <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_EmptyReportsProperty() {
-        String[] values = ConfigHelper.setProperty("com.cronos.timetracker.report.Reports", "ReportClasses", "");
+        String[] values = ConfigHelper.setProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", "");
         try {
             new ReportFactory();
             Assert.fail("ReportConfigurationException should have been thrown");
@@ -187,19 +191,19 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportConfigurationException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Sets the <code>ReportClasses</code> configuration property from the configuration namespace to invalid value
      * and expects the <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_ReportsPropertyWithUnknownClass() {
-        String[] values = ConfigHelper.setProperty("com.cronos.timetracker.report.Reports",
+        String[] values = ConfigHelper.setProperty("com.topcoder.timetracker.report.Reports",
                                                    "ReportClasses",
                                                    "com.topcoder.UnknownClass");
         try {
@@ -210,19 +214,19 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportConfigurationException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Sets the <code>ReportClasses</code> configuration property from the configuration namespace to invalid value
      * and expects the <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_ReportsPropertyWithNonReportClass() {
-        String[] values = ConfigHelper.setProperty("com.cronos.timetracker.report.Reports",
+        String[] values = ConfigHelper.setProperty("com.topcoder.timetracker.report.Reports",
                                                    "ReportClasses",
                                                    "java.lang.String");
         try {
@@ -233,21 +237,20 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportConfigurationException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Sets the <code>ReportClasses</code> configuration property from the configuration namespace to invalid value
      * and expects the <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_ReportFailingConstructor() {
-        String[] values = ConfigHelper.setProperty("com.cronos.timetracker.report.Reports",
-                                                   "ReportClasses",
-                                                   "com.cronos.timetracker.report.failuretests.impl.ReportFailedConstructor");
+        String[] values = ConfigHelper.setProperty("com.topcoder.timetracker.report.Reports",
+            "ReportClasses", "com.topcoder.timetracker.report.failuretests.impl.ReportFailedConstructor");
         try {
             new ReportFactory();
             Assert.fail("ReportConfigurationException should have been thrown");
@@ -256,21 +259,20 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportConfigurationException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Sets the <code>ReportClasses</code> configuration property from the configuration namespace to invalid value
      * and expects the <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_ReportPrivateConstructor() {
-        String[] values = ConfigHelper.setProperty("com.cronos.timetracker.report.Reports",
-                                                   "ReportClasses",
-                                                   "com.cronos.timetracker.report.failuretests.impl.ReportPrivateConstructor");
+        String[] values = ConfigHelper.setProperty("com.topcoder.timetracker.report.Reports",
+            "ReportClasses", "com.topcoder.timetracker.report.failuretests.impl.ReportPrivateConstructor");
         try {
             new ReportFactory();
             Assert.fail("ReportConfigurationException should have been thrown");
@@ -279,21 +281,20 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportConfigurationException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Sets the <code>ReportClasses</code> configuration property from the configuration namespace to invalid value
      * and expects the <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_ReportNoDefaultConstructor() {
-        String[] values = ConfigHelper.setProperty("com.cronos.timetracker.report.Reports",
-                                                   "ReportClasses",
-                                                   "com.cronos.timetracker.report.failuretests.impl.ReportNoDefaultConstructor");
+        String[] values = ConfigHelper.setProperty("com.topcoder.timetracker.report.Reports",
+            "ReportClasses", "com.topcoder.timetracker.report.failuretests.impl.ReportNoDefaultConstructor");
         try {
             new ReportFactory();
             Assert.fail("ReportConfigurationException should have been thrown");
@@ -302,19 +303,19 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportConfigurationException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 
     /**
-     * <p>Failure test. Tests the {@link com.cronos.timetracker.report.ReportFactory#ReportFactory} for proper behavior if the configuration is
-     * invalid.</p>
+     * <p>Failure test. Tests the {@link com.topcoder.timetracker.report.ReportFactory#ReportFactory} for
+     * proper behavior if the configuration is invalid.</p>
      *
      * <p>Sets the <code>ReportClasses</code> configuration property from the configuration namespace to invalid value
      * and expects the <code>ReportConfigurationException</code> to be thrown.</p>
      */
     public void testReportFactory_DuplicateReports() {
-        String[] values = ConfigHelper.setProperty("com.cronos.timetracker.report.Reports",
+        String[] values = ConfigHelper.setProperty("com.topcoder.timetracker.report.Reports",
                                                    "ReportClasses",
                                                    new String[] {ReportDuplicateFormatCategory1.class.getName(),
                                                                  ReportDuplicateFormatCategory2.class.getName()});
@@ -327,7 +328,7 @@ public class ReportFactoryTest extends TestCase {
         } catch (Exception e) {
             fail("ReportException was expected but the original exception is : " + e);
         } finally {
-            ConfigHelper.restoreProperty("com.cronos.timetracker.report.Reports", "ReportClasses", values);
+            ConfigHelper.restoreProperty("com.topcoder.timetracker.report.Reports", "ReportClasses", values);
         }
     }
 }

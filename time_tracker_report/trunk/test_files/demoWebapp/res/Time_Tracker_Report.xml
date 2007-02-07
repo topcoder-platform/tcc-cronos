@@ -33,7 +33,13 @@
         <Property name="DBHandler">
             <Value>InformixDBHandler</Value>
         </Property>
-    </Config>
+		
+        <Property name="SORT_SOLUMNS">
+            <Value>DATE</Value>
+			<Value>CLIENT</Value>
+			<Value>PROJECT</Value>
+		</Property>
+	</Config>
 
 
     <!--
@@ -109,6 +115,12 @@
         <Property name="COLUMN_COMPANY">
             <Value>Company</Value>
         </Property>
+		
+        <Property name="SORT_SOLUMNS">
+            <Value>DATE</Value>
+			<Value>CLIENT</Value>
+			<Value>PROJECT</Value>
+		</Property>
 
         <!-- Prefix and Suffix Properties.
             These set of properties specify the prefix and the suffix for a particular Column. This is useful for
@@ -154,7 +166,26 @@
             <Value>border-width:1px; border-style:solid; border-color:black;</Value>
         </Property>
 
-        <!-- Custom Column Properties.
+        <Property name="TD_STYLE_EMPLOYEE_TIME_COMPANY">
+            <Value>border-width:1px; border-style:solid; border-color:black; width:100px</Value>
+        </Property>
+        <Property name="TD_STYLE_EMPLOYEE_TIME_DATE">
+            <Value>border-width:1px; border-style:solid; border-color:black;width:150px</Value>
+        </Property>
+        <Property name="TD_STYLE_EMPLOYEE_TIME_PROJECT">
+            <Value>border-width:1px; border-style:solid; border-color:black;width:100px</Value>
+        </Property>
+        <Property name="TD_STYLE_EMPLOYEE_TIME_TASK">
+            <Value>border-width:1px; border-style:solid; border-color:black;width:100px</Value>
+        </Property>
+        <Property name="TD_STYLE_EMPLOYEE_TIME_HOURS">
+            <Value>border-width:1px; border-style:solid; border-color:black;width:30px</Value>
+        </Property>
+        <Property name="TD_STYLE_EMPLOYEE_TIME_PAY_RATE">
+            <Value>border-width:1px; border-style:solid; border-color:black;width:30px</Value>
+        </Property>
+
+		<!-- Custom Column Properties.
                    These set of properties specify the which set of Columns need to be displayed for a particular
                    Type and Category of the Report. The name of the property is in the format
                    CUSTOM_<ReportType>_<ReportCategory>_COLUMNS. eg: CUSTOM_EMPLOYEE_TIME_COLUMNS.
@@ -1173,7 +1204,7 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://chenqiang:1526/timetrack:informixserver=ol_chenqiang</Value>
+						<Value>jdbc:informix-sqli://chenqiang:1526/tt20:informixserver=ol_chenqiang</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
