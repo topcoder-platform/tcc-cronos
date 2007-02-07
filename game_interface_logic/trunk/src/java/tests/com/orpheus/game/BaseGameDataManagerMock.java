@@ -3,7 +3,11 @@
  */
 package com.orpheus.game;
 
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.persistence.HostingSlot;
+import com.topcoder.randomstringimg.RandomStringImage;
+import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
 
 
 /**
@@ -98,5 +102,37 @@ public class BaseGameDataManagerMock extends BaseGameDataManager {
      * @see com.orpheus.game.GameDataManager#regeneratePuzzle(long)
      */
     public void regeneratePuzzle(long slotId) throws GameDataException {
+    }
+
+    /**
+     * Nothing.
+     * @see com.orpheus.game.BaseGameDataManager#getGameDataPersistenceLocal()
+     */
+    protected GameDataLocal getGameDataPersistenceLocal() {
+        return null;
+    }
+
+    /**
+     * Nothing.
+     * @see com.orpheus.game.BaseGameDataManager#getGameDataPersistenceRemote()
+     */
+    protected GameData getGameDataPersistenceRemote() {
+        return null;
+    }
+
+    /**
+     * Nothing.
+     * @see com.orpheus.game.BaseGameDataManager#getHashAlgorithmManager()
+     */
+    protected HashAlgorithmManager getHashAlgorithmManager() {
+        return null;
+    }
+
+    /**
+     * Nothing.
+     * @see com.orpheus.game.BaseGameDataManager#getRandomStringImage()
+     */
+    protected RandomStringImage getRandomStringImage() {
+        return null;
     }
 }

@@ -4,6 +4,7 @@
 package com.orpheus.game;
 
 
+import com.orpheus.administration.ConfigurationException;
 import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.administration.persistence.AdminDataHome;
 import com.orpheus.administration.persistence.AdminDataLocal;
@@ -29,6 +30,11 @@ import com.topcoder.bloom.BitSetSerializer;
 import com.topcoder.bloom.BloomFilter;
 import com.topcoder.bloom.serializers.DefaultBitSetSerializer;
 import com.topcoder.message.messenger.MessageAPI;
+import com.topcoder.randomstringimg.Configuration;
+import com.topcoder.randomstringimg.InvalidConfigException;
+import com.topcoder.randomstringimg.ObfuscationAlgorithm;
+import com.topcoder.randomstringimg.RandomStringImage;
+import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
 import com.topcoder.util.auction.Auction;
 import com.topcoder.util.auction.AuctionManager;
 import com.topcoder.util.auction.Bid;
@@ -38,6 +44,8 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.generator.guid.UUIDType;
+import com.topcoder.util.net.httputility.HttpException;
+import com.topcoder.util.net.httputility.HttpUtility;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.puzzle.PuzzleData;
@@ -46,9 +54,14 @@ import com.topcoder.util.puzzle.PuzzleType;
 import com.topcoder.util.puzzle.PuzzleTypeSource;
 import com.topcoder.util.url.validation.SiteValidationResults;
 import com.topcoder.util.url.validation.SiteValidator;
+import com.topcoder.util.web.sitestatistics.SiteStatistics;
+import com.topcoder.util.web.sitestatistics.StatisticsException;
+import com.topcoder.util.web.sitestatistics.TextStatistics;
 
 import java.net.MalformedURLException;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -68,6 +81,7 @@ import javax.ejb.EJBLocalHome;
 import javax.imageio.ImageIO;
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
+
 import com.topcoder.util.generator.guid.UUIDUtility;
 import com.topcoder.util.image.manipulation.Image;
 import com.topcoder.util.image.manipulation.image.MutableMemoryImage;
@@ -123,6 +137,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * The property name used to get the game start poll interval.
      */
     private static final String GAME_START_POLL_INTERVAL = "game_started_poll_interval";
+
+    /**
+     * The property name used to get the target update check poll interval.
+     */
+    private static final String TARGET_CHECK_POLL_INTERVAL = "target_update_poll_interval";
 
     /**
      * The property name used to get the BitSetSerializer specification namespace
@@ -197,6 +216,16 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
     /**
      * <p>
+     * Represents a notification thread which will poll the hosting sites and determine (for each
+     * site) whether the target it is hosting has been updated. The polls are performed at some
+     * interval, which can be configured using <code>target_check_poll_interval</code> property.
+     * This member variable cannot be null.
+     * </p>
+     */
+    private final TargetCheckNotifier targetCheckNotifier;
+
+    /**
+     * <p>
      * Represents the remote ejb interface used for persistence.
      * </p>
      *
@@ -232,7 +261,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *
      */
     private final AdminDataLocal adminDataPersistenceLocal;
-    
+
     /**
      * This contains configuration to use when regenerating puzzles and
      * brainteasers. The key is an instance of PuzzleTypeEnum and value is an
@@ -243,7 +272,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *
      */
     private final Map puzzleConfigMap;
-    
+
     /**
      * Represents the PuzzleTypeSource instance to generate puzzles and
      * brainteasers with.<br/> This variable is initialized in the constructor
@@ -251,7 +280,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *
      */
     private final PuzzleTypeSource puzzleTypeSource;
-    
+
     /**
      * <p>
      * Represents a mutable flag that signifies if the manager is stopped or working.
@@ -268,7 +297,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * AuctionManager is used to auto-creation of the exhausted hosting blocks and hosting slots.
      */
     private AuctionManager auctionManager = null;
-    
+
     /**
      * The capacity of the Bloom Filter.
      */
@@ -285,6 +314,17 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * The category of the component.
      */
     private final String category;
+
+    /**
+     * The singleton <code>HashAlgorithmManager</code>, cached here for convenience.
+     */
+    private final HashAlgorithmManager hashAlgManager;
+
+    /**
+     * A <code>RandomStringImage</code> object that is used to generate images with text, which
+     * are in turn used to generate clues for targets.
+     */
+    private final RandomStringImage randomStringImage;
 
     /**
      * A BitSetSerializer with which to configure BloomFilter objects created by this GameDataManager
@@ -322,25 +362,23 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         this.puzzleTypeSource = puzzleTypeSource;
         try{
             InitialContext ctx = new InitialContext();
-	    EJBHomes homes;
-            
-            homes = readEJBConfig(namespace,GAME_DATA_EJB_JNDI_NAMES,ctx,GameDataHome.class);
+            EJBHomes homes = readEJBConfig(namespace,GAME_DATA_EJB_JNDI_NAMES,ctx,GameDataHome.class);
             //init the game data EJB instance
             this.gameDataPersistenceLocal = (homes.localHome != null)
-		    ? ((GameDataLocalHome) homes.localHome).create() : null;
+                    ? ((GameDataLocalHome) homes.localHome).create() : null;
             this.gameDataPersistenceRemote = (homes.remoteHome != null)
-		    ? ((GameDataHome) homes.remoteHome).create() : null;
-        
+                    ? ((GameDataHome) homes.remoteHome).create() : null;
+
             homes = readEJBConfig(namespace,ADMIN_DATA_EJB_JNDI_NAMES,ctx,AdminDataHome.class);
             this.adminDataPersistenceLocal = (homes.localHome != null)
-		    ? ((AdminDataLocalHome) homes.localHome).create() : null;
+                    ? ((AdminDataLocalHome) homes.localHome).create() : null;
             this.adminDataPersistenceRemote = (homes.remoteHome != null)
-		    ? ((AdminDataHome) homes.remoteHome).create() : null;
-            
+                    ? ((AdminDataHome) homes.remoteHome).create() : null;
+
         } catch(Exception e){
             throw new GameDataManagerConfigurationException("Fails to create EJB through the configuration.",e);
         }
-        
+
         puzzleConfigMap = new HashMap();
         // Load property "jigsaw"
         initializePuzzleType(namespace, "jigsaw", PuzzleTypeEnum.JIGSAW);
@@ -350,7 +388,44 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         initializeBrainTeaserType(namespace, "missingLetter", PuzzleTypeEnum.MISSING_LETTER);
         // Load property "letterScramble"
         initializeBrainTeaserType(namespace, "letterScramble", PuzzleTypeEnum.LETTER_SCRAMBLE);
-        
+
+        /*
+         * Create Hash Algorithm Manager
+         */
+        try {
+            hashAlgManager = HashAlgorithmManager.getInstance();
+        } catch (com.topcoder.util.algorithm.hash.ConfigurationException ce) {
+            throw new GameDataManagerConfigurationException(
+                    "Could not obtain HashAlgorithmManager instance", ce);
+        }
+
+        /*
+         * Create Random String Image
+         */
+        try {
+            Configuration config;
+
+            randomStringImage = new RandomStringImage(
+                    Helper.getPropertyString(namespace, "RandomStringImageFile"));
+            config = randomStringImage.getConfiguration();
+            config.clearAlgorithms();
+            config.addAlgorithm(new ObfuscationAlgorithm() {
+                    public int getType() {
+                        return ObfuscationAlgorithm.AFTER_TEXT;
+                    }
+
+                    public void obfuscate(BufferedImage image, Color textColor,
+                        Color backgroundColor) {
+                        /* does nothing */
+                    }
+                });
+        } catch (InvalidConfigException ice) {
+            throw new GameDataManagerConfigurationException(
+                    "Could not obtain a RandomStringImage instance", ice);
+        } catch (IOException ioe) {
+            throw new GameDataManagerConfigurationException(
+                    "Could not obtain a RandomStringImage instance", ioe);
+        }
 
         //initialize the bitSetSerializer
         String serializerSpecNamespace;
@@ -372,35 +447,40 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         } catch (Exception e) {
             throw new GameDataManagerConfigurationException("Error creating BitSetSerializer", e);
         }
-        
-        
+
 
         long gameStartInterval;
         long newGameInterval;
+        long targetCheckInterval;
 
         try {
+            // Convert poll intervals into integers
             gameStartInterval = Long.parseLong(Helper.getMandatoryProperty(namespace, GAME_START_POLL_INTERVAL));
             newGameInterval = Long.parseLong(Helper.getMandatoryProperty(namespace, NEW_GAME_POLL_INTERVAL));
+            targetCheckInterval = Long.parseLong(Helper.getMandatoryProperty(namespace, TARGET_CHECK_POLL_INTERVAL));
 
             capacity = Integer.parseInt(Helper.getMandatoryProperty(namespace, "capacity"));
             errorRate = Float.parseFloat(Helper.getMandatoryProperty(namespace, "errorRate"));
             messagerPluginNS = Helper.getMandatoryProperty(namespace, "messengerPluginNS");
             category = Helper.getMandatoryProperty(namespace, "category");
+
             //check the intervals should be > 0
             if (gameStartInterval <= 0) {
                 throw new GameDataManagerConfigurationException(
                     "The game start interval should be > 0.");
             }
-
             if (newGameInterval <= 0) {
                 throw new GameDataManagerConfigurationException(
                     "The new game interval should be > 0.");
+            }
+            if (targetCheckInterval <= 0) {
+                throw new GameDataManagerConfigurationException("The target update check interval should be > 0.");
             }
         } catch (NumberFormatException e) {
             throw new GameDataManagerConfigurationException("The value of interval properties should be numbers.",
                 e);
         }
-       
+
 
         Game[] games = null;
         try {
@@ -424,6 +504,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         //init the notifiers
         gameStartNotifier = new GameStartNotifier(gameStartInterval, this);
+        targetCheckNotifier = new TargetCheckNotifier(targetCheckInterval, this);
 
         if (gameDataPersistenceLocal != null) {
             newGameAvailableNotifier = new NewGameAvailableNotifier(newGameInterval,
@@ -436,9 +517,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         //start threads
         gameStartNotifier.start();
         newGameAvailableNotifier.start();
+        targetCheckNotifier.start();
     }
 
-    
+
 
     /**
      * <p>
@@ -449,19 +531,24 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @param gameDataJndiDesignations jndi designations such as Local or Remote
      * @param newGameDiscoveryPollInterval interval used to configure the poll frequency (ms)
      * @param gameStartedPollInterval interval used to configure the poll frequency (ms)
-     * @throws IllegalArgumentException if any array is null or contains null element,
-     * or <code>jndiNames</code> contains empty trimmed String,
-     * or <code>jndiDesignations</code> contains Strings that not Remote or Local,
-     * or two array String not of the same length,
-     * or any long parameters <= 0,
-     * or no EJB can be looked up with the given jndis
+     * @param targetCheckPollInterval interval used to set the frequency of target update checks, in
+     *            milliseconds
+     * @param randomStringImageFile the name of a file containing configuration for Random String
+     *            Image component.
+     * @throws IllegalArgumentException if any array is null or contains null element, or
+     *             <code>jndiNames</code> contains empty trimmed String, or
+     *             <code>jndiDesignations</code> contains Strings that not Remote or Local, or two
+     *             array String not of the same length, or any long parameters <= 0, or no EJB can
+     *             be looked up with the given jndis
      * @throws GameDataException if any other error occurs
+     * @throws GameDataManagerConfigurationException if any error occurs while creating Hash
+     *             Algorithm Manager object.
      */
-    public GameDataManagerImpl(PuzzleTypeSource puzzleTypeSource, Map puzzleConfigMap,String[] gameDataJndiNames, String[] gameDataJndiDesignations,
-            String[] adminDataJndiNames, String[] adminDataJndiDesignations,
-        long newGameDiscoveryPollInterval, long gameStartedPollInterval,
-        int capacity, float errorRate, String messengerPluginNS, String category)
-        throws GameDataException {
+    public GameDataManagerImpl(PuzzleTypeSource puzzleTypeSource, Map puzzleConfigMap, String[] gameDataJndiNames,
+            String[] gameDataJndiDesignations, String[] adminDataJndiNames, String[] adminDataJndiDesignations,
+            long newGameDiscoveryPollInterval, long gameStartedPollInterval, long targetCheckPollInterval,
+            int capacity, float errorRate, String messengerPluginNS, String category, String randomStringImageFile)
+        throws GameDataException, GameDataManagerConfigurationException {
         Helper.checkObjectNotNull(puzzleTypeSource, "puzzleTypeSource");
         Helper.checkObjectNotNull(puzzleConfigMap, "puzzleConfigMap");
         Helper.checkObjectNotNull(gameDataJndiNames, "gameDataJndiNames");
@@ -471,19 +558,19 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         Helper.checkStringNotNullOrEmpty(messengerPluginNS, "messengerPluginNS");
 
         this.puzzleTypeSource = puzzleTypeSource;
-        
+
         this.puzzleConfigMap = puzzleConfigMap;
-        
+
         if (adminDataJndiNames.length != adminDataJndiDesignations.length) {
             throw new IllegalArgumentException(
                 "The jndiNames and jndiDesignations should be of same length.");
         }
-        
+
         if (gameDataJndiNames.length != gameDataJndiDesignations.length) {
             throw new IllegalArgumentException(
                 "The jndiNames and jndiDesignations should be of same length.");
         }
-        
+
         //each jndi name can not be null or empty string and the Designation should be either Remote or Local
         for (int i = 0; i < adminDataJndiNames.length; i++) {
             Helper.checkStringNotNullOrEmpty(adminDataJndiNames[i],
@@ -504,7 +591,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                     "The value for property game_data_ejb_jndi_names should be  'jndiname,Remote' or 'jndiname,Local'.");
             }
         }
-        
+
         if (newGameDiscoveryPollInterval <= 0) {
             throw new IllegalArgumentException(
                 "The new game interval should be > 0.");
@@ -514,6 +601,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             throw new IllegalArgumentException(
                 "The game start interval should be > 0.");
         }
+
+        if (targetCheckPollInterval <= 0) {
+            throw new IllegalArgumentException(
+                "The target update check interval should be > 0.");
+        }
         if (errorRate <= 0 || errorRate >= 1.0) {
             throw new IllegalArgumentException("The errorRate should be between 0 and 1.");
         }
@@ -522,12 +614,50 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         this.errorRate = errorRate;
         this.messagerPluginNS = messengerPluginNS;
         this.category = category;
+
+        /*
+         * Create Hash Algorithm Manager
+         */
+        try {
+            hashAlgManager = HashAlgorithmManager.getInstance();
+        } catch (com.topcoder.util.algorithm.hash.ConfigurationException ce) {
+            throw new GameDataManagerConfigurationException(
+                    "Could not obtain HashAlgorithmManager instance", ce);
+        }
+
+        /*
+         * Create Random String Image
+         */
+        try {
+            Configuration config;
+
+            randomStringImage = new RandomStringImage(randomStringImageFile);
+            config = randomStringImage.getConfiguration();
+            config.clearAlgorithms();
+            config.addAlgorithm(new ObfuscationAlgorithm() {
+                    public int getType() {
+                        return ObfuscationAlgorithm.AFTER_TEXT;
+                    }
+
+                    public void obfuscate(BufferedImage image, Color textColor,
+                        Color backgroundColor) {
+                        /* does nothing */
+                    }
+                });
+        } catch (InvalidConfigException ice) {
+            throw new GameDataManagerConfigurationException(
+                    "Could not obtain a RandomStringImage instance", ice);
+        } catch (IOException ioe) {
+            throw new GameDataManagerConfigurationException(
+                    "Could not obtain a RandomStringImage instance", ioe);
+        }
+
         bitSetSerializer = new DefaultBitSetSerializer();
-        
+
         try{
             InitialContext ctx = new InitialContext();
             EJBHomes homes;
-	   
+
             //if no EJB is looked up successfully
             homes = locateEJB(gameDataJndiNames, gameDataJndiDesignations,ctx,GameDataHome.class);
             if ((homes.remoteHome == null) && (homes.localHome == null)) {
@@ -540,7 +670,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 		    ? ((GameDataLocalHome) homes.localHome).create() : null;
             this.gameDataPersistenceRemote = (homes.remoteHome != null)
 		    ? ((GameDataHome) homes.remoteHome).create() : null;
-        
+
             homes = locateEJB(adminDataJndiNames, adminDataJndiDesignations,ctx,AdminDataHome.class);
             if ((homes.remoteHome == null) && (homes.localHome == null)) {
                 throw new IllegalArgumentException(
@@ -554,7 +684,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         } catch(Exception e){
             throw new IllegalArgumentException("The configuration for ejb seems not right.");
         }
-        
+
         Game[] games = null;
         try {
             if (gameDataPersistenceLocal != null) {
@@ -577,6 +707,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         //init the notifiers
         gameStartNotifier = new GameStartNotifier(gameStartedPollInterval, this);
+        targetCheckNotifier = new TargetCheckNotifier(targetCheckPollInterval, this);
 
         if (gameDataPersistenceLocal != null) {
             newGameAvailableNotifier = new NewGameAvailableNotifier(newGameDiscoveryPollInterval,
@@ -589,10 +720,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         //start threads
         gameStartNotifier.start();
         newGameAvailableNotifier.start();
+        targetCheckNotifier.start();
     }
 
     /**
-     * 
+     *
      * Read the configuration for the ejb's local and remote jndi. And also try to lookup the ejb through the
      * jndi in the context.
      *
@@ -640,7 +772,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
            return result;
        }
     }
-    
+
     /**
      * <p>
      * Look up the EJB with the given names and desigantions.
@@ -721,7 +853,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 new Integer(height), 0);
         puzzleConfigMap.put(type, config);
     }
-    
+
     /**
      * <p>
      * Tests whether an upcoming domain is ready to begin hosting a specific slot.
@@ -781,7 +913,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         return true;
     }
 
-    
+
     /**
      * (Re)generates the brain teaser for the specified hosting slot. This
      * method does the following.
@@ -851,14 +983,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             } else{
                 gameDataPersistenceRemote.updateSlots(new HostingSlot[] { newSlot });
             }
-            
+
         } catch (Exception e) {
             throw new GameDataException("Failed to regenerate puzzle.", e);
         }
     }
 
-    
-    
+
+
     /**
      * (Re)generates the game-win puzzle for the specified hosting slot. This
      * method does the following.
@@ -930,7 +1062,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             throw new GameDataException("Failed to regenerate puzzle.", e);
         }
     }
-    
+
     /**
      * Get download data from gamedata.
      *
@@ -1167,7 +1299,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             HostingBlock[] blocks = game.getBlocks();
             for(int i = 0 ; i < blocks.length; i++){
                 HostingBlock block = blocks[i];
-                
+
                 //copy the block, add it to database
                 HostingBlock newBlock = null;
                 if (gameDataPersistenceLocal != null) {
@@ -1177,28 +1309,28 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 }
                 //get the corresponding auction of the hosting block
                 Auction oldAuction = auctionManager.getAuctionPersistence().getAuction(block.getId().longValue());
-                
+
                 //create new bid for the fake auction
                 Bid [] bids = oldAuction.getBids();
                 Bid [] newBids = new Bid[bids != null ? bids.length:0];
                 for(int j = 0 ; j < newBids.length; j++){
                     newBids[j] = new CustomBid(bids[j].getBidderId(),((CustomBid)bids[j]).getImageId(),bids[j].getMaxAmount(),bids[j].getTimestamp());
                 }
-                
+
                 //create a new "Fake Auction" for the new HostingBlock, copy the attribute from the old Auctions,
                 //the new bids will also be persisted
                 Auction fakeAuction = new AuctionImpl(newBlock.getId(), oldAuction.getSummary(), oldAuction.getDescription(),
                         oldAuction.getItemCount(), oldAuction.getMinimumBid(), oldAuction.getStartDate(), oldAuction.getEndDate(), newBids);
                 auctionManager.getAuctionPersistence().createAuction(fakeAuction);
-                
+
                 //reload the auction from persistence in order to get all the things with newIds.
                 fakeAuction = auctionManager.getAuctionPersistence().getAuction(newBlock.getId().longValue());
                 //reload the new bids
                 newBids = fakeAuction.getBids();
-                
+
                 //copy the slots and auto create it
                 autoCreateHostingSlots(block.getSlots(), newBlock.getId().longValue(), newBids);
-               
+
             }
         }catch(Exception e){
             throw new GameDataException("Error in auto-creation hosting blocks and slots.");
@@ -1228,11 +1360,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         for(int j = 0 ; j < newBidsList.size(); j++){
             copiedBidIds[j] = ((CustomBid)newBidsList.get(j)).getId().longValue();
         }
-        
+
         //create new HostingSlots array with the new block id and the new bid ids
         HostingSlot [] newSlots = (gameDataPersistenceLocal != null)? gameDataPersistenceLocal.createSlots(newBlockId, copiedBidIds):
            gameDataPersistenceRemote.createSlots(newBlockId, copiedBidIds);
-        
+
         //for each new slots, copy the domain targets, set the hostingstart and hosting end
         //and generate the puzzle and brainteaser list
         oldSlots = (HostingSlot[]) oldSlots.clone();  // this array gets modified by the procedure that follows
@@ -1242,7 +1374,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             if (targets.size() > 2) {  // no point in shuffling one (or fewer) objects; must in any case test for an empty list
                 Collections.shuffle(targets.subList(0, targets.size() - 1));
             }
-            
+
             //create new DomainTargets with null id objects.
             List newTargets = new ArrayList();
             for(int fix = 0 ;  fix < targets.size(); fix ++){
@@ -1264,7 +1396,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
     /**
      * Find a slot for which the domain id is equal to the given domainId.
-     * 
+     *
      * @param slots the slots array; members are set to null as they are used by this method
      * @param domainId the domain id
      * @return the HostingSlot
@@ -1281,7 +1413,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
         return null;
     }
-    
+
     /**
      * Finds a among the provided slots the first suitable one to which the Ball
      * may be advanced
@@ -1329,9 +1461,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         gameStartNotifier.stopNotifier();
         newGameAvailableNotifier.stopNotifier();
+        targetCheckNotifier.stopNotifier();
         try {
             gameStartNotifier.join();
             newGameAvailableNotifier.join();
+            targetCheckNotifier.join();
         } catch (Exception e) {
             throw new GameDataException("can not stop the threads.", e);
         }
@@ -1422,7 +1556,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     public void setAuctionManager(AuctionManager auctionManager) {
         this.auctionManager = auctionManager;
     }
-    
+
     /**
      * <p>
      * Checks whether the manager is stopped.
@@ -1443,6 +1577,62 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     }
 
     /**
+     * <p>
+     * This method is used by abstract parent class to obtain an instance of the
+     * <code>HashAlgorithmManager</code> class. This object may only be constructed in the derived
+     * concrete classes, since only they have access to the specific configuration parameters.
+     * </p>
+     *
+     * @return an instance of the <code>HashAlgorithmManager</code> class.
+     * @see BaseGameDataManager#getHashAlgorithmManager()
+     */
+    protected HashAlgorithmManager getHashAlgorithmManager() {
+        return this.hashAlgManager;
+    }
+
+    /**
+     * <p>
+     * This method is used by abstract parent class to obtain an instance of the
+     * <code>RandomStringImage</code> class. This object may only be constructed in the derived
+     * concrete classes, since only they have access to the specific configuration parameters.
+     * </p>
+     *
+     * @return an instance of the <code>RandomStringImage</code> class.
+     * @see BaseGameDataManager#getRandomStringImage()
+     */
+    protected RandomStringImage getRandomStringImage() {
+        return this.randomStringImage;
+    }
+
+    /**
+     * <p>
+     * This method is used by abstract parent class to obtain an instance of the
+     * <code>GameDataLocal</code> class. This object may only be constructed in the derived
+     * concrete classes, since only they have access to the specific configuration parameters.
+     * </p>
+     *
+     * @return an instance of the <code>GameDataLocal</code> class.
+     * @see BaseGameDataManager#getGameDataPersistenceLocal()
+     */
+    protected GameDataLocal getGameDataPersistenceLocal() {
+        return this.gameDataPersistenceLocal;
+    }
+
+    /**
+     * <p>
+     * This method is used by abstract parent class to obtain an instance of the
+     * <code>GameData</code> class. This object may only be constructed in the derived concrete
+     * classes, since only they have access to the specific configuration parameters.
+     * </p>
+     *
+     * @return an instance of the <code>GameData</code> class.
+     * @see BaseGameDataManager#getGameDataPersistenceRemote()
+     */
+    protected GameData getGameDataPersistenceRemote() {
+        return this.gameDataPersistenceRemote;
+    }
+
+    /**
      * <p>Update the slot in db, that is to set the start date of slot.</p>
      * @see com.orpheus.game.BaseGameDataManager#startGameInDB(com.orpheus.game.persistence.HostingSlot)
      */
@@ -1458,6 +1648,26 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         } catch(Exception e) {
             //ignore
         }
+    }
+
+    /**
+     * Checks whether target text exists in the provided statistics information.
+     *
+     * @return <code>true</code> if target text has been found in the provided statistics
+     *         information, <code>false</code> if it has not.
+     * @param textStatistics text statistics collected from some page of a hosting site. Used to
+     *            check for the presence of the target text.
+     * @param targetText target text to check its presence in the provided statistics information.
+     */
+    private static boolean checkForTextExistence(TextStatistics[] textStatistics, String targetText) {
+        Helper.checkObjectNotNull(textStatistics, "textStatistics");
+        Helper.checkStringNotNullOrEmpty(targetText, "targetText");
+
+        for (int i = 0; i < textStatistics.length; ++i)
+            if (textStatistics[i].getText().equals(targetText))
+                return true;
+
+        return false;
     }
 
     /**
@@ -1800,10 +2010,219 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
     }
 
-    private class EJBHomes {
-	EJBHome remoteHome;
-	EJBLocalHome localHome;
+    /**
+     * <p>
+     * This is a simple inner class, which runs as a worker thread and checks, at specified
+     * intervals, if targets on hosting site have been updated. This class accepts a registered
+     * listener, which gets notified whenever target has been updated. This is an internal worker
+     * thread class so it is guaranteed to be only executed by a single thread.
+     * </p>
+     */
+    private class TargetCheckNotifier extends Thread {
+        /**
+         * <p>
+         * Represents the sleep interval, in milliseconds, which determines how often this thread
+         * checks if targets have been updated.
+         * </p>
+         */
+        private final long sleepInterval;
 
-	public EJBHomes() {}
-    }   
+        /**
+         * <p>
+         * Represents the listener registered with this thread that is interested in
+         * receiving the notification that a game has started.
+         * </p>
+         *
+         */
+        private final TargetUpdateListener targetUpdateListener;
+
+        /**
+         * <p>
+         * Represents the flag (used to stop the thread) that is raised to signal the
+         * thread to stop execution.  The flag value is the single element of the array,
+         * and if set to <code>true</code> then the thread will stop.  Thread safety
+         * demands that all reads and updates of the flag value be synchronized on a
+         * common object; the designated object for this purpose is the array object itself.
+         * </p>
+         */
+        private final boolean[] stopped = new boolean[] { false };
+
+        /**
+         * <p>
+         * Creates a new instance initialized with the parameters.
+         * </p>
+         *
+         * @param sleepInterval interval which dictates how often the thread polls the hosting sites for target update check, in milliseconds.
+         * @param listener the <code>TargetCheckListener</code> instance.
+         */
+        public TargetCheckNotifier(long sleepInterval, TargetUpdateListener listener) {
+            this.sleepInterval = sleepInterval;
+            this.targetUpdateListener = listener;
+        }
+
+        /**
+         * <p>
+         * This is the thread's run method which will use <code>findGames</code> method from
+         * either <code>GameData</code> or <code>GamaDataLocal</code> classes to obtain a list
+         * of all games that have not yet ended, and iterate over that list to check targets. If any
+         * of the targets has disappeared, this method will try to update the target.
+         * </p>
+         */
+        public void run() {
+            System.err.println("TargetCheckNotifier started");
+
+            // it will not stop until the manager stops it
+            for (;;) {
+                try {
+                    Thread.sleep(sleepInterval);
+                } catch (InterruptedException e) {
+                    //ignore
+                }
+
+                synchronized (stopped) {
+                    if (stopped[0]) {
+                        break;
+                    }
+                }
+
+                try {
+                    // Get games that have not ended yet
+                    Game[] games;
+
+                    if (gameDataPersistenceLocal != null) {
+                        games = gameDataPersistenceLocal.findGames(null, Boolean.FALSE);
+                    } else {
+                        games = gameDataPersistenceRemote.findGames(null, Boolean.FALSE);
+                    }
+
+                    // This will check whether any targets are in ned of update,
+                    // and update those ones that need to be updated
+                    updateGames(games);
+                } catch (Exception e) {
+                    // eat the exception
+                }
+            }
+
+            System.err.println("TargetCheckNotifier stopped");
+        }
+
+        /**
+         * <p>
+         * Signals the thread to stop by raising the stop flag and interrupting this thread.
+         * </p>
+         */
+        public void stopNotifier() {
+            synchronized(stopped){
+                stopped[0] = true;
+            }
+            this.interrupt();
+        }
+
+        /**
+         * Checks targets and updates them if needed.
+         *
+         * @param games the list of all games that need their targets to be checked and, possibly,
+         *            updated.
+         */
+        private void updateGames(Game[] games) {
+            HttpUtility http = new HttpUtility(HttpUtility.GET);
+
+            for (int i = 0; i < games.length; ++i) {
+                HostingBlock[] hostingBlocks = games[i].getBlocks();
+
+                for (int j = 0; j < games.length; ++j) {
+                    HostingSlot[] slots = hostingBlocks[j].getSlots();
+
+                    for (int k = 0; k < slots.length; ++k) {
+                        Date hostingStart = slots[k].getHostingStart();
+
+                        // Skip slots that have not yet begun hosting
+                        if (hostingStart == null || hostingStart.before(new Date())) {
+                            continue;
+                        }
+
+                        DomainTarget[] targets = slots[k].getDomainTargets();
+                        boolean anyUpdated = false;
+
+                        for (int l = 0; l < targets.length; ++l) {
+                            DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[l]);
+
+                            if (updatedTarget != null) {
+                                targets[l] = updatedTarget;
+                                anyUpdated = true;
+                            }
+                        }
+
+                        // Persist the slot if any target has been updated
+                        if (anyUpdated) {
+                            // Create a new HostingSlotImpl instance
+                            HostingSlotImpl newSlot = Helper.doCopy(slots[k]);
+                            // Set the new domain targets
+                            newSlot.setDomainTargets(targets);
+                            // Update slot
+                            persistSlot(newSlot);
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * <p>
+         * Checks target for existence and updates it if needed. If this method fails for any
+         * reason, the return value is <code>null</code>.
+         * </p>
+         *
+         * @return newly-created <code>DomainTarget</code> that contains updated target, or
+         *         <code>null</code> if target does not need to be updated or there was a failure
+         *         during check or update operation.
+         * @param httpUtil <code>HttpUtility</code> object to fetch the page that possibly
+         *            contains target from hosting site over HTTP protocol.
+         * @param target object that contains target, and which needs to be checked for validity.
+         */
+        private DomainTarget checkAndUpdateTarget(HttpUtility httpUtil, DomainTarget target) {
+            SiteStatistics siteStatistics;
+
+            try {
+                String contents = httpUtil.execute(target.getUriPath());
+
+                siteStatistics = GameDataUtility.getConfiguredSiteStatisticsInstance("SiteStatistics");
+                siteStatistics.accumulateFrom(contents, "document1");
+            } catch (IOException ioe) {
+                System.err.println("IOException while trying to check address: " + target.getUriPath());
+                System.err.println("Message says: " + ioe.getMessage());
+                return null; // Target has not been updated
+            } catch (HttpException httpe) {
+                System.err.println("HttpException while trying to check address: " + target.getUriPath());
+                System.err.println("Message says: " + httpe.getMessage());
+                return null; // Target has not been updated
+            } catch (GameDataManagerConfigurationException gdmce) {
+                System.err.println("Unable to obtain SiteStatistics object. Exception information follows.");
+                gdmce.printStackTrace(System.err);
+                return null; // Target has not been updated
+            } catch (StatisticsException se) {
+                System.err.println("Unable to accumulate statistics information from document located at: "
+                        + target.getUriPath());
+                se.printStackTrace(System.err);
+                return null; // Target has not been updated
+            }
+
+            TextStatistics[] stats = siteStatistics.getElementContentStatistics();
+
+            // If the target has not been found, update it and return the updated target
+            if (!checkForTextExistence(stats, target.getIdentifierText())) {
+                return targetUpdateListener.targetUpdated(stats, target);
+            }
+
+            // Target is in no need of update
+            return null;
+        }
+    }
+
+    private class EJBHomes {
+        EJBHome remoteHome;
+        EJBLocalHome localHome;
+
+        public EJBHomes() {}
+    }
 }

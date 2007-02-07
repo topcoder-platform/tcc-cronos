@@ -1,4 +1,5 @@
 <CMConfig>
+  <!-- Configuration of Game Interface Logic component -->
   <Config name="com.orpheus.game.GameDataManagerImpl">
     <Property name="game_data_ejb_jndi_names">
       <Value>localjbossBean, Local</Value>
@@ -9,9 +10,8 @@
       <Value>localAdminDataBean, Local</Value>
       <Value>remoteAdminDataBean, Remote</Value>
     </Property>
-    
     <!-- config shifting from admin logic -->
-     <Property name="jigsaw">
+    <Property name="jigsaw">
       <Property name="puzzleTypeName">
         <Value>jigsaw</Value>
       </Property>
@@ -52,12 +52,18 @@
         <Value>12</Value>
       </Property>
     </Property>
-    
+    <!-- config shifting from admin logic -->
+    <Property name="RandomStringImageFile">
+      <Value>test_files/accuracy/RandomStringImage.xml</Value>
+    </Property>
     <Property name="new_game_poll_interval">
       <Value>1000</Value>
     </Property>
     <Property name="game_started_poll_interval">
       <Value>1000</Value>
+    </Property>
+    <Property name="target_update_poll_interval">
+      <Value>60000</Value>
     </Property>
     <Property name="capacity">
       <Value>1000</Value>
@@ -70,6 +76,58 @@
     </Property>
     <Property name="category">
       <Value>category</Value>
+    </Property>
+  </Config>
+  <!-- Configuration of Web Site Statistics component -->
+  <Config name="com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl">
+    <Property name="case_sensitive_element">
+      <Value>false</Value>
+    </Property>
+    <Property name="case_sensitive_word">
+      <Value>false</Value>
+    </Property>
+    <Property name="ignore_punctuation">
+      <Value>true</Value>
+    </Property>
+    <Property name="object_factory">
+      <Value>com.topcoder.util.web.sitestatistics.inclusion.rule</Value>
+    </Property>
+    <Property name="element_inclusion_rule">
+      <Value>ElementInclusionRule</Value>
+    </Property>
+    <Property name="word_inclusion_rule">
+      <Value>WordInclusionRule</Value>
+    </Property>
+  </Config>
+  <!-- Configuration of Object Factory component (for Web Site Statistics) -->
+  <Config name="com.topcoder.util.web.sitestatistics.inclusion.rule">
+    <Property name="WordInclusionRule">
+      <Property name="type">
+        <Value>com.topcoder.util.web.sitestatistics.impl.rules.LengthRule</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>int</Value>
+          </Property>
+          <Property name="value">
+            <Value>2</Value>
+          </Property>
+        </Property>
+        <Property name="param2">
+          <Property name="type">
+            <Value>int</Value>
+          </Property>
+          <Property name="value">
+            <Value>10</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+    <Property name="ElementInclusionRule">
+      <Property name="type">
+        <Value>com.topcoder.util.web.sitestatistics.impl.rules.TextOnlyElementRule</Value>
+      </Property>
     </Property>
   </Config>
 </CMConfig>

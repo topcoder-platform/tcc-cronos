@@ -4,15 +4,30 @@
 
 package com.orpheus.game;
 
+import com.orpheus.administration.AdministrationException;
+import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.Game;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
+import com.orpheus.game.persistence.entities.DomainTargetImpl;
+import com.topcoder.randomstringimg.InvalidConfigException;
+import com.topcoder.randomstringimg.ObfuscationException;
+import com.topcoder.randomstringimg.RandomStringImage;
+import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
+import com.topcoder.util.algorithm.hash.HashException;
+import com.topcoder.util.algorithm.hash.algorithm.HashAlgorithm;
+import com.topcoder.util.web.sitestatistics.TextStatistics;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * <p>
@@ -29,7 +44,7 @@ import java.util.Map;
  * @version 1.0
  */
 public abstract class BaseGameDataManager implements GameDataManager,
-    GameStartListener, NewGameAvailableListener {
+    GameStartListener, NewGameAvailableListener, TargetUpdateListener {
 
     /**
      * <p>
@@ -58,11 +73,11 @@ public abstract class BaseGameDataManager implements GameDataManager,
     /**
      * <p>Update the hosting slot in database. The impl class need to call game data ejb to update the slot to db.
      * Basically, the start date of slot will be updated.</p>
-     * 
+     *
      * @param slot HostingSlot with new start date
      */
     protected abstract void persistSlot(HostingSlot slot);
-    
+
     /**
      * <p>
      * This is a listener implementation method that simply takes the game to start, starts the game physically,
@@ -131,6 +146,60 @@ public abstract class BaseGameDataManager implements GameDataManager,
         synchronized (notYetStartedGames) {
             notYetStartedGames.put(game.getId(), game);
         }
+    }
+
+    /**
+     * <p>
+     * This is a listener implementation method that gets called in case some target has become
+     * obsolete. This method then tries to search for the new target on the same page, and if the
+     * new target has been found, creates <code>DomainTarget</code> object containing that new
+     * target.
+     * </p>
+     *
+     * @return newly created <code>DomainTarget</code> object containing new target, or a
+     *         reference to the old <code>DomainTarget</code> object in case target update
+     *         operation fails.
+     * @param foundTextStats text statistics collected from some page on the domain. This statistics
+     *            information will be used to create new target.
+     * @param obsoleteTarget an objects containing old and now become obsolete target. Used to copy
+     *            some properties into new target object.
+     * @trows IllegalArgumentException if any of the parameters is <code>null</code>.
+     * @throws IllegalStateException if Game Data Manager had already been stoped at the time call
+     *             was made to this method.
+     */
+    public DomainTarget targetUpdated(TextStatistics[] foundTextStats, DomainTarget obsoleteTarget) {
+        Helper.checkObjectNotNull(foundTextStats, "foundTextStats");
+        Helper.checkObjectNotNull(obsoleteTarget, "obsoleteTarget");
+        checkStopped();
+
+        Random rd = new Random();
+        HashAlgorithm hasher = getHashAlgorithmManager().getAlgorithm("SHA-1");
+        int triesNum = 10;
+
+        do {
+            // Choose textStatistics randomly
+            TextStatistics textStatistics = selectStatistics(foundTextStats, rd);
+
+            try {
+                // Create new text ID and hash for the target
+                String idText = textStatistics.getText();
+                String idHash = hasher.hashToHexString(
+                        idText.replaceAll("[\n\r \t\f\u200b]+", ""), "UTF-8");
+                // Generate clue image
+                long clueImageId = createClueImage(textStatistics.getText());
+
+                // Create a DomainTargetImpl instance and return it
+                return new DomainTargetImpl(null, obsoleteTarget.getSequenceNumber(),
+                        obsoleteTarget.getUriPath(), idText, idHash, clueImageId);
+            } catch (HashException he) {
+                // eat the exception
+            } catch (AdministrationException ae) {
+                // eat the exception
+            }
+        } while (triesNum-- != 0);
+
+        // Was unable to actually update target
+        return obsoleteTarget;
     }
 
     /**
@@ -237,6 +306,53 @@ public abstract class BaseGameDataManager implements GameDataManager,
 
     /**
      * <p>
+     * This method randomly choses a <code>TextStatistics</code> object from the array of provided
+     * text statistics.
+     * </p>
+     *
+     * @return a randomly chosen text statistics, or <code>null</code> if provided array is empty.
+     * @param stats the array of text statistics to chose one from.
+     * @param rd the random generator.
+     */
+    private TextStatistics selectStatistics(TextStatistics[] stats, Random rd) {
+        return stats[rd.nextInt(stats.length)];
+    }
+
+    /**
+     * <p>
+     * Creates an image representation of the specified text, records it as a downloadable object,
+     * and returns the download object ID.
+     * </p>
+     *
+     * @return the downloadable object ID of the generated image.
+     * @param imageText a String containing the text to be rendered as an image.
+     * @throws AdministrationException if an error occurs while generating or recording the image.
+     */
+    private long createClueImage(String imageText) throws AdministrationException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        try {
+            getRandomStringImage().generate(imageText, stream);
+            if (getGameDataPersistenceLocal() != null) {
+                return getGameDataPersistenceLocal().recordBinaryObject(
+                        "clue_image.png", "image/png", stream.toByteArray());
+            } else {
+                return getGameDataPersistenceRemote().recordBinaryObject(
+                        "clue_image.png", "image/png", stream.toByteArray());
+            }
+        } catch (IOException ioe) {
+            throw new AdministrationException("Could not generate clue image", ioe);
+        } catch (ObfuscationException oe) {
+            throw new AdministrationException("Could not generate clue image", oe);
+        } catch (InvalidConfigException ice) {
+            throw new AdministrationException("Could not generate clue image", ice);
+        } catch (GameDataException gde) {
+            throw new AdministrationException("Could not generate clue image", gde);
+        }
+    }
+
+    /**
+     * <p>
      * This is a clean up routine or the manager.
      * If the manager uses any kind of remote resources such as db connections, or threads this method
      * would be implemented to call on all the resources to clean up.
@@ -256,5 +372,44 @@ public abstract class BaseGameDataManager implements GameDataManager,
      */
     public abstract boolean isStopped();
 
+    /**
+     * <p>
+     * An abstract method used to obtain Hash Algorithm Manager created by concrete implementation
+     * of this class.
+     * </p>
+     *
+     * @return an instance of the <code>HashAlgorithmManager</code> class.
+     */
+    protected abstract HashAlgorithmManager getHashAlgorithmManager();
+
+    /**
+     * <p>
+     * An abstract method used to obtain Random String Image created by concrete implementation of
+     * this class.
+     * </p>
+     *
+     * @return an instance of the <code>RandomStringImage</code> class.
+     */
+    protected abstract RandomStringImage getRandomStringImage();
+
+    /**
+     * <p>
+     * An abstract method used to obtain <code>GameDataLocal</code> object created by concrete
+     * implementation of this class.
+     * </p>
+     *
+     * @return an instance of the <code>GameDataLocal</code> class.
+     */
+    protected abstract GameDataLocal getGameDataPersistenceLocal();
+
+    /**
+     * <p>
+     * An abstract method used to obtain <code>GameData</code> object created by concrete
+     * implementation of this class.
+     * </p>
+     *
+     * @return an instance of the <code>GameData</code> class.
+     */
+    protected abstract GameData getGameDataPersistenceRemote();
 }
 

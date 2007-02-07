@@ -5,7 +5,11 @@ package com.orpheus.game.accuracytests;
 
 import com.orpheus.game.BaseGameDataManager;
 import com.orpheus.game.GameDataException;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.persistence.HostingSlot;
+import com.topcoder.randomstringimg.RandomStringImage;
+import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
 
 
 /**
@@ -99,5 +103,37 @@ public class AccuracyTestBaseGameDataManager extends BaseGameDataManager {
      * @see com.orpheus.game.GameDataManager#regeneratePuzzle(long)
      */
     public void regeneratePuzzle(long slotId) throws GameDataException {
+    }
+
+    /**
+     * Noting.
+     * @see com.orpheus.game.BaseGameDataManager#getGameDataPersistenceLocal()
+     */
+    protected GameDataLocal getGameDataPersistenceLocal() {
+        return null;
+    }
+
+    /**
+     * Noting.
+     * @see com.orpheus.game.BaseGameDataManager#getGameDataPersistenceRemote()
+     */
+    protected GameData getGameDataPersistenceRemote() {
+        return null;
+    }
+
+    /**
+     * Noting.
+     * @see com.orpheus.game.BaseGameDataManager#getHashAlgorithmManager()
+     */
+    protected HashAlgorithmManager getHashAlgorithmManager() {
+        return null;
+    }
+
+    /**
+     * Noting.
+     * @see com.orpheus.game.BaseGameDataManager#getRandomStringImage()
+     */
+    protected RandomStringImage getRandomStringImage() {
+        return null;
     }
 }

@@ -156,6 +156,36 @@
     <property name="auction_framework.path" value="auction_framework/${auction_framework.version}"/>
     <property name="auction_framework.jar" value="${tcs_libdir}/${auction_framework.path}/${auction_framework.jar.name}"/>
 
+    <property name="command_line_utility.version" value="1.0"/>
+    <property name="command_line_utility.jar.name" value="command_line_utility.jar"/>
+    <property name="command_line_utility.path" value="command_line_utility/${command_line_utility.version}"/>
+    <property name="command_line_utility.jar" value="${tcs_libdir}/${command_line_utility.path}/${command_line_utility.jar.name}"/>
+
+    <property name="hashing_utility.version" value="1.0"/>
+    <property name="hashing_utility.jar.name" value="hashing_utility.jar"/>
+    <property name="hashing_utility.path" value="hashing_utility/${hashing_utility.version}"/>
+    <property name="hashing_utility.jar" value="${tcs_libdir}/${hashing_utility.path}/${hashing_utility.jar.name}"/>
+
+    <property name="http_utility.version" value="1.1"/>
+    <property name="http_utility.jar.name" value="http_utility.jar"/>
+    <property name="http_utility.path" value="http_utility/${http_utility.version}"/>
+    <property name="http_utility.jar" value="${tcs_libdir}/${http_utility.path}/${http_utility.jar.name}"/>
+
+    <property name="random_string_image.version" value="1.0"/>
+    <property name="random_string_image.jar.name" value="random_string_image.jar"/>
+    <property name="random_string_image.path" value="random_string_image/${random_string_image.version}"/>
+    <property name="random_string_image.jar" value="${tcs_libdir}/${random_string_image.path}/${random_string_image.jar.name}"/>
+
+    <property name="spell_check.version" value="1.0"/>
+    <property name="spell_check.jar.name" value="spell_check.jar"/>
+    <property name="spell_check.path" value="spell_check/${spell_check.version}"/>
+    <property name="spell_check.jar" value="${tcs_libdir}/${spell_check.path}/${spell_check.jar.name}"/>
+
+    <property name="web_site_statistics.version" value="1.0"/>
+    <property name="web_site_statistics.jar.name" value="web_site_statistics.jar"/>
+    <property name="web_site_statistics.path" value="web_site_statistics/${web_site_statistics.version}"/>
+    <property name="web_site_statistics.jar" value="${tcs_libdir}/${web_site_statistics.path}/${web_site_statistics.jar.name}"/>
+
 
     <!-- Custom Component Dependencies -->
     <property name="game_persistence.version" value="1.0" />
@@ -204,8 +234,15 @@
         <pathelement location="${html_document_parser.jar}" />
         <pathelement location="${stoppable_thread_class.jar}" />
         <pathelement location="${url_loader.jar}" />
+        <pathelement location="${command_line_utility.jar}" />
+        <pathelement location="${hashing_utility.jar}" />
+        <pathelement location="${http_utility.jar}" />
+        <pathelement location="${random_string_image.jar}" />
+        <pathelement location="${spell_check.jar}" />
+        <pathelement location="${web_site_statistics.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
+        <pathelement location="." /><!-- This is a teporary workaround for the Random String Image component -->
     </path>
 
     <path id="test.build.classpath">

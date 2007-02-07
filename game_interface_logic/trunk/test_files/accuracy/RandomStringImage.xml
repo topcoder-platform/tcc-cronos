@@ -1,0 +1,42 @@
+<CMConfig>
+    <Config name="com.topcoder.randomstringimg">
+        <Property name="width">
+            <Value>144</Value>
+        </Property>
+        <Property name="height">
+            <Value>14</Value>
+        </Property>
+        <Property name="colorfiles">
+            <Value>accuracy/Colors.xml</Value>
+        </Property>
+        <Property name="dictionaries">
+            <Value>test_files/accuracy/dict1.txt</Value>
+            <Value>test_files/accuracy/dict2.txt</Value>
+        </Property>
+        <Property name="algorithms">
+            <Value>com.topcoder.randomstringimg.algorithms.BlurObfuscator</Value>
+            <Value>com.topcoder.randomstringimg.algorithms.HorizLinesObfuscator</Value>
+            <Value>com.topcoder.randomstringimg.algorithms.VerticalLinesObfuscator</Value>
+            <Value>com.topcoder.randomstringimg.algorithms.DiagLinesObfuscator</Value>
+            <Value>com.topcoder.randomstringimg.algorithms.CheckersObfuscator</Value>
+            <Value>com.topcoder.randomstringimg.algorithms.ColorInvertObfuscator</Value>
+            <Value>com.topcoder.randomstringimg.algorithms.RotateObfuscator</Value>
+            <Value>com.topcoder.randomstringimg.algorithms.ShearObfuscator</Value>
+        </Property>
+        <Property name="minlength">
+            <Value>1</Value>
+        </Property>
+        <Property name="maxlength">
+            <Value>100</Value>
+        </Property>
+        <Property name="format">
+            <Value>JPEG</Value>
+        </Property>
+        <Property name="minfontsize">
+            <Value>8</Value>
+        </Property>
+        <Property name="maxfontsize">
+            <Value>10</Value>
+        </Property>
+    </Config>
+</CMConfig>

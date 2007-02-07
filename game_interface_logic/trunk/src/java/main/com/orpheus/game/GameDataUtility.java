@@ -7,6 +7,8 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
+import com.topcoder.util.web.sitestatistics.SiteStatistics;
+import com.topcoder.util.web.sitestatistics.impl.ConfigurationException;
 
 
 /**
@@ -92,6 +94,54 @@ public class GameDataUtility {
             throw new GameDataManagerConfigurationException(
                 "InvalidClassSpecificationException occurs when get "
                 + "the GameDataManager from ObjectFactory.", e);
+        }
+    }
+
+    /**
+     * TODO: Document this method.
+     *
+     * @return
+     * @param key
+     * @throws IllegalArgumentException
+     * @throws GameDataManagerConfigurationException
+     */
+    public static SiteStatistics getConfiguredSiteStatisticsInstance(String key)
+        throws GameDataManagerConfigurationException {
+        return getConfiguredSiteStatisticsInstance(GameDataManager.class.getName() + OBJECTFACTORY_NS_SUFFIX, key);
+    }
+
+    /**
+     * TODO: Document this method.
+     *
+     * @return
+     * @param namespace
+     * @param key
+     * @throws IllegalArgumentException
+     * @throws GameDataManagerConfigurationException
+     */
+    public static SiteStatistics getConfiguredSiteStatisticsInstance(String namespace, String key)
+        throws GameDataManagerConfigurationException {
+        Helper.checkStringNotNullOrEmpty(namespace, "namespace");
+        Helper.checkStringNotNullOrEmpty(key, "key");
+
+        try {
+            // Create the object factory
+            ObjectFactory objectFactory = new ObjectFactory(new ConfigManagerSpecificationFactory(
+                        namespace));
+
+            return (SiteStatistics) objectFactory.createObject(key);
+        } catch (SpecificationConfigurationException e) {
+            throw new GameDataManagerConfigurationException(
+                    "Unable to create ConfigManagerSpecificationFactory object.", e);
+        } catch (IllegalReferenceException e) {
+            throw new GameDataManagerConfigurationException(
+                    "Unable to create ConfigManagerSpecificationFactory object.", e);
+        } catch (InvalidClassSpecificationException e) {
+            throw new GameDataManagerConfigurationException(
+                    "Error while creating Web Site Statistics object using Object Factory.", e);
+        } catch (ClassCastException e) {
+            throw new GameDataManagerConfigurationException(
+                    "ClassCastException occurs when get the GameDataManager from ObjectFactory.", e);
         }
     }
 }
