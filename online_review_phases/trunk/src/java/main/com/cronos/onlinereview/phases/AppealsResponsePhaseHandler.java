@@ -259,14 +259,13 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 long submitterId = submission.getUpload().getOwner();
                 Resource submitter = getManagerHelper().getResourceManager().getResource(submitterId);
                 submitter.setProperty("Final Score", String.valueOf(aggScore));
+                submitter.setProperty("Placement", String.valueOf(placement));
 
                 //if failed review, then update the status
                 if (aggScore < minScore) {
                     submission.setSubmissionStatus(failedStatus);
                     getManagerHelper().getUploadManager().updateSubmission(submission, operator);
                 } else {
-                    submitter.setProperty("Placement", String.valueOf(placement));
-
                     //if not winner, update submission status
                     if (placement != 1) {
                         submission.setSubmissionStatus(noWinStatus);
