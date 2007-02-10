@@ -82,17 +82,17 @@ public class ExpenseReport extends AbstractReport {
         
         //append the amount line
         List styles = config.getStatisticStyles();
-        ret.append("<TABLE class=\"results_table\" width=\"100%\" " +
-        		"bgColor=#ffffff><TBODY><TR>");
-        final List columnDecorators = config.getColumnDecorators();
-        for (Iterator itor = columnDecorators.iterator(); itor.hasNext();) {
-        	final ColumnDecorator columnDecorator = (ColumnDecorator) itor.next();
-        	ret.append("<TH>");
-        	ret.append("<" + columnDecorator.getStyle() + ">");
-        	ret.append("</TH>");
-        }
-        ret.append("</TR></TBODY><tr><td ");
-        ret.append("</tr><tr><td ");
+//        ret.append("<TABLE class=\"results_table\" width=\"100%\" " +
+//        		"bgColor=#ffffff><THEAD><TR>");
+//        final List columnDecorators = config.getColumnDecorators();
+//        for (Iterator itor = columnDecorators.iterator(); itor.hasNext();) {
+//        	final ColumnDecorator columnDecorator = (ColumnDecorator) itor.next();
+//        	ret.append("<TH>");
+//        	ret.append("<" + columnDecorator.getStyle() + ">");
+//        	ret.append("</TH>");
+//        }
+//        ret.append("</TR></THEAD><TBODY><tr><td ");
+        ret.append("<tr><td ");
         ret.append(styles.get(0));
         ret.append(">Total Amount: </td><td " );
         ret.append(styles.get(1));
@@ -101,7 +101,7 @@ public class ExpenseReport extends AbstractReport {
         ret.append(totalAmount.getCurrentValue());
         ret.append("</td><td ");
         ret.append(styles.get(2));
-        ret.append("></td></tr></Table>");
+        ret.append("></td></tr></TBODY></Table>");
 
         return ret.toString();
     }

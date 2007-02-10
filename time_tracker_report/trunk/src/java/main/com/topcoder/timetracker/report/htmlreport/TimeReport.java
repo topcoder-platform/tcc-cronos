@@ -67,16 +67,18 @@ public class TimeReport extends AbstractReport {
         ret.append(renderedTable);
         //append the hours line
         List styles = config.getStatisticStyles();
-        ret.append("<TABLE class=\"results_table\" width=\"100%\" " +
-        		"bgColor=#ffffff><TBODY><TR>");
-        final List columnDecorators = config.getColumnDecorators();
-        for (Iterator itor = columnDecorators.iterator(); itor.hasNext();) {
-        	final ColumnDecorator columnDecorator = (ColumnDecorator) itor.next();
-        	ret.append("<TH>");
-        	ret.append("<" + columnDecorator.getStyle() + ">");
-        	ret.append("</TH>");
-        }
-        ret.append("</TR></TBODY><tr><td ");
+
+//        ret.append("<TABLE class=\"results_table\" width=\"100%\" " +
+//        		"bgColor=#ffffff><THEAD><TR>");
+//        final List columnDecorators = config.getColumnDecorators();
+//        for (Iterator itor = columnDecorators.iterator(); itor.hasNext();) {
+//        	final ColumnDecorator columnDecorator = (ColumnDecorator) itor.next();
+//        	ret.append("<TH>");
+//        	ret.append("<" + columnDecorator.getStyle() + ">");
+//        	ret.append("</TH>");
+//        }
+//        ret.append("</TR></THEAD><TBODY><tr><td ");
+        ret.append("<tr><td ");
         ret.append(styles.get(0));
         ret.append(">Total Hours: </td><td " );
         ret.append(styles.get(1));
@@ -84,7 +86,7 @@ public class TimeReport extends AbstractReport {
         ret.append(totalHours.getCurrentValue());
         ret.append("</td><td ");
         ret.append(styles.get(2));
-        ret.append(">&nbsp;</td></tr></Table>");
+        ret.append(">&nbsp;</td></tr></TBODY></TABLE>");
 
         return ret.toString();
     }

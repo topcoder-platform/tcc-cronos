@@ -156,11 +156,19 @@ final class HTMLRenderUtil {
         ret.append("<SCRIPT language=\"JavaScript\" type=\"text/javascript\">\r\n");
         ret.append("var "+ tableId + " = new SortTable(\"" + tableId + "\");\r\n");
         for (Iterator iterator = columnDecorators.iterator(); iterator.hasNext();) {
-            iterator.next();
+            final ColumnDecorator columnDecorator = (ColumnDecorator) iterator.next();
             ret.append(tableId + ".AddColumn(\"\",'");//bgColor=\"#FFFFFF\" ");
             ret.append(tdStyle);
+            String colName = columnDecorator.getColumnName().toLowerCase();
+            String alignString = "";
+            if ((colName.indexOf("hours") > -1)
+            || (colName.indexOf("pay_rate") > -1)
+            || (colName.indexOf("amount") > -1))
+            {
+                alignString = "right";
+            }
             //ret.append(columnDecorator.getStyle());
-            ret.append("',\"\",\"\");\r\n");
+            ret.append("',\"" + alignString + "\",\"\");\r\n");
         }
         
         // execute the query
@@ -302,7 +310,7 @@ final class HTMLRenderUtil {
 
 
         ret.append("<SCRIPT>" +tableId + ".WriteRows();</SCRIPT>");	   
-        ret.append("</TABLE>");
+        //ret.append("</TABLE>");
         return ret.toString();
     }
 
