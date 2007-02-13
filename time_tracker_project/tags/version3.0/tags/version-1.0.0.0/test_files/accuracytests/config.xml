@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.timetracker.project">
+
+    <!-- the class name of the persistence (required) -->
+    <Property name="persistence_class">
+      <Value>com.topcoder.timetracker.project.persistence.InformixTimeTrackerProjectPersistence</Value>
+    </Property>
+
+    <!-- the namespace of the DB Connection Factory configuration file (required) -->
+    <Property name="connection_factory_namespace">
+      <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+
+    <!-- the name identifying a ConnectionProducer instance (optional) -->
+    <Property name="connection_producer_name">
+      <Value>informix</Value>
+    </Property>
+  </Config>
+  <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+    <Property name="connections">
+      <Property name="default">
+        <Value>informix</Value>
+      </Property>
+      <Property name="informix">
+        <Property name="producer">
+          <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+          <Property name="jdbc_driver">
+            <Value>com.informix.jdbc.IfxDriver</Value>
+          </Property>
+          <Property name="jdbc_url">
+            <Value>jdbc:informix-sqli://172.16.214.52:1526/time_tracker_project:informixserver=devinformix10_shm</Value>
+          </Property>
+          <Property name="user">
+            <Value>informix</Value>
+          </Property>
+          <Property name="password">
+            <Value>informix</Value>
+          </Property>
+        </Property>
+      </Property>
+    </Property>
+  </Config>
+</CMConfig>

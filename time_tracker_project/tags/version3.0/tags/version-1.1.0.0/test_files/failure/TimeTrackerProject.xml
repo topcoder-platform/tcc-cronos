@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.project">
+
+		<!-- the class name of the persistence (required) -->
+		<Property name="persistence_class">
+			<Value>com.cronos.timetracker.project.persistence.InformixTimeTrackerProjectPersistence</Value>
+		</Property>
+
+		<!-- the namespace of the DB Connection Factory configuration file (required) -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+
+		<!-- the name identifying a ConnectionProducer instance (optional) -->
+		<Property name="connection_producer_name">
+			<Value>Informix_Connection_Producer</Value>
+		</Property>
+
+	</Config>
+
+
+	<!-- Configuration of the DatabseSearchUtility used to search projects -->
+	<Config
+		name="com.cronos.timetracker.project.persistence.DatabaseSearchUtility.projects">
+		<!--The SQL query template, required-->
+		<Property name="query_template">
+			<Value>
+				select distinct Projects.ProjectsID from Projects,
+				ProjectWorkers, ProjectManagers, ClientProjects where
+				(Projects.ProjectsID = ProjectWorkers.ProjectsID)
+				and(Projects.ProjectsID =
+				ClientProjects.ProjectsID)and(Projects.ProjectsID =
+				ProjectManagers.ProjectsID)and
+			</Value>
+		</Property>
+		<!-- The aliases of the DB column names, required-->
+		<Property name="column_aliases">
+		<!-- Name of a particular Property is a name of the alias -->
+			<Property name="Name">
+			<!-- Value of a particular Property is a Value of the alias -->
+				<Value>Projects.Name</Value>
+				<Property name="Description"></Property>
+				<Value>Projects.Description</Value>
+			</Property>
+			<Property name="Project Manager ">
+				<Value>ProjectManagers.UsersID</Value>
+			</Property>
+			<Property name="Project Worker ">
+				<Value>ProjectWorkers.UsersID</Value>
+			</Property>
+			<Property name="Project Client ">
+				<Value>ClientProjects.ClientsID</Value>
+			</Property>
+			<Property name="Creation User ">
+				<Value>Projects.CreationUser</Value>
+			</Property>
+			<Property name="Modification User ">
+				<Value>Projects.ModificationUser</Value>
+			</Property>
+			<Property name="Start Date ">
+				<Value>Projects.StartDate</Value>
+			</Property>
+			<Property name="End Date ">
+				<Value>Projects.EndDate</Value>
+			</Property>
+			<Property name="Creation Date ">
+				<Value>Projects.CreationDate</Value>
+			</Property>
+			<Property name="Modification Date ">
+				<Value>Projects.ModificationDate</Value>
+			</Property>
+		</Property>
+	</Config>
+
+	<!-- Configuration of the DatabseSearchUtility used to search clients-->
+	<Config
+		name="com.cronos.timetracker.project.persistence.DatabaseSearchUtility.clients">
+		<!--The SQL query template, required-->
+		<Property name="query_template">
+			<Value>
+				select distinct Clients.ClientsID from Clients where
+			</Value>
+		</Property>
+		<!-- The aliases of the DB column names, required-->
+		<Property name="column_aliases">
+		<!-- Name of a particular Property is a name of the alias -->
+			<Property name="Name">
+			<!-- Value of a particular Property is a Value of the alias -->
+				<Value>Clients.Name</Value>
+			</Property>
+			<Property name="Creation User">
+				<Value>Clients.CreationUser</Value>
+			</Property>
+			<Property name="Modification User">
+				<Value>Clients.ModificationUser</Value>
+			</Property>
+			<Property name="Creation Date">
+				<Value>Clients.CreationDate</Value>
+			</Property>
+			<Property name="Modification Date">
+				<Value>Clients.ModificationDate</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>
