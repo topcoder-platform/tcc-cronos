@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.timetracker.user.DbUserAuthenticator">
+
+		<Property name="connection_factory">
+			 <Property name="classname">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			 </Property>
+			 <Property name="namespace">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			 </Property>
+			 <Property name="connection_name">
+				<Value>sysuser</Value>
+			 </Property>
+		</Property>
+
+
+		<Property name="encryption_algorithm">
+			<Value>simple</Value>
+		</Property>
+	</Config>
+</CMConfig>

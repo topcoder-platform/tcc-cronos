@@ -1,0 +1,10 @@
+<CMConfig>
+  <Config name="com.topcoder.timetracker.user.UserStoreManager.failuretests">
+    <Property name="UserStoreNames">
+    </Property>
+    <Property name="ClassName">
+    </Property>
+    <Property name="ConnectionString">
+    </Property>
+  </Config>
+</CMConfig>

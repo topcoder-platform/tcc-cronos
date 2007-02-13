@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<CMConfig>
+  <Config name="SQLAuthorizationPersistence">
+    <!-- db connection name for DBConnectionFactory, required -->
+    <Property name="db_connection_factory">
+        <Property name="class">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="namespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="connection_name">
+            <Value>informix</Value>
+        </Property>
+    </Property>
+    <!-- cache factory, required -->
+    <Property name="cache_factory">
+      <Property name="class">
+        <Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
+      </Property>
+      <Property name="namespace">
+        <Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
+      </Property>
+    </Property>
+      <Property name="principal_sequence_name">
+            <Value>Principal</Value>
+        </Property>
+        <Property name="role_sequence_name">
+            <Value>SecurityRole</Value>
+        </Property>
+        <Property name="action_sequence_name">
+            <Value>Action</Value>
+        </Property>
+        <Property name="action_context_sequence_name">
+            <Value>ActionContext</Value>
+        </Property>
+  </Config>
+
+
+    <Config name="com.topcoder.security.authorization.persistence.CacheFactoryImpl">
+    <!-- timeout in milli-seconds, non-negative long value, 0 means NO_TIMEOUT, required -->
+    <Property name="timeout">
+      <Value>1000</Value>
+    </Property>
+     <Property name="max_cache_size">
+      <Value>10000</Value>
+    </Property>
+    <Property name="eviction_strategy">
+      <Property name="class">
+        <Value>com.topcoder.util.cache.LRUCacheEvictionStrategy</Value>
+      </Property>
+    </Property>
+  </Config>
+
+</CMConfig>

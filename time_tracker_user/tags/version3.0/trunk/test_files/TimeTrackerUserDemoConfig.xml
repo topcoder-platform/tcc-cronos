@@ -1,0 +1,84 @@
+<!-- This is a partially-populated configuration file for use in the Time Tracker User component. -->
+<CMConfig>
+    <!-- This section used by the UserStoreManager -->
+    <!-- Note that this user store is NOT used in the demo -->
+    <Property name="UserStoreNames">
+        <Value>userStore</Value>
+    </Property>
+    <Property name="ClassName.userStore">
+        <Value>com.topcoder.timetracker.user.DbUserStore</Value>
+    </Property>
+    <!-- Used by DbUserStore -->
+    <Property name="ConnectionString.userStore">
+        <Value>InformixConnection</Value>
+    </Property>
+
+    <!-- This is used by UserPersistenceImpl to get a connection to the database, via DBConnectionFactory -->
+    <Property name="connection_name">
+        <Value>InformixConnection</Value>
+    </Property>
+
+    <!-- Used by the DBConnectionFactory and others -->
+    <Property name="connections">
+        <!-- define the default connection for the IDGenerator -->
+        <Property name="default">
+            <Value>InformixConnection</Value>
+        </Property>
+        <Property name="InformixConnection">
+            <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jdbc_driver">
+                    <Value>com.informix.jdbc.IfxDriver</Value>
+                </Property>
+                <!-- CHANGE THIS to reference a database that has the right tables for the Time Tracker User,
+                     the SQLAuthenticationPersistence, and the IDGenerator components. -->
+                <Property name="jdbc_url">
+                    <Value>jdbc:informix-sqli://127.0.0.1:1526/time_tracker_user:informixserver=informix</Value>
+                </Property>
+                <!-- CHANGE THIS TO MATCH YOUR CONFIGURATION; should be correct username & pasword -->
+                <Property name="user">
+                    <Value>informix</Value>
+                </Property>
+                <Property name="password">
+                    <Value>informix</Value>
+                </Property>
+            </Property>            
+        </Property>
+    </Property>
+    
+    <!-- Used by the SQLAuthorization class -->
+    <Property name="db_connection_factory">
+        <Property name="class">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>   
+        </Property>
+        <Property name="namespace">
+            <Value>com.topcoder.timetracker.user</Value>   
+        </Property>
+        <Property name="connection_name">
+            <Value>InformixConnection</Value>   
+        </Property>        
+    </Property>
+    <Property name="cache_factory">
+      <Property name="class">
+        <Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>      
+      </Property>
+      <Property name="namespace">
+        <Value>com.topcoder.timetracker.user</Value>
+      </Property>
+    </Property>        
+    
+    <!-- Properties for CacheFactoryImpl, used by the SQLAuthorization class-->
+    <Property name="timeout">
+      <Value>1000</Value>
+    </Property>
+    <Property name="max_cache_size">
+      <Value>10000</Value>
+    </Property>
+    <Property name="eviction_strategy">
+      <Property name="class">
+        <Value>com.topcoder.util.cache.LRUCacheEvictionStrategy</Value>
+      </Property>
+    </Property>
+</CMConfig>

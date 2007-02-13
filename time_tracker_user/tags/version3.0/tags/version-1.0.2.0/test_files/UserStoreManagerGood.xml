@@ -1,0 +1,19 @@
+<CMConfig>
+    <Property name="UserStoreNames">
+        <Value>dummyStore</Value>
+        <Value>throwingStore</Value>
+    </Property>
+    <Property name="ClassName.dummyStore">
+        <Value>com.topcoder.timetracker.user.DummyUserStore</Value>
+    </Property>
+    <Property name="ConnectionString.dummyStore">
+        <Value>connect</Value>
+    </Property>
+    <Property name="ClassName.throwingStore">
+        <Value>com.topcoder.timetracker.user.ThrowingUserStore</Value>
+    </Property>
+    <!-- this is now required -->
+    <Property name="ConnectionString.throwingStore">
+        <Value>throw</Value>
+    </Property>
+</CMConfig>
