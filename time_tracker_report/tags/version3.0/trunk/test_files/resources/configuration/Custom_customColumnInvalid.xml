@@ -1,0 +1,94 @@
+<Config name="com.cronos.timetracker.report.CustomConfiguration">
+
+    <!-- Required Property For the Configuration. -->
+    <Property name="DBConnectionFactoryNamespace">
+        <Value>com.cronos.timetracker.report.Informix</Value>
+    </Property>
+
+    <Property name="Connection">
+        <Value>InformixConnection</Value>
+    </Property>
+    <Property name="DBHandler">
+        <Value>InformixDBHandler</Value>
+    </Property>
+
+    <!-- Optional Properties for the Configuration -->
+
+    <Property name="COLUMN_EMPLOYEE">
+        <Value>Employee Name</Value>
+    </Property>
+
+    <Property name="COLUMN_AMOUNT">
+        <Value>Amount Spent</Value>
+    </Property>
+
+
+    <!-- Prefix and Suffix Properties.
+        These set of properties specify the prefix and the suffix for a particular Column. This is useful for
+        supporting when certain prefix or suffix needs to be added to the Column data during display, an example
+        being the display of "$" symbol as prefix for AMOUNT Column.
+        Note that only the prefixes and the suffixes for the columns being display will be considered, others
+        will be ignored.
+        The names of the prefix and the suffix properties are obtained by concatenating the "PREFIX_" and the
+        "SUFFIX_" literals respectively to the COLUMN properties.
+        Examples of prefix and suffix property names are:
+            PREFIX_COLUMN_DATE, PREFIX_COLUMN_CLIENT, SUFFIX_COLUMN_TASK, SUFFIX_COLUMN_CLIENT etc.
+    -->
+
+    <Property name="PREFIX_COLUMN_AMOUNT">
+        <Value>$</Value>
+    </Property>
+
+    <!-- Properties for CSS support. Note that not all properties required to be specified.  -->
+
+    <!-- The CSS Style to be used in the Table HTML tag -->
+    <Property name="TABLE_STYLE">
+        <Value>background: blue; color: white;</Value>
+    </Property>
+
+    <!-- The CSS Style to be used in the TH (Table Header) HTML tag -->
+    <Property name="TH_STYLE">
+        <Value>background: grey; color: white;</Value>
+    </Property>
+
+    <!-- The CSS Style to be used in the TR (Table Row) HTML tag -->
+    <Property name="TR_STYLE">
+        <Value>color: white;</Value>
+    </Property>
+
+    <!-- The CSS Style to be used in the TRD HTML tag -->
+    <Property name="TD_STYLE">
+        <Value>color: white;</Value>
+    </Property>
+
+
+    <Property name="CUSTOM_CLIENT_TIMEEXPENSE_COLUMNS">
+        <Value>blah</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>HOURS</Value>
+        <Value>AMOUNT</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+    <Property name="CUSTOM_CLIENT_EXPENSE_COLUMNS">
+        <Value>blah</Value>
+        <Value>EMPLOYEE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>TYPE</Value>
+        <Value>DESCRIPTION</Value>
+        <Value>AMOUNT</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+
+    <Property name="CUSTOM_CLIENT_TIME_COLUMNS">
+        <Value>blah</Value>
+        <Value>EMPLOYEE</Value>
+        <Value>CLIENT</Value>
+        <Value>PROJECT</Value>
+        <Value>TASK</Value>
+        <Value>HOURS</Value>
+        <Value>BILLABLE</Value>
+    </Property>
+</Config>

@@ -1,0 +1,11 @@
+<Config name="com.cronos.timetracker.report.DBHandlers">
+
+    <Property name="DBHandlers">
+        <Value>InformixDBHandler</Value>
+    </Property>
+
+    <Property name="InformixDBHandler">
+        <Value>com.cronos.timetracker.report.BasicColumnDecorator</Value>
+    </Property>
+
+</Config>

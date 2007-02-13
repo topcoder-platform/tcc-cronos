@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE web-app PUBLIC
+    "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+<!--
+  Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+-->
+
+
+<web-app>
+
+    <servlet>
+        <servlet-name>dummy</servlet-name>
+        <servlet-class>demo.DummyServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <taglib>
+        <taglib-uri>com.topcoder.timetracker.report</taglib-uri>
+        <taglib-location>/WEB-INF/lib/Time_Tracker_Report.jar</taglib-location>
+    </taglib>
+
+
+</web-app>

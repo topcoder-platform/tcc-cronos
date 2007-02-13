@@ -1,0 +1,79 @@
+<BODY>
+    <TABLE>
+        <TR>
+            <TH>DATE</TH>
+            <TH>CLIENT</TH>
+            <TH>PROJECT</TH>
+            <TH>TASK</TH>
+            <TH>HOURS</TH>
+            <TH>PAY_RATE</TH>
+            <TH>BILLABLE</TH>
+        </TR>
+        <TR>
+            <TD>2005-10-10 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project1</TD>
+            <TD>tasktype1</TD>
+            <TD>5.0</TD>
+            <TD>200.00</TD>
+            <TD>1</TD>
+        </TR>
+        <TR>
+            <TD>2005-03-03 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project1</TD>
+            <TD>tasktype2</TD>
+            <TD>3.0</TD>
+            <TD>200.00</TD>
+            <TD>1</TD>
+        </TR>
+        <TR>
+            <TD>2006-01-03 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project1</TD>
+            <TD>tasktype2</TD>
+            <TD>6.0</TD>
+            <TD>200.00</TD>
+            <TD>1</TD>
+        </TR>
+        <TR>
+            <TD>2006-01-01 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project1</TD>
+            <TD>tasktype1</TD>
+            <TD>4.0</TD>
+            <TD>200.00</TD>
+            <TD>0</TD>
+        </TR>
+        <TR>
+            <TD>2006-01-01 00:00:00.0</TD>
+            <TD>client2</TD>
+            <TD>project2</TD>
+            <TD>tasktype3</TD>
+            <TD>3.0</TD>
+            <TD>230.00</TD>
+            <TD>0</TD>
+        </TR>
+        <TR>
+            <TD>2006-01-01 00:00:00.0</TD>
+            <TD>client1</TD>
+            <TD>project3</TD>
+            <TD>tasktype2</TD>
+            <TD>6.0</TD>
+            <TD>2000.00</TD>
+            <TD>1</TD>
+        </TR>
+        <TR>
+            <TD>2006-02-01 00:00:00.0</TD>
+            <TD>client3</TD>
+            <TD>project4</TD>
+            <TD>tasktype3</TD>
+            <TD>5.0</TD>
+            <TD>2090.00</TD>
+            <TD>1</TD>
+        </TR>
+    </TABLE>
+    <BR/>
+    <BR/>
+    <CENTER>Total Hours: 32</CENTER>
+</BODY>

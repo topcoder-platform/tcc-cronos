@@ -1,0 +1,20 @@
+<TABLE>
+    <TR>
+        <TH>DATE</TH>
+        <TH>CLIENT</TH>
+        <TH>PROJECT</TH>
+        <TH>TASK</TH>
+        <TH>HOURS</TH>
+        <TH>PAY_RATE</TH>
+        <TH>BILLABLE</TH>
+    </TR>
+    <TR>
+        <TD>2005-03-03 00:00:00.0</TD>
+        <TD>client1</TD>
+        <TD>project1</TD>
+        <TD>tasktype2</TD>
+        <TD>3.0</TD>
+        <TD>200.00</TD>
+        <TD>1</TD>
+    </TR>
+</TABLE>

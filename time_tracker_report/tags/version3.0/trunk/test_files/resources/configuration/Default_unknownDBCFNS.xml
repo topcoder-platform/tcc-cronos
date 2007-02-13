@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<CMConfig>
+    <Config name="com.cronos.timetracker.report.DefaultConfiguration">
+        <Property name="DBConnectionFactoryNamespace">
+            <Value>argh</Value>
+        </Property>
+        <Property name="Connection">
+            <Value>InformixConnection</Value>
+        </Property>
+        <Property name="DBHandler">
+            <Value>InformixDBHandler</Value>
+        </Property>
+    </Config>
+</CMConfig>

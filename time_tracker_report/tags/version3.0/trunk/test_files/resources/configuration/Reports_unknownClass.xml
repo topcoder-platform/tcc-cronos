@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<CMConfig>
+    <Config name="com.cronos.timetracker.report.Reports">
+
+        <Property name="ReportClasses">
+            <Value>com.cronos.timetracker.report.htmlreport.Blahschasel</Value>
+            <Value>com.cronos.timetracker.report.htmlreport.ExpenseReport</Value>
+            <Value>com.cronos.timetracker.report.htmlreport.TimeExpenseReport</Value>
+        </Property>
+
+    </Config>
+
+</CMConfig>

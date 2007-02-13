@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<CMConfig>
+    <Config name="com.cronos.timetracker.report.Reports">
+
+        <Property name="ReportClasses">
+            <Value></Value>
+        </Property>
+
+    </Config>
+
+</CMConfig>

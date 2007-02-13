@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<CMConfig>
+    <Config name="com.cronos.timetracker.report.ColumnTypes">
+
+        <Property name="DATE_TYPE">
+            <Value>argh</Value>
+        </Property>
+
+        <Property name="CLIENT_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="PROJECT_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="TASK_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="HOURS_TYPE">
+            <Value>FLOAT</Value>
+        </Property>
+
+        <Property name="PAY_RATE_TYPE">
+            <Value>MONEY</Value>
+        </Property>
+
+        <Property name="BILLABLE_TYPE">
+            <Value>SMALLINT</Value>
+        </Property>
+
+        <Property name="EMPLOYEE_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="TYPE_TYPE">
+            <Value></Value>
+        </Property>
+
+        <Property name="DESCRIPTION_TYPE">
+            <Value>VARCHAR</Value>
+        </Property>
+
+        <Property name="AMOUNT_TYPE">
+            <Value>MONEY</Value>
+        </Property>
+
+    </Config>
+
+</CMConfig>

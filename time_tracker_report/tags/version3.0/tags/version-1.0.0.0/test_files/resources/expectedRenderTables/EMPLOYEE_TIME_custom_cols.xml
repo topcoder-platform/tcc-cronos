@@ -1,0 +1,72 @@
+<TABLE>
+    <TR>
+        <TH>when?</TH>
+        <TH>who?</TH>
+        <TH>which?</TH>
+        <TH>how long?</TH>
+        <TH>too much?</TH>
+    </TR>
+    <TR>
+        <TD>2005-10-10 00:00:00.0</TD>
+        <TD>client1</TD>
+        <TD>project1</TD>
+        <TD>5.0</TD>
+        <TD>200.00</TD>
+    </TR>
+    <TR>
+        <TD>2005-03-03 00:00:00.0</TD>
+        <TD>client1</TD>
+        <TD>project1</TD>
+        <TD>3.0</TD>
+        <TD>200.00</TD>
+    </TR>
+    <TR>
+        <TD>2006-01-03 00:00:00.0</TD>
+        <TD>client1</TD>
+        <TD>project1</TD>
+        <TD>6.0</TD>
+        <TD>200.00</TD>
+    </TR>
+    <TR>
+        <TD>2006-01-01 00:00:00.0</TD>
+        <TD>client1</TD>
+        <TD>project1</TD>
+        <TD>4.0</TD>
+        <TD>200.00</TD>
+    </TR>
+    <TR>
+        <TD>2006-01-01 00:00:00.0</TD>
+        <TD>client2</TD>
+        <TD>project2</TD>
+        <TD>3.0</TD>
+        <TD>230.00</TD>
+    </TR>
+    <TR>
+        <TD>2006-01-01 00:00:00.0</TD>
+        <TD>client1</TD>
+        <TD>project1</TD>
+        <TD>1.0</TD>
+        <TD>250.00</TD>
+    </TR>
+    <TR>
+        <TD>2006-01-01 00:00:00.0</TD>
+        <TD>client2</TD>
+        <TD>project2</TD>
+        <TD>4.0</TD>
+        <TD>200.00</TD>
+    </TR>
+    <TR>
+        <TD>2006-01-01 00:00:00.0</TD>
+        <TD>client1</TD>
+        <TD>project3</TD>
+        <TD>6.0</TD>
+        <TD>2000.00</TD>
+    </TR>
+    <TR>
+        <TD>2006-02-01 00:00:00.0</TD>
+        <TD>client3</TD>
+        <TD>project4</TD>
+        <TD>5.0</TD>
+        <TD>2090.00</TD>
+    </TR>
+</TABLE>

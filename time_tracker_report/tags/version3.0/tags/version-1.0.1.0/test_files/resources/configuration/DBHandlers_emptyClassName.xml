@@ -1,0 +1,11 @@
+<Config name="com.topcoder.timetracker.report.DBHandlers">
+
+    <Property name="DBHandlers">
+        <Value>InformixDBHandler</Value>
+    </Property>
+
+    <Property name="InformixDBHandler">
+        <Value></Value>
+    </Property>
+
+</Config>

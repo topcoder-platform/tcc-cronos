@@ -1,0 +1,104 @@
+<Config name="com.cronos.timetracker.report.FiltersConfiguration">
+
+    <!-- Filter Configuration for the "Employee Time Report" -->
+
+    <Property name="EMPLOYEE_TIME_MANDATORY_FILTER">
+        <Value>FILTER_EMPLOYEE</Value>
+    </Property>
+
+    <Property name="EMPLOYEE_TIME_OPTIONAL_FILTER">
+    </Property>
+
+
+    <!-- Filter Configuration for the "Project Time Report" -->
+
+    <Property name="PROJECT_TIME_MANDATORY_FILTER">
+        <Value>FILTER_PROJECT</Value>
+    </Property>
+
+    <Property name="PROJECT_TIME_OPTIONAL_FILTER">
+        <Value>FILTER_DATE</Value>
+        <Value>FILTER_BILLABLE</Value>
+    </Property>
+
+
+    <!-- Filter Configuration for the "Client Time Report" -->
+
+    <Property name="CLIENT_TIME_MANDATORY_FILTER">
+        <Value>FILTER_CLIENT</Value>
+    </Property>
+
+    <Property name="CLIENT_TIME_OPTIONAL_FILTER">
+        <Value>FILTER_DATE</Value>
+        <Value>FILTER_BILLABLE</Value>
+    </Property>
+
+
+    <!-- Filter Configuration for the "Employee Expense Report" -->
+
+    <Property name="EMPLOYEE_EXPENSE_MANDATORY_FILTER">
+        <Value>FILTER_EMPLOYEE</Value>
+    </Property>
+
+    <Property name="EMPLOYEE_EXPENSE_OPTIONAL_FILTER">
+    </Property>
+
+
+    <!-- Filter Configuration for the "Project Expense Report" -->
+
+    <Property name="PROJECT_EXPENSE_MANDATORY_FILTER">
+        <Value>FILTER_PROJECT</Value>
+    </Property>
+
+    <Property name="PROJECT_EXPENSE_OPTIONAL_FILTER">
+        <Value>FILTER_DATE</Value>
+        <Value>FILTER_BILLABLE</Value>
+    </Property>
+
+
+    <!-- Filter Configuration for the "Client Expense Report" -->
+
+    <Property name="CLIENT_EXPENSE_MANDATORY_FILTER">
+        <Value>FILTER_CLIENT</Value>
+    </Property>
+
+    <Property name="CLIENT_EXPENSE_OPTIONAL_FILTER">
+        <Value>FILTER_DATE</Value>
+        <Value>FILTER_BILLABLE</Value>
+    </Property>
+
+
+    <!-- Filter Configuration for the "Employee Time and Expense Report" -->
+
+    <Property name="EMPLOYEE_TIMEEXPENSE_MANDATORY_FILTER">
+        <Value>FILTER_EMPLOYEE</Value>
+    </Property>
+
+    <Property name="EMPLOYEE_TIMEEXPENSE_OPTIONAL_FILTER">
+    </Property>
+
+
+    <!-- Filter Configuration for the "Project Time and Expense Report" -->
+
+    <Property name="PROJECT_TIMEEXPENSE_MANDATORY_FILTER">
+        <Value>FILTER_PROJECT</Value>
+    </Property>
+
+    <Property name="PROJECT_TIMEEXPENSE_OPTIONAL_FILTER">
+        <Value>FILTER_DATE</Value>
+        <Value>FILTER_BILLABLE</Value>
+    </Property>
+
+
+    <!-- Filter Configuration for the "Client Time and Expense Report" -->
+
+    <Property name="CLIENT_TIMEEXPENSE_MANDATORY_FILTER">
+        <Value>FILTER_CLIENT</Value>
+    </Property>
+
+    <Property name="CLIENT_TIMEEXPENSE_OPTIONAL_FILTER">
+        <Value>FILTER_DATE</Value>
+        <Value>FILTER_BILLABLE</Value>
+    </Property>
+
+</Config>
