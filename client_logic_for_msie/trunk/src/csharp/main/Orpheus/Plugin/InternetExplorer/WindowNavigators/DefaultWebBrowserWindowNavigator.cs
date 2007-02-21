@@ -37,7 +37,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
     public class DefaultWebBrowserWindowNavigator : IWebBrowserWindowNavigator
     {
         /// <summary>
-        /// Represents the newlly created window. This new window is created using the DOM
+        /// Represents the newly created window. This new window is created using the DOM
         /// of the browser inside the <c>Navigate</c> method. <br />
         ///
         /// It can be null if no new window is displayed.
@@ -136,8 +136,9 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
         /// <summary>
         /// Creates new browser window using configured properties.
         /// </summary>
+        /// <param name="newWindow">if false - the OnQuit event handler will be added</param>
         /// <returns>new browser window.</returns>
-        private SHDocVw.InternetExplorer CreateWindow()
+        private SHDocVw.InternetExplorer CreateWindow(bool newWindow)
         {
             // create new IE COM object
             SHDocVw.InternetExplorer popupWindow = new InternetExplorerClass();
@@ -147,14 +148,17 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
             popupWindow.StatusBar = statusBarEnabled;
             // hide the nagivation and others toolbars - unfortunately it will hide also our bar
             popupWindow.ToolBar = toolbarEnabled;
-            
+
             popupWindow.Width = windowWidth;
             popupWindow.Height = windowHeight;
 
             // add the quit delegate - it's used for releasing our popup window on close
-            popupWindow.OnQuit += new DWebBrowserEvents2_OnQuitEventHandler(ReleasePopupWindow);
+            if (!newWindow)
+            {
+                popupWindow.OnQuit += new DWebBrowserEvents2_OnQuitEventHandler(ReleasePopupWindow);
+            }
 
-            if (allowJSCloseWindow)
+            if (allowJSCloseWindow && !newWindow)
             {
                 popupWindow.WindowClosing += new DWebBrowserEvents2_WindowClosingEventHandler(
                     WindowClosingHandler);
@@ -188,7 +192,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
                     {
                         if (popupWindow == null)
                         {
-                            popupWindow = CreateWindow();
+                            popupWindow = CreateWindow(false);
                         }
 
                         // navigate to requested location
@@ -274,30 +278,18 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
             {
                 if (newWindow || (webBrowser == null))
                 {
-                    lock (newWindowLock)
-                    {
-                        if (popupWindow == null)
-                        {
-                            popupWindow = CreateWindow();
+                    SHDocVw.InternetExplorer popupWindow = CreateWindow(true);
 
-                            ContentLoader loader = new ContentLoader(popupWindow, output);
-                            DWebBrowserEvents2_DocumentCompleteEventHandler docHandler =
+                    ContentLoader loader = new ContentLoader(popupWindow, output);
+                    DWebBrowserEvents2_DocumentCompleteEventHandler docHandler =
                                 new DWebBrowserEvents2_DocumentCompleteEventHandler(loader.LoadWindowContent);
-                            loader.Handler = docHandler;
-                            popupWindow.DocumentComplete += docHandler;
+                    loader.Handler = docHandler;
+                    popupWindow.DocumentComplete += docHandler;
 
-                            // navigate to requested location
-                            object nullObj = null;
-                            object address = "about:blank";
-                            popupWindow.Navigate2(ref address, ref nullObj, ref nullObj, ref nullObj, ref nullObj);
-                        }
-                        else
-                        {
-                            WriteDocumentContent(popupWindow, output);
-                            popupWindow.Visible = true;
-                        }
-                    }
-
+                    // navigate to requested location
+                    object nullObj = null;
+                    object address = "about:blank";
+                    popupWindow.Navigate2(ref address, ref nullObj, ref nullObj, ref nullObj, ref nullObj);
                 }
                 else
                 {
