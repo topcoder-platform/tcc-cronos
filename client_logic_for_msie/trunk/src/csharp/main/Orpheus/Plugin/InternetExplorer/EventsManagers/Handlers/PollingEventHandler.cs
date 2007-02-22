@@ -252,7 +252,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
 
                 // Persist the feed timestamp.
                 args.Context.Persistence[Helper.KEY_TIMESTAMP] = 
-                    rssFeed.UpdatedDate.ToUniversalTime().ToString("s") + "Z";
+                    rssFeed.UpdatedDate.ToUniversalTime().ToString(@"yyyy-MM-dd\THH:mm:ss.fff\Z");
             }
             catch (Exception e)
             {

@@ -11,6 +11,7 @@ using MsHtmHstInterop;
 using Mshtml;
 using SHDocVw;
 using TopCoder.Util.ConfigurationManager;
+using Microsoft.Win32;
 
 namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
 {
@@ -148,7 +149,6 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
             popupWindow.StatusBar = statusBarEnabled;
             // hide the nagivation and others toolbars - unfortunately it will hide also our bar
             popupWindow.ToolBar = toolbarEnabled;
-
             popupWindow.Width = windowWidth;
             popupWindow.Height = windowHeight;
 
@@ -194,12 +194,17 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
                         {
                             popupWindow = CreateWindow(false);
                         }
-
+                        if (popupWindow.Busy)
+                        {
+                            popupWindow.Stop();
+                        }
                         // navigate to requested location
                         object nullObj = null;
                         popupWindow.Navigate2(ref address, ref nullObj, ref nullObj, ref nullObj, ref nullObj);
                         // show window
+                        popupWindow.Visible = false;
                         popupWindow.Visible = true;
+                       
                     }
                 }
                 else
@@ -372,6 +377,7 @@ namespace Orpheus.Plugin.InternetExplorer.WindowNavigators
             /// <param name="URL">not used</param>
             public void LoadWindowContent(object pDisp, ref object URL)
             {
+                ie.Visible = false;
                 WriteDocumentContent(ie, content);
                 ie.Visible = true;
                 // unregister event

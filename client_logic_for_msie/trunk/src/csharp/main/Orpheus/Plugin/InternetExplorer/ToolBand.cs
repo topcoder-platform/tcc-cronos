@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using MsHtmHstInterop;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Orpheus.Plugin.InternetExplorer
 {
@@ -160,14 +161,8 @@ namespace Orpheus.Plugin.InternetExplorer
         /// information for the object</param>
         public virtual void GetBandInfo(uint dwBandID, uint dwViewMode, ref DESKBANDINFO dbi)
         {
-             // DBIM_MINSIZE    = 0x0001,
-             // DBIM_MAXSIZE    = 0x0002,
-             // DBIM_INTEGRAL   = 0x0004,
-             // DBIM_ACTUAL     = 0x0008,
-             // DBIM_TITLE      = 0x0010,
-             // DBIM_MODEFLAGS  = 0x0020,
-             // DBIM_BKCOLOR    = 0x0040
-            dbi.dwModeFlags = 0x0010 | 0x0008 | 0x0002 | 0x0001 | 0x0004;
+            /// DBIMF BREAK = 0x0100
+            dbi.dwModeFlags = 0x0100;
 
             System.Array.Copy(Title.ToCharArray(), dbi.wszTitle,
                 Title.Length > dbi.wszTitle.Length ? dbi.wszTitle.Length : Title.Length);
