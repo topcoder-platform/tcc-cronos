@@ -4,6 +4,8 @@
 
 package com.orpheus.administration.persistence;
 
+import com.orpheus.administration.AdministrationExceptionUnitTests;
+
 import com.orpheus.administration.persistence.impl.AdminMessageTests;
 import com.orpheus.administration.persistence.impl.AdminMessageTranslatorTests;
 import com.orpheus.administration.persistence.impl.AdminSummaryImplTests;
@@ -67,6 +69,7 @@ public class UnitTests extends TestCase {
         addFilterTests(suite);
 
         // the main package tests
+        suite.addTestSuite(AdministrationExceptionUnitTests.class);
         suite.addTestSuite(AdminDataBeanTests.class);
         suite.addTestSuite(DuplicateEntryExceptionTests.class);
         suite.addTestSuite(EntryNotFoundExceptionTests.class);
