@@ -625,8 +625,7 @@ class GameDataHelper {
                 // search for the next block based on sequence number.
                 // The blocks are in order by ascending sequence number.
                 for (int i = 0; i < hostingBlocks.length; i++) {
-                    if (hostingBlocks[i].getSequenceNumber() > currentBlock
-                            .getSequenceNumber()) {
+                    if (hostingBlocks[i].getSequenceNumber() > currentBlock.getSequenceNumber()) {
                         nextBlock = hostingBlocks[i];
                         break;
                     }
@@ -790,200 +789,191 @@ class GameDataHelper {
             throw new IllegalArgumentException(
                     "Failed to get leader board, 'maxLeaders' is non-positive.");
         }
+
         GameData gameData = null;
         GameDataLocal gameDataLocal = null;
+
         try {
-            HostingSlot[] hostingSlots;
             Game game;
-            // local variable to store the player id and list of hosting slots
-            // for that player.
-            Map playerSlots = new HashMap();
-            // local variable to store the player id and the PlayerInfo.
-            Map playerInfos = new HashMap();
 
             if (useRemoteHome) {
                 Object object = context.lookup(gameDataJNDIName);
-                GameDataHome gameDataHome = (GameDataHome) PortableRemoteObject
-                        .narrow(object, GameDataHome.class);
+                GameDataHome gameDataHome = (GameDataHome) PortableRemoteObject.narrow(
+                        context.lookup(gameDataJNDIName), GameDataHome.class);
+
                 gameData = gameDataHome.create();
-                // finds the completed slots from the game data.
-                hostingSlots = gameData.findCompletedSlots(gameId);
+
                 // gets the game for this game id.
                 game = gameData.getGame(gameId);
             } else {
-                GameDataLocalHome gameDataLocalHome = (GameDataLocalHome) context
-                        .lookup(gameDataJNDIName);
+                GameDataLocalHome gameDataLocalHome = 
+                        (GameDataLocalHome) context.lookup(gameDataJNDIName);
+
                 gameDataLocal = gameDataLocalHome.create();
-                // finds the completed slots from the game data.
-                hostingSlots = gameDataLocal.findCompletedSlots(gameId);
+
                 // gets the game for this game id.
                 game = gameDataLocal.getGame(gameId);
             }
 
-            // iterate through the hosting slots.
-            for (int i = 0; i < hostingSlots.length; i++) {
-                if (hostingSlots[i].getId() == null) {
-                    throw new HandlerExecutionException(
-                            "Failed to get leader board. HostingSlots with null ids present.");
-                }
-                // finds the slot completions for the game id and current
-                // hosting slots id.
-                SlotCompletion[] completions;
-                if (useRemoteHome) {
-                    completions = gameData.findSlotCompletions(gameId,
-                            hostingSlots[i].getId().longValue());
-                } else {
-                    completions = gameDataLocal.findSlotCompletions(gameId,
-                            hostingSlots[i].getId().longValue());
-                }
+            // The number of keys required, plus one for the slot that currently hosts the Ball:
+            int slotBound = game.getKeyCount() + 1;
 
-                // iterates through the slot completions.
-                for (int j = 0; j < completions.length; j++) {
-                    // key is the player id.
-                    Long key = new Long(completions[j].getPlayerId());
+            /*
+             * Assemble a list of the ids of all hosting slots that ever started hosting the Ball,
+             * in DESCENDING order by block sequence number, slot sequence number
+             */
 
-                    if (playerSlots.containsKey(key)) {
-                        // if the player id already exists, add this hosting
-                        // slot too.
-                        ((List) playerSlots.get(key)).add(hostingSlots[i]);
-                        // get the player info.
-                        PlayerInfo playerInfo = (PlayerInfo) playerInfos
-                                .get(key);
-                        // if the current hosting slot is the latest set it.
-                        if (playerInfo.getLatestSlot() == null
-                                || hostingSlots[i].getHostingStart().after(
-                                        playerInfo.getLatestSlot()
-                                                .getHostingStart())) {
-                            playerInfo.setLatestSlot(hostingSlots[i]);
-                            playerInfo.setLatestSlotCompletion(completions[j]);
-                        }
-                    } else {
-                        // new entry into the maps.
-                        List list = new ArrayList();
-                        list.add(hostingSlots[i]);
-                        // add the player id and hosting slot list.
-                        playerSlots.put(key, list);
-                        PlayerInfo playerInfo = new PlayerInfo(key.longValue());
-                        playerInfo.setLatestSlot(hostingSlots[i]);
-                        playerInfo.setLatestSlotCompletion(completions[j]);
-                        // add the player id and player info.
-                        playerInfos.put(key, playerInfo);
-                    }
-                }
-            }
-
-            // gets the hosting blocks for the given game.
+            List slotIdList = new ArrayList();
             HostingBlock[] blocks = game.getBlocks();
-            List temp = Arrays.asList(blocks);
-            Collections.sort(temp, new SequenceNumberComparator());
-            // blocks should be sorted based on the ascending order of sequence
-            // number.
-            blocks = (HostingBlock[]) temp
-                    .toArray(new HostingBlock[temp.size()]);
-            // store the sorted sequence numbers as a list.
-            List slotSeqNos = new ArrayList();
-            for (int i = 0; i < blocks.length; i++) {
-                slotSeqNos.add(new Integer(blocks[i].getSequenceNumber()));
-            }
+            Comparator seqNoComparator = new SequenceNumberComparator(true);
 
-            // iterates through the hosting blocks.
-            for (int i = 0; i < blocks.length; i++) {
-                // gets the hosting slots for this block.
-                HostingSlot[] slots = blocks[i].getSlots();
-                temp = Arrays.asList(slots);
-                Collections.sort(temp, new SequenceNumberComparator());
-                // slots should be sorted based on sequence number.
-                slots = (HostingSlot[]) temp.toArray(new HostingSlot[temp
-                        .size()]);
-                // add the sequence numbers to the sequence number list too.
-                for (int j = 0; j < slots.length; j++) {
-                    slotSeqNos.add(new Integer(slots[j].getSequenceNumber()));
-                }
-            }
+            Arrays.sort(blocks, seqNoComparator);
+            for (int blockIndex = 0; blockIndex < blocks.length; blockIndex++) {
+                HostingSlot[] slots = blocks[blockIndex].getSlots();
 
-            Set players = playerSlots.keySet();
-            // iterates through the player slots map.
-            for (Iterator iter = players.iterator(); iter.hasNext();) {
-                Long playerId = (Long) iter.next();
-                // gets the list of hosting slots for a particular player.
-                List hostingSlotList = (List) playerSlots.get(playerId);
-                // iterate backwards to get a matching sequence number in slot
-                // sequence number list.
-                for (int k = slotSeqNos.size() - 1; k >= 0; k--) {
-                    Integer seqNumber = (Integer) slotSeqNos.get(k);
-                    boolean found = false;
-                    // search in the hosting slot list.
-                    for (Iterator iterator = hostingSlotList.iterator(); iterator
-                            .hasNext();) {
-                        HostingSlot currSlot = (HostingSlot) iterator.next();
-                        if (currSlot.getSequenceNumber() == seqNumber
-                                .intValue()) {
-                            // if match get the contiguous sequence count from
-                            // the match.
-                            found = true;
-                            int count = 1;
-                            int prev = seqNumber.intValue();
-                            k--;
-                            for (int p = k; p >= 0; p--, k--) {
-                                seqNumber = (Integer) slotSeqNos.get(p);
-                                if (prev - seqNumber.intValue() == 1) {
-                                    count++;
-                                } else {
-                                    break;
-                                }
-                            }
-                            // gets the player info from the player infos map.
-                            PlayerInfo playerInfo = (PlayerInfo) playerInfos
-                                    .get(playerId);
-                            // sets the count.
-                            playerInfo.setContiguousSlotsCount(count);
-                            break;
-                        }
-                    }
-                    if (found) {
-                        // stop the search for this player.
-                        break;
+                Arrays.sort(slots, seqNoComparator);
+                for (int slotIndex = 0; slotIndex < slots.length; slotIndex++) {
+                    if (slots[slotIndex].getHostingStart() != null) {
+                        slotIdList.add(slots[slotIndex].getId());
                     }
                 }
             }
 
-            // create a list of player info alone from the player infos map.
-            List playerInfo = new ArrayList();
-            for (Iterator iter = players.iterator(); iter.hasNext();) {
-                Long playerId = (Long) iter.next();
-                playerInfo.add(playerInfos.get(playerId));
+            // Consider only those slots whose keys matter
+            if (slotIdList.size() > slotBound) {
+                slotIdList = slotIdList.subList(0, slotBound);
             }
-            // sort the player info list based on the rules.
-            Collections.sort(playerInfo, new PlayerInfoComparator());
-            // limit the list to max leaders.
-            if (playerInfo.size() > maxLeaders) {
-                playerInfo = playerInfo.subList(0, maxLeaders);
+
+            /*
+             * Process slot completions from each slot, collecting information on up to the
+             * maximum number of players (and perhaps a few more)
+             */
+
+            // Maps from Long player IDs to PlayerStatistics objects
+            Map contiguousSlotPlayerMap= new HashMap();
+            Map thisSlotPlayerMap = new HashMap();
+            Map otherPlayerMap = new HashMap();
+
+            // A List of PlayerStatistics objects into which the leaders' statistics are accumulated
+            List leaderList = new ArrayList();
+
+            /*
+             * For each slot, in the order it appears in the slotIdList, the index into the leader
+             * list of the first player for which that slot might have been completed; the next
+             * array element can be viewed as the index into the leader list of the first player
+             * to not have completed the slot, thus consecutive pairs of entries form the bounds
+             * of sublists of the leader list within which all the players' slot completions closest
+             * to the ball are on the same slot:
+             */
+            int[] leadingSlotIndices = new int[slotIdList.size() + 1];
+
+            // A flag by which to recognize when we no longer need to consider additional potential leaders
+            boolean allowAdditionalLeaders = true;
+
+            // iterate over the slots we care about
+            for (int slotIdIndex = 0; slotIdIndex < slotIdList.size(); slotIdIndex++) {
+
+                // The ID of the slot to consider
+                long slotId = ((Long) slotIdList.get(slotIdIndex)).longValue();
+
+                // find the slot completions for the game id and hosting slot id
+
+                SlotCompletion[] completions;
+
+                if (useRemoteHome) {
+                    completions = gameData.findSlotCompletions(gameId, slotId);
+                } else {
+                    completions = gameDataLocal.findSlotCompletions(gameId, slotId);
+                }
+
+                // Process the completions for this slot
+
+                thisSlotPlayerMap.clear();
+                leadingSlotIndices[slotIdIndex] = leaderList.size();
+
+                for (int compIndex = 0; compIndex < completions.length; compIndex++) {
+                    SlotCompletion completion = completions[compIndex];
+                    Long playerId = new Long(completion.getPlayerId());
+
+                    if (contiguousSlotPlayerMap.containsKey(playerId)) {
+                        // a player who completed the previous slot as well, and is on his first contiguous run of slots
+                        PlayerStatistics stats = (PlayerStatistics) contiguousSlotPlayerMap.remove(playerId);
+
+                        stats.incrementCompletions(completion.getTimestamp());
+                        thisSlotPlayerMap.put(playerId, stats);
+                    } else if (otherPlayerMap.containsKey(playerId)) {
+                        // a player who is not on a contiguous run, but who has keys we care about
+                        PlayerStatistics stats = (PlayerStatistics) contiguousSlotPlayerMap.get(playerId);
+
+                        stats.updateCompletionDate(completion.getTimestamp());
+                    } else if (allowAdditionalLeaders) {
+                        // the first completion we've processed for this player
+                        PlayerStatistics stats = new PlayerStatistics(playerId, completion.getTimestamp());
+
+                        thisSlotPlayerMap.put(playerId, stats);
+                        leaderList.add(stats);
+                    }
+                }
+
+                /*
+                 * The remaining contents of the contiguousSlotPlayerMap are players who didn't complete
+                 * the current slot.  Add them to the otherPlayerMap to so indicate.
+                 */
+                otherPlayerMap.putAll(contiguousSlotPlayerMap);
+
+                /*
+                 * The players (still) on a contiguous run are exactly those in thisSlotPlayerMap, so just
+                 * swap that Map with contiguousSlotPlayerMap
+                 */
+                Map tempMap = contiguousSlotPlayerMap;
+
+                contiguousSlotPlayerMap = thisSlotPlayerMap;
+                thisSlotPlayerMap = tempMap;  // will be cleared near the beginning of the next iteration
+
+                if (leaderList.size() >= maxLeaders) {
+
+                    /*
+                     * We have already identified all the players who can show up on the leader board; raise a flag
+                     * to remind us that we don't need to consider any further players that we see for the first time
+                     */
+                    allowAdditionalLeaders = false;
+                }
             }
-            // get the player id of leaders and return.
-            long[] leaders = new long[playerInfo.size()];
+
+            // initialize the last element of leadingSlotIndices
+            leadingSlotIndices[slotIdList.size()] = leaderList.size();
+
+            // sort those sublists of the leader list in which all leaders closest completion to the ball is the same;
+            // those sublists are already block-wise in the correct order
+            for (int sublistIndex = 0; sublistIndex < (leadingSlotIndices.length - 1); sublistIndex++) {
+                Collections.sort(leaderList.subList(
+                        leadingSlotIndices[sublistIndex], leadingSlotIndices[sublistIndex + 1]));
+            }
+
+            // Take at most maxLeaders
+            if (leaderList.size() > maxLeaders) {
+                leaderList = leaderList.subList(0, maxLeaders);
+            }
+
+            // get the player ids of leaders and return
+
+            long[] leaders = new long[leaderList.size()];
+
             for (int i = 0; i < leaders.length; i++) {
-                leaders[i] = ((PlayerInfo) playerInfo.get(i)).getPlayerId();
+                leaders[i] = ((PlayerStatistics) leaderList.get(i)).getPlayerId().longValue();
             }
 
             return leaders;
         } catch (NamingException namingException) {
-            throw new HandlerExecutionException("Failed to get leader board.",
-                    namingException);
+            throw new HandlerExecutionException("Failed to get leader board.", namingException);
         } catch (RemoteException remoteException) {
-            throw new HandlerExecutionException("Failed to get leader board.",
-                    remoteException);
+            throw new HandlerExecutionException("Failed to get leader board.", remoteException);
         } catch (CreateException createException) {
-            throw new HandlerExecutionException("Failed to get leader board.",
-                    createException);
-        } catch (ClassCastException castException) {
-            throw new HandlerExecutionException("Failed to get leader board.",
-                    castException);
+            throw new HandlerExecutionException("Failed to get leader board.", createException);
         } catch (GameDataException gameDataException) {
-            throw new HandlerExecutionException("Failed to get leader board.",
-                    gameDataException);
+            throw new HandlerExecutionException("Failed to get leader board.", gameDataException);
         } catch (EJBException exception) {
-            throw new HandlerExecutionException("Failed to get leader board.",
-                    exception);
+            throw new HandlerExecutionException("Failed to get leader board.", exception);
         } finally {
             removeGameData(gameData, gameDataLocal);
         }
@@ -1039,253 +1029,95 @@ class GameDataHelper {
     }
 
     /**
-     * <p>
-     * PlayerInfo class is a private inner static class of
-     * <code>GameDataHelper</code> class. It encapsulates necessary attributes
-     * used to sort players on the leader board. This class will only be used in
-     * GameDataHelper's getLeaderBoard method, and it can be sorted by the
-     * <code>PlayerInfoComparator</code> class.
-     * 
-     * Thread-safety: this class is mutable, so it is not thread-safe, but it is
-     * used in a thread-safe way by GameDataHelper, since
-     * <code>PlayerInfo</code> objects are never shared in different threads.
-     * </p>
-     * 
-     * @author Standlove, mittu
-     * @version 1.0
+     * A nested utility class used in computing statistics for the leader board
      */
-    private static class PlayerInfo {
+    private static class PlayerStatistics implements Comparable {
+        
+        /**
+         * The ID of the player to whome this <code>PlayerStatistics</code> pertains
+         */
+        private final Long playerId;
 
         /**
-         * <p>
-         * Represents the latest completed HostingSlot by current user. It is
-         * null initially, and it has both getter and setter to access or change
-         * this attribute. It is invalid to assign null value to it in its
-         * setter.
-         * </p>
+         * The number of contiguous slots this player has completed, ending at the one closest to the Ball
          */
-        private HostingSlot latestSlot;
+        private int contiguousSlotCount;
 
         /**
-         * <p>
-         * Represents the count of last contiguous completed slots for this
-         * player. It is initialized to 0, and has both getter and setter to
-         * access or change this attribute. It is invalid to assign non-positive
-         * value to it in the setter.
-         * </p>
+         * The date of the player's most recent slot completion, among those slots considered
          */
-        private int contiguousSlotsCount;
+        private Date lastCompletionDate;
 
         /**
-         * <p>
-         * Represents the SlotCompletion for the latest completed slot of this
-         * player. It is null initially, and has both getter and setter to
-         * access or change this attribute. It is invalid to set it to null in
-         * its setter.
-         * </p>
+         * Initializes a new <code>PlayerStatistics</code> for the specified ID and slot completion date.
+         * The contiguous slot count is initialized to 1.
+         *
+         * @param  playerId the <code>Long</code> ID of the player to which these statistics pertain
+         * @param  completionDate the <code>Date</code> of a slot completion attributed to the specified
+         *         player
          */
-        private SlotCompletion latestSlotCompletion;
-
-        /**
-         * <p>
-         * Represents the player id used to uniquely identify a player. It is
-         * initialized in constructor, and never changed afterwards. It could be
-         * any possible long value. And it has a getter to access this
-         * attribute.
-         * </p>
-         */
-        private final long playerId;
-
-        /**
-         * <p>
-         * Constructor with the player id. Simply assign the argument to
-         * this.playerId. The argument could be any long value.
-         * </p>
-         * 
-         * @param playerId
-         *            the player id.
-         */
-        public PlayerInfo(long playerId) {
+        public PlayerStatistics(Long playerId, Date completionDate) {
             this.playerId = playerId;
+            contiguousSlotCount = 1;
+            lastCompletionDate = completionDate;
         }
 
         /**
-         * <p>
-         * Return the player id.
-         * </p>
-         * 
-         * @return the player id.
+         * Retrieves the player ID to which these statistics pertain
+         *
+         * @return the <code>Long</code> player ID
          */
-        public long getPlayerId() {
+        public Long getPlayerId() {
             return playerId;
         }
 
         /**
-         * <p>
-         * Get the latest completed slot. Simply return this.latestSlot. The
-         * returned value could be null if it is not set.
-         * </p>
-         * 
-         * @return the latest completed slot.
+         * Increments the count of contiguous completions comprised by these statistics to account for
+	 * a completion time stamped with the specified <code>Date</code>.
+	 *
+	 * @param timestamp the <code>Date</code> of the completion to account for
          */
-        public HostingSlot getLatestSlot() {
-            return latestSlot;
+        public void incrementCompletions(Date timestamp) {
+            contiguousSlotCount++;
+	    updateCompletionDate(timestamp);
         }
 
         /**
-         * <p>
-         * Set the latest completed slot.
-         * </p>
-         * 
-         * @param slot
-         *            the HostingSlot object to set.
-         * @throws IllegalArgumentException
-         *             if the given argument is null.
+         * (Possibly) updates the recorded latest completion timestamp in these statistics;  if the
+         * specified candidate date is later than the currently recorded one then it replaces the current one,
+         * otherwise the current one is retained
+         *
+         * @param  timestamp the candidate <code>Date</code>
          */
-        public void setLatestSlot(HostingSlot slot) {
-            ImplementationHelper.checkObjectValid(slot, "slot");
-            latestSlot = slot;
-        }
-
-        /**
-         * <p>
-         * Return the count of contiguous completed slots for this player.
-         * </p>
-         * 
-         * @return the count of contiguous completed slots for this player.
-         */
-        public int getContiguousSlotsCount() {
-            return contiguousSlotsCount;
-        }
-
-        /**
-         * <p>
-         * Set the count of contiguous completed slots for this player.
-         * </p>
-         * 
-         * @param count
-         *            the count of contiguous completed slots for this player.
-         * @throws IllegalArgumentException
-         *             if the given argument is non-positive value.
-         */
-        public void setContiguousSlotsCount(int count) {
-            if (count <= 0) {
-                throw new IllegalArgumentException(
-                        "The parameter 'count' should not be non-positive.");
+        public void updateCompletionDate(Date timestamp) {
+            if (timestamp.after(lastCompletionDate)) {
+                lastCompletionDate = timestamp;
             }
-            contiguousSlotsCount = count;
         }
 
         /**
-         * <p>
-         * Return the the SlotCompletion for the latest completed slot of this
-         * player.
-         * </p>
-         * 
-         * @return the SlotCompletion for the latest completed slot of this
-         *         player.
+         * An implementation method of the <code>Comparable</code> interface; compares this object to the
+         * specified one, and returns an integer less than, equal to, or greater than zero as this object
+         * comes before, at the same place, or after the other object in this class's natural order.  Note
+         * that this represents a <em>partial</em> order, not a total order.  Both for that reason and because
+         * this class does not override <code>Object.equals(Object)</code>, this order is inconsistent with
+         * equals.
+         *
+         * @param o the <code>Object</code> to compare to this one
+         *
+         * @throws ClassCastException if o is not an instance of <code>PlayerStatistics</code>
+         * @throws NullPointerException is o is <code>null</code>
          */
-        public SlotCompletion getLatestSlotCompletion() {
-            return latestSlotCompletion;
-        }
+        public int compareTo(Object o) {
+            PlayerStatistics other = (PlayerStatistics) o;
 
-        /**
-         * <p>
-         * Set the SlotCompletion for the latest completed slot of this player.
-         * </p>
-         * 
-         * @param completion
-         *            the SlotCompletion for the latest completed slot of this
-         *            player.
-         * @throws IllegalArgumentException
-         *             if the given argument is null.
-         */
-        public void setLatestSlotCompletion(SlotCompletion completion) {
-            ImplementationHelper.checkObjectValid(completion, "completion");
-            latestSlotCompletion = completion;
-        }
-    }
-
-    /**
-     * <p>
-     * <code>PlayerInfoComparator</code> class implements the
-     * <code>Comparator</code> interface, it is a private inner static class
-     * of <code>GameDataHelper</code> class. This class is used to sort the
-     * <code>PlayerInfo</code> objects in ascending order according the rules
-     * defined in req spec. The order will be determined according to the
-     * following criteria, listed from highest priority to lowest:
-     * <ol>
-     * <li>Compare the hostingStart date of PlayerInfo's latest slot,
-     * <code>PlayerInfo</code> object with larger hostingStart date value
-     * should be before the one with smaller value.</li>
-     * <li>Compare the contiguousSlotCount of PlayerInfo object, the object
-     * with larger value should be before the one with smaller value.</li>
-     * <li>Compare the timestamp of the PlayerInfo's latest slotCompletion, the
-     * object with smaller timestamp should be before the one with larger value.</li>
-     * </ol>
-     * Thread-safety: This class is thread-safe, since it is stateless.
-     * </p>
-     * 
-     * @author Standlove, mittu
-     * @version 1.0
-     */
-    private static class PlayerInfoComparator implements Comparator {
-
-        /**
-         * <p>
-         * Empty constructor.
-         * </p>
-         */
-        public PlayerInfoComparator() {
-            // empty
-        }
-
-        /**
-         * <p>
-         * Compare the two given objects, and return a negative integer, zero,
-         * or a positive integer as the first argument is less than, equal to,
-         * or greater than the second. The two given objects must be type of
-         * PlayerInfo.
-         * </p>
-         * 
-         * @param o1
-         *            the first object to compare.
-         * @param o2
-         *            the second object to compare.
-         * @return a negative integer, zero, or a positive integer as the first
-         *         argument is less than, equal to, or greater than the second.
-         * @throws IllegalArgumentException
-         *             if any argument is null.
-         * @throws ClassCastException
-         *             if any argument is not type of PlayerInfo.
-         */
-        public int compare(Object o1, Object o2) {
-            ImplementationHelper.checkObjectValid(o1, "o1");
-            ImplementationHelper.checkObjectValid(o2, "o2");
-            PlayerInfo player1 = (PlayerInfo) o1;
-            PlayerInfo player2 = (PlayerInfo) o2;
-            Date date1 = player1.getLatestSlot().getHostingStart();
-            Date date2 = player2.getLatestSlot().getHostingStart();
-            // if the hosting start is not equal decide the result based on
-            // that.
-            if (date1.compareTo(date2) != 0) {
-                return date1.compareTo(date2);
+            if (this.contiguousSlotCount > other.contiguousSlotCount) {
+                return -1;
+            } else if (this.contiguousSlotCount < other.contiguousSlotCount) {
+                return 1;
+            } else {
+                return this.lastCompletionDate.compareTo(other.lastCompletionDate);
             }
-            int count1 = player1.getContiguousSlotsCount();
-            int count2 = player2.getContiguousSlotsCount();
-            // if the contiguous slots count is not equal, decide the result
-            // based on that.
-            if (count1 != count2) {
-                return count2 - count1;
-            }
-            // decide the result based on latest slot completion timestamp.
-            date1 = player1.getLatestSlotCompletion().getTimestamp();
-            date2 = player2.getLatestSlotCompletion().getTimestamp();
-            if (date1.compareTo(date2) != 0) {
-                return date1.compareTo(date2);
-            }
-            // if everything is equal return 0.
-            return 0;
         }
     }
 
@@ -1297,6 +1129,31 @@ class GameDataHelper {
      * @version 1.0
      */
     private static class SequenceNumberComparator implements Comparator {
+
+	/**
+	 * An int multiplier for the return value of {@link #compare()}, used to reverse
+	 * the default order imposed by this <code>Comparator</code> if so configured
+	 */
+	private final int order;
+
+	/**
+	 * Initializes this <code>SequenceNumberComparator</code> to impose its default
+	 * (ascending) order
+	 */
+        public SequenceNumberComparator() {
+            this(false);
+	}
+
+	/**
+	 * Initializes this <code>SequenceNumberComparator</code> to impose either its
+	 * default order (ascending) or the reverse, as indicated by the argument
+         *
+	 * @param  reverseOrder <code>true</code> if the order should be the reverse
+	 *         of the default order
+	 */
+	public SequenceNumberComparator(boolean reverseOrder) {
+            order = (reverseOrder ? -1 : 1);
+	}
 
         /**
          * Compare the objects based on sequence number.
@@ -1312,12 +1169,15 @@ class GameDataHelper {
             if (o1 instanceof HostingBlock) {
                 HostingBlock block1 = (HostingBlock) o1;
                 HostingBlock block2 = (HostingBlock) o2;
-                return block1.getSequenceNumber() - block2.getSequenceNumber();
+
+                return order * (block1.getSequenceNumber() - block2.getSequenceNumber());
             } else {
                 HostingSlot slot1 = (HostingSlot) o1;
                 HostingSlot slot2 = (HostingSlot) o2;
-                return slot1.getSequenceNumber() - slot2.getSequenceNumber();
+
+                return order * (slot1.getSequenceNumber() - slot2.getSequenceNumber());
             }
         }
     }
 }
+

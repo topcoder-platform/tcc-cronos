@@ -80,7 +80,7 @@ public class GameDataHelperUnitTest extends TestCase {
         Game[] games = helper.getActiveGames();
         assertNotNull("failed to get active games", games);
         // expect the same count which is set in the mock bean.
-        assertEquals("failed to get active games", games.length, 3);
+        assertEquals("failed to get active games", 3, games.length);
     }
 
     /**
@@ -149,7 +149,7 @@ public class GameDataHelperUnitTest extends TestCase {
         GameDataHelper helper = GameDataHelper.getInstance();
         Domain[] domains = helper.getUnlockedDomains(101);
         assertNotNull("failed to get unlocked domains", domains);
-        assertEquals("failed to get unlocked domains", domains.length, 0);
+        assertEquals("wrong number of unlocked domains", 0, domains.length);
     }
 
     /**
@@ -165,8 +165,8 @@ public class GameDataHelperUnitTest extends TestCase {
     public void testGetUpcomingDomainsAccuracy() throws Exception {
         GameDataHelper helper = GameDataHelper.getInstance();
         Domain[] domains = helper.getUpcomingDomains(101);
-        assertNotNull("failed to get unlocked domains", domains);
-        assertEquals("failed to get unlocked domains", domains.length, 6);
+        assertNotNull("failed to get upcoming domains", domains);
+        assertEquals("wrong number of upcoming domains", 3, domains.length);
     }
 
     /**
@@ -184,7 +184,7 @@ public class GameDataHelperUnitTest extends TestCase {
         Game[] games = helper.findGamesByDomain("junit", 101);
         assertNotNull("failed to get games by domain", games);
         // expect the same count which is set in the mock bean.
-        assertEquals("failed to get games by domain", games.length, 3);
+        assertEquals("failed to get games by domain", 3, games.length);
     }
 
     /**
@@ -202,6 +202,6 @@ public class GameDataHelperUnitTest extends TestCase {
         long[] leaders = helper.getLeaderBoard(101, 5);
         assertNotNull("failed to get leader board", leaders);
         // expect the same count which is set in the mock bean.
-        assertEquals("failed to get leader board", leaders.length, 0);
+        assertEquals("failed to get leader board", 0, leaders.length);
     }
 }
