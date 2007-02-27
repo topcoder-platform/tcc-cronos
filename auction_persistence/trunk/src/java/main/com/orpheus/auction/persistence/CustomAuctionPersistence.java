@@ -13,13 +13,13 @@ import com.topcoder.util.cache.Cache;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
 import java.util.Date;
-
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * <p>
  * This is the auction persistence client to the EJB layer.
  * </p>
- *
  * <p>
  * This class implements the <code>AuctionPersistence</code> and supports all operations. It maintains a cache for
  * faster performance. It uses the ConfigManager and Object Factory to initialize itself. It is built to work with
@@ -28,9 +28,11 @@ import java.util.Date;
  * to perform translations between the Auction Frameworks <code>Auction</code> and <code>Bid</code> instances, and
  * their equivalent transport entities: <code>AuctionDTO</code> and <code>BidDTO</code>.
  * </p>
- *
  * <p>
- * <b>Thread Safety: </b>This class is mutable and thread-safe.
+ * <b>Thread Safety:</b> This class is mutable.  It is thread safe inasmuch as a single instance can safely be
+ * used by multiple threads without risk of internal data corruption.  This class does not protect against overwriting
+ * fresh data with stale data, however, and it is decidedly unsafe for multiple instances associated with the same data
+ * store to be in use at the same time, by any number of threads.
  * </p>
  *
  * @author argolite, TCSDEVELOPER
@@ -81,6 +83,21 @@ public abstract class CustomAuctionPersistence implements AuctionPersistence {
      * </p>
      */
     private final Cache cache;
+
+    /**
+     * The object that provides the monitor by which threads' access to the lock objects is controlled
+     */
+    private final Object globalLockMonitor = new Object();
+
+    /**
+     * The status of the global exclusionary lock: <code>true</code> if any thread holds it, <code>false</code> if not
+     */
+    private boolean globalLock = false;
+
+    /**
+     * A <code>Set</code> containing the IDs of the auctions that are currently locked
+     */
+    private Set auctionLocks = new HashSet();
 
     /**
      * <p>
@@ -134,22 +151,42 @@ public abstract class CustomAuctionPersistence implements AuctionPersistence {
      */
     public Auction createAuction(Auction auction) throws PersistenceException, TranslationException {
         AuctionPersistenceHelper.validateNotNull(auction, "auction");
+	Long auctionId = auction.getId();
 
-        if (auction.getId() == null) {
+        if (auctionId == null) {
             throw new InvalidEntryException("The auction does not contain an id.", auction.getId());
+
+	    /*
+	     * Technically, throwing an exception here is a violation of the AuctionPersistence contract,
+	     * which specifies that the persistence object should choose an ID if none has been specified.
+	     * In practice, the Orpheus application expects always to assign its own auction IDs, and this
+	     * exception serves to catch violations of that expectation.
+	     */
         }
 
-        // check if already in cache
-        Object obj = cache.get(auction.getId());
+	acquireAuctionLock(auctionId);
 
-        if (obj != null) {
-            throw new DuplicateEntryException("The auction already exists.", obj);
-        }
+	try {
+            // check if already in cache
+            Object obj = cache.get(auction.getId());
 
-        AuctionDTO auctionDTO = auctionTranslator.assembleAuctionDTO(auction);
-        AuctionDTO retrievedAuction = ejbCreateAuction(auctionDTO);
-        auction = auctionTranslator.assembleAuction(retrievedAuction);
-        cache.put(auction.getId(), auction);
+            if (obj != null) {
+                throw new DuplicateEntryException("The auction already exists.", obj);
+            }
+
+            AuctionDTO auctionDTO = auctionTranslator.assembleAuctionDTO(auction);
+            AuctionDTO retrievedAuction = ejbCreateAuction(auctionDTO);
+            auction = auctionTranslator.assembleAuction(retrievedAuction);
+
+	    // sanity check
+	    if (!auctionId.equals(auction.getId())) {
+		throw new PersistenceException("Internal error: created auction has the wrong ID");
+	    }
+
+            cache.put(auctionId, auction);
+	} finally {
+            releaseAuctionLock(auctionId);
+	}
 
         return auction;
     }
@@ -175,15 +212,30 @@ public abstract class CustomAuctionPersistence implements AuctionPersistence {
      * @throws TranslationException if it fails to translate the Auction or AuctionDTO instances.
      */
     public Auction getAuction(long auctionId) throws PersistenceException, TranslationException {
-        Auction auction = (Auction) cache.get(new Long(auctionId));
+	acquireAuctionLock(auctionId);
 
-        if (auction == null) {
-            AuctionDTO auctionDTO = ejbGetAuction(auctionId);
-            auction = auctionTranslator.assembleAuction(auctionDTO);
-            cache.put(auction.getId(), auction);
-        }
+	try {
+            Auction auction = (Auction) cache.get(new Long(auctionId));
 
-        return auction;
+            if (auction == null) {
+                AuctionDTO auctionDTO = ejbGetAuction(auctionId);
+                Long idObject;
+
+                auction = auctionTranslator.assembleAuction(auctionDTO);
+		idObject = auction.getId();
+
+	        // sanity check
+	        if (idObject == null || idObject.longValue() != auctionId) {
+		    throw new PersistenceException("Internal error: retrieved auction has the wrong ID");
+	        }
+
+                cache.put(auction.getId(), auction);
+            }
+
+            return auction;
+	} finally {
+            releaseAuctionLock(auctionId);
+	}
     }
 
     /**
@@ -209,16 +261,29 @@ public abstract class CustomAuctionPersistence implements AuctionPersistence {
      */
     public void updateAuction(Auction auction) throws PersistenceException, TranslationException {
         AuctionPersistenceHelper.validateNotNull(auction, "auction");
+	Long auctionId = auction.getId();
 
-        if (auction.getId() == null) {
+        if (auctionId == null) {
             throw new InvalidEntryException("The auction does not contain an id.", auction.getId());
         }
 
-        AuctionDTO auctionDTO = auctionTranslator.assembleAuctionDTO(auction);
-        ejbUpdateAuction(auctionDTO);
+	acquireAuctionLock(auctionId);
 
-        Auction retrievedAuction = auctionTranslator.assembleAuction(auctionDTO);
-        cache.put(retrievedAuction.getId(), retrievedAuction);
+	try {
+            AuctionDTO auctionDTO = auctionTranslator.assembleAuctionDTO(auction);
+            ejbUpdateAuction(auctionDTO);
+
+            Auction retrievedAuction = auctionTranslator.assembleAuction(auctionDTO);
+
+	    // sanity check
+	    if (!auctionId.equals(retrievedAuction.getId())) {
+		throw new PersistenceException("Internal error: created auction has the wrong ID");
+	    }
+
+            cache.put(auctionId, retrievedAuction);
+	} finally {
+            releaseAuctionLock(auctionId);
+	}
     }
 
     /**
@@ -253,9 +318,22 @@ public abstract class CustomAuctionPersistence implements AuctionPersistence {
             bidDTOs[i] = auctionTranslator.assembleBidDTO(bids[i]);
         }
 
-        AuctionDTO auctionDTO = ejbUpdateBids(auctionId, bidDTOs);
-        Auction auction = auctionTranslator.assembleAuction(auctionDTO);
-        cache.put(auction.getId(), auction);
+	acquireAuctionLock(auctionId);
+
+	try {
+            AuctionDTO auctionDTO = ejbUpdateBids(auctionId, bidDTOs);
+            Auction auction = auctionTranslator.assembleAuction(auctionDTO);
+            Long idObject = auction.getId();
+
+	    // sanity check
+	    if (idObject == null || idObject.longValue() != auctionId) {
+	        throw new PersistenceException("Internal error: retrieved auction has the wrong ID");
+	    }
+
+            cache.put(idObject, auction);
+	} finally {
+            releaseAuctionLock(auctionId);
+	}
     }
 
     /**
@@ -271,45 +349,57 @@ public abstract class CustomAuctionPersistence implements AuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     public void deleteAuction(long auctionId) throws PersistenceException {
-        ejbDeleteAuction(auctionId);
-        cache.remove(new Long(auctionId));
+	acquireAuctionLock(auctionId);
+
+	try {
+            ejbDeleteAuction(auctionId);
+            cache.remove(new Long(auctionId));
+	} finally {
+            releaseAuctionLock(auctionId);
+	}
     }
 
     /**
      * <p>
-     * Gets all auctions currently in persistence whose start date is not smaller than startingBay date parameter, and
+     * Gets all auctions currently in persistence whose start date is not smaller than startingBy date parameter, and
      * whose end date is smaller than endingAfter date parameter. Returns empty array if no auctions found. If
-     * startingBy or endingAfter is null, ignores the parameter in comparisons.
+     * startingBy or endingAfter is null, ignores that parameter in comparisons.
      * </p>
      *
      * <p>
      * It will delegate actual execution to the ejbFindAuctionsByDate. It makes no sense to try to match cached items
-     * with persisted items, se we get all directly from persistence, and then cache all retrieved and translated
+     * with persisted items, so we get all directly from persistence, and then cache all retrieved and translated
      * Auctions. Returns empty array if no auctions found.
      * </p>
      *
      * @param startingBy search date limit on the earliest start time, inclusive.
      * @param endingAfter search date limit on the latest end time, exclusive.
      *
-     * @return the retrieved auctions instances.
+     * @return the retrieved auction instances.
      *
      * @throws IllegalArgumentException If startBy date &gt; endAfter date (only if both not null)
      * @throws PersistenceException If there is any problem in the persistence layer.
      * @throws TranslationException if it fails to translate the Auction or AuctionDTO instances.
      */
     public Auction[] findAuctionsByDate(Date startingBy, Date endingAfter)
-        throws PersistenceException, TranslationException {
+            throws PersistenceException, TranslationException {
         AuctionPersistenceHelper.validateTwoDate(startingBy, endingAfter);
 
-        AuctionDTO[] auctionDTOs = ejbFindAuctionsByDate(startingBy, endingAfter);
-        Auction[] auctions = new Auction[auctionDTOs.length];
+	acquireGlobalLock();
 
-        for (int i = 0; i < auctionDTOs.length; i++) {
-            auctions[i] = auctionTranslator.assembleAuction(auctionDTOs[i]);
-            cache.put(auctions[i].getId(), auctions[i]);
-        }
+	try {
+            AuctionDTO[] auctionDTOs = ejbFindAuctionsByDate(startingBy, endingAfter);
+            Auction[] auctions = new Auction[auctionDTOs.length];
 
-        return auctions;
+            for (int i = 0; i < auctionDTOs.length; i++) {
+                auctions[i] = auctionTranslator.assembleAuction(auctionDTOs[i]);
+                cache.put(auctions[i].getId(), auctions[i]);
+            }
+
+            return auctions;
+	} finally {
+            releaseGlobalLock();
+	}
     }
 
     /**
@@ -334,16 +424,109 @@ public abstract class CustomAuctionPersistence implements AuctionPersistence {
      * @throws TranslationException if it fails to translate the Auction or AuctionDTO instances.
      */
     public Auction[] findAuctionsByBidder(long bidderId, Date endingAfter)
-        throws PersistenceException, TranslationException {
-        AuctionDTO[] auctionDTOs = ejbFindAuctionsByBidder(bidderId, endingAfter);
-        Auction[] auctions = new Auction[auctionDTOs.length];
+            throws PersistenceException, TranslationException {
+        acquireGlobalLock();
 
-        for (int i = 0; i < auctionDTOs.length; i++) {
-            auctions[i] = auctionTranslator.assembleAuction(auctionDTOs[i]);
-            cache.put(auctions[i].getId(), auctions[i]);
-        }
+	try {
+            AuctionDTO[] auctionDTOs = ejbFindAuctionsByBidder(bidderId, endingAfter);
+            Auction[] auctions = new Auction[auctionDTOs.length];
 
-        return auctions;
+            for (int i = 0; i < auctionDTOs.length; i++) {
+                auctions[i] = auctionTranslator.assembleAuction(auctionDTOs[i]);
+                cache.put(auctions[i].getId(), auctions[i]);
+            }
+
+            return auctions;
+	} finally {
+	    releaseGlobalLock();
+	}
+    }
+
+    /**
+     * Acquires the global exclusionary lock for this persistence object, waiting as necessary
+     */
+    private void acquireGlobalLock() throws PersistenceException {
+	synchronized (globalLockMonitor) {
+            while (globalLock || !auctionLocks.isEmpty()) {
+		try {
+		    globalLockMonitor.wait();
+		} catch (InterruptedException ie) {
+		    throw new PersistenceException(
+		            "Unexpectedly interrupted while waiting to acquire the global lock", ie);
+		}
+	    }
+	    globalLock = true;
+	    // no need to notify: no other lock attempts can succeed until the global lock is released,
+	    // and there can be no release attempts because no other locks are held
+	}
+    }
+
+    /**
+     * Releases the global exclusionary lock for this persistence object
+     */
+    private void releaseGlobalLock() {
+	synchronized (globalLockMonitor) {
+
+            // no condition here: it is always safe to release the global lock
+
+            globalLock = false;
+	    globalLockMonitor.notifyAll();
+	}
+    }
+
+    /**
+     * Acquires a lock for the auction having the specified ID
+     *
+     * @param auctionId the auction ID as a <code>long</code>
+     */
+    private void acquireAuctionLock(long auctionId) throws PersistenceException {
+	acquireAuctionLock(new Long(auctionId));
+    }
+
+    /**
+     * Acquires a lock for the auction having the specified ID
+     *
+     * @param auctionId the auction ID as a <code>Long</code>
+     */
+    private void acquireAuctionLock(Long auctionId) throws PersistenceException {
+	synchronized (globalLockMonitor) {
+            while (globalLock || auctionLocks.contains(auctionId)) {
+		try {
+		globalLockMonitor.wait();
+		} catch (InterruptedException ie) {
+                    throw new PersistenceException(
+			    "Unexpectedly interrupted while waiting to acquire an auction lock", ie);
+		}
+	    }
+	    auctionLocks.add(auctionId);
+	    globalLockMonitor.notifyAll();
+	}
+    }
+
+    /**
+     * Releases a lock for the auction having the specified ID
+     *
+     * @param auctionId the auction ID as a <code>long</code>
+     */
+    private void releaseAuctionLock(long auctionId) {
+	releaseAuctionLock(new Long(auctionId));
+    }
+
+    /**
+     * Releases a lock for the auction having the specified ID
+     *
+     * @param auctionId the auction ID as a <code>Long</code>
+     */
+    private void releaseAuctionLock(Long auctionId) {
+	synchronized (globalLockMonitor) {
+
+            // no condition here: it is always safe to release an auction lock
+
+            auctionLocks.remove(auctionId);
+
+	    //silently ignore the case where the lock was not recorded
+	    globalLockMonitor.notifyAll();
+	}
     }
 
     /**

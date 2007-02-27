@@ -11,6 +11,7 @@ import com.orpheus.auction.persistence.ejb.BidDTO;
 import java.util.Date;
 
 import javax.ejb.CreateException;
+import javax.ejb.RemoveException;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,9 +23,9 @@ import javax.naming.NamingException;
  * uses the ConfigManager and Object Factory to initialize the JNDI EJB reference to obtain the handle to the EJB
  * interface itself.
  * </p>
- *
  * <p>
- * <b>Thread Safety: </b>This class is mutable and thread-safe.
+ * <b>Thread Safety: </b>This class is mutable.  It is thread safe to the extent that its superclass is thread safe,
+ * and to the extent that concurrent access to multiple instances of the persistence EJB is thread safe.
  * </p>
  *
  * @author argolite, TCSDEVELOPER
@@ -41,17 +42,17 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
 
     /**
      * <p>
-     * Represents the local ejb instance used for all calls. Created in the consructor, will not be null, and will not
-     * change.
+     * Represents the local ejb's home interface, from which an EJB instance is obtained for each calls. Created in
+     * the consructor, will not be null, and will not change.
      * </p>
      */
-    private final AuctionLocal auctionEJB;
+    private final AuctionLocalHome auctionEJBHome;
 
     /**
      * <p>
      * Instantiates new LocalCustomAuctionPersistence instance from the given namespace. It will use ConfigManager and
-     * ObjectFactory to instantiate a new AuctionTranslator and Cache objects. Will also obtain a reference to the EJB
-     * AuctionLocal.
+     * ObjectFactory to instantiate a new AuctionTranslator and Cache objects. Will also obtain a reference to the
+     * Auction EJB's local home interface.
      * </p>
      *
      * @param namespace configuration namespace.
@@ -68,11 +69,9 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
 
         try {
             InitialContext ic = new InitialContext();
-            AuctionLocalHome home = (AuctionLocalHome) ic.lookup(jndiEjbReference);
-            auctionEJB = home.create();
+
+            auctionEJBHome = (AuctionLocalHome) ic.lookup(jndiEjbReference);
         } catch (NamingException e) {
-            throw new ObjectInstantiationException("Fails to create the ejb.", e);
-        } catch (CreateException e) {
             throw new ObjectInstantiationException("Fails to create the ejb.", e);
         }
     }
@@ -91,7 +90,13 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     protected AuctionDTO ejbCreateAuction(AuctionDTO auction) throws PersistenceException {
-        return auctionEJB.createAuction(auction);
+        AuctionLocal auctionEJB = getEJB();
+
+        try {
+            return auctionEJB.createAuction(auction);
+        } finally {
+            removeEJB(auctionEJB);
+        }
     }
 
     /**
@@ -108,7 +113,13 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     protected AuctionDTO ejbGetAuction(long auctionId) throws PersistenceException {
-        return auctionEJB.getAuction(auctionId);
+        AuctionLocal auctionEJB = getEJB();
+
+        try {
+            return auctionEJB.getAuction(auctionId);
+        } finally {
+            removeEJB(auctionEJB);
+        }
     }
 
     /**
@@ -126,7 +137,13 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     protected AuctionDTO ejbUpdateAuction(AuctionDTO auction) throws PersistenceException {
-        return auctionEJB.updateAuction(auction);
+        AuctionLocal auctionEJB = getEJB();
+
+        try {
+            return auctionEJB.updateAuction(auction);
+        } finally {
+            removeEJB(auctionEJB);
+        }
     }
 
     /**
@@ -146,7 +163,13 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     protected AuctionDTO ejbUpdateBids(long auctionId, BidDTO[] bids) throws PersistenceException {
-        return auctionEJB.updateBids(auctionId, bids);
+        AuctionLocal auctionEJB = getEJB();
+
+        try {
+            return auctionEJB.updateBids(auctionId, bids);
+        } finally {
+            removeEJB(auctionEJB);
+        }
     }
 
     /**
@@ -161,7 +184,13 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     protected void ejbDeleteAuction(long auctionId) throws PersistenceException {
-        auctionEJB.deleteAuction(auctionId);
+        AuctionLocal auctionEJB = getEJB();
+
+        try {
+            auctionEJB.deleteAuction(auctionId);
+        } finally {
+            removeEJB(auctionEJB);
+        }
     }
 
     /**
@@ -183,7 +212,13 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     protected AuctionDTO[] ejbFindAuctionsByDate(Date startingBy, Date endingAfter) throws PersistenceException {
-        return auctionEJB.findAuctionsByDate(startingBy, endingAfter);
+        AuctionLocal auctionEJB = getEJB();
+
+        try {
+            return auctionEJB.findAuctionsByDate(startingBy, endingAfter);
+        } finally {
+            removeEJB(auctionEJB);
+        }
     }
 
     /**
@@ -204,6 +239,45 @@ public class LocalCustomAuctionPersistence extends CustomAuctionPersistence {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     protected AuctionDTO[] ejbFindAuctionsByBidder(long bidderId, Date endingAfter) throws PersistenceException {
-        return auctionEJB.findAuctionsByBidder(bidderId, endingAfter);
+        AuctionLocal auctionEJB = getEJB();
+
+        try {
+            return auctionEJB.findAuctionsByBidder(bidderId, endingAfter);
+        } finally {
+            removeEJB(auctionEJB);
+        }
+    }
+
+    /**
+     * Obtains an EJB instance from the configured home interface
+     *
+     * @return an <code>AuctionLocal</code> instance
+     *
+     * @throws PersistenceException if no EJB instance can be obtained
+     */
+    private AuctionLocal getEJB() throws PersistenceException {
+        try {
+            return auctionEJBHome.create();
+        } catch (CreateException ce) {
+            throw new PersistenceException("Could not obtain EJB instance", ce);
+        }
+    }
+
+    /**
+     * Removes the specified EJB instance, signalling to the container that this object
+     * is finished using it.  This method swallows any exception that may be thrown,
+     * but does print stack traces of such exceptions to System.err
+     *
+     * @param auctionEJB the <code>AuctionLocal</code> instance to remove
+     */
+    private void removeEJB(AuctionLocal auctionEJB) {
+        try {
+            auctionEJB.remove();
+        } catch (RemoveException re) {
+            re.printStackTrace(System.err);
+
+            // don't throw anything
+        }
     }
 }
+

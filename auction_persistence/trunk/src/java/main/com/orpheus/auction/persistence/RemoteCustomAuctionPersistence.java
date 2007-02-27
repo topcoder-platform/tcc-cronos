@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.util.Date;
 
 import javax.ejb.CreateException;
+import javax.ejb.RemoveException;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -45,17 +46,17 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
 
     /**
      * <p>
-     * Represents the remote ejb instance used for all calls. Created in the consructor, will not be null, and will not
-     * change.
+     * Represents the remote ejb's home interface, from which an EJB instance is obtained for each calls. Created in
+     * the consructor, will not be null, and will not change.
      * </p>
      */
-    private final AuctionRemote auctionEJB;
+    private final AuctionRemoteHome auctionEJBHome;
 
     /**
      * <p>
      * Instantiates new RemoteCustomAuctionPersistence instance from the given namespace. It will use ConfigManager and
-     * ObjectFactory to instantiate a new AuctionTranslator and Cache objects. Will also obtain a reference to the EJB
-     * AuctionRemote.
+     * ObjectFactory to instantiate a new AuctionTranslator and Cache objects. Will also obtain a reference to the
+     * Auction EJB's remote home interface.
      * </p>
      *
      * @param namespace configuration namespace
@@ -73,13 +74,9 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
         try {
             InitialContext ic = new InitialContext();
             Object lookup = ic.lookup(jndiEjbReference);
-            AuctionRemoteHome home = (AuctionRemoteHome) PortableRemoteObject.narrow(lookup, AuctionRemoteHome.class);
-            auctionEJB = home.create();
+
+            auctionEJBHome = (AuctionRemoteHome) PortableRemoteObject.narrow(lookup, AuctionRemoteHome.class);
         } catch (NamingException e) {
-            throw new ObjectInstantiationException("Fails to create the ejb.", e);
-        } catch (RemoteException e) {
-            throw new ObjectInstantiationException("Fails to create the ejb.", e);
-        } catch (CreateException e) {
             throw new ObjectInstantiationException("Fails to create the ejb.", e);
         }
     }
@@ -99,10 +96,14 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
      *         here.
      */
     protected AuctionDTO ejbCreateAuction(AuctionDTO auction) throws PersistenceException {
+        AuctionRemote auctionEJB = getEJB();
+
         try {
             return auctionEJB.createAuction(auction);
         } catch (RemoteException e) {
             throw new PersistenceException("Error occurs when create the auction.", e);
+        } finally {
+            removeEJB(auctionEJB);
         }
     }
 
@@ -121,10 +122,14 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
      *         here.
      */
     protected AuctionDTO ejbGetAuction(long auctionId) throws PersistenceException {
+        AuctionRemote auctionEJB = getEJB();
+
         try {
             return auctionEJB.getAuction(auctionId);
         } catch (RemoteException e) {
-            throw new PersistenceException("Error occurs when get the auction.", e);
+            throw new PersistenceException("Error occurs when create the auction.", e);
+        } finally {
+            removeEJB(auctionEJB);
         }
     }
 
@@ -144,10 +149,14 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
      *         here.
      */
     protected AuctionDTO ejbUpdateAuction(AuctionDTO auction) throws PersistenceException {
+        AuctionRemote auctionEJB = getEJB();
+
         try {
             return auctionEJB.updateAuction(auction);
         } catch (RemoteException e) {
-            throw new PersistenceException("Error occurs when update the auction.", e);
+            throw new PersistenceException("Error occurs when create the auction.", e);
+        } finally {
+            removeEJB(auctionEJB);
         }
     }
 
@@ -169,10 +178,14 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
      *         here.
      */
     protected AuctionDTO ejbUpdateBids(long auctionId, BidDTO[] bids) throws PersistenceException {
+        AuctionRemote auctionEJB = getEJB();
+
         try {
             return auctionEJB.updateBids(auctionId, bids);
         } catch (RemoteException e) {
-            throw new PersistenceException("Error occurs when update the bids.", e);
+            throw new PersistenceException("Error occurs when create the auction.", e);
+        } finally {
+            removeEJB(auctionEJB);
         }
     }
 
@@ -189,10 +202,14 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
      *         here.
      */
     protected void ejbDeleteAuction(long auctionId) throws PersistenceException {
+        AuctionRemote auctionEJB = getEJB();
+
         try {
             auctionEJB.deleteAuction(auctionId);
         } catch (RemoteException e) {
-            throw new PersistenceException("Error occurs when delete the auctions.", e);
+            throw new PersistenceException("Error occurs when create the auction.", e);
+        } finally {
+            removeEJB(auctionEJB);
         }
     }
 
@@ -216,10 +233,14 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
      *         here.
      */
     protected AuctionDTO[] ejbFindAuctionsByDate(Date startingBy, Date endingAfter) throws PersistenceException {
+        AuctionRemote auctionEJB = getEJB();
+
         try {
             return auctionEJB.findAuctionsByDate(startingBy, endingAfter);
         } catch (RemoteException e) {
-            throw new PersistenceException("Error occurs when find the auctions.", e);
+            throw new PersistenceException("Error occurs when create the auction.", e);
+        } finally {
+            removeEJB(auctionEJB);
         }
     }
 
@@ -242,10 +263,53 @@ public class RemoteCustomAuctionPersistence extends CustomAuctionPersistence {
      *         here.
      */
     protected AuctionDTO[] ejbFindAuctionsByBidder(long bidderId, Date endingAfter) throws PersistenceException {
+        AuctionRemote auctionEJB = getEJB();
+
         try {
             return auctionEJB.findAuctionsByBidder(bidderId, endingAfter);
         } catch (RemoteException e) {
-            throw new PersistenceException("Error occurs when find the auctions.", e);
+            throw new PersistenceException("Error occurs when create the auction.", e);
+        } finally {
+            removeEJB(auctionEJB);
+        }
+    }
+
+    /**
+     * Obtains an EJB instance from the configured home interface
+     *
+     * @return an <code>AuctionRemote</code> instance
+     *
+     * @throws PersistenceException if no EJB instance can be obtained
+     */
+    private AuctionRemote getEJB() throws PersistenceException {
+        try {
+            return auctionEJBHome.create();
+        } catch (RemoteException re) {
+            throw new PersistenceException("Could not obtain EJB instance", re);
+        } catch (CreateException ce) {
+            throw new PersistenceException("Could not obtain EJB instance", ce);
+        }
+    }
+
+    /**
+     * Removes the specified EJB instance, signalling to the container that this object
+     * is finished using it.  This method swallows any exception that may be thrown,
+     * but does print stack traces of such exceptions to System.err
+     *
+     * @param auctionEJB the <code>AuctionRemote</code> instance to remove
+     */
+    private void removeEJB(AuctionRemote auctionEJB) {
+        try {
+            auctionEJB.remove();
+        } catch (RemoteException re) {
+            re.printStackTrace(System.err);
+
+            // don't throw anything
+        } catch (RemoveException re) {
+            re.printStackTrace(System.err);
+
+            // don't throw anything
         }
     }
 }
+
