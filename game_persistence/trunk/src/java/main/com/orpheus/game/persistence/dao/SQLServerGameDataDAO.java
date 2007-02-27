@@ -125,19 +125,19 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         "INNER JOIN bid t6 ON (t4.bid_id = t6.id) " + "INNER JOIN [image] t7 ON (t6.image_id = t7.id) " +
         "INNER JOIN domain t8 ON (t7.domain_id = t8.id AND t8.base_url = ?)) " + "ON (t1.id = t6.auction_id) " +
         "WHERE (t2.player_id IS NULL AND t3.sequence_number IS NULL " +
-        "AND t5.timestamp IS NULL AND t4.hosting_start IS NOT NULL)";
+        "AND t5.timestamp IS NULL AND t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
 
     /** Constant represents the sql clause to get complete slot for a game. */
     private static final String SQL_SELECT_COMPLETE_SLOT_IN_GAME =
         "SELECT t4.hosting_slot_id AS id, MIN(t1.sequence_number) s1, MIN(t3.sequence_number) s2 " +
-        "FROM plyr_compltd_slot t4 " + "INNER JOIN hosting_slot t3 ON (t4.hosting_slot_id = t3.id) " +
+        "FROM plyr_compltd_slot t4 " + "INNER JOIN hosting_slot t3 ON (t4.hosting_slot_id = t3.id AND t3.is_deleted=0) " +
         "INNER JOIN bid t2 ON (t3.bid_id = t2.id) " + "INNER JOIN hosting_block t1 ON (t2.auction_id = t1.id) " +
         "WHERE t1.game_id = ? " + "GROUP BY t4.hosting_slot_id ORDER BY s1, s2";
 
     /** Constant represents the sql clause get all complete slot with game and slot id. */
     private static final String SQL_SELECT_COMPLETE_SLOT =
         "SELECT t5.* FROM hosting_block t2 INNER JOIN bid t3 ON (t2.game_id = ? AND t2.id = t3.auction_id) " +
-        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ?) " +
+        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ? AND t4.is_deleted=0) " +
         "INNER JOIN plyr_compltd_slot t5 ON (t4.id = t5.hosting_slot_id) " + "ORDER BY t5.timestamp";
 
     /** Constant represents the field name. */
@@ -152,7 +152,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /** Constant represents the sql clause to check if the slot id exists with the game id. */
     private static final String SQL_SELECT_CHECK_GAME_ID_SLOT_ID = "SELECT t4.id FROM " +
         "hosting_block t2 INNER JOIN bid t3 ON (t2.id = t3.auction_id AND t2.game_id = ?) " +
-        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ?) ";
+        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ? AND t4.is_deleted=0) ";
 
     /**
      * Constant represents the sql clause to get unstarted games. Games are judged to have not been started if none of their
@@ -160,12 +160,14 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private static final String SQL_SELECT_NOT_START_GAME = "SELECT t2.game_id AS id, COUNT(t4.hosting_start) " +
         "FROM hosting_block t2 " + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " +
-        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " + "GROUP BY t2.game_id " + "HAVING (COUNT(t4.hosting_start) = 0)";
+        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.is_deleted=0) " +
+       	"GROUP BY t2.game_id " + "HAVING (COUNT(t4.hosting_start) = 0)";
 
     /** Constant represents the sql clause to get started games that have no winner. */
     private static final String SQL_SELECT_START_NOT_END_GAME = "SELECT DISTINCT t2.game_id AS id " + "FROM plyr_won_game t1 " +
         "RIGHT JOIN hosting_block t2 ON (t1.game_id = t2.game_id) " + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " +
-        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " + "WHERE (t4.hosting_start IS NOT NULL AND t1.player_id IS NULL)";
+        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " +
+       	"WHERE (t4.hosting_start IS NOT NULL AND t1.player_id IS NULL AND t4.is_deleted=0)";
 
     /**
      * <p>
@@ -180,12 +182,12 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      */
     private static final String SQL_SELECT_START_END_GAME = "SELECT DISTINCT t1.game_id AS id " + "FROM plyr_won_game t1 " +
         "INNER JOIN hosting_block t2 ON (t1.game_id = t2.game_id) " + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " +
-        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " + "WHERE (t4.hosting_start IS NOT NULL)";
+        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " + "WHERE (t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
 
     /** Constant represents the sql clause to get games that have started. */
     private static final String SQL_SELECT_START_GAME = "SELECT DISTINCT t2.game_id AS id " + "FROM hosting_block t2 " +
         "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " +
-        "WHERE (t4.hosting_start IS NOT NULL)";
+        "WHERE (t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
 
     /** Constant represents the sql clause to get games that have no winner. */
     private static final String SQL_SELECT_NOT_END_GAME = "SELECT t1.id FROM game t1 " +
@@ -196,15 +198,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /** Constant represents the sql clause to get all the game id. */
     private static final String SQL_SELECT_GAME = "SELECT id FROM game";
-
-    /** Constant represents the sql clause delete all target_object with slot id. */
-    private static final String SQL_DELETE_TARGET_OBJECT = "DELETE FROM target_object WHERE hosting_slot_id = ?";
-
-    /** Constant represents the sql clause delete all puzzle_for_slot with slot id. */
-    private static final String SQL_DELETE_PUZZLE_FOR_SLOT = "DELETE FROM puzzle_for_slot WHERE hosting_slot_id = ?";
-
-    /** Constant represents the sql clause delete brn_tsr for slot with slot id. */
-    private static final String SQL_DELETE_BRN_TSR_FOR_SLOT = "DELETE FROM brn_tsr_for_slot WHERE hosting_slot_id = ?";
 
     /** Constant represents the sql clause game has winner. */
     private static final String SQL_SELECT_PLYR_WON_GAME = "SELECT t1.game_id FROM plyr_won_game t1";
@@ -220,24 +213,16 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         "FROM hosting_block t5 LEFT JOIN plyr_won_game t6 ON (t5.game_id = t6.game_id) " +
         "INNER JOIN bid t1 ON (t5.id = t1.auction_id) " + "INNER JOIN [image] t2 ON (t1.image_id = t2.id) " +
         "INNER JOIN domain t3 ON (t2.domain_id = t3.id) " +
-        "INNER JOIN hosting_slot t4 ON (t1.id = t4.bid_id AND t4.hosting_start IS NOT NULL) " + "WHERE (t6.player_id IS NULL)";
+        "INNER JOIN hosting_slot t4 ON (t1.id = t4.bid_id AND t4.hosting_start IS NOT NULL AND t4.is_deleted=0) " +
+       	"WHERE (t6.player_id IS NULL)";
 
     /** Constant represents the sql clause to delete slot with the id. */
-    private static final String SQL_DELET_HOSTING_SLOT = "DELETE FROM hosting_slot WHERE id = ?";
-
-    /** Constant represents the sql clause to delete player complete slot with id. */
-    private static final String SQL_DELETE_PLYR_COMPLTD_SLOT = "DELETE FROM plyr_compltd_slot WHERE hosting_slot_id = ?";
-
-    /** Constant represents the sql clause to delete download obj with id. */
-    private static final String SQL_DELETE_DOWNLOAD_OBJ = "DELETE FROM download_obj WHERE id = ?";
+    private static final String SQL_DELETE_HOSTING_SLOT = "UPDATE hosting_slot SET is_deleted=1 WHERE id = ?";
 
     /** Constant represents the field name. */
     private static final String FIELD_KEY_IMAGE_ID = "key_image_id";
     /** Constant represents the field name. */
     private static final String FIELD_CLUE_IMAGE_ID = "clue_img_id";
-
-    /** Constant represents the sql clause to get all player complete slot with id. */
-    private static final String SQL_SELECT_PLYR_COMPLTD_SLOT_WITH_HOSTING_SLOT_ID = "SELECT * FROM plyr_compltd_slot WHERE hosting_slot_id = ";
 
     /** Constant represents the sql clause to call stored procedure. */
     private static final String SP_CREATE_DOMAIN_TARGET = "{Call CreateDomainTarget(?,?,?,?,?,?,?,?)}";
@@ -375,8 +360,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String FIELD_HOSTING_START = "hosting_start";
 
     /** Constant represents the sql clause get slot for a block. */
-    private static final String SQL_SELECT_HOSTING_SLOT_WITH_BLOCK_ID = "SELECT hosting_slot.id as id FROM hosting_slot, bid " +
-        "WHERE hosting_slot.bid_id = bid.id AND bid.auction_id =";
+    private static final String SQL_SELECT_HOSTING_SLOT_WITH_BLOCK_ID = "SELECT hosting_slot.id as id "
+	    + "FROM hosting_slot INNER JOIN bid ON hosting_slot.bid_id = bid.id AND hosting_slot.is_deleted=0 "
+	    + "WHERE bid.auction_id =";
 
     /** Constant representing the SQL clause for ordering hosting slots by their sequence numbers */
     private static final String SQL_ORDER_SLOTS_BY_SEQUENCE = " ORDER BY hosting_slot.sequence_number";
@@ -455,12 +441,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * game, subject to the constraints that the specified domain be assigned to the slot and that the slot not have been
      * completed by the specified player
      */
-    private static final String SQL_PS_SELECT_SLOT_FOR_DOMAIN = "SELECT TOP (1) t5.id FROM hosting_block t1 " +
-        "INNER JOIN bid t2 ON (t1.game_id = ? AND t1.id = t2.auction_id) " + "INNER JOIN [image] t3 ON (t2.image_id = t3.id) " +
-        "INNER JOIN domain t4 ON (t4.base_url = ? AND t3.domain_id = t4.id) " +
-        "INNER JOIN hosting_slot t5 ON (t5.sequence_number >= 0 AND t2.id = t5.bid_id) " +
-        "LEFT JOIN plyr_compltd_slot t6 ON (t5.id = t6.hosting_slot_id AND t6.player_id = ?) " + "WHERE (t6.timestamp IS NULL) " +
-        "ORDER BY t1.sequence_number, t5.sequence_number";
+    private static final String SQL_PS_SELECT_SLOT_FOR_DOMAIN = "SELECT TOP (1) t5.id FROM hosting_block t1 "
+	    + "INNER JOIN bid t2 ON (t1.game_id = ? AND t1.id = t2.auction_id) " + "INNER JOIN [image] t3 ON (t2.image_id = t3.id) " + "INNER JOIN domain t4 ON (t4.base_url = ? AND t3.domain_id = t4.id) " + "INNER JOIN hosting_slot t5 ON (t5.is_deleted = 0 AND t2.id = t5.bid_id) " + "LEFT JOIN plyr_compltd_slot t6 ON (t5.id = t6.hosting_slot_id AND t6.player_id = ?) " + "WHERE (t6.timestamp IS NULL) " + "ORDER BY t1.sequence_number, t5.sequence_number";
 
     /** Constant represents the field name. */
     private static final String FIELD_DOWNLOAD_OBJ_ID = "download_obj_id";
@@ -812,8 +794,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                         // persist the hosting slot
                         this.update(conn,
-                            "INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start,hosting_end)" +
-                            "values(?,?,null,null)", new Object[] { new Long(bidIds[i]), new Long(sequenceNumber) });
+                            "INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start,hosting_end,is_deleted)" +
+                            "values(?,?,null,null,0)", new Object[] { new Long(bidIds[i]), new Long(sequenceNumber) });
 
                         Long id;
                         rs = query(conn, "SELECT id FROM hosting_slot WHERE bid_id = ? AND sequence_number = ?",
@@ -2075,80 +2057,19 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     public void deleteSlot(long slotId) throws PersistenceException {
+
+	/*
+	 * This version marks the slot as deleted, but doesn't actually remove it from the DB
+	 */
+
         try {
             Connection conn = this.getConnection();
 
             try {
-                // get the key_image_id array from plyr_compltd_slot, 
-                List keyImageIds = new ArrayList();
-                ResultSet rs = query(conn, SQL_SELECT_PLYR_COMPLTD_SLOT_WITH_HOSTING_SLOT_ID + slotId, null);
-                try {
-                    while (rs.next()) {
-                        keyImageIds.add(new Long(rs.getLong(FIELD_KEY_IMAGE_ID)));
-                    }
-                } finally {
-                    close(rs);
-                }
-
-                //get the clue_img_id array from target_object,
-                rs = query(conn,"SELECT clue_img_id FROM target_object WHERE hosting_slot_id = " + slotId, null);
-                try {
-                    while (rs.next()) {
-                        keyImageIds.add(new Long(rs.getLong(FIELD_CLUE_IMAGE_ID)));
-                    }
-                } finally {
-                    close(rs);
-                }
-                
                 Object[] param = new Object[] { new Long(slotId) };
 
-                
-                // delete the plyr_compltd_slot records with the hosting_slot_id
-                update(conn, SQL_DELETE_PLYR_COMPLTD_SLOT, param);
-
-                // delete from target_object table
-                update(conn, SQL_DELETE_TARGET_OBJECT, param);
-
-                List puzzleIds = new ArrayList();
-                //Get the puzzle_ids refered in  puzzle_for_slot tables
-                rs = query(conn,"SELECT puzzle_id FROM puzzle_for_slot WHERE hosting_slot_id = " + slotId,null);
-                try {
-                    while (rs.next()) {
-                        puzzleIds.add(new Long(rs.getLong("puzzle_id")));
-                    }
-                } finally {
-                    close(rs);
-                }
-                //Get the puzzle_ids refered in  brn_tsr_for_slot tables
-                rs = query(conn,"SELECT puzzle_id FROM brn_tsr_for_slot WHERE hosting_slot_id = " + slotId,null);
-                try {
-                    while (rs.next()) {
-                        puzzleIds.add(new Long(rs.getLong("puzzle_id")));
-                    }
-                } finally {
-                    close(rs);
-                }
-                
-                // delete from puzzle_for_slot table
-                update(conn, SQL_DELETE_PUZZLE_FOR_SLOT, param);
-                //delete from 'brn_tsr_for_slot' table
-                update(conn, SQL_DELETE_BRN_TSR_FOR_SLOT, param);
-                
-                //delete the puzzle_attribute/puzzle_resource/puzzle with the puzzle_ids
-                for (Iterator it = puzzleIds.iterator(); it.hasNext();) {
-                    Long puzzleId = (Long) it.next();
-                    update(conn, "DELETE FROM puzzle_attribute WHERE puzzle_id = ?" , new Object[] {puzzleId});
-                    update(conn, "DELETE FROM puzzle_resource WHERE puzzle_id = ?" , new Object[] {puzzleId});
-                    update(conn, "DELETE FROM puzzle WHERE id = ?" , new Object[] {puzzleId});
-                }
-                
-                //delete the download_obj records
-                for (Iterator it = keyImageIds.iterator(); it.hasNext();) {
-                    update(conn, SQL_DELETE_DOWNLOAD_OBJ, new Object[] { (Long) it.next() });
-                }
-                
                 // delete the hosting_slot records
-                update(conn, SQL_DELET_HOSTING_SLOT, param);
+                update(conn, SQL_DELETE_HOSTING_SLOT, param);
             } finally {
                 close(conn);
             }
@@ -2214,7 +2135,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      *
      * @return array of games
      *
-     * @throws EntryNotFoundException If there is no domain with the given name, or no player with such an id in persistence
+     * @throws EntryNotFoundException If there is no player with such an id in persistence
      * @throws PersistenceException If there is any problem in the persistence layer.
      * @throws IllegalArgumentException If domain is null/empty
      */
@@ -2228,8 +2149,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             List games;
 
             try {
-                // checks if the domain exist ,if not throw exception
-                checkDomainNotExist(domain, conn);
 
                 // checks if the player exist, if not throw exception
                 checkPlayerNotExist(playerId, conn);
@@ -2269,9 +2188,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /**
      * <p>
-     * Looks up all hosting slots completed by any player in the specified game, and returns the results as an array of
-     * HostingSlot objects. Returned slots are in ascending order by first completion time, or equivalently, in ascending order
-     * by hosting block sequence number and hosting slot sequence number.
+     * Looks up all hosting slots completed by any player in the specified game,
+     * and returns the results as an array of HostingSlot objects. Returned slots
+     * are in ascending order by hosting block sequence number and hosting slot sequence number.
      * </p>
      *
      * @param gameId the game id
@@ -2574,10 +2493,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * @param playerId the player id
      * @param domain the domain
      *
-     * @return hosting slot
+     * @return the first hosting slot matching the specified criteria, or <code>null</code> if there is none
      *
-     * @throws EntryNotFoundException If there is no domain with the given name, or no player or game with such an id in
-     *         persistence
+     * @throws EntryNotFoundException If there is no player or game with such an id in persistence
      * @throws PersistenceException If there is any problem in the persistence layer.
      * @throws IllegalArgumentException If domain is null/empty
      */
@@ -2589,13 +2507,11 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             Connection conn = getConnection();
 
             try {
-                // check if the domain name exists in 'domain' table
-                checkDomainNotExist(domain, conn);
 
                 // check if the playerId exists in 'player' table
                 checkPlayerNotExist(playerId, conn);
 
-                // check if the gameId exists in the 'game' table or npt
+                // check if the gameId exists in the 'game' table
                 checkGameNotExist(gameId, conn);
 
                 ResultSet rs = query(conn, SQL_PS_SELECT_SLOT_FOR_DOMAIN,
