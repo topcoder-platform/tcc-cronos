@@ -198,61 +198,62 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                     lastPollingDate);
                 // get the content of url and parse it into rss feed.
                 RSSFeed rssFeed = null;
-                using (Stream stream = Helper.GetDocumentContent(value))
+                string feed = Helper.GetDocumentContent(value);
+                if (feed != null)
                 {
-                    rssFeed = rssParser.Parse(stream);
-                }
+                    rssFeed = rssParser.Parse(new StringReader(feed));
 
-                RSSItem updateItem = null;
-                foreach (RSSItem item in rssFeed.Items)
-                {
-                    if (item.Description == null)
+                    RSSItem updateItem = null;
+                    foreach (RSSItem item in rssFeed.Items)
                     {
-                        continue;
-                    }
-
-                    if (item.Description.Type == RSSTextType.Html ||
-                        item.Description.Type == RSSTextType.Text ||
-                        item.Description.Type == RSSTextType.Xhtml)
-                    {
-                        // If the content is of type text, HTML or XHTML sets the content
-                        // to be displayed in the new window using the web browser window navigator.
-                        using (Stream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(item.Description.Text)))
+                        if (item.Description == null)
                         {
-                            args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, stream, true);
+                            continue;
                         }
-                    }
-                    else
-                    {
-                        AtomMultimediaContentItem multi = item.Description as AtomMultimediaContentItem;
-                        
-                        if ((multi != null) && multi.MimeType.Equals(MIME_BLOOM_FILTER))
+
+                        if (item.Description.Type == RSSTextType.Html ||
+                            item.Description.Type == RSSTextType.Text ||
+                            item.Description.Type == RSSTextType.Xhtml)
                         {
-                            if (updateItem == null)
+                            // If the content is of type text, HTML or XHTML sets the content
+                            // to be displayed in the new window using the web browser window navigator.
+                            using (Stream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(item.Description.Text)))
                             {
-                                updateItem = item;
-                            }
-                            else if (updateItem.UpdatedDate.CompareTo(item.UpdatedDate) <= 0)
-                            {
-                                updateItem = item;
+                                args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, stream, true);
                             }
                         }
+                        else
+                        {
+                            AtomMultimediaContentItem multi = item.Description as AtomMultimediaContentItem;
+
+                            if ((multi != null) && multi.MimeType.Equals(MIME_BLOOM_FILTER))
+                            {
+                                if (updateItem == null)
+                                {
+                                    updateItem = item;
+                                }
+                                else if (updateItem.UpdatedDate.CompareTo(item.UpdatedDate) <= 0)
+                                {
+                                    updateItem = item;
+                                }
+                            }
+                        }
                     }
-                }
 
-                if (updateItem != null)
-                {
-                    // If the content is of type "application/x-tc-bloom-filter" restore the bloom filter
-                    // from the serialized content of the feed item.
-                    AtomMultimediaContentItem multi = updateItem.Description as AtomMultimediaContentItem;
-                    string serializedForm = Encoding.UTF8.GetString(multi.RawData);
-                    args.Context.BloomFilter = new BloomFilter(serializedForm);
-                    MsieClientLogic.GetInstance().Persistence[Helper.KEY_BLOOM_FILTER] = serializedForm;
-                }
+                    if (updateItem != null)
+                    {
+                        // If the content is of type "application/x-tc-bloom-filter" restore the bloom filter
+                        // from the serialized content of the feed item.
+                        AtomMultimediaContentItem multi = updateItem.Description as AtomMultimediaContentItem;
+                        string serializedForm = Encoding.UTF8.GetString(multi.RawData);
+                        args.Context.BloomFilter = new BloomFilter(serializedForm);
+                        MsieClientLogic.GetInstance().Persistence[Helper.KEY_BLOOM_FILTER] = serializedForm;
+                    }
 
-                // Persist the feed timestamp.
-                args.Context.Persistence[Helper.KEY_TIMESTAMP] = 
-                    rssFeed.UpdatedDate.ToUniversalTime().ToString(@"yyyy-MM-dd\THH:mm:ss.fff\Z");
+                    // Persist the feed timestamp.
+                    args.Context.Persistence[Helper.KEY_TIMESTAMP] =
+                        rssFeed.UpdatedDate.ToUniversalTime().ToString(@"yyyy-MM-dd\THH:mm:ss.fff\Z");
+                }
             }
             catch (Exception e)
             {

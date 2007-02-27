@@ -114,26 +114,23 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                     string url = string.Format(cm.GetValue(configurationNamespace,
                         PROPERTY_DOCUMENT_COMPLETED_URL), host);
 
-                    string numberStr = null;
                     // the number recieved from the server will be in text form
-                    using (Stream stream = Helper.GetDocumentContent(url))
+                    string numberStr = Helper.GetDocumentContent(url);
+                    if (numberStr != null)
                     {
-                        TextReader reader = new StreamReader(stream);
-                        numberStr = reader.ReadToEnd().Trim();
-                    }
+                        int number = int.Parse(numberStr);
+                        if (number != 0)
+                        {
+                            // the number is not 0
+                            // Read from the configuration file the configured
+                            // URL(document_completed_0_responce_url property), set the host parameter
+                            url = string.Format(cm.GetValue(configurationNamespace,
+                                PROPERTY_DOCUMENT_COMPLETED_RESPONSE_URL), host);
 
-                    int number = int.Parse(numberStr);
-                    if (number != 0)
-                    {
-                        // the number is not 0
-                        // Read from the configuration file the configured
-                        // URL(document_completed_0_responce_url property), set the host parameter
-                        url = string.Format(cm.GetValue(configurationNamespace,
-                            PROPERTY_DOCUMENT_COMPLETED_RESPONSE_URL), host);
-
-                        // direct the web browser window navigator to the new location
-                        //to open in a new window.
-                        args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, url, true);
+                            // direct the web browser window navigator to the new location
+                            //to open in a new window.
+                            args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, url, true);
+                        }
                     }
                 }
             }

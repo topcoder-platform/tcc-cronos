@@ -6,6 +6,7 @@
 
 using System;
 using System.Text;
+using System.Globalization;
 using Microsoft.Win32;
 
 using TopCoder.Util.Hash.Algorithm;
@@ -50,6 +51,11 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         /// The property name to object factory
         /// </summary>
         private const string TEST_OBJECT_URL = "test_object_url";
+
+        /// <summary>
+        /// The culture to use for culture-sensitive text manipulations
+        /// </summary>
+        private CultureInfo US_CULTURE = new CultureInfo("en-US", false);
 
         /// <summary>
         /// Default configuration namespace.
@@ -173,10 +179,12 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 // here not done as the design said get text one by one,
                 // but just use innerText, which has the same effect.
                 string content = element.innerText;
+
                 if (content == null)
                 {
                     return;
                 }
+
                 string hash = hashAlgorithm.HashToHexString(NormalizeText(content.ToString()));
                 if (hash == args.Context.Persistence[Helper.KEY_HASH])
                 {
@@ -240,29 +248,19 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         /// <returns>the normalized string</returns>
         private string NormalizeText(string text)
         {
-            text = text.Trim().ToLower();
+            text = text.ToLower(US_CULTURE);
             StringBuilder builder = new StringBuilder();
-            Boolean blank = false;
+
             foreach (char ch in text)
             {
-                if (char.IsWhiteSpace(ch))
+                // The applicable definition of "white space" differs from that
+                // provided by Char.isWhitespace()
+                if (" \t\r\n\f\u200b".IndexOf(ch) < 0) // not HTML whitespace
                 {
-                    blank = true;
+                    builder.Append(ch);
                 }
-                else
-                {
-                    if (!blank)
-                    {
-                        builder.Append(ch);
-                    }
-                    else
-                    {
-                        builder.Append(' ');
-                        builder.Append(ch);
-                    }
-                }
-                blank = false;
             }
+
             return builder.ToString();
         }
     }

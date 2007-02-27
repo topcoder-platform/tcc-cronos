@@ -72,17 +72,27 @@ namespace Orpheus.Plugin.InternetExplorer
         /// Gets the url content by xml http.
         /// </summary>
         /// <param name="url">the url to retrieve document content</param>
-        /// <returns>the document content</returns>
-        public static Stream GetDocumentContent(string url)
+        /// <returns>the document content or null if user session timed out</returns>
+        /// <exception cref="ClientLogicExtensionException">if the response from server is not 200 or 401</exception>
+        public static string GetDocumentContent(string url)
         {
             XMLHTTP xmlHttp = new XMLHTTP();
             xmlHttp.open("GET", url, false, null, null);
             xmlHttp.send(null);
-            Stream stream = new MemoryStream();
-            byte[] buf = Encoding.Default.GetBytes(xmlHttp.responseText);
-            stream.Write(buf, 0, buf.Length);
-            stream.Seek(0, SeekOrigin.Begin);
-            return stream;
+            if (xmlHttp.status == 200)
+            {
+                return xmlHttp.responseText;
+            }
+            else if (xmlHttp.status == 401)
+            { 
+                ExtensionEventArgs args = new ExtensionEventArgs(EVENT_LOGGEDOUT, MsieClientLogic.GetInstance());
+                MsieClientLogic.GetInstance().EventsManager.FireEvent(EVENT_LOGGEDOUT, args.Context, args);
+                return null;
+            }
+
+            throw new ClientLogicExtensionException(
+                string.Format("Unexpected server response. Status {0}, response text: {1}", xmlHttp.status,
+                xmlHttp.responseText));
         }
     }
 }
