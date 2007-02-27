@@ -422,6 +422,39 @@ public class Helper {
     }
 
     /**
+     * This method gets an optional property value as an int.
+     *
+     * @param namespace the namespace
+     * @param propertyName the property name
+     * @param defaultValue the value to be returned if the property is not present
+     *
+     * @return configed int value, or the default value if the property is absent
+     * @throws ConfigurationException if property is present but cannot be parsed as an integer
+     */
+    public static final int getOptionalPropertyInt(String namespace, String propertyName,
+            int defaultValue) throws ConfigurationException {
+        String value;
+
+        try {
+            value = ConfigManager.getInstance().getString(namespace, propertyName);
+        } catch (UnknownNamespaceException e) {
+            throw new ConfigurationException("The namespace '" + namespace
+                    + "' is missing in configuration.", e);
+        }
+
+        if (value == null) {
+            return defaultValue;
+        } else {
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new ConfigurationException("The '" + propertyName
+                        + "' can not be paresed as a integer.", e);
+            }
+        }
+    }
+
+    /**
      * get Admin Data using adminDataJndiName.
      *
      * @param adminDataJndiName adminDataJndiName
@@ -833,10 +866,10 @@ public class Helper {
             HttpServletRequest request, String failRequestAttrName) {
         //Long slotId = slot.getId();
         if (slot.getHostingStart() == null) {
-        	return true;
+            return true;
         }
         if (slot.getHostingStart().compareTo(new Date()) <= 0) {
-        	return true;
+            return true;
         }
         return false;
     }

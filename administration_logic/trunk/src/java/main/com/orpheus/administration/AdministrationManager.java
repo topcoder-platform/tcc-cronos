@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
 package com.orpheus.administration;
 
 import com.orpheus.administration.entities.DomainTargetImpl;
@@ -152,6 +153,9 @@ import javax.ejb.CreateException;
  *  &lt;Property name=&quot;objFactoryNS&quot;&gt;
  *  &lt;Value&gt;objFactoryNS&lt;/Value&gt;
  *  &lt;/Property&gt;
+ *  &lt;Property name=&quot;SpideringDepth&quot;&gt;
+ *  &lt;Value&gt;3&lt;/Value&gt;
+ *  &lt;/Property&gt;
  *  &lt;/Config&gt;
  * </pre>
  * </p>
@@ -168,12 +172,11 @@ import javax.ejb.CreateException;
 public class AdministrationManager {
 
     /**
-     * The maximum depth to which the Web Spider will descend when crawling a
-     * target site for the purpose of extracting hunt targets.  This should
-     * probably be externally-configurable in some future version.
+     * The default maximum depth to which the Web Spider will descend while
+     * crawling a target site in search of hunt targets.
      */
-    private final static int MAX_SPIDERING_DEPTH = 10;
-   
+    private final static int DEFAULT_MAX_SPIDERING_DEPTH = 8;
+
     /**
      * This holds the JNDI name to use to look up the GameDataHome service.<br/>
      * This variable is initialized in the constructor and does not change after
@@ -206,7 +209,7 @@ public class AdministrationManager {
      */
     private final int huntTargetsPerSlot;
 
-    
+
     /**
      * Preferred length of generated targets.<br/>
      * This variable is initialized in the constructor and does not change after
@@ -240,6 +243,13 @@ public class AdministrationManager {
     private final int preferredDistinctPages;
 
     /**
+     * The maximum depth to which the Web Spider will descend when
+     * crawling a target site for the purpose of extracting hunt targets.  This
+     * should probably be externally-configurable in some future version.
+     */
+    private final int maxSpideringDepth;
+
+    /**
      * Namespace for instantiating ConfigManagerSpecificationFactory of
      * ObjectFactory.
      *
@@ -260,7 +270,7 @@ public class AdministrationManager {
      * GameDataManager for regeneratepuzzle and brainteaser.
      */
     private GameDataManager gameDataManager = null;
-    
+
     /**
      * Creates a AdministrationManager instance with given PuzzleTypeSource to
      * use when generating puzzles and brain teasers and set up with
@@ -280,7 +290,7 @@ public class AdministrationManager {
      */
     public AdministrationManager(String namespace) throws ConfigurationException {
         Helper.checkString(namespace, "namespace");
-        
+
         // initialize other fields
         gameDataJndiName = Helper.getPropertyString(namespace, "game-data-jndi-name");
         minTargetLength = Helper.getPropertyInt(namespace, "MinTargetLength");
@@ -291,6 +301,8 @@ public class AdministrationManager {
         maxDistinctPages = Helper.getPropertyInt(namespace, "MaxDistinctPages");
         preferredDistinctPages = Helper.getPropertyInt(namespace, "PreferredDistinctPages");
         objectFactory = Helper.getPropertyString(namespace, "objFactoryNS");
+        maxSpideringDepth = Helper.getOptionalPropertyInt(namespace, "SpideringDepth",
+                DEFAULT_MAX_SPIDERING_DEPTH);
 
         try {
             hashAlgManager = HashAlgorithmManager.getInstance();
@@ -322,9 +334,6 @@ public class AdministrationManager {
         }
     }
 
-    
-   
-
     /**
      * This method try to get remote GameData.
      *
@@ -349,8 +358,6 @@ public class AdministrationManager {
                 e);
         }
     }
-
-   
 
     /**
      * (Re)generates the mini-hunt targets for the specified hosting slot. It
@@ -388,8 +395,7 @@ public class AdministrationManager {
      *             if a checked exception prevents this method from completing
      *             normally
      */
-    public void initializeSlotsForBlock(long blockId)
-        throws AdministrationException {
+    public void initializeSlotsForBlock(long blockId) throws AdministrationException {
         ServiceLocator sl = new ServiceLocator();
 
         // Create the GameData EJB instance
@@ -403,22 +409,21 @@ public class AdministrationManager {
             for (int i = 0; i < slots.length; i++) {
                 long slotId = slots[i].getId().longValue();
 
-                this.gameDataManager.regeneratePuzzle(slotId);
-                generateHuntTargets(slotId, gameData);
-                this.gameDataManager.regenerateBrainTeaser(slotId);
+                try {
+                    this.gameDataManager.regeneratePuzzle(slotId);
+                    generateHuntTargets(slotId, gameData);
+                    this.gameDataManager.regenerateBrainTeaser(slotId);
+                } catch (AdministrationException ae) {
+                    ae.printStackTrace(System.err);
+                } catch (GameDataException gde) {
+                    gde.printStackTrace();
+                }
             }
-        } catch (AdministrationException e) {
-            // re-throw
-            throw e;
         } catch (Exception e) {
-            throw new AdministrationException("Failed to initialize slots for block.",
-                e);
+            throw new AdministrationException("Failed to initialize slots for block.", e);
         }
     }
 
-    
-
-    
 
     /**
      * This helper method is called to actually generates the mini-hunt targets
@@ -432,27 +437,27 @@ public class AdministrationManager {
      * @throws AdministrationException
      *             if an error such as RemoteException of GameDataException
      *             occurs.
-     * @throws IllegalReferenceException 
-     * @throws SpecificationConfigurationException 
+     * @throws IllegalReferenceException
+     * @throws SpecificationConfigurationException
      */
     private void generateHuntTargets(long slotId, GameData gameData)
         throws AdministrationException {
-        
+
         try {
             // Get the hosting slot
             HostingSlot slot = gameData.getSlot(slotId);
             String domainName = slot.getDomain().getDomainName();
-    
+
             DomainTarget[] domainTargets = generateDomainTargets(gameData,
                     domainName);
-    
+
             // Create a new HostingSlotImpl instance
             HostingSlotImpl newSlot = Helper.copySlot(slot,
                     slot.getSequenceNumber());
             // Set the new domain targets
             newSlot.setDomainTargets(domainTargets);
             // Update slot
-            gameData.updateSlots(new HostingSlot[] { newSlot });            
+            gameData.updateSlots(new HostingSlot[] { newSlot });
         } catch (RemoteException e) {
             throw new AdministrationException("Failed to generate hunt targets.", e);
         } catch (PersistenceException e) {
@@ -465,7 +470,7 @@ public class AdministrationManager {
             throw new AdministrationException("Failed to generate hunt targets.", e);
         } catch (SpecificationFactoryException e) {
             throw new AdministrationException("Failed to generate hunt targets.", e);
-        }         
+        }
     }
 
     /**
@@ -477,15 +482,15 @@ public class AdministrationManager {
      * @param domainName domain name from which to crawl -- will be converted to a URL
      *        by prepending "http://" and appending "/"
      * @return domain targets generated.
-     * @throws AdministrationException 
-     * @throws StatisticsException 
-     * @throws HashException 
+     * @throws AdministrationException
+     * @throws StatisticsException
+     * @throws HashException
      * @throws ObjectFactoryException
-     * @throws SpecificationFactoryException 
+     * @throws SpecificationFactoryException
      * @throws Exception - if fail to generate hunt targets for specified domain.
      */
-    private DomainTarget[] generateDomainTargets(GameData gameData, String domainName) throws 
-            ObjectFactoryException, AdministrationException, 
+    private DomainTarget[] generateDomainTargets(GameData gameData, String domainName) throws
+            ObjectFactoryException, AdministrationException,
             StatisticsException, HashException, SpecificationFactoryException {
         // Spider the domain
         String baseUrl = "http://" + domainName + "/";
@@ -494,7 +499,7 @@ public class AdministrationManager {
         crawler.setValidator(new AndValidator(
                 RegExValidator.inclusionValidator(
                         "(?i)http://\\Q" + domainName + "\\E/.*"),
-                new DepthValidator(MAX_SPIDERING_DEPTH)));
+                new DepthValidator(maxSpideringDepth)));
 
         List results = crawler.crawl();
 
@@ -508,14 +513,17 @@ public class AdministrationManager {
         // assign doc id to each document, index from 0.
         for (Iterator iter = results.iterator(); iter.hasNext(); idx++) {
             WebPageData data = (WebPageData) iter.next();
+            String contents;
 
             // if malformed or exception when parsing.
             if (data.getException() != null) {
                 continue;
             }
 
-            // site statistics the page.
-            if (data.getContentsAsString() != null) {
+            contents = data.getContentsAsString();
+
+            // compute site statistics for the page.
+            if ((contents != null) && (contents.trim().length() > 0)) {
                 String docId = "docID" + idx;
                 siteStatistics.accumulateFrom(data.getContentsAsString(), docId);
                 docUrlMap.put(docId, data.getAddressContext().getAddress());
@@ -526,7 +534,7 @@ public class AdministrationManager {
 
         // Filter statistics by document count and target length boundaries
         stats = filterStatistics(stats);
-        
+
         Random rd = new Random();
         int[] selected = new int[stats.length];
         for (int i = 0; i < selected.length; i++) {
@@ -538,14 +546,14 @@ public class AdministrationManager {
         Map targetsCountOnDoc = new HashMap();
 
         HashAlgorithm hasher = hashAlgManager.getAlgorithm("SHA-1");
-                
+
         for (int cnt = 0; cnt < numTargetsToGenerate; cnt++) {
             boolean tryAnotherStat = false;
             int attempts = 10;
-            
+
             // create a DomainTargetImpl instance
             DomainTargetImpl domainTarget = new DomainTargetImpl();
-            
+
             do {
                 // Choose textStatistics from result randomly, one textStat can be choosen once.
                 // Quit if there are no more stats or if we try too many times without success.
@@ -559,12 +567,12 @@ public class AdministrationManager {
                     System.arraycopy(domainTargets, 0, domainTargets2, 0, cnt);
                     return domainTargets2;
                 }
-                
+
                 String[] docs = textStatistics.getDocuments();
-    
+
                 // choose document id randomly which contains the text.
                 final String docId = randomFindDocId(rd, docs, targetsCountOnDoc);
-                
+
                 domainTarget.setSequenceNumber(cnt);
                 // get uri from doc id.
                 domainTarget.setUriPath((String) docUrlMap.get(docId));
@@ -577,10 +585,10 @@ public class AdministrationManager {
                 } catch (Exception e) {
                     tryAnotherStat = true;
                 }
-                
+
             } while (tryAnotherStat);
-            
-            domainTargets[cnt] = domainTarget;            
+
+            domainTargets[cnt] = domainTarget;
         }
 
         return domainTargets;
@@ -589,7 +597,7 @@ public class AdministrationManager {
     /**
      * Chooses from among the provided TextStatistics the ones that satisfy the configured criteria
      * for target length and number of pages
-     * 
+     *
      * @param stats a <code>TextStatistics[]</code> containing the statistics to consider
      *
      * @return a <code>TextStatistics[]</code> containing those elements of <code>stats</code>
@@ -599,14 +607,14 @@ public class AdministrationManager {
         List results = new ArrayList();
 
         for (int i = 0; i < stats.length; i++) {
-            String[] documents = stats[i].getDocuments();        
+            String[] documents = stats[i].getDocuments();
             if ((documents.length >= minDistinctPages) && (documents.length <= maxDistinctPages) &&
                     (stats[i].getText().length() >= minTargetLength) && (stats[i].getText().length() <= maxTargetLength)) {
                 results.add(stats[i]);
-            }    
+            }
         }
 
-        return (TextStatistics[]) results.toArray(new TextStatistics[results.size()]);      
+        return (TextStatistics[]) results.toArray(new TextStatistics[results.size()]);
     }
 
     /**
@@ -653,11 +661,11 @@ public class AdministrationManager {
      * Create {@link SiteStatistics} from object factory.
      * </p>
      * @return created {@link SiteStatistics} object.
-     * @throws AdministrationException 
+     * @throws AdministrationException
      * @throws SpecificationFactoryException
      */
-    private SiteStatistics createSiteStatistics() throws 
-            ObjectFactoryException, AdministrationException, 
+    private SiteStatistics createSiteStatistics() throws
+            ObjectFactoryException, AdministrationException,
             SpecificationFactoryException {
         // Create an instance of ObjectFactory
         ObjectFactory of = new ObjectFactory(new ConfigManagerSpecificationFactory(

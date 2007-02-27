@@ -56,7 +56,6 @@ public class UnitTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
         // main package
-        suite.addTestSuite(AdministrationExceptionUnitTests.class);
         suite.addTestSuite(AdministrationManagerUnitTests.class);
         suite.addTestSuite(ConfigurationExceptionUnitTests.class);
         suite.addTestSuite(ServiceLocatorExceptionUnitTests.class);

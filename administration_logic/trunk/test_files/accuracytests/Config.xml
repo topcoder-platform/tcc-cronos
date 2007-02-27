@@ -1,46 +1,46 @@
 <?xml version="1.0" ?>
 <CMConfig>
-	<Config name="com.topcoder.util.log">
-		<Property name="logClass">
-			<Value>com.topcoder.util.log.basic.BasicLog</Value>
-		</Property>
-	</Config>
-	
-	<Config name="com.topcoder.user.profile.manager.SimpleUserProfileManager">
-		<Property name="upm_log_name">
-			<Value>UserProfileManager</Value>
-		</Property>
-		<Property name="persistence_class">
-			<Value>com.topcoder.user.profile.manager.persistence.XMLUserProfilePersistence</Value>
-		</Property>
-		<Property name="profile_type_factory_class">
-			<Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
-		</Property>
-		<Property name="profile_xml_file">
-			<Value>test_files/accuracytests/profiles.xml</Value>
-		</Property>
-	</Config>
+    <Config name="com.topcoder.util.log">
+        <Property name="logClass">
+            <Value>com.topcoder.util.log.basic.BasicLog</Value>
+        </Property>
+    </Config>
+    
+    <Config name="com.topcoder.user.profile.manager.SimpleUserProfileManager">
+        <Property name="upm_log_name">
+            <Value>UserProfileManager</Value>
+        </Property>
+        <Property name="persistence_class">
+            <Value>com.topcoder.user.profile.manager.persistence.XMLUserProfilePersistence</Value>
+        </Property>
+        <Property name="profile_type_factory_class">
+            <Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+        </Property>
+        <Property name="profile_xml_file">
+            <Value>test_files/accuracytests/profiles.xml</Value>
+        </Property>
+    </Config>
   
     <!-- object factory config -->
   <Config name="objFactoryNS">
-		<Property name="com/topcoder/user/profile/manager/UserProfileManager">
-	      <Property name="type">
-	        <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
-	      </Property>
-	      <Property name="params">
-	        <Property name="param1">
-	          <Property name="type">
-	            <Value>String</Value>
-	          </Property>
-	          <Property name="value">
-	            <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
-	          </Property>
-	        </Property>
-	      </Property>
-	    </Property>
-	</Config>
-	
-	<Config name="com.topcoder.user.profile.ConfigProfileType.sponsor">
+        <Property name="com/topcoder/user/profile/manager/UserProfileManager">
+          <Property name="type">
+            <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+          </Property>
+          <Property name="params">
+            <Property name="param1">
+              <Property name="type">
+                <Value>String</Value>
+              </Property>
+              <Property name="value">
+                <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+              </Property>
+            </Property>
+          </Property>
+        </Property>
+    </Config>
+    
+    <Config name="com.topcoder.user.profile.ConfigProfileType.sponsor">
         <Property name="user_name">
             <Value>notempty</Value>
         </Property>
@@ -53,8 +53,8 @@
         <Property name="IS_APPROVED">
             <Value>notnull</Value>
         </Property>
-	</Config>
-	
+    </Config>
+    
   <Config name="com.orpheus.administration.AdministrationManager">
     <Property name="jigsaw">
       <Property name="puzzleTypeName">
@@ -109,6 +109,9 @@
     </Property>
     <Property name="MaxTargetLength">
         <Value>12</Value>
+    </Property>
+    <Property name="HuntTargetsPerSlot">
+        <Value>7</Value>
     </Property>
     <Property name="PreferredTargetLength">
         <Value>5</Value>
