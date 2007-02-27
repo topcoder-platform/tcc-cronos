@@ -15,4 +15,12 @@ public class MockGameDataManager implements GameDataManager {
 		return false;
 	}
 
+	public void regeneratePuzzle(long puzzleId) {
+            // this version does nothing
+	}
+
+	public void regenerateBrainTeaser(long puzzleId) {
+            // this version does nothing
+	}
+
 }

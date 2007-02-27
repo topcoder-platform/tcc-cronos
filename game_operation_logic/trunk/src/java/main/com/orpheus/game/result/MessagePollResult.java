@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
 package com.orpheus.game.result;
 
 import com.orpheus.game.GameOperationLogicUtility;
@@ -75,8 +76,72 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  */
 public class MessagePollResult implements Result {
+
     /** Content type while output the Atom1.0 to response */
     private static final String RESPONSE_CONTENT_TYPE = "application/atom+xml";
+
+    /**
+     * A Pattern matching that subset of ISO8601:2004 date/time strings recognized by this class.  In
+     * practice, the strings recognized are those described by the "date-time" production of RFC 3339,
+     * plus versions of all those strings in which a comma (,) is used as a decimal separator instead of a
+     * full stop (.).  As permitted by RFC 3339, the time separator (T) and UTC indicator (Z) may be given
+     * in either upper- or lower-case.
+     */
+    private static final Pattern ISO8601_DATE_PATTERN = Pattern.compile(
+            "(\\d{4})-(\\d{2})-(\\d{2})[Tt](\\d{2}):(\\d{2}):(\\d{2})(?:[,.](\\d{1,}))?(?:([Zz])|([-+]\\d{2}:\\d{2}))?");
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the four-digit year
+     */
+    private static final int YEAR_GROUP = 1;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the two-digit month number
+     */
+    private static final int MONTH_GROUP = 2;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the two-digit day of the month
+     */
+    private static final int DAY_GROUP = 3;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the two-digit hour (0-23)
+     */
+    private static final int HOUR_GROUP = 4;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the two-digit minute (0-59)
+     */
+    private static final int MINUTE_GROUP = 5;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the two-digit second (0-59)
+     */
+    private static final int SECOND_GROUP = 6;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the millisecond portion, which is optional for
+     * the purposes of this class
+     */
+    private static final int MILLISECOND_OPTIONAL_GROUP = 7;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the millisecond portion, which is optional for
+     * the purposes of this class
+     */
+    private static final int ZULU_OPTIONAL_GROUP = 8;
+
+    /**
+     * The group index in ISO8601_DATE_PATTERN representing the millisecond portion, which is optional for
+     * the purposes of this class
+     */
+    private static final int GMT_OFFSET_OPTIONAL_GROUP = 9;
+
+    /**
+     * The TimeZone object for GMT
+     */
+    private static final TimeZone GMT_ZONE = TimeZone.getTimeZone("GMT+0");
 
     /** A key to get the date string from the request parameters. */
     private final String dateParamKey;
@@ -116,8 +181,8 @@ public class MessagePollResult implements Result {
      *&lt;/result&gt;</pre>
      * <p>
      * Following is simple explanation of the above XML structure.<br>
-     * The handler¡¯s type attribute is required by Front Controller component, it won¡¯t be used in this design. <br>
-     * The date node¡¯s value represents the http request parameter name to get the date string<br>
+     * The handler's type attribute is required by Front Controller component, it won't be used in this design. <br>
+     * The date node's value represents the http request parameter name to get the date string<br>
      * The category_names node contains an array of category names that will be used to construct the SearchCriteria
      * </p>
      *
@@ -180,7 +245,7 @@ public class MessagePollResult implements Result {
             RSSItem[] items = dataStore.findItems(searchCriteria);
 
             //write to response the items
-            writeAtom10Feed(context.getResponse(), items);
+            writeAtom10Feed(context.getResponse(), items, date);
         } catch (Exception e) {
             throw new ResultExecutionException("error occurs while recording user registation", e);
         }
@@ -196,71 +261,59 @@ public class MessagePollResult implements Result {
      * @throws ResultExecutionException if the date is invalid, or not ISO 8601 format
      */
     private Date getDate(String str) throws ResultExecutionException {
-        //pattern to parse the date
-        StringBuffer pattern = new StringBuffer("yyyy-MM-dd'T'HH:mm:ss");
 
         //pattern to recognize the ISO 8601 date format
-        String regExp = "(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2})(,\\d{3})?(Z)?([-|+]\\d{2}:\\d{2})?";
-        Pattern datePattern = Pattern.compile(regExp);
-        Matcher matcher = datePattern.matcher(str);
-        StringBuffer source = new StringBuffer();
-        boolean utc = false;
-        String timeZoneValue = null;
+        Matcher matcher = ISO8601_DATE_PATTERN.matcher(str);
 
         //the str is valid ISO 8601 format
         if (matcher.matches()) {
-            source.append(matcher.group(1));
-
-            //matches millisecond
-            if (matcher.group(2) != null) {
-                pattern.append(",SSS");
-                source.append(matcher.group(2));
-            }
+            Calendar cal = Calendar.getInstance();
 
             //matches UTC identification
-            if (matcher.group(3) != null) {
-                utc = true;
-                timeZoneValue = "GMT0:00";
-                pattern.append("'Z'");
-                source.append(matcher.group(3));
-            }
+            if (matcher.group(ZULU_OPTIONAL_GROUP) != null) {
+                cal.setTimeZone(GMT_ZONE);
 
             //matches time zone
-            if (matcher.group(4) != null) {
-                pattern.append("Z");
+            } else if (matcher.group(GMT_OFFSET_OPTIONAL_GROUP) != null) {
+                cal.setTimeZone(TimeZone.getTimeZone("GMT" + matcher.group(GMT_OFFSET_OPTIONAL_GROUP)));
 
-                if (utc) {
-                    timeZoneValue = "GMT" + matcher.group(4);
+            // no time zone specified
+            } else {
+                cal.setTimeZone(TimeZone.getDefault());
+            }
+
+            cal.set(Integer.parseInt(matcher.group(YEAR_GROUP)),
+                    Integer.parseInt(matcher.group(MONTH_GROUP)) - 1,  // Java Calendar months start from 0
+                    Integer.parseInt(matcher.group(DAY_GROUP)),
+                    Integer.parseInt(matcher.group(HOUR_GROUP)),
+                    Integer.parseInt(matcher.group(MINUTE_GROUP)),
+                    Integer.parseInt(matcher.group(SECOND_GROUP)));
+
+            //matches millisecond
+            if (matcher.group(MILLISECOND_OPTIONAL_GROUP) != null) {
+                String millis = matcher.group(MILLISECOND_OPTIONAL_GROUP);
+
+                // convert to an integer number of milliseconds
+                int scale = millis.length() - 3;
+                double d = Double.parseDouble(millis);
+
+                while (scale < 3) {
+                    d *= 10;
+                    scale++;
+                }
+                while (scale > 3) {
+                    d /= 10;
+                    scale--;
                 }
 
-                source.append(matcher.group(4));
-                source.deleteCharAt(source.length() - 3); //remove : from time zone string
+                // set the number in the calendar
+                cal.set(Calendar.MILLISECOND, (int) Math.round(d));
             }
+
+            return cal.getTime();
         } else {
             throw new ResultExecutionException(str + " is not valid ISO 8601:2004 date format");
         }
-
-        //use SimpleDateFormat to parse the given date time string
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern.toString());
-
-        Date date;
-
-        try {
-            date = sdf.parse(source.toString());
-        } catch (ParseException e) {
-            throw new ResultExecutionException(str + " is not valid ISO 8601:2004 date format");
-        }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-
-        //if UTC identification exists, set time zone to it 
-        if (utc) {
-            cal.setTimeZone(TimeZone.getTimeZone(timeZoneValue));
-        }
-
-        //return cal.getTime();
-        return new java.sql.Date(cal.getTime().getTime());
     }
 
     /**
@@ -364,10 +417,14 @@ public class MessagePollResult implements Result {
      *
      * @param response HttpServletResponse
      * @param items RSSItem[] to be written
+     * @param updateLowerBound a Date representing a lower bound on the feed update date to be
+     *        reported.  If any of the specified items are more recent then the most recent of those
+     *        dates will be used, but otherwise (and in particular if there are no items) this lower
+     *        bound will be used
      *
      * @throws ResultExecutionException if any error occurred
      */
-    private void writeAtom10Feed(HttpServletResponse response, RSSItem[] items)
+    private void writeAtom10Feed(HttpServletResponse response, RSSItem[] items, Date updateLowerBound)
         throws ResultExecutionException {
 
         response.setContentType(RESPONSE_CONTENT_TYPE);
@@ -375,45 +432,46 @@ public class MessagePollResult implements Result {
         try {
             PrintWriter responseWriter = response.getWriter();
 
-	    // Revised fix to bug BALL-4783, based on isv's interim fix:
-	    try {
+            try {
                 Atom10Writer writer = new Atom10Writer();
                 Atom10Feed rssFeed = new Atom10Feed(new RSSObjectImpl());
                 Atom10Content title = new Atom10Content(new RSSObjectImpl());
                 RSSEntity author = new RSSEntityImpl(new RSSObjectImpl());
                 RSSEntity name = new RSSEntityImpl(new RSSObjectImpl());
-		Date updateDate = new Date(0);
+                Date updateDate = updateLowerBound;
 
                 // Feed Title
                 title.setElementText("The Ball periodic update");
                 rssFeed.setTitle(title);
 
                 // Feed Author
-                name.setElementText("Orpheus Game Server");
+                name.setElementText("The Ball Game Server");
                 author.addChildElement("name", name);
                 rssFeed.addAuthor(author);
 
+                // Feed ID
                 rssFeed.setId("there-can-be-only-one");
 
+                // Feed Update Date
                 for (int i = 0; i < items.length; i++) {
-		    Date itemUpdate = items[i].getUpdatedDate();
+                    Date itemUpdate = items[i].getUpdatedDate();
 
-		    if (itemUpdate == null) {
-			itemUpdate = items[i].getPublishedDate();
-		    }
-		    if (itemUpdate != null
+                    if (itemUpdate == null) {
+                        itemUpdate = items[i].getPublishedDate();
+                    }
+                    if (itemUpdate != null
                             && itemUpdate.compareTo(updateDate) > 0) {
-			 updateDate = itemUpdate;
-		    }
+                         updateDate = itemUpdate;
+                    }
                     rssFeed.addItem(items[i]);
                 }
                 rssFeed.setUpdatedDate(updateDate);
 
+                // Write the feed
                 writer.writeFeed(rssFeed, responseWriter);
             } finally {
                 responseWriter.close();
-	    }
-	    // end of BALL-4783 fix
+            }
         } catch (IOException e) {
             throw new ResultExecutionException("failed to write content to response", e);
         } catch (RSSWriteException e) {
@@ -421,3 +479,4 @@ public class MessagePollResult implements Result {
         }
     }
 }
+

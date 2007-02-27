@@ -158,7 +158,7 @@ public class KeySubmissionHandlerTest extends TestCase {
 		mockRequest.setParameter("submissions","2");
 		mockRequest.setParameter(SUBMISSION_PARAM_KEY, new String[]{"1"});
         
-		assertEquals("execute failed.", null, handler.execute(context));
+		assertEquals("execute failed.", SUCCESS_RESULT, handler.execute(context));
 	}
 
 	/**

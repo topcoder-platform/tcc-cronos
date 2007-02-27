@@ -3,10 +3,18 @@
  */
 package com.orpheus.game;
 
+import com.topcoder.user.profile.UserProfile;
+
 import com.topcoder.user.profile.manager.MockUserProfileManager;
 import com.topcoder.user.profile.manager.ProfileTypeFactory;
+import com.topcoder.user.profile.manager.UserProfileManager;
+
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.UnknownNamespaceException;
 
 import com.topcoder.web.frontcontroller.ActionContext;
+
+import com.topcoder.web.user.LoginHandler;
 
 import junit.framework.TestCase;
 
@@ -95,20 +103,35 @@ public class WinnerDataHandlerTest extends TestCase {
         
         String[] profileTypeNames = new String[] { "typeA", "typeB" };
         Map profilesMap = new HashMap();
+        UserProfileManager manager = new MockUserProfileManager();
+        UserProfile profile = manager.getUserProfile(1);
+
+        String key;
+
+        try { // try to get key for logged-in UserProfile from config manager
+            key = ConfigManager.getInstance().getString(
+                    LoginHandler.class.getName(), "profile_session_key");
+            if (key == null || key.trim().length() == 0) {
+                key = "user_profile";
+            }
+        } catch (UnknownNamespaceException e) {
+            key = "user_profile";
+        }
+
         profilesMap.put("first_name", "firstName");
         profilesMap.put("email_address", "email");
-        handler = new WinnerDataHandler(new MockUserProfileManager(), profileTypeNames, profilesMap,
+        handler = new WinnerDataHandler(manager, profileTypeNames, profilesMap,
                 ProfileTypeFactory.getInstance("com.topcoder.user.profile.manager"));
 
         servletContext = new MockServletContext();
 
         session = new MockHttpSession(servletContext);
+        session.setAttribute(key, profile);
         request = new MockHttpRequest(session);
 
         response = new MockHttpResponse();
         context = new ActionContext(request, response);
 
-        request.setParameter(WinnerDataHandler.USER_ID_PROPERTY, "1");
         request.setParameter("firstName", "tom");
         request.setParameter("email", "tom@email.com");
         

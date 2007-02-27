@@ -73,7 +73,7 @@ public class MockGameData implements GameData {
 				new Long(13), 0, slots, 86400) };
 		// Game
 		return new GameImpl(new Long(gameId), new BallColorImpl(new Long(1985),
-				"testBall", 0), 0, new Date(), new Date(), blocks);
+				"testBall", 0), 0, new Date(), null, blocks);
 	}
 
 	public HostingBlock getBlock(long blockId) throws RemoteException {

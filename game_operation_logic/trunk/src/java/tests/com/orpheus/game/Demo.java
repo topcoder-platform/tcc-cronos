@@ -194,7 +194,7 @@ public class Demo extends TestCase {
 
         session.setAttribute("base_name123", new MockSolutionTester());
         servletContext.setAttribute(GameOperationLogicUtility.getInstance().getGameManagerKey(),
-            new GameDataManagerImpl());
+            new GameDataManagerImpl(new MockPuzzleTypeSource()));
 
         handler.execute(context);
     }

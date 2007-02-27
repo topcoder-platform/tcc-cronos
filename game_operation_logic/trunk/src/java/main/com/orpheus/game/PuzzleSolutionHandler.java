@@ -181,28 +181,48 @@ public class PuzzleSolutionHandler implements Handler {
 
                 return null;
             } else {
+                
                 GameDataManager gdMgr = (GameDataManager) request.getSession().getServletContext().getAttribute(
                         golu.getGameManagerKey());
                 Game game;
 
-                gdMgr.advanceHostingSlot(gameId);
-
                 SlotCompletion completion;
                 if (golu.isUseLocalInterface()){
+
+                        /*
+                         * FIXME: There is a race condition here because the slot may stop hosting (as a result of
+                         * another thread's action) between the time its data are retrieved and the time
+                         * the hosting slot advancement is complete.  Fixing that would require changes to
+                         * the Game Interface Logic design.  The worst-case result is that the Ball is advanced
+                         * an extra time, which is undesirable, but not fatal.  It needs to be fixed in the next
+                         * version, but can wait until then.
+                         */
+                        HostingSlot slot = gameDataLocal.getSlot(slotId);
+
+                        if (slot.getHostingEnd() == null) {
+                            gdMgr.advanceHostingSlot(gameId);
+                        }
                         completion = gameDataLocal.recordSlotCompletion(userId, slotId, new Date());
                         game = gameDataLocal.getGame(gameId);
-                }else{
+                } else {
+
+                        // FIXME: As above, there is a race condition here
+                        HostingSlot slot = gameData.getSlot(slotId);
+
+                        if (slot.getHostingEnd() == null) {
+                            gdMgr.advanceHostingSlot(gameId);
+                        }
                         completion = gameData.recordSlotCompletion(userId, slotId, new Date());
                         game = gameData.getGame(gameId);
                 }
 
                 // find the next domain
-		
-		/*
-		 * This sequence may be over-engineered, but it accounts for the possibility that hosting slots
-		 * will be skipped because of domain inaccessibility, administrative action, or other, unknown
-		 * cause, with the skipped slot(s) nevertheless returned by GameData.getGame().
-		 */
+                
+                /*
+                 * This sequence may be over-engineered, but it accounts for the possibility that hosting slots
+                 * will be skipped because of domain inaccessibility, administrative action, or other, unknown
+                 * cause, with the skipped slot(s) nevertheless returned by GameData.getGame().
+                 */
                 HostingBlock[] blocks = game.getBlocks();
 
                 find_block:
@@ -231,7 +251,7 @@ public class PuzzleSolutionHandler implements Handler {
                                     HostingSlot candidateSlot = candidateSlots[nextSlotIndex];
 
                                     if (candidateSlot.getHostingStart() != null) {
-					// this is the one
+                                        // this is the one
                                         request.setAttribute(NEXT_DOMAIN_ATTRIBUTE, candidateSlot.getDomain());
                                         break find_block;
                                     }
