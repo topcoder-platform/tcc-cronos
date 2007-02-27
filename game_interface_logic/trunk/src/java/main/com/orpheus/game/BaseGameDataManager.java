@@ -4,7 +4,6 @@
 
 package com.orpheus.game;
 
-import com.orpheus.administration.AdministrationException;
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
@@ -193,7 +192,7 @@ public abstract class BaseGameDataManager implements GameDataManager,
                         obsoleteTarget.getUriPath(), idText, idHash, clueImageId);
             } catch (HashException he) {
                 // eat the exception
-            } catch (AdministrationException ae) {
+            } catch (GameDataException ae) {
                 // eat the exception
             }
         } while (triesNum-- != 0);
@@ -326,9 +325,9 @@ public abstract class BaseGameDataManager implements GameDataManager,
      *
      * @return the downloadable object ID of the generated image.
      * @param imageText a String containing the text to be rendered as an image.
-     * @throws AdministrationException if an error occurs while generating or recording the image.
+     * @throws GameDataException if an error occurs while generating or recording the image.
      */
-    private long createClueImage(String imageText) throws AdministrationException {
+    long createClueImage(String imageText) throws GameDataException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         try {
@@ -341,13 +340,13 @@ public abstract class BaseGameDataManager implements GameDataManager,
                         "clue_image.png", "image/png", stream.toByteArray());
             }
         } catch (IOException ioe) {
-            throw new AdministrationException("Could not generate clue image", ioe);
+            throw new GameDataException("Could not generate clue image", ioe);
         } catch (ObfuscationException oe) {
-            throw new AdministrationException("Could not generate clue image", oe);
+            throw new GameDataException("Could not generate clue image", oe);
         } catch (InvalidConfigException ice) {
-            throw new AdministrationException("Could not generate clue image", ice);
+            throw new GameDataException("Could not generate clue image", ice);
         } catch (GameDataException gde) {
-            throw new AdministrationException("Could not generate clue image", gde);
+            throw new GameDataException("Could not generate clue image", gde);
         }
     }
 

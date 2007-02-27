@@ -1,10 +1,9 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
 package com.orpheus.game;
 
-
-import com.orpheus.administration.ConfigurationException;
 import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.administration.persistence.AdminDataHome;
 import com.orpheus.administration.persistence.AdminDataLocal;
@@ -34,6 +33,7 @@ import com.topcoder.randomstringimg.Configuration;
 import com.topcoder.randomstringimg.InvalidConfigException;
 import com.topcoder.randomstringimg.ObfuscationAlgorithm;
 import com.topcoder.randomstringimg.RandomStringImage;
+import com.topcoder.util.algorithm.hash.ConfigurationException;
 import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
 import com.topcoder.util.auction.Auction;
 import com.topcoder.util.auction.AuctionManager;
@@ -54,6 +54,10 @@ import com.topcoder.util.puzzle.PuzzleType;
 import com.topcoder.util.puzzle.PuzzleTypeSource;
 import com.topcoder.util.url.validation.SiteValidationResults;
 import com.topcoder.util.url.validation.SiteValidator;
+import com.topcoder.util.url.validation.URLAndFilter;
+import com.topcoder.util.url.validation.URLFilter;
+import com.topcoder.util.url.validation.URLHostFilter;
+import com.topcoder.util.url.validation.SiteValidator;
 import com.topcoder.util.web.sitestatistics.SiteStatistics;
 import com.topcoder.util.web.sitestatistics.StatisticsException;
 import com.topcoder.util.web.sitestatistics.TextStatistics;
@@ -65,16 +69,21 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.ejb.EJBHome;
 import javax.ejb.EJBLocalHome;
@@ -173,27 +182,27 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     private static final String ADMIN_DATA_EJB_JNDI_NAMES = "admin_data_ejb_jndi_names";
 
     /**
-     * The name of the GUID message property to use when generating a Bloom Filter update message
+     * The name of the GUID message property to use when generating a Bloom Filter update (or other) message
      */
     private static final String ADMIN_MESSAGE_GUID = "guid";
 
     /**
-     * The name of the CATEGORY message property to use when generating a Bloom Filter update message
+     * The name of the CATEGORY message property to use when generating a Bloom Filter update (or other) message
      */
     private static final String ADMIN_MESSAGE_CATEGORY = "category";
 
     /**
-     * The name of the CONTENT TYPE message property to use when generating a Bloom Filter update message
+     * The name of the CONTENT TYPE message property to use when generating a Bloom Filter update (or other) message
      */
     private static final String ADMIN_MESSAGE_CONTENT_TYPE = "contentType";
 
     /**
-     * The name of the MESSAGE CONTENT message property to use when generating a Bloom Filter update message
+     * The name of the MESSAGE CONTENT message property to use when generating a Bloom Filter update (or other) message
      */
     private static final String ADMIN_MESSAGE_CONTENT = "content";
 
     /**
-     * The name of the TIMESTAMP message property to use when generating a Bloom Filter update message
+     * The name of the TIMESTAMP message property to use when generating a Bloom Filter update (or other) message
      */
     private static final String ADMIN_MESSAGE_TIMESTAMP = "timestamp";
 
@@ -394,7 +403,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          */
         try {
             hashAlgManager = HashAlgorithmManager.getInstance();
-        } catch (com.topcoder.util.algorithm.hash.ConfigurationException ce) {
+        } catch (ConfigurationException ce) {
             throw new GameDataManagerConfigurationException(
                     "Could not obtain HashAlgorithmManager instance", ce);
         }
@@ -482,7 +491,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
 
 
-        Game[] games = null;
+        Game[] games;
+
         try {
             if (gameDataPersistenceLocal != null) {
                 games = gameDataPersistenceLocal.findGames(Boolean.FALSE, null);
@@ -496,6 +506,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         if (games == null) {
             games = new Game[0];
         }
+
+        setCurrentNotStartedGames(games);
+
         Long[] ids = new Long[games.length];
 
         for (int i = 0; i < ids.length; i++) {
@@ -620,7 +633,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          */
         try {
             hashAlgManager = HashAlgorithmManager.getInstance();
-        } catch (com.topcoder.util.algorithm.hash.ConfigurationException ce) {
+        } catch (ConfigurationException ce) {
             throw new GameDataManagerConfigurationException(
                     "Could not obtain HashAlgorithmManager instance", ce);
         }
@@ -667,9 +680,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
             //init the game data EJB instance
             this.gameDataPersistenceLocal = (homes.localHome != null)
-		    ? ((GameDataLocalHome) homes.localHome).create() : null;
+                    ? ((GameDataLocalHome) homes.localHome).create() : null;
             this.gameDataPersistenceRemote = (homes.remoteHome != null)
-		    ? ((GameDataHome) homes.remoteHome).create() : null;
+                    ? ((GameDataHome) homes.remoteHome).create() : null;
 
             homes = locateEJB(adminDataJndiNames, adminDataJndiDesignations,ctx,AdminDataHome.class);
             if ((homes.remoteHome == null) && (homes.localHome == null)) {
@@ -678,14 +691,15 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             }
             //init the admin data EJB instance
             this.adminDataPersistenceLocal = (homes.localHome != null)
-		    ? ((AdminDataLocalHome) homes.localHome).create() : null;
+                    ? ((AdminDataLocalHome) homes.localHome).create() : null;
             this.adminDataPersistenceRemote = (homes.remoteHome != null)
-		    ? ((AdminDataHome) homes.remoteHome).create() : null;
+                    ? ((AdminDataHome) homes.remoteHome).create() : null;
         } catch(Exception e){
             throw new IllegalArgumentException("The configuration for ejb seems not right.");
         }
 
-        Game[] games = null;
+        Game[] games;
+
         try {
             if (gameDataPersistenceLocal != null) {
                 games = gameDataPersistenceLocal.findGames(Boolean.FALSE, null);
@@ -699,6 +713,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         if (games == null) {
             games = new Game[0];
         }
+
+        setCurrentNotStartedGames(games);
+
         Long[] ids = new Long[games.length];
 
         for (int i = 0; i < ids.length; i++) {
@@ -739,7 +756,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         String[] jndiNames = new String[jndiNameValues.length];
         String[] jndiDesignations = new String[jndiNameValues.length];
-	EJBHomes result;
+        EJBHomes result;
 
         //parse the values, the format should be 'jndiname,Remote' or 'jndiname,Local'
         for (int i = 0; i < jndiDesignations.length; i++) {
@@ -786,7 +803,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @param classType the remote Ejb class type
      */
     private EJBHomes locateEJB(String[] jndiNames, String[] jndiDesignations,InitialContext ctx, Class classType) {
-	EJBHomes result = new EJBHomes();
+        EJBHomes result = new EJBHomes();
 
         //try to lookup the ejb
         for (int i = 0; i < jndiNames.length; i++) {
@@ -807,7 +824,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             break;
         }
 
-	return result;
+        return result;
     }
 
     /**
@@ -823,7 +840,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *             if any sub-property miss or is valid
      */
     private void initializeBrainTeaserType(String namespace, String name,
-        PuzzleTypeEnum type) throws GameDataManagerConfigurationException {
+            PuzzleTypeEnum type) throws GameDataManagerConfigurationException {
         Property property = Helper.getProperty(namespace, name);
         String typeName = Helper.getSubPropertyString(property, "puzzleTypeName");
         int seriesSize = Helper.getSubPropertyInt(property, "seriesSize");
@@ -844,33 +861,31 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *             if any sub-property miss or is valid
      */
     private void initializePuzzleType(String namespace, String name,
-        PuzzleTypeEnum type) throws GameDataManagerConfigurationException {
+            PuzzleTypeEnum type) throws GameDataManagerConfigurationException {
         Property property = Helper.getProperty(namespace, name);
         String typeName = Helper.getSubPropertyString(property, "puzzleTypeName");
         int width = Helper.getSubPropertyInt(property, "width");
         int height = Helper.getSubPropertyInt(property, "height");
-        PuzzleConfig config = new PuzzleConfig(typeName, new Integer(width),
-                new Integer(height), 0);
+        PuzzleConfig config = new PuzzleConfig(typeName, new Integer(width), new Integer(height), 0);
         puzzleConfigMap.put(type, config);
     }
 
     /**
      * <p>
-     * Tests whether an upcoming domain is ready to begin hosting a specific slot.
-     * Bascially we need to ensure that the
-     * domain's document root and the documents hosting all the slot's domain targets are all reachable.
-     * Note that this implementation is inherently thread-safe since it
-     * delegates to an EJB and container will ensure thread-safe invocation.
+     * Tests whether an upcoming domain is ready to begin hosting a specific slot.  Basically, we need to
+     * ensure that the domain's document root and the documents hosting all the slot's domain targets are
+     * reachable.  This method does not modify the state of any object visible from outside, but it does
+     * issue HTTP requests and it does depend on its argument to not mutate while this method is executing.
      * </p>
      *
      * @param slot hosting slot ot validator
-     * @return true if the host os valid; false otherwise
+     * @return <code>true</code> if the slot is valid; <code>false</code> otherwise
      * @throws IllegalArgumentException if the slot is null
-     * @throws GameDataException if a checked exception prevents this method from completing successfully.
      * @throws IllegalStateException if the manager has been stopped.
+     * @throws GameDataException if a checked exception prevents this method from completing successfully
      */
     public boolean testUpcomingDomain(HostingSlot slot)
-        throws GameDataException {
+            throws GameDataException {
         Helper.checkObjectNotNull(slot, "slot");
 
         if (isStopped()) {
@@ -878,41 +893,87 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 "The game data manager is already stopped.");
         }
 
-        //get the domain and the domain targets to test
+        // get the domain and the domain targets to test
         Domain domain = slot.getDomain();
-        DomainTarget[] targets = slot.getDomainTargets();
 
-        try {
-            if (domain != null) {
-                //create the SiteValidator and to the site validation
-                SiteValidator sv = new SiteValidator("http://" + domain.getDomainName() + "/");
-                SiteValidationResults result = sv.validateTarget(0);
-
-                //if the domain can not pass the validatiton, return false directly
-                if (result.getInvalidCount() > 0) {
-                    return false;
-                }
-
-                if (targets != null) {
-                    for (int i = 0; i < targets.length; i++) {
-                        sv = new SiteValidator(targets[i].getUriPath());
-                        result = sv.validateTarget(0);
-
-                        //if any domain target can not pass the validatiton, return false directly
-                        if (result.getInvalidCount() > 0) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        } catch (MalformedURLException e) {
-            throw new GameDataException("MalformedURLException occurs when get the SiteValidator.", e);
+        if (domain == null) {
+            throw new GameDataException("Hosting slot has no assigned domain");
         }
 
-        //all right, return true
+        Set testedURLs = new HashSet();
+        HttpUtility http = new HttpUtility(HttpUtility.GET);
+        String baseURL = "http://" + domain.getDomainName() + "/"; 
+
+        http.setFollowRedirects(true);
+        http.setDepthLimit(10);
+        http.setKeepCookies(true);
+
+        //if the domain can not pass the validatiton, return false directly
+        if (!testSingleURL(baseURL, http)) {
+            return false;
+        }
+
+        testedURLs.add(baseURL);
+
+        DomainTarget[] targets = slot.getDomainTargets();
+
+        // There must be at least one target for this domain to be valid
+        if ((targets == null) || (targets.length == 0)) {
+            return false;
+        } else {
+
+            // The target pages must be accessible
+            for (int i = 0; i < targets.length; i++) {
+                String targetURL = targets[i].getUriPath();
+
+                /*
+                 * if any domain target can not pass the validatiton, return false directly;
+                 * don't test the same page multiple times
+                 */
+                if (testedURLs.add(targetURL) && !testSingleURL(targetURL, http)) {
+                    return false;
+                }
+            }
+        }
+
+        // all right, return true
         return true;
     }
 
+    /**
+     * Tests a single URL to determine whether it can be loaded successfully via HTTP or HTTPS,
+     * as appropriate, and that the response content is declared to be HTML
+     *
+     * @param urlString a <code>String</code> representation of the absolute URL to test
+     *
+     * @return <code>true</code> if the URL is valid, <code>false</code> if not
+     *
+     * @throws MalformedURLException if the argument cannot be parsed as an absolute URL
+     */
+    private boolean testSingleURL(String urlString, HttpUtility http) {
+        try {
+            http.executeToStream(urlString, new OutputStream() {
+                public void write(byte[] bytes) { /* does nothing */ }
+                public void write(byte[] bytes, int off, int len) { /* does nothing */ }
+                public void write(int b) { /* does nothing */ }
+            });
+
+            String contentType = http.getResponseHeaders().getByName("content-type");
+        
+            return ((http.getResponseStatusCode() == 200) && (contentType != null)
+                    && contentType.replaceFirst("[+;].*", "").toLowerCase().equals("text/html"));
+        } catch (HttpException he) {
+            System.err.println("While testing for target disappearance, error trying to load\n"
+                    + urlString + ":\ncode: " + he.getCode() + "  message: " + he.getHttpMessage());
+
+            return false;
+        } catch (IOException ioe) {
+            System.err.println("I/O error while retrieving " + urlString + ".  Stack trace follows");
+            ioe.printStackTrace(System.err);
+
+            return false;
+        }
+    }
 
     /**
      * (Re)generates the brain teaser for the specified hosting slot. This
@@ -978,7 +1039,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             // Set the new brainteaser ids
             newSlot.setBrainTeaserIds(puzzleIds);
             // Update slot
-            if ( this.gameDataPersistenceLocal != null){
+            if (this.gameDataPersistenceLocal != null) {
                 gameDataPersistenceLocal.updateSlots(new HostingSlot[] { newSlot });
             } else{
                 gameDataPersistenceRemote.updateSlots(new HostingSlot[] { newSlot });
@@ -988,8 +1049,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             throw new GameDataException("Failed to regenerate puzzle.", e);
         }
     }
-
-
 
     /**
      * (Re)generates the game-win puzzle for the specified hosting slot. This
@@ -1001,7 +1060,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * <li>Store the puzzle using AdminData.</li>
      * <li>Update the puzzle information for the slot using GameData.</li>
      * </ol>
-     *
      *
      * @param slotId
      *            the slot id.
@@ -1108,6 +1166,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             " download image exist in domain. (slot id is " + slot.getId() +
             ", expected game id is " + imageId + ")");
     }
+
     /**
      * <p>
      * Records the IDs of the winning bids for the slots in the specified hosting block.
@@ -1117,7 +1176,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * Note that this implementation is inherently thread-safe since it delegates to an
      * EJB and container will ensure thread-safe invocation.
      * </p>
-     *
      *
      * @param blockId block id
      * @param bidIds an array of block ids
@@ -1161,12 +1219,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
     /**
      * <p>
-     * This call will advance to the next hosting slot by setting the hosting
-     * end timestamp on the current slot and the hosting start timestamp on the next one in the same game.
-     * When it does this, it should also test the subsequent domain
-     * to make sure it is still valid; if not then it will flag the slot as inaccessible by setting
-     * its sequence number to -1. Note that this implementation is inherently thread-safe since
-     * it delegates to an EJB and container will ensure thread-safe invocation.
+     * Advances the Ball in the iactive game of the specified ID to the next hosting available hosting slot,
+     * by setting the hosting end timestamp on the current slot and the hosting start timestamp on the next
+     * one.  As part of the process, this method tests the subsequent domain to make sure it is still valid;
+     * if not then it will delete it.
      * </p>
      *
      * @param gameId id of the game
@@ -1174,6 +1230,25 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws IllegalStateException if the manager has been stopped.
      */
     public void advanceHostingSlot(long gameId) throws GameDataException {
+        advanceHostingSlot(gameId, true);
+    }
+
+    /**
+     * <p>
+     * Advances the Ball in the active game of the specified ID to the next hosting available hosting slot,
+     * by setting the hosting end timestamp on the current slot and the hosting start timestamp on the next
+     * one.  As part of the process, this method tests the subsequent domain to make sure it is still valid;
+     * if not then it will flag the slot as deleted. Creates additional hosting slots (and blocks) if necessary and
+     * permitted.
+     * </p>
+     *
+     * @param gameId id of the game
+     * @param allowSlotCreation <code>true</code> if this method is permitted to create new hosting slots in
+     *        order to fulfull the request; <code>false</code> if not
+     * @throws GameDataException if a checked exception prevents this method from completing successfully.
+     * @throws IllegalStateException if the manager has been stopped.
+     */
+    private void advanceHostingSlot(long gameId, boolean allowSlotCreation) throws GameDataException {
         if (isStopped()) {
             throw new IllegalStateException(
                 "The game data manager is already stopped.");
@@ -1194,6 +1269,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         if (game == null) {
             throw new GameDataException("No Game can be retrieved with the id.");
         }
+        if (game.getEndDate() != null) {
+            // Game has already ended; return without doing anything. in the future, this should be logged
+            return;
+        }
 
         //get the blocks of the game
         HostingBlock[] blocks = game.getBlocks();
@@ -1207,7 +1286,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
             // if no slots exist, just go on to the next block
             if (slots == null) {
-                continue ;
+                continue;
             }
 
             // set the end date of the current slot and the start date of the next slot to now
@@ -1217,16 +1296,18 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 if ( slots[j] == null){
                     throw new GameDataException("Null slots in HostingBlock of the game.");
                 }
+
                 // if this is the current slot ...
                 if ((slots[j].getHostingStart() != null) && (slots[j].getHostingEnd() == null)) {
                     List slotsToUpdate = new ArrayList();
+                    List slotsToDelete = new ArrayList();
                     int nextSlotBlockIndex = i;
                     HostingSlot[] nextSlots = slots;
                     int searchIndex = j + 1;
                     Date current = new Date();
                     int nextSlotIndex;
 
-                    // set end date of this slot to NOW
+                    // set end date of this slot to now
                     slotsToUpdate.add(Helper.copyToSetEndDate(slots[j], current));
 
                     // find the next slot, and mark any invalid slots between
@@ -1235,9 +1316,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                             nextSlotIndex = findNextSlot(nextSlots, searchIndex)) {
                         if (nextSlotIndex < 0) {
 
-                            // all the slots from the search index to the end of the array need to be updated
+                            // all the slots from the search index to the end of the array need to be deleted
                             // (they are invalid)
-                              slotsToUpdate.addAll(Arrays.asList(nextSlots).subList(searchIndex, nextSlots.length));
+                            slotsToDelete.addAll(Arrays.asList(nextSlots).subList(searchIndex, nextSlots.length));
 
                             // Try the next block, if there is one
                             if (++nextSlotBlockIndex < blocks.length) {
@@ -1245,13 +1326,20 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                                 searchIndex = 0;
                             } else {
                                 // out of slots
-                                // extra slot generation could be inserted here
-                                autoCreateHostingBlocks(gameId);
-                                break find_next_slot;
+
+                                if (allowSlotCreation) {
+                                    autoCreateHostingBlocks(gameId);
+
+                                    // try again after adding slots to the game, avoiding further recursion
+                                    advanceHostingSlot(gameId, false);
+                                    return;
+                                } else {
+                                    break find_next_slot;
+                                }
                             }
                         } else {
                             // slots from the search index to just before the nextSlotIndex are invalid
-                              slotsToUpdate.addAll(Arrays.asList(nextSlots).subList(searchIndex, nextSlotIndex));
+                            slotsToDelete.addAll(Arrays.asList(nextSlots).subList(searchIndex, nextSlotIndex));
 
                             // start the next slot by making its start date be NOW
                             slotsToUpdate.add(Helper.copyToSetStartDate(nextSlots[nextSlotIndex], current));
@@ -1265,8 +1353,18 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                     try {
                         if (gameDataPersistenceLocal != null) {
                             gameDataPersistenceLocal.updateSlots(slots);
+                            for (Iterator slotIterator = slotsToDelete.iterator(); slotIterator.hasNext(); ) {
+                                HostingSlot slot = (HostingSlot) slotIterator.next();
+
+                                gameDataPersistenceLocal.deleteSlot(slot.getId().longValue());
+                            }
                         } else {
                             gameDataPersistenceRemote.updateSlots(slots);
+                            for (Iterator slotIterator = slotsToDelete.iterator(); slotIterator.hasNext(); ) {
+                                HostingSlot slot = (HostingSlot) slotIterator.next();
+
+                                gameDataPersistenceRemote.deleteSlot(slot.getId().longValue());
+                            }
                         }
                     } catch (Exception e) {
                         throw new GameDataException("Exception occurs when update slots with EJB.", e);
@@ -1284,11 +1382,12 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
     /**
      * Specifically, each of the game's existing blocks will be used as the basis for a new block.
-     * @param gameId the game to re create the hosting block and hosting slots.
      *
+     * @param gameId the game to re create the hosting block and hosting slots.
      */
     private void autoCreateHostingBlocks(long gameId) throws GameDataException{
-        Game game = null;
+        Game game;
+
         try{
             //get the game with the given id
             if (gameDataPersistenceLocal != null) {
@@ -1296,6 +1395,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             } else {
                 game = gameDataPersistenceRemote.getGame(gameId);
             }
+            if (game == null) {
+                throw new GameDataException("There is no game with ID " + gameId);
+            }
+
             HostingBlock[] blocks = game.getBlocks();
             for(int i = 0 ; i < blocks.length; i++){
                 HostingBlock block = blocks[i];
@@ -1312,28 +1415,30 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
                 //create new bid for the fake auction
                 Bid [] bids = oldAuction.getBids();
-                Bid [] newBids = new Bid[bids != null ? bids.length:0];
+                Bid [] newBids = new Bid[(bids != null) ? bids.length : 0];
                 for(int j = 0 ; j < newBids.length; j++){
-                    newBids[j] = new CustomBid(bids[j].getBidderId(),((CustomBid)bids[j]).getImageId(),bids[j].getMaxAmount(),bids[j].getTimestamp());
+                    newBids[j] = new CustomBid(bids[j].getBidderId(), ((CustomBid)bids[j]).getImageId(),
+                            bids[j].getMaxAmount(), bids[j].getTimestamp());
                 }
 
                 //create a new "Fake Auction" for the new HostingBlock, copy the attribute from the old Auctions,
                 //the new bids will also be persisted
-                Auction fakeAuction = new AuctionImpl(newBlock.getId(), oldAuction.getSummary(), oldAuction.getDescription(),
-                        oldAuction.getItemCount(), oldAuction.getMinimumBid(), oldAuction.getStartDate(), oldAuction.getEndDate(), newBids);
+                Auction fakeAuction = new AuctionImpl(newBlock.getId(), oldAuction.getSummary(),
+                        oldAuction.getDescription(), oldAuction.getItemCount(), oldAuction.getMinimumBid(),
+                               oldAuction.getStartDate(), oldAuction.getEndDate(), newBids);
                 auctionManager.getAuctionPersistence().createAuction(fakeAuction);
 
                 //reload the auction from persistence in order to get all the things with newIds.
                 fakeAuction = auctionManager.getAuctionPersistence().getAuction(newBlock.getId().longValue());
+
                 //reload the new bids
                 newBids = fakeAuction.getBids();
 
                 //copy the slots and auto create it
                 autoCreateHostingSlots(block.getSlots(), newBlock.getId().longValue(), newBids);
-
             }
-        }catch(Exception e){
-            throw new GameDataException("Error in auto-creation hosting blocks and slots.");
+        } catch(Exception e){
+            throw new GameDataException("Error in auto-creation hosting blocks and slots.", e);
         }
     }
 
@@ -1343,6 +1448,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * For each new slots, copy the domain targets, set the hostingstart and hosting end
      * and generate the puzzle and brainteaser list.
      * </p>
+     *
      * @param oldSlots the old slots
      * @param newBlockId the new HostingBlock id
      * @param newBids the new Bid array to create slots
@@ -1351,45 +1457,73 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws GameDataException fail to auto create hosting slots
      */
     private void autoCreateHostingSlots(HostingSlot [] oldSlots, long newBlockId, Bid [] newBids)
-	   throws PersistenceException, RemoteException, GameDataException {
-        //shuffle randomly the newBids array
+           throws PersistenceException, RemoteException, GameDataException {
+
+        // shuffle randomly the newBids array
         List newBidsList = Arrays.asList(newBids);
         Collections.shuffle(newBidsList);
-        //get the bid id array
+
+        // get the bid id array
         long  [] copiedBidIds = new long[newBidsList.size()];
+
         for(int j = 0 ; j < newBidsList.size(); j++){
             copiedBidIds[j] = ((CustomBid)newBidsList.get(j)).getId().longValue();
         }
 
         //create new HostingSlots array with the new block id and the new bid ids
-        HostingSlot [] newSlots = (gameDataPersistenceLocal != null)? gameDataPersistenceLocal.createSlots(newBlockId, copiedBidIds):
-           gameDataPersistenceRemote.createSlots(newBlockId, copiedBidIds);
+        HostingSlot [] newSlots = (gameDataPersistenceLocal != null)
+                ? gameDataPersistenceLocal.createSlots(newBlockId, copiedBidIds)
+                : gameDataPersistenceRemote.createSlots(newBlockId, copiedBidIds);
 
-        //for each new slots, copy the domain targets, set the hostingstart and hosting end
-        //and generate the puzzle and brainteaser list
+        /*
+         * for each new slot, copy the domain targets, set the hosting start and hosting end
+         * and generate the puzzle and brainteaser list
+         */
         oldSlots = (HostingSlot[]) oldSlots.clone();  // this array gets modified by the procedure that follows
+
         for(int j = 0 ; j < newSlots.length; j++){
-            //get the domain targets of the old slots and shuffle randomly, except for the last target
-            List targets = Arrays.asList(findSlotByDomainId(oldSlots, newSlots[j].getDomain().getId().longValue()).getDomainTargets());
-            if (targets.size() > 2) {  // no point in shuffling one (or fewer) objects; must in any case test for an empty list
+            // get the domain targets of the old slots and shuffle randomly, except for the last target
+            HostingSlot oldSlot = findSlotByDomainId(oldSlots, newSlots[j].getDomain().getId().longValue());
+
+            if (oldSlot == null) { // probably the corresponding old slot had been deleted
+                if (gameDataPersistenceLocal != null) {
+                    gameDataPersistenceLocal.deleteSlot(newSlots[j].getId().longValue());
+                } else {
+                    gameDataPersistenceRemote.deleteSlot(newSlots[j].getId().longValue());
+                }
+                continue;
+            }
+
+            List targets = Arrays.asList(oldSlot.getDomainTargets());
+
+            // no point in shuffling one (or fewer) objects, and must in any case test for an empty list:
+            if (targets.size() > 2) {
                 Collections.shuffle(targets.subList(0, targets.size() - 1));
             }
 
-            //create new DomainTargets with null id objects.
+            // create new DomainTargets with null id objects.
             List newTargets = new ArrayList();
-            for(int fix = 0 ;  fix < targets.size(); fix ++){
+
+            for(int fix = 0 ;  fix < targets.size(); fix++) {
                 DomainTarget target = (DomainTarget)targets.get(fix);
-                newTargets.add(new DomainTargetImpl(null,target.getSequenceNumber(),target.getUriPath(),
-                        target.getIdentifierText(),target.getIdentifierHash(),target.getClueImageId()));
+
+                newTargets.add(new DomainTargetImpl(null, fix, target.getUriPath(), target.getIdentifierText(),
+                            target.getIdentifierHash(), createClueImage(target.getIdentifierText())));
             }
-            //copy the slot to set the hosting start, hosting end and shuffled randomly targets
-            HostingSlot copiedSlot = Helper.copySlot(newSlots[j], null,null,(DomainTarget[])newTargets.toArray(new DomainTarget[0]));
-            //update the slot
-            HostingSlot updatedSlot = ((gameDataPersistenceLocal != null)? gameDataPersistenceLocal.updateSlots(new HostingSlot[]{copiedSlot}):
-                this.gameDataPersistenceRemote.updateSlots(new HostingSlot[]{copiedSlot}))[0];
-            //regenerate Puzzle array
+
+            // copy the slot to set the hosting start, hosting end and shuffled randomly targets
+            HostingSlot copiedSlot = Helper.copySlot(newSlots[j], null, null,
+                    (DomainTarget[]) newTargets.toArray(new DomainTarget[0]));
+
+            // update the slot
+            HostingSlot updatedSlot = ((gameDataPersistenceLocal != null)
+                    ? gameDataPersistenceLocal.updateSlots(new HostingSlot[]{copiedSlot})
+                    : gameDataPersistenceRemote.updateSlots(new HostingSlot[]{copiedSlot}))[0];
+
+            // regenerate Puzzle
             regeneratePuzzle(updatedSlot.getId().longValue());
-            //regenerate BrainTeaser array
+
+            // regenerate BrainTeaser array
             regenerateBrainTeaser(updatedSlot.getId().longValue());
         }
     }
@@ -1419,8 +1553,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * may be advanced
      *
      * @param  slots a <code>HostingSlot[]</code> containing the candidate
-     *         slots; some or all of the elements starting at the test index
-     *         may be replaced with copies modified to mark them as invalid
+     *         slots
      * @param  testIndex the index into the <code>slots</code> of the first
      *         candidate
      *
@@ -1429,14 +1562,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      */
     private int findNextSlot(HostingSlot[] slots, int testIndex) throws GameDataException {
         for (; testIndex < slots.length; testIndex++) {
-            if (slots[testIndex].getSequenceNumber() < 0) {
-                continue;
-            } else if (testUpcomingDomain(slots[testIndex])) {
+            if (testUpcomingDomain(slots[testIndex])) {
                 return testIndex;
-            } else {
-                // not valid: set the sequence number to a negative number
-                slots[testIndex] = Helper.copyToSequenceNumber(
-                        slots[testIndex], -slots[testIndex].getSequenceNumber() - 1);
             }
         }
 
@@ -2126,41 +2253,59 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          */
         private void updateGames(Game[] games) {
             HttpUtility http = new HttpUtility(HttpUtility.GET);
+            Map pageCache = new HashMap();
 
-            for (int i = 0; i < games.length; ++i) {
-                HostingBlock[] hostingBlocks = games[i].getBlocks();
+            http.setFollowRedirects(true);
+            http.setDepthLimit(10);
 
-                for (int j = 0; j < games.length; ++j) {
-                    HostingSlot[] slots = hostingBlocks[j].getSlots();
+            for (int gameIndex = 0; gameIndex < games.length; ++gameIndex) {
+                HostingBlock[] hostingBlocks = games[gameIndex].getBlocks();
 
-                    for (int k = 0; k < slots.length; ++k) {
-                        Date hostingStart = slots[k].getHostingStart();
+                for (int blockIndex = 0; blockIndex < hostingBlocks.length; ++blockIndex) {
+                    HostingSlot[] slots = hostingBlocks[blockIndex].getSlots();
+
+                    for (int slotIndex = 0; slotIndex < slots.length; ++slotIndex) {
+                        Date hostingStart = slots[slotIndex].getHostingStart();
 
                         // Skip slots that have not yet begun hosting
-                        if (hostingStart == null || hostingStart.before(new Date())) {
+                        if (hostingStart == null) {
                             continue;
                         }
 
-                        DomainTarget[] targets = slots[k].getDomainTargets();
+                        DomainTarget[] targets = slots[slotIndex].getDomainTargets();
                         boolean anyUpdated = false;
+                        boolean firstUpdated = false;
 
-                        for (int l = 0; l < targets.length; ++l) {
-                            DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[l]);
+                        for (int targetIndex = 0; targetIndex < targets.length; ++targetIndex) {
+                            DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[targetIndex], pageCache);
 
                             if (updatedTarget != null) {
-                                targets[l] = updatedTarget;
+                                targets[targetIndex] = updatedTarget;
                                 anyUpdated = true;
+                                if (targetIndex == 0) {
+                                    firstUpdated = true;
+                                }
                             }
                         }
 
                         // Persist the slot if any target has been updated
                         if (anyUpdated) {
                             // Create a new HostingSlotImpl instance
-                            HostingSlotImpl newSlot = Helper.doCopy(slots[k]);
+                            HostingSlotImpl newSlot = Helper.doCopy(slots[slotIndex]);
                             // Set the new domain targets
                             newSlot.setDomainTargets(targets);
                             // Update slot
                             persistSlot(newSlot);
+
+                            if (firstUpdated) {
+                                try {
+                                    regenerateBrainTeaser(slots[slotIndex].getId().longValue());
+                                } catch (GameDataException gde) {
+                                    System.err.println("Unable to generate a new brain teaser for slot "
+                                            + slots[slotIndex].getId().longValue());
+                                    gde.printStackTrace(System.err);
+                                }
+                            }
                         }
                     }
                 }
@@ -2176,15 +2321,26 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * @return newly-created <code>DomainTarget</code> that contains updated target, or
          *         <code>null</code> if target does not need to be updated or there was a failure
          *         during check or update operation.
-         * @param httpUtil <code>HttpUtility</code> object to fetch the page that possibly
-         *            contains target from hosting site over HTTP protocol.
-         * @param target object that contains target, and which needs to be checked for validity.
+         * @param  httpUtil <code>HttpUtility</code> object to fetch the page that possibly
+         *         contains target from hosting site over HTTP protocol.
+         * @param  target object that contains target, and which needs to be checked for validity.
+         * @param  pageCache a Map from target URLs to page content, used to cache pages on which multiple
+         *         targets appear to boost performance and reduce impact on host sites.  If a
+         *         page is loaded by this method then it will be cached in this map
          */
-        private DomainTarget checkAndUpdateTarget(HttpUtility httpUtil, DomainTarget target) {
+        private DomainTarget checkAndUpdateTarget(HttpUtility httpUtil, DomainTarget target, Map pageCache) {
             SiteStatistics siteStatistics;
 
             try {
-                String contents = httpUtil.execute(target.getUriPath());
+                String urlString = target.getUriPath();
+                String contents;
+
+                if (pageCache.containsKey(urlString)) {
+                    contents = (String) pageCache.get(urlString);
+                } else {
+                    contents = httpUtil.execute(target.getUriPath());
+                    pageCache.put(urlString, contents);
+                }
 
                 siteStatistics = GameDataUtility.getConfiguredSiteStatisticsInstance("SiteStatistics");
                 siteStatistics.accumulateFrom(contents, "document1");
