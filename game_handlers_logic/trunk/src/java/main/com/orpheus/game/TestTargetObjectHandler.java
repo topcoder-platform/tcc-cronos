@@ -139,7 +139,7 @@ public class TestTargetObjectHandler implements Handler {
      *      &lt;game_id_param_key&gt;gameId&lt;/game_id_param_key&gt;
      *      &lt;domain_name_param_key&gt;domainName&lt;/domain_name_param_key&gt;
      *      &lt;sequence_number_param_key&gt;seqNo&lt;/sequence_number_param_key&gt;
-     *      &lt;triggeredURLParamKey&gt;www.topcoder.com/tc&lt;/triggeredURLParamKey&gt;
+     *      &lt;triggered_url_param_key&gt;www.topcoder.com/tc&lt;/triggered_url_param_key&gt;
      *      &lt;text_param_key&gt;text&lt;/text_param_key&gt;
      *      &lt;test_failed_result_code&gt;test_failed&lt;/test_failed_result_code&gt;
      *      &lt;not_logged_in_result_code&gt;not_logged_in&lt;/not_logged_in_result_code&gt;
@@ -163,7 +163,7 @@ public class TestTargetObjectHandler implements Handler {
         sequenceNumberParamKey = ImplementationHelper.getElement(element, "sequence_number_param_key");
         testFailedResultCode = ImplementationHelper.getElement(element, "test_failed_result_code");
         textParamKey = ImplementationHelper.getElement(element, "text_param_key");
-        triggeredURLParamKey = ImplementationHelper.getElement(element, "triggeredURLParamKey");
+        triggeredURLParamKey = ImplementationHelper.getElement(element, "triggered_url_param_key");
     }
 
     /**
