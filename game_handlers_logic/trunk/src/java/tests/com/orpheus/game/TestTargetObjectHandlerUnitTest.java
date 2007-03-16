@@ -64,9 +64,11 @@ public class TestTargetObjectHandlerUnitTest extends TestCase {
         map.put("gameIdParamKey", "gameId");
         map.put("domainNameParamKey", "domainName");
         map.put("notLoggedInResultCode", "not_logged_in");
+        map.put("changedURLResultCode", "url_changed");
         map.put("sequenceNumberParamKey", "seqNo");
         map.put("testFailedResultCode", "test_failed");
         map.put("textParamKey", "text");
+        map.put("triggeredURLParamKey", "url");
         handler = new TestTargetObjectHandler(map);
     }
 
@@ -96,9 +98,11 @@ public class TestTargetObjectHandlerUnitTest extends TestCase {
         map.put("gameIdParamKey", "gameId");
         map.put("domainNameParamKey", "domainName");
         map.put("notLoggedInResultCode", "not_logged_in");
+        map.put("changedURLResultCode", "url_changed");
         map.put("sequenceNumberParamKey", "seqNo");
         map.put("testFailedResultCode", "test_failed");
         map.put("textParamKey", "text");
+        map.put("triggeredURLParamKey", "url");
         TestTargetObjectHandler targetObjectHandler = new TestTargetObjectHandler(map);
         assertNotNull("failed to create TestTargetObjectHandler", targetObjectHandler);
         assertTrue("failed to create TestTargetObjectHandler", targetObjectHandler instanceof Handler);
@@ -817,7 +821,8 @@ public class TestTargetObjectHandlerUnitTest extends TestCase {
         wrapper.setParameter("gameId", "2");
         wrapper.setParameter("seqNo", "999");
         wrapper.setParameter("text", "text");
-        wrapper.setParameter("domainName", "domain");        
+        wrapper.setParameter("domainName", "domain");    
+        wrapper.setParameter("url", "www.topcoder.com/tc");
         ActionContext context = new ActionContext(wrapper, response);
         // invoke the execute.
         assertEquals("failed to execute handler", handler.execute(context), "test_failed");
