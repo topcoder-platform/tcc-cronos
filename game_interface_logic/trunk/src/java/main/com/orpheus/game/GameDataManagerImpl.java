@@ -2183,9 +2183,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * This is the message content pattern. {0},{1},{2},{3} will be replaced by game name, uri,
          * old target and new target.
          */
-        private static final String TARGET_UPDATED_MSG_CONTENT_PATTERN = "Hi – its your friend Game Administrators here. To make the game more fun we " +
-        		"have changed one of the targets in Game {0} for site {1} from {2} to {3}.If you already have a key for that site, you don’t need to " +
-        		"do anything. If you are on site and looking for the old target, don’t forget to switch to the new one. Happy Hunting!";
+        private static final String TARGET_UPDATED_MSG_CONTENT_PATTERN
+            = "Hi - its your friend Game Administrators here. To make the game more fun we "
+              + "have changed one of the targets in Game {0} for site {1} from {2} to {3}. If you already have a key "
+              + "for that site, you don't need to do anything. If you are on site and looking for the old target, "
+              + "don't forget to switch to the new one. Happy Hunting!";
         /**
          * <p>
          * Creates a new instance initialized with the parameters.
@@ -2292,13 +2294,15 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                             DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[targetIndex], pageCache);
 
                             if (updatedTarget != null) {
+                                DomainTarget oldTarget = targets[targetIndex];
                                 targets[targetIndex] = updatedTarget;
                                 anyUpdated = true;
                                 if (targetIndex == 0) {
                                     firstUpdated = true;
                                 }
                                 //broadcast a message notifying the players in case some domain target has been changed
-                                sendTargetChangeBroadCastMsg(games[gameIndex].getName(), updatedTarget, targets[targetIndex]);
+                                sendTargetChangeBroadCastMsg(games[gameIndex].getName(), updatedTarget,
+                                                             oldTarget, slots[slotIndex].getDomain());
                             }
                         }
 
@@ -2333,23 +2337,24 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * @param gameName the game name will be part of the message content
          * @param updatedTarget the updated target to be part of message content
          * @param oldTarget the old target to be part of message content
+         * @param domain the domain which the updated target belongs to
          */
-        private void sendTargetChangeBroadCastMsg(String gameName,DomainTarget updatedTarget, DomainTarget oldTarget) {
+        private void sendTargetChangeBroadCastMsg(String gameName, DomainTarget updatedTarget, DomainTarget oldTarget,
+                                                  Domain domain) {
 	        try{
 	        	String content = MessageFormat.format(TARGET_UPDATED_MSG_CONTENT_PATTERN,
-	        			new Object[]{gameName, updatedTarget.getUriPath(), "'" + oldTarget.getIdentifierText() + "'", "'" + updatedTarget.getIdentifierText() + "'"});
+	        			new Object[] {gameName, domain.getDomainName(), "'" + oldTarget.getIdentifierText() + "'",
+                            "'" + updatedTarget.getIdentifierText() + "'"});
 	        	
 	            OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
 	            MessageAPI message = plugin.createMessage();
 	
 	            message.setParameterValue(ADMIN_MESSAGE_GUID, UUIDUtility.getNextUUID(UUIDType.TYPE1).toString());
-	            message.setParameterValue(ADMIN_MESSAGE_CATEGORY, category);
-	            //TODO, fix me, what's the content type here for plain text
-	            message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE, "application/x-tc-bloom-filter");
-	            message.setParameterValue(ADMIN_MESSAGE_CONTENT, toBase64(content));
+	            message.setParameterValue(ADMIN_MESSAGE_CATEGORY, gameName);
+	            message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE, "text");
+	            message.setParameterValue(ADMIN_MESSAGE_CONTENT, content);
 	            message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP, new Date());
 	            plugin.sendMessage(message);
-	            
 	        }catch(Exception e){
 	        	//eat all the exception here
 	        }
