@@ -69,6 +69,14 @@ public class TestTargetObjectHandler implements Handler {
      * </p>
      */
     private final String textParamKey;
+    
+    /**
+     * <p>
+     * Represents the key used to get the URL for the page on which the Test Target Object request has been triggered.
+     * It is initialized in constructor and never changed afterwards. It must be non-null, non-empty string.
+     * </p>
+     */
+    private final String triggeredURLParamKey;
 
     /**
      * <p>
@@ -88,6 +96,14 @@ public class TestTargetObjectHandler implements Handler {
 
     /**
      * <p>
+     * Represents the result code to return if the triggeredURL(by the triggeredURLParamKey) is different from the tested
+     * target object's url.
+     * It is initialized in constructor and never changed afterwards. It must be non-null, non-empty string.
+     * </p>
+     */
+    private final String changedURLResultCode;
+    /**
+     * <p>
      * Constructor with a Map of attributes, this constructor will extract values from the attributes Map, and then
      * assign to corresponding instance variable. The map should contain keys gameIdParamKey, domainNameParamKey,
      * sequenceNumberParamKey, textParamKey, testFailedResultCode and notLoggedInResultCode.
@@ -103,9 +119,11 @@ public class TestTargetObjectHandler implements Handler {
         gameIdParamKey = ImplementationHelper.getString(attributes, "gameIdParamKey");
         domainNameParamKey = ImplementationHelper.getString(attributes, "domainNameParamKey");
         notLoggedInResultCode = ImplementationHelper.getString(attributes, "notLoggedInResultCode");
+        changedURLResultCode = ImplementationHelper.getString(attributes, "changedURLResultCode");
         sequenceNumberParamKey = ImplementationHelper.getString(attributes, "sequenceNumberParamKey");
         testFailedResultCode = ImplementationHelper.getString(attributes, "testFailedResultCode");
         textParamKey = ImplementationHelper.getString(attributes, "textParamKey");
+        triggeredURLParamKey = ImplementationHelper.getString(attributes, "triggeredURLParamKey");
     }
 
     /**
@@ -121,9 +139,11 @@ public class TestTargetObjectHandler implements Handler {
      *      &lt;game_id_param_key&gt;gameId&lt;/game_id_param_key&gt;
      *      &lt;domain_name_param_key&gt;domainName&lt;/domain_name_param_key&gt;
      *      &lt;sequence_number_param_key&gt;seqNo&lt;/sequence_number_param_key&gt;
+     *      &lt;triggeredURLParamKey&gt;www.topcoder.com/tc&lt;/triggeredURLParamKey&gt;
      *      &lt;text_param_key&gt;text&lt;/text_param_key&gt;
      *      &lt;test_failed_result_code&gt;test_failed&lt;/test_failed_result_code&gt;
      *      &lt;not_logged_in_result_code&gt;not_logged_in&lt;/not_logged_in_result_code&gt;
+     *      &lt;url_change_result_code&gt;changedURL&lt;/url_change_result_code&gt;
      *     &lt;/handler&gt;
      * </pre>
      *
@@ -139,9 +159,11 @@ public class TestTargetObjectHandler implements Handler {
         gameIdParamKey = ImplementationHelper.getElement(element, "game_id_param_key");
         domainNameParamKey = ImplementationHelper.getElement(element, "domain_name_param_key");
         notLoggedInResultCode = ImplementationHelper.getElement(element, "not_logged_in_result_code");
+        changedURLResultCode = ImplementationHelper.getElement(element, "url_change_result_code");
         sequenceNumberParamKey = ImplementationHelper.getElement(element, "sequence_number_param_key");
         testFailedResultCode = ImplementationHelper.getElement(element, "test_failed_result_code");
         textParamKey = ImplementationHelper.getElement(element, "text_param_key");
+        triggeredURLParamKey = ImplementationHelper.getElement(element, "triggeredURLParamKey");
     }
 
     /**
@@ -177,13 +199,17 @@ public class TestTargetObjectHandler implements Handler {
                 return notLoggedInResultCode;
             }
             long profileId = ((Long) userProfile.getIdentifier()).longValue();
-            // gets the domain name, sequence number and text from the request parameter.
+            // gets the domain name, sequence number ,text and trigger url from the request parameter.
             String domainName = context.getRequest().getParameter(domainNameParamKey);
             checkValidString(domainName, "domain name");
             String seqNum = context.getRequest().getParameter(sequenceNumberParamKey);
             checkValidString(seqNum, "sequence number");
             String text = context.getRequest().getParameter(textParamKey);
             checkValidParam(text, "text");
+            
+            String triggeredURL = context.getRequest().getParameter(triggeredURLParamKey);
+            checkValidParam(triggeredURL,"triggeredURL");
+            
             // parses the game id from the request parameter.
             long gameId = Long.parseLong(context.getRequest().getParameter(gameIdParamKey));
 
@@ -198,7 +224,11 @@ public class TestTargetObjectHandler implements Handler {
                 // if the sequence number and text matches return null.
                 if (Integer.parseInt(seqNum) == domainTargets[i].getSequenceNumber()
                         && text.equals(domainTargets[i].getIdentifierText().replaceAll("[\n\r \t\f\u200b]+", ""))) {
-                    return null;
+                    if ( triggeredURL.equalsIgnoreCase(domainTargets[i].getUriPath())){
+                    	return null;
+                    } else {
+                    	return changedURLResultCode;
+                    }
                 }
             }
         } catch (ClassCastException castException) {
