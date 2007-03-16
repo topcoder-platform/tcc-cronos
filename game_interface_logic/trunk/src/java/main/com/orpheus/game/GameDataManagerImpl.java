@@ -8,6 +8,7 @@ import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.administration.persistence.AdminDataHome;
 import com.orpheus.administration.persistence.AdminDataLocal;
 import com.orpheus.administration.persistence.AdminDataLocalHome;
+import com.orpheus.administration.persistence.InstantiationException;
 import com.orpheus.administration.persistence.OrpheusMessengerPlugin;
 import com.orpheus.administration.persistence.RemoteOrpheusMessengerPlugin;
 import com.orpheus.auction.persistence.CustomBid;
@@ -29,6 +30,7 @@ import com.topcoder.bloom.BitSetSerializer;
 import com.topcoder.bloom.BloomFilter;
 import com.topcoder.bloom.serializers.DefaultBitSetSerializer;
 import com.topcoder.message.messenger.MessageAPI;
+import com.topcoder.message.messenger.MessageException;
 import com.topcoder.randomstringimg.Configuration;
 import com.topcoder.randomstringimg.InvalidConfigException;
 import com.topcoder.randomstringimg.ObfuscationAlgorithm;
@@ -73,6 +75,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1656,9 +1659,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *         modified so that the class itself or the required constructor is not accessible
      * @throws InstantiationException if the Base64Codec class's constructor throws any exception
      * @throws IOException if an I/O error occurs during internal I/O to perform the encoding
+     * @throws java.lang.InstantiationException Exception from CompressionUtility, if fails to instantiate the Compression Utility
      */
     private String toBase64(String s) throws UnsupportedEncodingException, ClassNotFoundException,
-            IllegalAccessException, InstantiationException, IOException {
+            IllegalAccessException, InstantiationException, IOException, java.lang.InstantiationException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         CompressionUtility utility = new CompressionUtility("com.topcoder.util.compression.Base64Codec", stream);
 
@@ -2175,6 +2179,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         private final boolean[] stopped = new boolean[] { false };
 
         /**
+         * Broadcast a message notifying the players in case some domain target has been changed.
+         * This is the message content pattern. {0},{1},{2},{3} will be replaced by game name, uri,
+         * old target and new target.
+         */
+        private static final String TARGET_UPDATED_MSG_CONTENT_PATTERN = "Hi – its your friend Game Administrators here. To make the game more fun we " +
+        		"have changed one of the targets in Game {0} for site {1} from {2} to {3}.If you already have a key for that site, you don’t need to " +
+        		"do anything. If you are on site and looking for the old target, don’t forget to switch to the new one. Happy Hunting!";
+        /**
          * <p>
          * Creates a new instance initialized with the parameters.
          * </p>
@@ -2285,6 +2297,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                                 if (targetIndex == 0) {
                                     firstUpdated = true;
                                 }
+                                //broadcast a message notifying the players in case some domain target has been changed
+                                sendTargetChangeBroadCastMsg(games[gameIndex].getName(), updatedTarget, targets[targetIndex]);
                             }
                         }
 
@@ -2313,6 +2327,35 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
 
         /**
+         * <p>
+         * This method is used to send out broadcast message notifying the players in case some domain target has been changed.
+         * </p>
+         * @param gameName the game name will be part of the message content
+         * @param updatedTarget the updated target to be part of message content
+         * @param oldTarget the old target to be part of message content
+         */
+        private void sendTargetChangeBroadCastMsg(String gameName,DomainTarget updatedTarget, DomainTarget oldTarget) {
+	        try{
+	        	String content = MessageFormat.format(TARGET_UPDATED_MSG_CONTENT_PATTERN,
+	        			new Object[]{gameName, updatedTarget.getUriPath(), "'" + oldTarget.getIdentifierText() + "'", "'" + updatedTarget.getIdentifierText() + "'"});
+	        	
+	            OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
+	            MessageAPI message = plugin.createMessage();
+	
+	            message.setParameterValue(ADMIN_MESSAGE_GUID, UUIDUtility.getNextUUID(UUIDType.TYPE1).toString());
+	            message.setParameterValue(ADMIN_MESSAGE_CATEGORY, category);
+	            //TODO, fix me, what's the content type here for plain text
+	            message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE, "application/x-tc-bloom-filter");
+	            message.setParameterValue(ADMIN_MESSAGE_CONTENT, toBase64(content));
+	            message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP, new Date());
+	            plugin.sendMessage(message);
+	            
+	        }catch(Exception e){
+	        	//eat all the exception here
+	        }
+		}
+
+		/**
          * <p>
          * Checks target for existence and updates it if needed. If this method fails for any
          * reason, the return value is <code>null</code>.
