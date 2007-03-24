@@ -428,8 +428,8 @@ public class CreateGameHandler implements Handler {
         // Get date format from request parameter
         String dtFormat = request.getParameter(dtFormatParamName);
         // Get the auction manager instance from application context
-        AuctionManager auctionMgr = (AuctionManager) session
-                .getServletContext().getAttribute(auctionMgrAttrName);
+        AuctionManager auctionMgr
+                = (AuctionManager) session.getServletContext().getAttribute(auctionMgrAttrName);
         // Use auction framework to create auctions for each block in newGame
         HostingBlock[] newHBlock = newGame.getBlocks();
         for (int i = 0; i < newHBlock.length; i++) {

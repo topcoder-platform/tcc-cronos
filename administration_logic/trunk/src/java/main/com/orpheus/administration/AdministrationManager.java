@@ -498,7 +498,7 @@ public class AdministrationManager {
         crawler.getStrategy().addAddress(new WebAddressContext(baseUrl, 0));
         crawler.setValidator(new AndValidator(
                 RegExValidator.inclusionValidator(
-                        "(?i)http://\\Q" + domainName + "\\E/.*"),
+                        "(?i)https?://\\Q" + domainName + "\\E/.*"),
                 new DepthValidator(maxSpideringDepth)));
 
         List results = crawler.crawl();
