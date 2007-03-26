@@ -9,41 +9,33 @@ import com.orpheus.game.ParameterCheck;
 import com.orpheus.game.XMLHelper;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataLocal;
-
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.GreaterThanFilter;
 import com.topcoder.search.builder.filter.OrFilter;
-
 import com.topcoder.user.profile.UserProfile;
-
 import com.topcoder.util.rssgenerator.DataStore;
-import com.topcoder.util.rssgenerator.RSSFeed;
+import com.topcoder.util.rssgenerator.RSSEntity;
 import com.topcoder.util.rssgenerator.RSSItem;
 import com.topcoder.util.rssgenerator.SearchCriteria;
 import com.topcoder.util.rssgenerator.datastore.SearchCriteriaImpl;
-import com.topcoder.util.rssgenerator.RSSEntity;
-import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
 import com.topcoder.util.rssgenerator.impl.RSSEntityImpl;
+import com.topcoder.util.rssgenerator.impl.RSSObjectImpl;
 import com.topcoder.util.rssgenerator.impl.atom10.Atom10Content;
 import com.topcoder.util.rssgenerator.impl.atom10.Atom10Feed;
 import com.topcoder.util.rssgenerator.io.RSSWriteException;
 import com.topcoder.util.rssgenerator.io.atom10.Atom10Writer;
-
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Result;
 import com.topcoder.web.frontcontroller.ResultExecutionException;
 import com.topcoder.web.user.LoginHandler;
-
 import org.w3c.dom.Element;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -53,9 +45,6 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -426,6 +415,11 @@ public class MessagePollResult implements Result {
      */
     private void writeAtom10Feed(HttpServletResponse response, RSSItem[] items, Date updateLowerBound)
         throws ResultExecutionException {
+
+        // Set the response headers to tell the client that no caching should be used for such sorts of requests
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setIntHeader("Expires", -1);
 
         response.setContentType(RESPONSE_CONTENT_TYPE);
 
