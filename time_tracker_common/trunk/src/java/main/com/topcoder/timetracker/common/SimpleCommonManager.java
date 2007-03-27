@@ -1,373 +1,626 @@
-
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.timetracker.common;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.timetracker.common.CommonManagerConfigurationException;
-import com.topcoder.timetracker.common.DuplicatePaymentTermException;
-import com.topcoder.timetracker.common.PaymentTerm;
-import com.topcoder.timetracker.common.PaymentTermDAOException;
-import com.topcoder.timetracker.common.PaymentTermNotFoundException;
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.idgenerator.IDGenerator;
-import com.topcoder.util.idgenerator.IDGeneratorFactory;
-import com.topcoder.util.objectfactory.ObjectFactory;
-import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
+
+import java.util.Date;
+
+import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 
 /**
- * <strong>Usage: </strong>This class implements the CommonManager interface and it uses the PaymentTermDAO object to manage the PaymentTerms in the persistence, and it also have a configurable recentDays used in the <em>retrieveRecentlyCreatedPaymentTerms</em> and <em>retrieveRecentlyModifiedPaymentTerms</em> methods. Contains operations like add, update, retrieve, delete. An IDGenerator instance is used to generate ids for PaymentTerms that should be added in the persistence.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><strong>implements </strong>CommonManager.</li>
- * </ul>
- * <p><strong>Thread-safety: </strong>Thread safety of this class depends on the persistence layer. But implementations of PaymentTermDAO are required to be thread safe so thread safety should not be a concern here.</p>
- * 
+ * <p>
+ * This class implements the <code>CommonManager</code> interface and it uses the <code>DatabasePaymentTermDAO</code>
+ * object to manage the <code>PaymentTerm</code> in the persistence, and it also have a configurable recentDays used
+ * in the <code>retrieveRecentlyCreatedPaymentTerms()</code> and <code>retrieveRecentlyModifiedPaymentTerms</code>
+ * methods. Contains operations like add, update, retrieve, delete.
+ * </p>
+ *
+ * <p>
+ *  <strong>Delegation:</strong>
+ *  <ul>
+ *   <li>
+ *   The retrieve and delete operations are simply delegated to <code>DatabasePaymentTermDAO</code>.
+ *   </li>
+ *   <li>
+ *   The add and update operations are delegated <code>DatabasePaymentTermDAO</code> after have set some necessary
+ *   values on the given <code>PaymentTerm</code>.
+ *   </li>
+ *  </ul>
+ * </p>
+ *
+ * <p>
+ *  <strong>Sample Configuration:</strong>
+ *  All properties are required and must have non-empty(trimmed) values.
+ *  <pre>
+ *  &lt;Config name="com.topcoder.timetracker.common.SimpleCommonManager"&gt;
+ *       &lt;!-- namespace of ObjectFactory --&gt;
+ *       &lt;Property name="of_namespace"&gt;
+ *          &lt;Value&gt;ObjectFactoryNS&lt;/Value&gt;
+ *       &lt;/Property&gt;
+ *       &lt;!-- key of PaymentTermDAO within ObjectFactory --&gt;
+ *       &lt;Property name="payment_term_dao_key"&gt;
+ *          &lt;Value&gt;PaymentTermDAOKey&lt;/Value&gt;
+ *       &lt;/Property&gt;
+ *       &lt;!-- recent days, must be positive int value(which should not exceed 2147483647) or -1 --&gt;
+ *       &lt;Property name="recent_days"&gt;
+ *          &lt;Value&gt;3&lt;/Value&gt;
+ *       &lt;/Property&gt;
+ *   &lt;/Config&gt;
+ *  </pre>
+ * </p>
+ *
+ * <p>
+ *  <strong>Thread-safety:</strong>
+ *  Thread safety of this class depends on the persistence layer. But implementations of <code>PaymentTermDAO</code>
+ *  are required to be thread safe so thread safety should not be a concern here.
+ * </p>
+ *
+ * @author Mafy, liuliquan
+ * @version 3.1
  */
 public class SimpleCommonManager implements CommonManager {
 
-/**
- * <strong>Usage:</strong> Constructor. Load the configuration values from default namespace.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li>simply call: <em>this(SimpleCommonManager.class.getName());</em></li>
- * </ul>
- * 
- * 
- * @throws CommonManagerConfigurationException if any configured value is invalid or any required value is missing, it is also used to wrap the exceptions from ConfigManager
- */
-    public  SimpleCommonManager() {        
+    /**
+     * <p>
+     * The name of property which gives the namespace of {@link ObjectFactory}.
+     * </p>
+     */
+    private static final String OF_NAMESPACE = "of_namespace";
+
+    /**
+     * <p>
+     * The name of property which gives the key of {@link PaymentTerm} within the {@link ObjectFactory}.
+     * </p>
+     */
+    private static final String PAYMENTTERMDAO_KEY = "payment_term_dao_key";
+
+    /**
+     * <p>
+     * The name of property which gives the connection name within {@link DBConnectionFactory}.
+     * </p>
+     */
+    private static final String RECENT_DAYS = "recent_days";
+
+    /**
+     * <p>
+     *  <strong>Usage:</strong>
+     *  Represents the recent days used in the {@link this#retrieveRecentlyCreatedPaymentTerms()}
+     *  and {@link this#retrieveRecentlyModifiedPaymentTerms()} methods.
+     * </p>
+     *
+     * <p>
+     *  <strong>Value:</strong>
+     *  Must be positive int value value or -1.
+     * </p>
+     *
+     * <p>
+     *  <strong>Accessibility:</strong>
+     *  Initialized in the constructor.
+     * </p>
+     *
+     * <p>
+     *  <strong>Immutability:</strong>
+     *  Immutable.
+     * </p>
+     */
+    private final int recentDays;
+
+    /**
+     * <p>
+     *  <strong>Usage:</strong>
+     *  Represents the Data Access Object used to manage the {@link PaymentTerm} in the persistence.
+     * </p>
+     *
+     * <p>
+     *  <strong>Value:</strong>
+     *  Can not be null.
+     * </p>
+     *
+     * <p>
+     *  <strong>Accessibility:</strong>
+     *  Initialized in the constructor. Used in all methods.
+     * </p>
+     *
+     * <p>
+     *  <strong>Immutability:</strong>
+     *  Immutable.
+     * </p>
+     */
+    private final PaymentTermDAO paymentTermDAO;
+
+    /**
+     * <p>
+     * Constructor. Load the configuration values from default namespace
+     * <b>"com.topcoder.timetracker.common.SimpleCommonManager"</b>.
+     * </p>
+     *
+     * <p>
+     * See class doc for sample configuration.
+     * </p>
+     *
+     * @throws CommonManagerConfigurationException if any configured value is invalid or any required
+     *         value is missing within the default namespace.
+     *
+     * @see SimpleCommonManager#SimpleCommonManager(String)
+     */
+    public SimpleCommonManager() throws CommonManagerConfigurationException {
         this(SimpleCommonManager.class.getName());
-    } 
+    }
 
-/**
- * <p><strong>Usage:</strong> Represents the recent days used in the <em>retrieveRecentlyCreatedPaymentTerms</em> and <em>retrieveRecentlyModifiedPaymentTerms</em> methods. Initialized in the constructor, and never changed afterwards. If it is -1, it means all the recently requested users should be returned.</p>
- * <p><strong>Valid values</strong>: must be positive int value or -1.</p>
- * 
- */
-    private final int recentDays = <<constructor>>;
+    /**
+     * <p>
+     * Constructor to load configuration values from the given namespace.
+     * </p>
+     *
+     * <p>
+     * See class doc for sample configuration.
+     * </p>
+     *
+     * @param namespace the namespace to load configuration values. Must not be null or empty(trimmed).
+     *
+     * @throws IllegalArgumentException if argument is null or empty(trimmed) string.
+     * @throws CommonManagerConfigurationException if any configured value is invalid or any required value
+     *         is missing within the given namespace.
+     */
+    public SimpleCommonManager(String namespace) throws CommonManagerConfigurationException {
+        //Create PaymentTermDAO
+        String paymentTermDaoKey = Helper.getPropertyValue(namespace, PAYMENTTERMDAO_KEY);
+        try {
+            this.paymentTermDAO = (PaymentTermDAO)
+                (Helper.getObjectFactory(namespace, OF_NAMESPACE).createObject(paymentTermDaoKey));
+        } catch (InvalidClassSpecificationException e) {
+            throw new CommonManagerConfigurationException("Error occurs while instantiating PaymentTermDAO.", e);
+        } catch (ClassCastException e) {
+            throw new CommonManagerConfigurationException(
+                    "The object created by ObjectFactory is not type of PaymentTermDAO.", e);
+        }
 
-/**
- * <p><strong>Usage:</strong> Represents the Data Access Object used to manage the PaymentTerms in the persistence, used in all methods. Initialized in the constructor, and never changed afterwards.</p>
- * <p><strong>Valid values</strong>: can not be null.</p>
- * 
- */
-    private final com.topcoder.timetracker.common.PaymentTermDAO paymentTermDAO = <<constructor>>;
+        //Get recent days
+        try {
+            int recent = Integer.parseInt(Helper.getPropertyValue(namespace, RECENT_DAYS));
+            Helper.validateRecentDays(recent);
+            this.recentDays = recent;
+        } catch (NumberFormatException e) {
+            throw new CommonManagerConfigurationException("The recent days configured is not valid number format.", e);
+        } catch (IllegalArgumentException e) {
+            throw new CommonManagerConfigurationException(e.getMessage());
+        }
+    }
 
-/**
- * <p><strong>Usage: </strong>Represents an instance of the id generator that is used to generate ids for the PaymentTerm entities. Initialized in one of the constructors and never changed afterwards. Used in addPaymentTerm method to generate id for the PaymentTerms that should be added to persistence.</p>
- * <p><strong>Valid values:</strong> can not be null.</p>
- * 
- */
-    private final com.topcoder.util.idgenerator.IDGenerator idGenerator = <<constructor>>;
+    /**
+     * <p>
+     * Constructor with a given <code>PaymentTermDAO</code> and the number of recent days.
+     * </p>
+     *
+     * @param paymentTermDAO the PaymentTermDAO implementation that will be used
+     * @param recentDays the number of recent days
+     *
+     * @throws IllegalArgumentException if the paymentTermDAO; or recentDays argument is not positive and not -1.
+     */
+    public SimpleCommonManager(PaymentTermDAO paymentTermDAO, int recentDays) {
+        Helper.validateNotNull(paymentTermDAO, "The PaymentTermDAO used by SimpleCommonManager");
+        Helper.validateRecentDays(recentDays);
+        this.paymentTermDAO = paymentTermDAO;
+        this.recentDays = recentDays;
+    }
 
-/**
- * <strong>Usage:</strong> Constructor to load configuration values from the given namespace.
- * <p><strong>Implementation notes:</strong></p>
- * <ol>
- * <li>
- * use ConfigManager to load the following properties from the given namespace:
- * <ol>
- * <li><strong>&quot;recent_days&quot;</strong> property value, <strong>required</strong>, must be convertible to int value, and the result must be positive int value.</li>
- * <li><strong>&quot;of_namespace&quot;</strong> property value, <strong>required</strong>, must be non-empty string.</li>
- * <li><strong>&quot;payment_term_dao_key&quot;</strong> property value, <strong>required</strong>, must be non-empty string.</li>
- * <li><strong>&quot;id_generator_name&quot;</strong> property values, <strong>required,</strong> must be non-empty string.</li>
- * </ol>
- * </li>
- * <li>convert <strong>recent_days</strong> property value to int, and assign to <em>this.recentDays</em>.</li>
- * <li>create <em>of = new ObjectFactory(new ConfigManagerSpecificationFactory(<strong>of_namespace</strong>))</em>. and then initialize <em>this.paymentTermDAO = (PaymentTermDAO) of.createObject(<strong>payment_term_dao_ke</strong>y);</em></li>
- * <li>initialize idGenerator: <em>this.idGenerator = IDGeneratorFactory.getIDGenerator(<strong>id_generator_name</strong>);</em></li>
- * </ol>
- * 
- * 
- * @param namespace the namespace to load configuration values
- * @throws IllegalArgumentException if argument is null or empty string
- * @throws CommonManagerConfigurationException if any configured value is invalid or any required value is missing, it is also used to wrap the exceptions from ConfigManager
- */
-    public  SimpleCommonManager(String namespace) {        
-        // your code here
-    } 
+    /**
+     * <p>
+     * Add the given <code>PaymentTerm</code> into the data store. The previous values of creation date and modification
+     * date of the give <code>PaymentTerm</code> will be ignored and will be set to current date.
+     * </p>
+     *
+     * <p>
+     *  <strong>Validation:</strong>
+     *  Validation will be performed on given <code>PaymentTerm</code> first,
+     *  <code>IllegalArgumentException</code> is thrown:
+     *  <ul>
+     *   <li>if the given <code>PaymentTerm</code> is null;</li>
+     *   <li>or its creation user is null, empty string or length greater than 64;</li>
+     *   <li>or its modification user is not null but is empty or length greater than 64;</li>
+     *   <li>or its description is null, empty or length greater than 64;</li>
+     *   <li>or its term is not positive.</li>
+     *  </ul>
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  Some fields of given <code>PaymentTerm</code> will have values altered through calling this method:
+     *  <ul>
+     *   <li>
+     *   If modification user of given <code>PaymentTerm</code> is null, it will be set to creation user value.
+     *   </li>
+     *   <li>
+     *   The unique identifier of given <code>PaymentTerm</code> will be set to the id retrieved through
+     *   <code>IDGenerator</code>.
+     *   </li>
+     *   <li>
+     *   After success adding, the changed status of given <code>PaymentTerm</code> will be set as false.
+     *   </li>
+     *  </ul>
+     * </p>
+     *
+     * @param paymentTerm the <code>PaymentTerm</code> to add.
+     *
+     * @throws IllegalArgumentException if the given <code>PaymentTerm</code> is not valid.
+     * @throws PaymentTermDAOException if any other problem occurs while accessing the data store.
+     * @throws DuplicatePaymentTermException if <code>PaymentTerm</code> is already added.
+     */
+    public void addPaymentTerm(PaymentTerm paymentTerm) throws PaymentTermDAOException {
+        Helper.validatePaymentTerm(paymentTerm, "PaymentTerm to be added", false, false);
 
-/**
- * <p><strong>Usage:</strong> Constructor with a given paymentTermDAO and id generator name. Also the number of recent day is provided.</p>
- * <p><strong>Implementation notes:</strong> &nbsp;</p>
- * <ul type="disc">
- * <li>
- * <p><em>this.paymentTermDAO = paymentTermDAO;</em></p>
- * </li>
- * <li>
- * <p><em>this.recentDays = recentDays;</em></p>
- * </li>
- * <li>
- * <p><em>this.idGenerator = IDGeneratorFactory.getIDGenerator(idGeneratorName);</em></p>
- * </li>
- * </ul>
- * 
- * 
- * @param paymentTermDAO the PaymentTermDAO implementation that will be used
- * @param recentDays the number of recent days
- * @param idGeneratorName the Id Generator String name to use
- * @throws IllegalArgumentException if the paymentTermDAO or idGeneratorName argument is null; or idGeneratorName argument is empty; or recentDays argument is not positive int and not -1.
- * @throws CommonManagerConfigurationException if fails to create the IDGenerator instance. Wrap the IDGenerationException that may occur here.
- */
-    public  SimpleCommonManager(PaymentTermDAO paymentTermDAO, int recentDays, String idGeneratorName) {        
-        // your code here
-    } 
-/**
- * 
- * 
- */
-    private final com.topcoder.timetracker.common.PaymentTermDAO paymentTermDAO;
+        //If the modification user has not been set, set it as the creation user.
+        String modificationUser = paymentTerm.getModificationUser();
+        if (modificationUser == null) {
+            paymentTerm.setModificationUser(paymentTerm.getCreationUser());
+        } else {
+            Helper.validateStringWithMaxLength(modificationUser, "The modification user of PaymentTerm to be added");
+        }
 
-/**
- * <strong>Usage:</strong> Add the given PaymentTerm in the data store. Set the id using idGenerator.getNextId(), creation date and modification date should be set to currennt date. If modification user is not set should be set to creation user value.
- * <p><strong>Implementation notes:</strong></p>
- * <p>after setting the required attributes for paymentTerm call:</p>
- * <ul type="disc">
- * <li><em>paymentTermDAO.addPaymentTerm(paymentTerm);</em></li>
- * </ul>
- * 
- * 
- * @param paymentTerm the PaymentTerm to add
- * @throws PaymentTermDAOException if any other problem occurs while accessing the data store
- * @throws IllegalArgumentException  if the given PaymentTerm is null; creation user is null, empty string or length >64; description is null, empty or length >64; term <=0
- * @throws DuplicatePaymentTermException if PaymentTerm is already added
- */
-    public void addPaymentTerm(PaymentTerm paymentTerm) {        
-        // your code here
-    } 
+        //Sets the creation date and modification date to current date.
+        Date date = new Date();
+        paymentTerm.setCreationDate(date);
+        paymentTerm.setModificationDate(date);
 
-/**
- * <strong>Usage:</strong> Update the given PaymentTerm in the data store. Set the modification date of the given paymentTerm to current date.
- * <p><strong>Implementation notes:</strong></p>
- * <p>after setting the required attribute for paymentTerm call:</p>
- * <ul type="disc">
- * <li><em>paymentTermDAO.updatePaymentTerm(paymentTerm);</em></li>
- * </ul>
- * 
- * 
- * @param paymentTerm the PaymentTerm to update
- * @throws PaymentTermDAOException if PaymentTerm is not added yet or any other problem occurs while accessing the data store
- * @throws IllegalArgumentException  if the given PaymentTerm is null; Date and String attributes of PaymentTerm are null; String attributes are empty; description length >64; creation user length >64; modification user length >64; term <=0; id<=0
- * @throws PaymentTermNotFoundException if the PaymentTerm to update was not found in the data store
- */
-    public void updatePaymentTerm(PaymentTerm paymentTerm) {        
-        // your code here
-    } 
+        this.paymentTermDAO.addPaymentTerm(paymentTerm);
+    }
 
-/**
- * <strong>Usage: </strong>Retrieve the PaymentTerm corresponding to given id from the data store.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrievePaymentTerm(id);</em></li>
- * </ul>
- * 
- * 
- * @return the PaymentTerm corresponding to given id
- * @param id the id of PaymentTerm to be retrieved
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if id<0
- * @throws PaymentTermNotFoundException if there is no PaymentTerm with the given id in the data store
- */
-    public PaymentTerm retrievePaymentTerm(long id) {        
-        return null;
-    } 
+    /**
+     * <p>
+     * Update the given <code>PaymentTerm</code> within the data store. The previous value of modification
+     * date of the give <code>PaymentTerm</code> will be ignored and will be set to current date.
+     * </p>
+     *
+     * <p>
+     *  <strong>Validation:</strong>
+     *  Validation will be performed on given <code>PaymentTerm</code> first,
+     *  <code>IllegalArgumentException</code> is thrown:
+     *  <ul>
+     *   <li>if the given <code>PaymentTerm</code> is null;</li>
+     *   <li>or its id is not positive.</li>
+     *   <li>or its creation date is null or &gt;= current date;</li>
+     *   <li>or its creation user is null, empty string or length greater than 64;</li>
+     *   <li>or its modification user is null, empty string or length greater than 64;</li>
+     *   <li>or its description is null, empty string or length greater than 64;</li>
+     *   <li>or its term is not positive.</li>
+     *  </ul>
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  <ul>
+     *   <li>
+     *   After successfully validating, if the changed status of given <code>PaymentTerm</code> is found to be false,
+     *   this method will simply return.
+     *   </li>
+     *   <li>
+     *   After successfully updating, the changed status of given <code>PaymentTerm</code> will be set as false.
+     *   </li>
+     *  </ul>
+     * </p>
+     *
+     * @param paymentTerm the <code>PaymentTerm</code> to update.
+     *
+     * @throws IllegalArgumentException if the given <code>PaymentTerm</code> is not valid.
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     * @throws PaymentTermNotFoundException if the <code>PaymentTerm</code> to update was not found in the data store.
+     */
+    public void updatePaymentTerm(PaymentTerm paymentTerm) throws PaymentTermDAOException {
+        String usage = "PaymentTerm to be updated";
+        Helper.validatePaymentTerm(paymentTerm, usage, true, true);
 
-/**
- * <strong>Usage: </strong>Retrieve an array with the PaymentTerms corresponding to given ids from the data store. If nothing is found, return zero length array.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrievePaymentTerms(ids);</em></li>
- * </ul>
- * 
- * 
- * @return the array with PaymentTerms corresponding to given ids
- * @param ids the array with ids of PaymentTerms to be retrieved
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if ids contains negative values
- * @throws PaymentTermNotFoundException if there is no PaymentTerm like one of the given ids in the data store
- */
-    public PaymentTerm[] retrievePaymentTerms(long[] ids) {        
-        return new PaymentTerm[0];
-    } 
+        Date currentDate = new Date();
 
-/**
- * <strong>Usage: </strong>Retrieve an array with all the PaymentTerms from the data store. If nothing is found, return zero length array.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrieveAllPaymentTerms();</em></li>
- * </ul>
- * 
- * 
- * @return the arraw with all the PaymentTerms
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- */
-    public PaymentTerm[] retrieveAllPaymentTerms() {        
-        return new PaymentTerm[0];
-    } 
+        //Check creationDate < currentDate(which will be set as modificationDate)
+        Helper.validateNotExceed(paymentTerm.getCreationDate(), currentDate, Boolean.FALSE,
+                "The creation date of " + usage, "current date");
 
-/**
- * <strong>Usage: </strong>Retrieve an array with all the active PaymentTerms from the data store. If nothing is found, return zero length array.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrieveActivePaymentTerms();</em></li>
- * </ul>
- * 
- * 
- * @return the arraw with all the active PaymentTerms
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- */
-    public PaymentTerm[] retrieveActivePaymentTerms() {        
-        return new PaymentTerm[0];
-    } 
 
-/**
- * <strong>Usage:</strong> Get an array with recently created PaymentTerms with configured recent days from the data store. If nothing is found, return zero length array.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrieveRecentlyCreatedPaymentTerms(recentDays);</em></li>
- * </ul>
- * 
- * 
- * @return the array with recently created PaymentTerms with configured recent days
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- */
-    public PaymentTerm[] retrieveRecentlyCreatedPaymentTerms() {        
-        return new PaymentTerm[0];
-    } 
+        //Set modification date as current date.
+        paymentTerm.setModificationDate(currentDate);
 
-/**
- * <strong>Usage:</strong> Get an array with recently created PaymentTerms with specified recent days from the data store. If recentDays is -1, it means all the recently requested users should be returned. If nothing is found, return zero length array.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrieveRecentlyCreatedPaymentTerms(recentDays);</em></li>
- * </ul>
- * 
- * 
- * @return the array with recently created PaymentTerms with specified recent days
- * @param recentDays the nubmer of recent days
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if the recentDays argument is non-positive value and not -1
- */
-    public PaymentTerm[] retrieveRecentlyCreatedPaymentTerms(int recentDays) {        
-        return new PaymentTerm[0];
-    } 
+        this.paymentTermDAO.updatePaymentTerm(paymentTerm);
+    }
 
-/**
- * <strong>Usage:</strong> Get an array with recently modified PaymentTerms with configured recent days from the data store. If nothing is found, return zero length array.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrieveRecentlyModifiedPaymentTerms(recentDays);</em></li>
- * </ul>
- * 
- * 
- * @return the array with recently modified PaymentTerms with configured recent days
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- */
-    public PaymentTerm[] retrieveRecentlyModifiedPaymentTerms() {        
-        return new PaymentTerm[0];
-    } 
+    /**
+     * <p>
+     * Retrieve the <code>PaymentTerm</code> corresponding to given id from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  Null is returned if the corresponding <code>PaymentTerm</code> is not found.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  The returned <code>PaymentTerm</code>(if not null) will have the changed status set as false.
+     * </p>
+     *
+     * @param id the id of PaymentTerm to retrieve.
+     *
+     * @return the <code>PaymentTerm</code> corresponding to given id. May be null if nothing is found.
+     *
+     * @throws IllegalArgumentException if id is not positive.
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public PaymentTerm retrievePaymentTerm(long id) throws PaymentTermDAOException {
+        Helper.validatePositive(id, "The id of PaymentTerm to retrieve");
+        return this.paymentTermDAO.retrievePaymentTerm(id);
+    }
 
-/**
- * <strong>Usage:</strong> Get an array with recently modified PaymentTerms with specified recent days from the data store. If recentDays is -1, it means all the recently requested users should be returned. If nothing is found, return zero length array.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return paymentTermDAO.retrieveRecentlyModifiedPaymentTerms(recentDays);</em></li>
- * </ul>
- * 
- * 
- * @return the array with recently modified PaymentTerms with specified recent days
- * @param recentDays the nubmer of recent days
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if the recentDays argument is non-positive value and not -1
- */
-    public PaymentTerm[] retrieveRecentlyModifiedPaymentTerms(int recentDays) {        
-        return new PaymentTerm[0];
-    } 
+    /**
+     * <p>
+     * Retrieve the <code>PaymentTerm</code>s corresponding to given ids from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  <ul>
+     *      <li>
+     *      If some ids are not found within the data store, they will be simply ignored and this method continues to
+     *      retrieve <code>PaymentTerm</code> for next id. So if some ids are not found, the returned array will
+     *      have the length less than the length of the passed in array of ids.
+     *      </li>
+     *      <li>
+     *      If the given array contains duplicate ids, the returned array of <code>PaymentTerm</code> will also contains
+     *      duplication.
+     *      </li>
+     *      <li>
+     *      If given ids array is empty or no <code>PaymentTerm</code>s are found in the data store, an empty array of
+     *      <code>PaymentTerm</code> is returned.
+     *      </li>
+     *  </ul>
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  All returned <code>PaymentTerm</code>s will have the changed status set as false.
+     * </p>
+     *
+     * @param ids the array with ids of <code>PaymentTerm</code> to be retrieved. Can be empty.
+     *
+     * @return the array with <code>PaymentTerm</code> corresponding to given ids. May be empty, but not null.
+     *
+     * @throws IllegalArgumentException if the given array is null or contains non-positive values.
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public PaymentTerm[] retrievePaymentTerms(long[] ids) throws PaymentTermDAOException {
+        if (!Helper.validateIdsArray(ids, "The id of PaymentTerm to retrieve")) {
+            return new PaymentTerm[0];
+        }
+        return this.paymentTermDAO.retrievePaymentTerms(ids);
+    }
 
-/**
- * <strong>Usage: </strong>Delete the PaymentTerm corresponding to given id from the data store.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>paymentTermDAO.deletePaymentTerm(id);</em></li>
- * </ul>
- * 
- * 
- * @param id the id of PaymentTerm to be deleted
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if id<0
- * @throws PaymentTermNotFoundException if there is no PaymentTerm with the given id in the data store
- */
-    public void deletePaymentTerm(long id) {        
-        // your code here
-    } 
+    /**
+     * <p>
+     * Return an array with all the <code>PaymentTerm</code>s within the datastore.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  If no <code>PaymentTerm</code> exist in data store, an empty array is returned.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  All returned <code>PaymentTerm</code>s will have the changed status set as false.
+     * </p>
+     *
+     * @return the array with all the <code>PaymentTerm</code>s. May be empty, but not null.
+     *
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public PaymentTerm[] retrieveAllPaymentTerms() throws PaymentTermDAOException {
+        return this.paymentTermDAO.retrieveAllPaymentTerms();
+    }
 
-/**
- * <strong>Usage: </strong>Delete the PaymentTerm corresponding to given id of the provided PaymentTerm from the data store.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>paymentTermDAO.deletePaymentTerm(paymentTerm);</em></li>
- * </ul>
- * 
- * 
- * @param paymentTerm the PaymentTerm to be deleted
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if id of PaymentTerm<0
- * @throws PaymentTermNotFoundException if the PaymentTerm to delete was not found in the data store
- */
-    public void deletePaymentTerm(PaymentTerm paymentTerm) {        
-        // your code here
-    } 
+    /**
+     * <p>
+     * Retrieve an array with all the active <code>PaymentTerm</code>s from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  If no active <code>PaymentTerm</code> is found, an empty array is returned.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  All returned <code>PaymentTerm</code>s will have the changed status set as false.
+     * </p>
+     *
+     * @return the array with all the active <code>PaymentTerm</code>s. May be empty, but not null.
+     *
+     * @throws PaymentTermDAOException if error occurs while accessing the data store
+     */
+    public PaymentTerm[] retrieveActivePaymentTerms() throws PaymentTermDAOException {
+        return this.paymentTermDAO.retrieveActivePaymentTerms();
+    }
 
-/**
- * <strong>Usage: </strong>Delete the PaymentTerms corresponding to the given ids from the data store.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>paymentTermDAO.deletePaymentTerms(ids);</em></li>
- * </ul>
- * <p></p>
- * 
- * 
- * @param ids the array with ids of PaymentTerms to be deleted
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if ids contains negative values
- * @throws PaymentTermNotFoundException if there is no PaymentTerm like one of the given ids in the data store
- */
-    public void deletePaymentTerms(long[] ids) {        
-        // your code here
-    } 
+    /**
+     * <p>
+     * Get an array with recently created <code>PaymentTerm</code>s with configured recent days from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  If no <code>PaymentTerm</code>s are found within the range of configured recent days, an empty array is
+     *  returned.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  All returned <code>PaymentTerm</code>s will have the changed status set as false.
+     * </p>
+     *
+     * @return the array with recently created <code>PaymentTerm</code>s with configured recent days. May be empty, but
+     *         not null.
+     *
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public PaymentTerm[] retrieveRecentlyCreatedPaymentTerms() throws PaymentTermDAOException {
+        return this.paymentTermDAO.retrieveRecentlyCreatedPaymentTerms(this.recentDays);
+    }
 
-/**
- * <strong>Usage: </strong>Delete the PaymentTerms corresponding to ids of given PaymentTerms from the data store.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>paymentTermDAO.deletePaymentTerms(paymentTerms);</em></li>
- * </ul>
- * <p></p>
- * 
- * 
- * @param paymentTerms the array with PaymentTerms to be deleted
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- * @throws IllegalArgumentException  if ids of PaymentTerms contains negative values
- * @throws PaymentTermNotFoundException if there is no PaymentTerm like one from the given paymentTerms in the data store
- */
-    public void deletePaymentTerms(PaymentTerm[] paymentTerms) {        
-        // your code here
-    } 
+    /**
+     * <p>
+     * Get an array with recently created <code>PaymentTerm</code>s with specified recent days from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  The given recent days must be a positive value or equal to -1,
+     *  <ul>
+     *      <li>
+     *      If given recent days is -1, all <code>PaymentTerm</code>s within data store will be returned.
+     *      </li>
+     *      <li>
+     *      If no <code>PaymentTerm</code>s are found within the range of recent days, an empty array is returned.
+     *      </li>
+     *  </ul>
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  All returned <code>PaymentTerm</code>s will have the changed status set as false.
+     * </p>
+     *
+     * @param recentDays the number of recent days.
+     *
+     * @return the array with recently created PaymentTerms with specified recent days. May be empty, but not null.
+     *
+     * @throws IllegalArgumentException if the recentDays argument is non-positive value and not -1.
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public PaymentTerm[] retrieveRecentlyCreatedPaymentTerms(int recentDays) throws PaymentTermDAOException {
+        Helper.validateRecentDays(recentDays);
+        return this.paymentTermDAO.retrieveRecentlyCreatedPaymentTerms(recentDays);
+    }
 
-/**
- * <strong>Usage: </strong>Delete all the PaymentTerms from the data store.
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>paymentTermDAO.deleteAllPaymentTerms();</em></li>
- * </ul>
- * 
- * 
- * @throws PaymentTermDAOException if a problem occurs while accessing the data store
- */
-    public void deleteAllPaymentTerms() {        
-        // your code here
-    } 
-/**
- * 
- * 
- */
-    private final com.topcoder.util.idgenerator.IDGenerator idGenerator;
- }
+    /**
+     * <p>
+     * Get an array with recently modified <code>PaymentTerm</code>s with configured recent days from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  If no <code>PaymentTerm</code>s are found within the range of configured recent days, an empty array is
+     *  returned.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  All returned <code>PaymentTerm</code>s will have the changed status set as false.
+     * </p>
+     *
+     * @return the array with recently modified PaymentTerms with configured recent days. May be empty, but not null.
+     *
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public PaymentTerm[] retrieveRecentlyModifiedPaymentTerms() throws PaymentTermDAOException {
+        return this.paymentTermDAO.retrieveRecentlyModifiedPaymentTerms(this.recentDays);
+    }
+
+    /**
+     * <p>
+     * Get an array with recently modified <code>PaymentTerm</code>s with specified recent days from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  The given recent days must be a positive value or equal to -1,
+     *  <ul>
+     *      <li>
+     *      If given recent days is -1, all <code>PaymentTerm</code>s within data store will be returned.
+     *      </li>
+     *      <li>
+     *      If no <code>PaymentTerm</code>s are found within the range of recent days, an empty array is returned.
+     *      </li>
+     *  </ul>
+     * </p>
+     *
+     * <p>
+     *  <strong>Changed status:</strong>
+     *  All returned <code>PaymentTerm</code>s will have the changed status set as false.
+     * </p>
+     *
+     * @param recentDays the number of recent days.
+     *
+     * @return the array with recently modified PaymentTerms with specified recent days. May be empty, but not null.
+     *
+     * @throws IllegalArgumentException if the recentDays argument is non-positive value and not -1.
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public PaymentTerm[] retrieveRecentlyModifiedPaymentTerms(int recentDays) throws PaymentTermDAOException {
+        Helper.validateRecentDays(recentDays);
+        return this.paymentTermDAO.retrieveRecentlyModifiedPaymentTerms(recentDays);
+    }
+
+    /**
+     * <p>
+     * Delete the <code>PaymentTerm</code> corresponding to given id from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  If this id doesn't exist in the persistence, <code>PaymentTermNotFoundException</code> will be raised.
+     * </p>
+     *
+     * @param id the id of <code>PaymentTerm</code> to be deleted.
+     *
+     * @throws IllegalArgumentException if id is not positive.
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     * @throws PaymentTermNotFoundException if there is no <code>PaymentTerm</code> with the given id in the data store.
+     */
+    public void deletePaymentTerm(long id) throws PaymentTermDAOException {
+        this.deletePaymentTerms(new long[]{id});
+    }
+
+    /**
+     * <p>
+     * Delete the <code>PaymentTerm</code>s corresponding to the given ids from the data store.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  <ul>
+     *      <li>
+     *      If the given array is empty, nothing happen.
+     *      </li>
+     *      <li>
+     *      If any of the given ids doesn't exist in the persistence, <code>PaymentTermNotFoundException</code>
+     *      will be raised.
+     *      </li>
+     *      <li>
+     *      If you delete a <code>PaymentTerm</code> twice, that is, the given array contain duplicate ids,
+     *      <code>PaymentTermNotFoundException</code> will be raised.
+     *      </li>
+     *  </ul>
+     * </p>
+     *
+     * @param ids the array with ids of <code>PaymentTerm</code>s to be deleted. Can be empty.
+     *
+     * @throws IllegalArgumentException if the given array is null or contains non-positive values.
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     * @throws PaymentTermNotFoundException if there is no <code>PaymentTerm</code> like one of the given ids in the
+     *         data store.
+     */
+    public void deletePaymentTerms(long[] ids) throws PaymentTermDAOException {
+        if (!Helper.validateIdsArray(ids, "The id of PaymentTerm to be deleted")) {
+            return;
+        }
+        this.paymentTermDAO.deletePaymentTerms(ids);
+    }
+
+    /**
+     * <p>
+     * Delete all the <code>PaymentTerm</code>s from the data store.
+     * </p>
+     *
+     * @throws PaymentTermDAOException if error occurs while accessing the data store.
+     */
+    public void deleteAllPaymentTerms() throws PaymentTermDAOException {
+        this.paymentTermDAO.deleteAllPaymentTerms();
+    }
+}

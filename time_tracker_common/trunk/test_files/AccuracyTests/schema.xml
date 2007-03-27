@@ -1,0 +1,21 @@
+CREATE TABLE id_sequences (
+    name                VARCHAR(255) NOT NULL  PRIMARY KEY,
+    next_block_start    INT8 NOT NULL,
+    block_size          INT NOT NULL,
+    exhausted		int NOT NULL
+);
+
+CREATE TABLE payment_terms (
+  payment_terms_id INT8 NOT NULL,
+  description VARCHAR(64) NOT NULL,
+  creation_date DATETIME year to second NOT NULL,
+  creation_user VARCHAR(64) NOT NULL,
+  modification_date DATETIME year to second NOT NULL,
+  modification_user VARCHAR(64) NOT NULL,
+  active SMALLINT NOT NULL,
+  term INTEGER NOT NULL,
+  PRIMARY KEY(payment_terms_id)
+);
+
+insert into id_sequences (name, next_block_start, block_size, exhausted) values ('ids', 11, 3, 0);
+

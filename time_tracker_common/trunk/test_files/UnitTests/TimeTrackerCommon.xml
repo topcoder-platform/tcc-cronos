@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+
+   <Config name="com.topcoder.timetracker.common.SimpleCommonManager">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>3</Value>
+       </Property>
+   </Config> 
+  
+   <Config name="SimpleCommonManager">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>-1</Value>
+       </Property>
+   </Config>
+
+   <Config name="DatabasePaymentTermDAO">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+
+</CMConfig>

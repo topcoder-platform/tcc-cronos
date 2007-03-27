@@ -1,57 +1,81 @@
-
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.timetracker.common;
 
 /**
- * <p><strong>Usage: </strong>This exception is thrown if the involved PaymentTerm was not found in the persistence. This is thrown during update/delete/retrieve methods.</p>
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><strong>extends </strong>PaymenTermDAOException.</li>
- * </ul>
- * <p><strong>Thread-safety:</strong> Exceptions are thread-safe.</p>
- * 
+ * <p>
+ *  This exception is thrown if the involved <code>PaymentTerm</code> was not found in the persistence.
+ *  This is thrown during update/delete methods.
+ * </p>
+ *
+ * <p>
+ *  <strong>Thread-safety:</strong>
+ *  This class is immutable since its super class <code>PaymentTermDAOException</code> is immutable,
+ *  so this class is thread-safe.
+ * </p>
+ *
+ * @author Mafy, liuliquan
+ * @version 3.1
  */
 public class PaymentTermNotFoundException extends PaymentTermDAOException {
+    /**
+     * <p>
+     * Serial Version UID.
+     * </p>
+     */
+    private static final long serialVersionUID = 8313867367875352566L;
 
-/**
- * <p><strong>Usage: </strong>The ID of the PaymentTerm that the DAO was working with when a problem occurred. Initialized in&nbsp; the constructor and never changed afterwards. Accessed thru<em> getProblemPaymentTermID </em>method.</p>
- * <p><strong>Valid values:</strong> can not be &lt;=0.</p>
- * 
- */
-    private final long problemPaymentTermID = <<constructor>>;
+    /**
+     * <p>
+     *  <strong>Usage:</strong>
+     *  The ID of the PaymentTerm that the DAO was working with when a problem occurred.
+     * </p>
+     *
+     * <p>
+     *  <strong>Value:</strong>
+     *  Should be positive. Initialized in the constructor.
+     * </p>
+     *
+     * <p>
+     *  <strong>Accessibility:</strong>
+     *  Accessed through <code>getProblemPaymentTermId()</code> method.
+     * </p>
+     *
+     * <p>
+     *  <strong>Immutability:</strong>
+     *  Immutable.
+     * </p>
+     */
+    private final long problemPaymentTermId;
 
-/**
- * <p><strong>Usage:</strong> Constructor with error message and ID of problem PaymentTerm.</p>
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li>
- * <p><em>super(message);</em></p>
- * </li>
- * <li>
- * <p><em>this.problemPaymentTermID = problemPaymentTermID;</em></p>
- * </li>
- * </ul>
- * 
- * 
- * @param message the error message
- * @param problemPaymentTermID the ID of the PaymentTerm that the DAO was working with when a problem occurred
- * @throws IllegalArgumentException if problemPaymentTerm ID <=0
- */
-    public  PaymentTermNotFoundException(String message, long problemPaymentTermID) {        
-        // your code here
-    } 
+    /**
+     * <p>
+     *  Constructor with error message and id of <code>PaymentTerm</code> which was not found in the persistence.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  To follow the tc code convention, the passed in <em>problemPaymentTermId</em> is not checked.
+     *  But it should be positive.
+     * </p>
+     *
+     * @param message the error message.
+     * @param problemPaymentTermId the id of the <code>PaymentTerm</code> that was not found in the persistence.
+     */
+    public PaymentTermNotFoundException(String message, long problemPaymentTermId) {
+        super(message);
+        this.problemPaymentTermId = problemPaymentTermId;
+    }
 
-/**
- * <p><strong>Usage:</strong> Retrieves the ID of the PaymentTerm that the DAO was working with when a problem occurred.</p>
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return this.problemPaymentTermID;</em></li>
- * </ul>
- * 
- * 
- * @return the ID of the PaymentTerm that the DAO was working with when a problem occurred
- */
-    public long getProblemPaymentTermID() {        
-        // your code here
-        return 0;
-    } 
- }
+    /**
+     * <p>
+     *  Retrieves the Id of the <code>PaymentTerm</code> that was not found in the persistence.
+     * </p>
+     *
+     * @return the Id of the <code>PaymentTerm</code> that was not found in the persistence.
+     */
+    public long getProblemPaymentTermId() {
+        return this.problemPaymentTermId;
+    }
+}

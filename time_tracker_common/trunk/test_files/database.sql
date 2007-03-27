@@ -1,0 +1,2 @@
+insert into id_sequences (name, next_block_start, block_size, exhausted) values ('PaymentTermGenerator', 11, 3, 0);
+insert into id_sequences (name, next_block_start, block_size, exhausted) values ('ids', 11, 3, 0);

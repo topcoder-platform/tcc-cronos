@@ -1,0 +1,15 @@
+1. See build.xml for the required jars.
+
+2. Create tables as /docs/Time_Tracker_Common_DDL.sql
+
+3. Correct the configuration in /test_files/UnitTests/DBConnectionFactory.xml according to your enviroment.
+
+4. Correct the configuration in /test_files/UnitTests/DBConnectionFactory_Error.xml according to your enviroment.
+   Ensure:
+   
+   4.1 The configuration of namespace "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl_Error_4" should exactly
+       equal configutation in 3 except that within "jdbc_url" property, the database name points a non-exist one.
+       The non-exist database will raise DBConnectionException.
+   4.2 The configuration of namespace "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl_Error_5" should exactly
+       equal configutation in 3 except that within "jdbc_url" property, the database name points an existing but empty one.
+       The existing but empty database will raise SQLException addressing something like "no such table or view".

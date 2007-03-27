@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+   <Config name="DatabasePaymentTermDAO_Error_1">
+       <!-- namespace of ObjectFactory is missing-->
+
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+   
+      <Config name="DatabasePaymentTermDAO_Error_2">
+       <!-- namespace of ObjectFactory is empty -->
+       <Property name="of_namespace">
+          <Value> </Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+   
+   <Config name="DatabasePaymentTermDAO_Error_3">
+       <!-- namespace of ObjectFactory is unknown -->
+       <Property name="of_namespace">
+          <Value>unknown</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+   
+   <Config name="DatabasePaymentTermDAO_Error_4">
+       <!-- namespace of ObjectFactory is error -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_1</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+   
+   <Config name="DatabasePaymentTermDAO_Error_5">
+       <!-- namespace of ObjectFactory is error -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_2</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+
+   <Config name="DatabasePaymentTermDAO_Error_6">
+       <!-- namespace of ObjectFactory is error -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_3</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+   
+   <Config name="DatabasePaymentTermDAO_Error_7">
+       <!-- namespace of ObjectFactory is error -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_4</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_8">
+       <!-- namespace of ObjectFactory is error -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_5</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_9">
+       <!-- namespace of ObjectFactory is error -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_6</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_10">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory is missing-->
+       <Property name="db_connection_factory_key">
+          <!-- Value>DBConnectionFactoryKey</Value-->
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_11">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory is empty-->
+       <Property name="db_connection_factory_key">
+          <Value> </Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_12">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory does not exist-->
+       <Property name="db_connection_factory_key">
+          <Value>xxxxxxxxxxxx</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_13">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory is missing-->
+       <Property name="connection_name">
+         
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+
+   <Config name="DatabasePaymentTermDAO_Error_14">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory is empty -->
+       <Property name="connection_name">
+          <Value> </Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_15">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm is missing-->
+       <Property name="id_generator_name">
+          
+       </Property>
+   </Config> 
+   
+   <Config name="DatabasePaymentTermDAO_Error_16">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm is empty-->
+       <Property name="id_generator_name">
+          <Value> </Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_17">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm does not exist in data store-->
+       <Property name="id_generator_name">
+          <Value>NoSuchIDGeneratorInDataStore</Value>
+       </Property>
+   </Config>
+   
+   <Config name="DatabasePaymentTermDAO_Error_18">
+       <!-- namespace of ObjectFactory points to an invalid configuration of DBConnectionFactory-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_7</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory is empty -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm-->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+
+   <Config name="DatabasePaymentTermDAO_Error_19">
+       <!-- namespace of ObjectFactory points to an invalid configuration of DBConnectionFactory-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_8</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory is empty -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm-->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+
+   <Config name="DatabasePaymentTermDAO_Error_20">
+       <!-- namespace of ObjectFactory points to an invalid configuration of DBConnectionFactory-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_9</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory is empty -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm-->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_21">
+       <!-- namespace of ObjectFactory points to an invalid configuration of DBConnectionFactory-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_10</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory is empty -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm-->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO_Error_22">
+       <!-- namespace of ObjectFactory points to an invalid configuration of DBConnectionFactory-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_11</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory-->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory is empty -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm-->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config> 
+
+</CMConfig>

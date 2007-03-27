@@ -1,0 +1,48 @@
+<CMConfig>
+  <Config name="com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO">
+   	<Property name="of_namespace">
+                <Value>com.topcoder.timetracker.common.objectfactory</Value>
+   	</Property>
+   	<Property name="db_connection_factory_key">
+                <Value>connectionfactory</Value>
+   	</Property>
+   	 <Property name="connection_name">
+                <Value>funny</Value>
+   	</Property>
+   	 <Property name="id_generator_name">
+                <Value>sequence</Value>
+   	</Property>
+  </Config>
+  <Config name="com.topcoder.timetracker.common.objectfactory">
+  	  <Property name="connectionfactory">
+	   <Property name="type">
+         <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+       </Property>
+       <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+          </Property>
+        </Property>
+      </Property>
+     </Property>
+    <Property name="paymentTermDao">
+      <Property name="type">
+        <Value>com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO</Value>
+          </Property>
+        </Property>
+      </Property>
+     </Property>
+  </Config>
+</CMConfig>

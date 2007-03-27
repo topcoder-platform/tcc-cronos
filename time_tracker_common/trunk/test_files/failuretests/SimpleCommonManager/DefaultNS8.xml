@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+   <Config name="com.topcoder.timetracker.common.SimpleCommonManager">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value> </Value>
+       </Property>
+   </Config> 
+
+   <Config name="DatabasePaymentTermDAO">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of DBConnectionFactory within ObjectFactory -->
+       <Property name="db_connection_factory_key">
+          <Value>DBConnectionFactoryKey</Value>
+       </Property>
+       <!-- connection name within DBConnectionFactory -->
+       <Property name="connection_name">
+          <Value>Informix</Value>
+       </Property>
+       <!-- IDGenerator name used to generate id for PaymentTerm -->
+       <Property name="id_generator_name">
+          <Value>PaymentTermGenerator</Value>
+       </Property>
+   </Config>
+
+      <Config name="ObjectFactoryNS">
+
+      <Property name="PaymentTermDAOKey">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>DatabasePaymentTermDAO</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+        
+      <Property name="DBConnectionFactoryKey">
+	        <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+   </Config>
+</CMConfig>

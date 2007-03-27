@@ -1,6 +1,5 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.common;
 
@@ -12,28 +11,35 @@ import com.topcoder.timetracker.common.failuretests.FailureTests;
 import com.topcoder.timetracker.common.stresstests.StressTests;
 
 /**
- * <p>This test case aggregates all test cases.</p>
- *
- * @author TopCoder
+ * <p>
+ * This test case aggregates all test cases.
+ * </p>
+ * @author FireIce
  * @version 1.0
  */
 public class AllTests extends TestCase {
 
+    /**
+     * <p>
+     * Aggregates all tests in this class.
+     * </p>
+     * @return test suite aggregating all tests.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        
-        //unit tests
+
+        // unit tests
         suite.addTest(UnitTests.suite());
-        
-        //accuracy tests
+
+        // accuracy tests
         suite.addTest(AccuracyTests.suite());
-        
-        //failure tests
+
+        // failure tests
         suite.addTest(FailureTests.suite());
-        
-        //stress tests
-        suite.addTest(StressTests.suite());
-        
+
+        // stress tests
+        suite.addTestSuite(StressTests.class);
+
         return suite;
     }
 

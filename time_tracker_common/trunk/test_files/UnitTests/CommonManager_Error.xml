@@ -1,0 +1,212 @@
+<CMConfig>
+   <Config name="SimpleCommonManager_Error_1">
+       <!-- namespace of ObjectFactory is missing -->
+       <Property name="of_namespace">
+          
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>3</Value>
+       </Property>
+   </Config> 
+   
+   <Config name="SimpleCommonManager_Error_2">
+       <!-- namespace of ObjectFactory is missing -->
+       <Property name="of_namespace">
+          <Value> </Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>3</Value>
+       </Property>
+   </Config> 
+   
+   <Config name="SimpleCommonManager_Error_3">
+       <!-- namespace of ObjectFactory is missing -->
+       <Property name="of_namespace">
+          <Value>unknown</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>3</Value>
+       </Property>
+   </Config> 
+
+   <Config name="SimpleCommonManager_Error_4">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO is missing -->
+       <Property name="payment_term_dao_key">
+         
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>3</Value>
+       </Property>
+   </Config> 
+   
+   <Config name="SimpleCommonManager_Error_5">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO is empty-->
+       <Property name="payment_term_dao_key">
+          <Value></Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>3</Value>
+       </Property>
+   </Config>
+   
+   <Config name="SimpleCommonManager_Error_6">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days is missing -->
+       <Property name="recent_days">
+          
+       </Property>
+   </Config> 
+   
+   <Config name="SimpleCommonManager_Error_7">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days is empty -->
+       <Property name="recent_days">
+          <Value></Value>
+       </Property>
+   </Config>
+
+   <Config name="SimpleCommonManager_Error_8">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days is invalid -->
+       <Property name="recent_days">
+          <Value>-4</Value>
+       </Property>
+   </Config>
+
+   <Config name="SimpleCommonManager_Error_9">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days is invalid -->
+       <Property name="recent_days">
+          <Value>9999999999999999</Value>
+       </Property>
+   </Config>
+
+   <Config name="SimpleCommonManager_Error_10">
+       <!-- namespace of ObjectFactory -->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days is invalid -->
+       <Property name="recent_days">
+          <Value>1234abcd</Value>
+       </Property>
+   </Config>
+
+   <Config name="SimpleCommonManager_Error_11">
+       <!-- configuration of ObjectFactory points to an invalid configuration of dao-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_12</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>1234</Value>
+       </Property>
+   </Config>
+
+   <Config name="SimpleCommonManager_Error_12">
+       <!-- configuration of ObjectFactory points to an invalid configuration of dao-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_13</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>1234</Value>
+       </Property>
+   </Config>
+
+   <Config name="SimpleCommonManager_Error_13">
+       <!-- configuration of ObjectFactory points to an invalid configuration of dao-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_14</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>1234</Value>
+       </Property>
+   </Config>
+
+   <Config name="SimpleCommonManager_Error_14">
+       <!-- configuration of ObjectFactory points to an invalid configuration of dao-->
+       <Property name="of_namespace">
+          <Value>ObjectFactoryNS_Error_15</Value>
+       </Property>
+       <!-- key of PaymentTermDAO within ObjectFactory -->
+       <Property name="payment_term_dao_key">
+          <Value>PaymentTermDAOKey</Value>
+       </Property>
+       <!-- recent days, must be positive int value or -1 -->
+       <Property name="recent_days">
+          <Value>1234</Value>
+       </Property>
+   </Config>
+
+</CMConfig>

@@ -1,0 +1,311 @@
+<CMConfig>
+
+   <Config name="ObjectFactoryNS_Error_1">
+
+      <Property name="DBConnectionFactoryKey">
+            <!-- class type property is missing  -->
+	        <Property name="type">
+	            <!--  Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value-->
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_2">
+
+      <Property name="DBConnectionFactoryKey">
+	        <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <!-- parameter type property is missing -->
+	                <Property name="type">
+	                    <!-- Value>String</Value-->
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_3">
+
+      <Property name="DBConnectionFactoryKey">
+	        <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	            <!-- parameter type is wrong -->
+	                <Property name="type">
+	                    <Value>int</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_4">
+
+      <Property name="DBConnectionFactoryKey">
+	        <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- value points to an unknown namespace -->
+	                <Property name="value">
+	                    <Value>asdfsadfjalkj</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_5">
+
+      <Property name="DBConnectionFactoryKey">
+            <!-- class type is wrong -->
+	        <Property name="type">
+	            <Value>xxx.com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                 <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+   
+   <Config name="ObjectFactoryNS_Error_6">
+
+      <Property name="DBConnectionFactoryKey">
+            <!-- class type is wrong -->
+	        <Property name="type">
+	            <Value>java.lang.String</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                 <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_7">
+
+      <Property name="DBConnectionFactoryKey">
+            <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                 <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- points to an invalid configuration of DBConnectionFactory -->
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl_Error_1</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_8">
+
+      <Property name="DBConnectionFactoryKey">
+            <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                 <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- points to an invalid configuration of DBConnectionFactory -->
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl_Error_2</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_9">
+
+      <Property name="DBConnectionFactoryKey">
+            <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                 <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- points to an invalid configuration of DBConnectionFactory -->
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl_Error_3</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_10">
+
+      <Property name="DBConnectionFactoryKey">
+            <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                 <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- points to a of DBConnectionFactory whose jdbc_url points to a non-exist database-->
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl_Error_4</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+
+   <Config name="ObjectFactoryNS_Error_11">
+
+      <Property name="DBConnectionFactoryKey">
+            <Property name="type">
+	            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                 <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- points to a configuration of DBConnectionFactory whose jdbc_url points to an existing but empty database-->
+	                <Property name="value">
+	                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl_Error_5</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    
+   </Config>
+   
+   <Config name="ObjectFactoryNS_Error_12">
+
+      <Property name="PaymentTermDAOKey">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>DatabasePaymentTermDAO_Error_1</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+   <Config name="ObjectFactoryNS_Error_13">
+
+      <Property name="PaymentTermDAOKey">
+	        <Property name="type">
+	        <!-- type is wrong -->
+	            <Value>java.lang.String</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>DatabasePaymentTermDAO</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+   <Config name="ObjectFactoryNS_Error_14">
+
+      <Property name="PaymentTermDAOKey">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>DatabasePaymentTermDAO_Error_21</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+   <Config name="ObjectFactoryNS_Error_15">
+
+      <Property name="PaymentTermDAOKey">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>DatabasePaymentTermDAO_Error_22</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+</CMConfig>

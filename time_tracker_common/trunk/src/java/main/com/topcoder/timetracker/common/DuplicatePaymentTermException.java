@@ -1,62 +1,89 @@
-
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.timetracker.common;
 
 /**
- * <strong>Usage:</strong> This exception is thrown by PaymentTermDAO to indicate that a PaymenTerm already exists when one was not expected.&nbsp;This method only really is thrown from a call to <em>addPaymentTerm().</em>&nbsp;
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><strong>extends </strong>PaymenTermDAOException.</li>
- * </ul>
- * <p><strong>Thread-safety:</strong> Exceptions are thread-safe.</p>
- * 
+ * <p>
+ *  This exception is thrown by <code>PaymentTermDAO</code> to indicate that a <code>PaymenTerm</code>
+ *  already exists when one was not expected. This only really is thrown from a call to <code>addPaymentTerm()</code>.
+ * </p>
+ *
+ * <p>
+ *  <strong>Thread-safety:</strong>
+ *  This class is immutable since its super class <code>PaymentTermDAOException</code> is immutable,
+ *  so this class is thread-safe.
+ * </p>
+ *
+ * @author Mafy, liuliquan
+ * @version 3.1
  */
-public class DuplicatePaymentTermException extends com.topcoder.timetracker.common.PaymentTermDAOException {
+public class DuplicatePaymentTermException extends PaymentTermDAOException {
+    /**
+     * <p>
+     * Serial Version UID.
+     * </p>
+     */
+    private static final long serialVersionUID = 62322203574596518L;
 
-/**
- * <p><strong>Usage: </strong>The PaymentTerm that the DAO was trying to add but this already exist in the persistence. Initialized in&nbsp; the constructor and never changed afterwards. Accessed thru<em> getDupplicatePaymentTerm </em>method.</p>
- * <p><strong>Valid values:</strong> can not be &lt;=0.</p>
- * 
- */
-    private final com.topcoder.timetracker.common.PaymentTerm duplicatePaymentTerm;
+    /**
+     * <p>
+     *  <strong>Usage:</strong>
+     *  The <code>PaymentTerm</code> that the DAO was trying to add but this already exist in the persistence.
+     * </p>
+     *
+     * <p>
+     *  <strong>Value:</strong>
+     *  Should not be null and should hold the unique identifier which is found to be duplicate in the data store.
+     *  Initialized in the constructor.
+     * </p>
+     *
+     * <p>
+     *  <strong>Accessibility:</strong>
+     *  Accessed through <code>getDupplicatePaymentTerm()</code> method.
+     * </p>
+     *
+     * <p>
+     *  <strong>Immutability:</strong>
+     *  Immutable.
+     * </p>
+     */
+    private final PaymentTerm duplicatePaymentTerm;
 
-/**
- * <p><strong>Usage:</strong> Constructor with error message and&nbsp; dupplicate PaymentTerm.</p>
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li>
- * <p><em>super(message);</em></p>
- * </li>
- * <li>
- * <p><em>this.duplicatePaymentTerm = duplicatePaymentTerm;</em></p>
- * </li>
- * </ul>
- * 
- * 
- * @param message the error message
- * @param duplicatePaymentTerm the PaymentTerm that the DAO was trying to add but this already exist in the persistence
- * @throws IllegalArgumentException if duplicatePaymentTerm is null
- */
-    public  DuplicatePaymentTermException(String message, com.topcoder.timetracker.common.PaymentTerm duplicatePaymentTerm) {        
-        // your code here
-    } 
+    /**
+     * <p>
+     *  Constructor with error message and duplicate <code>PaymentTerm</code>.
+     * </p>
+     *
+     * <p>
+     *  <strong>Note:</strong>
+     *  To follow the tc code convention, the passed in <code>PaymentTerm</code> is not checked. But it should not
+     *  be null and should hold the unique identifier which is found to be duplicate in the data store.
+     * </p>
+     *
+     * @param message the error message.
+     * @param duplicatePaymentTerm the <code>PaymentTerm</code> that the DAO was trying to add but this already exist
+     *        in the persistence.
+     */
+    public DuplicatePaymentTermException(String message, PaymentTerm duplicatePaymentTerm) {
+        super(message);
+        this.duplicatePaymentTerm = duplicatePaymentTerm;
+    }
 
-/**
- * <p><strong>Usage:</strong> Retrieves the PaymentTerm that the DAO was trying to add but this already exist in the persistence.</p>
- * <p><strong>Implementation notes:</strong></p>
- * <ul type="disc">
- * <li><em>return this.duplicatePaymentTerm;</em></li>
- * </ul>
- * 
- * 
- * @return the PaymentTerm that the DAO was trying to add but this already exist in the persistence
- */
-    public com.topcoder.timetracker.common.PaymentTerm getDuplicatePaymentTerm() {        
-        // your code here
-        return null;
-    } 
-/**
- * 
- * 
- */
-    private final com.topcoder.timetracker.common.PaymentTerm paymentTerm;
- }
+    /**
+     * <p>
+     *  Retrieves the <code>PaymentTerm</code> that the DAO was trying to add but this already exist in the persistence.
+     * </p>
+     *
+     * <p>
+     *  The returned <code>PaymentTerm</code> should hold the unique identifier which is found to be duplicate in the
+     *  data store.
+     * </p>
+     *
+     * @return the <code>PaymentTerm</code> that the DAO was trying to add but this already exist in the persistence.
+     *         May be null.
+     */
+    public PaymentTerm getDuplicatePaymentTerm() {
+        return this.duplicatePaymentTerm;
+    }
+}
