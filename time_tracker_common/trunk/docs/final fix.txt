@@ -1,0 +1,9 @@
+Hi!
+
+"Transaction shouldn't be used for single query string. This problem occurs in many places in DatabasePaymentDAO"
+I have added a note in DatabasePaymentTermDAO Class Doc and removed the details about transactions in retrieve methods.
+
+
+Please detail any remaining issues that you might find.
+
+Thank you and have a nice day!
