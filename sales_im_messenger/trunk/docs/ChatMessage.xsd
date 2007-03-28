@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="timestamp"/>
+				<xs:element ref="sender"/>
+				<xs:element ref="recipients"/>
+				<xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="chat_session_id"/>
+				<xs:element ref="chat_user_profile_properties"/>
+				<xs:element ref="chat_text"/>
+				<xs:element ref="formatted_chat_text"/>
+			</xs:sequence>
+			<xs:attribute name="type" type="xs:string" fixed="ChatMessage"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="timestamp" type="xs:string"/>
+	<xs:element name="sender" type="xs:long"/>
+	<xs:element name="recipients">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="recipient" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="recipient" type="xs:long"/>
+	<xs:element name="attribute">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="name"/>
+				<xs:element ref="value"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="value" type="xs:string"/>
+	<xs:element name="name" type="xs:string"/>
+	<xs:element name="chat_session_id" type="xs:long"/>
+	<xs:element name="chat_user_profile_properties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="attribute" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="chat_text" type="xs:string"/>
+	<xs:element name="formatted_chat_text" type="xs:string"/>
+</xs:schema>

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.messenger.ChatFormattedMessage">
+		<Property name="user_name_key">
+			<Value>user_name</Value>
+		</Property>
+		<Property name="role_name_key">
+			<Value>manager</Value>
+		</Property>
+	</Config>
+	<!-- this is the namespace for the role "manager" -->
+	<Config name="com.cronos.im.messenger.ChatFormattedMessage.manager">
+	    <!-- format attributes for user name -->
+		<Property name="user_name_format">
+			<Property name="face">
+				<Value>Arial</Value>
+			</Property>
+			<Property name="size">
+				<Value>5</Value>
+			</Property>
+			<Property name="color">
+				<Value>#2248</Value>
+			</Property>
+		</Property>
+        <!-- format attributes for timstamp -->
+		<Property name="timestamp_format">
+			<Property name="face">
+				<Value>Arial</Value>
+			</Property>
+			<Property name="size">
+				<Value>5</Value>
+			</Property>
+			<Property name="color">
+				<Value>#2248</Value>
+			</Property>
+		</Property>
+
+        <!-- format attributes for chat text -->
+		<Property name="chat_text_format">
+		    <Property name="chat_text_static_format">
+				<Property name="face">
+					<Value>Arial</Value>
+				</Property>
+				<Property name="size">
+					<Value>5</Value>
+				</Property>
+				<Property name="color">
+					<Value>#2248</Value>
+				</Property>
+			</Property>
+
+			<Property name="chat_text_dynamic_format">
+			    <!-- a sample pattern used to select the url like http://www.topcoder.com.
+				Assume that the original chat text is: 
+                Visit http://www.google.com/finance everyday and you will be very rich. 
+           
+				the formatted chat text will be:
+                Visit <a href="www.google.com/finance">http://www.google.com/finance</a>.
+
+				if the static format is applied, the formatted chat text will be:
+                <font face="Arial" size="5" color="#2248">Visit <a href="www.google.com/finance">http://www.google.com/finance</a><font>.
+
+
+				Please note that the pattern sepcifed in class document of FormattedChatMessage and requirement 1.2.1.6 should be showed fully
+				in the demo during development phase.
+				-->
+			    <Value>http://([^ ]+)</Value>
+				<Property name="href">
+					<Value>$1</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

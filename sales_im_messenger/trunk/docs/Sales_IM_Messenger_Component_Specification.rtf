@@ -1,0 +1,244 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052\deftab420{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier;}{\f3\fswiss\fprq1\fcharset0 ArialMT;}{\f4\fnil\fprq2\fcharset2 Wingdings;}{\f5\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue127;\red255\green0\blue0;\red0\green0\blue255;\red51\green51\blue153;\red127\green127\blue127;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx720\ul\b\f0\fs32 Sales IM Messenger Component Specification\par
+\pard\nowidctlpar\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1\fs24 1.\tab Design\f0\fs20\par
+\pard\nowidctlpar\li720\sa120\b0\f1 The Sales IM Messenger component is part of a larger client-server chat application. It distributes and routes all kinds of messages that are involved. Since connection is not persistent between client and server, messages are pushed to message pools for clients to pull. Additional formatting will be applied on normal chat messages. Six types of messages are derived on top of the abstract Message class. Each message type has its own XML representation. \f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li701\sa120\b0 MessageTracker, UserIDRetriever and their implementation implement the strategy pattern for MessengerImpl.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 JDBC\f0\par
+\f1 XML\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.3\tab Required Algorithms\par
+\b0\i 1.3.1\f0\tab\f1 Load the ChatMessageFormatter by role name\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\i0\f1 This algorithm is used by FormatterLoader to load the ChatMessageFormater from the configuration file. The sample configuration file locates in docs/\f0\par
+\pard\nowidctlpar\fi720\sa120\sl240\slmult0\cf2\f2\fs18 Impl note:\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 1. For the role name, construct a namespace like com.cronos.im.messenger.FormatterLoader.roleName.\par
+2. Load the user name formatting configuration values from com.cronos.im.messenger.FormatterLoader.roleName.\par
+2.1 Load all the font attributes from user_name_format.xxx property.\line 2.2 Create XmlTagFormatter with \ldblquote font\rdblquote  tag, and add these static attributes\par
+3. Load the timestamp formatting configuration values from com.cronos.im.messenger.FormatterLoader.roleName. Create XmlTagFormatter in the similar way as step 3.\par
+4. Load the chat dynamic attributes and pattern from chat_text_dynamic_format property. Create XmlTagFormatter with \ldblquote a\rdblquote  tag, pattern and the dynamic attributes. Create Matcher, create ContentHighligthter, add the formatter to matcher, and then add the Matcher to ContentHigglighter. \par
+5. Create another XmlTagFormatter with \ldblquote font\rdblquote  tag.\par
+5.1 Load all the static attributes under chat_text_static_format property, and add them to the formatter.\line 5.2 Format the chat text against this formatter. Note that the chat text is the output of the step 5.\par
+Note: please see the sample configuration file for the output of the formatted chat text.\par
+6. Create the ChatMessageFormatterImpl with the arguments in the above steps. Note that the pattern is loaded from the chat_text_dynamic_format property in step 4.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.1\f0\tab\f1 Format the timestamp against the DateFormatContext\f0\par
+\pard\nowidctlpar\li720\sa120\i0\f1 The format context information is retrieved from DateFormatContext. In the version 1.0, three attributes will be retrieved:\par
+Date format: retrieved by key DateFormatContext#DATE_FORMAT_KEY, if not found, the default value is hh:mm:ss a z.\par
+Time zone: retrieved by key DateFormatContext#TIME_ZONE_KEY. If not found, the default value is TimeZone.getID();\par
+Locale: retrieved by key DateFormatContext#TIME_ZONE_KEY. If not found, the default value is Locale.getDefault().getLanguage().\par
+\par
+The timestamp will be formatted in this way:\par
+// locale is retrieved by locale language from dateFormatContext\par
+DateFormat format = new SimpleDateFormat(dateFormat, locale);\par
+// timeZone is retrieved by time zone id from dateFormatContext\par
+format.setTimeZone(timeZone);\par
+format.format(timestamp);\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\f2\fs18\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1\fs20 1.4\tab Component Class Overview\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Messenger\b0 : \par
+This interface is the main entry of this component. It defines the contract of routing the messages to the message pools of the desired recipients.\par
+The implementation of this interface is required to be thread safe.\par
+\b MessengerImpl\b0 : \par
+The MessengerImpl is responsible for routing the messages to the message pools of the desired recipients. Using the Chat Message Pool component, users will be able to receive the messages by pulling them of. All the chat messages that are post to the user session pool are tracked. \par
+Though some inner variables(like ChatContactManager) is not immutable, all the methods of this class can be invoked in multi-thread environment since all of them are synchronized.\par
+\b XMLMessage\b0 : \par
+XMLMessage is the base class of all the other six messages defined in this component. It provides a method to set the date time format which will be used to format the timestamp.\f0\par
+\f1 This class is not thread safe since it\rquote s mutable.\f0\par
+\b\f1 ChatMessage: \par
+\b0 This is the message typed by a user in a chat room. It should include:\par
+User profile of the person who typed the text (only username is required in XML).\par
+Chat text.\par
+The xml string representation of this message has an extra element to keep  the formatted chat text. \par
+The formatted chat text takes the following standard format:\par
+[Name]: [Timestamp]: [Text Message]\par
+Name: the user name\par
+Timestamp: the message timestamp. The format for the time should be configurable\par
+with the default being the following format: hh:mm:ss PM Time zone. For example, 05:34:30 PM EST\par
+Text Message: the chat text\par
+The font and color for each of the above parts in configurable. In particular, the color for text message is different for client and manager. This allows easier differentiation between the two. For now, assume the \ldblquote Role\rdblquote  property returns either \ldblquote Client\rdblquote  or \ldblquote Manager\rdblquote .\par
+\pard\nowidctlpar\li720\f0\fs24\par
+\pard\nowidctlpar\li720\sa120\f1\fs20 Furthermore, if a text message includes a link to a URL, then the URL text will be displayed as a hyperlink. Below are the rules for determining if text should be generated as a hyperlink:\par
+If the text begins with a http://, https://, ftp:// (not case sensitive)\par
+If the text follows the pattern: www.[Text].[Top Level Domain], where [text] section may include dots, and [Top Level Domain] is defined in http://data.iana.org/TLD/tlds-alpha-by-domain.txt\par
+\par
+This class is not thread safe since it\rquote s mutable.\par
+\b SessionUnavailableMessage: \par
+\b0 This is the message to notify a user that the session is unavailable. The sender of this message must be the system. \par
+This class is not thread safe since it\rquote s mutable.\par
+\b PresenceMessage: \par
+\b0 This is the message to indicate if a user is present or absent. Besides the attributes defined by XMLMessage, it includes:\par
+User profile attributes of the person who changed the presence (only username is required in XML)\par
+Absence / Presence\par
+This class is not thread safe since it\rquote s mutable.\par
+\b AskForChatMessage: \par
+\b0 This is the message to ask a user for chatting in a session created by another user. The sender of this message must be the system. Besides the attributes defined by XMLMessage, it includes:\par
+User profile attributes of the person who created the chat\par
+Timestamp of when the session is created\par
+Timestamp of which the user needs to acknowledge\par
+This class is not thread safe since it\rquote s mutable.\par
+\par
+\b EnterChatMessage: \par
+\b0\f3 T\f1 his is the message to signal a user to enter a chat session, after he has accepted for chatting. The sender of this message must be the system.\par
+This class is not thread safe since it\rquote s mutable.\par
+\par
+\b MessageTracker\b0 : \par
+This interface defines the contract of tracking the chat message. The tracking information could be stored in the database, xml file, etc.\par
+The implementation of this interface is required to be thread safe.\par
+\par
+\b ChatMessageTrackerImpl\b0 : \par
+ChatMessageTrackerImpl is used to store the tracking information in the database. It\rquote s called by MessengerImpl when a chat message is post to user\rquote s session pool.\par
+This class is thread safe since it does not contain any mutable inner status.\par
+\par
+\b UserIDRetriever\b0 : \par
+This interface defines the contract of retrieve the long user id from the user object. \par
+The implementation of this interface is required to be thread safe.\par
+\par
+\b UserIDRetrieverImpl\b0 : \par
+This class assumes that the user object is of Long type. If not, throw UserIDRetrieverException. \par
+This class is thread safe since it does not contain any mutable inner status.\par
+\par
+\b ChatMessageFormatter\b0 : \par
+This interface defines the contract of formatting the message from user name, timestamp, and chat text. \par
+The implementation of this interface is required to be thread safe.\par
+\par
+\b ChatMessageFormatterImpl\b0 : \par
+ChatMessageFormatterImpl uses the ContentHighlighter to format the chat message.\par
+The instance of this class will be created by FormatterLoader, and used by ChatMessage to format the chat message.\par
+This class is thread safe since it does not contain any mutable inner status.\par
+\par
+\b FormatterLoader\b0 : \par
+FormatterLoader is used to load the ChatMessageFormatter instance from the configuration file and associates them with role name for the easy access.\par
+This class is thread safe since it\rquote s properly synchronized..\par
+\par
+\b DateFormatContext\b0 : \par
+DateFormatContext holds the date format attributes like date pattern, time zone, locale, etc which will be used by XMLMessage to format the timestamp.\par
+This class is not thread safe since it\rquote s mutable.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.5\tab Component Exception Definitions\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IllegalArgumentException\par
+\b0 This exception is thrown in various methods if null object is not allowed, or the given string argument is empty. Refer to the documentation in Poseidon for more details.\par
+\b IllegalStateException\par
+\b0 This exception is thrown from Message class if any field is missing during formatting the xml string.\par
+\cf3\b NOTE: Empty string means string of zero length or string full of whitespaces.\par
+\cf0 MessengerException\b0  \par
+This exception will be thrown by MessengerException and its implementations if any error occurs during the routing the messages\par
+\b MessageTrackerException\f0\par
+\b0\f1 This exception will be thrown by MessageTracker and its implementation if any error occurred during tracking the chat message\par
+\b UserIDRetrieverException\f0\par
+\b0\f1 This exception will be thrown by UserIDRetriever and its implementation if any error occurred during retrieving the user id.\b\f0\par
+\f1 ChatMessageFormattingException\f0\par
+\b0\f1 This exception will be thrown by FormattedChatMessage if any error occurred during formatting the chat message.\par
+\b FormatterConfigurationException\par
+\b0 This exception will be thrown by FormatterLoader if any error occurred during loading the configuration values.\f0\par
+\par
+\pard\nowidctlpar\sa120\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Messenger and MessengerImpl are the main classes of this component. MessengerImpl itself is not thread safe, since it contains mutable variables like MessagePool and ChatContactMessage. However, as all the methods of this class are synchronized, application users can still invoke these methods in a multi-thread environment.\par
+The XMLMessage and its six sub classes are mutable and not thread safe. To be thread safe, their set and get methods should be synchronized externally.\par
+FormatterLoader is thread safe, since it\rquote s properly synchronized.\par
+ChatMessageFormatter and its implementation are thread safe.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\nowidctlpar\li720\sa120\b0 Java 1.4 or higher.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Base Exception 1.0\par
+\pard\nowidctlpar\fi-2\li722\sa120\b0 The custom exception extends BaseException in this component. \f0\par
+\pard\nowidctlpar\li360\sa120\f1     \b Configuration Manager 2.1.5\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It will be used to load the configuration values.\par
+       \tab\b DB Connection Factory 1.0\f0\par
+\b0\f1               It will be used to get named connection.\f0\par
+\pard\nowidctlpar\fi-10\li711\sa120\b\f1 Chat Contact Manager 1.0\f0\par
+\pard\nowidctlpar\fi-1420\li1420\sa120\b0\f1               It\rquote s used to get the blocked users..\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Chat Message Pool 1.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to post the message to the user pool or session pool\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Chat Session Manager 1.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               ChatSession come from this component.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Chat User Profile 2.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1              ChatUserProfile class comes from this component\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Content Highlighter 1.1\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to format the user name, timestamp and chat text.\par
+\pard\nowidctlpar\f0\fs24\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1\fs20 2.3\tab Third Party Components\par
+\pard\nowidctlpar\fi800\sa120\qj\b0 None.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 com.cronos.im.messenger\f0\par
+\f1 com.cronos.im.messenger.impl\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f0\par
+\pard\nowidctlpar\sa120\b0\par
+             Configuration for com.cronos.im.messenger.FormatterLoader namespace\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b\f1 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\f0 role_name_key\cell\b0\f1 The property name to get the role name . \b Required\b0 .\cell role\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b user_name_key\cell\b0 The property name to get the user name . \b Required\b0\cell tc\cell\row\pard\nowidctlpar\li720\f0\fs24\par
+\f1\fs20 Assume that the role name is manager\par
+Configuration values for \f0 com.cronos.im.messenger.FormatterLoader.manager\f1\par
+\pard\nowidctlpar\sa120\f0\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b\f1 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120 user_name_format\f0\cell\b0\f1 The property contains the sub properties representing the font attributes like face, color, size etc. \b Required\b0 .\cell None\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b user_name_format.xxx\cell\b0 This property contains the attribute for font tag. The name of the property will be face, color, size, etc \b Required\b0 . \cell #2248dd(if property name is color)\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b timestamp_format\cell\b0 The property contains the sub properties representing the font attributes like face, color, size etc. \b Required\b0 .\cell None\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b timestamp_format.xxx\cell\b0 This property contains the attribute for font tag. The name of the property will be face, color, size, etc \b Required\b0 .\cell 5(if the property name is size)\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b chat_text_format\cell\b0 The property contains the sub properties representing the font attributes like face, color, size etc. \b Required\b0 .\cell none\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b chat_text_static_format\cell\b0 The property contains the sub properties representing the font attributes like face, color, size etc. \b Required\b0 .\cell none\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b chat_text_static_format.xxx\cell\b0 This property contains the attribute for font tag. The name of the property will be face, color, size, etc \b Required\b0 .\cell Arial if property name is face\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b chat_text_dynamic_format\cell\b0 The property contains the sub properties representing dynamic attribute for XmlTagFormatter. The value is the pattern to find out the url. \b Required\b0 .\cell ^http://.*\\n\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b chat_text_dynamic_format.xxx\cell\b0 This property contains the dynamic attributes. \b Required\b0 .\cell http://en.wikipedia.org/wiki/$1\cell\row\pard\nowidctlpar\sa120\cf2\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1 3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 ConfigurationManager and DBConnectionFactory should be properly configured to make this component work.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-420\li1140\sa120\tx1140\lang2052\b0\f4\'d8\lang1033\tab\f1 Extract the component distribution.\par
+\pard\nowidctlpar\fi-420\li1140\sa120\lang2052\f4\'d8\lang1033\tab\f1 Follow \cf4\ul Dependencies Configuration\cf0\ulnone .\par
+\lang2052\f4\'d8\lang1033\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Preload the configuration file into Configuration Manager. Follow demo.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.3\tab Demo\f0\par
+\pard\nowidctlpar\li720\cf3\b0\fs24 The configuration file listed in the section 3.2 is used in the demo.\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.1\tab Use  Message\f0\par
+\pard\nowidctlpar\fi480\li240\cf5\i0\f5\fs18 // create the ChatMessage\par
+ChatMessage msg = new ChatMessage();\par
+\par
+// set the msg attributes\par
+msg.setXXX(\'85)\par
+\par
+// create the date format context\par
+DateFormatContext context = new DateFormatContext();\par
+String xmlString = msg.toXMLString(context);\par
+System.out.println(xmlString);\par
+\pard\nowidctlpar\par
+\pard\nowidctlpar\fi480\li240 // the other five message works in the similar way.\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.2\tab User MessengerImpl\f0\par
+\pard\nowidctlpar\fi480\li240\cf5\i0\f5\fs18 // create ChatMessageTracker, assume that dbFactory is created\par
+// somewhere\par
+MessageTracker tracker = new ChatMessageTracker(dbFactory,\rdblquote conn\rdblquote ,\rdblquote user\rdblquote );\par
+\par
+// create the MessengerImpl. Assume that the MessagePool and \par
+// ChatContactManager are created somewhere.\par
+\pard\nowidctlpar\fi-1350\li2070 Messenger messenger = new MessengerImpl(pool,tracker,new UserIDRetrieverImpl(),manager);\par
+\par
+// post the message.\par
+// assume that userId, sessionId, and session are already defined \par
+messenger.postMessage(msg,userId,sessionId);\par
+messenger.postMessageToAll(msg,session);\par
+messenger.postMessageToOthers(msg,session);\par
+// nothing happens, since msg is of ChatMessage type.\par
+messenger.postMessage(msg,userId);\par
+\par
+\pard\nowidctlpar\fi-360\li1080 // get the MesssagePool\par
+MessagePool pool = messenger.getMessagePool();\par
+\par
+// pull the message from pool\par
+Message[] ms1 = pool.pull(userId);\par
+Message[] ms2 = pool.pull(userId,sessionId):\cf6\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li701\sa120\b0 None\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\par
+\pard\nowidctlpar\fs24\par
+}
+ 
