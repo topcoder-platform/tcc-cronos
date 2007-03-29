@@ -183,7 +183,7 @@ public abstract class BaseGameDataManager implements GameDataManager,
                 // Create new text ID and hash for the target
                 String idText = textStatistics.getText();
                 String idHash = hasher.hashToHexString(
-                        idText.replaceAll("[\n\r \t\f\u200b]+", ""), "UTF-8");
+                        idText.replaceAll("[\n\r \t\f\u00a0\u200b]+", ""), "UTF-8");
                 // Generate clue image
                 long clueImageId = createClueImage(textStatistics.getText());
 
