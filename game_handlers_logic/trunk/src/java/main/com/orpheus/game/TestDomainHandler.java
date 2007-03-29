@@ -112,12 +112,13 @@ public class TestDomainHandler implements Handler {
 
     /**
      * <p>
-     * It determines in which active games the specified domain is a current or past host for the current user, creates
-     * an array containing the corresponding <code>Game</code> objects, and assigns the array to a request attribute
-     * of configurable name. The <code>LoginHandler</code> will be used to get logged-in user's details, and a proper
-     * resultCode is returned if user is not logged in, null is returned if user is logged-in, and the games for this
-     * user are loaded successfully (it is ok if the games array is of zero length). Otherwise,
-     * <code>HandlerExecutionException</code> is thrown.
+     * It determines in which active games the specified domain is a current or past host for a slot that the current
+     * user has not completed, creates an array containing the corresponding <code>Game</code> objects, and assigns
+     * the array to a request attribute of configurable name. The <code>LoginHandler</code> will be used to get
+     * logged-in user's details, and a proper resultCode is returned if user is not logged in, null is returned if
+     * user is logged-in, and the games for this user are loaded successfully (it is ok if the games array is of
+     * zero length). Otherwise, <code>HandlerExecutionException</code> is thrown.
+     * </p>
      *
      * @param context
      *            the ActionContext object.
@@ -134,18 +135,23 @@ public class TestDomainHandler implements Handler {
         try {
             // gets the user profile from the LoginHandler.
             UserProfile userProfile = LoginHandler.getAuthenticatedUser(context.getRequest().getSession(true));
+
             // if no profile, return the result code.
             if (userProfile == null) {
                 return notLoggedInResultCode;
             }
+
             long profileId = ((Long) userProfile.getIdentifier()).longValue();
+
             // parses the domain name from the request parameter.
             String domainName = context.getRequest().getParameter(domainNameParamKey);
             if (domainName == null || domainName.trim().length() == 0) {
                 throw new HandlerExecutionException("Failed to execute test domain handler, invalid domain name");
             }
+
             // finds the games using the helper.
             Game[] games = helper.findGamesByDomain(domainName, profileId);
+
             // save the games array to the request attribute.
             context.getRequest().setAttribute(gamesKey, games);
         } catch (ClassCastException castException) {

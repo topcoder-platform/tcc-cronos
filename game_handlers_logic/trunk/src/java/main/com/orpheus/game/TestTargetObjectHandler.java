@@ -172,8 +172,9 @@ public class TestTargetObjectHandler implements Handler {
      * number, and the UTF-8 encoded text from which the hash was computed will be read from request parameters of
      * configurable name. It finds the hosting slot corresponding to the provided game ID and domain for the logged-in
      * player via the game persistence component, and will use the provided sequence number to choose from it the domain
-     * target object to be compared with the provided text.
-     *
+     * target object to be compared with the provided text.  Only slots that have already started hosting are considered;
+     * if there is no slot meeting all the criteria then the test is considered simply to fail.
+     * </p><p>
      * The <code>LoginHandler</code> will be used to get logged-in user's details, and a proper resultCode is returned
      * if user is not logged in, and a test failed result code will be returned if the test mentioned fails, otherwise
      * null will be returned if the test succeeds.
@@ -191,45 +192,60 @@ public class TestTargetObjectHandler implements Handler {
     public String execute(ActionContext context) throws HandlerExecutionException {
         ImplementationHelper.checkObjectValid(context, "context");
         GameDataHelper helper = GameDataHelper.getInstance();
+
         try {
             // gets the user profile from the LoginHandler.
             UserProfile userProfile = LoginHandler.getAuthenticatedUser(context.getRequest().getSession(true));
+
             // if the user profile is missing return the result code.
             if (userProfile == null) {
                 return notLoggedInResultCode;
             }
+
             long profileId = ((Long) userProfile.getIdentifier()).longValue();
-            // gets the domain name, sequence number ,text and trigger url from the request parameter.
+
+            // gets the domain name, sequence number and text from the request parameter.
             String domainName = context.getRequest().getParameter(domainNameParamKey);
             checkValidString(domainName, "domain name");
+
             String seqNum = context.getRequest().getParameter(sequenceNumberParamKey);
             checkValidString(seqNum, "sequence number");
+
             String text = context.getRequest().getParameter(textParamKey);
             checkValidParam(text, "text");
-            
+
             String triggeredURL = context.getRequest().getParameter(triggeredURLParamKey);
             checkValidParam(triggeredURL,"triggeredURL");
-            
+
+            String gameIdString = context.getRequest().getParameter(gameIdParamKey);
+            checkValidParam(gameIdString, "game ID");
+
             // parses the game id from the request parameter.
-            long gameId = Long.parseLong(context.getRequest().getParameter(gameIdParamKey));
+            long gameId = Long.parseLong(gameIdString);
 
             // gets the hosting slot using the helper.
             HostingSlot slot = helper.findSlotForDomain(gameId, profileId, domainName);
-            if (slot == null) {
-                throw new HandlerExecutionException(
-                        "Failed to execute test target object handler., No hosting slot present");
-            }
-            DomainTarget[] domainTargets = slot.getDomainTargets();
-            for (int i = 0; i < domainTargets.length; i++) {
-                // if the sequence number and text matches return null.
-                if (Integer.parseInt(seqNum) == domainTargets[i].getSequenceNumber()
-                        && text.equals(domainTargets[i].getIdentifierText().replaceAll("[\n\r \t\f\u200b]+", ""))) {
-                    if ( triggeredURL.equalsIgnoreCase(domainTargets[i].getUriPath())){
-                    	return null;
-                    } else {
-                    	return changedURLResultCode;
+
+            if (slot != null && slot.getHostingStart() != null) {  // otherwise, the test will simply fail
+                DomainTarget[] domainTargets = slot.getDomainTargets();
+
+                for (int i = 0; i < domainTargets.length; i++) {
+                    // if the sequence number, text, and URL all match then return null
+                    if (Integer.parseInt(seqNum) == domainTargets[i].getSequenceNumber()) {
+                        if (text.equals(domainTargets[i].getIdentifierText().replaceAll("[\n\r \t\f\u00a0\u200b]+", ""))) {
+                            if (triggeredURL.equalsIgnoreCase(domainTargets[i].getUriPath())) {
+                                return null;
+                            } else {
+                                return changedURLResultCode;
+                            }
+                        } else {
+                            return testFailedResultCode;
+                        }
                     }
                 }
+
+                // if control reaches here then the test will fail
+
             }
         } catch (ClassCastException castException) {
             throw new HandlerExecutionException("Failed to execute test target object handler.", castException);
@@ -239,6 +255,7 @@ public class TestTargetObjectHandler implements Handler {
             // session is null.
             return notLoggedInResultCode;
         }
+
         // if no match return failed result code.
         return testFailedResultCode;
     }

@@ -903,7 +903,7 @@ class GameDataHelper {
                         thisSlotPlayerMap.put(playerId, stats);
                     } else if (otherPlayerMap.containsKey(playerId)) {
                         // a player who is not on a contiguous run, but who has keys we care about
-                        PlayerStatistics stats = (PlayerStatistics) contiguousSlotPlayerMap.get(playerId);
+                        PlayerStatistics stats = (PlayerStatistics) otherPlayerMap.get(playerId);
 
                         stats.updateCompletionDate(completion.getTimestamp());
                     } else if (allowAdditionalLeaders) {
@@ -916,7 +916,7 @@ class GameDataHelper {
                 }
 
                 /*
-                 * The remaining contents of the contiguousSlotPlayerMap are players who didn't complete
+                 * The remaining contents of the contiguousSlotPlayerMap represent players who didn't complete
                  * the current slot.  Add them to the otherPlayerMap to so indicate.
                  */
                 otherPlayerMap.putAll(contiguousSlotPlayerMap);
@@ -934,7 +934,9 @@ class GameDataHelper {
 
                     /*
                      * We have already identified all the players who can show up on the leader board; raise a flag
-                     * to remind us that we don't need to consider any further players that we see for the first time
+                     * to remind us that we don't need to consider any further players that we see for the first time.
+		     * We do this once at the end of each iteration, because we don't know until later the relative
+		     * rankings of the players whose contiguous completions end at the same slot.
                      */
                     allowAdditionalLeaders = false;
                 }
@@ -943,8 +945,10 @@ class GameDataHelper {
             // initialize the last element of leadingSlotIndices
             leadingSlotIndices[slotIdList.size()] = leaderList.size();
 
-            // sort those sublists of the leader list in which all leaders closest completion to the ball is the same;
-            // those sublists are already block-wise in the correct order
+            // sort those sublists of the leader list in which all leaders' closest completion to the ball is the same;
+            // those sublists are already block-wise in the correct order.  An insertion sort might actually be better
+	    // for this case than the k merge sorts we're about to do, as insertion sort is particularly effective when
+	    // the input is already sorted into reasonably small blocks
             for (int sublistIndex = 0; sublistIndex < (leadingSlotIndices.length - 1); sublistIndex++) {
                 Collections.sort(leaderList.subList(
                         leadingSlotIndices[sublistIndex], leadingSlotIndices[sublistIndex + 1]));
