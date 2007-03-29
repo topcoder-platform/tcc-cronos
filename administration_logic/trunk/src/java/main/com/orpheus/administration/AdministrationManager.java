@@ -578,7 +578,7 @@ public class AdministrationManager {
                 domainTarget.setUriPath((String) docUrlMap.get(docId));
                 domainTarget.setIdentifierText(textStatistics.getText());
                 domainTarget.setIdentifierHash(hasher.hashToHexString(
-                        textStatistics.getText().replaceAll("[\n\r \t\f\u200b]+", ""),
+                        textStatistics.getText().replaceAll("[\n\r \t\f\u00a0\u200b]+", ""),
                         "UTF-8"));
                 try {
                     domainTarget.setClueImageId(createClueImage(textStatistics.getText(), gameData));
