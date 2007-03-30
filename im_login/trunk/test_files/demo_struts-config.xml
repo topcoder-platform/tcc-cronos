@@ -1,0 +1,37 @@
+<struts-config>
+    <!-- =========== Exception handling ================= -->
+    <global-exceptions>
+        <exception
+            type="java.lang.Exception"
+            key="error.input"
+            path="errors.jsp"/>
+    </global-exceptions>
+    <form-beans>
+        <!-- ===================  Configure a test form  ==================== -->
+        <form-bean name="testForm" type="org.apache.struts.action.DynaActionForm"/>
+    </form-beans>
+    <action-mappings>
+        <!-- =================  Configure the client login action  ================== -->
+        <action path="/client-login"
+             type="com.cronos.im.ClientLoginAction"
+             name="testForm">
+                <forward name="unchattable" path="/unchattable.jsp"/>
+                <forward name="loginSucceed" path="/success.jsp"/>
+                <forward name="loginFail" path="/failure.jsp"/>
+        </action>
+        <!-- ================  Configure the manager login action  ================= -->
+        <action path="/manager-login"
+             type="com.cronos.im.ManagerLoginAction"
+             name="testForm">
+                <forward name="loginSucceed" path="/success.jsp"/>
+                <forward name="loginFail" path="/failure.jsp"/>
+        </action>
+        <!-- ==============  Configure the administrator login action  =============== -->
+        <action path="/admin-login"
+             type="com.cronos.im.AdminLoginAction"
+             name="testForm">
+                <forward name="loginSucceed" path="/success.jsp"/>
+                <forward name="loginFail" path="/failure.jsp"/>
+        </action>
+    </action-mappings>
+</struts-config>

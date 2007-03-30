@@ -1,0 +1,1 @@
+LoginActionStressTest should be place at com.cronos.im.login package.

@@ -1,0 +1,176 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.cronos.im.LoginAction">
+		<Property name="userProfileKey">
+			<Value>userProfile</Value>
+		</Property>
+		<Property name="loginSucceedForward">
+			<Value>loginSucceed</Value>
+		</Property>
+		<Property name="loginFailForward">
+			<Value>loginFail</Value>
+		</Property>
+		<Property name="categoryKey">
+			<Value>category</Value>
+		</Property>
+		<Property name="roleKey">
+			<Value>role</Value>
+		</Property>
+		<Property name="authProviderURL">
+			<Value>http://locahost:1099</Value>
+		</Property>
+		<Property name="authInitialContextFactory">
+			<Value>org.mockejb.jndi.MockContextFactory</Value>
+		</Property>
+		<Property name="ObjectFactoryNS">
+            <Value>of.ChatUserProfileManager</Value>
+        </Property>
+        <Property name="chatUserProfileManager">
+            <Value>chatUserProfileManager</Value>
+        </Property>
+	</Config>	
+	
+	<Config name="of.ChatUserProfileManager">		
+		<Property name="chatUserProfileManager">
+		      <Property name="type">
+		        <Value>com.topcoder.chat.user.profile.SimpleProfileKeyManager</Value>
+		      </Property>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.chat.user.profile.database.DatabaseChatUserProfilePersistence">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix_connect</Value>
+			</Property>
+			<Property name="informix_connect">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://localhost:1526/tc:informixserver=myinformix</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>pwd#123</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix_connect</Value>
+			</Property>
+			<Property name="informix_connect">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://localhost:1526/tc:informixserver=myinformix</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>pwd#123</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.AuthorizationManager">
+	    <Property name="role_policy">
+		  <Property name="class">
+			<Value>com.topcoder.security.authorization.HighSecurityRolePolicy</Value>
+		  </Property>
+		  <Property name="name">
+			<Value>highSecurityRolePolicy</Value>
+		  </Property>
+		</Property>
+		<Property name="action_policy">
+		  <Property name="class">
+			<Value>com.topcoder.security.authorization.HighSecurityActionPolicy</Value>
+		  </Property>
+		  <Property name="name">
+			<Value>highSecurityActionPolicy</Value>
+		  </Property>
+		</Property>
+	    <!-- authorization persistence, required -->
+		<Property name="persistence">
+		  <Property name="class">
+			<Value>com.topcoder.security.authorization.persistence.SQLAuthorizationPersistence</Value>
+		  </Property>
+		  <Property name="namespace">
+			<Value>com.cronos.im.AuthorizationManager.SQLAuthorizationPersistence</Value>
+		  </Property>
+		</Property>
+  	</Config>
+  
+  	<Config name="com.cronos.im.AuthorizationManager.SQLAuthorizationPersistence">    
+	    <!-- db connection name for DBConnectionFactory, required -->
+		<Property name="db_connection_factory">
+			<Property name="class">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="namespace">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="connection_name">
+				<Value>informix_connect</Value>
+			</Property>
+	    </Property>
+    
+	    <!-- cache factory, required -->
+	    <Property name="cache_factory">
+	      <Property name="class">
+	        <Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
+	      </Property>
+	      <Property name="namespace">
+	        <Value>com.cronos.im.AuthorizationManager.CacheFactoryImpl</Value>
+	      </Property>
+	    </Property>
+  	</Config>
+
+	  <!-- properties for CacheFactoryImpl-->
+	<Config name="com.cronos.im.AuthorizationManager.CacheFactoryImpl">
+	    <!-- timeout in milli-seconds, non-negative long value, 0 means NO_TIMEOUT, required -->
+	    <Property name="timeout">
+	      <Value>1000</Value>
+	    </Property>
+		 <Property name="max_cache_size">
+	      <Value>10000</Value>
+	    </Property>
+		<Property name="eviction_strategy">
+		  <Property name="class">
+			<Value>com.topcoder.util.cache.LRUCacheEvictionStrategy</Value>
+		  </Property>
+	    </Property>
+	</Config>  
+  
+	<Config name="com.topcoder.util.log">
+		<!-- The Log implementation class -->
+		<Property name="logClass">
+			<Value>com.topcoder.util.log.basic.BasicLog</Value>
+		</Property>
+
+		<!-- Specifies where the output should be written to, System.out or System.err -->
+		<Property name="basic.log.target">
+			<Value>System.out</Value>
+		</Property>
+	</Config>
+	
+</CMConfig>
