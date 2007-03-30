@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.messenger.FormatterLoader">
+		<Property name="user_name_key">
+			<Value>user_name</Value>
+		</Property>
+		<Property name="role_name_key">
+			<Value>manager</Value>
+		</Property>
+	</Config>
+	<Config name="com.cronos.im.messenger.FormatterLoader.manager">
+		<Property name="user_name_format">
+			<Property name="face">
+				<Value>Arial</Value>
+			</Property>
+			<Property name="size">
+				<Value>5</Value>
+			</Property>
+			<Property name="color">
+				<Value>#2248</Value>
+			</Property>
+		</Property>
+        <!-- format attributes for timstamp -->
+		<Property name="timestamp_format">
+			<Property name="face">
+				<Value>Arial</Value>
+			</Property>
+			<Property name="size">
+				<Value>20</Value>
+			</Property>
+		</Property>
+		<Property name="chat_text_format">
+		    <Property name="chat_text_static_format">
+				<Property name="face">
+					<Value>Helvetica</Value>
+				</Property>
+				<Property name="size">
+					<Value>12</Value>
+				</Property>
+			</Property>
+
+			<Property name="chat_text_dynamic_format">
+			    <Value>http://([^ ]+)</Value>
+				<Property name="href">
+					<Value>http://$1</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

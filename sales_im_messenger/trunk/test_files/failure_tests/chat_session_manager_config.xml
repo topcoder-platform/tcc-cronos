@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.chat.session">
+		<Property name="factory_namespace">
+			<Value>com.topcoder.chat.session.objectfactory</Value>
+		</Property>
+		<Property name="data_store">
+			<Value>chat_session_data_store</Value>
+		</Property>
+		<Property name="listeners">
+			<Value>chat_session_event_listeners1</Value>
+			<Value>chat_session_event_listeners2</Value>
+		</Property>
+		<Property name="recent">
+			<Value>2</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.chat.session.datastores">
+		<Property name="connection_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>informix_connect</Value>
+		</Property>
+		<Property name="user_function">
+			<Value>USER</Value>
+		</Property>
+		<Property name="date_function">
+			<Value>CURRENT</Value>
+		</Property>
+		<Property name="recent_query">
+			<Value>SELECT create_user_id FROM session, session_requested_user WHERE session.session_id = session_requested_user.session_id and session_requested_user.requested_user_id = ? and session_requested_user.create_date > CURRENT - cast(? AS INTERVAL DAY TO DAY)</Value>
+		</Property>
+		<Property name="session_id_generator">
+			<Value>session_id</Value>
+		</Property>
+		<Property name="session_user_id_generator">
+			<Value>session_user_id</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.chat.session.objectfactory">
+		<Property name="chat_session_data_store">
+			<Property name="type">
+				<Value>com.topcoder.chat.session.datastores.ChatSessionDatabaseStore</Value>
+			</Property>
+		</Property>
+		<Property name="chat_session_event_listeners1">
+			<Property name="type">
+				<Value>com.topcoder.chat.session.MockChatSessionEventAdapter</Value>
+			</Property>
+		</Property>
+	  <Property name="chat_session_event_listeners2">
+			<Property name="type">
+				<Value>com.topcoder.chat.session.MockChatSessionEventAdapter</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="timestamp"/>
+                <xs:element ref="sender"/>
+                <xs:element ref="recipients"/>
+                <xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="chat_session_id"/>
+                <xs:element ref="author_profile_properties"/>
+                <xs:element ref="session_creation_time"/>
+                <xs:element ref="acknowledge_time"/>
+                <xs:element ref="request_user_id"/>
+            </xs:sequence>
+            <xs:attribute name="type" fixed="AskForChatMessage" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="timestamp" type="xs:string"/>
+    <xs:element name="sender" type="xs:long"/>
+    <xs:element name="recipients">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="recipient" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="recipient" type="xs:long"/>
+    <xs:element name="attribute">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="value" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="value" type="xs:string"/>
+    <xs:element name="name" type="xs:string"/>
+    <xs:element name="chat_session_id" type="xs:long"/>
+    <xs:element name="author_profile_properties">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="attribute" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="session_creation_time" type="xs:long"/>
+    <xs:element name="acknowledge_time" type="xs:long"/>
+    <xs:element name="request_user_id" type="xs:long"/>
+</xs:schema>

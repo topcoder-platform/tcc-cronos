@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix</Value>
+			</Property>
+			<Property name="informix">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.3:1526/chat:informixserver=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>sa</Value>
+					</Property>
+				</Property>
+			</Property>		
+		</Property>
+	</Config>
+    <!-- Namespace for SimpleChatContactManager class -->
+    <Config name="com.topcoder.chat.contact.SimpleChatContactManager">
+        <Property name="of_namespace">
+            <Value>of.SimpleChatContactManager</Value>
+        </Property>
+        <Property name="recent_days">
+            <Value>1</Value>
+        </Property>
+        <Property name="chat_contact_persistence_key">
+            <Value>ChatContactDbPersistence</Value>
+        </Property>
+    </Config>
+    
+    <!-- Namespace for ChatContactDbPersistenceclass -->
+    <Config name="com.topcoder.chat.contact.persistences.ChatContactDbPersistence">
+        <Property name="of_namespace">
+            <Value>of.ChatContactDbPersistence</Value>
+        </Property>
+        <Property name="db_connection_factory_key">
+            <Value>DBConnection</Value>
+        </Property>
+        <Property name="connection_name">
+            <Value>informix_connect</Value>
+        </Property>
+    </Config>
+    
+    <!-- Namespace for ObjectFactory component -->
+    <Config name="of.SimpleChatContactManager">
+        <Property name="ChatContactDbPersistence">
+            <Property name="type">
+                <Value>com.topcoder.chat.contact.persistences.ChatContactDbPersistence</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.chat.contact.persistences.ChatContactDbPersistence</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="of.ChatContactDbPersistence">
+        <Property name="DBConnection">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+	<Config name="com.topcoder.chat.user.profile.database.DatabaseChatUserProfilePersistence">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix</Value>
+			</Property>
+			<Property name="informix">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.101:1527/sysuser:informixserver=lyt</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>informix</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.util.log">
+		<!-- The Log implementation class -->
+		<Property name="logClass">
+			<Value>com.topcoder.util.log.basic.BasicLog</Value>
+		</Property>
+
+		<!-- Specifies where the output should be written to, System.out or System.err -->
+		<Property name="basic.log.target">
+			<Value>System.out</Value>
+		</Property>
+	</Config>
+<Config name="com.topcoder.chat.session">
+		<Property name="factory_namespace">
+			<Value>com.topcoder.chat.session.objectfactory</Value>
+		</Property>
+		<Property name="data_store">
+			<Value>chat_session_data_store</Value>
+		</Property>
+		<Property name="listeners">
+			<Value>chat_session_event_listeners1</Value>
+			<Value>chat_session_event_listeners2</Value>
+		</Property>
+		<Property name="recent">
+			<Value>2</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.chat.session.datastores">
+		<Property name="connection_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>informix_connect</Value>
+		</Property>
+		<Property name="user_function">
+			<Value>USER</Value>
+		</Property>
+		<Property name="date_function">
+			<Value>CURRENT</Value>
+		</Property>
+		<Property name="recent_query">
+			<Value>SELECT create_user_id FROM session, session_requested_user WHERE session.session_id = session_requested_user.session_id and session_requested_user.requested_user_id = ? and session_requested_user.create_date > CURRENT - cast(? AS INTERVAL DAY TO DAY)</Value>
+		</Property>
+		<Property name="session_id_generator">
+			<Value>session_id</Value>
+		</Property>
+		<Property name="session_user_id_generator">
+			<Value>session_user_id</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.chat.session.objectfactory">
+		<Property name="chat_session_data_store">
+			<Property name="type">
+				<Value>com.topcoder.chat.session.datastores.ChatSessionDatabaseStore</Value>
+			</Property>
+		</Property>
+		<Property name="chat_session_event_listeners1">
+			<Property name="type">
+				<Value>com.topcoder.chat.session.MockChatSessionEventAdapter</Value>
+			</Property>
+		</Property>
+	  <Property name="chat_session_event_listeners2">
+			<Property name="type">
+				<Value>com.topcoder.chat.session.MockChatSessionEventAdapter</Value>
+			</Property>
+		</Property>
+	</Config>	    
+</CMConfig>
