@@ -16,6 +16,8 @@ using TopCoder.Util.RSS.Atom.IO;
 using TopCoder.Util.BloomFilter;
 using TopCoder.Util.ConfigurationManager;
 using TopCoder.Util.ObjectFactory;
+using System.Collections;
+using System.Globalization;
 
 namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
 {
@@ -70,6 +72,16 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         private const string PROPERTY_POLLING_URL = "polling_url";
 
         /// <summary>
+        /// The message template config property name.
+        /// </summary>
+        private const string MESSAGE_TEMPLATE_PROPERTY = "message_template";
+
+        /// <summary>
+        /// The date format config property name.
+        /// </summary>
+        private const string DATE_FORMAT_PROPERTY = "date_format";
+
+        /// <summary>
         /// The mime type of bloom filter.
         /// </summary>
         private const string MIME_BLOOM_FILTER = "application/x-tc-bloom-filter";
@@ -78,6 +90,11 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         /// The default timestamp value that is used on first polling request.
         /// </summary>
         private const string DEFAULT_TIMESTAMP = "2007-01-01T00:00:01Z";
+
+        /// <summary>
+        /// The US culture used in date formatting.
+        /// </summary>
+        private readonly CultureInfo usCulture = new CultureInfo("en-US", false);
 
         /// <summary>
         /// Represents the configuration namespace to use.
@@ -91,6 +108,16 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
         /// Once set can not change and can not be null.
         /// </summary>
         private readonly IRSSParser rssParser;
+
+        /// <summary>
+        /// The template of the RSS message.
+        /// </summary>
+        private readonly string messageTemplate;
+
+        /// <summary>
+        /// The format of the date in RSS message.
+        /// </summary>
+        private readonly string dateFormat;
 
         /// <summary>
         /// Constructor.
@@ -147,6 +174,9 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 throw new ConfigurationException(
                     string.Format("Failed to create IRSSParser instance by {0}", value), e);
             }
+
+            messageTemplate = cm.GetValue(configurationNamespace, MESSAGE_TEMPLATE_PROPERTY);
+            dateFormat = cm.GetValue(configurationNamespace, DATE_FORMAT_PROPERTY);
         }
 
         /// <summary>
@@ -203,6 +233,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 {
                     rssFeed = rssParser.Parse(new StringReader(feed));
 
+                    IList rssItems = new ArrayList();
                     RSSItem updateItem = null;
                     foreach (RSSItem item in rssFeed.Items)
                     {
@@ -217,10 +248,7 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                         {
                             // If the content is of type text, HTML or XHTML sets the content
                             // to be displayed in the new window using the web browser window navigator.
-                            using (Stream stream = new MemoryStream(ASCIIEncoding.UTF8.GetBytes(item.Description.Text)))
-                            {
-                                args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser, stream, true);
-                            }
+                            rssItems.Add(item);
                         }
                         else
                         {
@@ -250,6 +278,15 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                         MsieClientLogic.GetInstance().Persistence[Helper.KEY_BLOOM_FILTER] = serializedForm;
                     }
 
+                    if (rssItems.Count > 0)
+                    {
+                        using (Stream stream = FormatMessages(rssItems))
+                        {
+                            args.Context.WebBrowserWindowNavigator.Navigate(args.Context.WebBrowser,
+                                stream, true);
+                        }
+                    }
+
                     // Persist the feed timestamp.
                     args.Context.Persistence[Helper.KEY_TIMESTAMP] =
                         rssFeed.UpdatedDate.ToUniversalTime().ToString(@"yyyy-MM-dd\THH:mm:ss.fff\Z");
@@ -260,6 +297,29 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 throw new HandleEventException(
                     string.Format("Failed to handle the event : {0}\n{1}\n{2}", args.EventName, e, value), e);
             }
+        }
+
+        /// <summary>
+        /// Formats the list of the RSS items into single message.
+        /// </summary>
+        /// <param name="rssItems">the list of RSSItem objects.</param>
+        /// <returns>the message to be displayed to the user.</returns>
+        private Stream FormatMessages(IList rssItems)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("<html><body><table>");
+            foreach (RSSItem item in rssItems)
+            {
+                builder.Append("<tr>");
+                String msg = messageTemplate.Replace("title", item.Title.Text)
+                .Replace("date", item.UpdatedDate.ToString(dateFormat, usCulture.DateTimeFormat))
+                .Replace("msg_body", item.Description.Text);
+
+                builder.Append(msg);
+                builder.Append("<br/></tr>");
+            }
+            builder.Append("</table></body></html>");
+            return new MemoryStream(ASCIIEncoding.UTF8.GetBytes(builder.ToString()));
         }
     }
 }
