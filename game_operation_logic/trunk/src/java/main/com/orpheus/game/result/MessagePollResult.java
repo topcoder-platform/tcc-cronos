@@ -52,7 +52,7 @@ import java.util.regex.Pattern;
  * attribute of configurable name and use it to construct an Atom 1.0 feed document, which it returns (in XML format)
  * as the HTTP response entity. It will select items for the feed as follows:  The Result will be configured with a
  * request parameter name with which it will accept an item update date and time. If the request specifies a parameter
- * of that name then this Result will parse it as a java.util.Date in ISO 8601:2004 format
+ * of that name then this Result will parse it as a <code>java.util.Date</code> in ISO 8601:2004 format
  * (http://en.wikipedia.org/wiki/ISO_8601), and only items with a creation or update date strictly later than the
  * parsed date will be included in the resulting feed. The Result will determine the games for which the requesting
  * player (the one currently logged-in) is registered; the name of each will be used as an item category, and items in
@@ -77,7 +77,10 @@ public class MessagePollResult implements Result {
      * in either upper- or lower-case.
      */
     private static final Pattern ISO8601_DATE_PATTERN = Pattern.compile(
-            "(\\d{4})-(\\d{2})-(\\d{2})[Tt](\\d{2}):(\\d{2}):(\\d{2})(?:[,.](\\d{1,}))?(?:([Zz])|([-+]\\d{2}:\\d{2}))?");
+            "(\\d{4})-(\\d{2})-(\\d{2})"           // Calendar date, YYYY-MM-DD
+	    + "[Tt](\\d{2}):(\\d{2}):(\\d{2})"     // Mandatory time of day (24-hour clock), "T"hh:mm:ss
+	    + "(?:[,.](\\d{1,}))?"                 // optional fractional seconds, "."d+
+	    + "(?:([Zz])|([-+]\\d{2}:\\d{2}))?");  // optional time zone, "Z" or [-+]hh:mm
 
     /**
      * The group index in ISO8601_DATE_PATTERN representing the four-digit year
@@ -113,7 +116,7 @@ public class MessagePollResult implements Result {
      * The group index in ISO8601_DATE_PATTERN representing the millisecond portion, which is optional for
      * the purposes of this class
      */
-    private static final int MILLISECOND_OPTIONAL_GROUP = 7;
+    private static final int FRACTIONAL_SECOND_OPTIONAL_GROUP = 7;
 
     /**
      * The group index in ISO8601_DATE_PATTERN representing the millisecond portion, which is optional for
@@ -278,12 +281,14 @@ public class MessagePollResult implements Result {
                     Integer.parseInt(matcher.group(MINUTE_GROUP)),
                     Integer.parseInt(matcher.group(SECOND_GROUP)));
 
-            //matches millisecond
-            if (matcher.group(MILLISECOND_OPTIONAL_GROUP) != null) {
-                String millis = matcher.group(MILLISECOND_OPTIONAL_GROUP);
+            //matches fractional seconds
+            if (matcher.group(FRACTIONAL_SECOND_OPTIONAL_GROUP) != null) {
+                String millis = matcher.group(FRACTIONAL_SECOND_OPTIONAL_GROUP);
 
-                // convert to an integer number of milliseconds
-                int scale = millis.length() - 3;
+                // convert to an integer number of milliseconds, accounting for the variable precision
+		// to which the fractional seconds may be expressed.  Floating-point arithmetic is used
+		// because we want to round after division, not truncate.
+                int scale = millis.length();
                 double d = Double.parseDouble(millis);
 
                 while (scale < 3) {
