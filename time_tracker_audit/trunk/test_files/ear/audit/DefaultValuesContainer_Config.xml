@@ -1,0 +1,23 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.audit.persistence.DefaultValuesContainer">
+		<Property name="id">
+			<Value>100</Value>
+		</Property>
+		<Property name="newValue">
+			<Value>newValue</Value>
+		</Property>
+		<Property name="oldValue">
+			<Value>oldValue</Value>
+		</Property>
+		<Property name="columnName">
+			<Value>columnName</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.audit.persistence.DefaultValuesContainer.InvalidId">
+		<Property name="id">
+			<Value>  </Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.audit.persistence.DefaultValuesContainer.Empty">
+	</Config>
+</CMConfig>

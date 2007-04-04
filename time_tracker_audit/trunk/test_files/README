@@ -1,0 +1,7 @@
+1: Changes in CS are marked with dark blue.
+2: run the create_db.sql under folder test_files/sql
+3: update the config file DBConnectionFactory_Config.xml to adjust the database settings
+4: junitejb is used to test. You can download it from http://sourceforge.net/projects/junitejb/
+5: Make sure jboss is running before running the unit test. Deploy the audit.ear into jboss, this is an easy job as just to put the file audit.ear under the directory JBOSS_HOME/server/default/deploy and jboss will auto deploy this ear.
+6: You can take a look at my build.xml. adjust your jboss home executing "ant deploy" "ant test".
+7: AuditDelegateUnitTest is not corvered by coveragereport, I do not konw why. Please consider it in the screening phase.

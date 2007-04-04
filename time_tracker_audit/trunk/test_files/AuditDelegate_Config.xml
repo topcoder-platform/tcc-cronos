@@ -1,0 +1,26 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.audit.ejb.AuditDelegate">
+		<Property name="context_name">
+			<Value>audit</Value>
+		</Property>
+		<Property name="jndi_name">
+			<Value>java:comp/env/ejb/audit/AuditEJB</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.audit.ejb.AuditDelegate.InvalidContextName">
+		<Property name="context_name">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="jndi_name">
+			<Value>java:comp/env/ejb/audit/AuditEJB</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.audit.ejb.AuditDelegate.InvalidJndiName">
+		<Property name="context_name">
+			<Value>audit</Value>
+		</Property>
+		<Property name="jndi_name">
+			<Value>invalid</Value>
+		</Property>
+	</Config>
+</CMConfig>

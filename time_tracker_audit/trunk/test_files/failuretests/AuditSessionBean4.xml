@@ -1,0 +1,15 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.audit.ejb.AuditSessionBean">
+		<Property name="of_namespace">
+			<Value>com.topcoder.timetracker.audit.ejb.objectfactory</Value>
+		</Property>
+	</Config>
+	<!-- Config for object factory -->
+	<Config name="com.topcoder.timetracker.audit.ejb.objectfactory">
+		<Property name="InformixAuditPersistence">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.audit.failuretests.MockAuditPersistence</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

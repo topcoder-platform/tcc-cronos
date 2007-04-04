@@ -1,25 +1,35 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.audit.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Stress test cases.</p>
+ * <p>
+ * This test case aggregates all stress cases for Time Tracker Audit 3.2.
+ * </p>
  *
- * @author TopCoder
- * @version 1.0
+ * @author Hacker_QC
+ * @version 3.2
  */
 public class StressTests extends TestCase {
 
-    public static Test suite() {
-        final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
-        return suite;
-    }
+	/**
+	 * <p>
+	 * Creates a test suite of the stress tests.
+	 * </p>
+	 *
+	 * @return a test suite of the tests contained in this class.
+	 */
+	public static Test suite() {
+		final TestSuite suite = new TestSuite();
+		
+		suite.addTestSuite(ValueContainerStressTest.class);
+        suite.addTestSuite(PersistenceStressTest.class);
+		
+		return suite;
+	}
 }

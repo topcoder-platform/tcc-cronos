@@ -1,0 +1,28 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.audit.ejb.AuditSessionBean">
+		<Property name="of_namespace">
+			<Value>com.topcoder.timetracker.audit.ejb.objectfactory</Value>
+		</Property>
+		<Property name="dao_key">
+			<Value>InformixAuditPersistence</Value>
+		</Property>
+	</Config>
+	<!-- Config for object factory -->
+	<Config name="com.topcoder.timetracker.audit.ejb.objectfactory">
+		<Property name="InformixAuditPersistence">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.audit.persistence.InformixAuditPersistence</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.audit.persistence.InformixAuditPersistence</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

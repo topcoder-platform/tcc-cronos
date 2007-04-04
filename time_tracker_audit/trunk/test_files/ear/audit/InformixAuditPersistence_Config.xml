@@ -1,0 +1,117 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.audit.persistence.InformixAuditPersistence">
+		<Property name="connectionName">
+			<Value>informix</Value>
+		</Property>
+		<Property name="connectionFactoryNamespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<Property name="logName">
+			<Value>InformixAuditPersistence</Value>
+		</Property>
+		<Property name="idGeneratorName">
+			<Value>AuditPersistence</Value>
+		</Property>
+		<Property name="searchBundleName">
+			<Value>FirstSearchBundle</Value>
+		</Property>
+		<Property name="searchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="defaultValueNamespace">
+			<Value>com.topcoder.timetracker.audit.persistence.DefaultValuesContainer</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.audit.persistence.InformixAuditPersistence.InvalidConnectionFactoryNamespace">
+		<Property name="connectionName">
+			<Value>informix</Value>
+		</Property>
+		<Property name="connectionFactoryNamespace">
+			<Value>Invalid</Value>
+		</Property>
+		<Property name="logName">
+			<Value>InformixAuditPersistence</Value>
+		</Property>
+		<Property name="idGeneratorName">
+			<Value>AuditPersistence</Value>
+		</Property>
+		<Property name="searchBundleName">
+			<Value>FirstSearchBundle</Value>
+		</Property>
+		<Property name="searchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="defaultValueNamespace">
+			<Value>com.topcoder.timetracker.audit.persistence.DefaultValuesContainer</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.audit.persistence.InformixAuditPersistence.InvalidIdGeneratorName">
+		<Property name="connectionName">
+			<Value>informix</Value>
+		</Property>
+		<Property name="connectionFactoryNamespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<Property name="logName">
+			<Value>InformixAuditPersistence</Value>
+		</Property>
+		<Property name="idGeneratorName">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="searchBundleName">
+			<Value>FirstSearchBundle</Value>
+		</Property>
+		<Property name="searchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="defaultValueNamespace">
+			<Value>com.topcoder.timetracker.audit.persistence.DefaultValuesContainer</Value>
+		</Property>
+	</Config>
+		<Config name="com.topcoder.timetracker.audit.persistence.InformixAuditPersistence.InvalidSearchBundleNamespace">
+		<Property name="connectionName">
+			<Value>informix</Value>
+		</Property>
+		<Property name="connectionFactoryNamespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<Property name="logName">
+			<Value>InformixAuditPersistence</Value>
+		</Property>
+		<Property name="idGeneratorName">
+			<Value>AuditPersistence</Value>
+		</Property>
+		<Property name="searchBundleName">
+			<Value>FirstSearchBundle</Value>
+		</Property>
+		<Property name="searchBundleNamespace">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="defaultValueNamespace">
+			<Value>com.topcoder.timetracker.audit.persistence.DefaultValuesContainer</Value>
+		</Property>
+	</Config>
+		<Config name="com.topcoder.timetracker.audit.persistence.InformixAuditPersistence.InvalidSearchBundleName">
+		<Property name="connectionName">
+			<Value>informix</Value>
+		</Property>
+		<Property name="connectionFactoryNamespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<Property name="logName">
+			<Value>InformixAuditPersistence</Value>
+		</Property>
+		<Property name="idGeneratorName">
+			<Value>AuditPersistence</Value>
+		</Property>
+		<Property name="searchBundleName">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="searchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="defaultValueNamespace">
+			<Value>com.topcoder.timetracker.audit.persistence.DefaultValuesContainer</Value>
+		</Property>
+	</Config>
+</CMConfig>

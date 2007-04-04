@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.topcoder.timetracker.audit.AllTests" tests="274" failures="0" errors="0" time="159.312">
+  <properties>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="uml_model_-_core_relationships.jar" value="D:/lib/tcs/uml_model_-_core_relationships/1.0/uml_model_-_core_relationships.jar"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="cactus.home.tomcat4x" value="D:/Software/Servers/AppServers/jakarta-tomcat-4.1.31"></property>
+    <property name="authorization.version" value="2.1.1"></property>
+    <property name="packagedir" value="com/topcoder/timetracker/audit"></property>
+    <property name="ant.library.dir" value="D:\Software\Java\apache-ant-1.6.5\lib"></property>
+    <property name="search_builder.version" value="1.3.1"></property>
+    <property name="configuration_manager.version" value="2.1.5"></property>
+    <property name="user.dir" value="F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final"></property>
+    <property name="java.vm.version" value="1.4.2_09-b05"></property>
+    <property name="servlet1.3.jar" value="D:/lib/servlet.jar"></property>
+    <property name="math_expression_evaluator.path" value="math_expression_evaluator/1.0"></property>
+    <property name="search_builder.jar" value="D:/lib/tcs/search_builder/1.3.1/search_builder.jar"></property>
+    <property name="uml_model_-_state_machines.path" value="uml_model_-_state_machines/1.0"></property>
+    <property name="uml_model_-_core_relationships.path" value="uml_model_-_core_relationships/1.0"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"></property>
+    <property name="jdbc.sqlserver.jar" value="D:/lib/jdbc/sqljdbc.jar"></property>
+    <property name="data_validation.path" value="data_validation/1.0"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="distfilename" value="time_tracker_audit"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="cobertura.datafile" value="log/cobertura.ser"></property>
+    <property name="uml_model_-_state_machines.jar.name" value="uml_model_-_state_machines.jar"></property>
+    <property name="commons.httpclient.jar" value="D:/lib/apache/commons/commons-httpclient-3.0.1.jar"></property>
+    <property name="diagram_interchange.version" value="1.0"></property>
+    <property name="object_factory.path" value="object_factory/2.0.1"></property>
+    <property name="ext_libdir" value="D:/lib"></property>
+    <property name="JNDI_Utility.version" value="1.0"></property>
+    <property name="search_builder.path" value="search_builder/1.3.1"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="jdbc.informix.jar" value="D:/lib/jdbc/ifxjdbc.jar"></property>
+    <property name="authorization.path" value="authorization/2.1.1"></property>
+    <property name="logging_wrapper.jar" value="D:/lib/tcs/logging_wrapper/1.2/logging_wrapper.jar"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/time_tracker_audit/3.2/time_tracker_audit.jar"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="uml_model_-_core.jar" value="D:/lib/tcs/uml_model_-_core/1.0/uml_model_-_core.jar"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="logging_wrapper.version" value="1.2"></property>
+    <property name="user.name" value="Zhang Guiqiang"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="uml_model_-_core_relationships.jar.name" value="uml_model_-_core_relationships.jar"></property>
+    <property name="commons.beanutils.jar" value="${lib.apache.common.dir}/commons-beanutils-1.7.0.jar"></property>
+    <property name="configuration_manager.path" value="configuration_manager/2.1.5"></property>
+    <property name="time_tracker_common.jar" value="D:/lib/tcs/time_tracker_common/3.1/time_tracker_common.jar"></property>
+    <property name="string_pattern_match.version" value="1.0"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="uml_model_-_common_behavior.jar" value="D:/lib/tcs/uml_model_-_common_behavior/1.0/uml_model_-_common_behavior.jar"></property>
+    <property name="xercesImpl.jar" value="D:/lib/xerces/2.7.1/xercesImpl.jar"></property>
+    <property name="search_builder.jar.name" value="search_builder.jar"></property>
+    <property name="id_generator.version" value="3.0"></property>
+    <property name="JNDI_Utility.jar" value="D:/lib/tcs/JNDI_Utility/1.0/JNDI_Utility.jar"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="time_tracker_contact.path" value="time_tracker_contact/3.2"></property>
+    <property name="reports" value="reports"></property>
+    <property name="cobertura.dir" value="D:/lib/cobertura-1.8"></property>
+    <property name="time_tracker_common.path" value="time_tracker_common/3.1"></property>
+    <property name="dist_conf" value="build/dist/time_tracker_audit-3.2/conf"></property>
+    <property name="uml_model_-_core_relationships.version" value="1.0"></property>
+    <property name="tcs_libdir" value="D:/lib/tcs"></property>
+    <property name="data_validation.jar" value="D:/lib/tcs/data_validation/1.0/data_validation.jar"></property>
+    <property name="uml_model_-_core.jar.name" value="uml_model_-_core.jar"></property>
+    <property name="dist_javadocs" value="build/dist/time_tracker_audit-3.2/docs/javadocs"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="jdbc.oracle.jar" value="D:/lib/jdbc/ojdbc14.jar"></property>
+    <property name="java.endorsed.dirs" value="D:\Software\Java\j2sdk1.4.2\jre\lib\endorsed"></property>
+    <property name="string_pattern_match.path" value="string_pattern_match/1.0"></property>
+    <property name="commons.io.jar" value="D:/lib/apache/commons/commons-io-1.0.jar"></property>
+    <property name="generic_event_manager.path" value="generic_event_manager/1.0"></property>
+    <property name="chat_user_profile.jar.name" value="chat_user_profile.jar"></property>
+    <property name="jbossall-client.jar" value="D:/lib/jbossall-client.jar"></property>
+    <property name="component.dist.jar" value="build/dist/time_tracker_audit-3.2.jar"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="commons.cli.jar" value="D:/lib/apache/commons/commons-cli-1.0.jar"></property>
+    <property name="lib.apache.commons.dir" value="D:/lib/apache/commons"></property>
+    <property name="logging_wrapper.path" value="logging_wrapper/1.2"></property>
+    <property name="status_tracker.jar" value="D:/lib/tcs/status_tracker/1.0/status_tracker.jar"></property>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="file.separator" value="\"></property>
+    <property name="jboss-deploy" value="D:/Software/Servers/AppServers/jboss-4.0.5.GA/server/default/deploy"></property>
+    <property name="user.variant" value=""></property>
+    <property name="mail.jar" value="D:/lib/mail.jar"></property>
+    <property name="ant.home" value="D:\Software\Java\apache-ant-1.6.5"></property>
+    <property name="builddir" value="build"></property>
+    <property name="dev_dist.jar" value="Time_Tracker_Audit_3.2_dev_dist.jar"></property>
+    <property name="simple_cache.path" value="simple_cache/1.1"></property>
+    <property name="jboss_home" value="D:/Software/Servers/AppServers/jboss-4.0.5.GA"></property>
+    <property name="zoom_panel.path" value="zoom_panel/1.0"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="ant.java.version" value="1.4"></property>
+    <property name="java.library.path" value="D:\Software\Java\j2sdk1.4.2\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;D:\Software\Servers\Databases\oraclexe\app\oracle\product\10.2.0\server\bin;C:\Program Files\PC Connectivity Solution\;D:\Software\Ruby\bin;D:\Software\Tools\mksscripts\src;D:\Software\Tools\MKS\IntegrityClient\bin;D:\Software\Perl\bin\;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\ATI Technologies\ATI Control Panel;D:\Software\Java\j2sdk1.4.2\bin;D:\Software\Java\apache-ant-1.6.5\bin;C:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\ThinkPad\ConnectUtilities;C:\tbs\bin;D:\Software\Tools\nant-0.85\bin;C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322;D:\Software\Servers\Databases\MySQL5\bin;D:\Software\Tools\cygwin\bin;D:\Software\Tools\4NT302;D:\Software\groovy\bin;C:\Program Files\QuickTime\QTSystem\"></property>
+    <property name="uml_model_-_core_extension_mechanisms.jar" value="D:/lib/tcs/uml_model_-_core_extension_mechanisms/1.0/uml_model_-_core_extension_mechanisms.jar"></property>
+    <property name="activation.jar" value="D:/lib/activation.jar"></property>
+    <property name="time_tracker_audit.version" value="3.2"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="basedir" value="F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final"></property>
+    <property name="webdir" value="web"></property>
+    <property name="ant.file.Common properties and tasks" value="D:\TopCoder\config\commons.xml"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="diagram_elements.path" value="diagram_elements/1.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="uml_model_-_core_classifiers.path" value="uml_model_-_core_classifiers/1.0"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="generic_event_manager.jar" value="D:/lib/tcs/generic_event_manager/1.0/generic_event_manager.jar"></property>
+    <property name="simple_cache.version" value="1.1"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="junit.jar" value="D:/lib/junit.jar"></property>
+    <property name="object_factory.jar" value="D:/lib/tcs/object_factory/2.0.1/object_factory.jar"></property>
+    <property name="docpackage.jar" value="time_tracker_audit_docs.jar"></property>
+    <property name="chat_user_profile.version" value="2.0"></property>
+    <property name="database_abstraction.jar.name" value="database_abstraction.jar"></property>
+    <property name="uml_model_-_common_behavior.jar.name" value="uml_model_-_common_behavior.jar"></property>
+    <property name="authentication_factory.version" value="2.0"></property>
+    <property name="authorization.jar" value="D:/lib/tcs/authorization/2.1.1/authorization.jar"></property>
+    <property name="chat_user_profile.jar" value="D:/lib/tcs/chat_user_profile/2.0/chat_user_profile.jar"></property>
+    <property name="package" value="com.topcoder.timetracker.audit"></property>
+    <property name="java.class.version" value="48.0"></property>
+    <property name="uml_model_-_core_extension_mechanisms.version" value="1.0"></property>
+    <property name="xml-apis.jar" value="D:/lib/xerces/2.7.1/xml-apis.jar"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="database_abstraction.version" value="1.1"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="uml_model_-_activity_graphs.jar" value="D:/lib/tcs/uml_model_-_activity_graphs/1.0/uml_model_-_activity_graphs.jar"></property>
+    <property name="time_tracker_contact.jar" value="D:/lib/tcs/time_tracker_contact/3.2/time_tracker_contact.jar"></property>
+    <property name="generic_event_manager.version" value="1.0"></property>
+    <property name="zoom_panel.jar.name" value="zoom_panel.jar"></property>
+    <property name="java.home" value="D:\Software\Java\j2sdk1.4.2\jre"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="diagram_interchange.jar" value="D:/lib/tcs/diagram_interchange/1.0/diagram_interchange.jar"></property>
+    <property name="data_validation.version" value="1.0"></property>
+    <property name="component_version" value="3.2"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="junitejb.jar" value="D:/lib/junitejb.jar"></property>
+    <property name="diagram_edges.path" value="diagram_edges/1.0"></property>
+    <property name="uml_model_-_core_classifiers.jar" value="D:/lib/tcs/uml_model_-_core_classifiers/1.0/uml_model_-_core_classifiers.jar"></property>
+    <property name="mockejb.jar" value="D:/lib/mockejb.jar"></property>
+    <property name="commons.collections.jar" value="D:/lib/apache/commons/commons-collections-3.1.jar"></property>
+    <property name="dist_src" value="build/dist/time_tracker_audit-3.2/src"></property>
+    <property name="log4j.jar" value="D:/lib/log4j-1.2.13.jar"></property>
+    <property name="string_pattern_match.jar.name" value="string_pattern_match.jar"></property>
+    <property name="build_tcsdistdir" value="build/dist/time_tracker_audit-3.2"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="instrumented.dir" value="build/instrumented"></property>
+    <property name="time_tracker_contact.jar.name" value="time_tracker_contact.jar"></property>
+    <property name="math_expression_evaluator.jar" value="D:/lib/tcs/math_expression_evaluator/1.0/math_expression_evaluator.jar"></property>
+    <property name="debug" value="off"></property>
+    <property name="uml_model_-_data_types.path" value="uml_model_-_data_types/1.0"></property>
+    <property name="diagram_interchange.jar.name" value="diagram_interchange.jar"></property>
+    <property name="jdbc.mysql.jar" value="D:/lib/jdbc/mysql-connector-java-3.1.12-bin.jar"></property>
+    <property name="object_factory.jar.name" value="object_factory.jar"></property>
+    <property name="ant.file" value="F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final\build.xml"></property>
+    <property name="typesafe_enum.version" value="1.0"></property>
+    <property name="commons.logging.jar" value="D:/lib/apache/commons/commons-logging-1.0.4.jar"></property>
+    <property name="time_tracker_common.version" value="3.1"></property>
+    <property name="uml_model_-_core_extension_mechanisms.path" value="uml_model_-_core_extension_mechanisms/1.0"></property>
+    <property name="diagram_edges.version" value="1.0"></property>
+    <property name="time_tracker_contact.version" value="3.2"></property>
+    <property name="jdbc.postgres.jar" value="D:/lib/jdbc/postgresql-8.1-404.jdbc3.jar"></property>
+    <property name="status_tracker.path" value="status_tracker/1.0"></property>
+    <property name="java_1_3_bootclasspath" value="D:/TopCoder/JavaSoft/JRE/1.3.1_18/lib/rt.jar"></property>
+    <property name="commons.codec.jar" value="D:/lib/apache/commons/commons-codec-1.3.jar"></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="design_submission.jar" value="Time_Tracker_Audit_3.2_design_submission.jar"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\ZHANGG~1\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="status_tracker.version" value="1.0"></property>
+    <property name="typesafe_enum.jar" value="D:/lib/tcs/typesafe_enum/1.0/typesafe_enum.jar"></property>
+    <property name="uml_model_-_core_classifiers.version" value="1.0"></property>
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/time_tracker_audit_tests.jar"></property>
+    <property name="sun.boot.library.path" value="D:\Software\Java\j2sdk1.4.2\jre\bin"></property>
+    <property name="configuration_manager.jar" value="D:/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="zoom_panel.version" value="1.0"></property>
+    <property name="chat_user_profile.path" value="chat_user_profile/2.0"></property>
+    <property name="diagram_interchange.path" value="diagram_interchange/1.0"></property>
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"></property>
+    <property name="xerces1.4.4.jar" value="D:/lib/xerces/1.4.4/xerces.jar"></property>
+    <property name="id_generator.path" value="id_generator/3.0"></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="ant.project.name" value="Time Tracker Audit"></property>
+    <property name="commons.digester.jar" value="D:/lib/apache/commons/commons-digester-1.8.jar"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="dist_testfiles" value="build/dist/time_tracker_audit-3.2/test_files"></property>
+    <property name="sun.cpu.isalist" value="pentium i486 i386"></property>
+    <property name="lib.cactus.dir" value="D:/lib/cactus"></property>
+    <property name="db_connection_factory.jar" value="D:/lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="zoom_panel.jar" value="D:/lib/tcs/zoom_panel/1.0/zoom_panel.jar"></property>
+    <property name="user.home" value="C:\Documents and Settings\Zhang Guiqiang"></property>
+    <property name="class_associations.path" value="class_associations/1.0"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="database_abstraction.jar" value="D:/lib/tcs/database_abstraction/1.1/database_abstraction.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="uml_model_-_activity_graphs.jar.name" value="uml_model_-_activity_graphs.jar"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.version" value="1.4.2_09"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="diagram_elements.jar.name" value="diagram_elements.jar"></property>
+    <property name="string_pattern_match.jar" value="D:/lib/tcs/string_pattern_match/1.0/string_pattern_match.jar"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="base_exception.jar" value="D:/lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="mockrunner.jar" value="D:/lib/mock/mockrunner-0.3.7/lib/mockrunner.jar"></property>
+    <property name="jdbc.jtds.jar" value="D:/lib/jdbc/jtds-1.2.jar"></property>
+    <property name="email_engine.version" value="3.0"></property>
+    <property name="simple_cache.jar.name" value="simple_cache.jar"></property>
+    <property name="id_generator.jar.name" value="id_generator.jar"></property>
+    <property name="configuration_manager.jar.name" value="configuration_manager.jar"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.specification.version" value="1.4"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="authorization.jar.name" value="authorization.jar"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="jdbc.hsqldb.jar" value="D:/lib/jdbc/hsqldb.jar"></property>
+    <property name="uml_model_-_state_machines.version" value="1.0"></property>
+    <property name="sun.boot.class.path" value="D:\Software\Java\j2sdk1.4.2\jre\lib\rt.jar;D:\Software\Java\j2sdk1.4.2\jre\lib\i18n.jar;D:\Software\Java\j2sdk1.4.2\jre\lib\sunrsasign.jar;D:\Software\Java\j2sdk1.4.2\jre\lib\jsse.jar;D:\Software\Java\j2sdk1.4.2\jre\lib\jce.jar;D:\Software\Java\j2sdk1.4.2\jre\lib\charsets.jar;D:\Software\Java\j2sdk1.4.2\jre\classes"></property>
+    <property name="generic_event_manager.jar.name" value="generic_event_manager.jar"></property>
+    <property name="verbose" value="no"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="dist_docs" value="build/dist/time_tracker_audit-3.2/docs"></property>
+    <property name="uml_model_-_data_types.version" value="1.0"></property>
+    <property name="time_tracker_audit.jar" value="D:/lib/tcs/time_tracker_audit/3.2/time_tracker_audit.jar"></property>
+    <property name="data_validation.jar.name" value="data_validation.jar"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="authentication_factory.jar.name" value="authentication_factory.jar"></property>
+    <property name="dev_submission.jar" value="Time_Tracker_Audit_3.2_dev_submission.jar"></property>
+    <property name="ant.file.Time Tracker Audit" value="F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final\build.xml"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="typesafe_enum.path" value="typesafe_enum/1.0"></property>
+    <property name="simple_cache.jar" value="D:/lib/tcs/simple_cache/1.1/simple_cache.jar"></property>
+    <property name="uml_model_-_activity_graphs.version" value="1.0"></property>
+    <property name="diagram_elements.version" value="1.0"></property>
+    <property name="uml_model_-_state_machines.jar" value="D:/lib/tcs/uml_model_-_state_machines/1.0/uml_model_-_state_machines.jar"></property>
+    <property name="java.runtime.version" value="1.4.2_09-b05"></property>
+    <property name="lib.jdbc.dir" value="D:/lib/jdbc"></property>
+    <property name="uml_model_-_data_types.jar.name" value="uml_model_-_data_types.jar"></property>
+    <property name="component.war" value="${dist_examples}/time_tracker_audit.war"></property>
+    <property name="class_associations.jar" value="D:/lib/tcs/class_associations/1.0/class_associations.jar"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="class_associations.version" value="1.0"></property>
+    <property name="component_path" value="time_tracker_audit/3.2"></property>
+    <property name="j2ee.jar" value="D:/lib/jboss-j2ee.jar"></property>
+    <property name="uml_model_-_common_behavior.path" value="uml_model_-_common_behavior/1.0"></property>
+    <property name="database_abstraction.path" value="database_abstraction/1.1"></property>
+    <property name="authentication_factory.jar" value="D:/lib/tcs/authentication_factory/2.0/authentication_factory.jar"></property>
+    <property name="java.ext.dirs" value="D:\Software\Java\j2sdk1.4.2\jre\lib\ext"></property>
+    <property name="class_associations.jar.name" value="class_associations.jar"></property>
+    <property name="jta.jar" value="D:/lib/jta.jar"></property>
+    <property name="object_factory.version" value="2.0.1"></property>
+    <property name="java.class.path" value="F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final\build\testClasses;F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final\build\classes;D:\lib\junit.jar;F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final\conf;F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final\test_files;D:\lib\tcs\base_exception\1.0\base_exception.jar;D:\lib\tcs\class_associations\1.0\class_associations.jar;D:\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;D:\lib\tcs\data_validation\1.0\data_validation.jar;D:\lib\tcs\database_abstraction\1.1\database_abstraction.jar;D:\lib\tcs\db_connection_factory\1.0\db_connection_factory.jar;D:\lib\tcs\id_generator\3.0\id_generator.jar;D:\lib\jdbc\informix\ifxjdbc.jar;D:\lib\jdbc\informix\ifxjdbcx.jar;D:\lib\jdbc\informix\ifxlang.jar;D:\lib\jdbc\informix\ifxlsupp.jar;D:\lib\jdbc\informix\ifxsqlj.jar;D:\lib\jdbc\informix\ifxtools.jar;D:\lib\tcs\JNDI_Utility\1.0\JNDI_Utility.jar;D:\lib\log4j-1.2.13.jar;D:\lib\mock\junitejb.jar;D:\lib\mock\mockejb\mockejb.jar;D:\lib\apache\commons\commons-logging-1.0.4.jar;D:\lib\cglib-nodep-2.2_beta1.jar;D:\lib\jakarta-oro-2.0.8.jar;D:\lib\tcs\logging_wrapper\1.2\logging_wrapper.jar;D:\lib\tcs\object_factory\2.0.1\object_factory.jar;D:\lib\tcs\search_builder\1.3.1\search_builder.jar;D:\lib\tcs\typesafe_enum\1.0\typesafe_enum.jar;D:\lib\jbossall-client.jar;F:\Download\Time_Tracker_Audit_3.2_dev_dist\Final;C:\Program Files\QuickTime\QTSystem\QTJava.zip;D:\Software\Java\apache-ant-1.6.5\lib\junit.jar;D:\Software\Java\apache-ant-1.6.5\lib\ant-launcher.jar;D:\Software\Java\apache-ant-1.6.5\lib\ant.jar;D:\Software\Java\apache-ant-1.6.5\lib\ant-junit.jar"></property>
+    <property name="uml_model_-_common_behavior.version" value="1.0"></property>
+    <property name="status_tracker.jar.name" value="status_tracker.jar"></property>
+    <property name="component" value="Time_Tracker_Audit"></property>
+    <property name="cactus.jar" value="D:/lib/cactus/cactus-1.7.2.jar"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="email_engine.jar" value="D:/lib/tcs/email_engine/3.0/email_engine.jar"></property>
+    <property name="design_dist.jar" value="Time_Tracker_Audit_3.2_design_dist.jar"></property>
+    <property name="uml_model_-_core_classifiers.jar.name" value="uml_model_-_core_classifiers.jar"></property>
+    <property name="time_tracker_audit.jar.name" value="time_tracker_audit.jar"></property>
+    <property name="diagram_edges.jar.name" value="diagram_edges.jar"></property>
+    <property name="uml_model_-_core.version" value="1.0"></property>
+    <property name="cactus.port" value="9090"></property>
+    <property name="math_expression_evaluator.jar.name" value="math_expression_evaluator.jar"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="uml_model_-_core_extension_mechanisms.jar.name" value="uml_model_-_core_extension_mechanisms.jar"></property>
+    <property name="time_tracker_audit.path" value="time_tracker_audit/3.2"></property>
+    <property name="math_expression_evaluator.version" value="1.0"></property>
+    <property name="diagram_edges.jar" value="D:/lib/tcs/diagram_edges/1.0/diagram_edges.jar"></property>
+    <property name="hibernate3.jar" value="D:/lib/hibernate3.jar"></property>
+    <property name="uml_model_-_core.path" value="uml_model_-_core/1.0"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="uml_model_-_activity_graphs.path" value="uml_model_-_activity_graphs/1.0"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dom4j.jar" value="D:/lib/dom4j-1.6.1.jar"></property>
+    <property name="sun.java2d.fontpath" value=""></property>
+    <property name="cactus.home.tomcat5x" value="D:/Software/Servers/AppServers/jakarta-tomcat-5.0.28"></property>
+    <property name="servlet1.4.jar" value="D:/lib/servlet-api.jar"></property>
+    <property name="$log4j.jar" value="D:/lib/log4j-1.2.13.jar"></property>
+    <property name="id_generator.jar" value="D:/lib/tcs/id_generator/3.0/id_generator.jar"></property>
+    <property name="JNDI_Utility.jar.name" value="JNDI_Utility.jar"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="email_engine.path" value="email_engine/3.0"></property>
+    <property name="time_tracker_common.jar.name" value="time_tracker_common.jar"></property>
+    <property name="authentication_factory.path" value="authentication_factory/2.0"></property>
+    <property name="JNDI_Utility.path" value="JNDI_Utility/1.0"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="diagram_elements.jar" value="D:/lib/tcs/diagram_elements/1.0/diagram_elements.jar"></property>
+    <property name="jsp1.4.jar" value="D:/lib/jsp-api.jar"></property>
+    <property name="email_engine.jar.name" value="email_engine.jar"></property>
+    <property name="uml_model_-_data_types.jar" value="D:/lib/tcs/uml_model_-_data_types/1.0/uml_model_-_data_types.jar"></property>
+  </properties>
+  <testcase name="testMethodToString" classname="com.topcoder.timetracker.audit.accuracytests.ApplicationAreaTest" time="0.0"></testcase>
+  <testcase name="testMethodGetId" classname="com.topcoder.timetracker.audit.accuracytests.ApplicationAreaTest" time="0.0"></testcase>
+  <testcase name="testMethodGetName" classname="com.topcoder.timetracker.audit.accuracytests.ApplicationAreaTest" time="0.0"></testcase>
+  <testcase name="testMethodGetId" classname="com.topcoder.timetracker.audit.accuracytests.AuditDetailTest" time="0.0"></testcase>
+  <testcase name="testConstructor" classname="com.topcoder.timetracker.audit.accuracytests.AuditDetailTest" time="0.0"></testcase>
+  <testcase name="testMethodGetColumnName" classname="com.topcoder.timetracker.audit.accuracytests.AuditDetailTest" time="0.0"></testcase>
+  <testcase name="testMethodIsPersisted" classname="com.topcoder.timetracker.audit.accuracytests.AuditDetailTest" time="0.0"></testcase>
+  <testcase name="testMethodGetNewValue" classname="com.topcoder.timetracker.audit.accuracytests.AuditDetailTest" time="0.0"></testcase>
+  <testcase name="testMethodGetOldValue" classname="com.topcoder.timetracker.audit.accuracytests.AuditDetailTest" time="0.0"></testcase>
+  <testcase name="testConstructor_String" classname="com.topcoder.timetracker.audit.accuracytests.AuditEjbTest" time="2.078"></testcase>
+  <testcase name="testMethodCreateAuditRecord_AuditHeader" classname="com.topcoder.timetracker.audit.accuracytests.AuditEjbTest" time="1.985"></testcase>
+  <testcase name="testMethodRollbackAuditRecord_int" classname="com.topcoder.timetracker.audit.accuracytests.AuditEjbTest" time="2.828"></testcase>
+  <testcase name="testMethodSearchAudit_Filter" classname="com.topcoder.timetracker.audit.accuracytests.AuditEjbTest" time="4.344"></testcase>
+  <testcase name="testMethodGetId" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testConstructor" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodIsPersisted" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetClientName" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetEntityId" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetProjectId" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetProjectName" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetCreationUser" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetActionType" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetClientId" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetDetails" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetResourceId" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetTableName" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetCompanyId" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetCreationDate" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testMethodGetApplicationArea" classname="com.topcoder.timetracker.audit.accuracytests.AuditHeaderTest" time="0.0"></testcase>
+  <testcase name="testConstructor_String" classname="com.topcoder.timetracker.audit.accuracytests.InformixAuditPersistenceTest" time="0.953"></testcase>
+  <testcase name="testMethodCreateAuditRecord_AuditHeader" classname="com.topcoder.timetracker.audit.accuracytests.InformixAuditPersistenceTest" time="2.203"></testcase>
+  <testcase name="testMethodRollbackAuditRecord_int" classname="com.topcoder.timetracker.audit.accuracytests.InformixAuditPersistenceTest" time="3.812"></testcase>
+  <testcase name="testMethodSearchAudit_Filter" classname="com.topcoder.timetracker.audit.accuracytests.InformixAuditPersistenceTest" time="6.454"></testcase>
+  <testcase name="testTT_EXPENSE_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_EXPENSE_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_EXPENSE_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_FIXED_BILLING_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_FIXED_BILLING_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_FIXED_BILLING_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_TIME_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_TIME_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_TIME_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_CLIENT_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_CLIENT_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_CLIENT_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_COMPANY_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_COMPANY_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_COMPANY_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_PROJECT_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_PROJECT_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_PROJECT_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_USER_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_USER_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_USER_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_INVOICE_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_INVOICE_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_INVOICE_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_NOTIFICATION_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_NOTIFICATION_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_NOTIFICATION_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_CONFIGURATION_GetId_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_CONFIGURATION_GetName_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testTT_CONFIGURATION_ToString_Accuracy" classname="com.topcoder.timetracker.audit.ApplicationAreaUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditConfigurationException1" classname="com.topcoder.timetracker.audit.AuditConfigurationExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditConfigurationException2" classname="com.topcoder.timetracker.audit.AuditConfigurationExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditConfigurationExceptionInheritance1" classname="com.topcoder.timetracker.audit.AuditConfigurationExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditConfigurationExceptionInheritance2" classname="com.topcoder.timetracker.audit.AuditConfigurationExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditDetail_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetId_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetId_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testSetId_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetNewValue_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetNewValue_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testSetNewValue_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetOldValue_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetOldValue_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testSetOldValue_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetColumnName_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetColumnName_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testSetColumnName_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testIsPersisted_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testIsPersisted_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testSetPersisted_Accuracy" classname="com.topcoder.timetracker.audit.AuditDetailUnitTest" time="0.0"></testcase>
+  <testcase name="testGetId_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testIsPersisted_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testIsPersisted_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetPersisted_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditHeader_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetEntityId_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetEntityId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetEntityId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetCreationDate_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetCreationDate_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetCreationDate_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetTableName_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetTableName_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetTableName_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetCompanyId_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetCompanyId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetCompanyId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetCreationUser_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetCreationUser_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetCreationUser_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetActionType_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetActionType_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetActionType_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetClientId_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetClientId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetClientId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetProjectId_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetProjectId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetProjectId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetResourceId_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetResourceId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetResourceId_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetClientName_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetClientName_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetClientName_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetProjectName_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetProjectName_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetProjectName_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDetails_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetDetails_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetDetails_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetApplicationArea_Default_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testGetApplicationArea_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testSetApplicationArea_Accuracy" classname="com.topcoder.timetracker.audit.AuditHeaderUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditManagerException1" classname="com.topcoder.timetracker.audit.AuditManagerExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditManagerException2" classname="com.topcoder.timetracker.audit.AuditManagerExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditManagerExceptionInheritance1" classname="com.topcoder.timetracker.audit.AuditManagerExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditManagerExceptionInheritance2" classname="com.topcoder.timetracker.audit.AuditManagerExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditPersistenceException1" classname="com.topcoder.timetracker.audit.AuditPersistenceExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditPersistenceException2" classname="com.topcoder.timetracker.audit.AuditPersistenceExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditPersistenceExceptionInheritance1" classname="com.topcoder.timetracker.audit.AuditPersistenceExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testAuditPersistenceExceptionInheritance2" classname="com.topcoder.timetracker.audit.AuditPersistenceExceptionUnitTest" time="0.0"></testcase>
+  <testcase name="testValidateNotNull_NullObject" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.046"></testcase>
+  <testcase name="testValidateNotNull_Accuracy" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.079"></testcase>
+  <testcase name="testValidateString_NullString" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.046"></testcase>
+  <testcase name="testValidateString_EmptyString" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.047"></testcase>
+  <testcase name="testValidateString_Accuracy" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.047"></testcase>
+  <testcase name="testCreateObjectFactory_NotCorrect" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.078"></testcase>
+  <testcase name="testCreateObjectFactory_Accuracy" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.047"></testcase>
+  <testcase name="testCreateObject_NotCorrect" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.047"></testcase>
+  <testcase name="testCreateObject_NotExpectedClass" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.734"></testcase>
+  <testcase name="testCreateObject_Accuracy" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.094"></testcase>
+  <testcase name="testGetStringPropertyValue_NotExistNamespace" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.031"></testcase>
+  <testcase name="testGetStringPropertyValue_MissingRequiredPropertyValue" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.079"></testcase>
+  <testcase name="testGetStringPropertyValue_EmptyRequiredPropertyValue" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.062"></testcase>
+  <testcase name="testGetStringPropertyValue_MissingOptionalPropertyValue" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.125"></testcase>
+  <testcase name="testGetStringPropertyValue_Accuracy" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.125"></testcase>
+  <testcase name="testGetExceptionStaceTrace_Accuracy" classname="com.topcoder.timetracker.audit.TimeTrackerAuditHelperUnitTest" time="0.063"></testcase>
+  <testcase name="testAuditDelegate_NullNamespace" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="0.609"></testcase>
+  <testcase name="testAuditDelegate_EmptyNamespace" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="0.344"></testcase>
+  <testcase name="testAuditDelegate_NotExistNamespace" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="0.453"></testcase>
+  <testcase name="testAuditDelegate_InvalidContextName" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="0.344"></testcase>
+  <testcase name="testAuditDelegate_InvalidJndiName" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="0.421"></testcase>
+  <testcase name="testAuditDelegate_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="0.579"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy1" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="1.234"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy2" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="2.703"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy3" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="2.219"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy4" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="1.328"></testcase>
+  <testcase name="testSearchAudit_NullAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="2.437"></testcase>
+  <testcase name="testSearchAudit_ByResourceIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="2.313"></testcase>
+  <testcase name="testSearchAudit_ByApplicationAreaIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="4.078"></testcase>
+  <testcase name="testSearchAudit_ByClientIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="2.734"></testcase>
+  <testcase name="testSearchAudit_ByProjectIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="2.766"></testcase>
+  <testcase name="testSearchAudit_ByCreationDateAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="5.25"></testcase>
+  <testcase name="testRollbackAuditRecord_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="1.516"></testcase>
+  <testcase name="testRollbackAuditRecord_NoRecordAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditDelegateUnitTest" time="0.578"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy1" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="1.062"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy2" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="1.485"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy3" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="1.0"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy4" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="1.625"></testcase>
+  <testcase name="testSearchAudit_NullAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="2.14"></testcase>
+  <testcase name="testSearchAudit_ByResourceIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="2.5"></testcase>
+  <testcase name="testSearchAudit_ByApplicationAreaIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="2.516"></testcase>
+  <testcase name="testSearchAudit_ByClientIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="2.437"></testcase>
+  <testcase name="testSearchAudit_ByProjectIdAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="2.204"></testcase>
+  <testcase name="testSearchAudit_ByCreationDateAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="2.421"></testcase>
+  <testcase name="testRollbackAuditRecord_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="1.172"></testcase>
+  <testcase name="testRollbackAuditRecord_NoRecordAccuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.578"></testcase>
+  <testcase name="testAuditSessionBean_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.438"></testcase>
+  <testcase name="testEjbCreate_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.312"></testcase>
+  <testcase name="testEjbRemove_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.375"></testcase>
+  <testcase name="testEjbActivate_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.329"></testcase>
+  <testcase name="testEjbPassivate_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.828"></testcase>
+  <testcase name="testSetSessionContext_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.39"></testcase>
+  <testcase name="testGetSessionContext_Default_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.36"></testcase>
+  <testcase name="testGetSessionContext_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.343"></testcase>
+  <testcase name="testGetDao_Accuracy" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.375"></testcase>
+  <testcase name="testCreateAuditRecord_DAOError" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.375"></testcase>
+  <testcase name="testSearchAudit_DAOError" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.344"></testcase>
+  <testcase name="testEollbackAuditRecord_DAOError" classname="com.topcoder.timetracker.audit.ejb.AuditSessionBeanUnitTest" time="0.391"></testcase>
+  <testcase name="testDefaultValuesContainer_NullNamespace" classname="com.topcoder.timetracker.audit.persistence.DefaultValuesContainerUnitTest" time="0.047"></testcase>
+  <testcase name="testDefaultValuesContainer_EmptyNamespace" classname="com.topcoder.timetracker.audit.persistence.DefaultValuesContainerUnitTest" time="0.031"></testcase>
+  <testcase name="testDefaultValuesContainer_AllExistAccuracy" classname="com.topcoder.timetracker.audit.persistence.DefaultValuesContainerUnitTest" time="0.047"></testcase>
+  <testcase name="testDefaultValuesContainer_AllNotExistAccuracy" classname="com.topcoder.timetracker.audit.persistence.DefaultValuesContainerUnitTest" time="0.094"></testcase>
+  <testcase name="testDefaultValuesContainer_NamespaceNotExistAccuracy" classname="com.topcoder.timetracker.audit.persistence.DefaultValuesContainerUnitTest" time="0.046"></testcase>
+  <testcase name="testDefaultValuesContainer_IdInvalidAccuracy" classname="com.topcoder.timetracker.audit.persistence.DefaultValuesContainerUnitTest" time="0.032"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy1" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="1.437"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy2" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="1.094"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy3" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="1.187"></testcase>
+  <testcase name="testCreateAuditRecord_Accuracy4" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="1.204"></testcase>
+  <testcase name="testSearchAudit_NullAccuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="3.031"></testcase>
+  <testcase name="testSearchAudit_ByResourceIdAccuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="2.469"></testcase>
+  <testcase name="testSearchAudit_ByApplicationAreaIdAccuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="2.64"></testcase>
+  <testcase name="testSearchAudit_ByClientIdAccuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="2.953"></testcase>
+  <testcase name="testSearchAudit_ByProjectIdAccuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="2.532"></testcase>
+  <testcase name="testSearchAudit_ByCreationDateAccuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="2.609"></testcase>
+  <testcase name="testRollbackAuditRecord_Accuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="1.203"></testcase>
+  <testcase name="testRollbackAuditRecord_NoRecordAccuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.672"></testcase>
+  <testcase name="testInformixAuditPersistenceNullNamespace" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.344"></testcase>
+  <testcase name="testInformixAuditPersistence_EmptyNamespace" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.812"></testcase>
+  <testcase name="testInformixAuditPersistence_NotExistNamespace" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.563"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConnectionFactoryNamespace" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.406"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidIdGeneratorName" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.547"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidSearchBundleNamespace" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.375"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidSearchBundleName" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="4.39"></testcase>
+  <testcase name="testInformixAuditPersistence_Accuracy" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.375"></testcase>
+  <testcase name="testCreateAuditRecord_NullAuditHeader" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.391"></testcase>
+  <testcase name="testCreateAuditRecord_NullAuditHeaderApplicationArea" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.313"></testcase>
+  <testcase name="testCreateAuditRecord_NullAuditHeaderTableName" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.328"></testcase>
+  <testcase name="testCreateAuditRecord_NullAuditHeaderCreationDate" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.422"></testcase>
+  <testcase name="testCreateAuditRecord_NullAuditHeaderCreationUser" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.484"></testcase>
+  <testcase name="testCreateAuditRecord_NullAuditHeaderAuditDetail" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.547"></testcase>
+  <testcase name="testCreateAuditRecord_NullAuditHeaderAuditDetailColumnName" classname="com.topcoder.timetracker.audit.persistence.InformixAuditPersistenceUnitTest" time="0.406"></testcase>
+  <testcase name="testTypicalAuctionClient_Usage" classname="com.topcoder.timetracker.audit.DemoTest" time="2.594"></testcase>
+  <testcase name="testInformixAuditPersistence_EmptyNamespace" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.078"></testcase>
+  <testcase name="testInformixAuditPersistence_NullNamespace" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.172"></testcase>
+  <testcase name="testInformixAuditPersistence_TrimmedEmptyNamespace" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.187"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case1" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.094"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case2" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.141"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case3" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.593"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case4" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.157"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case5" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.078"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case6" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.453"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case7" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.078"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case8" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.125"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case9" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.063"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case10" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.125"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case11" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.156"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case12" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.14"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case13" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.079"></testcase>
+  <testcase name="testInformixAuditPersistence_InvalidConfig_Case14" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.14"></testcase>
+  <testcase name="testCreateAuditRecord_NullRecord" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.078"></testcase>
+  <testcase name="testCreateAuditRecord_InvalidRecord1" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.125"></testcase>
+  <testcase name="testCreateAuditRecord_InvalidRecord2" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.063"></testcase>
+  <testcase name="testCreateAuditRecord_InvalidRecord3" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.156"></testcase>
+  <testcase name="testCreateAuditRecord_InvalidRecord4" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.328"></testcase>
+  <testcase name="testCreateAuditRecord_InvalidRecord5" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.297"></testcase>
+  <testcase name="testCreateAuditRecord_InvalidRecord6" classname="com.topcoder.timetracker.audit.failuretests.InformixAuditPersistenceFailureTests" time="0.313"></testcase>
+  <testcase name="testAuditDelegate_NullNamespace" classname="com.topcoder.timetracker.audit.failuretests.AuditDelegateFailureTests" time="0.015"></testcase>
+  <testcase name="testAuditDelegate_EmptyNamespace" classname="com.topcoder.timetracker.audit.failuretests.AuditDelegateFailureTests" time="0.0"></testcase>
+  <testcase name="testAuditDelegate_TrimmedNamespace" classname="com.topcoder.timetracker.audit.failuretests.AuditDelegateFailureTests" time="0.0"></testcase>
+  <testcase name="testAuditDelegate_InvalidConfig_Case1" classname="com.topcoder.timetracker.audit.failuretests.AuditDelegateFailureTests" time="0.016"></testcase>
+  <testcase name="testAuditDelegate_InvalidConfig_Case2" classname="com.topcoder.timetracker.audit.failuretests.AuditDelegateFailureTests" time="0.0"></testcase>
+  <testcase name="testAuditDelegate_InvalidConfig_Case3" classname="com.topcoder.timetracker.audit.failuretests.AuditDelegateFailureTests" time="0.0"></testcase>
+  <testcase name="testEjbCreate_InvaidConfig_case1" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.015"></testcase>
+  <testcase name="testEjbCreate_InvaidConfig_case2" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.0"></testcase>
+  <testcase name="testEjbCreate_InvaidConfig_case3" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.016"></testcase>
+  <testcase name="testEjbCreate_InvaidConfig_case4" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.0"></testcase>
+  <testcase name="testEjbCreate_InvaidConfig_case5" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.016"></testcase>
+  <testcase name="testEjbCreate_InvaidConfig_case6" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.0"></testcase>
+  <testcase name="testCreateAuditRecord_AuditManagerException" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.015"></testcase>
+  <testcase name="testSearchAudit_AuditManagerException" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.0"></testcase>
+  <testcase name="testrollbackAuditRecord_AuditManagerException" classname="com.topcoder.timetracker.audit.failuretests.AuditSessionBeanFailureTests" time="0.0"></testcase>
+  <testcase name="testContainerStressForValidNamespace" classname="com.topcoder.timetracker.audit.stresstests.ValueContainerStressTest" time="0.047"></testcase>
+  <testcase name="testContainerStressForEmptyContainer" classname="com.topcoder.timetracker.audit.stresstests.ValueContainerStressTest" time="0.11"></testcase>
+  <testcase name="testContainerStressForContainerWithInvalidNamespaceContainer" classname="com.topcoder.timetracker.audit.stresstests.ValueContainerStressTest" time="0.078"></testcase>
+  <testcase name="testRollbackAuditRecord_Accuracy" classname="com.topcoder.timetracker.audit.stresstests.PersistenceStressTest" time="14.547"></testcase>
+  <testcase name="testPersistenceStressForCreatingNewInstance" classname="com.topcoder.timetracker.audit.stresstests.PersistenceStressTest" time="0.64"></testcase>
+  <testcase name="testPersistenceStressForSearchingRecord" classname="com.topcoder.timetracker.audit.stresstests.PersistenceStressTest" time="18.625"></testcase>
+  <system-out><![CDATA[The stress test for container with valid namespace costs: 0 milliseconds.
+The stress test for empty container costs: 0 milliseconds.
+The stress test for container with invalid namespace costs: 32 milliseconds.
+The stress test for rolling back costs: 14188 milliseconds.
+The stress test for creating new persistence instance costs: 328 milliseconds.
+The stress test for searching record costs: 18328 milliseconds.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
