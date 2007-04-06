@@ -1,0 +1,110 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.base.entry">
+		<!-- optional 
+		<Property name="context_name">
+			<Value></Value>
+		</Property>
+		-->
+		<Property name="jndi_home">
+			<Value>timetracker/entryejb</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.base.ejb.EntrySessionBean">
+		<Property name="of_namespace">
+			<Value>com.topcoder.timetracker.entry.base.ejb.EntrySessionBean.objectfactory</Value>
+		</Property>
+		<Property name="dao_key">
+			<Value>infomix_dao</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.base.ejb.EntrySessionBean.objectfactory">
+		<Property name="infomix_dao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDao</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>informix_connection</Value>
+					</Property>
+				</Property>	
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>cut_off_time</Value>
+					</Property>
+				</Property>	
+				<Property name="param3">
+					<Property name="name">
+						<Value>informix</Value>
+					</Property>
+				</Property>	
+				<Property name="param4">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>			
+			</Property>
+		</Property>
+		
+		<Property name="informix">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>			
+			</Property>
+		</Property>
+		<Property name="auditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.base.accuracytests.MockAuditManager</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+	    <Property name="connections">
+	        <!-- The default should not be oracle, the db should be in the scope of the DBs which are allowed in IDGenerator 2.0 -->
+	        <Property name="default">
+	            <Value>informix_connection</Value>
+	        </Property>
+	        
+	        <Property name="informix_connection">
+	            <Property name="producer">
+	                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+	            </Property>
+	            
+	            <Property name="parameters">
+	                <Property name="jdbc_driver">
+	                    <Value>com.informix.jdbc.IfxDriver</Value>
+	                </Property>
+	                <Property name="jdbc_url">
+	                    <Value>jdbc:informix-sqli://172.20.3.102:1526/tt_base_entry:INFORMIXSERVER=ol_hackerqc</Value>
+	                </Property>
+	                <Property name="user">
+	                    <Value>informix</Value>
+	                </Property>
+	                <Property name="password">
+	                    <Value>topcoder</Value>
+	                </Property>
+	            </Property>
+	            
+	        </Property>
+	    </Property>
+    </Config>
+    
+</CMConfig>

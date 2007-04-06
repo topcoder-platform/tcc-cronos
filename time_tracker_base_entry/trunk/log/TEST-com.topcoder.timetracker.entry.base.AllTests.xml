@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" name="com.topcoder.timetracker.entry.base.AllTests" tests="260" time="511.703">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="package" value="com.topcoder.timetracker.entry.base"></property>
+    <property name="docpackage.jar" value="time_tracker_base_entry_docs.jar"></property>
+    <property name="eclipse.pdebuild.templates" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.2.0.v20060603/templates/"></property>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="id_generator.jar.name" value="id_generator.jar"></property>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_08\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_08\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_08\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_08\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_08\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_08\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_08\jre\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="Time_Tracker_Base_Entry_3.2_design_submission.jar"></property>
+    <property name="sun.desktop" value="windows"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/time_tracker_base_entry_tests.jar"></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="net.sourceforge.cobertura.datafile" value="C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\log\cobertura.ser"></property>
+    <property name="ant.home" value="C:\eclipse\plugins\org.apache.ant_1.6.5"></property>
+    <property name="java.runtime.version" value="1.5.0_08-b03"></property>
+    <property name="base_exception.jar.name" value="base_exception.jar"></property>
+    <property name="component_path" value="time_tracker_base_entry/3.2"></property>
+    <property name="cobertura.dir" value="C:\Topcoder\Tools\cobertura-1.8"></property>
+    <property name="user.name" value="Hacker_QC"></property>
+    <property name="id_generator.version" value="3.0"></property>
+    <property name="debug" value="off"></property>
+    <property name="reports" value="reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="dist_conf" value="build/dist/time_tracker_base_entry-3.2/conf"></property>
+    <property name="component_version" value="3.2"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="cobertura.datafile" value="log/cobertura.ser"></property>
+    <property name="configmanager.path" value="configuration_manager/2.1.5"></property>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_08\jre\bin"></property>
+    <property name="tcs_libdir" value="lib/tcs"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="Time Tracker Base Entry"></property>
+    <property name="mocks" value="src/java/mocks"></property>
+    <property name="java.version" value="1.5.0_08"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="Time_Tracker_Base_Entry_3.2_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="build_lib" value="build/lib"></property>
+    <property name="webdir" value="web"></property>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_08\jre\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"></property>
+    <property name="packagedir" value="com/topcoder/timetracker/"></property>
+    <property name="sun.jnu.encoding" value="GBK"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dev_submission.jar" value="Time_Tracker_Base_Entry_3.2_dev_submission.jar"></property>
+    <property name="java.class.version" value="49.0"></property>
+    <property name="base_exception.path" value="base_exception/1.0"></property>
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.0/db_connection_factory.jar"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="ant.file.Time Tracker Base Entry" value="C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\build.xml"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_08\jre"></property>
+    <property name="java.vm.info" value="mixed mode, sharing"></property>
+    <property name="jar_tcs_libdir" value="lib/tcs"></property>
+    <property name="ant.file" value="C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="build_tcsdistdir" value="build/dist/time_tracker_base_entry-3.2"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.5.0_08-b03"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.library.dir" value="C:\eclipse\plugins\org.apache.ant_1.6.5\lib"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar"></property>
+    <property name="dist_javadocs" value="build/dist/time_tracker_base_entry-3.2/docs/javadocs"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="dist_testfiles" value="build/dist/time_tracker_base_entry-3.2/test_files"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="db_connection_factory.version" value="1.0"></property>
+    <property name="component" value="Time_Tracker_Base_Entry"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="component.war" value="${dist_examples}/time_tracker_base_entry.war"></property>
+    <property name="eclipse.pdebuild.scripts" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.2.0.v20060603/scripts/"></property>
+    <property name="user.home" value="C:\Documents and Settings\Hacker_QC"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_08\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Symbian\Tools;C:\Program Files\CSL Arm Toolchain\bin;c:\Perl\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\ATI Technologies\ATI Control Panel;C:\Program Files\Ringz Studio\Storm Codec\QTSystem\;C:\Topcoder\Tools\nant-0.85\bin;C:\Program Files\NUnit-Net-2.0 2.2.8\bin;C:\Program Files\NCover;C:\Topcoder\Tools\cobertura-1.8;c:\Program Files\MySQL\MySQL Server 5.0\bin;C:\Sun\SDK\bin"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="java.class.path" value="C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\build\instrumented;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\build\testClasses;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\build\classes;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\conf;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\test_files;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\configuration_manager.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\base_exception.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\object_factory.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\cglib-full-2.0-RC2.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\commons-logging.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\db_connection_factory.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\id_generator.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\ifxjdbc.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\j2ee.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\search_builder.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\JNDI_Utility.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\mockejb.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\mockrunner.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\jakarta-oro-2.0.8.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final\lib\typesafe_enum.jar;C:\Topcoder\Tools\cobertura-1.8\cobertura.jar;C:\Topcoder\Tools\cobertura-1.8\lib\asm-2.2.1.jar;C:\Topcoder\Tools\cobertura-1.8\lib\jakarta-oro-2.0.8.jar;C:\Topcoder\Tools\cobertura-1.8\lib\log4j-1.2.9.jar;C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final;C:\Program Files\Java\jre1.5.0_08\lib\ext\QTJava.zip;C:\eclipse\plugins\org.apache.ant_1.6.5\lib\junit.jar;C:\eclipse\plugins\org.apache.ant_1.6.5\lib\ant-launcher.jar;C:\eclipse\plugins\org.apache.ant_1.6.5\lib\ant.jar;C:\eclipse\plugins\org.apache.ant_1.6.5\lib\ant-junit.jar"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="ext_libdir" value="lib"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/time_tracker_base_entry-3.2.jar"></property>
+    <property name="junit.jar" value="lib/junit/3.8.2/junit.jar"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"></property>
+    <property name="java.io.tmpdir" value="c:\tmp\"></property>
+    <property name="eclipse.pdebuild.home" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.2.0.v20060603/./"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.5/configuration_manager.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="id_generator.jar" value="lib/tcs/id_generator/3.0/id_generator.jar"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="instrumented.dir" value="build/instrumented"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="build_webdir" value="build/web"></property>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_08\jre\lib\ext"></property>
+    <property name="dist_src" value="build/dist/time_tracker_base_entry-3.2/src"></property>
+    <property name="user.dir" value="C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final"></property>
+    <property name="design_dist.jar" value="Time_Tracker_Base_Entry_3.2_design_dist.jar"></property>
+    <property name="jar_ext_libdir" value="lib"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"></property>
+    <property name="distfilename" value="time_tracker_base_entry"></property>
+    <property name="basedir" value="C:\Topcoder\Component_Develope\Time_Tracker_Base_Entry_final"></property>
+    <property name="ant.java.version" value="1.5"></property>
+    <property name="db_connection_factory.path" value="db_connection_factory/1.0"></property>
+    <property name="id_generator.path" value="id_generator/3.0"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="configmanager.version" value="2.1.5"></property>
+    <property name="base_exception.version" value="1.0"></property>
+    <property name="dist_docs" value="build/dist/time_tracker_base_entry-3.2/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/time_tracker_base_entry/3.2/time_tracker_base_entry.jar"></property>
+    <property name="java.specification.version" value="1.5"></property>
+  </properties>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTime" time="2.344"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeAuditFailed" time="1.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeExistentCompId" time="2.109"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeExistentId" time="1.563"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeGenId" time="1.578"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeInvalidEntity_invalid_compId" time="0.578"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeInvalidEntity_missing_creationUser" time="0.547"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeInvalidEntity_missing_cutoffTime" time="0.656"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeNoAudit" time="0.75"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testCreateCutoffTimeNullEntity" time="0.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testDeleteCutoffTime" time="1.171"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testDeleteCutoffTimeAuditFailed" time="0.922"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testDeleteCutoffTimeNoAudit" time="0.844"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testDeleteCutoffTimeNotExistentEntity" time="0.578"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testDeleteCutoffTimeNullEntity" time="0.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testFetchCutoffTimeByCompanyID" time="0.828"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testFetchCutoffTimeByCompanyIDNotExistent" time="0.562"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testFetchCutoffTimeByCompanyIDNotPositive" time="0.313"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testFetchCutoffTimeById" time="0.766"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testFetchCutoffTimeByIdInvalid" time="0.25"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testFetchCutoffTimeByIdNotExistent" time="0.531"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDao" time="0.265"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDaoEmptyConnName" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDaoInvalidConnName" time="0.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDaoInvalidIDGenName" time="0.531"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDaoNullAuditMgr" time="0.485"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDaoNullConnName" time="0.562"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDaoNullDBFactory" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testInformixCutoffTimeDaoNullIDGenName" time="0.344"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testUpdateCutoffTime" time="1.187"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testUpdateCutoffTimeAuditFailed" time="0.828"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testUpdateCutoffTimeEntityNotExistent" time="0.641"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testUpdateCutoffTimeInvalidEntity_missiong_cutoffTime" time="0.828"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testUpdateCutoffTimeNoAudit" time="0.766"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDaoTest" name="testUpdateCutoffTimeNotUpdate" time="0.922"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDao" time="0.609"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDaoEmptyConnName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDaoInvalidConnName" time="0.016"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDaoInvalidIDGenName" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDaoNullAuditMgr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDaoNullConnName" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDaoNullDBFactory" time="0.016"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testBaseDaoNullIDGenName" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testGetAuditManager" time="0.016"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testGetConnection" time="0.25"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseDaoTest" name="testNextId" time="0.015"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.PersistenceExceptionTest" name="testPersistenceExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.PersistenceExceptionTest" name="testPersistenceExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.IdGenerationExceptionTest" name="testIdGenerationExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.IdGenerationExceptionTest" name="testIdGenerationExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.EntryNotFoundExceptionTest" name="testEntryNotFoundExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.EntryNotFoundExceptionTest" name="testEntryNotFoundExceptionStringLong" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.EntryNotFoundExceptionTest" name="testEntryNotFoundExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.EntryNotFoundExceptionTest" name="testEntryNotFoundExceptionStringThrowableLong" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.EntryNotFoundExceptionTest" name="testGetEntityId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.DuplicateEntryExceptionTest" name="testGetEntityId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.DuplicateEntryExceptionTest" name="testDuplicateEntryExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.DuplicateEntryExceptionTest" name="testDuplicateEntryExceptionStringLong" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.DuplicateEntryExceptionTest" name="testDuplicateEntryExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.DuplicateEntryExceptionTest" name="testDuplicateEntryExceptionStringThrowableLong" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ConfigurationExceptionTest" name="testConfigurationExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ConfigurationExceptionTest" name="testConfigurationExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.EntryManagerExceptionTest" name="testEntryManagerExceptionString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.EntryManagerExceptionTest" name="testEntryManagerExceptionStringThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTime" time="0.938"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeAuditFailed" time="0.562"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeExistentCompId" time="0.86"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeExistentId" time="0.89"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeGenId" time="0.86"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeInvalidEntity_invalid_compId" time="0.625"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeInvalidEntity_missing_creationUser" time="0.593"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeInvalidEntity_missing_cutoffTime" time="0.641"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCreateCutoffTimeNullEntity" time="0.312"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testDeleteCutoffTime" time="1.079"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testDeleteCutoffTimeAuditFailed" time="0.937"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testDeleteCutoffTimeNotExistentEntity" time="0.609"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testDeleteCutoffTimeNullEntity" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testFetchCutoffTimeByCompanyID" time="0.969"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testFetchCutoffTimeByCompanyIDNotExistent" time="0.531"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testFetchCutoffTimeById" time="0.766"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testFetchCutoffTimeByIdNotExistent" time="0.578"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testUpdateCutoffTime" time="1.094"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testUpdateCutoffTimeAuditFailed" time="0.89"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testUpdateCutoffTimeEntityNotExistent" time="0.86"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testUpdateCutoffTimeInvalidEntity_missiong_cutoffTime" time="0.89"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCanSubmitEntry" time="0.782"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCanSubmitEntryAfterCutoff" time="0.828"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCanSubmitEntryBeforeNow" time="0.953"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCanSubmitEntryNull" time="0.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testCanSubmitEntryNullDate" time="0.484"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEjbActivate" time="0.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEjbCreate" time="0.312"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEjbCreateMissingDaoKey" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEjbCreateMissingNamespace" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEjbCreateMissingOFNamespace" time="0.313"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEjbPassivate" time="0.344"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEjbRemove" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testEntrySessionBean" time="0.344"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testGetDao" time="0.39"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testGetSessionContext" time="0.36"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanTest" name="testSetSessionContext" time="0.265"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTime" time="1.203"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeAuditFailed" time="0.578"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeExistentCompId" time="0.938"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeExistentId" time="0.937"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeGenId" time="0.922"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeInvalidEntity_invalid_compId" time="0.719"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeInvalidEntity_missing_creationUser" time="1.156"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeInvalidEntity_missing_cutoffTime" time="0.672"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCreateCutoffTimeNullEntity" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testDeleteCutoffTime" time="1.343"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testDeleteCutoffTimeAuditFailed" time="0.844"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testDeleteCutoffTimeNotExistentEntity" time="0.547"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testDeleteCutoffTimeNullEntity" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testFetchCutoffTimeByCompanyID" time="1.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testFetchCutoffTimeByCompanyIDNotExistent" time="0.75"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testFetchCutoffTimeById" time="0.797"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testFetchCutoffTimeByIdNotExistent" time="0.625"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testUpdateCutoffTime" time="1.719"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testUpdateCutoffTimeAuditFailed" time="1.5"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testUpdateCutoffTimeEntityNotExistent" time="0.687"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testUpdateCutoffTimeInvalidEntity_missiong_cutoffTime" time="0.985"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCanSubmitEntry" time="1.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCanSubmitEntryAfterCutoff" time="0.843"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCanSubmitEntryBeforeNow" time="1.625"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCanSubmitEntryNull" time="0.313"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testCanSubmitEntryNullDate" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testEntryDelegate" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testEntryDelegateEmpty" time="0.391"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testEntryDelegateMissing_context_name" time="0.39"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testEntryDelegateMissing_jndi_home" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testEntryDelegateNotExistentNamespace" time="0.469"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.EntryDelegateTest" name="testEntryDelegateNull" time="0.344"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.CutoffTimeBeanTest" name="testCutoffTimeBean" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.CutoffTimeBeanTest" name="testGetCompanyId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.CutoffTimeBeanTest" name="testGetCutoffTime" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.CutoffTimeBeanTest" name="testSetCompanyId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.CutoffTimeBeanTest" name="testSetCompanyIdNotPositive" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.CutoffTimeBeanTest" name="testSetCutoffTime" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.CutoffTimeBeanTest" name="testSetCutoffTimeNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testGetCompanyId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetCompanyId" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testBaseEntry" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testGetDate" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testGetDescription" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testGetRejectReasons" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetDate" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetDateNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetDescription" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetDescriptionNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetRejectReasons" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetRejectReasonsInvalidElement" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetRejectReasonsNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetRejectReasonsNullKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.BaseEntryTest" name="testSetRejectReasonsNullValue" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.ConfigHelperTest" name="testGetStringProperty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.ConfigHelperTest" name="testGetStringPropertyEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.ConfigHelperTest" name="testGetStringPropertyMissingRequired" time="0.016"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ejb.ConfigHelperTest" name="testGetStringPropertyNotRequired" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckEmptyEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckEmptyNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckNotPositive" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckNotPositiveInvalid" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckNullEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckNullEmptyEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckNullEmptyNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.ParameterCheckTest" name="testCheckNullNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.DemoTest" name="testDemo" time="2.718"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.InformixCutoffTimeDaoAccuracyTests" name="testCreateCutoffTime" time="1.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.InformixCutoffTimeDaoAccuracyTests" name="testDeleteCutoffTime" time="1.906"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.InformixCutoffTimeDaoAccuracyTests" name="testUpdateCutoffTime" time="1.75"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.InformixCutoffTimeDaoAccuracyTests" name="testCreateCutoffTime_withPreSetId" time="1.313"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.InformixCutoffTimeDaoAccuracyTests" name="testUpdateCutoffTime_notChanged" time="1.453"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.InformixCutoffTimeDaoAccuracyTests" name="testFetchCutoffTimeBeanByCompanyId" time="1.094"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.InformixCutoffTimeDaoAccuracyTests" name="testFecthCutoffTimeBeanById" time="1.25"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntryDelegateAccuracyTests" name="testUpdateCutoffTime" time="2.703"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntryDelegateAccuracyTests" name="testCanSubmitEntry" time="1.015"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testCreateCutoffTime" time="1.235"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testDeleteCutoffTime" time="1.781"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testUpdateCutoffTime" time="1.719"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testCanSubmitEntry" time="0.859"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testCreateCutoffTime_withPreSetId" time="1.156"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testUpdateCutoffTime_notChanged" time="1.078"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testFetchCutoffTimeBeanByCompanyId" time="0.907"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testFecthCutoffTimeBeanById" time="1.172"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.accuracytests.EntrySessionBeanAccuracyTests" name="testCanSubmitEntry2" time="1.437"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseDaoFailureTest" name="testBaseDaoFailure1" time="0.016"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseDaoFailureTest" name="testBaseDaoFailure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseDaoFailureTest" name="testBaseDaoFailure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseDaoFailureTest" name="testBaseDaoFailure4" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseDaoFailureTest" name="testBaseDaoFailure5" time="0.016"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseDaoFailureTest" name="testBaseDaoFailure6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseEntryFailureTest" name="testSetDateFailure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseEntryFailureTest" name="testSetDescription1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseEntryFailureTest" name="testSetRejectReasons1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseEntryFailureTest" name="testSetRejectReasons2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseEntryFailureTest" name="testSetRejectReasons3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.BaseEntryFailureTest" name="testSetRejectReasons4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.CutoffTimeBeanFailureTest" name="testSetCompanyIdFailure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.CutoffTimeBeanFailureTest" name="testSetCompanyIdFailure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.CutoffTimeBeanFailureTest" name="testSetCutoffTimeFailure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testEntryDelegateFailure1" time="0.343"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testEntryDelegateFailure2" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testEntryDelegateFailure3" time="0.313"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testEntryDelegateFailure4" time="0.609"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testCanSubmitEntryFailure1" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testCanSubmitEntryFailure2" time="0.625"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testCreateCutoffTimeFailure1" time="0.329"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testCreateCutoffTimeFailure2" time="0.578"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testCreateCutoffTimeFailure3" time="0.562"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testCreateCutoffTimeFailure4" time="0.735"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testDeleteCutoffTimeFailure1" time="0.359"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testFetchCutoffTimeByCompanyIDFailure1" time="0.344"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testFetchCutoffTimeByCompanyIDFailure2" time="0.515"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testFetchCutoffTimeByIdFailure1" time="0.485"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testFetchCutoffTimeByIdFailure2" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntryDelegateFailureTest" name="testUpdateCutoffTimeFailure1" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testCanSubmitEntryFailure1" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testCanSubmitEntryFailure2" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testCreateCutoffTimeFailure1" time="0.391"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testCreateCutoffTimeFailure2" time="0.453"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testCreateCutoffTimeFailure3" time="0.672"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testCreateCutoffTimeFailure4" time="0.625"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testDeleteCutoffTimeFailure1" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testFetchCutoffTimeByCompanyIDFailure1" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testFetchCutoffTimeByCompanyIDFailure2" time="0.344"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.EntrySessionBeanFailureTest" name="testUpdateCutoffTimeFailure1" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testCreateCutoffTimeFailure1" time="0.328"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testCreateCutoffTimeFailure2" time="0.891"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testCreateCutoffTimeFailure3" time="0.562"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testCreateCutoffTimeFailure4" time="1.094"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testDeleteCutoffTimeFailure1" time="0.375"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testFetchCutoffTimeByCompanyIDFailure1" time="0.312"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testFetchCutoffTimeByCompanyIDFailure2" time="0.61"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testFetchCutoffTimeByIdFailure1" time="0.297"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testFetchCutoffTimeByIdFailure2" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testUpdateCutoffTimeFailure1" time="0.375"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testInformixCutoffTimeDaoFailure1" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testInformixCutoffTimeDaoFailure2" time="0.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testInformixCutoffTimeDaoFailure4" time="0.313"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testInformixCutoffTimeDaoFailure5" time="0.562"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testInformixCutoffTimeDaoFailure6" time="0.266"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testInformixCutoffTimeDaoFailure7" time="0.313"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testCreateCutoffTimeFailure5" time="0.687"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testDeleteCutoffTimeFailure2" time="0.609"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.failuretests.InformixCutoffTimeDaoFailureTest" name="testUpdateCutoffTimeFailure2" time="0.782"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testCanSubmitEntrySingleThread" time="31.703"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testCreateCutoffTimeSingleThread" time="41.187"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testUpdateCutoffTimeSingleThread" time="28.813"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testDeleteCutoffTimeSingleThread" time="27.719"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testFetchCutoffTimeByCompanyIDSingleThread" time="27.171"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testFetchCutoffTimeByIdSingleThread" time="27.641"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testCanSubmitEntryMultipleThreads" time="48.406"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testCreateCutoffTimeMultipleThreads" time="34.078"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testUpdateCutoffTimeMultipleThreads" time="32.188"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testDeleteCutoffTimeMultipleThreads" time="30.281"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testFetchCutoffTimeByCompanyIDMultipleThreads" time="29.703"></testcase>
+  <testcase classname="com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests" name="testFetchCutoffTimeByIdMultipleThreads" time="28.422"></testcase>
+  <system-out><![CDATA[id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:33 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:34.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:34.0 modification_user:null->user1 ]
+id:1080 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1080 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:40 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:40.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:40.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:44 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:44.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:44.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:30:44 GMT+08:00 2007->null creation_date:2007-04-06 04:30:44.0->null creation_user:user1->null modification_date:2007-04-06 04:30:44.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:54 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:54.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:54.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:58 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:58.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:58.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:01 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:01.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:01.0 modification_user:null->user1 ]
+id:1082 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1082 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:04 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:04.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:04.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:07 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:07.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:07.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:31:07 GMT+08:00 2007->null creation_date:2007-04-06 04:31:07.0->null creation_user:user1->null modification_date:2007-04-06 04:31:07.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:13 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:13.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:13.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[]
+id:1083 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1083 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:16 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:17.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:17.0 modification_user:null->user1 ]
+id:1084 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1084 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:17 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:17.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:17.0 modification_user:null->user1 ]
+id:1085 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1085 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:18 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:18.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:18.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:24 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:24.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:24.0 modification_user:null->user1 ]
+id:1086 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1086 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:27 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:27.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:27.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:31 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:31.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:31.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:31:31 GMT+08:00 2007->null creation_date:2007-04-06 04:31:31.0->null creation_user:user1->null modification_date:2007-04-06 04:31:31.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:37 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:38.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:38.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[cut_off_time:Fri Apr 06 04:31:37 GMT+08:00 2007->Fri Apr 06 04:31:38 GMT+08:00 2007 ]
+id:1087 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1087 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:42 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:42.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:42.0 modification_user:null->user1 ]
+id:1088 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1088 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:43 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:43.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:43.0 modification_user:null->user1 ]
+id:1089 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1089 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:44 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:45.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:45.0 modification_user:null->user1 ]
+id:1090 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1090 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:48 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:48.0 creation_user:null->some user modification_date:null->2007-04-06 04:31:48.0 modification_user:null->some user ]
+id:1090 cId:1 t:UPDATE table:cut_off_time area:Time[modification_date:2007-04-06 04:31:48.0->2007-04-06 04:31:50.0 ]
+id:1090 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:1090->null company_id:1->null cut_off_time:Fri Apr 06 04:31:48 GMT+08:00 2007->null creation_date:2007-04-06 04:31:48.0->null creation_user:some user->null modification_date:2007-04-06 04:31:50.0->null modification_user:some user->null ]
+Calling canSubmitEntry for 100 times costs 30656 milliseconds.
+Calling createCutoffTime for 100 times costs 40250 milliseconds.
+Calling updateCutoffTime for 100 times costs 27890 milliseconds.
+Calling deleteCutoffTime for 100 times costs 26859 milliseconds.
+Calling fetchCutoffTimeByCompanyID for 100 times costs 26328 milliseconds.
+Calling fetchCutoffTimeById for 100 times costs 26656 milliseconds.
+Calling canSubmitEntry with 10 threads costs 47109 milliseconds.
+Calling createCutoffTime with 10 threads costs 32890 milliseconds.
+Calling updateCutoffTime with 10 threads costs 31000 milliseconds.
+Calling deleteCutoffTime with 10 threads costs 29329 milliseconds.
+Calling fetchCutoffTimeByCompanyID with 10 threads costs 28703 milliseconds.
+Calling fetchCutoffTimeById with 10 threads costs 27515 milliseconds.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+onfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+</error>
+  </testcase>
+  <system-out><![CDATA[id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:05 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:05.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:05.0 modification_user:null->user1 ]
+id:1040 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1040 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:08 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:09.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:09.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:12 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:13.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:13.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:28:12 GMT+08:00 2007->null creation_date:2007-04-06 04:28:13.0->null creation_user:user1->null modification_date:2007-04-06 04:28:13.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:24 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:24.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:24.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:31 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:31.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:31.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:33 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:33.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:33.0 modification_user:null->user1 ]
+id:1042 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1042 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:37 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:37.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:37.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:40 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:40.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:40.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:28:40 GMT+08:00 2007->null creation_date:2007-04-06 04:28:40.0->null creation_user:user1->null modification_date:2007-04-06 04:28:40.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:46 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:47.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:47.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[cut_off_time:Fri Apr 06 04:28:46 GMT+08:00 2007->Fri Apr 06 04:28:47 GMT+08:00 2007 ]
+id:1043 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1043 company_id:null->1 cut_off_time:null->Sat Apr 07 04:28:50 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:51.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:51.0 modification_user:null->user1 ]
+id:1044 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1044 company_id:null->1 cut_off_time:null->Sat Apr 07 04:28:51 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:51.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:51.0 modification_user:null->user1 ]
+id:1045 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1045 company_id:null->1 cut_off_time:null->Sat Apr 07 04:28:52 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:52.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:52.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:28:58 GMT+08:00 2007 creation_date:null->2007-04-06 04:28:58.0 creation_user:null->user1 modification_date:null->2007-04-06 04:28:58.0 modification_user:null->user1 ]
+id:1046 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1046 company_id:null->1 cut_off_time:null->Fri Apr 06 04:29:02 GMT+08:00 2007 creation_date:null->2007-04-06 04:29:02.0 creation_user:null->user1 modification_date:null->2007-04-06 04:29:02.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:29:05 GMT+08:00 2007 creation_date:null->2007-04-06 04:29:05.0 creation_user:null->user1 modification_date:null->2007-04-06 04:29:05.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:29:05 GMT+08:00 2007->null creation_date:2007-04-06 04:29:05.0->null creation_user:user1->null modification_date:2007-04-06 04:29:05.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:29:12 GMT+08:00 2007 creation_date:null->2007-04-06 04:29:12.0 creation_user:null->user1 modification_date:null->2007-04-06 04:29:12.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[modification_date:2007-04-06 04:29:12.0->2007-04-06 04:29:13.0 ]
+id:1047 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1047 company_id:null->1 cut_off_time:null->Sat Apr 07 04:29:17 GMT+08:00 2007 creation_date:null->2007-04-06 04:29:17.0 creation_user:null->user1 modification_date:null->2007-04-06 04:29:17.0 modification_user:null->user1 ]
+id:1048 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1048 company_id:null->1 cut_off_time:null->Sat Apr 07 04:29:18 GMT+08:00 2007 creation_date:null->2007-04-06 04:29:18.0 creation_user:null->user1 modification_date:null->2007-04-06 04:29:18.0 modification_user:null->user1 ]
+id:1049 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1049 company_id:null->1 cut_off_time:null->Sat Apr 07 04:29:19 GMT+08:00 2007 creation_date:null->2007-04-06 04:29:19.0 creation_user:null->user1 modification_date:null->2007-04-06 04:29:19.0 modification_user:null->user1 ]
+id:1050 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1050 company_id:null->1 cut_off_time:null->Fri Apr 06 04:29:24 GMT+08:00 2007 creation_date:null->2007-04-06 04:29:24.0 creation_user:null->some user modification_date:null->2007-04-06 04:29:24.0 modification_user:null->some user ]
+id:1050 cId:1 t:UPDATE table:cut_off_time area:Time[cut_off_time:Fri Apr 06 04:29:24 GMT+08:00 2007->Fri Apr 06 04:29:23 GMT+08:00 2007 modification_date:2007-04-06 04:29:24.0->2007-04-06 04:29:25.0 ]
+id:1050 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:1050->null company_id:1->null cut_off_time:Fri Apr 06 04:29:23 GMT+08:00 2007->null creation_date:2007-04-06 04:29:24.0->null creation_user:some user->null modification_date:2007-04-06 04:29:25.0->null modification_user:some user->null ]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

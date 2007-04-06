@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.base">
+		<Property name="context_name">
+			<Value>default</Value>
+		</Property>
+
+		<Property name="jndi_home">
+			<Value>tt_entry</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.entry.base.ejb.EntrySessionBean">
+		<Property name="of_namespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+
+		<Property name="dao_key">
+			<Value>dao</Value>
+		</Property>
+	</Config>
+	
+	<Config name="ObjectFactory">
+		<Property name="dao">
+      		<Property name="type">
+				<Value>com.topcoder.timetracker.entry.base.persistence.InformixCutoffTimeDao</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>informix_connect</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>cut_off_time</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="name">
+						<Value>DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+				<Property name="param4">
+					<Property name="name">
+						<Value>AuditManager</Value>
+					</Property>
+				</Property>
+				
+			</Property>
+			
+		</Property>
+		
+		<Property name="DBConnectionFactoryImpl">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>	
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="AuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.base.MockAuditManager</Value>
+			</Property>
+		</Property>
+				
+	</Config>
+</CMConfig>
+

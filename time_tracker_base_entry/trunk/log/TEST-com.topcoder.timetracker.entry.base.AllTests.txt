@@ -1,0 +1,399 @@
+Testsuite: com.topcoder.timetracker.entry.base.AllTests
+Tests run: 260, Failures: 0, Errors: 0, Time elapsed: 511.703 sec
+------------- Standard Output ---------------
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:33 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:34.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:34.0 modification_user:null->user1 ]
+id:1080 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1080 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:40 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:40.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:40.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:44 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:44.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:44.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:30:44 GMT+08:00 2007->null creation_date:2007-04-06 04:30:44.0->null creation_user:user1->null modification_date:2007-04-06 04:30:44.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:54 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:54.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:54.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:30:58 GMT+08:00 2007 creation_date:null->2007-04-06 04:30:58.0 creation_user:null->user1 modification_date:null->2007-04-06 04:30:58.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:01 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:01.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:01.0 modification_user:null->user1 ]
+id:1082 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1082 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:04 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:04.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:04.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:07 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:07.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:07.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:31:07 GMT+08:00 2007->null creation_date:2007-04-06 04:31:07.0->null creation_user:user1->null modification_date:2007-04-06 04:31:07.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:13 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:13.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:13.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[]
+id:1083 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1083 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:16 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:17.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:17.0 modification_user:null->user1 ]
+id:1084 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1084 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:17 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:17.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:17.0 modification_user:null->user1 ]
+id:1085 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1085 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:18 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:18.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:18.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:24 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:24.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:24.0 modification_user:null->user1 ]
+id:1086 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1086 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:27 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:27.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:27.0 modification_user:null->user1 ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:31 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:31.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:31.0 modification_user:null->user1 ]
+id:2 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:2->null company_id:1->null cut_off_time:Fri Apr 06 04:31:31 GMT+08:00 2007->null creation_date:2007-04-06 04:31:31.0->null creation_user:user1->null modification_date:2007-04-06 04:31:31.0->null modification_user:user1->null ]
+id:2 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->2 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:37 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:38.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:38.0 modification_user:null->user1 ]
+id:2 cId:1 t:UPDATE table:cut_off_time area:Time[cut_off_time:Fri Apr 06 04:31:37 GMT+08:00 2007->Fri Apr 06 04:31:38 GMT+08:00 2007 ]
+id:1087 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1087 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:42 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:42.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:42.0 modification_user:null->user1 ]
+id:1088 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1088 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:43 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:43.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:43.0 modification_user:null->user1 ]
+id:1089 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1089 company_id:null->1 cut_off_time:null->Sat Apr 07 04:31:44 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:45.0 creation_user:null->user1 modification_date:null->2007-04-06 04:31:45.0 modification_user:null->user1 ]
+id:1090 cId:1 t:INSERT table:cut_off_time area:Time[cut_off_time_id:null->1090 company_id:null->1 cut_off_time:null->Fri Apr 06 04:31:48 GMT+08:00 2007 creation_date:null->2007-04-06 04:31:48.0 creation_user:null->some user modification_date:null->2007-04-06 04:31:48.0 modification_user:null->some user ]
+id:1090 cId:1 t:UPDATE table:cut_off_time area:Time[modification_date:2007-04-06 04:31:48.0->2007-04-06 04:31:50.0 ]
+id:1090 cId:1 t:DELETE table:cut_off_time area:Time[cut_off_time_id:1090->null company_id:1->null cut_off_time:Fri Apr 06 04:31:48 GMT+08:00 2007->null creation_date:2007-04-06 04:31:48.0->null creation_user:some user->null modification_date:2007-04-06 04:31:50.0->null modification_user:some user->null ]
+Calling canSubmitEntry for 100 times costs 30656 milliseconds.
+Calling createCutoffTime for 100 times costs 40250 milliseconds.
+Calling updateCutoffTime for 100 times costs 27890 milliseconds.
+Calling deleteCutoffTime for 100 times costs 26859 milliseconds.
+Calling fetchCutoffTimeByCompanyID for 100 times costs 26328 milliseconds.
+Calling fetchCutoffTimeById for 100 times costs 26656 milliseconds.
+Calling canSubmitEntry with 10 threads costs 47109 milliseconds.
+Calling createCutoffTime with 10 threads costs 32890 milliseconds.
+Calling updateCutoffTime with 10 threads costs 31000 milliseconds.
+Calling deleteCutoffTime with 10 threads costs 29329 milliseconds.
+Calling fetchCutoffTimeByCompanyID with 10 threads costs 28703 milliseconds.
+Calling fetchCutoffTimeById with 10 threads costs 27515 milliseconds.
+------------- ---------------- ---------------
+
+Testcase: testCreateCutoffTime took 2.344 sec
+Testcase: testCreateCutoffTimeAuditFailed took 1.266 sec
+Testcase: testCreateCutoffTimeExistentCompId took 2.109 sec
+Testcase: testCreateCutoffTimeExistentId took 1.563 sec
+Testcase: testCreateCutoffTimeGenId took 1.578 sec
+Testcase: testCreateCutoffTimeInvalidEntity_invalid_compId took 0.578 sec
+Testcase: testCreateCutoffTimeInvalidEntity_missing_creationUser took 0.547 sec
+Testcase: testCreateCutoffTimeInvalidEntity_missing_cutoffTime took 0.656 sec
+Testcase: testCreateCutoffTimeNoAudit took 0.75 sec
+Testcase: testCreateCutoffTimeNullEntity took 0.266 sec
+Testcase: testDeleteCutoffTime took 1.171 sec
+Testcase: testDeleteCutoffTimeAuditFailed took 0.922 sec
+Testcase: testDeleteCutoffTimeNoAudit took 0.844 sec
+Testcase: testDeleteCutoffTimeNotExistentEntity took 0.578 sec
+Testcase: testDeleteCutoffTimeNullEntity took 0.266 sec
+Testcase: testFetchCutoffTimeByCompanyID took 0.828 sec
+Testcase: testFetchCutoffTimeByCompanyIDNotExistent took 0.562 sec
+Testcase: testFetchCutoffTimeByCompanyIDNotPositive took 0.313 sec
+Testcase: testFetchCutoffTimeById took 0.766 sec
+Testcase: testFetchCutoffTimeByIdInvalid took 0.25 sec
+Testcase: testFetchCutoffTimeByIdNotExistent took 0.531 sec
+Testcase: testInformixCutoffTimeDao took 0.265 sec
+Testcase: testInformixCutoffTimeDaoEmptyConnName took 0.297 sec
+Testcase: testInformixCutoffTimeDaoInvalidConnName took 0.266 sec
+Testcase: testInformixCutoffTimeDaoInvalidIDGenName took 0.531 sec
+Testcase: testInformixCutoffTimeDaoNullAuditMgr took 0.485 sec
+Testcase: testInformixCutoffTimeDaoNullConnName took 0.562 sec
+Testcase: testInformixCutoffTimeDaoNullDBFactory took 0.297 sec
+Testcase: testInformixCutoffTimeDaoNullIDGenName took 0.344 sec
+Testcase: testUpdateCutoffTime took 1.187 sec
+Testcase: testUpdateCutoffTimeAuditFailed took 0.828 sec
+Testcase: testUpdateCutoffTimeEntityNotExistent took 0.641 sec
+Testcase: testUpdateCutoffTimeInvalidEntity_missiong_cutoffTime took 0.828 sec
+Testcase: testUpdateCutoffTimeNoAudit took 0.766 sec
+Testcase: testUpdateCutoffTimeNotUpdate took 0.922 sec
+Testcase: testBaseDao took 0.609 sec
+Testcase: testBaseDaoEmptyConnName took 0 sec
+Testcase: testBaseDaoInvalidConnName took 0.016 sec
+Testcase: testBaseDaoInvalidIDGenName took 0.281 sec
+Testcase: testBaseDaoNullAuditMgr took 0 sec
+Testcase: testBaseDaoNullConnName took 0.297 sec
+Testcase: testBaseDaoNullDBFactory took 0.016 sec
+Testcase: testBaseDaoNullIDGenName took 0 sec
+Testcase: testGetAuditManager took 0.016 sec
+Testcase: testGetConnection took 0.25 sec
+Testcase: testNextId took 0.015 sec
+Testcase: testPersistenceExceptionString took 0 sec
+Testcase: testPersistenceExceptionStringThrowable took 0 sec
+Testcase: testIdGenerationExceptionString took 0 sec
+Testcase: testIdGenerationExceptionStringThrowable took 0 sec
+Testcase: testEntryNotFoundExceptionString took 0 sec
+Testcase: testEntryNotFoundExceptionStringLong took 0 sec
+Testcase: testEntryNotFoundExceptionStringThrowable took 0 sec
+Testcase: testEntryNotFoundExceptionStringThrowableLong took 0 sec
+Testcase: testGetEntityId took 0 sec
+Testcase: testGetEntityId took 0 sec
+Testcase: testDuplicateEntryExceptionString took 0 sec
+Testcase: testDuplicateEntryExceptionStringLong took 0 sec
+Testcase: testDuplicateEntryExceptionStringThrowable took 0 sec
+Testcase: testDuplicateEntryExceptionStringThrowableLong took 0 sec
+Testcase: testConfigurationExceptionString took 0 sec
+Testcase: testConfigurationExceptionStringThrowable took 0 sec
+Testcase: testEntryManagerExceptionString took 0 sec
+Testcase: testEntryManagerExceptionStringThrowable took 0 sec
+Testcase: testCreateCutoffTime took 0.938 sec
+Testcase: testCreateCutoffTimeAuditFailed took 0.562 sec
+Testcase: testCreateCutoffTimeExistentCompId took 0.86 sec
+Testcase: testCreateCutoffTimeExistentId took 0.89 sec
+Testcase: testCreateCutoffTimeGenId took 0.86 sec
+Testcase: testCreateCutoffTimeInvalidEntity_invalid_compId took 0.625 sec
+Testcase: testCreateCutoffTimeInvalidEntity_missing_creationUser took 0.593 sec
+Testcase: testCreateCutoffTimeInvalidEntity_missing_cutoffTime took 0.641 sec
+Testcase: testCreateCutoffTimeNullEntity took 0.312 sec
+Testcase: testDeleteCutoffTime took 1.079 sec
+Testcase: testDeleteCutoffTimeAuditFailed took 0.937 sec
+Testcase: testDeleteCutoffTimeNotExistentEntity took 0.609 sec
+Testcase: testDeleteCutoffTimeNullEntity took 0.297 sec
+Testcase: testFetchCutoffTimeByCompanyID took 0.969 sec
+Testcase: testFetchCutoffTimeByCompanyIDNotExistent took 0.531 sec
+Testcase: testFetchCutoffTimeById took 0.766 sec
+Testcase: testFetchCutoffTimeByIdNotExistent took 0.578 sec
+Testcase: testUpdateCutoffTime took 1.094 sec
+Testcase: testUpdateCutoffTimeAuditFailed took 0.89 sec
+Testcase: testUpdateCutoffTimeEntityNotExistent took 0.86 sec
+Testcase: testUpdateCutoffTimeInvalidEntity_missiong_cutoffTime took 0.89 sec
+Testcase: testCanSubmitEntry took 0.782 sec
+Testcase: testCanSubmitEntryAfterCutoff took 0.828 sec
+Testcase: testCanSubmitEntryBeforeNow took 0.953 sec
+Testcase: testCanSubmitEntryNull took 0.266 sec
+Testcase: testCanSubmitEntryNullDate took 0.484 sec
+Testcase: testEjbActivate took 0.266 sec
+Testcase: testEjbCreate took 0.312 sec
+Testcase: testEjbCreateMissingDaoKey took 0.328 sec
+Testcase: testEjbCreateMissingNamespace took 0.328 sec
+Testcase: testEjbCreateMissingOFNamespace took 0.313 sec
+Testcase: testEjbPassivate took 0.344 sec
+Testcase: testEjbRemove took 0.281 sec
+Testcase: testEntrySessionBean took 0.344 sec
+Testcase: testGetDao took 0.39 sec
+Testcase: testGetSessionContext took 0.36 sec
+Testcase: testSetSessionContext took 0.265 sec
+Testcase: testCreateCutoffTime took 1.203 sec
+Testcase: testCreateCutoffTimeAuditFailed took 0.578 sec
+Testcase: testCreateCutoffTimeExistentCompId took 0.938 sec
+Testcase: testCreateCutoffTimeExistentId took 0.937 sec
+Testcase: testCreateCutoffTimeGenId took 0.922 sec
+Testcase: testCreateCutoffTimeInvalidEntity_invalid_compId took 0.719 sec
+Testcase: testCreateCutoffTimeInvalidEntity_missing_creationUser took 1.156 sec
+Testcase: testCreateCutoffTimeInvalidEntity_missing_cutoffTime took 0.672 sec
+Testcase: testCreateCutoffTimeNullEntity took 0.297 sec
+Testcase: testDeleteCutoffTime took 1.343 sec
+Testcase: testDeleteCutoffTimeAuditFailed took 0.844 sec
+Testcase: testDeleteCutoffTimeNotExistentEntity took 0.547 sec
+Testcase: testDeleteCutoffTimeNullEntity took 0.328 sec
+Testcase: testFetchCutoffTimeByCompanyID took 1 sec
+Testcase: testFetchCutoffTimeByCompanyIDNotExistent took 0.75 sec
+Testcase: testFetchCutoffTimeById took 0.797 sec
+Testcase: testFetchCutoffTimeByIdNotExistent took 0.625 sec
+Testcase: testUpdateCutoffTime took 1.719 sec
+Testcase: testUpdateCutoffTimeAuditFailed took 1.5 sec
+Testcase: testUpdateCutoffTimeEntityNotExistent took 0.687 sec
+Testcase: testUpdateCutoffTimeInvalidEntity_missiong_cutoffTime took 0.985 sec
+Testcase: testCanSubmitEntry took 1 sec
+Testcase: testCanSubmitEntryAfterCutoff took 0.843 sec
+Testcase: testCanSubmitEntryBeforeNow took 1.625 sec
+Testcase: testCanSubmitEntryNull took 0.313 sec
+Testcase: testCanSubmitEntryNullDate took 0.328 sec
+Testcase: testEntryDelegate took 0.297 sec
+Testcase: testEntryDelegateEmpty took 0.391 sec
+Testcase: testEntryDelegateMissing_context_name took 0.39 sec
+Testcase: testEntryDelegateMissing_jndi_home took 0.281 sec
+Testcase: testEntryDelegateNotExistentNamespace took 0.469 sec
+Testcase: testEntryDelegateNull took 0.344 sec
+Testcase: testCutoffTimeBean took 0 sec
+Testcase: testGetCompanyId took 0 sec
+Testcase: testGetCutoffTime took 0 sec
+Testcase: testSetCompanyId took 0 sec
+Testcase: testSetCompanyIdNotPositive took 0 sec
+Testcase: testSetCutoffTime took 0 sec
+Testcase: testSetCutoffTimeNull took 0 sec
+Testcase: testGetCompanyId took 0 sec
+Testcase: testSetCompanyId took 0 sec
+Testcase: testBaseEntry took 0 sec
+Testcase: testGetDate took 0 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testGetRejectReasons took 0 sec
+Testcase: testSetDate took 0 sec
+Testcase: testSetDateNull took 0 sec
+Testcase: testSetDescription took 0 sec
+Testcase: testSetDescriptionNull took 0 sec
+Testcase: testSetRejectReasons took 0 sec
+Testcase: testSetRejectReasonsInvalidElement took 0 sec
+Testcase: testSetRejectReasonsNull took 0 sec
+Testcase: testSetRejectReasonsNullKey took 0 sec
+Testcase: testSetRejectReasonsNullValue took 0 sec
+Testcase: testGetStringProperty took 0 sec
+Testcase: testGetStringPropertyEmpty took 0 sec
+Testcase: testGetStringPropertyMissingRequired took 0.016 sec
+Testcase: testGetStringPropertyNotRequired took 0 sec
+Testcase: testCheckEmpty took 0 sec
+Testcase: testCheckEmptyEmpty took 0 sec
+Testcase: testCheckEmptyNull took 0 sec
+Testcase: testCheckNotPositive took 0 sec
+Testcase: testCheckNotPositiveInvalid took 0 sec
+Testcase: testCheckNull took 0 sec
+Testcase: testCheckNullEmpty took 0 sec
+Testcase: testCheckNullEmptyEmpty took 0 sec
+Testcase: testCheckNullEmptyNull took 0 sec
+Testcase: testCheckNullNull took 0 sec
+Testcase: testDemo took 2.718 sec
+Testcase: testCreateCutoffTime took 1.266 sec
+Testcase: testDeleteCutoffTime took 1.906 sec
+Testcase: testUpdateCutoffTime took 1.75 sec
+Testcase: testCreateCutoffTime_withPreSetId took 1.313 sec
+Testcase: testUpdateCutoffTime_notChanged took 1.453 sec
+Testcase: testFetchCutoffTimeBeanByCompanyId took 1.094 sec
+Testcase: testFecthCutoffTimeBeanById took 1.25 sec
+Testcase: testUpdateCutoffTime took 2.703 sec
+Testcase: testCanSubmitEntry took 1.015 sec
+Testcase: testCreateCutoffTime took 1.235 sec
+Testcase: testDeleteCutoffTime took 1.781 sec
+Testcase: testUpdateCutoffTime took 1.719 sec
+Testcase: testCanSubmitEntry took 0.859 sec
+Testcase: testCreateCutoffTime_withPreSetId took 1.156 sec
+Testcase: testUpdateCutoffTime_notChanged took 1.078 sec
+Testcase: testFetchCutoffTimeBeanByCompanyId took 0.907 sec
+Testcase: testFecthCutoffTimeBeanById took 1.172 sec
+Testcase: testCanSubmitEntry2 took 1.437 sec
+Testcase: testBaseDaoFailure1 took 0.016 sec
+Testcase: testBaseDaoFailure2 took 0 sec
+Testcase: testBaseDaoFailure3 took 0 sec
+Testcase: testBaseDaoFailure4 took 0.281 sec
+Testcase: testBaseDaoFailure5 took 0.016 sec
+Testcase: testBaseDaoFailure6 took 0 sec
+Testcase: testSetDateFailure1 took 0 sec
+Testcase: testSetDescription1 took 0 sec
+Testcase: testSetRejectReasons1 took 0 sec
+Testcase: testSetRejectReasons2 took 0 sec
+Testcase: testSetRejectReasons3 took 0 sec
+Testcase: testSetRejectReasons4 took 0 sec
+Testcase: testSetCompanyIdFailure1 took 0 sec
+Testcase: testSetCompanyIdFailure2 took 0 sec
+Testcase: testSetCutoffTimeFailure1 took 0 sec
+Testcase: testEntryDelegateFailure1 took 0.343 sec
+Testcase: testEntryDelegateFailure2 took 0.328 sec
+Testcase: testEntryDelegateFailure3 took 0.313 sec
+Testcase: testEntryDelegateFailure4 took 0.609 sec
+Testcase: testCanSubmitEntryFailure1 took 0.328 sec
+Testcase: testCanSubmitEntryFailure2 took 0.625 sec
+Testcase: testCreateCutoffTimeFailure1 took 0.329 sec
+Testcase: testCreateCutoffTimeFailure2 took 0.578 sec
+Testcase: testCreateCutoffTimeFailure3 took 0.562 sec
+Testcase: testCreateCutoffTimeFailure4 took 0.735 sec
+Testcase: testDeleteCutoffTimeFailure1 took 0.359 sec
+Testcase: testFetchCutoffTimeByCompanyIDFailure1 took 0.344 sec
+Testcase: testFetchCutoffTimeByCompanyIDFailure2 took 0.515 sec
+Testcase: testFetchCutoffTimeByIdFailure1 took 0.485 sec
+Testcase: testFetchCutoffTimeByIdFailure2 took 0.281 sec
+Testcase: testUpdateCutoffTimeFailure1 took 0.328 sec
+Testcase: testCanSubmitEntryFailure1 took 0.328 sec
+Testcase: testCanSubmitEntryFailure2 took 0.281 sec
+Testcase: testCreateCutoffTimeFailure1 took 0.391 sec
+Testcase: testCreateCutoffTimeFailure2 took 0.453 sec
+Testcase: testCreateCutoffTimeFailure3 took 0.672 sec
+Testcase: testCreateCutoffTimeFailure4 took 0.625 sec
+Testcase: testDeleteCutoffTimeFailure1 took 0.328 sec
+Testcase: testFetchCutoffTimeByCompanyIDFailure1 took 0.297 sec
+Testcase: testFetchCutoffTimeByCompanyIDFailure2 took 0.344 sec
+Testcase: testUpdateCutoffTimeFailure1 took 0.328 sec
+Testcase: testCreateCutoffTimeFailure1 took 0.328 sec
+Testcase: testCreateCutoffTimeFailure2 took 0.891 sec
+Testcase: testCreateCutoffTimeFailure3 took 0.562 sec
+Testcase: testCreateCutoffTimeFailure4 took 1.094 sec
+Testcase: testDeleteCutoffTimeFailure1 took 0.375 sec
+Testcase: testFetchCutoffTimeByCompanyIDFailure1 took 0.312 sec
+Testcase: testFetchCutoffTimeByCompanyIDFailure2 took 0.61 sec
+Testcase: testFetchCutoffTimeByIdFailure1 took 0.297 sec
+Testcase: testFetchCutoffTimeByIdFailure2 took 0.281 sec
+Testcase: testUpdateCutoffTimeFailure1 took 0.375 sec
+Testcase: testInformixCutoffTimeDaoFailure1 took 0.281 sec
+Testcase: testInformixCutoffTimeDaoFailure2 took 0.281 sec
+Testcase: testInformixCutoffTimeDaoFailure4 took 0.313 sec
+Testcase: testInformixCutoffTimeDaoFailure5 took 0.562 sec
+Testcase: testInformixCutoffTimeDaoFailure6 took 0.266 sec
+Testcase: testInformixCutoffTimeDaoFailure7 took 0.313 sec
+Testcase: testCreateCutoffTimeFailure5 took 0.687 sec
+Testcase: testDeleteCutoffTimeFailure2 took 0.609 sec
+Testcase: testUpdateCutoffTimeFailure2 took 0.782 sec
+Testcase: testCanSubmitEntrySingleThread took 31.703 sec
+Testcase: testCreateCutoffTimeSingleThread took 41.187 sec
+Testcase: testUpdateCutoffTimeSingleThread took 28.813 sec
+Testcase: testDeleteCutoffTimeSingleThread took 27.719 sec
+Testcase: testFetchCutoffTimeByCompanyIDSingleThread took 27.171 sec
+Testcase: testFetchCutoffTimeByIdSingleThread took 27.641 sec
+Testcase: testCanSubmitEntryMultipleThreads took 48.406 sec
+Testcase: testCreateCutoffTimeMultipleThreads took 34.078 sec
+Testcase: testUpdateCutoffTimeMultipleThreads took 32.188 sec
+Testcase: testDeleteCutoffTimeMultipleThreads took 30.281 sec
+Testcase: testFetchCutoffTimeByCompanyIDMultipleThreads took 29.703 sec
+Testcase: testFetchCutoffTimeByIdMultipleThreads took 28.422 sec
+xception(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.sendStatementExecute(IfxSqli.java:1178)
+	at com.informix.jdbc.IfxSqli.executeExecute(IfxSqli.java:2105)
+	at com.informix.jdbc.IfxSqli.executeExecute(IfxSqli.java:2042)
+	at com.informix.jdbc.IfxResultSet.executeExecute(IfxResultSet.java:394)
+	at com.informix.jdbc.IfxStatement.executeImpl(IfxStatement.java:924)
+	at com.informix.jdbc.IfxPreparedStatement.execute(IfxPreparedStatement.java:301)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.insertCutofftime(StressTestHelper.java:149)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.setUpDatabase(StressTestHelper.java:106)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:50)
+
+Testcase: testFetchCutoffTimeByCompanyIDSingleThread took 0 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
+Testcase: testFetchCutoffTimeByIdSingleThread took 0 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
+Testcase: testCanSubmitEntryMultipleThreads took 0 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
+Testcase: testCreateCutoffTimeMultipleThreads took 0.015 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
+Testcase: testUpdateCutoffTimeMultipleThreads took 0 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
+Testcase: testDeleteCutoffTimeMultipleThreads took 0 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
+Testcase: testFetchCutoffTimeByCompanyIDMultipleThreads took 0 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
+Testcase: testFetchCutoffTimeByIdMultipleThreads took 0.016 sec
+	Caused an ERROR
+com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+com.topcoder.util.config.NamespaceAlreadyExistsException: com.topcoder.timetracker.entry.base.ejb.EntrySessionBeanalready exists
+	at com.topcoder.util.config.DefaultConfigManager.addURL(DefaultConfigManager.java:81)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:226)
+	at com.topcoder.util.config.DefaultConfigManager.add(DefaultConfigManager.java:321)
+	at com.topcoder.timetracker.entry.base.stresstests.StressTestHelper.loadConfig(StressTestHelper.java:199)
+	at com.topcoder.timetracker.entry.base.stresstests.EntrySessionBeanStressTests.setUp(EntrySessionBeanStressTests.java:49)
+
