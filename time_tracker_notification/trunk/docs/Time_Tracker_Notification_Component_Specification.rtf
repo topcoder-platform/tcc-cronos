@@ -1,0 +1,346 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033\deflangfe1033\deftab420{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\froman\fprq2\fcharset2 Symbol;}{\f3\fnil\fprq2\fcharset2 Wingdings;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue128;\red0\green0\blue127;\red0\green0\blue255;\red51\green51\blue153;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx720\ul\b\f0\fs32 Time Tracker Notification Component Specification\par
+\pard\nowidctlpar\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1\fs24 1.\tab Design\f0\fs20\par
+\pard\nowidctlpar\li720\sa120\b0\f1 The Notification custom component is part of the Time Tracker application.  It provides an abstraction of the notification features used to communication via email to users of the system. This component integrates the scheduling, sending and manages the persistence and other business logic required by the application. NotificationManager is the main class of this component. It groups all the methods of NotificationPersistence and NotificationSender interfaces for easy access. Application users can get, create, update, delete and search the notification in the persistence, as well as send the notification manually.\par
+\par
+\pard\nowidctlpar\li720\qj\cf1\ul Version 3.2 Changes \par
+\ulnone\par
+Version 3.2 addresses the Transaction Management strategy of the Time Tracker application.  This is done by utilizing an EJB container to manage the operations being performed by the different Time Tracker components.\par
+\par
+The design takes the approach of building an EJB layer on top of the existing classes, rather than modifying the old design.  Building the layer has the advantage of allowing the user the easy option of switching out of EJB, and moving to a different Transaction Management strategy should the need arise.  The EJB layer is composed of a Business Delegate, the Local and LocalHome interfaces, and a Stateless SessionBean.  The Business Delegate is responsible for looking up the LocalHome interface and obtaining an instance of the Local interface.  It will then use the Local interface to delegate business calls to the SessionBean.  The SessionBean itself has no business logic other than managing the transactions - the actual business logic exists in the old classes of the existing design.\par
+\cf0\par
+\cf1 The following changes were done:\par
+\pard{\pntext\f5\'B7\tab}{\*\pn\pnlvlblt\pnf5\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li1440 NotificationPersistenceDelegate, NotificationPersistenceLocalHome, NotificationPersistenceLocal and NotificationPersistenceSessionBean classes were all added in a new ejb subpackage.  This comprises the EJB layer of the component.\par
+{\pntext\f5\'B7\tab}A new Sequence Diagram was added to depict the functionality within the EJB layer.\par
+{\pntext\f5\'B7\tab}Another Sequence Diagram was added to depict the functioning of the NotificationEvent as requested in the Software Development Forums.\par
+{\pntext\f5\'B7\tab}A note was added to the Use Cases, saying that the application may now run under a J2EE container.  Since the requirements for the new changes are not actual business functionality, but rather more on the inner functionality of the component, it did not seem appropriate to introduce a new use case for the new requirements.\par
+{\pntext\f5\'B7\tab}There was no need to refactor the DAOs, since no business logic was found in the DAOs.  The JBoss Transaction DataSource may be configured using ConnectionFactory.\par
+{\pntext\f5\'B7\tab}The design attempts to adhere to the J2EE specification of not allowing File access by delegating all file access to an external NotificationPersistenceFactory class.  This is a pragmatic approach which has been proven to work in previous designs (see the Orpheus Application components, like Game Persistence, Administration Persistence components).  File access does not occur within the SessionBean itself, but rather within external classes when the application is called.  It is also possible for File Access to occur before any SessionBean calls occur, since the ConfigManager may be initialized beforehand.\par
+{\pntext\f5\'B7\tab}Note that the only other alternative to not using ConfigManager and configuration files will be to restrict usage of ANY TC components that utilize configuration files - these include the Connection Factory, Search Builder and ID Generator components, which are a core part of the given component.\par
+{\pntext\f5\'B7\tab}This upgrade also makes a slight modification to the API itself by adding a FilterFactory class to the NotificationPersistence.  Such a modification will make it much more convenient for the users to perform their searches.\par
+\pard\nowidctlpar\li720\par
+\pard\nowidctlpar\li720\sa120\cf0\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li701\sa120\b0 NotificationPersistence and its implementation implement the strategy pattern for NotificationManager. NotificationSender and EmailNotificationSender also implement this pattern.\par
+NotificationPersistence and its implementation implement the DAO pattern\par
+NotificaionManager implements the fa\'e7ade pattern.\par
+\cf1 NotificationFilterFactory and NotificationPersistenceFactory implement the Factory pattern.\par
+NotificationPersistenceDelegate implements the Business Delegate pattern.\par
+\cf0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 JDBC\f0\par
+\f1 Informix\par
+\cf1 EJB\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1 1.3\tab Required Algorithms\line  \line        Developers must be familiar with the JDBC and the schema defined in TimeTrackerClient_Notification_ERD.jpg.\par
+\b0\i 1.3.1\f0\tab\f1 Transaction of InformixNotificationPersistence\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\i0\f1 All the methods of InformixNotificationPersistence that involve in the database operations, should put the database queries in one transaction. Take the updateNotification (notification) method for instance, in order to update notification, this method will also be responsible for updating the associated notification_clients, notification_resources and notification_projects. All these database operations should be put in one transaction. The connection is retrieved from DBConnectionFactory, and it should be closed after operation to release to connection pool.\par
+\cf1\b Note: \b0 As of Version 3.2, this portion of the Algorithm Spec does not apply.  From the EJB Specification, it is forbidden to use JDBC Transactions within a Container-managed transaction, so the DAO must NOT use transactions.\par
+\cf2\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i 1.3.2\f0\tab\f1 Validate Notification in InformixNotificationPersistence\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\i0\f1 When creating, updating the notifications in the Informix persistence, the Notification instances should be validated against the database schema (refer to TimeTrackerClient_Notification_ERD.jpg). For instance, in the schema, the notification table must have non-null subject field, then the Notification instance\rquote s subject field must be set before inserted into the database. For invalid client instance, throw NotificationPersistenceException.\par
+\pard\nowidctlpar\li720\sa120\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i 1.3.3\f0\tab\f1 Create, update and delete Notification\f0\par
+\pard\nowidctlpar\li720\sa120\cf2\i0\f1 For creating operation, the notification id is generated by IDGenerator. The notification_clients, notification_resources and notification_projects should be updated. If the client to create already exists, throw NotificationPersistenceException. If there are duplicate schedule id associated with the new notification id, throw NotificationPersistenceException. If the auditing functionality is enabled, all the created columns in notification table should be audited.\par
+\pard\nowidctlpar\sa120\par
+\pard\nowidctlpar\li720\sa120 For the update operation, developers can first delete the mapping in notification_clients, notification_resources and notification_projects tables and then insert the new mapping specified in Notification instance. If the auditing functionality is enabled, all the modified columns in notification table should be audited. If there are duplicate schedule ids associated with the notification id, throw NotificationPersistenceException.\line If any error occurred, must rollback the auditing entry. \cf1 Note that rolling back is not explicitly needed in version 3.2; The EJB container will automatically roll back the audit so long as the setRollbackOnly() method is signalled.\par
+\cf2 For the delete operation, this operation is responsible for delete the notification table as well as the mappings defined in notification_clients, notification_resources and notification_projects tables. If the give notification id does not exist in the notification table, throw NotificationPersistenceException. If the auditing functionality is enabled, all the deleted columns in notification table should be audited.\par
+The three operations will only effect the notification, notification_resources, notification_clients and notification_projects tables.\par
+\par
+\cf3 Set AuditHeader in this way:\par
+\tab The short descriptions of each field in AuditHeader:\par
+\tab entityId: Notification.getId()\par
+\tab tableName: notification\par
+\tab companyId: user.getCompanyId()\par
+\tab actionType: INSERT, DELETE or UPDATE depending of the action type\par
+\tab applicationArea: TT_NOTIFICATION\par
+\tab resourceId:  not set\par
+\tab creationUser\tab : username\par
+\par
+For the create operation, the old value of the audit detail is null.\par
+For the delete operation, the new value of the audit detail is null.\cf2\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i 1.3.4\f0\tab\f1 Search Notifications with filter.\f0\par
+\pard\nowidctlpar\li720\sa120\cf2\i0\f1 This component will provide search functionalities based on a logical (AND, OR, NOT) combination of search filters. The return will be a collection of Notification objects.  If no results are found then the result set will be empty. An exception will be thrown in the event of an error condition being raised. The following is a summary of the required filters:\par
+\pard\nowidctlpar\fi-360\li1080\sl240\slmult0\tx1080\cf0\kerning2\f2\fs21\'b7\tab\f0 Return all entries with a given company Id\par
+\pard\nowidctlpar\fi-360\li1080\sl240\slmult0\f2\'b7\tab\f0 Return all entries with a given project Id\par
+\f2\'b7\tab\f0 Return all entries with a given client Id\par
+\f2\'b7\tab\f0 Return all entries with a given resource Id\par
+\f2\'b7\tab\f0 Return all entries with a given status\par
+\f2\'b7\tab\f0 Return all entries with last sent within a given inclusive date range (may be open-ended)\par
+\f2\'b7\tab\f0 Return all entries with next send within a given inclusive date range (may be open-ended)\par
+\f2\'b7\tab\f0 Return all entries with Subject line containing some text\par
+\f2\'b7\tab\f0 Return all entries with Message line containing some text\par
+\f2\'b7\tab\f0 Return all entries with from line containing some text\par
+\f2\'b7\tab\f0 Return all entries created within a given inclusive date range (may be open-ended)\par
+\f2\'b7\tab\f0 Return all entries modified within a given inclusive date range (may be open-ended)\par
+\f2\'b7\tab\f0 Return all entries created by a given username\par
+\f2\'b7\tab\f0 Return all entries modified by a given username\par
+\pard\nowidctlpar\li720\sl240\slmult0\par
+\pard\nowidctlpar\li720\sa120\cf2\kerning0\f1\fs20 Please note that the default filter field is the column name. For example, if users try to search the notification whose project id is 1, the filter will be new EqualFilter("project_id" ,new Long(1)); however, final users can change the mapping in the SearchBundle. The context string for SearchBundle is:\par
+select [fields] from notification, notification_resources, notification_clients, notification_projects\par
+where notification.notification_id=notification_resources.notification_id and \line notification.notification_id=notification_clients.notification_id and  notification.notification_id=notification_projects.notification_id and\par
+The [fields] should contain all the necessary attributes for Notification\par
+\cf1 The developer should note that a NotificationFilterFactory was introduced in version 3.2.  The developer should provide filter name mappings accordingly:\par
+\pard\nowidctlpar\fi-360\li1440\sa120\tx1440\f2\'b7  \f1 PROJECT_ID_NAME -> notification_projects.project_id\par
+\pard\nowidctlpar\fi-360\li1440\sa120\f2\'b7\tab\f1 COMPANY_ID_NAME -> notification_projects.company_id (may not be present in the schema - but the schema should be updated to contain this)\par
+\f2\'b7\tab\f1 CLIENT_ID_NAME -> notification_clients.client_id\par
+\f2\'b7\tab\f1 RESOURCE_ID_NAME -> notification_resources.notification_id\par
+\f2\'b7\tab\f1 ACTIVE_NAME -> notification.status\par
+\f2\'b7\tab\f1 LAST_SENT_NAME -> notification.last_time_sent\par
+\f2\'b7\tab\f1 NEXT_SEND_NAME -> notification.next_time_send\par
+\f2\'b7\tab\f1 FROM_LINE_NAME -> notification.from_line\par
+\f2\'b7\tab\f1 MESSAGE_NAME -> notification.message\par
+\f2\'b7\tab\f1 SUBJECT_NAME -> notification.subject\par
+\f2\'b7\tab\f1 CREATION_USER_NAME -> notification.creation_user*\par
+\f2\'b7\tab\f1 MODIFICATION_USER_NAME -> notification.modification_user*\par
+\f2\'b7\tab\f1 CREATION_DATE -> notification.creation_date*\par
+\f2\'b7\tab\f1 MODIFICATION_DATE -> notification.modification_date*\par
+\pard\nowidctlpar\li1080\sa120 * - Not present in the schema diagram, but this is assumed, since it is that way with all the other tables.\par
+\pard\nowidctlpar\li720\sa120\cf2\par
+\pard\nowidctlpar\sl240\slmult0\cf0\kerning2\f0\fs21\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\kerning0\i\f1\fs20 1.3.5\f0\tab\f1 Send Notification\f0\par
+\pard\nowidctlpar\li720\sa120\cf2\i0\f1 This algorithm is used by NotificationSender. In order to populate the email message, all the columns in notification table should be selected. To get the contact name and email addresses for user, project and client, the algorithm should first select user account ids, client ids and project ids from notification_resources and notification_projects tables. And get the contacts from ContactManager by these ids. Finally, get the contact name and email address from each contact. \par
+Please note that the TCSEmailMessage\rquote s email body should be generated by MessageBodyGenerator with contact name and the message retrieved from notification table.\par
+Finally, use EmailEngine to send the tcs message.\par
+\pard\nowidctlpar\sa120\cf4\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1 1.4\tab Component Class Overview\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Notification\b0 : \par
+The notification bean holds the necessary information to send the email.\par
+This class is mutable and not thread safe.\par
+\cf5\b NotificatonManager\b0 : \par
+NotificationManager groups all the methods of NotificationPersistence and NotificationSender interfaces for easy access. Application users can get, create, update, delete and search the notification in the persistence, as well as send the notification manually.\f0\par
+\f1 This class is thread safe since it\rquote s immutable.\par
+As of Version 3.2, a FilterFactory was added to this class.\cf0\par
+\cf5\b NotificationPersistence\b0 : \par
+This interface defines the contract of managing the Notification entity in some persistence. It provides the persistence functionalities to create, update and search Notification instances. \par
+The implementation is required to be thread safe.\par
+As of Version 3.2, a FilterFactory was added to this class.  \par
+\b InformixNotificationPersistence\b0 : \par
+InformixNotificationPersistence provides the functionality of managing the Notification entity in the Informix database. \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 All the methods of InformixNotificationPersistence that involve in the database operations, should put the database queries in one transaction. Take the updateNotification (notification) method for instance, in order to update notification, this method will also be responsible for updating the associated notification_clients, notification_resources and notification_projects. All these database operations should be put in one transaction. The connection is retrieved from DBConnectionFactory, and it should be closed after operation to release to connection pool.\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe as long as the inner SearchBundle is not modified externally.\par
+As of Version 3.2, a FilterFactory was added to this class.\par
+\cf0\b NotificationSender\b0 : \par
+This interface defines the contract of sending the notification in some way like via email.\par
+The implementation is required to be thread safe.\par
+\b EmailNotificationSender\b0 : \par
+EmailNotificationSender is used to send the notification via email. The notification content is retrieved from database. MessageBodyGenerator is employed to generate the email message body based on the contact name and notification message from database.\par
+This class is thread safe since it\rquote s immutable.\par
+\b MessageBodyGenerator\b0 : \par
+This interface defines the contract of generating the email body from the contact name and given message.\par
+The implementation is required to be thread safe.\par
+\b NotificationEvent\b0 : \par
+NotificationEvent will be executed by the Job. It will parse the notification id from the job name and then invoke NotificationManager to send the notification.\par
+This class is not thread safe since its mutable.\par
+\cf1\b NotificationFilterFactory\b0 : \par
+A FilterFactory used to create Filters for searching the Notifications.\par
+\b StringMatchType\par
+\b0 An enum used to specify the type of String Matching when building filters.\par
+\b NotificationPersistenceFactory\par
+\b0 A Factory used to create NotificationPersistence instances.\par
+\b NotificationPersistenceDelegate\par
+\b0 This is a business delegate for NotificationPersistence.\par
+\b NotificationPersistenceSessionBean\par
+\b0 This is a SessionBean for NotificationPersistence.\par
+\b NotificationPersistenceLocalHome\par
+\b0 This is the LocalHome interface for NotificationPersistence.\par
+\b NotificationPersistenceLocal\par
+\b0 This is the Local interface for NotificationPersistence.\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b 1.5\tab Component Exception Definitions\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IllegalArgumentException\par
+\b0 This exception is thrown in various methods if null object is not allowed, or the given string argument is empty. Refer to the documentation in Poseidon for more details.\f0\par
+\cf1\b\f1 NOTE: Empty string means string of zero length or string full of whitespaces.\par
+\cf0 NotificationPersistenceException\par
+\b0 This exception will be thrown by NotificationPersistence and its implementation if any error occurred during persisting the notification entity.\par
+\b NotificationConfigurationException\f0\par
+\b0\f1 This exception will be thrown if failed to create the object from configuration file..\par
+\b NotificationSendingException\par
+\b0 This exception will be thrown by NotificationSender and its implementation if any error occurred during sending the notification.\par
+\b MessageBodyGeneratorException\f0\par
+\b0\f1 This exception will be thrown by MessageBodyGenerator and its implementation if any error occurred during generating the message body.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 This component is not completely thread safe. The bean class Notification has set and get methods, and are not thread safe. NotificationPersistence, NotificationSender, MessageBodyGenerator and their implementations are thread safe, all of their method can be invoked in a multi-thread environment. NotificationEvent is not thread safe, since it\rquote s immutable. To be thread safe, all the methods of NotificationEvent must be properly synchronized externally.\par
+\pard\nowidctlpar\li720\sa120\cf1 The EJB classes are either stateless or have their state initialized during construction.  They are all Thread-safe.  The NotificationFilterFactory class is also thread-safe due to being immutable.\par
+The NotificationPersistenceFactory should also perform synchronization when retrieving the NotificationPersistence, to ensure that only a single instance is created and returned.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\nowidctlpar\li720\sa120\b0 Java 1.4 or higher.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Base Exception 1.0\par
+\pard\nowidctlpar\fi-2\li722\sa120\b0 The custom exception extends BaseException in this component. \f0\par
+\pard\nowidctlpar\fi701\sa120\b\f1 Configuration Manager 2.1.5\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It is used to load the configuration value\par
+       \tab\b DB Connection Factory 1.0\f0\par
+\b0\f1               It is used to get named connection.\f0\par
+\pard\nowidctlpar\fi-10\li711\sa120\b\f1 Search Builder 1.3.1\f0\par
+\pard\nowidctlpar\fi-1420\li1420\sa120\b0\f1               It\rquote s used to generate the complicated search conditions..\par
+\pard\nowidctlpar\fi-10\li711\sa120\b ID Generator 3.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It is used to get the long id for client entities\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Time Tracker Audit 3.\cf5 2\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\cf0\b0\f1               It is used to audit the notification modification in the database\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Time Tracker Common 3.2\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1              Notification extends from TimeTrackerBean from this component.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Time Tracker Contact 3.\cf5 2\cf0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used the get the contact instances.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Object Factory 2.0.1\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to create the configured object.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Email Engine 2.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to send email.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Email Address Validator 1.1\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               Not used, it will be removed in the development phase.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Job Scheduling 3.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               NotificatonEvent implements the ScheduledEnabled from this component.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Job Processor 3.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               Not directly used.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Database Abstraction 1.1\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0               CustomResultSet comes from this component.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Logging Wrapper 1.2\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0               It\rquote s used to log the error occurring during sending email notification.\par
+\cf1\tab JNDI Context Utility 1.0\par
+\tab  Used for looking up and loading the LocalHome interface.\par
+\cf0\par
+\pard\nowidctlpar\f0\fs24\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1\fs20 2.3\tab Third Party Components\par
+\pard\nowidctlpar\fi800\sa120\qj\b0 None.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\fi-360\li360\qj\tx360\b\f1 3.\tab Installation and Configuration\line\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 com.topcoder.timetracker.\cf5 notification\cf0\par
+com.topcoder.timetracker.\cf5 notification\cf0 .persistence\par
+com.topcoder.timetracker.\cf5 notification\cf0 .ejb\par
+com.topcoder.timetracker.\cf5 notification\cf0 .send\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f0\par
+\pard\nowidctlpar\fi420\qj\kerning2\b0\fs21 For NotificationManager\par
+\trowd\trgaph108\trleft426\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx2844\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5796\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\nowidctlpar\qj\b\fs20 Parameter\b0\fs21\cell\b\fs20 Description\b0\fs21\cell\b\fs20 Values\b0\fs21\cell\row\trowd\trgaph108\trleft426\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx2844\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5796\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\nowidctlpar\qj\fs20 Of_namespace\fs21\cell\fs20 The namespace used to create ObjectFactory object. Required.\fs21\cell\fs20 Must be non-empty string.\fs21\cell\row\trowd\trgaph108\trleft426\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx2844\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5796\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\nowidctlpar\qj\fs20 persistence_key\fs21\cell\fs20 The key used to create NotificationPersistence object from ObjectFactory. Required.\fs21\cell\fs20 Must be non-empty string.\fs21\cell\row\trowd\trgaph108\trleft426\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx2844\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5796\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\nowidctlpar\qj\fs20 send_notification_key\fs21\cell\fs20 The key used to create NotificationSender object from ObjectFactory. Required.\fs21\cell\fs20 Must be non-empty string.\fs21\cell\row\pard\nowidctlpar\fi420\qj\par
+\cf1 For NotificationPersistenceDelegate\par
+\trowd\trgaph108\trleft426\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx2844\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5796\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\nowidctlpar\qj\b\fs20 Parameter\b0\fs21\cell\b\fs20 Description\b0\fs21\cell\b\fs20 Values\b0\fs21\cell\row\trowd\trgaph108\trleft426\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx2844\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5796\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\nowidctlpar\qj\fs20 context_name\fs21\cell\fs20 The context name used to retrieve the context from JNDIUtils.  If not specified, the default context is used. \b Optional.\b0\fs21\cell\fs20 Must be non-empty string.\fs21\cell\row\trowd\trgaph108\trleft426\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx2844\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5796\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\nowidctlpar\qj\fs20 location\fs21\cell\fs20 The location within the context where the local home should be retrieved. \b Required.\b0\fs21\cell\fs20 Must be non-empty string.\fs21\cell\row\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\kerning0\b\f1\fs20\par
+3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 SearchBuilder, DBConnectionFactory and IDGenerator should be properly configured to make this component work.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-420\li1140\sa120\tx1140\lang2052\b0\f3\'d8\lang1033\tab\f1 Extract the component distribution.\par
+\pard\nowidctlpar\fi-420\li1140\sa120\lang2052\f3\'d8\lang1033\tab\f1 Follow \cf5\ul Dependencies Configuration\cf0\ulnone .\par
+\lang2052\f3\'d8\lang1033\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Preload the configuration file into Configuration Manager. Follow demo.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.3\tab Demo\par
+\tab\cf1 See ejb-jar.xml for the deployment descriptor for the EJBs.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\b0\i\f1 4.3.1\tab Manage Notifications\f0\par
+\pard\nowidctlpar\fi480\li240\cf6\i0\f4\fs18 // NotificationManager groups all the methods of NotificationPersistece\par
+// and SendNotification, the demo only show how to use the manager.\par
+\pard\nowidctlpar\fi29\li691 // create the manager, assume that namespace, persistence, and \par
+// NotificationSender\par
+\pard\nowidctlpar\fi480\li240 // are defined\par
+NotificationManager manager = new NoticiationManager(namespace);\par
+// or create from arguments\par
+manager = new NotificationManager(persistence,sendNotification);\par
+\par
+// assume that there is one nitification with id 1 in the database\par
+// get the notification\par
+Notification notification = manager.getNotification(1);\par
+\par
+// update the notification\par
+notification.setSubject(\ldblquote hello yyy\rdblquote );\par
+manager.updateNotification(notification);\par
+\par
+// create notification\par
+Notification temp = new Notification();\par
+temp.setCompanyId(1);\par
+temp.setSubject(\ldblquote hello xxx\rdblquote );\par
+temp.setFromAddress(\ldblquote{\field{\*\fldinst{HYPERLINK "mailto:xxx@topcoder.com"}}{\fldrslt{\cf5\ul xxx@topcoder.com}}}\cf6\ulnone\f4\fs18\rdblquote );\par
+temp.setMessage(\ldblquote come here\rdblquote );\par
+temp.setNextTimeToSend(new Date(new Date().getTime() + 1000*1000));\par
+// assume that client 1 exists in the database\par
+temp.setToClients(new long[]\{1\});\par
+temp.setActive(true);\par
+manager.createNotification(temp);\par
+\par
+\cf5 // search the notification whose client id is 1 or subject is \ldblquote hello yyy\rdblquote );\par
+NotificationFilterFactory filterFactory = \par
+\pard\nowidctlpar\fi480\li360 manager.getNotificationFilterFactory();\par
+\pard\nowidctlpar\fi480\li240\par
+\par
+Filter filter1 = filterFactory.createClientIdFilter(1);\par
+Filter filter2 = filterFactory.createSubjectFilter(\ldblquote hello yyy\rdblquote ,\par
+\pard\nowidctlpar\fi480\li360  StringMatchType.EQUALS);\par
+\pard\nowidctlpar\fi480\li240 Filter orFilter = new OrFilter(filter1, filter2);\par
+// two elements expected\par
+Notification[] ns = manager.searchNotifications(orFilter);\par
+\cf6\par
+// get all notifications\par
+ns = manager.getAllNotifications();\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.2\tab Schedule Notifications\f0\par
+\pard\nowidctlpar\fi480\li240\cf6\i0\f4\fs18 // assume that demo 4.3.1 is executed.\par
+// this demo show how to schedule the notification defined in 3.2.1\par
+// create Job\par
+Job job = new Job();\par
+job.setName(\ldblquote TT_NOTE_\rdblquote  + notification.getId());\par
+\par
+// set the job start date\par
+{\field{\*\fldinst{HYPERLINK "mk:@MSITStore:D:\\\\J2SE%201.4.1%20Documentation.chm::/jdk141/api/java/util/GregorianCalendar.html" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\l "GregorianCalendar(int, int, int)"}}{\fldrslt{GregorianCalendar}}}\f4\fs18  gc = new {\field{\*\fldinst{HYPERLINK "mk:@MSITStore:D:\\\\J2SE%201.4.1%20Documentation.chm::/jdk141/api/java/util/GregorianCalendar.html" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\l "GregorianCalendar(int, int, int)"}}{\fldrslt{GregorianCalendar}}}\f4\fs18 (2007, 2, 2);\par
+job.setStartDate(gc);\par
+job.setStartTime(1);\par
+\par
+job.setRecurrent(10);\par
+job.setIntervalUnit(new Day());\par
+job.setIntervalValue(1);\par
+\par
+job.setJobType(JobType.JOB_TYPE_JAVA_CLASS);\par
+job.setRunningCommand(\par
+\pard\nowidctlpar\fi839\li239\ldblquote com.topcoder.timetracker.notification.send.NotificationEvent\rdblquote );\par
+\pard\nowidctlpar\par
+\pard\nowidctlpar\fi480\li240 // get the scheduler from some where\par
+Scheduler scheduler = \'85// \par
+// store the job\par
+scheduler.addJob(job);\par
+\par
+// in this step we must update the scheduler id for notification\par
+\pard\nowidctlpar         // PM said that Job Scheduling component is revised last week,\par
+        // please see the revised version about how to get the job id\par
+        // from job instance.\par
+        long jobId = \'85//\par
+        \par
+        notification.setScheduleId(jobId);\par
+        manager.updateNotification(notification);\par
+\pard\nowidctlpar\fi480\li240\par
+// JobProcessor should be configured properly to process the job.\par
+// It\rquote s beyond the scope of this component to show how to use JobProcessor\par
+// please refer to JobProcessor component.\par
+\par
+\pard\keepn\nowidctlpar\fi-840\li840\sb120\sa60\sl240\slmult0\tx0\tx840\cf1\i\f1\fs20 4.3.3\tab Create a BusinessDelegate to run the SessionBean\par
+\pard\nowidctlpar\fi420\li420\i0\f4\fs18 NotificationPersistence delegate = new\par
+\pard\nowidctlpar\fi420\li840 NotificationPersistenceDelegate(\ldblquote coder.timetracker.notification\rdblquote );\par
+\par
+\pard\nowidctlpar\tab\tab // create a new manager using the delegate. We assume the sender has been\par
+\pard\nowidctlpar\fi420\li420 // initialized.\par
+\pard\nowidctlpar\tab\tab NotificationManager delegatedManager = \par
+\pard\nowidctlpar\fi420\li840 new NotificationManager(delegate, sender)\par
+\pard\nowidctlpar\par
+\pard\nowidctlpar\fi480\li240  // Once manager has been initialized, all the functions are similar to section\par
+\pard\nowidctlpar\fi480\li360 // 4.3.1 and 4.3.2\par
+\pard\nowidctlpar\cf6\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li701\sa120\b0 None\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\par
+\pard\nowidctlpar\fs24\par
+}
+ 

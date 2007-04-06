@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd"
+         version="2.1">
+
+ <enterprise-beans>
+	<session>
+     <ejb-name>NotificationPersistenceEJB</ejb-name>
+      <local-home>com.topcoder.timetracker.notification.ejb.NotificationPersistenceLocalHome</local-home>
+      <local>com.topcoder.timetracker.notification.ejb.NotificationPersistenceLocal</local>
+     <ejb-class>com.topcoder.timetracker.notification.ejb.NotificationPersistenceSessionBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+	</session>
+ </enterprise-beans>
+
+ 
+
+ <assembly-descriptor>
+
+   <container-transaction>
+     <method>
+        <ejb-name>NotificationPersistenceEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+ </assembly-descriptor>
+
+</ejb-jar>
