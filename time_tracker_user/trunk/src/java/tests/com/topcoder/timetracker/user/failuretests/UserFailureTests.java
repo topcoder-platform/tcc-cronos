@@ -1,47 +1,36 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.user.failuretests;
 
-import junit.framework.TestCase;
-
 import com.topcoder.timetracker.user.User;
+
+import junit.framework.TestCase;
 
 /**
  * <p>
- * Failure unit test cases for the User class.
+ * Failure test for <code>{@link User}</code> class.
  * </p>
- * @author agh
- * @version 2.0
- * @since 2.0
+ * @author FireIce
+ * @version 1.0
  */
 public class UserFailureTests extends TestCase {
     /**
      * <p>
-     * The User instance used for testing.
+     * Represents the User instance used in testing.
      * </p>
      */
-    private User user = null;
+    private User user = new User();
 
     /**
      * <p>
-     * Creates User instance.
-     * </p>
-     * @throws Exception to JUnit
-     */
-    protected void setUp() throws Exception {
-        user = new User();
-    }
-
-    /**
-     * <p>
-     * Tests setAccountStatus(AccountStatus) for failure. Passes null, IllegalArgumentException is expected.
+     * Failure test for <code>{@link User#setPassword(String)}</code> method.
      * </p>
      */
-    public void testSetAccountStatus1() {
+    public void testSetPassword_NullPassword() {
         try {
-            user.setAccountStatus(null);
-            fail("IllegalArgumentException should be thrown");
+            user.setPassword(null);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -49,13 +38,13 @@ public class UserFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests setAddress(Address) for failure. Passes null, IllegalArgumentException is expected.
+     * Failure test for <code>{@link User#setPassword(String)}</code> method.
      * </p>
      */
-    public void testSetAddress1() {
+    public void testSetPassword_EmptyPassword() {
         try {
-            user.setAddress(null);
-            fail("IllegalArgumentException should be thrown");
+            user.setPassword("");
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -63,112 +52,13 @@ public class UserFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests setAlgorithmName(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * Failure test for <code>{@link User#setPassword(String)}</code> method.
      * </p>
      */
-    public void testSetAlgorithmName1() {
-        try {
-            user.setAlgorithmName(" ");
-            fail("IllegalArgumentException should be thrown");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setAlgorithmName(String) for failure. Passes name that is not contained in encryption repository,
-     * IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetAlgorithmName2() {
-        try {
-            user.setAlgorithmName("abc");
-            fail("IllegalArgumentException should be thrown");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setCompanyId(String) for failure. Passes 0, IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetCompanyId1() {
-        try {
-            user.setCompanyId(0);
-            fail("IllegalArgumentException should be thrown");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setCompanyId(String) for failure. Passes negative argument, IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetCompanyId2() {
-        try {
-            user.setCompanyId(-3);
-            fail("IllegalArgumentException should be thrown");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setContactInfo(Contact) for failure. Passes null, IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetContactInfo() {
-        try {
-            user.setContactInfo(null);
-            fail("IllegalArgumentException should be thrown");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setFirstName(String) for failure. Passes empty string, IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetFirstName1() {
-        try {
-            user.setFirstName(" ");
-            fail("IllegalArgumentException should be thrown");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setlastName(String) for failure. Passes empty string, IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetLastName1() {
-        try {
-            user.setLastName(" ");
-            fail("IllegalArgumentException should be thrown");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setPassword(String) for failure. Passes empty string, IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetPassword1() {
+    public void testSetPassword_TrimmedEmptyPassword() {
         try {
             user.setPassword(" ");
-            fail("IllegalArgumentException should be thrown");
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -176,28 +66,13 @@ public class UserFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests setPassword(String) for failure. Passes passcode without specifying algorithm name,
-     * IllegalStateException is expected.
+     * Failure test for <code>{@link User#setUsername(String)}</code> method.
      * </p>
      */
-    public void testSetPassword2() {
+    public void testSetUsername_NullUsername() {
         try {
-            user.setPassword("abc");
-            fail("IllegalStateException should be thrown");
-        } catch (IllegalStateException e) {
-            // expected
-        }
-    }
-
-    /**
-     * <p>
-     * Tests setPhoneNumber(String) for failure. Passes empty string, IllegalArgumentException is expected.
-     * </p>
-     */
-    public void testSetPhoneNumber1() {
-        try {
-            user.setPhoneNumber(" ");
-            fail("IllegalArgumentException should be thrown");
+            user.setUsername(null);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -205,13 +80,125 @@ public class UserFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests setUsername(String) for failure. Passes empty string, IllegalArgumentException is expected.
+     * Failure test for <code>{@link User#setUsername(String)}</code> method.
      * </p>
      */
-    public void testSetUsername1() {
+    public void testSetUsername_EmptyUsername() {
         try {
-            user.setUsername(" ");
-            fail("IllegalArgumentException should be thrown");
+            user.setUsername("");
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setUsername(String)}</code> method.
+     * </p>
+     */
+    public void testSetUsername_TrimmedEmptyUsername() {
+        try {
+            user.setUsername("  ");
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setCompanyId(long)}</code> method.
+     * </p>
+     */
+    public void testSetCompanyId_NegativeId() {
+        try {
+            user.setCompanyId(-1);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setCompanyId(long)}</code> method.
+     * </p>
+     */
+    public void testSetCompanyId_ZeroId() {
+        try {
+            user.setCompanyId(0);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setContact(com.topcoder.timetracker.contact.Contact)}</code> method.
+     * </p>
+     */
+    public void testSetContact_NullContact() {
+        try {
+            user.setContact(null);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setAddress(com.topcoder.timetracker.contact.Address)}</code> method.
+     * </p>
+     */
+    public void testSetAddress_NullAddress() {
+        try {
+            user.setAddress(null);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setStatus(com.topcoder.timetracker.user.Status)}</code> method.
+     * </p>
+     */
+    public void testSetStatus_NullStatus() {
+        try {
+            user.setStatus(null);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setAlgorithmName(String)}</code> method.
+     * </p>
+     */
+    public void testSetAlgorithmName_EmptyAlgorithmName() {
+        try {
+            user.setAlgorithmName("");
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link User#setAlgorithmName(String)}</code> method.
+     * </p>
+     */
+    public void testSetAlgorithmName_TrimmedEmptyAlgorithmName() {
+        try {
+            user.setAlgorithmName("  ");
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }

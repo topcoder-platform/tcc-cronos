@@ -1,4 +1,31 @@
-1. Please use Simple Cache 1.1 since 2.0 is not compatibile with Authorization component.
-2. Deploy the Time_tracker_User.sql and sequences (note that there are typos in the ORIGINAL schema).
-3. The src/java contains modify classes from the Search BUilder 1.1. They should be used together with the
-search builder jar.
+1. This component use MockEJB to test the session bean. You can download MockEJB from 
+http://mockejb.sourceforge.net/
+
+Note, they are put under /test_files so you can use them directly.
+
+2. There are many indirectly dependence components, so I attach my build.xml to help
+you to know what components are used by this component.
+
+3. This component runs under informix database, the jdbc library is put under the /test_files as well.
+
+Note, please set up the database environment before you run the tests.
+
+Typically, you should create a "tt_user" database and then use the "test_files/create_db.sql" to 
+set up the tables. Modify the configuration file accroding to your database setting.
+
+Please use "test_files/create_db.sql" to set up the database instead of the one provided by PM.
+The difference is all the foreign key constraints are removed by me because I have to mock the 
+dependence components.
+
+"test_files/add_data.sql" and "test_files/clear_data.sql" will be executed by the test cases
+automatically so there is no need to execute them before run the tests.
+
+4. MockEJB is used so no application server is needed. You can run the tests directly after the 
+database is ready.
+
+5. Be patient. The tests may cost some time and please wait to see the result. It would be better
+to use the Eclipse or the graphic runner to run the tests and you can knwo what's going on with 
+the test more intuitionistic.
+FYI, in my compute, the test cases take 4 minutes and 2 seconds.
+
+Thanks for your review! Have Fun!

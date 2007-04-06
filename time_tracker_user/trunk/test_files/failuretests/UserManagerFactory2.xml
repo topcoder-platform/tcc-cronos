@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.user">
+		<Property name="com.topcoder.timetracker.user.UserManager">
+			<Property name="type">
+				<Value>java.lang.Object</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

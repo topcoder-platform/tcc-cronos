@@ -1,0 +1,9 @@
+<CMConfig>
+	<Config name="com.topcoder.util.objectfactory">
+		<Property name="MockUserDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.user.failuretests.MockUserDAO</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

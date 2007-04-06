@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.user.UserAuthenticator">
+		<Property name="userDao">
+			<Property name="classname">
+				<Value>MockUserDAO</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

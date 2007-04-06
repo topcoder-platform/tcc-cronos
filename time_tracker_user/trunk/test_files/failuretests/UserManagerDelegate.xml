@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.user.j2ee.UserManagerDelegate">
+		<Property name="contextName">
+			<Value>tt_user</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>UserManagerLocalHome</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.user.j2ee.UserManagerDelegate1">
+		<Property name="contextName">
+			<Value>tt_user</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.user.j2ee.UserManagerDelegate2">
+		<Property name="contextName">
+			<Value>tt_user</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value> </Value>
+		</Property>
+	</Config>
+
+
+	<Config name="com.topcoder.timetracker.user.j2ee.UserManagerDelegate3">
+		<Property name="contextName">
+			<Value>tt_user</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>NotFoundJNDI</Value>
+		</Property>
+	</Config>
+</CMConfig>

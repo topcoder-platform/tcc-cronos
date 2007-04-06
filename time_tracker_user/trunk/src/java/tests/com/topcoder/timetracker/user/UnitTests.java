@@ -1,77 +1,62 @@
 /*
- * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.user;
 
+import com.topcoder.timetracker.user.db.DbUserDAOTests;
+import com.topcoder.timetracker.user.filterfactory.MappedBaseFilterFactoryTests;
+import com.topcoder.timetracker.user.filterfactory.MappedUserFilterFactoryTests;
+import com.topcoder.timetracker.user.filterfactory.UtilTests;
+import com.topcoder.timetracker.user.j2ee.UserManagerSessionBeanTests;
+
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.topcoder.timetracker.common.AddressTest;
-import com.topcoder.timetracker.common.ContactTest;
-import com.topcoder.timetracker.common.DbRejectEmailDAOTest;
-import com.topcoder.timetracker.common.DbRejectReasonDAOTest;
-import com.topcoder.timetracker.common.EncryptionRepositoryTest;
-import com.topcoder.timetracker.common.RejectEmailSearchBuilderTest;
-import com.topcoder.timetracker.common.RejectEmailTest;
-import com.topcoder.timetracker.common.RejectReasonSearchBuilderTest;
-import com.topcoder.timetracker.common.RejectReasonTest;
-import com.topcoder.timetracker.common.StateTest;
-import com.topcoder.timetracker.common.TimeTrackerBeanTest;
-import com.topcoder.timetracker.company.CompanySearchBuilderTest;
-import com.topcoder.timetracker.company.CompanyTest;
-import com.topcoder.timetracker.company.DbCompanyDAOTest;
-
-
 /**
- * Run all the Time Tracker User unit tests.
+ * <p>This test case aggregates all Unit test cases.</p>
  *
- * @author kr00tki
- * @version 2.0
+ * @author TCSDEVELOPER
+ * @version 3.2
  */
-public class UnitTests {
-
-    /** Hide default constructor of this static class. */
-    private UnitTests() {
-    }
-
+public class UnitTests extends TestCase {
     /**
-     * Builds a test suite of all the unit tests.
+     * <p>
+     * This test case aggregates all Unit test cases.
+     * </p>
      *
-     * @return A fully-populated test suite.
+     * @return all Unit test cases.
      */
     public static Test suite() {
+        final TestSuite suite = new TestSuite();
 
-        TestSuite suite = new TestSuite("Unit Tests for Time Tracker User component");
+        // tests for package com.topcoder.timetracker.user
+        suite.addTest(UserTests.suite());
+        suite.addTest(UserManagerImplTests.suite());
+        suite.addTest(StatusTests.suite());
+        suite.addTest(ConfigurationExceptionTests.suite());
+        suite.addTest(UserAuthenticatorTests.suite());
+        suite.addTest(BatchOperationExceptionTests.suite());
+        suite.addTest(UserManagerFactoryTests.suite());
+        suite.addTest(UnrecognizedEntityExceptionTests.suite());
+        suite.addTest(DataAccessExceptionTests.suite());
+        suite.addTest(StringMatchTypeTests.suite());
 
-        // common
-        suite.addTestSuite(AddressTest.class);
-        suite.addTestSuite(ContactTest.class);
-        suite.addTestSuite(StateTest.class);
-        suite.addTestSuite(TimeTrackerBeanTest.class);
-        suite.addTestSuite(RejectReasonTest.class);
-        suite.addTestSuite(RejectEmailTest.class);
-        suite.addTestSuite(RejectReasonSearchBuilderTest.class);
-        suite.addTestSuite(RejectEmailSearchBuilderTest.class);
-        suite.addTestSuite(EncryptionRepositoryTest.class);
-        suite.addTestSuite(DbRejectEmailDAOTest.class);
-        suite.addTestSuite(DbRejectReasonDAOTest.class);
+        // tests for package com.topcoder.timetracker.user.db
+        suite.addTest(DbUserDAOTests.suite());
 
-        // company
-        suite.addTestSuite(CompanyTest.class);
-        suite.addTestSuite(CompanySearchBuilderTest.class);
-        suite.addTestSuite(DbCompanyDAOTest.class);
+        // tests for package com.topcoder.timetracker.user.filterfactory
+        suite.addTest(MappedBaseFilterFactoryTests.suite());
+        suite.addTest(UtilTests.suite());
+        suite.addTest(MappedUserFilterFactoryTests.suite());
 
-        // user
-        suite.addTestSuite(AccountStatusTest.class);
-        suite.addTestSuite(UserTest.class);
-        suite.addTestSuite(UserSearchBuilderTest.class);
-        suite.addTestSuite(DbUserAuthenticatorTest.class);
-        suite.addTestSuite(DbUserDAOTest.class);
-        suite.addTestSuite(UserManagerTest.class);
+        // tests for package com.topcoder.timetracker.user.j2ee
+        suite.addTest(UserManagerSessionBeanTests.suite());
 
-        suite.addTestSuite(ExceptionsTests.class);
-        suite.addTestSuite(Demo.class);
+        // tests for the demo
+        suite.addTest(DemoTests.suite());
 
         return suite;
     }
+
 }

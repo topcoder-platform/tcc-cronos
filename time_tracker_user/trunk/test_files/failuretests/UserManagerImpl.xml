@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.security.authenticationfactory.AuthenticationFactory">
+		<Property name="authenticators">
+			<!-- http authenticator -->
+			<Property name="UserAuthenticator">
+				<!-- the full qualified class name, required. -->
+				<Property name="class">
+					<Value>com.topcoder.timetracker.user.UserAuthenticator</Value>
+				</Property>
+
+				<!-- the namespace to load configuration values, required. -->
+				<Property name="namespace">
+					<Value>com.topcoder.timetracker.user.UserAuthenticator</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

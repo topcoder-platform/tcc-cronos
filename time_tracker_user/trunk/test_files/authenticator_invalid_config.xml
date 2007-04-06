@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+	<Config name="objectFactoryNamespace_missing">
+		<Property name="userDao">
+			<Property name="classname">
+				<Value>DbUserDAO</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="objectFactoryNamespace_empty">
+		<Property name="objectFactoryNamespace">
+			<Value> </Value>
+		</Property>
+		<Property name="userDao">
+			<Property name="classname">
+				<Value>DbUserDAO</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+		<Config name="objectFactoryNamespace_invalid">
+		<Property name="objectFactoryNamespace">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="userDao">
+			<Property name="classname">
+				<Value>DbUserDAO</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+		<Config name="userDao_classname_missing">
+		<Property name="objectFactoryNamespace">
+			<Value>com.topcoder.timetracker.user.objectfactory</Value>
+		</Property>
+		<Property name="userDao">
+		</Property>
+	</Config>
+	
+		<Config name="userDao_classname_empty">
+		<Property name="objectFactoryNamespace">
+			<Value>com.topcoder.timetracker.user.objectfactory</Value>
+		</Property>
+		<Property name="userDao">
+			<Property name="classname">
+				<Value> </Value>
+			</Property>
+		</Property>
+	</Config>
+	
+		<Config name="userDao_classname_invalid">
+		<Property name="objectFactoryNamespace">
+			<Value>com.topcoder.timetracker.user.objectfactory</Value>
+		</Property>
+		<Property name="userDao">
+			<Property name="classname">
+				<Value>invalid</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+		<Config name="userDao_classname_wrong_type">
+		<Property name="objectFactoryNamespace">
+			<Value>com.topcoder.timetracker.user.objectfactory</Value>
+		</Property>
+		<Property name="userDao">
+			<Property name="classname">
+				<Value>AuditManager:default</Value>
+			</Property>
+		</Property>
+	</Config>
+		
+</CMConfig>

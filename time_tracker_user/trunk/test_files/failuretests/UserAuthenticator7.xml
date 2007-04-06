@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.user.UserAuthenticator">
+		<Property name="objectFactoryNamespace">
+			<Value>com.topcoder.util.objectfactory</Value>
+		</Property>
+		<Property name="userDao">
+			<Property name="classname">
+				<Value>MockUserDAO_NOTDEFINED</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

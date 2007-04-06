@@ -1,110 +1,125 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.user.failuretests;
 
-import java.io.File;
+import org.jmock.MockObjectTestCase;
 
-import junit.framework.TestCase;
-
-import com.topcoder.timetracker.user.DbUserDAO;
-import com.topcoder.timetracker.user.User;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.security.authorization.AuthorizationPersistence;
+import com.topcoder.security.authorization.persistence.SQLAuthorizationPersistence;
+import com.topcoder.timetracker.audit.AuditManager;
+import com.topcoder.timetracker.contact.AddressManager;
+import com.topcoder.timetracker.contact.ContactManager;
+import com.topcoder.timetracker.user.ConfigurationException;
+import com.topcoder.timetracker.user.User;
+import com.topcoder.timetracker.user.UserDAO;
+import com.topcoder.timetracker.user.db.DbUserDAO;
+import com.topcoder.util.config.ConfigManager;
 
 /**
  * <p>
- * Failure unit test cases for the DbUserDAO class.
+ * Failure test for <code>{@link DbUserDAO}</code> class.
  * </p>
- * @author agh
- * @version 2.0
- * @since 2.0
+ * @author FireIce
+ * @version 1.0
  */
-public class DbUserDAOFailureTests extends TestCase {
+public class DbUserDAOFailureTests extends MockObjectTestCase {
 
     /**
      * <p>
-     * Connection name.
+     * Represents the DbUserDAO instance.
      * </p>
      */
-    private static final String CONN_NAME = "informix";
+    private UserDAO userDAO;
 
     /**
      * <p>
-     * Id generator name.
+     * The AuditManager instance for testing.
      * </p>
      */
-    private static final String ID_GENERATOR_NAME = "ttu2";
+    private AuditManager auditManager;
 
     /**
      * <p>
-     * Algorithm name.
+     * The ContactManager instance for testing.
      * </p>
      */
-    private static final String ALGORITHM_NAME = "ttu2";
+    private ContactManager contactManager;
 
     /**
      * <p>
-     * DBConnection Factory namespace.
+     * The AuthorizationPersistence instance for testing.
      * </p>
      */
-    private static final String DB_CONN_FACTORY_NAMESPACE = DBConnectionFactoryImpl.class.getName();
+    private AuthorizationPersistence authPersistence;
 
     /**
      * <p>
-     * The name of the file containing configuration data.
+     * The AddressManager instance for testing.
      * </p>
      */
-    private static final String CONFIG_XML = "failuretests" + File.separatorChar + "dbconfig.xml";
+    private AddressManager addressManager;
 
     /**
      * <p>
-     * DBConnectionFactory instance used for testing
+     * The DBConnectionFactory instance for testing.
      * </p>
      */
-    private DBConnectionFactory connectionFactory = null;
+    private DBConnectionFactory dbFactory;
 
     /**
      * <p>
-     * The DbUserDAO instance used for testing.
+     * Setup the testing environment.
      * </p>
-     */
-    private DbUserDAO dbUserDAO = null;
-
-    /**
-     * <p>
-     * Creates DbUserDAO instance.
-     * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
     protected void setUp() throws Exception {
-        FailureTestsHelper.loadConfig(CONFIG_XML);
+        super.setUp();
 
-        connectionFactory = new DBConnectionFactoryImpl(DB_CONN_FACTORY_NAMESPACE);
-        dbUserDAO = new DbUserDAO(connectionFactory, CONN_NAME, ALGORITHM_NAME, ID_GENERATOR_NAME);
+        FailureTestHelper.clearNamespaces();
+        ConfigManager.getInstance().add(FailureTestHelper.FAILURE_CONFIG_ROOT + "DbUserDAO.xml");
+        FailureTestHelper.setUpDataBase();
+
+        dbFactory = new DBConnectionFactoryImpl();
+        auditManager = (AuditManager) mock(AuditManager.class).proxy();
+        contactManager = (ContactManager) mock(ContactManager.class).proxy();
+        authPersistence = new SQLAuthorizationPersistence("com.topcoder.timetracker.application.authorization");
+        addressManager = (AddressManager) mock(AddressManager.class).proxy();
+
+        userDAO = new DbUserDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.User",
+            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+            authPersistence, addressManager, true);
     }
 
     /**
      * <p>
-     * Removes the configuration if it exists.
+     * Tear down the testing environment.
      * </p>
-     * @throws Exception to JUnit.
      */
     protected void tearDown() throws Exception {
-        FailureTestsHelper.cleanConfig();
+        super.tearDown();
+        FailureTestHelper.tearDownDataBase();
+        FailureTestHelper.clearNamespaces();
     }
 
     /**
      * <p>
-     * Tests DbUserDAO(DBConnectionFactory, String, String, String) for failure. Passes null as first
-     * argument, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testConstructor1() throws Exception {
+    public void testDbUserDAO_NullConnectionFactory() throws Exception {
         try {
-            new DbUserDAO(null, CONN_NAME, ALGORITHM_NAME, ID_GENERATOR_NAME);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(null, "tt_user", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -112,15 +127,19 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests DbUserDAO(DBConnectionFactory, String, String, String) for failure. Passes null as second
-     * argument, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testConstructor2() throws Exception {
+    public void testDbUserDAO_EmptyConnectionName() throws Exception {
         try {
-            new DbUserDAO(connectionFactory, null, ALGORITHM_NAME, ID_GENERATOR_NAME);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, "", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -128,15 +147,19 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests DbUserDAO(DBConnectionFactory, String, String, String) for failure. Passes null as third
-     * argument, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testConstructor3() throws Exception {
+    public void testDbUserDAO_TrimmedEmptyConnectionName() throws Exception {
         try {
-            new DbUserDAO(connectionFactory, CONN_NAME, null, ID_GENERATOR_NAME);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, "  ", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -144,15 +167,18 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests DbUserDAO(DBConnectionFactory, String, String, String) for failure. Passes null as fourth
-     * argument, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testConstructor4() throws Exception {
+    public void testDbUserDAO_NullIDGen() throws Exception {
         try {
-            new DbUserDAO(connectionFactory, CONN_NAME, ALGORITHM_NAME, null);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, null, "com.topcoder.search.builder.database.DatabaseSearchStrategy",
+                auditManager, contactManager, authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -160,15 +186,18 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests DbUserDAO(DBConnectionFactory, String, String, String) for failure. Passes empty string as second
-     * argument, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testConstructor5() throws Exception {
+    public void testDbUserDAO_EmptyIDGen() throws Exception {
         try {
-            new DbUserDAO(connectionFactory, " ", ALGORITHM_NAME, ID_GENERATOR_NAME);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "", "com.topcoder.search.builder.database.DatabaseSearchStrategy",
+                auditManager, contactManager, authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -176,15 +205,18 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests DbUserDAO(DBConnectionFactory, String, String, String) for failure. Passes empty string as third
-     * argument, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testConstructor6() throws Exception {
+    public void testDbUserDAO_TrimmedEmptyIDGen() throws Exception {
         try {
-            new DbUserDAO(connectionFactory, CONN_NAME, " ", ID_GENERATOR_NAME);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, " ", "com.topcoder.search.builder.database.DatabaseSearchStrategy",
+                auditManager, contactManager, authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -192,15 +224,37 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests DbUserDAO(DBConnectionFactory, String, String, String) for failure. Passes empty string as fourth
-     * argument, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testConstructor7() throws Exception {
+    public void testDbUserDAO_NotFoundIDGen() throws Exception {
         try {
-            new DbUserDAO(connectionFactory, CONN_NAME, ALGORITHM_NAME, " ");
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "NotExist", "com.topcoder.search.builder.database.DatabaseSearchStrategy",
+                auditManager, contactManager, authPersistence, addressManager, true);
+            fail("expect throw ConfigurationException.");
+        } catch (ConfigurationException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
+     * </p>
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     */
+    public void testDbUserDAO_NullSearchsStrategyNamespace() throws Exception {
+        try {
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User", null, auditManager, contactManager,
+                authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -208,14 +262,18 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests createUser(User, String) for failure. Passes null company, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testCreateUser1() throws Exception {
+    public void testDbUserDAO_EmptySearchsStrategyNamespace() throws Exception {
         try {
-            dbUserDAO.createUser(null, "A");
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User", "", auditManager, contactManager,
+                authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -223,15 +281,18 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests createUsers(User[], String, boolean) for failure. Passes null array, IllegalArgumentException is
-     * expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testCreateUsers1() throws Exception {
+    public void testDbUserDAO_TrimmedEmptySearchsStrategyNamespace() throws Exception {
         try {
-            dbUserDAO.createUsers(null, "A", false);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User", " ", auditManager, contactManager,
+                authPersistence, addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -239,15 +300,38 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests createUsers(User[], String, boolean) for failure. Passes array with null elements,
-     * IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testCreateUsers2() throws Exception {
+    public void testDbUserDAO_NotFoundSearchsStrategyNamespace() throws Exception {
         try {
-            dbUserDAO.createUsers(new User[] {new User(), null}, "A", false);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User", "NotFound", auditManager,
+                contactManager, authPersistence, addressManager, true);
+            fail("expect throw ConfigurationException.");
+        } catch (ConfigurationException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
+     * </p>
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     */
+    public void testDbUserDAO_NullAuditManager() throws Exception {
+        try {
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", null, contactManager, authPersistence,
+                addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -255,15 +339,19 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests createUsers(User[], String, boolean) for failure. Passes empty user name,
-     * IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testCreateUsers3() throws Exception {
+    public void testDbUserDAO_NullContactManager() throws Exception {
         try {
-            dbUserDAO.createUsers(new User[] {new User()}, " ", false);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, null, authPersistence,
+                addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -271,14 +359,19 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests deleteUser(User) for failure. Passes null, IllegalArgumentException is expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testDeleteUser1() throws Exception {
+    public void testDbUserDAO_NullAuthPersitence() throws Exception {
         try {
-            dbUserDAO.deleteUser(null);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager, null,
+                addressManager, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -286,15 +379,19 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests deleteUsers(User[], boolean) for failure. Passes null array, IllegalArgumentException is
-     * expected.
+     * Failure test for
+     * <code>{@link DbUserDAO#DbUserDAO(DBConnectionFactory, String, String, String, AuditManager, ContactManager, AuthorizationPersistence, AddressManager, boolean)}</code>
+     * method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testDeleteUsers1() throws Exception {
+    public void testDbUserDAO_NullAddressManager() throws Exception {
         try {
-            dbUserDAO.deleteUsers(null, false);
-            fail("IllegalArgumentException should be thrown");
+            new DbUserDAO(dbFactory, null, "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, null, true);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -302,14 +399,15 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests deleteUsers(User[], boolean) for failure. Passes 0, IllegalArgumentException is expected.
+     * Failure test for <code>{@link DbUserDAO#addUsers(User[], boolean)}</code> method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testDeleteUsers2() throws Exception {
+    public void testAddUsers_NullUsers() throws Exception {
         try {
-            dbUserDAO.deleteUsers(new User[] {new User(), null}, false);
-            fail("IllegalArgumentException should be thrown");
+            userDAO.addUsers(null, false);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -317,14 +415,15 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests retrieveUsers(long[]) for failure. Passes null, IllegalArgumentException is expected.
+     * Failure test for <code>{@link DbUserDAO#addUsers(User[], boolean)}</code> method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testRetrieveUsers1() throws Exception {
+    public void testAddUsers_UsersContainsNull() throws Exception {
         try {
-            dbUserDAO.retrieveUsers(null);
-            fail("IllegalArgumentException should be thrown");
+            userDAO.addUsers(new User[] {null}, false);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -332,14 +431,16 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests searchUsers(Filter) for failure. Passes null, IllegalArgumentException is expected.
+     * Failure test for <code>{@link DbUserDAO#addUsers(User[], boolean)}</code> method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testSearchUsers1() throws Exception {
+    public void testAddUsers_UsersContainsInvalidUser() throws Exception {
+        User user = new User();
         try {
-            dbUserDAO.searchUsers(null);
-            fail("IllegalArgumentException should be thrown");
+            userDAO.addUsers(new User[] {user}, false);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -347,15 +448,15 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests updateUsers(User[], String, boolean) for failure. Passes null array, IllegalArgumentException is
-     * expected.
+     * Failure test for <code>{@link DbUserDAO#updateUsers(User[], boolean)}</code> method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testUpdateUsers1() throws Exception {
+    public void testUpdateUsers_NullUsers() throws Exception {
         try {
-            dbUserDAO.updateUsers(null, "A", false);
-            fail("IllegalArgumentException should be thrown");
+            userDAO.updateUsers(null, false);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -363,15 +464,15 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests updateUsers(User[], String, boolean) for failure. Passes array with null elements,
-     * IllegalArgumentException is expected.
+     * Failure test for <code>{@link DbUserDAO#updateUsers(User[], boolean)}</code> method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testUpdateUsers2() throws Exception {
+    public void testUpdateUsers_UsersContainsNull() throws Exception {
         try {
-            dbUserDAO.updateUsers(new User[] {new User(), null}, "A", false);
-            fail("IllegalArgumentException should be thrown");
+            userDAO.updateUsers(new User[] {null}, false);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -379,15 +480,16 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests updateUsers(User[], String, boolean) for failure. Passes empty user name,
-     * IllegalArgumentException is expected.
+     * Failure test for <code>{@link DbUserDAO#updateUsers(User[], boolean)}</code> method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
      */
-    public void testUpdateUsers3() throws Exception {
+    public void testUpdateUsers_UsersContainsInvalidUser() throws Exception {
+        User user = new User();
         try {
-            dbUserDAO.updateUsers(new User[] {new User()}, " ", false);
-            fail("IllegalArgumentException should be thrown");
+            userDAO.updateUsers(new User[] {user}, false);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
@@ -395,16 +497,108 @@ public class DbUserDAOFailureTests extends TestCase {
 
     /**
      * <p>
-     * Tests updateUser(User, String) for failure. Passes null company, IllegalArgumentException is expected.
+     * Failure test for <code>{@link DbUserDAO#removeUsers(long[], boolean)}</code> method.
      * </p>
-     * @throws Exception to JUnit.
+     * @throws Exception
      */
-    public void testUpdateUser1() throws Exception {
+    public void testRemoveUsers_NullUserIds() throws Exception {
         try {
-            dbUserDAO.updateUser(null, "A");
-            fail("IllegalArgumentException should be thrown");
+            userDAO.removeUsers(null, false);
+            fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected
         }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link DbUserDAO#removeUsers(long[], boolean)}</code> method.
+     * </p>
+     * @throws Exception
+     */
+    public void testRemoveUsers_ZeroUserId() throws Exception {
+        try {
+            userDAO.removeUsers(new long[] {0}, false);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link DbUserDAO#removeUsers(long[], boolean)}</code> method.
+     * </p>
+     * @throws Exception
+     */
+    public void testRemoveUsers_NegativeUserId() throws Exception {
+        try {
+            userDAO.removeUsers(new long[] {-1}, false);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link DbUserDAO#getUsers(long[], boolean)}</code> method.
+     * </p>
+     * @throws Exception
+     */
+    public void testGetUsers_NullUserIds() throws Exception {
+        try {
+            userDAO.getUsers(null);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link DbUserDAO#getUsers(long[], boolean)}</code> method.
+     * </p>
+     * @throws Exception
+     */
+    public void testGetUsers_ZeroUserId() throws Exception {
+        try {
+            userDAO.getUsers(new long[] {0});
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link DbUserDAO#getUsers(long[], boolean)}</code> method.
+     * </p>
+     * @throws Exception
+     */
+    public void testGetUsers_NegativeUserId() throws Exception {
+        try {
+            userDAO.getUsers(new long[] {-1});
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link DbUserDAO#searchUsers(com.topcoder.search.builder.filter.Filter)}</code> method.
+     * </p>
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     */
+    public void testSearchUsers_NullFilter() throws Exception {
+        try {
+            userDAO.searchUsers(null);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+
     }
 }
