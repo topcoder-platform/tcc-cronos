@@ -2,6 +2,7 @@
 
 <project name="Time Tracker Notification" default="dist" basedir=".">
 
+	<import file="D:/TopCoder/config/commons.xml" />
     <property file="../topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
@@ -85,12 +86,26 @@
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
 
     <path id="buildlibs">
-        <!--
         <pathelement location="${junit.jar}" />
-        <pathelement location="${configmanager.jar}" />
+		<pathelement location="dep/mail.jar" />
+		<!--
+        <pathelement location="${configuration_manager.jar}" />
+		<pathelement location="${time_tracker_common.jar}"/>
+		<pathelement location="${email_engine.jar}" />
+		<pathelement location="${db_connection_factory.jar}" />
+		<pathelement location="${base_exception.jar}" />
+		<pathelement location="${typesafe_enum.jar}" />
+		<pathelement location="${object_factory.jar}" />
+		<pathelement location="${logging_wrapper.jar}" />
+		<pathelement location="dep/job_scheduling.jar" />
+		<pathelement location="time_tracker_mock.jar" />
+		-->
+		<fileset dir="dep">
+			<include name="**/*.jar"/>
+	    </fileset>
+		<pathelement location="${jdbc.informix.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
-        -->
     </path>
 
     <path id="test.build.classpath">

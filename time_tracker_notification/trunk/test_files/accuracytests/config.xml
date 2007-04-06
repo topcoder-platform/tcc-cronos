@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>tt_connection</Value>
+			</Property>
+			<Property name="tt_connection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.102:1526/notification:informixserver=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>810814</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.notification.persistence.searchstrategy">
+		<!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
+		<Property name="connectionFactory">
+
+			<!-- The namespace of the ConnectionFactory -->
+			<Property name="name">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="class">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		</Property>
+
+
+		<!-- The name to request from the connection factory when acquiring a connection. 
+		If not present, then the default connection is used. 
+		-->
+		<Property name="connectionName">
+			<Value>tt_connection</Value>
+		</Property>
+
+
+		<Property name="searchFragmentFactoryNamespace">
+			<Value>com.topcoder.search.builder.database.factory</Value>
+		</Property>
+
+
+		<Property name="searchFragmentBuilders">
+			<Property name="first">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.AndFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="second">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.OrFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="third">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="fourth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NotFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="fifth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="sixth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.InFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="eighth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NullFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="ninth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="tenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="eleventh">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="twelvth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="thirteenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.database.factory">
+	</Config>
+	<Config name="com.topcoder.util.log">
+		<!-- The Log implementation class -->
+		<Property name="logClass">
+			<Value>com.topcoder.util.log.basic.BasicLog</Value>
+		</Property>
+
+		<!-- Specifies where the output should be written to, System.out or System.err -->
+		<Property name="basic.log.target">
+			<Value>System.out</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.notification.NotificationManager">
+		<Property name="Of_namespace">
+			<Value>com.topcoder.timetracker.notification</Value>
+		</Property>
+		<Property name="persistence_key">
+			<Value>com.topcoder.timetracker.notification.NotificationPersistence</Value>
+		</Property>
+		<Property name="send_notification_key">
+			<Value>NotificationSender</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.notification.ejb.NotificationPersistenceDelegate">
+		<Property name="location">
+			<Value>NotificationPersistenceLocalHome</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.notification">
+		<Property name="DBConnectionFactoryImpl">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="MockAuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.accuracytests.MockAuditManager</Value>
+			</Property>
+		</Property>
+		<Property name="com/topcoder/timetracker/notification/NotificationPersistence">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.persistence.InformixNotificationPersistence</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>tt_connection</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TimeTrackerID</Value>
+					</Property>
+				</Property>
+				<Property name="param4">
+					<Property name="name">
+						<Value>MockAuditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="NotificationSender">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.send.EmailNotificationSender</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>tt_connection</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="name">
+						<Value>MockContactManager</Value>
+					</Property>
+				</Property>
+				<Property name="param4">
+					<Property name="name">
+						<Value>MockMessageBodyGenerator</Value>
+					</Property>
+				</Property>
+				<Property name="param5">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TestLogger</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="MockContactManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.accuracytests.MockContactManager</Value>
+			</Property>
+		</Property>
+		<Property name="MockMessageBodyGenerator">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.accuracytests.MockMessageBodyGenerator</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.message.email.EmailEngine">
+		<Property name="smtp_host_addr">
+			<Value>192.168.1.102</Value>
+		</Property>
+		<Property name="smtp_host_port">
+			<Value>25</Value>
+		</Property>
+	</Config>
+</CMConfig>

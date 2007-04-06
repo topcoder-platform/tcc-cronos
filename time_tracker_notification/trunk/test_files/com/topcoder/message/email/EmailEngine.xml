@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <Property name="smtp_host_addr">
+        <Value>192.168.1.102</Value>
+    </Property>
+    <Property name="smtp_host_port">
+        <Value>25</Value>
+    </Property>
+</CMConfig>

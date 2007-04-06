@@ -1,0 +1,9 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.notification">
+		<Property name="FailureNotificationPersistence">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.failuretests.FailureNotificationPersistence</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

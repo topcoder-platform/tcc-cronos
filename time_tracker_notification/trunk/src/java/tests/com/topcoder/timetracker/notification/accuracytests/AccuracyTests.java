@@ -1,25 +1,45 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.notification.accuracytests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Accuracy test cases.</p>
  *
- * @author TopCoder
+ * @author kzhu
  * @version 1.0
  */
 public class AccuracyTests extends TestCase {
-
+    /**
+     * <p>
+     * This test case aggregates all Unit test cases.
+     * </p>
+     *
+     * @return all accuracy test cases.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTest(EmailNotificationSenderAccuracyTests.suite());
+        suite.addTest(InformixNotificationPersistenceAccuracyTests.suite());
+        suite.addTest(MessageBodyGeneratorExceptionAccuracyTests.suite());
+        suite.addTest(NotificationAccuracyTests.suite());
+        suite.addTest(NotificationConfigurationExceptionAccuracyTests.suite());
+        suite.addTest(NotificationEventAccuracyTests.suite());
+        suite.addTest(NotificationFilterFactoryAccuracyTests.suite());
+        suite.addTest(NotificationManagerAccuracyTests.suite());
+
+        suite.addTest(NotificationPersistenceExceptionAccuracyTests.suite());
+        suite.addTest(NotificationPersistenceFactoryAccuracyTests.suite());
+        suite.addTest(NotificationPersistenceSessionBeanAccuracyTests.suite());
+
+        suite.addTest(NotificationSendingExceptionAccuracyTests.suite());
+        suite.addTest(StringMatchTypeAccuracyTests.suite());
+
         return suite;
     }
 

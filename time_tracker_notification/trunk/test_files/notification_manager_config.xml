@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.notification.NotificationManager">
+		<Property name="Of_namespace">
+			<Value>com.topcoder.timetracker.notification.objectfactory</Value>
+		</Property>
+		<Property name="persistence_key">
+			<Value>com.topcoder.timetracker.notification.persistence.InformixNotificationPersistence</Value>
+		</Property>
+		<Property name="send_notification_key">
+			<Value>com.topcoder.timetracker.notification.send.EmailNotificationSender</Value>
+		</Property>
+	</Config>
+</CMConfig>
+
+

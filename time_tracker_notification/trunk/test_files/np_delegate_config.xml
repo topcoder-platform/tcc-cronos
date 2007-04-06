@@ -1,0 +1,9 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.notification.ejb.NotificationPersistenceDelegate">
+		<Property name="location">
+			<Value>java:com/topcoder/timetracker/notification</Value>
+		</Property>
+
+	</Config>
+</CMConfig>
+

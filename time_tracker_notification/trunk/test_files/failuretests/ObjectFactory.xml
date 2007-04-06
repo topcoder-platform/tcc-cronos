@@ -1,0 +1,21 @@
+<CMConfig>
+	<Config name="com.topcoder.util.objectfactory">
+		<Property name="FailureNotificationPersistence">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.failuretests.FailureNotificationPersistence</Value>
+			</Property>
+		</Property>
+
+		<Property name="FailureNotificationSender">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.notification.failuretests.FailureNotificationSender</Value>
+			</Property>
+		</Property>
+
+		<Property name="Object">
+			<Property name="type">
+				<Value>java.lang.Object</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

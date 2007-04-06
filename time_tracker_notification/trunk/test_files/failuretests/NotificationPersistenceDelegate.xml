@@ -1,0 +1,11 @@
+<CMConfig>
+    <Config name="com.topcoder.timetracker.notification.ejb.NotificationPersistenceDelegate">
+		<Property name="context_name">
+			<Value>audit</Value>
+		</Property>
+		<Property name="location">
+			<Value>java:comp/env/ejb/notificationEJB</Value>
+		</Property>
+    </Config>
+</CMConfig>
+
