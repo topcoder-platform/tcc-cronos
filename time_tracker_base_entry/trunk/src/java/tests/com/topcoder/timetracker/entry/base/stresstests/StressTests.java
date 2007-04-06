@@ -1,25 +1,28 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.timetracker.base.entry.stresstests;
+package com.topcoder.timetracker.entry.base.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Stress test cases.</p>
+ * This test case aggregates all stress test cases.
  *
- * @author TopCoder
- * @version 1.0
+ * @author vividmxx
+ * @version 3.2
  */
 public class StressTests extends TestCase {
 
+    /**
+     * Aggregates all Stress test cases.
+     *
+     * @return the aggregated stress test cases
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(EntrySessionBeanStressTests.class);
         return suite;
     }
 }

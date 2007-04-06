@@ -7,7 +7,7 @@
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Time_Tracker_Base_Entry" />
     <property name="package" value="com.topcoder.timetracker.entry.base" />
-    <property name="packagedir" value="com/topcoder/timetracker/entry/base" />
+    <property name="packagedir" value="com/topcoder/timetracker/" />
     <property name="distfilename" value="time_tracker_base_entry" />
     <property name="component_version" value="3.2" />
     <property name="component_path" value="${distfilename}/${component_version}" />
@@ -28,6 +28,7 @@
 
     <property name="javasrc" value="${srcdir}/java" />
     <property name="javamain" value="${javasrc}/main" />
+	<property name="mocks" value="${javasrc}/mocks" />
     <property name="javatests" value="${javasrc}/tests" />
 
     <property name="builddir" value="build" />
@@ -67,6 +68,18 @@
     <!-- DOCUMENT PACKAGE -->
     <property name="dist_docpackage" value="${builddir}/doc_package" />
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
+	
+	<!-- codertura task definitation -->
+	<property name="cobertura.dir" value="C:\Topcoder\Tools\cobertura-1.8" />
+	<path id="cobertura.classpath">
+	<fileset dir="${cobertura.dir}">
+  	  <include name="cobertura.jar" />
+    	<include name="lib/**/*.jar" />
+	</fileset>
+	</path>
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+	<property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
+	<property name="instrumented.dir" value="${builddir}/instrumented" />
     
     <!-- TCS Dependencies -->
     <property name="configmanager.version" value="2.1.5"/>
@@ -97,12 +110,27 @@
 
     <path id="buildlibs">
         <pathelement location="${junit.jar}" />
-        <pathelement location="${configmanager.jar}" />
-        <pathelement location="${id_generator.jar}" />
-        <pathelement location="${base_exception.jar}" />
-        <pathelement location="${db_connection_factory.jar}" />
         <pathelement location="${configdir}" />
-        <pathelement location="${testfiles}" />
+    	<pathelement location="${testfiles}" />
+    	
+    	<pathelement location="lib/configuration_manager.jar" />
+    	<pathelement location="lib/base_exception.jar" />
+        <pathelement location="lib/object_factory.jar" />
+    	
+    	<pathelement location="lib\cglib-full-2.0-RC2.jar" />
+    	<pathelement location="lib\commons-logging.jar" />
+    	<pathelement location="lib\db_connection_factory.jar" />
+       	<pathelement location="lib\id_generator.jar" />
+       	<pathelement location="lib\ifxjdbc.jar" />
+      	<pathelement location="lib\j2ee.jar" />
+       	<pathelement location="lib\search_builder.jar" />
+    	
+       	<pathelement location="lib\JNDI_Utility.jar" />
+       	<pathelement location="lib\mockejb.jar" />
+    	<pathelement location="lib\mockrunner.jar" />
+   		<pathelement location="lib\jakarta-oro-2.0.8.jar" />
+   		<pathelement location="lib\typesafe_enum.jar" />
+    	
     </path>
 
     <path id="test.build.classpath">
@@ -163,14 +191,48 @@
 
     <target name="test" depends="compile_tests">
         <mkdir dir="${testlogdir}"/>
+				<mkdir dir="${instrumented.dir}"/>
+
+				<delete file="${cobertura.datafile}" />
+
+				<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+						<!-- all included -->
+						<fileset dir="${build_classdir}">
+							<exclude name="com/topcoder/timetracker/audit/**.class"/>
+							<exclude name="com/topcoder/timetracker/common/**.class"/>
+							<exclude name="com/topcoder/timetracker/rejectreason/**.class"/>
+    				</fileset>
+				</cobertura-instrument>
+
         <junit fork="true" haltonerror="false">
-            <classpath refid="test.build.classpath"/>
+
+				<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
+
+						<classpath location="${instrumented.dir}" />
+						<classpath location="${build_testclassdir}" />
+						<classpath refid="test.build.classpath" />
+						<classpath refid="cobertura.classpath" />
+
             <test name="${package}.AllTests" todir="${testlogdir}">
                 <formatter type="plain" usefile="true"/>
                 <formatter type="xml" usefile="true"/>
             </test>
+
         </junit>
     </target>
+	
+	
+	<target name="coveragereport" depends="test">
+
+			<cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
+			<fileset dir="${javamain}">
+    		<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${javatests}">
+    		<include name="**/*.java" />
+			</fileset>
+			</cobertura-report>
+	</target>
 
     <target name="reports" depends="test">
         <mkdir dir="${reports}"/>
@@ -301,7 +363,7 @@
     <target name="dev_submission" depends="test">
         <jar jarfile="${dev_submission.jar}"
              basedir="."
-             includes="${configdir}/**,${javamain}/**/*.java,${javatests}/${packagedir}/**,${testlogdir}/**,${testfiles}/**,${docsdir}/**"
+             includes="${configdir}/**,readme.txt,${javamain}/**/*.java,${javatests}/${packagedir}/**,${testlogdir}/**,${testfiles}/**,${docsdir}/**"
              excludes="${javatests}/${packagedir}/AllTests.java,${javatests}/${packagedir}/stresstests/*,${javatests}/${packagedir}/failuretests/*,
                        ${javatests}/${packagedir}/accuracytests/*"
         />
