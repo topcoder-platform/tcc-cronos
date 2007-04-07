@@ -11,7 +11,7 @@
 			<Value>InformixAuditPersistence</Value>
 		</Property>
 		<Property name="idGeneratorName">
-			<Value>AuditPersistenceAccuracy</Value>
+			<Value>AuditPersistence</Value>
 		</Property>
 		<Property name="searchBundleName">
 			<Value>FirstSearchBundle</Value>
@@ -79,13 +79,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/audit:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://192.168.0.156:1526/audit:INFORMIXSERVER=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 				</Property>
