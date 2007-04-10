@@ -1,0 +1,20 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate">
+		<Property name="JndiReference">
+			<Value>java:comp/env/ejb/company/CompanyEJB</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate.MissingJndiReference">
+
+	</Config>
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate.EmptyJndiReference">
+		<Property name="JndiReference">
+			<Value>  </Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate.InvalidJndiReference">
+		<Property name="JndiReference">
+			<Value>invalid</Value>
+		</Property>
+	</Config>
+</CMConfig>

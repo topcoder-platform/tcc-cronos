@@ -2,14 +2,14 @@
  *
  * Copyright (c) 2006, TopCoder, Inc. All rights reserved
  */
-package com.topcoder.<<<PACKAGE>>>;
+package com.topcoder.timetracker.company;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import com.topcoder.<<<PACKAGE>>>.accuracytests.AccuracyTests;
-import com.topcoder.<<<PACKAGE>>>.failuretests.FailureTests;
-import com.topcoder.<<<PACKAGE>>>.stresstests.StressTests;
+import com.topcoder.timetracker.company.accuracytests.AccuracyTests;
+import com.topcoder.timetracker.company.failuretests.FailureTests;
+import com.topcoder.timetracker.company.stresstests.StressTests;
 
 /**
  * <p>This test case aggregates all test cases.</p>

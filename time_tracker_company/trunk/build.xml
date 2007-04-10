@@ -2,6 +2,7 @@
 
 <project name="Time Tracker Company" default="dist" basedir=".">
 
+<import file="D:/TopCoder/config/commons.xml" />
     <property file="../topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
@@ -85,12 +86,43 @@
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
 
     <path id="buildlibs">
-        <!--
         <pathelement location="${junit.jar}" />
-        <pathelement location="${configmanager.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
-        -->
+		<pathelement location="${base_exception.jar}" />
+        <pathelement location="${class_associations.jar}" />
+        <pathelement location="${configuration_manager.jar}" />
+        <pathelement location="${data_validation.jar}" />
+        <pathelement location="${database_abstraction.jar}" />
+        <pathelement location="${db_connection_factory.jar}" />
+        <pathelement location="${id_generator.jar}" />
+		<!--
+		<pathelement location="${time_tracker_common.jar}" />
+		<pathelement location="${time_tracker_audit.jar}" />
+		<pathelement location="${time_tracker_contact.jar}" />
+		-->
+		<pathelement location="test_files/dependency.jar" />
+
+        <pathelement location="${ext_libdir}/jdbc/informix/ifxjdbc.jar" />
+        <pathelement location="${ext_libdir}/jdbc/informix/ifxjdbcx.jar" />
+        <pathelement location="${ext_libdir}/jdbc/informix/ifxlang.jar" />
+        <pathelement location="${ext_libdir}/jdbc/informix/ifxlsupp.jar" />
+        <pathelement location="${ext_libdir}/jdbc/informix/ifxsqlj.jar" />
+        <pathelement location="${ext_libdir}/jdbc/informix/ifxtools.jar" />
+        <pathelement location="${JNDI_Utility.jar}" />
+        <pathelement location="${ext_libdir}/log4j-1.2.13.jar" />
+        <pathelement location="${ext_libdir}/mock/junitejb.jar" />
+		<pathelement location="${ext_libdir}/mock/mockejb/mockejb.jar" />
+		<pathelement location="${ext_libdir}/mock/jmock/jmock-1.1.0.jar" />
+		<pathelement location="${ext_libdir}/mock/mockrunner-0.3.7/lib/mockrunner-ejb.jar" />
+		<pathelement location="${ext_libdir}/apache/commons/commons-logging-1.0.4.jar" />
+		<pathelement location="${ext_libdir}/cglib-nodep-2.2_beta1.jar" />
+		<pathelement location="${ext_libdir}/jakarta-oro-2.0.8.jar" />
+        <pathelement location="${logging_wrapper.jar}" />
+        <pathelement location="${object_factory.jar}" />
+        <pathelement location="${search_builder.jar}" />
+        <pathelement location="${typesafe_enum.jar}" />
+        <pathelement location="${jbossall-client.jar}" />
     </path>
 
     <path id="test.build.classpath">

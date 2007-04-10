@@ -1,0 +1,107 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.company.ejb.objectfactory">
+		<Property name="DbCompanyDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.company.daoimplementation.DbCompanyDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>informix</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>DbCompanyDAO</Value>
+					</Property>
+				</Property>
+				<Property name="param4">
+					<Property name="name">
+						<Value>contactManager</Value>
+					</Property>
+				</Property>
+				<Property name="param5">
+					<Property name="name">
+						<Value>addressManager</Value>
+					</Property>
+				</Property>
+				<Property name="param6">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="DBConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="contactManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.company.MockContactManager</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>boolean</Value>
+					</Property>
+					<Property name="value">
+						<Value>false</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="addressManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.company.MockAddressManager</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>boolean</Value>
+					</Property>
+					<Property name="value">
+						<Value>false</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="auditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.company.MockAuditManager</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>boolean</Value>
+					</Property>
+					<Property name="value">
+						<Value>false</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

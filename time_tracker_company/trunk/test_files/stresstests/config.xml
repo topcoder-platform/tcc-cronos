@@ -1,0 +1,114 @@
+<CMConfig>
+<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate">
+        <Property name="JndiReference">
+            <Value>ejb/companybean</Value>
+        </Property>
+ </Config>
+<Config name="com.topcoder.timetracker.company">
+   	  <Property name="DbcompanyDao">
+	   <Property name="type">
+         <Value>com.topcoder.timetracker.company.daoimplementation.DbCompanyDAO</Value>
+       </Property>
+       <Property name="params">
+        <Property name="param1">
+          <Property name="name">
+            <Value>connectionfactory</Value>
+          </Property>
+        </Property>
+        <Property name="param2">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>informix</Value>
+          </Property>
+        </Property>
+        <Property name="param3">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>company</Value>
+          </Property>
+         </Property>
+         <Property name="param4">
+          <Property name="name">
+            <Value>MockedContactManager</Value>
+          </Property>
+          <Property name="params">
+          </Property>
+         </Property>
+         <Property name="param5">
+          <Property name="name">
+            <Value>MockedAddressManager</Value>
+          </Property>
+          <Property name="params">
+          </Property>
+         </Property>
+         <Property name="param6">
+          <Property name="name">
+            <Value>MockedAuditManager</Value>
+          </Property>
+          <Property name="params">
+          </Property>
+         </Property>
+      </Property>
+     </Property>
+     <Property name="MockedContactManager">
+      <Property name="type">
+        <Value>com.topcoder.timetracker.company.stresstests.MockedContactManager</Value>
+      </Property>
+     </Property>
+     <Property name="MockedAddressManager">
+      <Property name="type">
+        <Value>com.topcoder.timetracker.company.stresstests.MockedAddressManager</Value>
+      </Property>
+     </Property>
+     <Property name="MockedAuditManager">
+      <Property name="type">
+        <Value>com.topcoder.timetracker.company.stresstests.MockedAuditManager</Value>
+      </Property>
+     </Property>
+     <Property name="connectionfactory">
+      <Property name="type">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+      </Property>
+      <Property name="params">
+        <Property name="param1">
+          <Property name="type">
+            <Value>String</Value>
+          </Property>
+          <Property name="value">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+          </Property>
+        </Property>
+      </Property>
+     </Property>
+  </Config>
+  <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix</Value>
+			</Property>
+			<Property name="informix">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.102:1526/company:INFORMIXSERVER=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>810814</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

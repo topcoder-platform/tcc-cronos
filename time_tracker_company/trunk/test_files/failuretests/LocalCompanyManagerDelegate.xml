@@ -1,0 +1,22 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate">
+		<Property name="JndiReference">
+			<Value>java:comp/env/ejb/company/CompanyEJB</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate.invalidcase1">
+	</Config>
+
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate.invalidcase2">
+		<Property name="JndiReference">
+			<Value> </Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.company.ejb.LocalCompanyManagerDelegate.invalidcase3">
+		<Property name="JndiReference">
+			<Value>java:comp/env/ejb/company/CompanyEJBInvalid</Value>
+		</Property>
+	</Config>
+</CMConfig>

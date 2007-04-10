@@ -1,0 +1,8 @@
+insert into state_name(state_name_id, name, abbreviation, creation_date, creation_user, modification_date, modification_user) values (1, 'OHIO', 'OH', TODAY, 'accuracy_user', TODAY, 'accuracy_user');
+insert into country_name(country_name_id, name, creation_date, creation_user, modification_date, modification_user) values (1, 'USA', TODAY, 'accuracy_user', TODAY, 'accuracy_user');
+insert into contact_type(contact_type_id, description, creation_date, creation_user, modification_date, modification_user) values (3, 'sponsor', TODAY, 'accuracy_user', TODAY, 'accuracy_user');
+insert into address_type(address_type_id, description, creation_date, creation_user, modification_date, modification_user) values (3, 'office', TODAY, 'accuracy_user', TODAY, 'accuracy_user');
+insert into contact(contact_id, first_name, last_name, phone, email, creation_date, creation_user, modification_date, modification_user) values (1, 'sams', 'john', '614-376-2342', 'sams@aol.com', TODAY, 'accuracy_user', TODAY, 'accuracy_user');
+insert into address(address_id, line1, line2, city, state_name_id, country_name_id, zip_code, creation_date, creation_user, modification_date, modification_user) values (1, 'line11', 'line21', 'city1', 1, 1, '42134', '2005-01-01 12:00:00', 'creation_user', '2005-01-01 12:00:00', 'modification_user')
+insert into contact_relation(entity_id, creation_date, creation_user, modification_date, modification_user, contact_id, contact_type_id) values (1, TODAY, 'accuracy_user', TODAY, 'accuracy_user', 1, 3);
+insert into address_relation(entity_id, creation_date, creation_user, modification_date, modification_user, address_id, address_type_id) values (1, TODAY, 'accuracy_user', TODAY, 'accuracy_user', 1, 3);
