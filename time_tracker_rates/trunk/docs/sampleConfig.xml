@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+
+<!-- File containing sample configuration details for use with
+ the Time Tracker Rates 1.0 component -->
+    
+<CMConfig>
+    <!-- configuration for Rate manager (at default location) -->
+    <Config name="com.topcoder.timetracker.rates">
+        <!-- required parameter: 
+             namespace for use with the object factory -->
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>
+        
+        <!-- required parameter:
+             name of persistence layer to obtain from object factory -->
+        <Property name="persistenceObject">
+            <Value>informixPersistence</Value>
+        </Property>
+                          
+    </Config>
+    
+    <!-- configuration for default (Informix) persistence -->
+    <Config name="RatesInformixConfig">
+        <!-- optional parameter: 
+             connection name used with DB Connection factory 
+             If not provided, default connection is used instead -->
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value> <!-- for example -->
+        </Property>
+        
+        <!-- optional parameter: 
+             Logging name for use with LogFactory, otherwise default log is used -->
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <!-- required parameter: 
+             namespace for use with the object factory -->
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <!-- required parameter:
+             name of DB connection factory to obtain from object factory -->
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+        <!-- required parameter:
+             name of audit manager to obtain from object factory -->
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+   
+    <!-- Namespace for possible use with the object factory component -->
+    <Config name="TimeTrackerObjectFactory">  
+        <!-- Object factory configuration for the default DB persistence -->
+        <Property name="informixPersistence">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.rates.persistence.InformixRatesPersistence</Value>
+            </Property>
+            <Property name="params">
+                <!-- single-string namespace constructor -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="Value">
+                        <!-- see above -->
+                        <Value>RatesInformixConfig</Value> 
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config
+</CMConfig>
