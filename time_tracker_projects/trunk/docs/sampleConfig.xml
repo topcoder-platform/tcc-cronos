@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+
+<!-- File containing sample configuration details for use with
+ the Time Tracker Notification 3.2 component -->
+    
+<CMConfig>
+	<!-- configuration for project delegate -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectUtilityDelegate">
+		<Property name="context_name">
+			<Value>projectContext</Value>
+		</Property>
+		<Property name="jndi_home">
+			<Value>projectDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for project session bean -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectUtilitySessionBean">
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectUtility</Value>
+		</Property>
+	</Config>
+	
+		<!-- configuration for project worker delegate -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectWorkerUtilityDelegate">
+		<Property name="context_name">
+			<Value>projectContext</Value>
+		</Property>
+		<Property name="jndi_home">
+			<Value>projectWorkerDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for project worker session bean -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectWorkerUtilitySessionBean">
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectWorkerUtility</Value>
+		</Property>
+	</Config>
+	
+		<!-- configuration for project manager delegate -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectManagerUtilityDelegate">
+		<Property name="context_name">
+			<Value>projectContext</Value>
+		</Property>
+		<Property name="jndi_home">
+			<Value>projectManagerDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for notification session bean -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectManagerUtilitySessionBean">
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectManagerUtility</Value>
+		</Property>
+	</Config>
+	
+</CMConfig>
