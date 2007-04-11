@@ -1,0 +1,374 @@
+<CMConfig>
+	
+	<Config name="com.cronos.im.persistence.InformixProfileKeyManager.failure">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!--  optional -->
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	
+
+	
+	<Config name="com.cronos.im.persistence.InformixEntityStatusTracker.failure">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!--  optional -->
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+	</Config>
+	
+	<Config name="failure1">
+		<!--  required 
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		-->
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	
+	
+	<Config name="failure2">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory.notExist</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	<Config name="failure3">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  required 
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		-->
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	<Config name="failure4">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory_notExist</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	<Config name="failure5">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  required 
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		-->
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	<Config name="failure6">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>oracle</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	<Config name="failure9">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>oracle</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	<Config name="failure10">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator_not_exist</Value>
+		</Property>
+		
+		<!--  optional 
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		-->
+	</Config>
+	<Config name="failure7">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  optional -->
+		<Property name="validator_key">
+			<Value>not_exist</Value>
+		</Property>
+		
+	</Config>
+	
+	<Config name="failure8">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory.failure8</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+		<!--  optional -->
+		<Property name="validator_key">
+			<Value>validator</Value>
+		</Property>
+		
+	</Config>
+	
+	<Config name="com.cronos.im.persistence.RegisteredChatUserProfileInformixPersistence.failure">
+		<!--  required -->
+		<Property name="specification_factory_namespace">
+			<Value>com.cronos.im.persistence.objectfactory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<!--  required -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+	</Config>
+	
+	
+	<Config name="com.cronos.im.persistence.objectfactory">
+		<Property name="connection_factory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="validator">
+			<Property name="type">
+				<Value>com.cronos.im.persistence.failuretests.MockValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.cronos.im.persistence.objectfactory.failure8">
+		<Property name="connection_factory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="validator">
+			<Property name="type">
+				<Value>com.cronos.im.persistence.failuretests.MockValidator.Notexist</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix</Value>
+			</Property>
+			<Property name="informix">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.11.105:1526/im_persistence:INFORMIXSERVER=tcs</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>topcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

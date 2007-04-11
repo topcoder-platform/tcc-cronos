@@ -1,0 +1,224 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>MyConnection</Value>
+			</Property>
+			<Property name="MyConnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.11.105:1526/im_persistence:INFORMIXSERVER=tcs</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>topcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="spec.factory">
+		<Property name="connection_factory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.cronos.im.persistence.InformixEntityStatusTracker">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	<Config name="com.cronos.im.persistence.UnregisteredChatUserProfileInformixPersistence">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	<Config name="missing.spec.namespace">
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	<Config name="missing.connection.factory">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	<Config name="bad.connection.factory">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>bad</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	<Config name="missing.connection.name">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	<Config name="missing.id.generator">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+	</Config>
+	<Config name="bad.id.generator">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>bad</Value>
+		</Property>
+	</Config>
+	<Config name="bad.validator">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="validator_key">
+			<Value>bad_validator</Value>
+		</Property>
+	</Config>
+	<Config name="invalid.validator">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="validator_key">
+			<Value>connection_factory</Value>
+		</Property>
+	</Config>
+	<Config name="com.cronos.im.persistence.RegisteredChatUserProfileInformixPersistence">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+	</Config>
+	<Config name="com.cronos.im.persistence.rolecategories.InformixRoleCategoryPersistence">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+	</Config>
+	<Config name="com.cronos.im.persistence.InformixProfileKeyManager">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+	<Config name="TestConfig">
+		<Property name="specification_factory_namespace">
+			<Value>spec.factory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>MyConnection</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="id_generator">
+			<Value>generator</Value>
+		</Property>
+	</Config>
+</CMConfig>

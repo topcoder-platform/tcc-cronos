@@ -1,0 +1,15 @@
+;; Object failuretests/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "failuretests/"
+  :tables (list
+   (semanticdb-table "FailureTests.java"
+    :major-mode 'jde-mode
+    :tags '(("com.cronos.im.persistence.failuretests" package nil nil [702 702]) ("junit.framework.Test" include nil nil [702 702]) ("junit.framework.TestCase" include nil nil [702 702]) ("junit.framework.TestSuite" include nil nil [702 702]) ("junit.framework.TestResult" include nil nil [702 702]) ("FailureTests" type (:typemodifiers ("public") :superclasses "TestCase" :members (("suite" function (:typemodifiers ("public" "static") :type "Test") (reparse-symbol class_member_declaration) [702 702])) :type "class") nil [702 702]))
+    :file "FailureTests.java"
+    :pointmax 702
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )
