@@ -1,0 +1,184 @@
+<?xml version="1.0" ?>
+
+<!-- File containing sample configuration details for use with
+ the Time Tracker Rates 1.0 component -->
+    
+<CMConfig>
+    
+    <Config name="valid">
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value>
+        </Property>
+        
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+	
+	<!-- Valid config missing log name -->
+	<Config name="valid_missing_logName">
+        
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+	
+	<!-- Valid config missing connection name -->
+	<Config name="valid_missing_connectionName">
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value>
+        </Property>
+        
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+
+	<!-- Invalid config missing objectFactoryNamespace -->
+	<Config name="valid_missing_objectFactoryNamespace">
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value>
+        </Property>
+        
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+
+	<!-- Invalid config missing connectionFactoryKey -->
+	<Config name="valid_missing_connectionFactoryKey">
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value>
+        </Property>
+        
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+
+	<!-- Invalid config missing auditManagerKey -->
+	<Config name="valid_missing_auditManagerKey">
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value>
+        </Property>
+        
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+    </Config>
+	
+	<!-- Config for logger-->
+	<Config name="com.topcoder.util.log">
+		<Property name="logClass">
+			<Value>com.topcoder.util.log.basic.BasicLog</Value>
+		</Property>
+		<Property name="TimeTrackerLog">
+			<Value>com.topcoder.util.log.basic.BasicLog</Value>
+		</Property>
+	</Config>
+
+	    <!-- Namespace for possible use with the object factory component -->
+    <Config name="TimeTrackerObjectFactory">  
+        <!-- Object factory configuration for the default DB persistence -->
+        <Property name="informixPersistence">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.rates.persistence.InformixRatePersistence</Value>
+            </Property>
+            <Property name="params">
+                <!-- single-string namespace constructor -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <!-- see above -->
+                        <Value>RatesInformixConfig</Value> 
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+		<!-- end of  informixPersistence-->
+		
+        <Property name="TTDBFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>	
+					</Property>
+				</Property>
+			</Property>
+        </Property>
+		<!-- end of  TTDBFactory-->
+		
+		<Property name="TTAuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.rates.MockAuditManager</Value>
+			</Property>
+        </Property>
+		<!-- end of  TTAuditManager-->
+    </Config>	
+	
+</CMConfig>

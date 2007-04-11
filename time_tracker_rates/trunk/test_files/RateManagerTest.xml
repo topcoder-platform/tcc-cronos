@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+
+<CMConfig>
+    <Config name="com.topcoder.timetracker.rates">
+        <Property name="rate_local_ejb_reference_name">
+            <Value>rate.rateLocalHome</Value>
+        </Property>
+    </Config>
+	
+    <Config name="missing_reference">
+        <Property name="rate_local_ejb_reference_name">
+            <Value>rate.rateLocalHome</Value>
+        </Property>
+    </Config>
+    
+    <Config name="RatesInformixConfig">
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value>
+        </Property>
+        
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+   
+    <Config name="TimeTrackerObjectFactory">  
+        <Property name="informixPersistence">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.rates.persistence.InformixRatePersistence</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>RatesInformixConfig</Value> 
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+		
+        <Property name="TTDBFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>	
+					</Property>
+				</Property>
+			</Property>
+        </Property>
+		
+		<Property name="TTAuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.rates.MockAuditManager</Value>
+			</Property>
+        </Property>
+    </Config>
+	
+<Config name="com.topcoder.util.log">
+    <Property name="logClass">
+        <Value>com.topcoder.util.log.basic.BasicLog</Value>
+    </Property>
+	<Property name="TimeTrackerLog">
+        <Value>com.topcoder.util.log.basic.BasicLog</Value>
+    </Property>
+</Config>
+	
+	
+</CMConfig>

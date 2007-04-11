@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="config_helper">
+		<Property name="string1">
+			<Value>value</Value>
+		</Property>
+		
+		<Property name="empty">
+			<Value></Value>
+		</Property>
+		
+	</Config>
+</CMConfig>

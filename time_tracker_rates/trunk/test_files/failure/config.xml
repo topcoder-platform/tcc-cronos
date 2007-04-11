@@ -1,0 +1,241 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--InformixRatePersistence -->
+	<Config name="com.topcoder.timetracker.rates.failure.informix1">
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix2">
+		<Property name="objectFactoryNamespace">
+			<Value>of.unknown</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix3">
+		<Property name="objectFactoryNamespace">
+			<Value>of.bad</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix4">
+		<Property name="objectFactoryNamespace">
+			<Value>of.empty</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value></Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix5">
+		<Property name="objectFactoryNamespace">
+			<Value>of.empty</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value>unknown</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix6">
+		<Property name="objectFactoryNamespace">
+			<Value>of.cast</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value>classCast</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix7">
+		<Property name="objectFactoryNamespace">
+			<Value>of.valid</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value>connection_factory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix8">
+		<Property name="objectFactoryNamespace">
+			<Value>of.valid</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="auditManagerKey">
+			<Value>unknown</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix9">
+		<Property name="objectFactoryNamespace">
+			<Value>of.valid</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="auditManagerKey">
+			<Value>classCast</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix10">
+		<Property name="connectionName">
+			<Value>bad_con</Value>
+		</Property>
+		<Property name="objectFactoryNamespace">
+			<Value>of.valid</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="auditManagerKey">
+			<Value>audit_manager</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.informix">
+		<Property name="objectFactoryNamespace">
+			<Value>of.valid</Value>
+		</Property>
+		<Property name="connectionFactoryKey">
+			<Value>connection_factory</Value>
+		</Property>
+		<Property name="auditManagerKey">
+			<Value>audit_manager</Value>
+		</Property>
+	</Config>
+	<!-- RateManager -->
+	<Config name="com.topcoder.timetracker.rates.failure.manager1">
+		<Property name="rate_local_ejb_reference_name">
+			<Value></Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.manager2">
+		<Property name="rate_local_ejb_reference_name">
+			<Value>unknown</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.rates.failure.manager">
+		<Property name="rate_local_ejb_reference_name">
+			<Value>java:comp/env/rates</Value>
+		</Property>
+	</Config>
+	<!-- object factory namespaces -->
+	<Config name="of.bad">
+		<Property name="bad">
+			<!-- "typ" -->
+			<Property name="typ">
+		        <Value>java.lang.Object</Value>
+		      </Property>
+		</Property>
+	</Config>
+	<Config name="of.empty">
+	</Config>
+	<Config name="of.cast">
+		<Property name="classCast">
+			<Property name="type">
+	    	    <Value>java.lang.Object</Value>
+    	    </Property>
+		</Property>
+	</Config>
+	<Config name="of.valid">
+		<Property name="connection_factory">
+		      <Property name="type">
+		        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		      </Property>
+			  <Property name="params">
+		        <Property name="param1">
+		           <Property name="type">
+                    	<Value>String</Value>
+                	</Property>
+                	<Property name="value">
+                    	<Value>db.connection.valid</Value>
+                	</Property>
+		        </Property>
+		      </Property>
+		</Property>
+		<Property name="classCast">
+			<Property name="type">
+	    	    <Value>java.lang.Object</Value>
+    	    </Property>
+		</Property>
+		<Property name="audit_manager">
+			<Property name="type">
+	    	    <Value>com.topcoder.timetracker.rates.failuretests.MockAuditManager</Value>
+    	    </Property>
+		</Property>
+		<Property name="informix_rate_persistence">
+			<Property name="type">
+		        <Value>com.topcoder.timetracker.rates.persistence.InformixRatePersistence</Value>
+		      </Property>
+			  <Property name="params">
+		        <Property name="param1">
+		           <Property name="type">
+                    	<Value>String</Value>
+                	</Property>
+                	<Property name="value">
+                    	<Value>com.topcoder.timetracker.rates.failure.informix</Value>
+                	</Property>
+		        </Property>
+		      </Property>
+		</Property>
+		<Property name="informix_rate_persistence_bad">
+			<Property name="type">
+		        <Value>com.topcoder.timetracker.rates.persistence.InformixRatePersistence</Value>
+		      </Property>
+			  <Property name="params">
+		        <Property name="param1">
+		           <Property name="type">
+                    	<Value>String</Value>
+                	</Property>
+                	<Property name="value">
+                    	<Value>com.topcoder.timetracker.rates.failure.informix10</Value>
+                	</Property>
+		        </Property>
+		      </Property>
+		</Property>
+	</Config>
+	<!-- DBConnection -->
+	<Config name="db.connection.valid">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix</Value>
+			</Property>
+			<Property name="informix">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://JaG:1527/tt_company:informixserver=topcoder_test</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>topcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="bad_con">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://JaG:1526/tt:informixserver=ol_jag</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>topcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.util.log">
+		<Property name="logClass">
+			<Value>com.topcoder.util.log.basic.BasicLog</Value>
+		</Property>
+
+		<Property name="basic.log.target">
+			<Value>System.out</Value>
+		</Property>
+	</Config>
+</CMConfig>

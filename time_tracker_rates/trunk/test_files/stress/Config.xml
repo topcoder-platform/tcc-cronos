@@ -1,0 +1,100 @@
+<CMConfig>
+    <!-- configuration for Rate manager (at default location) -->
+    <Config name="com.topcoder.timetracker.rates">
+        <!-- required parameter: 
+             reference name to get RateLocalHome -->
+        <Property name="rate_local_ejb_reference_name">
+            <Value>rate.rateLocalHome</Value>
+        </Property>
+    </Config>
+    
+    <!-- configuration for default (Informix) persistence -->
+    <Config name="RatesInformixConfig">
+        <!-- optional parameter: 
+             connection name used with DB Connection factory 
+             If not provided, default connection is used instead -->
+        <Property name="connectionName">
+            <Value>TimeTrackerConnection</Value> <!-- for example -->
+        </Property>
+        
+        <!-- optional parameter: 
+             Logging name for use with LogFactory, otherwise default log is used -->
+        <Property name="logName">
+            <Value>TimeTrackerLog</Value>
+        </Property>     
+
+        <!-- required parameter: 
+             namespace for use with the object factory -->
+        <Property name="objectFactoryNamespace">
+            <Value>TimeTrackerObjectFactory</Value>
+        </Property>        
+        
+        <!-- required parameter:
+             name of DB connection factory to obtain from object factory -->
+        <Property name="connectionFactoryKey">
+            <Value>TTDBFactory</Value>
+        </Property> 
+        
+        <!-- required parameter:
+             name of audit manager to obtain from object factory -->
+        <Property name="auditManagerKey">
+            <Value>TTAuditManager</Value>
+        </Property> 
+    </Config>
+   
+    <!-- Namespace for possible use with the object factory component -->
+    <Config name="TimeTrackerObjectFactory">  
+        <!-- Object factory configuration for the default DB persistence -->
+        <Property name="informixPersistence">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.rates.persistence.InformixRatePersistence</Value>
+            </Property>
+            <Property name="params">
+                <!-- single-string namespace constructor -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <!-- see above -->
+                        <Value>RatesInformixConfig</Value> 
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+		
+        <Property name="TTDBFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>	
+					</Property>
+				</Property>
+			</Property>
+        </Property>
+		
+		<Property name="TTAuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.rates.MockAuditManager</Value>
+			</Property>
+        </Property>
+    </Config>
+	
+	<!-- Config for logger-->
+<Config name="com.topcoder.util.log">
+    <Property name="logClass">
+        <Value>com.topcoder.util.log.basic.BasicLog</Value>
+    </Property>
+	<Property name="TimeTrackerLog">
+        <Value>com.topcoder.util.log.basic.BasicLog</Value>
+    </Property>
+</Config>
+	
+	
+</CMConfig>
