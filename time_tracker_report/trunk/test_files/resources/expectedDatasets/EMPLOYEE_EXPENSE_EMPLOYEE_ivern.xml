@@ -1,5 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-  <RESULT company="1" date="2006-01-01 00:00:00.0" client="Client 1" project="Project Name 1" type="Expense Type 1" description="Expense Entry 1" amount="100" billable="1"/>
-  <RESULT company="2" date="2006-02-01 00:00:00.0" client="Client 2" project="Project Name 2" type="Expense Type 2" description="Expense Entry 2" amount="200" billable="2"/>
-</dataset>

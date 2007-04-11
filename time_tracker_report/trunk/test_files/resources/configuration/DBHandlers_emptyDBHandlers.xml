@@ -1,9 +1,0 @@
-<Config name="com.cronos.timetracker.report.DBHandlers">
-
-    <Property name="DBHandlers">
-    </Property>
-
-    <Property name="InformixDBHandler">
-        <Value>com.cronos.timetracker.report.dbhandler.InformixDBHandler</Value>
-    </Property>
-</Config>
