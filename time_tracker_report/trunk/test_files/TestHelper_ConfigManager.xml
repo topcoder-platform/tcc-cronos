@@ -1,0 +1,63 @@
+<CMConfig>
+   <Config name="HelperTest_ConfigManagerNS">
+       <!-- property is empty-->
+       <Property name="property_empty">
+          <Value></Value>
+       </Property>
+       <!-- property has some value -->
+       <Property name="property_not_empty">
+          <Value>this is the value</Value>
+       </Property>
+	   
+	   <!-- property which contains the namespace of the unknown ObjectFactory -->
+       <Property name="property_unknown_object_factory_ns">
+          <Value>unknown object factory namespace</Value>
+       </Property>
+	   
+	   <!-- property which contains the namespace of the invalid ObjectFactory -->
+       <Property name="property_invalid_object_factory_ns">
+          <Value>HelperTest_ObjectFactoryNS_invalid</Value>
+       </Property>
+	   
+	   <!-- property which contains the namespace of the valid ObjectFactory -->
+       <Property name="property_valid_object_factory_ns">
+          <Value>HelperTest_ObjectFactoryNS_valid</Value>
+       </Property>
+   </Config>
+   <Config name="HelperTest_ObjectFactoryNS_invalid">
+	  <Property name="PersistenceExceptionKey">
+			<!-- class type property is missing  -->
+			<Property name="type">
+				<!--<Value>com.topcoder.timetracker.entry.base.PersistenceException</Value> -->
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>error message</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+<Config name="HelperTest_ObjectFactoryNS_valid">  
+    <Property name="ReportExceptionKey">
+		<Property name="type">
+			<Value>com.topcoder.timetracker.report.ReportException</Value>
+		</Property>
+		<Property name="params">
+			<Property name="param1">
+				<Property name="type">
+					<Value>String</Value>
+				</Property>
+				<Property name="value">
+					<Value>error message</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Property>
+</Config>
+</CMConfig>

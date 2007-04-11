@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>  
+<!-- object factory namespace for DAOs and Builders-->
+<Config name="AllDao_ObjectFactoryNS">
+    <Property name="InformixReportDAOKey">
+        <Property name="type">
+            <Value>com.topcoder.timetracker.report.informix.InformixReportDAO</Value>
+        </Property>
+        <Property name="params">
+        </Property>
+    </Property>
+    <Property name="InformixReportDAOKey2">
+        <Property name="type">
+            <Value>com.topcoder.timetracker.report.informix.InformixReportDAO</Value>
+        </Property>
+        <Property name="params">
+            <Property name="param1">
+                <Property name="type">	<Value>String</Value>	        </Property>
+                <Property name="value">	<Value>com.topcoder.timetracker.report.InformixReportDAO</Value>	</Property>
+            </Property>
+        </Property>
+    </Property>
+    
+    
+    <Property name="FixedBillingEntriesReportBuilderKey">
+        <Property name="type">
+            <Value>com.topcoder.timetracker.report.informix.FixedBillingEntriesReportBuilder</Value>
+        </Property>
+    </Property>
+</Config> <!-- end of  object factory namespace for DAOs and Builders-->
+
+</CMConfig>

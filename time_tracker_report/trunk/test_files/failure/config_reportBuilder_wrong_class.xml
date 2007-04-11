@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+
+    <!--namespace of ReportDaoFactory -->
+    <Config name="com.topcoder.timetracker.report.ReportDaoFactory">
+        <!-- object factory namespace -->
+        <Property name="objectFactoryNameSpace">
+            <Value>AllDao_ObjectFactoryNS2</Value>
+        </Property>
+
+        <!-- daos -->
+        <Property name="reportDaos">
+            <Property name="type1">
+                <Value>InformixReportDAOKey</Value>
+            </Property>
+            <Property name="type2">
+                <Value>InformixReportDAOKey2</Value>
+            </Property>
+        </Property>
+
+        <!-- informixReportDao -->
+        <Property name="informixReportDaoNamespace">
+            <Value>com.topcoder.timetracker.report.InformixReportDAO</Value>
+        </Property>
+    </Config><!--end of namespace of ReportDaoFactory -->
+
+
+    <!-- Namespace of  com.topcoder.timetracker.report.InformixReportDAO -->
+    <Config name="com.topcoder.timetracker.report.InformixReportDAO">
+        <!-- object factory namespace -->
+        <Property name="objectFactoryNameSpace">
+            <Value>AllDao_ObjectFactoryNS2</Value>
+        </Property>
+
+        <!-- builders -->
+        <Property name="reportsSearchBuilders">
+            <Property name="expenseEntries">
+                <Value>ExpenseEntriesReportBuilderKey</Value>
+            </Property>
+            <Property name="fixedBillingEntries">
+                <Value>FixedBillingEntriesReportBuilderKey</Value>
+            </Property>
+            <Property name="timeEntries">
+                <Value>TimeEntriesReportBuilderKey</Value>
+            </Property>
+        </Property>
+
+    </Config>
+    <!-- object factory namespace for DAOs and Builders-->
+    <Config name="AllDao_ObjectFactoryNS2">
+        <Property name="InformixReportDAOKey">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.report.informix.InformixReportDAO</Value>
+            </Property>
+            <Property name="params"></Property>
+        </Property>
+        <Property name="InformixReportDAOKey2">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.report.informix.InformixReportDAO</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.timetracker.report.InformixReportDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+
+        <Property name="ExpenseEntriesReportBuilderKey">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+        </Property>
+        <Property name="FixedBillingEntriesReportBuilderKey">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.report.informix.FixedBillingEntriesReportBuilder</Value>
+            </Property>
+        </Property>
+        <Property name="TimeEntriesReportBuilderKey">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.report.informix.TimeEntriesReportBuilder</Value>
+            </Property>
+        </Property>
+    </Config><!-- end of  object factory namespace for DAOs and Builders-->
+
+</CMConfig>

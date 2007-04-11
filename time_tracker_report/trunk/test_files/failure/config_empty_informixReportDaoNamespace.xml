@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+
+    <!--namespace of ReportDaoFactory -->
+    <Config name="com.topcoder.timetracker.report.ReportDaoFactory">
+        <!-- object factory namespace -->
+        <Property name="objectFactoryNameSpace">
+            <Value>AllDao_ObjectFactoryNS</Value>
+        </Property>
+
+        <!-- daos -->
+        <Property name="reportDaos">
+            <Property name="type1">
+                <Value>InformixReportDAOKey</Value>
+            </Property>
+            <Property name="type2">
+                <Value>InformixReportDAOKey2</Value>
+            </Property>
+        </Property>
+
+        <!-- informixReportDao -->
+        <Property name="informixReportDaoNamespace">
+            <Value>         </Value>
+        </Property>
+    </Config><!--end of namespace of ReportDaoFactory -->
+
+
+    <!-- Namespace of  com.topcoder.timetracker.report.InformixReportDAO -->
+    <Config name="com.topcoder.timetracker.report.InformixReportDAO">
+        <!-- object factory namespace -->
+        <Property name="objectFactoryNameSpace">
+            <Value>AllDao_ObjectFactoryNS</Value>
+        </Property>
+
+        <!-- builders -->
+        <Property name="reportsSearchBuilders">
+            <Property name="expenseEntries">
+                <Value>ExpenseEntriesReportBuilderKey</Value>
+            </Property>
+            <Property name="fixedBillingEntries">
+                <Value>FixedBillingEntriesReportBuilderKey</Value>
+            </Property>
+            <Property name="timeEntries">
+                <Value>TimeEntriesReportBuilderKey</Value>
+            </Property>
+        </Property>
+
+    </Config>
+
+</CMConfig>
