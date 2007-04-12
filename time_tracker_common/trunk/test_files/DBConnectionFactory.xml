@@ -14,13 +14,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/common:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/tcs:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -34,13 +34,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/common:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/tcs:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>

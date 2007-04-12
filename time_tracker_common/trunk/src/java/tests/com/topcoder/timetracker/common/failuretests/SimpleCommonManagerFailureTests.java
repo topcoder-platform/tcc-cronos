@@ -107,7 +107,6 @@ public class SimpleCommonManagerFailureTests extends TestCase {
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
-    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         FailureTestHelper.clearNamespaces();

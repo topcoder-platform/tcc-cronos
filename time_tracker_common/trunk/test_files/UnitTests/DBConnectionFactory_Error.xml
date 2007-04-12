@@ -14,13 +14,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/common:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/tcs:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -35,20 +35,20 @@
 			<Property name="Informix">
 			    <!-- producer property is missing -->
 				<Property name="producer">
-					
+
 				</Property>
 				<Property name="parameters">
 					<Property name="jdbc_driver">
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/common:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/tcs:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -70,13 +70,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/common:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/tcs:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -98,13 +98,13 @@
 					</Property>
 					<!-- jdbc_url points to a non-exist database "MeDoNotExist" -->
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/MeDoNotExist:informixserver=topcoder</Value>
+					    <Value>jdbc:informix-sqli://192.168.0.155:1526/MeDoNotExist:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -126,13 +126,13 @@
 					</Property>
 					<!-- jdbc_url points to an existing but empty database "meEmpty" -->
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/meEmpty:informixserver=topcoder</Value>
+					    <Value>jdbc:informix-sqli://192.168.0.155:1526/meEmpty:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>

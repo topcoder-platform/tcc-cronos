@@ -33,7 +33,7 @@ public class StressTests extends TestCase {
      * Times to run the cases.
      * </p>
      */
-    private static final int TIMES = 100;
+    private static final int TIMES = 10;
 
     /**
      * <p>
