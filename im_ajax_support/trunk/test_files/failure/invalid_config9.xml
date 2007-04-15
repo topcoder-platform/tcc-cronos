@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.ajax.IMAjaxSupportUtility">
+		<!-- The client role name. Required. -->
+		<Property name="client_role_name">
+			<Value>client</Value>
+		</Property>
+		
+		<!-- The manager role name Required. -->
+		<Property name="manager_role_name">
+			<Value>manager</Value>
+		</Property>
+		<!-- The property name used to get the role name from the user profile. Required. -->
+		<Property name="role_property_name">
+			<Value>role</Value>
+		</Property>
+		<!-- The key used to get the ChatUserProfile from the http session attribute. Required. -->
+		<Property name="user_profile_session_key">
+			<Value>user_profile_session_key</Value>
+		</Property>
+		<!-- The object key used to create the Messenger from object factory Required. -->
+		<Property name="messenger_key">
+			<Value>messenger_key</Value>
+		</Property>
+		<!-- The object key used to create the ChatSessionManager from object factory Required. -->
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<!-- The object key used to create the ChatStatusTracker from object factory Required. -->
+		<Property name="chat_status_tracker_key">
+			<Value>chat_status_tracker_key</Value>
+		</Property>
+		<!-- The object key used to create the ServiceEngine from object factory Required. 
+		<Property name="service_engine_key">
+			<Value>service_engine_key</Value>
+		</Property>
+		-->
+		<!-- The cookie name used to get the time zone. Required. -->
+		<Property name="time_zone_cookie_name">
+			<Value>timeZone</Value>
+		</Property>
+		<!-- Get the category key used to get the category from http session attribute -->
+		<Property name="category_session_key">
+			<Value>category_session_key</Value>
+		</Property>
+		<!-- The key used to get the xml request message from the http request -->
+		<Property name="xml_request">
+			<Value>xml_request</Value>
+		</Property>
+		<!-- the key used to get the user id from ServiceEelement -->
+		<Property name="user_id_property_key">
+			<Value>user_id_property_key</Value>
+		</Property>
+		<!-- The key used to get the session id from ServiceEelement -->
+		<Property name="session_id_property_key">
+			<Value>session_id_property_key</Value>
+		</Property>
+	</Config>
+</CMConfig>

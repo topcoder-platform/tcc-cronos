@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.ajax.IMAjaxSupportUtility">
+
+		<Property name="client_role_name">
+			<Value>client</Value>
+		</Property>
+		<Property name="manager_role_name">
+			<Value>manager</Value>
+		</Property>
+		<Property name="role_property_name">
+			<Value>role</Value>
+		</Property>
+		<Property name="user_profile_session_key">
+			<Value>user_profile_session_key</Value>
+		</Property>
+		<Property name="messenger_key">
+			<Value>messenger_key</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="chat_status_tracker_key">
+			<Value>chat_status_tracker_key</Value>
+		</Property>
+		<Property name="service_engine_key">
+			<Value>service_engine_key</Value>
+		</Property>
+		<Property name="time_zone_cookie_name">
+			<Value>timeZone</Value>
+		</Property>
+
+
+		<Property name="category_session_key">
+			<Value>category_session_key</Value>
+		</Property>
+		<Property name="xml_request">
+			<Value>xml_request</Value>
+		</Property>
+		<Property name="user_id_property_key">
+			<Value>user_id_property_key</Value>
+		</Property>
+		<Property name="session_id_property_key">
+			<Value>session_id_property_key</Value>
+		</Property>
+
+	</Config>
+</CMConfig>

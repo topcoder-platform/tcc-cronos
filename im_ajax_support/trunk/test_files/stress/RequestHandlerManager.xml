@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.ajax.RequestHandlerManager">
+		<Property name="object_factory_namespace">
+			<Value>com.cronos.im.ajax.objectfactory</Value>
+		</Property>
+		<Property name="handler_types">
+			<Value>AcceptChatRequest</Value>
+			<Value>ChangeManagerStatus</Value>
+			<Value>PostTextMessage</Value>
+			<Value>ReadClientSessionMessage</Value>
+			<Value>ReadClientUserMessage</Value>
+			<Value>ReadManagerSessionMessage</Value>
+			<Value>ReadManagerUserMessage</Value>
+		</Property>
+		<Property name="AcceptChatRequest">
+			<Value>AcceptChatRequestHandler</Value>
+		</Property>
+		<Property name="ChangeManagerStatus">
+			<Value>ChangeManagerStatusHandler</Value>
+		</Property>
+		<Property name="PostTextMessage">
+			<Value>PostTextMessageHandler</Value>
+		</Property>
+		<Property name="ReadClientSessionMessage">
+			<Value>ReadClientSessionMessageHandler</Value>
+		</Property>
+		<Property name="ReadClientUserMessage">
+			<Value>ReadClientUserMessageHandler</Value>
+		</Property>
+		<Property name="ReadManagerSessionMessage">
+			<Value>ReadManagerSessionMessageHandler</Value>
+		</Property>
+		<Property name="ReadManagerUserMessage">
+			<Value>ReadManagerUserMessageHandler</Value>
+		</Property>
+	</Config>
+</CMConfig>

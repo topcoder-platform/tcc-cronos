@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.ajax.RequestHandlerManager">
+<!-- namespace to create object factory -->
+		<Property name="object_factory_namespace">
+			<Value>com.cronos.im.ajax.objectfactory</Value>
+		</Property>
+
+<!-- Contains the type values. Required. -->
+		<Property name="handler_types">
+			<Value>AcceptChatRequest</Value>
+			<Value>ChangeManagerStatus</Value>
+			<Value>PostTextMessage</Value>
+			<Value>ReadClientSessionMessage</Value>
+			<Value>ReadClientUserMessage</Value>
+			<Value>ReadManagerSessionMessage</Value>
+			<Value>ReadManagerUserMessage</Value>
+		</Property>
+<!-- each of the type values defined in "handler_types" property. The value of the xxx property
+ is object key used to create the handler instance from object factory. Required. -->
+		<Property name="AcceptChatRequest">
+			<Value>AcceptChatRequestHandler</Value>
+		</Property>
+		<Property name="ChangeManagerStatus">
+			<Value>ChangeManagerStatusHandler</Value>
+		</Property>
+		<Property name="PostTextMessage">
+			<Value>PostTextMessageHandler</Value>
+		</Property>
+		<Property name="ReadClientSessionMessage">
+			<Value>ReadClientSessionMessageHandler</Value>
+		</Property>
+		<Property name="ReadClientUserMessage">
+			<Value>ReadClientUserMessageHandler</Value>
+		</Property>
+		<Property name="ReadManagerSessionMessage">
+			<Value>ReadManagerSessionMessageHandler</Value>
+		</Property>
+		<Property name="ReadManagerUserMessage">
+			<Value>ReadManagerUserMessageHandler</Value>
+		</Property>
+	</Config>
+
+<!-- missing object_factory_namespace -->
+	<Config name="com.cronos.im.ajax.RequestHandlerManager.Invalid1">
+		<Property name="handler_types">
+			<Value>AcceptChatRequest</Value>
+		</Property>
+		<Property name="AcceptChatRequest">
+			<Value>AcceptChatRequestHandler</Value>
+		</Property>
+	</Config>
+
+<!-- incorrect object_factory_namespace -->
+	<Config name="com.cronos.im.ajax.RequestHandlerManager.Invalid2">
+		<Property name="object_factory_namespace">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="handler_types">
+			<Value>AcceptChatRequest</Value>
+		</Property>
+		<Property name="AcceptChatRequest">
+			<Value>AcceptChatRequestHandler</Value>
+		</Property>
+	</Config>
+
+<!-- missing handler_types -->
+	<Config name="com.cronos.im.ajax.RequestHandlerManager.Invalid3">
+		<Property name="object_factory_namespace">
+			<Value>com.cronos.im.ajax.objectfactory</Value>
+		</Property>
+		<Property name="AcceptChatRequest">
+			<Value>AcceptChatRequestHandler</Value>
+		</Property>
+	</Config>
+
+<!-- empty handler_types -->
+	<Config name="com.cronos.im.ajax.RequestHandlerManager.Invalid4">
+		<Property name="object_factory_namespace">
+			<Value>com.cronos.im.ajax.objectfactory</Value>
+		</Property>
+		<Property name="handler_types">
+		</Property>
+		<Property name="AcceptChatRequest">
+			<Value>AcceptChatRequestHandler</Value>
+		</Property>
+	</Config>
+
+<!-- missing property for a handler type -->
+	<Config name="com.cronos.im.ajax.RequestHandlerManager.Invalid5">
+		<Property name="object_factory_namespace">
+			<Value>com.cronos.im.ajax.objectfactory</Value>
+		</Property>
+		<Property name="handler_types">
+			<Value>AcceptChatRequest</Value>
+		</Property>
+	</Config>
+
+<!-- empty string handler type -->
+	<Config name="com.cronos.im.ajax.RequestHandlerManager.Invalid6">
+		<Property name="object_factory_namespace">
+			<Value>com.cronos.im.ajax.objectfactory</Value>
+		</Property>
+		<Property name="handler_types">
+			<Value>   </Value>
+		</Property>
+		<Property name="AcceptChatRequest">
+			<Value>AcceptChatRequestHandler</Value>
+		</Property>
+	</Config>
+
+</CMConfig>

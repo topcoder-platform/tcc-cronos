@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.cronos.im.ajax.objectfactory">
+
+	<Property name="messenger_key">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.MockMessenger</Value>
+		</Property>
+	</Property>
+	<Property name="chat_session_manager_key">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.MockChatSessionManager</Value>
+		</Property>
+	</Property>
+	<Property name="chat_status_tracker_key">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.MockChatStatusTracker</Value>
+		</Property>
+	</Property>
+	<Property name="service_engine_key">
+		<Property name="type">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+	</Property>
+
+
+
+
+	<Property name="AcceptChatRequestHandler">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.handler.AcceptChatRequestHandler</Value>
+		</Property>
+	</Property>
+	<Property name="ChangeManagerStatusHandler">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.handler.ChangeManagerStatusHandler</Value>
+		</Property>
+	</Property>
+	<Property name="PostTextMessageHandler">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.handler.PostTextMessageHandler</Value>
+		</Property>
+	</Property>
+	<Property name="ReadClientSessionMessageHandler">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.handler.ReadClientSessionMessageHandler</Value>
+		</Property>
+	</Property>
+	<Property name="ReadClientUserMessageHandler">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.handler.ReadClientUserMessageHandler</Value>
+		</Property>
+	</Property>
+	<Property name="ReadManagerSessionMessageHandler">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.handler.ReadManagerSessionMessageHandler</Value>
+		</Property>
+	</Property>
+	<Property name="ReadManagerUserMessageHandler">
+		<Property name="type">
+			<Value>com.cronos.im.ajax.handler.ReadManagerUserMessageHandler</Value>
+		</Property>
+	</Property>
+  </Config>
+</CMConfig>
