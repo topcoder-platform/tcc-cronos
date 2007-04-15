@@ -1,0 +1,199 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052\deftab420{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier;}{\f3\fnil\fprq2\fcharset2 Wingdings;}{\f4\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue127;\red255\green0\blue0;\red0\green0\blue255;\red0\green0\blue128;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx720\ul\b\f0\fs32 IM Ajax Support Component Specification\par
+\pard\nowidctlpar\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1\fs24 1.\tab Design\f0\fs20\par
+\pard\nowidctlpar\li720\sa120\b0\f1 IM is an application which allows users to perform online chat through the web browser. AJAX technology is used heavily to exchange messages in order to enhance user\rquote s experience. The IM Ajax Support component provides the servlets to handle the Ajax requests and responses on the server side.\par
+The component will provide servlet support for the application on AJAX interactions. The input and output will be using XML. The interactions will be covered in different pages of the application. On the request side, Javascript will be used to compose the XML input and pass it to the servlet for processing. On the respond side, the output XML encapsulating the updated information/result will be parsed asynchronously using Javascript.\par
+The main workflow is described as follow:\par
+The javascript on client side composes a xml request, and sends it to the url, IMAjaxSupportServlet will first use RequestHandlerManager to pick up the matching handler to service the request. If the request message is invalid, or no matching handler is found, the manager will return error message to the client. If the handler is found, the manager will delegate to the handler to process. The handler will also return success or failure xml message based on the handling result. The request and response xml message must conform to the XSD schema files in docs/ directory. Please refer to the algorithm for the format of the request and response.\par
+\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li701\sa120\b0 The RequestHandler implements the strategy pattern for RequestHandlerManager.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Servlet 2.4\f0\par
+\f1 XML\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.3\tab Required Algorithms\par
+\b0\i 1.3.1\f0\tab\f1 The XMLrequest message\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\i0\f1 In the version 1.0, there are seven concrete implementations for RequestHandler, and there are seven XML schemas for these handlers. All the schemas are given in the docs/ directory. The incoming http request message must confirm to one of those schemas. Otherwise, the client will always receive an error response, indicating that the request message is invalid or the message type is unrecognized.\cf2\f2\fs18  \cf1\f1\fs20 As the structure of the request message is very simple, this algorithm does not discuss them.\cf2\f2\fs18\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.2\f0\tab\f1 The XML response message\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\i0\f1 All the RequestHandler implementations will set the xml response on http response no matter the operation succeeds or not. The content type for the http response is \ldblquote text/xml\rdblquote . The XML response must follow the below schema:\par
+\f0 <response>\par
+\pard\nowidctlpar\li930\sa120\sl240\slmult0 <success>success message</success>\par
+<failure> failure message </failure>\par
+<messages>\par
+    <message>\'85</message>\par
+</messages>\par
+<client_position>1</client_position>\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 </response>\par
+\pard\nowidctlpar\li722\sa120\sl240\slmult0\cf2\f2\fs18 The response element must contain one of success and failure element, but not both. If the success is included, the response indicates that the operation succeeded, otherwise, failed. The response element optional contains the messages element. The messages element must contain at least one message element which is defined in the IM Sales Messenger component. The response element optional contains the client_position element. The node value of the client_position must be integer or long.\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 Please see the XSD schema in the docs/response.xsd\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.2\f0\tab\f1 Generate XML response\f0\par
+\pard\nowidctlpar\li720\sa120\i0\f1 All the subclass of AbstractRequestHandler will generate the xml response. If the handler succeeded, and need to populate the messages element, the handler must first create a DateFormatContext, get the cookies from the http request, select the cookie whose name is IMAjaxSupportUtility#getTimezoneCookieName(),get the cookie value as the time zone id, and set the id on the DateFormatContext. Then, pass the DateFormatContext to the XMLMessage to obtain the xml string. Please note that if no matching cookie is found, simply pass the DateFormatContext to the message.\par
+If the handler failed, the response only contains the failure element. The value of the failure element will be the exception message, or any other meaningful string indicating the error. For example, if the handler can not find the category in the http session, the error message will look like \ldblquote no category found in the session\rdblquote . If user profile in the http session has wrong role, the error message will look like \ldblquote Incorrect role name for the user profile\rdblquote\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\i 1.3.3\f0\tab\f1 Log for the request handler\f0\par
+\pard\nowidctlpar\li720\qj\i0\f1 All the subclass of AbstractRequestHandler will log the information at the Level.INFO level.\kerning2\f0\fs21  L\kerning0\f1\fs20 ogging information must contain user ID, timestamp, action taken, and entity IDs affected.\par
+The user id is retrieved from the ChatUserProfile in http session.\par
+The action name is read from the type attribute of the xml request element\par
+The affected entity IDs are other ID involved in the handler, except the user ID.\par
+The log format will be:\par
+User ID:[user id] timestamp:[timestamp] action:[actionName]\par
+affected entityIDs: [..]\par
+For the affected ids, all the involved ids should be logged. For example, the AcceptChatRequestHandler is the most complicated one, this handler will use category id, session id and request user id. The format for the affected entityIDs should be:\par
+affected entityIDs: requestUserId [userId] sessionId [sessionId] category ids [idOne] [idTwo]\'85.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.4\tab Component Class Overview\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IMAjaxSupportServlet\b0 : \par
+IMAjaxSupportServlet provides servlet support for the application on AJAX interactions. It receives the client request and output the XML response to indicate if the operation succeeds or not.\par
+Servlet container can guarantee the thread safety of this class.\par
+\b IMAjaxSupportUtility\b0 : \par
+IMAjaxSupportUtility holds the global configurable values(like session key, object key, etc), shared by all the other class in this component.\par
+This class is thread safe since it only reads the values from the config manager..\par
+\b RequestHandlerManager: \par
+\b0 RequestHandlerManager is used to route the incoming request to the RequestHandler based on the request message type. The request handlers are loaded from the configuration file. If the request message is invalid, or no matching handler is found for the request, this manage will set the failure message on the http response and return.\par
+This class is thread safe since it does not contain any mutable status..\par
+\b RequestHandler: \par
+\b0 RequestHandler defines the contract of handling the request based on some logic. Please be noted that, the implementation should not throw any exception. The exception should be caught, and the exception message should be contained as the part of the response.\par
+The implementation is required to be thread safe.\f0\par
+\b\f1 AbstractRequestHandler: \par
+\b0 AbstractRequestHandler provides an additional method to return the log for all the subclass that need to log something.\par
+This class is thread safe since it\rquote s immutable.\par
+\b ReadClientUserMessageHandler: \par
+\b0 This handler is only for users with client role. The handler will pull the pending messages from the user message pool. In addition, the current position of the client (under the selected category) in the service engine is included in the response. The request message for this handler is defined in docs/ReadClientUserMessage.xsd. The response schema is given in the algorithm\par
+This class is thread safe since it\rquote s immutable.\par
+\par
+\b ReadManagerUserMessageHandler: \par
+\b0 This handler is only for users with manager role. The handler will pull the pending messages from the user message pool.\par
+The request message for this handler is defined in docs/ReadManagerUserMessage.xsd. The response schema is given in the algorithm\par
+This class is thread safe since it\rquote s immutable.\par
+\par
+\b ReadClientSessionMessageHandler: \par
+\b0 This handler is only for users with client role. The xml request message includes the session id. The handler will pull the pending messages from both the user message pool and session message pool.\par
+The request message for this handler is defined in docs/ReadClientSessionMessage.xsd. The response schema is given in the algorithm\par
+This class is thread safe since it\rquote s immutable.\par
+\par
+\b ReadManagerSessionMessageHandler: \par
+\pard\nowidctlpar\li720\qj\b0 This handler is only for users with manager role. The xml request message includes the session id. The servlet will pull the pending messages from the session message pool of the user.\par
+\pard\nowidctlpar\qj\par
+\pard\nowidctlpar\li720\qj The request message for this handler is defined in docs/ReadManagerSessionMessage.xsd. The response schema is given in the algorithm\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe since it\rquote s immutable.\par
+\par
+\b AcceptChatRequestHandler: \par
+\pard\nowidctlpar\li720\qj\b0 The xml request message includes the request user id and session id. The handler will update the state in the service engine to servicing for that session. The response will indicate whether the operation succeeds or not.\par
+The request message for this handler is defined in docs/AcceptChatRequestHandler.xsd. The response schema is given in the algorithm\par
+\pard\nowidctlpar\li720\sa120 This class is thread safe since it\rquote s immutable.\par
+\b PostTextMessageHandler: \par
+\pard\nowidctlpar\li720\qj\b0 The xml request message includes the session id and text. The handler will post the submitted message to all users of the session. In addition, the handler will pull the pending messages from the session message pool of the user and return them in the response.\par
+The request message for this handler is defined in docs/PostTextMessageHandler.xsd. The response schema is given in the algorithm\par
+This class is thread safe since it\rquote s immutable.\par
+\pard\nowidctlpar\sa120\par
+\pard\nowidctlpar\li720\sa120\b ChangeManagerStatusHandler: \par
+\pard\nowidctlpar\li720\qj\b0 This handler is only for users with manager role. The request parameter includes the status. The handler will change the user status. If it is ONLINE, the handle will enqueue the manager to the service engine for each of the selected categories. Conversely, if it is BUSY, the handler will dequeue the manager from the service engine.\par
+The request message for this handler is defined in docs/ChangeManagerStatusHandler.xsd. The response schema is given in the algorithm\par
+This class is thread safe since it\rquote s immutable.\par
+\pard\nowidctlpar\li720\sa120\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.5\tab Component Exception Definitions\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IllegalArgumentException\par
+\b0 This exception is thrown in various methods if null object is not allowed, or the given string argument is empty. Refer to the documentation in Poseidon for more details.\par
+\cf3\b NOTE: Empty string means string of zero length or string full of white spaces.\par
+\cf0 IOException\par
+\b0 This exception is thrown by IMAjaxSupportServlet if any I/O error occurred.\par
+\b ServletException\par
+\b0 This exception is thrown by IMAjaxSupportServlet if any servlet-related error occurred.\par
+\b IMAjaxConfigurationException\par
+\b0 This exception will be thrown by IMAjaxSupportUtility if any error occurred during loading the configuration values.\f0\par
+\pard\nowidctlpar\sa120\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 This component will be used in the web application, and must be thread safe. IMAjaxSupportServlet is not immutable, but servlet container can guarantee the thread safety of this class.RequestHandlerManager is thread safe since it\rquote s immutable. RequestHandler and its implementation are also required to be thread safe. IMAjaxSupportUtility is thread safe, as this class only reads the configuration values from the ConfigManager.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\nowidctlpar\li720\sa120\b0 Java 1.4 or higher.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Base Exception 1.0\par
+\pard\nowidctlpar\fi700\li722\sa120\b0 The custom exception extends BaseException in this component. \f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\f1        \b Sale IM Messenger  1.0\f0\par
+\b0\f1               It will be used to route the message.\f0\par
+\pard\nowidctlpar\fi-10\li711\sa120\b\f1 Chat Message Pool 1.1\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to pull the message from the user pool or session pool\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Chat Session Manager 1.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               ChatSession come from this component.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Chat User Profile 2.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1              ChatUserProfile class comes from this component\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Logging Wrapper 1.2\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to log the actions.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Service Engine 1.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to service the user request.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b IM Application Logic 1.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               Responser and Requester objects come from this component.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Chat Status Tracker 1.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to update the manager status.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Object Factory 2.0.1\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It\rquote s used to create object from the configuration file.\par
+\pard\nowidctlpar\fi-10\li711\sa120\b Status Tracker 1.0\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               The status class comes from this component.\par
+\pard\nowidctlpar\li360\sa120    \b Configuration Manager 2.1.5\f0\par
+\pard\nowidctlpar\fi-720\li720\sa120\b0\f1               It will be used to load the configuration values.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.3\tab Third Party Components\par
+\pard\nowidctlpar\fi800\sa120\qj\b0 None.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 com.cronos.im.ajax\par
+com.cronos.im.ajax.handlerimpl\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f0\par
+\pard\nowidctlpar\li720\b0\fs24\par
+\f1\fs20 Configuration values for \f0 IMAjaxSuportUtility\par
+\pard\nowidctlpar\sa120\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b\f1 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120 client_role_name\f0\cell\b0\f1 The client role name. \b Required\b0 .\cell client\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b manager_role_name\cell\b0 The manager role name \b Required\b0 . \cell manager\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b role_property_name\cell\b0 The property name used to get the role name from the user profile. \b Required\b0 .\cell role\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b user_profile_session_key\cell\b0 The key used to get the ChatUserProfile from the http session attribute. \b Required\b0 .\cell user_profile_session_key\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b messenger_key\cell\b0 The object key used to create the Messenger from object factory \b Required\b0 .\cell messenger_key\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b chat_session_manager_key\cell\b0 The object key used to create the ChatSessionManager from object factory \b Required\b0 .\cell chat_session_manager_key\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b chat_status_tracker_key\cell\b0 The object key used to create the ChatStatusTracker from object factory \b Required\b0 .\cell chat_status_tracker_key\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b service_engine_key\cell\b0 The object key used to create the ServiceEngine from object factory \b Required\b0 .\cell service_engine_key\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b time_zone_cookie_name\cell\b0 The cookie name used to get the time zone. \b Required\b0 .\cell timeZone\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b handler_manager_key\cell\b0 The object key used to create the HandlerManager from object factory. \b Required\b0\cell handler_manager_key\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b category_session_name\cell\b0 The property name used to get the categories from http session attribute. \b Required\b0 .\cell category_session_name\cell\row\pard\nowidctlpar\sa120\cf2\f0\par
+\pard\nowidctlpar\li720\cf0\f1 Configuration values for \f0 RequestHandlerManager\par
+\pard\nowidctlpar\sa120\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b\f1 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120 handler_types\f0\cell\b0\f1 Contains the type values. \b Required\b0 .\cell ReadClientUserMesage;ReadManagerUserMessage;PostTextMessage\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx6379\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx8505\pard\intbl\nowidctlpar\sa120\b xxx\cell\b0 The \ldblquote xxx\rdblquote  property name is one of the type values defined in \ldblquote handler_types\rdblquote  property. The value of the xxx property is object key used to create the handler instance from object factory. \b Required\b0 . \cell read_client_user_message_handler_key\cell\row\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 The dependent components should be properly configured to make this component work.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-420\li1140\sa120\tx1140\lang2052\b0\f3\'d8\lang1033\tab\f1 Extract the component distribution.\par
+\pard\nowidctlpar\fi-420\li1140\sa120\lang2052\f3\'d8\lang1033\tab\f1 Follow \cf4\ul Dependencies Configuration\cf0\ulnone .\par
+\lang2052\f3\'d8\lang1033\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Preload the configuration file into Configuration Manager. Follow demo.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.3\tab Demo\f0\par
+\pard\nowidctlpar\li720\cf1\b0\fs24 The component will be deployed in the web application. A sample web.xml is given in docs. Assume that the url access the IMAjaxSupportServlet is \cf0 http://localhost:8080/im/IMAjaxSupport\cf1 .\par
+The javascript on client side composes a xml request, and sends it to the url, IMAjaxSupportServlet will first use RequestHandlerManager to pick up the matching handler to service the request. If the request message is invalid, or no matching handler is found, the manager will return error message to the client. If the handler is found, the manager will delegate to the handler to process. The handler will also return success or failure xml message based on the handling result. The request and response xml message must conform to the XSD schema files in docs/ directory. Please refer to the algorithm for the format of the request and response.\par
+\par
+The response for the ReadClientUserMessage is most complicated. The demo only shows the request and response for this message. Developers are required to show all the seven messages in the unit test.\par
+Assume that the client sends the message:\par
+\pard\nowidctlpar\fi450\li300\cf5\f4\fs18 <request type=\rdblquote  ReadClientUserMessage\rdblquote >\par
+\pard\nowidctlpar\fi810\li300 <session_id>1</session_id>\par
+\pard\nowidctlpar\li300      </request>\par
+\pard\nowidctlpar\cf1\f0\fs24       \par
+\pard\nowidctlpar\fi-720\li720       If the request is handled successfully, the response will contains the user messages and the current position of the client in the service engine.\par
+\pard\nowidctlpar\li300  \fs18      \cf5\f4 <response>\par
+          <success>success</success>\par
+          <messages>\par
+              <!--please see the Sales IM Messenger for the message schema-->\par
+              <message type=\rdblquote someType\rdblquote >\'85.</message>\par
+              <message type=\rdblquote someType\rdblquote >\'85.</message>\par
+          </messages>\par
+          <client_position>1</client_position>\par
+      </response>\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li701\sa120\b0 None\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\par
+\pard\nowidctlpar\fs24\par
+}
+ 

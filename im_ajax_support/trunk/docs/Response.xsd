@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	<!-- please see the IM Sales Messenger for the following five schemas -->
+	<xs:include schemaLocation="AskForChatMessage.xsd"/>
+	<xs:include schemaLocation="ChatMessage.xsd"/>
+	<xs:include schemaLocation="EnterChatMessage.xsd"/>
+	<xs:include schemaLocation="PresenceMessage.xsd"/>
+	<xs:include schemaLocation="SessionUnavailableMessage.xsd"/>
+	<xs:element name="reponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="success" type="xs:string"/>
+					<xs:element name="failure" type="xs:string"/>
+				</xs:choice>
+				<xs:element ref="messages" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="client_position"/>
+			</xs:sequence>
+			<xs:attribute name="type" fixed="AskForChatMessage" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="messages">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="message" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="client_position" type="xs:long"/>
+</xs:schema>
