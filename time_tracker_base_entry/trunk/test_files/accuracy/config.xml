@@ -93,10 +93,10 @@
 	                    <Value>com.informix.jdbc.IfxDriver</Value>
 	                </Property>
 	                <Property name="jdbc_url">
-	                    <Value>jdbc:informix-sqli://172.20.3.102:1526/tt_base_entry:INFORMIXSERVER=ol_hackerqc</Value>
+	                    <Value>jdbc:informix-sqli://IBM-68C4DC40CEA:1526/dev:informixserver=tcs</Value>
 	                </Property>
 	                <Property name="user">
-	                    <Value>Informix</Value>
+	                    <Value>informix</Value>
 	                </Property>
 	                <Property name="password">
 	                    <Value>informix</Value>

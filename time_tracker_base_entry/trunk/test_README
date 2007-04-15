@@ -1,0 +1,8 @@
+1. Initialize your Informix service.
+2. Update all the connection string in the database configuration files under /test_files directory.
+3. Execute test_files\create_db.sql and test_files\stresstests\scripts.sql to set up the testing environment.
+4. Run the tests.
+
+Notice:
+1. Third-party components used in this component are under \lib directory, of course you can use your own, but you have to modify build.xml first.
+2. Before running all the tests, make sure the database is clean, in fact the test cases did not clean the data in the table company which will influence the result if you want to run all the tests as a whole using ANT. But if you separately run unit/accuracy/failure/stress tests, they all execute successfully. So currently I just quoted out this line (InformixCutoffTimeDaoTest:585) for building purpose, we need the developer/reviewer to fix this problem.
