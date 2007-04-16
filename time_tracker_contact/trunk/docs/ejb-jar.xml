@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd"
+         version="2.1">
+
+ <enterprise-beans>
+   <session>
+     <ejb-name>ContactEJB</ejb-name>
+      <local-home>com.topcoder.timetracker.contact.ejb.ContactHomeLocal</local-home>
+      <local>com.topcoder.timetracker.contact.ejb.ContactLocal</local>
+      <ejb-class>com.topcoder.timetracker.contact.ejb.ContactBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+     <env-entry>
+       <env-entry-name>SpecificationNamespace</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>myNamespace</env-entry-value>
+     </env-entry>
+     <env-entry>
+       <env-entry-name>ContactDAOKey</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>daoKey</env-entry-value>
+     </env-entry>
+     <resource-ref>
+       <res-ref-name>jdbc/Contact</res-ref-name>
+       <res-type>javax.sql.DataSource</res-type>
+       <res-auth>Container</res-auth>
+       <res-sharing-scope>Shareable</res-sharing-scope>
+     </resource-ref>
+	</session>
+	<session>
+     <ejb-name>AddressEJB</ejb-name>
+      <local-home>com.topcoder.timetracker.contact.ejb.AddressHomeLocal</local-home>
+      <local>com.topcoder.timetracker.contact.ejb.AddressLocal</local>
+      <ejb-class>com.topcoder.timetracker.contact.ejb.AddressBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+     <env-entry>
+       <env-entry-name>SpecificationNamespace</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>myNamespace</env-entry-value>
+     </env-entry>
+     <env-entry>
+       <env-entry-name>AddressDAOKey</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>daoKey</env-entry-value>
+     </env-entry>
+     <resource-ref>
+       <res-ref-name>jdbc/Address</res-ref-name>
+       <res-type>javax.sql.DataSource</res-type>
+       <res-auth>Container</res-auth>
+       <res-sharing-scope>Shareable</res-sharing-scope>
+     </resource-ref>
+	</session>
+ </enterprise-beans>
+
+ <assembly-descriptor>
+   <container-transaction>
+     <method>
+        <ejb-name>ContactEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+
+   <container-transaction>
+     <method>
+        <ejb-name>AddressEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+ </assembly-descriptor>
+
+</ejb-jar>

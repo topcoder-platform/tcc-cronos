@@ -1,0 +1,128 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.contact.ContactManager">
+		<Property name="ContactDAO:default">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.contact.persistence.InformixContactDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.contact.persistence.InformixContactDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO">
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.ConnectionFactory</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>ConnectionName</Value>
+		</Property>
+		<Property name="idgenerator_name">
+			<Value>ContactIDGenerator</Value>
+		</Property>
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.contact.persistence.ConnectionFactory">
+		<Property name="connections">
+			<Property name="default">
+				<Value>InformixJDBCConnection</Value>
+			</Property>
+
+			<Property name=" InformixJDBCConnection ">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value> jdbc:informix-sqli://¡­¡­¡­</Value>
+					</Property>
+					<Property name="user">
+						<Value>user_name</Value>
+					</Property>
+					<Property name="password">
+						<Value>password</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.contact.persistence.SearchBundleManager">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+			
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+
+		<Property name="searchBundles">
+			<Property name="ContactSearch">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>dbStrategy</Value>
+					</Property>
+				</Property>
+				<Property name="context">
+					<Value>Select contact.* from contact, contact_relation where </Value>
+				</Property>
+				<Property name="alias">
+					<Property name="first_name">
+						<Value>contact.first_name</Value>
+					</Property>
+					<Property name="creation_date">
+						<Value>contact.creation_date</Value>
+					</Property>
+					<Property name="entity_id">
+						<Value>contact_relation.entity_id</Value>
+					</Property>
+					... ...
+				</Property>
+				<Property name="searchableFields">
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+<Config name="com.topcoder.search.builder.validator.factory">
+		<Property name="validator:default">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.MockValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.strategy.factory">
+		<Property name="dbStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>DBSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>
