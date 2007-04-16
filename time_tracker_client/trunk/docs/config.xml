@@ -1,0 +1,130 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.client.ClientUtility">
+		<Property name="objectFactoryNamespace">
+			<Value>com.topcoder.timetracker.client.ClientUtility.ObjectFactory</Value>
+		</Property>
+		<Property name="IDName">
+			<Value>IDGeneratorName</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.client.ClientUtility.ObjectFactory">
+		<Property name="ClientDAO:default">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.client.db.ClientInformixDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.client.db.ClientInformixDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.client.db.ClientInformixDAO">
+		<Property name="ConnectionFactoryNamespace">
+			<Value>com.topcoder.timetracker.client.db.ConnectionFactory</Value>
+		</Property>
+		<Property name="ConnectionName">
+			<Value>InformixJDBCConnection</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientSearch</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.timetracker.client.db.SearchBundleManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.client.db.ConnectionFactory">
+		<Property name="connections">
+			<Property name="default">
+				<Value>InformixJDBCConnection</Value>
+			</Property>
+
+			<Property name=" InformixJDBCConnection ">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value> jdbc:informix-sqli://¡­¡­¡­</Value>
+					</Property>
+					<Property name="user">
+						<Value>user_name</Value>
+					</Property>
+					<Property name="password">
+						<Value>password</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.client.db.SearchBundleManager">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+			
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+
+		<Property name="searchBundles">
+			<Property name="ClientSearch">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>dbStrategy</Value>
+					</Property>
+				</Property>
+				<Property name="context">
+					<Value>Select  from client where</Value>
+				</Property>
+				<Property name="alias">
+					<Property name="The ID">
+						<Value>peopleID</Value>
+					</Property>
+					<Property name="The name">
+						<Value>peopleName</Value>
+					</Property>
+				</Property>
+				<Property name="searchableFields">
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+<Config name="com.topcoder.search.builder.validator.factory">
+		<Property name="validator:default">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.MockValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.strategy.factory">
+		<Property name="dbStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>DBSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

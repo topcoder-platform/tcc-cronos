@@ -1,0 +1,555 @@
+{\rtf1\ansi\ansicpg1252\deff0\deftab420{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\fnil\fcharset2 Symbol;}{\f3\fnil\fprq2\fcharset2 Wingdings;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fprq2\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue0;\red255\green0\blue0;\red0\green0\blue255;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}{\s3 heading 3;}}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx720\lang1033\ul\b\f0\fs28 Time Tracker Client 3.2 Component Specification\par
+\pard\li720\sa120\ulnone\b0\f1\fs20\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b\f0\fs24 1.\tab Design\par
+\pard\li720\b0\fs20 The Time Tracker Client custom component is part of the Time Tracker application.  It provides an abstraction of clients that the projects are assigned to. This component handles the persistence and other business logic required by the application.\par
+\cf1\f1\par
+\cf0\f0 This design provides configurable ClientUtility which can be used to add, update and retrieve Client and associated Projects.\par
+\f1\par
+\f0 The clients can be search with filter and depth. Four kind of depth is provided. And pre-defined filter can be created by the ClientFilterFactory. The user can also create custom filter by the Filters provide by Search Builder component.\par
+\f1\par
+\f0 The action which will modify the database can be audited according to user\rquote s setting. And the audit will be rollback if the transaction is failed.\par
+\f1\par
+\f0 And the data source is pluggable, new data source can be easily added. And the alias of column name is provided by ClientColumnName and ClientProjectColumnName , the actual column name can be configured by the configuration file.\par
+\par
+\cf2\ul Version 3.2 Changes \par
+\par
+\ulnone Version 3.2 addresses the Transaction Management strategy of the Time Tracker application.  This is done by utilizing an EJB container to manage the operations being performed by the different Time Tracker components.\par
+\par
+The design takes the approach of building an EJB layer on top of the existing classes, rather than modifying the old design.  Changes to the 3.1 design are minimal, and consist of some slight refactoring and making certain classes Serializable.  Building the layer has the advantage of allowing the user the easy option of switching out of EJB, and moving to a different Transaction Management strategy should the need arise.  The EJB layer is composed of a Business Delegate, the Local and LocalHome interfaces, and a Stateless SessionBean.  The Business Delegate is responsible for looking up the LocalHome interface and obtaining an instance of the Local interface.  It will then use the Local interface to delegate business calls to the SessionBean.  The SessionBean itself has no business logic other than managing the transactions - the actual business logic exists in the old classes of the existing design.\par
+\par
+The following changes were done:\par
+\pard\li1440\f2\tab\f0 Depth class was made Serializable.  This is done for the same reason that the Filter class needs to be made Serializable.  Since Depth is part of the method argument in search method, it needs to be made Serializable in order to support a possible move away from Local interfaces, and into Remote interfaces.\par
+\f2\tab\f0 The old ClientUtility class was renamed into ClientUtilityImpl, and implements a new interface called ClientUtility.  This is done to hide implementation details away from the client: the client might be using the actual Impl object, or might be using a BusinessDelegate - it wouldn't need to be known by the client.\par
+\f2\tab\f0 Delegate, LocalHome, Local and SessionBean classes were all added in a new ejb subpackage.  This comprises the EJB layer of the component.\par
+\f2\tab\f0 A new Sequence Diagram was added to depict the functionality within the EJB layer.\par
+\f2\tab\f0 A note was added to the Use Cases, saying that the application may now run under a J2EE container.  Since the requirements for the new changes are not actual business functionality, but rather more on the inner functionality of the component, it did not seem appropriate to introduce a new use case for the new requirements.\par
+\f2\tab\f0 There was no need to refactor the DAOs, since no business logic was found in the DAOs.  The JBoss Transaction DataSource may be configured using ConnectionFactory.\par
+\f2\tab\f0 The design attempts to adhere to the J2EE specification of not allowing File access by delegating all file access to an external ClientUtilityFactory class.  This is a pragmatic approach which has been proven to work in previous designs (see the Orpheus Application components, like Game Persistence, Administration Persistence components).  File access does not occur within the SessionBean itself, but rather within external classes when the application is called.  It is also possible for File Access to occur before any SessionBean calls occur, since the ConfigManager may be initialized beforehand.\par
+\f2\tab\f0 Note that the only other alternative to not using ConfigManager and configuration files will be to restrict usage of ANY TC components that utilize configuration files - these include the Connection Factory, Search Builder and ID Generator components, which are a core part of the given component.\par
+\f2\tab\par
+\tab\par
+\pard\li720\cf0\f0\par
+\f1\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b\f0 1.1\tab Design Patterns \par
+\pard\fi-420\li1140\tx1140\b0\f3\fs16 l\tab\f0\fs20 Data Access Object Pattern is used by ClientInformixDAO.\fs24\par
+\f3\fs16 l\tab\f0\fs20 Strategy Pattern is used to allow plugging different types of data source.\fs24\par
+\f3\fs16 l\tab\f0\fs20 Template Pattern is used to provide the general algorithm structure of Depth.\fs24\par
+\pard\fi-450\li1170\tx1155\tx1170\f3\fs16 l \tab\f0\fs20 Factory Pattern is used to create different filters by ClientFilterFactory.\fs24\par
+\pard\li1170\tx1155\tx1170\tx1155\tx1170\cf2\f2\fs20\tab\f0 Business Delegate  Pattern is used in ClientUtilityDelegate.\par
+\f2\tab\f0 ServiceLocator is also used in ClientUtilityDelegate.\par
+\f2\tab\f0 While not technically a Singleton, the ClientManagerFactory behaves very similarly and may be considered a Singleton wrapper.\par
+\pard\li1440\sa120\sl240\slmult0\b\f2\tab\f0       \par
+\pard\fi-420\li1140\cf0\b0\f1\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b\f0 1.2\tab Industry Standards \par
+\pard\li720\b0 JavaBean\par
+SQL\par
+\cf2 EJB\par
+\cf0\f1\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b\f0 1.3\tab Required Algorithms\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 1.3.1\tab Constructs ClientUtility with given namespace\par
+\pard\li720\i0\f4 Get the configManager by ConfigManager.getInstance()\par
+Get the objectFactoryNamespace from the configManager with namespace and key as "ObjectFactoryNamespace"\par
+Get the idName from the configManager with namespace and key as "IDName"\par
+Get idGenerator by IDGeneratorFactory.getIDGenerator(idName)\par
+Create the ObjectFactory with a new ConfigManagerSpecificationFactory created with the objectFactoryNamespace\par
+Create dao by the ObjectFactory with the key as "ClientDAO"\par
+Create auditManager by the auditManager with the key as "AuditManager", if not specified, create with no-arg constructor.\par
+Create addressManager by the addressManager with the key as "AddressManager", if not specified, create with no-arg constructor.\par
+Create contactManager by the contactManager with the key as "ContactManager", if not specified, create with no-arg constructor.\par
+Create commonManager by the commonManager with the key as "CommonManager", if not specified, create with no-arg constructor.\par
+Create projectUtility by the projectUtility with the key as "ProjectUtility", if not specified, create with no-arg constructor. \par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.2\tab Constructs ClientInformixDAO with given namespace\par
+\pard\li720\i0\f4 Get the configManager by ConfigManager.getInstance()\par
+Get the connectionFactoryNamespace from the configManager with namespace and key as "ConnectionFactoryNamespace"\par
+Create the connectionFactory by new DBConnectionFactoryImpl(connectionFactoryNamespace)\par
+Get the connectionName from the configManager with namespace and key as "ConnectionName"\par
+Get the searchBundleName from the configManager with namespace and key as "SearchBundleName"\par
+Get the searchBundleNamespace from the configManager with namespace and key as "SearchBundleNamespace"\par
+Create search bundle manager with searchBundleNamespace\par
+Get searchBundle by manager.getSearchBundle(searchBundleName)\par
+Get the Property containing all the column alias and actual name from the searchBundleNamespace. This property named "alias" contained by property named searchBundleName contained by property named "searchBundles".\par
+Put all the alias, actual name pair into a HashMap. All the alias defined in ClientColumnNames should be found, and all the actual name should be non null, non empty(trim'd) string, else throw ConfigurationException.\par
+Set the clientColumnNames to this map.\par
+Get clientProjectColumnNames in the same way.\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.3\f1\tab\f0 Add client\par
+\pard\li720\i0\f4 Throw InvalidClientPropertyException if:\par
+\pard\fi-420\li1140\tx1140\f3\fs16 l\tab\f4\fs20 The company id <= 0\f0\fs24\par
+\pard\fi-420\li1140\f3\fs16 l\tab\f4\fs20 Or description/name is null or empty(trim'd)\f0\fs24\par
+\f3\fs16 l\tab\f4\fs20 Or the creation/modification user is null or empty(trim'd)\f0\fs24\par
+\f3\fs16 l\tab\f4\fs20 Or the salesTax < 0\f0\fs24\par
+\f3\fs16 l\tab\f4\fs20 Or the start/end Date, paymentTerm, contact or address is null\f0\fs24\par
+\pard\li720\f4\fs20 Set the ID of the client by idGenerator.getNextID()\par
+If audit add client is true, create an auditHeader with all the properties of this client and createAuditRecord by AuditManager\par
+Add the client by dao.addClient\par
+\pard\li960 Set the creation and modification date to current date.\par
+Get a connection by createConnection, and prepare a statement to add the given client to the client table.\par
+Set all the parameters of statement according to the properties of client and executeUpdate\par
+Close the connection\par
+\pard\li720 Add the contact by contactManager.addContact(client.getContact()) and associate with this client by contactManager.associate\par
+Add the address by addressManager.addAddress(client.getAddress()) and associate with this client by addressManager.associate\par
+Call addProjectToClient to add the project\par
+If add client failed and doAudit is true, call auditManager.delete(header.getID()) to rollback the audit.\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.4\f1\tab\f0 Add clients\par
+\pard\li720\i0\f4 For each client ...\par
+Throw InvalidClientPropertyException if any property of the contact is invalid.\par
+Set the ID of the client by idGenerator.getNextID()\par
+If audit add client is true, create an auditHeader with all the properties of this client and create it by AuditManager\par
+Add the id of the header to the auditId which is created by new long[client.length]\par
+... end each\par
+Call dao.addClients(clients)\par
+\pard\li960 Get a connection by createConnection, and prepare a statement to add the given client to the client table.\par
+For each client, set the creation and modification date to current date and set all the parameters of statement according to the properties of client and addBatch.\par
+Execute the batch, and get the returned int[]\par
+If BatchUpdateException is thrown, get the int[] by exception.getUpdateCounts\par
+Create a boolean[], set boolean[i] to int[i]!=EXECUTE_FAILED\par
+If any int[i] is EXECUTE_FAILED, throw BatchOperationException which created with the boolean[]\par
+Close the connection\par
+\pard\li720 If BatchOperationException is thrown, get the boolean[] by exception.getResult\par
+For each client which result[i]==true\par
+\pard\li994 add the contact by contactManager.addContact(client.getContact()) and associate with this client by contactManager.associate\par
+add the address by addressManager.addAddress(client.getAddress()) and associate with this client by addressManager.associate\par
+Call addProjectToClient to add the project\par
+\pard\li720 For each client which result[i]==false, call auditManager.delete(auditId[i]) to rollback the audit.\par
+If BatchOperationException have been thrown, rethrow it.\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.5\f1\tab\f0 Update client\par
+\pard\li720\i0\f4 Throw InvalidClientPropertyException if:\par
+\pard\fi-420\li1140\tx1140\f3\fs16 l\tab\f4\fs20 The company/client id <= 0\f0\fs24\par
+\pard\fi-420\li1140\f3\fs16 l\tab\f4\fs20 Or description/name is null or empty(trim'd)\f0\fs24\par
+\f3\fs16 l\tab\f4\fs20 Or the creation/modification user is null or empty(trim'd)\f0\fs24\par
+\f3\fs16 l\tab\f4\fs20 Or the salesTax < 0\f0\fs24\par
+\f3\fs16 l\tab\f4\fs20 Or the start/end Date, paymentTerm, contact or address is null\f0\fs24\par
+\pard\li720\f4\fs20 If the bean is not changed(client.isChanged() is false), simply return.\par
+If audit update client is true, get the oldClient with the id by retrieveClient. Create an auditHeader with all the different properties between client and oldClient. Create audit by auditManager.create(header).\par
+If the id of project of the client is changed, call removeProjectFromClient to deassociate with the old one and call addProjectToClient with the new one.\par
+Simply call dao.updateClient(client)\par
+\pard\li960 Set the modification date to current date.\par
+Get a connection by createConnection, and prepare a statement to update the client with given ID in the client table\par
+Set all the parameters of statement according to the properties of client and executeUpdate\par
+Close the connection\par
+\pard\li720 Update the contact by contactManager.updateContact(client.getContact()), if the contact id is changed, deassociate the oldClient.getContact with this client by contactManager.deassociate and associate the client.getContact with this client by contactManager.associate\par
+Update the address by addressManager.updateAddress(client.getAddress()), if the address id is changed, deassociate the oldClient.getAddress with this client by addressManager.deassociate and associate the client.getAddress with this client by addressManager.associate\par
+If update client failed and doAudit is true, call auditManager.delete(header.getID()) to rollback the audit.\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.6\f1\tab\f0 Update clients\par
+\pard\li720\i0\f4 Throw InvalidPropertyException if any property of any contact is invalid\par
+Get all the ids of clients\par
+Get the oldClients by retrieveClients(ids)?and get the result boolean[]\par
+For each client...\par
+If audit update client is true, create an auditHeader with all the different properties between client and oldClient. Create audit by auditManager.create(header).\par
+Add the id of the header to the auditId which is created by new long[clients.length]\par
+... end each\par
+Call dao.updateClients() with all the clients with which isChanged is true.\par
+\pard\li960 Get a connection by createConnection, and prepare a statement to update the client with given ID in the client table\par
+For each client, set the modification date to current date and create a sql statement to update the client and addBatch\par
+Execute the batch, and get the returned int[]\par
+If BatchUpdateException is thrown, get the int[] by exception.getUpdateCounts\par
+Create a boolean[], set boolean[i] to int[i]!=EXECUTE_FAILED\par
+If any int[i] is EXECUTE_FAILED, throw BatchOperationException which created with the boolean[]\par
+Close the connection\par
+\pard\li720 If BatchOperationException is thrown, get the boolean[] by exception.getResult\par
+For each client which result[i]==true\par
+\pard\fi-10\li994 Update the contact by contactManager.updateContact(client.getContact()), if the contact id is changed, deassociate the oldClient.getContact with this client by contactManager.deassociate and associate the client.getContact with this client by contactManager.associate\par
+Update the address by addressManager.updateAddress(client.getAddress()), if the address id is changed, deassociate the oldClient.getAddress with this client by addressManager.deassociate and associate the client.getAddress with this client by addressManager.associate\par
+If the id of project of the client is changed, call removeProjectFromClient to deassociate with the old one and call addProjectToClient with the new one.\par
+\pard\li720 For each client which result[i]==false, call auditManager.delete(auditId[i]) to rollback the audit.\par
+If BatchOperationException have been thrown, rethrow it.\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.7\f1\tab\f0 Remove client\par
+\pard\li720\i0\f4 Get the client by retrieveClient(id)\par
+If audit remove client is true, create an auditHeader with all the properties of this client and create it by AuditManager\par
+Call dao.removeClient(id)\par
+\pard\li960 Get a connection by createConnection, and prepare a statement to remove the client with given id from the client table.\par
+Set the parameter of statement to given id and executeUpdate.\par
+Close the connection\par
+\pard\li720 Call removeProjectFromClient to deassociate with the project\par
+Remove the contact and address of client by contactManager and addressManager\par
+For each project, remove project from the client.\par
+deassociate the address with this client by addressManager.deassociate\par
+deassociate the contact with this client by contactManager.deassociate\par
+If remove client failed and doAudit is true, call auditManager.delete(header.getID()) to rollback the audit.\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.8\f1\tab\f0 Remove clients\par
+\pard\li720\i0\f4 Get the clients by retrieveClients(ids)\par
+For each client ...\par
+If audit remove client is true, create an auditHeader with all the properties of this client and create it by AuditManager\par
+Add the id of the header to the auditId which is created by new long[clients.length]\par
+... end each\par
+Call dao.removeClients(ids)\par
+\pard\li960 Get a connection by createConnection, and prepare a statement to remove the client with given id from the client table.\par
+For each client, set the parameter of statement to given id and addBatch\par
+Execute the batch, and get the returned int[]\par
+If BatchUpdateException is thrown, get the int[] by exception.getUpdateCounts\par
+Create a boolean[], set boolean[i] to int[i]!=EXECUTE_FAILED\par
+If any int[i] is EXECUTE_FAILED, throw BatchOperationException which created with the boolean[]\par
+Close the connection \par
+\pard\li720 If BatchOperationException is thrown, get the boolean[] by exception.getResult\par
+For each client which result[i]==true\par
+\pard\li994 call removeProjectFromClient to deassociate with the project.\par
+Remove the contact and address by contact manager and address manager\par
+deassociate the address with this client by addressManager.deassociate\par
+deassociate the contact with this client by contactManager.deassociate\par
+\pard\li720 For each client which result[i]==false, call auditManager.delete(auditId[i]) to rollback the audit.\par
+If BatchOperationException have been thrown, rethrow it.\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.9\f1\tab\f0 Search client with filter and depth\par
+\pard\li720\i0\f4 Get the result with dao.searchClients(filter, depth)\par
+\pard\li960 Return searchBundle.search(filter, depth.getFields) which will return the result set including the fields specified by depth.getFields()\par
+\pard\li720 Get the clients by depth.buildResult(result)\par
+\pard\li960 Get the number of records of the result set by result.getRecordCount\par
+Create a Client array with the number as size\par
+Set current row to the first row\par
+For each row\par
+Create a new Client by buildClient(Each specific depth will specify customized buildClient method)\par
+And put the Client into the array\par
+Goto next row\par
+... end each\par
+Return the array.\par
+\pard\li720 If depth.setAddress is true, set address of each client by setAddress\par
+If depth.setContact is true, set contact of each client by setContact\par
+Set payment term by setPaymentTerm\par
+If the depth.setProjects is true, if depth.onlyProjectsIdName() is true, call setProjectsIdName, else call setProjects.\par
+Return clients.\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.10\f1\tab\f0 Get all clients by DAO\par
+\pard\li720\i0\f4 Get clients dao.getAllClients()\par
+\pard\li960 Get a connection by createConnection, and prepare a statement to get all the clients from the client table\par
+Execute the query\par
+For each record\par
+Create a new Client according to the record, the payment term will be created only with the term id.\par
+And put the Client into a list\par
+... end each\par
+Close the connection\par
+Return the clients in the list as Client[]\par
+\pard\li720 For each client ...\par
+Set the address of the client\par
+Set the contact of the client\par
+Set the payment term of the client\par
+Set the projects of the client\par
+... end each\par
+return clients\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.11\f1\tab\f0 Add project to client\par
+\pard\li720\i0\f4 Call client.addProject(Project)\par
+If audit add project to client is true, create an auditHeader with the project id and client id and create audit by auditManager.create(header)\par
+Call dao.addProjectToClient\par
+\pard\li960 Get a connection by createConnection, and prepare a statement to add the association to the client_project, the creation/modification user/date of association will be set to current date.\par
+Set all the parameters of statement according to the properties of the association and executeUpdate\par
+Close the connection\par
+\pard\li720 If add project is failed, call auditManager.delete(header.getId) to rollback the audit, and remove the project by client.removeProject\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0 1.3.12\f1\tab\f0 Remove project from client\par
+\pard\li720\i0\f4 Call client.removeProject\par
+If audit remove project to client is true, create an auditHeader with the project id and client id and create audit by auditManager.create(header) \par
+Call dao.removeProjectFromClient\par
+\pard\li960 Get a connection by createConnection, and prepare a statement to add the association with which clientId and projectID are equal to the given from client_project table\par
+Set all the parameters of statement according to the properties of the association and executeUpdate\par
+Close the connection\par
+\pard\li720 If remove project is failed, call auditManager.delete(header.getId) to rollback the audit, and add the project by client.addProject\par
+\par
+\pard\cf2\i\f0 1.3.12\f1\tab\f0 Perform Transaction Management (in the SessionBean)\par
+\tab\tab\i0\f4 Call ClientUtilityFactory.getClientUtility();\f0\par
+\f4\tab\tab Delegate to the ClientUtility.\par
+\tab\tab If an exception is thrown\par
+\tab\tab\tab Catch the exception\par
+\tab\tab\tab Call context.setRollbackOnly()\par
+\tab\tab\tab Rethrow the exception\par
+\cf0\tab\tab\par
+\pard\li720\par
+\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b\f0 1.4\tab Component Class Overview\par
+\pard\li720\cf3 ClientUtility\b0 :\par
+\pard\li1440 This is an interface that defines the API that may be used to manage Time Tracker Clients.\par
+\pard\li720\par
+\cf2\b ClientUtilityImpl:\par
+\pard\li1440\b0 This is the default implementation of ClientUtility.\par
+\pard\fi-420\li1860\cf0\f1\par
+\pard\li720\b\f0 Client\b0 :\par
+\pard\li1440 This class holds the information of a client. \par
+\f1\par
+\pard\li720\b\f0 ClientDAO\b0 :\par
+\pard\li1440 This interface specifies the contract for implementations of a ClientDAOs. A ClientDAO is responsible for accessing the database. Clients\rquote  information is persisted in client table, while the associated project information is persisted in client_project table. \par
+\f1\par
+\pard\li720\b\f0 ClientInformixDAO\b0 :\par
+\pard\li1440 This class is the Informix database implementation of the ClientDAO. It provides general retrieve/update/remove/add functionality to access the database. And it provides SearchClient method to search client with filter and depth. Clients\rquote  information is persisted in client table, while the associated project information is persisted in client_project table.\par
+\f1\par
+\pard\li720\b\f0 ClientColumnName\b0 :\par
+\pard\li1440 This class is enumeration of the column name's alias in client table. It make all the column names can be configured. \par
+\f1\par
+\pard\li720\b\f0 ClientProjectColumnName\b0 :\par
+\pard\li1440 This class is enumeration of the column name's alias in client_project table. It make all the column names can be configured. \par
+\f1\par
+\pard\li720\b\f0 Depth\b0 :\par
+\pard\li1440 This abstract class is the base class of the depth. It defines the general interface for all the depth. Therefore, all depth depending search can be uniformly processed without to know the difference between depths.\par
+\par
+\pard\li720\b ClientOnlyDepth\b0 :\par
+\pard\li1440 This class represents the client only depth. It extends Depth. Search with this depth, the result will contain only the client information.\par
+\f1\par
+\pard\li720\b\f0 ClientIDOnlyDepth\b0 :\par
+\pard\li1440 This class represents the client ID only depth. It extends Depth. Search with this depth, the result will contain client name and Id only.\par
+\f1\par
+\pard\li720\b\f0 ClientProjectDepth\b0 :\par
+\pard\li1440 This class represents the client project depth. It extends Depth. Search with this depth, the result will contain all clients and all projects.\par
+\f1\par
+\pard\li720\b\f0 SummaryDepth\b0 :\par
+\pard\li1440 This class represents the summary depth. It extends Depth. Search with this depth, the result will contain client id & Name and associated project ids & names.\par
+\f1\par
+\pard\li720\b\f0 ClientFilterFactory\b0 :\par
+\pard\li1440 This class is used to create pre-defined filters or AND/OR/NOT filter based on given filters.\par
+\par
+\pard\li720\cf2\b ClientUtilityFactory:\par
+\pard\li1440\b0 This class is used to obtain an instance of ClientUtility from the SessionBean.\par
+\par
+\pard\li720\b ClientUtilityDelegate:\par
+\pard\li1440\b0 This a business delegate that looks up the local interface of ClientUtilitySessionBean and delegates to that.\par
+.\par
+\pard\li720\b ClientUtilityLocal:\par
+\pard\li1440\b0 This is the local interface of ClientUtility.\par
+\cf0\par
+\pard\li720\cf2\b ClientUtilityLocalHome:\par
+\pard\li1440\b0 This is the local home interface of ClientUtility.\par
+\cf0\par
+\pard\li720\cf2\b ClientUtilitySessionBean:\par
+\pard\li1440\b0 This is a Stateless SessionBean that is responsible for managing the transactions.  It delegates the actual business logic to an implementation of ClientUtility.\par
+\cf0\par
+\par
+\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b 1.5\tab Usage of Exceptions\par
+\pard\li720 ClientUtilityException\b0 :\par
+\pard\li710 This exception will be the base exception for all exceptions thrown by the implementations of ClientUtility. This exception can be used by the application to simply their exception processing by catching a single exception regardless of the actual subclass.\par
+\f1\par
+\pard\li720\b\f0 InvalidClientIDException\b0 :\par
+\pard\li710 This exception will be created and thrown by the implementations of ClientUtility when it can't generate ID successfully. This exception will be exposed to the caller of ClientUtility.addClient(s) method.\par
+\f1\par
+\pard\li720\b\f0 InvalidClientPropertyException\b0 :\par
+\pard\li710 This exception will be thrown by the implementations of  ClientUtility when the property of the properties of given Client is invalid. This exception will be exposed to the caller of ClientUtility's addClient(s) and updateClient(s) method.\par
+\f1\par
+\pard\li720\b\f0 PropertyOperationException\b0 :\par
+\pard\li710 This exception will be thrown by the implementations of ClientUtility and ClientDAO if it encounters any exception when try to retrieve/delete/update/create the contact/address/project property from contact/address manager or project utility. It will be exposed to the caller of the batch operation methods.\par
+\f1\par
+\pard\li720\b\f0 ClientPersistenceException\b0 :\par
+\pard\li710 This exception will be thrown by the implementations of ClientUtiltiy and the implementations of ClientDAO when they encounter database exceptions. This exception will be exposed to the caller of ClientUtiltiy and the ClientDAO implementations' database related methods.\par
+\f1\par
+\pard\li720\b\f0 ConfigurationException\b0 :\par
+\pard\li710 This exception will be thrown by the implementations of ClientUtiltiy and the implementations of ClientDAO when they encounter configuration error. This exception will be exposed to the caller of constructor of ClientUtility and ClientDAO implementations.\par
+\par
+\pard\li720\b ClientAuditException:\par
+\pard\li710\b0 This exception will be thrown by the implementations of ClientUtility if it encounters exception when audit. This exception will be exposed to the caller of ClientUtility's addClient(s), updateClient(s), removeClient(s), addProjectToClient and removeProjectFromClient method.\par
+\par
+\b BatchOperationException:\par
+\b0 This exception will be thrown by the ClientUtility if the batch operation can't be completed successfully. This exception will be exposed to the caller of ClientUtility's batch operation methods.\par
+\pard\f1\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b\f0 1.6\tab Thread Safety\par
+\pard\li720\sa120\sl240\slmult0\cf1\b0 Client is not thread-safe by being mutable. They are not supposed to be used in multithread environment. If they would be used in multithread environment, they should be synchronized externally.\par
+Other classes in this component are thread-safe by being immutable.\par
+\cf2 The Local and LocalHome interfaces are expected to be used in a thread-safe manner by the EJB container, and their implementations are to be thread-safe.  The ClientUtilityDelegate does not change state after initialization, and relies on the thread-safety of the Local interface.  The ClientUtilitySessionBean is stateless, and relies on the thread-safety of the ClientUtility interface, and the ClientUtilityFactory - both of which are required to be thread-safe.\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\cf0\b\fs24 2.\tab Environment Requirements\tab\tab\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\fs20 2.1\tab Environment\par
+\pard\li1080\b0\f2\tab\f0 Development language: Java 1.4\par
+\f2\tab\f0 Compile target: Java 1.4, Java 1.5\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\par
+\pard\fi-420\li1140\sa120\sl240\slmult0\tx1080\tx1140\cf1\b0\f3\fs16 l\tab\f0\fs20 Configuration Manager 2.1.5 is used t\cf0 o provide configuration options\fs24\par
+\pard\fi-420\li1140\sa120\sl240\slmult0\f3\fs16 l\tab\f0\fs20 Object Factory 2.0 is utilized to create the implementations of ClientDAO.\fs24\par
+\f3\fs16 l\tab\f0\fs20 Base Exception 1.0 is used to provide a base for all custom exceptions.\fs24\par
+\f3\fs16 l\tab\f0\fs20 ID Generator 3.0 is used to generate IDs for Client.\fs24\par
+\f3\fs16 l\tab\f0\fs20 DB Connection Factory 1.0 is used to generate the database Connection. \fs24\par
+\f3\fs16 l\tab\f0\fs20 Type Safe Enum 1.0 is used to be extended by the ClientColumnName and ClientProjectColumnName enumeration. \fs24\par
+\f3\fs16 l\tab\f0\fs20 Search Builder 1.3.1 is used to enable search with filter\fs24\par
+\f3\fs16 l\tab\f0\fs20 Database Abstraction 1.1 is used to provide the CustomResultSet return by the SearchBundle\fs24\par
+\f3\fs16 l\tab\f0\fs20 Time Tracker Audit 3.\cf3 2\cf0  is used to provide audit functionality\fs24\par
+\f3\fs16 l\tab\f0\fs20 Time Tracker Common 3.\cf3 2\cf0  provides TimeTrakerBean base class, PaymentTerm and CommonManager\fs24\par
+\f3\fs16 l\tab\f0\fs20 Time Tracker Project 3.\cf3 2\cf0  provides Project and ProjectUtility to get Projects.\fs24\par
+\f3\fs16 l\tab\f0\fs20 Time Tracker Contact 3.\cf3 2\cf0  provides Contact and Address and their manager.\fs24\par
+\cf2\f3\fs16 l\tab\f0\fs20 JNDI Utility 1.0 is used to look-up the LocalHome interface.\fs24\par
+\cf0\fs20\par
+\fs24\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 2.3\tab Third Party Components\par
+\pard\s3\li720\sb120\sa60\sl240\slmult0\tx720\b0 None\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b\fs24 3.\tab Installation and Configuration\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\fs20 3.1\tab Package Name\par
+\pard\li720\sa120\b0 com.topcoder.timetracker.client\par
+com.topcoder.timetracker.client.db\par
+com.topcoder.timetracker.client.depth\par
+\cf2 com.topcoder.timetracker.client.ejb\par
+\pard\fi-420\li420\sa120\sl240\slmult0\tx420\cf0\b 3.2\tab Configuration Parameters\par
+\pard\fi-720\li720\sa120\sl240\slmult0\tx720\b0 3.2.1\tab Configuration Parameters \par
+\pard\li708\sa120\sl240\slmult0 ClientUtility has the following configuration using the specified namespaces (or one provided by the application):\par
+\pard\li720\sa120\sl240\slmult0\i Namespace\i0 : com.topcoder.timetracker.client.ClientUtility\par
+\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b Property Name\cell Description\cell Format\cell Required\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b0\f4 objectFactoryNamespace\cell\f0 The namespace used for ObjectFactory to create the \f4 ClientDAO\f0\cell String\cell Yes\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f4 IDName\cell\f0 The name of ID Generator\cell String\cell Yes\cell\row\pard\li720\sa120\sl240\slmult0\cf1\f1\par
+\cf0\f0 The ClientUtility will use the ObjectFactory to create the following:\par
+\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b Class Type\cell Key\cell Required\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b0 com.topcoder.timetracker.client.\f4 ClientDAO\f0\cell\f4 "ClientDAO"\cell Yes\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f0 com.topcoder.timetracker.contact.ContactManager\cell\f4 "\f0 ContactManager\f4 "\f0\cell\f4 No\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f0 com.topcoder.timetracker.contact.AddressManager\cell\f4 "\f0 AddressManager\f4 "\f0\cell\f4 No\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f0 com.topcoder.timetracker.common.CommonManager\cell\f4 "\f0 CommonManager\f4 "\f0\cell\f4 No\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f0 com.topcoder.timetracker.project.ProjectUtility\cell\f4 "\f0 ProjectUtility\f4 "\f0\cell\f4 No\cell\row\pard\li720\sa120\sl240\slmult0\cf1\f1\par
+\cf0\f0 The ClientInformixDAO has the following configuration using the specified namespaces (or one provided by the application or ClientUtility):\par
+\i Namespace\i0 : com.topcoder.timetracker.client.db.ClientInformixDAO\par
+\par
+\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b Property Name\cell Description\cell Format\cell Required\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b0\f4 objectFactoryNamespace\cell\f0 The namespace used for ObjectFactory to create the \f4 ClientDAO\f0\cell String\cell Yes\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f4 IDName\cell\f0 The name of ID Generator\cell String\cell Yes\cell\row\pard\li720\sa120\sl240\slmult0\par
+\pard\fs24\par
+\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b\fs20 Property Name\cell Description\cell Format\cell Required\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b0\f4 objectFactoryNamespace\cell\f0 The namespace used for ObjectFactory to create the \f4 AuditManager\f0\cell String\cell Yes\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f4 ConnectionName\cell\f0 The name used to get connection from connection factory\cell String\cell Yes\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f4 SearchBundleName\cell\f0 The name will be used to get SearchBundle from SearchBundleManager\cell String\cell Yes\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f4 SearchBundleNamespace\cell\f0 The namespace used to create \f4 SearchBundleManager\f0\cell String\cell Yes\cell\row\trowd\trgaph10\trleft612\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3645\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6582\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7561\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f4 ConnectionFactoryNamespace\cell\f0 The namespace used to create DBConnectionFactory\cell String\cell Yes\cell\row\pard\fs24\par
+\par
+\pard\li720\sa120\sl240\slmult0\fs20\par
+The ClientInformixDAO will use the ObjectFactory to create the following:\par
+\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b Class Type\cell Key\cell Required\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5439\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b0 com.topcoder.timetracker.\f4 audit.AuditManager\f0\cell\f4 "AuditManager"\cell Yes\cell\row\pard\li720\sa120\sl240\slmult0\cf1\f1\par
+\cf0\f0 NOTE: In the configuration of SearchBundleNamespace\rquote s alias property, should specify all the aliases defined in ClientColumnName and ClientProjectColumnName. Please refer to sample configuration file.\par
+\par
+\cf2 The following configuration properties are used by the ClientUtilityDelegate class.\par
+\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3629\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6552\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b Property Name\cell Description\cell Format\cell Required\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3629\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6552\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\b0\f4 ContextName\cell\f0 The name used to retrieve the Context from JNDIUtils.  If not specified, default is used.\cell String\cell Optional\cell\row\trowd\trgaph10\trleft567\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx3629\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6552\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx7526\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8640\pard\intbl\f4 LocalHomeName\cell\f0 The name used to retrieve the LocalHome object using this and context.  \cell String\cell Yes\cell\row\pard\li720\sa120\sl240\slmult0\cf0\par
+\f1\par
+\pard\fi-720\li720\sa120\sl240\slmult0\tx720\f0 3.2.2\tab Sample Configuration\par
+\pard\li720\sa120\sl240\slmult0 Please refer to config.xml \cf2 and ejb-jar.xml.\cf0\par
+\pard\keepn\s2\fi-720\li720\sb120\sa60\sl240\slmult0\tx0\tx720\b 3.3\tab Dependencies Configuration\par
+\pard\li720\sa120\sl240\slmult0\cf1\b0 None\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\cf0\b\fs24 4.\tab Usage Notes\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\fs20 4.1\tab Required steps to test the component\par
+\pard\fi-360\li1080\sa120\tx1080\b0\f3\fs24\'b7\f5\fs20\tab\f0 Extract the component distribution.\fs24\par
+\pard\fi-360\li1080\sa120\f5\'b7\fs20\tab\f0 Follow \cf3\ul Dependencies Configuration.\cf0\ulnone\fs24\par
+\f5\'b7\fs20\tab\f0 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\fs24\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 4.2\tab Required steps to use the component\par
+\pard\li720\sa120\sl240\slmult0\b0 Nothing special required\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\b 4.3\tab Demo\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 4.3.1\tab Create ClientUtility\par
+\pard\li720\i0\f4\fs18\par
+//Create a new ClientUtility, the default namespace will be used\par
+ClientUtility utility = new \cf3 ClientUtilityImpl\cf0 ();\par
+\par
+// Create a new ClientUtility with namespace\par
+\pard\li720\sa120 ClientUtility utility = new \cf3 ClientUtilityImpl\cf0 (\ldblquote\f0\fs20 com.topcoder.timetracker.client\f4\fs18\rdblquote );\f0\fs24\par
+\pard\li720\i\f1\fs20\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\f0 4.3.2\tab Add Client(s)\par
+\pard\li720\i0\f4\fs18\par
+//Create a new Client\par
+Client client = new Client();\par
+\par
+//Set the properties\par
+client.setCreationUser(\ldblquote CreationUser\rdblquote ); \par
+client.setModificationUser(\ldblquote ModificationUser\rdblquote );\par
+client.setDescription(\ldblquote This is description\rdblquote );\par
+client.setTerm(3);\par
+client.setActive(true); \par
+client.setChanged(true);\par
+\f1\fs24\par
+\f4\fs18 //Add the client by utility, and this action will be audited\par
+utility.addClient(client, true);\par
+\f1\fs24\par
+\f4\fs18 //Add the clients by utility, clients is Client[], and this action will be audited\par
+utility.addClients(clients, true);\par
+\f1\fs24\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.3\f1\tab\f0 Update Client(s)\par
+\pard\li720\i0\f1\fs24\par
+\f4\fs18 //update the client by utility, and this action will be audited\par
+utility.updateClient(client, true);\par
+\f1\fs24\par
+\f4\fs18 //update the clients by utility, clients is Client[], and this action won\rquote t be audited\par
+utility.updateClients(clients, false);\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.4\f1\tab\f0 Retrieve Client(s) by ID\par
+\pard\li720\i0\f1\fs24\par
+\f4\fs18 //retrieve the client by utility\par
+Client client = utility.retrieveClient(clientId);\par
+\f1\fs24\par
+\f4\fs18 // retrieve the clients by utility, clientIds is long[]\par
+Client[] clients = utility.retrieveClients(clientIds);\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.5\f1\tab\f0 Remove Client(s) by ID\par
+\pard\li720\i0\f1\fs24\par
+\f4\fs18 //remove the client by utility, and this action won\rquote t be audited\par
+utility.removeClient(clientId, false);\par
+\f1\fs24\par
+\f4\fs18 //remove the clients by utility, clientIds is long[], and this action will be audited\par
+utility.removeClients(clientIds, true);\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.6\f1\tab\f0 Get all clients\par
+\pard\li720\i0\f1\fs24\par
+\f4\fs18 //get all clients by utility\par
+Client[] clients = utility.getAllClients();\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.7\f1\tab\f0 Search clients with filter and depth\par
+\pard\li720\i0\f4\fs18\par
+//Search with filter (About creating filters, please refer \i\f0\fs20 Create various filters\i0\f4\fs18 ) and client id only depth.\f0\fs24\par
+\f4\fs18 Client[] clients = utility.searchClient(filter, new ClientIDOnlyDepth());\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.8\f1\tab\f0 Add project to client\par
+\pard\li720\i0\f4\fs18\par
+//add project to client, and this action will be audited\par
+utility.addProjectToClient(clientId, projectToBeAdded, true);\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.9\f1\tab\f0 Remove project from client\par
+\pard\li720\i0\f4\fs18\par
+//remove project from client, and this action won\rquote t be audited\par
+utility.addProjectFromClient(clientId, projected, false);\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.10\f1\tab\f0 Get all projects of client\par
+\pard\li720\i0\f4\fs18\par
+//get all projects of a client\par
+Project[] projects = utility.getAllProjectsOfClient(clientId);\par
+\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.11\f1\tab\f0 Create various filters\par
+\pard\li720\i0\f4\fs18\par
+//Create a company id filter which will return all clients with a given company ID\par
+Filter companyIdFilter = ClientFilterFactory.createCompanyIdFilter(companyId);\par
+\par
+//Create a name keyword filter which will return all clients with name that contains a given string, the keyword is a string should be included in the name\par
+Filter nameKeywordFilter = ClientFilterFactory.createNameKeywordFilter(keyword);\par
+\par
+//Create a created in filter which will return all clients created within a given inclusive date range (may be open-ended). To can be null, which indicate the range is open-ended.\par
+Filter createdInFilter = ClientFilterFactory.createCreatedInFilter(from, to);\par
+\par
+//Create a modified in filter which will return all clients modified within a given inclusive date range (may be open-ended) . To can be null, which indicate the range is open-ended.\par
+Filter modifiedInFilter = ClientFilterFactory.createModifiedInFilter(from, to);\par
+\par
+//Create a created by filter which will return all clients created by a given username.\par
+Filter createdByFilter = ClientFilterFactory.createCreatedByFilter(userName); \par
+\par
+// Create a modified by filter which will return all clients modified by a given username.\par
+Filter modifiedByFilter = ClientFilterFactory.createModifiedByFilter(userName);\par
+\par
+// Create an AND filter with created by filter and company id filter which will return all clients created by a given username and company id\par
+Filter andFilter = ClientFilterFactory.andFilter(createdByFilter, companyIdFilter);\par
+\par
+// Create an OR filter with two created by filter which will return all clients created by the two given usernames\par
+Filter orFilter = ClientFilterFactory.andFilter(createdByFilter, createdByFilter2);\par
+\par
+// Create a NOT filter with created in filter which will return all clients not created in the given date range\par
+Filter notFilter = ClientFilterFactory.notFilter(createdInFilter);\par
+\par
+\pard\fi-720\li720\cf2\i\f0\fs20 4.3.12\f1\tab\f0 Utilize a Business Delegate to access the SessionBean\par
+\tab\tab\par
+\pard\li720\i0\f4\fs18 //Create a new ClientUtilityDelegate, the default namespace will be used\par
+ClientUtility delegate = new ClientUtilityDelegate();\par
+\par
+// Create a new ClientUtilityDelegate with namespace\par
+\pard\li720\sa120 ClientUtility delegate = new ClientUtilityDelegate(\ldblquote\f0\fs20 com.topcoder.timetracker.client\f4\fs18\rdblquote );\f0\fs24\par
+\f4\fs18 // Operations from sections 4.3.2 to 4.3.11 can be performed in similar manner.\par
+\cf0\f0\fs24\par
+\pard\li720\f4\fs18\par
+\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b\f0\fs24 5.\tab Future Enhancements\par
+\pard\keepn\s1\li710\sb120\sa60\sl240\slmult0\tx360\cf1\b0\fs20 Implement accessibility for other database systems.\par
+\pard\cf0\f1\fs24\par
+}
+ 
