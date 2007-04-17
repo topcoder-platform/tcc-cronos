@@ -1,0 +1,504 @@
+<?xml version="1.0"?>
+<!-- Configuration details for use with the Time Tracker Time Entry 3.2 component -->
+<CMConfig>
+	<!-- configuration for task type manager delegate -->
+	<Config name="com.topcoder.timetracker.entry.time.delegate.TaskTypeManagerDelegate">
+		<Property name="contextName">
+			<Value>timeEntryContext</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>taskTypeDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for time entry manager delegate -->
+	<Config name="com.topcoder.timetracker.entry.time.delegate.TimeEntryManagerDelegate">
+		<Property name="contextName">
+			<Value>timeEntryContext</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>timeEntryDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for time status manager delegate -->
+	<Config name="com.topcoder.timetracker.entry.time.delegate.TimeStatusManagerDelegate">
+		<Property name="contextName">
+			<Value>timeEntryContext</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>timeStatusDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for manager facotry -->
+	<Config name="com.topcoder.timetracker.entry.time">
+		<Property name="com/topcoder/timetracker/entry/time/TaskTypeManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.TaskTypeManagerImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>taskTypeDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="com/topcoder/timetracker/entry/time/TimeEntryManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.TimeEntryManagerImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>timeEntryDao</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="name">
+						<Value>timeEntryRejectReasonDao</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="name">
+						<Value>rejectReasonManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="com/topcoder/timetracker/entry/time/TimeStatusManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.TimeStatusManagerImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>timeStatusDao</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="taskTypeDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TaskTypeIdGenerator</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="timeEntryDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTimeEntryDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TimeEntryIdGenerator</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
+					<Property name="name">
+						<Value>taskTypeDAO</Value>
+					</Property>
+				</Property>
+
+				<Property name="param7">
+					<Property name="name">
+						<Value>timeStatusDao</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="timeEntryRejectReasonDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTimeEntryRejectReasonDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="rejectReasonManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager</Value>
+			</Property>
+						<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager</Value>
+					</Property>
+				</Property>
+							</Property>
+		</Property>
+
+		<Property name="timeStatusDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TaskTypeIdGenerator</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="auditManager">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.audit.ejb.AuditDelegate</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>java.lang.String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.timetracker.audit.ejb.AuditDelegate</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+		</Property>
+
+		<!-- For the ConnectionFactory -->
+		<Property name="DBConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<!-- Namespace parameter for the connection factory. -->
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>tt_time_entry</Value>
+			</Property>
+			<Property name="tt_time_entry">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.18.44:1526/tt_time_entry:informixserver=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>root</Value>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="empty">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.18.44:1526/empty:informixserver=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>root</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
+		<!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
+		<Property name="connectionFactory">
+			<!-- The namespace of the ConnectionFactory -->
+			<Property name="name">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="class">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		</Property>
+
+		<Property name="searchFragmentFactoryNamespace">
+			<Value>com.topcoder.search.builder.database.factory</Value>
+		</Property>
+
+		<Property name="searchFragmentBuilders">
+			<Property name="first">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.AndFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="second">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.OrFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="third">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="fourth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NotFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="fifth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="sixth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.InFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="eighth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NullFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="ninth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="tenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="eleventh">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="twelvth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="thirteenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<!-- No search fragment factory -->
+	<Config name="com.topcoder.search.builder.database.factory">
+	</Config>
+
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>org.mockejb.jndi.MockContextFactory</Value>
+				</Property>
+			</Property>
+			<Property name="timeEntryContext">
+				<Property name="factory">
+					<Value>org.mockejb.jndi.MockContextFactory</Value>
+				</Property>
+			</Property>
+			<Property name="audit">
+				<Property name="factory">
+					<Value>org.mockejb.jndi.MockContextFactory</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

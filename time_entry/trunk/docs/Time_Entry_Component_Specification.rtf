@@ -1,479 +1,608 @@
-{\rtf1\ansi\ansicpg1252\uc1\deff0\stshfdbch0\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f36\froman\fcharset238\fprq2 Times New Roman CE;}{\f37\froman\fcharset204\fprq2 Times New Roman Cyr;}
-{\f39\froman\fcharset161\fprq2 Times New Roman Greek;}{\f40\froman\fcharset162\fprq2 Times New Roman Tur;}{\f41\froman\fcharset177\fprq2 Times New Roman (Hebrew);}{\f42\froman\fcharset178\fprq2 Times New Roman (Arabic);}
-{\f43\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f44\froman\fcharset163\fprq2 Times New Roman (Vietnamese);}{\f46\fswiss\fcharset238\fprq2 Arial CE;}{\f47\fswiss\fcharset204\fprq2 Arial Cyr;}{\f49\fswiss\fcharset161\fprq2 Arial Greek;}
-{\f50\fswiss\fcharset162\fprq2 Arial Tur;}{\f51\fswiss\fcharset177\fprq2 Arial (Hebrew);}{\f52\fswiss\fcharset178\fprq2 Arial (Arabic);}{\f53\fswiss\fcharset186\fprq2 Arial Baltic;}{\f54\fswiss\fcharset163\fprq2 Arial (Vietnamese);}
-{\f56\fmodern\fcharset238\fprq1 Courier New CE;}{\f57\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f59\fmodern\fcharset161\fprq1 Courier New Greek;}{\f60\fmodern\fcharset162\fprq1 Courier New Tur;}{\f61\fmodern\fcharset177\fprq1 Courier New (Hebrew);}
-{\f62\fmodern\fcharset178\fprq1 Courier New (Arabic);}{\f63\fmodern\fcharset186\fprq1 Courier New Baltic;}{\f64\fmodern\fcharset163\fprq1 Courier New (Vietnamese);}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;
-\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;
-\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{\*\cs10 \additive \ssemihidden 
+{\rtf1\ansi\ansicpg936\uc2\deff0\stshfdbch13\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe2052{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f13\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}\'cb\'ce\'cc\'e5{\*\falt SimSun};}
+{\f36\fnil\fcharset134\fprq2{\*\panose 00000000000000000000}@\'cb\'ce\'cc\'e5;}{\f38\froman\fcharset238\fprq2 Times New Roman CE;}{\f39\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f41\froman\fcharset161\fprq2 Times New Roman Greek;}
+{\f42\froman\fcharset162\fprq2 Times New Roman Tur;}{\f43\froman\fcharset177\fprq2 Times New Roman (Hebrew);}{\f44\froman\fcharset178\fprq2 Times New Roman (Arabic);}{\f45\froman\fcharset186\fprq2 Times New Roman Baltic;}
+{\f46\froman\fcharset163\fprq2 Times New Roman (Vietnamese);}{\f48\fswiss\fcharset238\fprq2 Arial CE;}{\f49\fswiss\fcharset204\fprq2 Arial Cyr;}{\f51\fswiss\fcharset161\fprq2 Arial Greek;}{\f52\fswiss\fcharset162\fprq2 Arial Tur;}
+{\f53\fswiss\fcharset177\fprq2 Arial (Hebrew);}{\f54\fswiss\fcharset178\fprq2 Arial (Arabic);}{\f55\fswiss\fcharset186\fprq2 Arial Baltic;}{\f56\fswiss\fcharset163\fprq2 Arial (Vietnamese);}{\f58\fmodern\fcharset238\fprq1 Courier New CE;}
+{\f59\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f61\fmodern\fcharset161\fprq1 Courier New Greek;}{\f62\fmodern\fcharset162\fprq1 Courier New Tur;}{\f63\fmodern\fcharset177\fprq1 Courier New (Hebrew);}
+{\f64\fmodern\fcharset178\fprq1 Courier New (Arabic);}{\f65\fmodern\fcharset186\fprq1 Courier New Baltic;}{\f66\fmodern\fcharset163\fprq1 Courier New (Vietnamese);}{\f170\fnil\fcharset0\fprq2 SimSun Western{\*\falt SimSun};}
+{\f400\fnil\fcharset0\fprq2 @\'cb\'ce\'cc\'e5 Western;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;
+\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;\red63\green127\blue95;\red127\green0\blue85;\red42\green0\blue255;
+\red0\green0\blue192;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\f0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{\*\cs10 \additive \ssemihidden 
 Default Paragraph Font;}{\*\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\trcbpat1\trcfpat1\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
-\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}}{\*\latentstyles\lsdstimax156\lsdlockeddef0}{\*\listtable{\list\listtemplateid2091426502
-\listsimple{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\'01*;}{\levelnumbers;}}{\listname ;}\listid-2}}{\*\listoverridetable{\listoverride\listid-2\listoverridecount1{\lfolevel
-\listoverrideformat{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelold\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 }}\ls1}}{\*\rsidtbl \rsid2510413\rsid5383878\rsid9310010\rsid11874141
-\rsid12089197\rsid12467711\rsid15602780\rsid16719269}{\*\generator Microsoft Word 11.0.5604;}{\info{\author TCSDESIGNER}{\operator TCSDESIGNER}{\creatim\yr2007\mo3\dy15\hr3\min14}{\revtim\yr2007\mo3\dy16\hr17\min37}{\version9}{\edmins49}{\nofpages12}
-{\nofwords3938}{\nofchars22451}{\*\company CPPI}{\nofcharsws26337}{\vern24689}}\widowctrl\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\horzdoc\dghspace120\dgvspace120\dghorigin1701\dgvorigin1984\dghshow0\dgvshow3
-\jcompress\viewkind4\viewscale110\nolnhtadjtbl\rsidroot11874141 \fet0\sectd \linex0\sectdefaultcl\sftnbj {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl3
-\pndec\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}
-{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}\pard\plain 
-\ql \li283\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx1003\faauto\rin0\lin283\itap0 \fs24\lang1033\langfe1033\cgrid\langnp1033\langfenp1033 {\b\f1\fs28\ul\insrsid5383878 Time Tracker Time Entry version 3.2 Component Specification
+\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\loch\f0\hich\af0\dbch\af13\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{
+\s15\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \cbpat9 \fs24\lang1033\langfe1033\loch\f0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext15 \ssemihidden \styrsid14775437 Document Map;}}
+{\*\latentstyles\lsdstimax156\lsdlockeddef0}{\*\listtable{\list\listtemplateid2091426502\listsimple{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\'01*;}{\levelnumbers;}}{\listname 
+;}\listid-2}}{\*\listoverridetable{\listoverride\listid-2\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelold\levelspace0\levelindent0{\leveltext
+\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\fbias0 }}\ls1}}{\*\rsidtbl \rsid2510413\rsid5383878\rsid9310010\rsid11612737\rsid11874141\rsid12089197\rsid12467711\rsid14775437\rsid15602780\rsid16719269}{\*\generator Microsoft Word 11.0.5604;}{\info
+{\author TCSDESIGNER}{\operator Gencheng Wu}{\creatim\yr2007\mo3\dy15\hr3\min14}{\revtim\yr2007\mo4\dy17\hr10\min44}{\version11}{\edmins154}{\nofpages11}{\nofwords4031}{\nofchars22977}{\*\company CPPI}{\nofcharsws26955}{\vern24689}}
+\paperw12240\paperh15840\margl1800\margr1800\margt1440\margb1440\gutter0 \ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\horzdoc\dghspace120\dgvspace120\dghorigin1701\dgvorigin1984\dghshow0\dgvshow3
+\jcompress\viewkind1\viewscale103\viewzk2\nolnhtadjtbl\rsidroot11874141 \fet0\sectd \linex0\sectdefaultcl\sftnbj {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}
+{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang {\pntxta \dbch .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta \dbch )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl6
+\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl9
+\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb \dbch (}{\pntxta \dbch )}}\pard\plain \ql \li283\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx1003\faauto\outlinelevel0\rin0\lin283\itap0\pararsid14775437 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp1033 {\b\f1\fs28\ul\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Time Tracker Time Entry version 3.2 Component Specification
 \par }\pard \ql \li720\ri0\sa120\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 1.Design
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
+\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.Design
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
 The Time Tracker Time Entry custom component is part of the Time Tracker application.  It provides an abstraction of Time Entries.  This component handles the persistence and other business logic required by the application.
 \par 
-\par The design is separated into 2 layers of management: The topmost layer }{\f1\fs20\insrsid2510413 is}{\f1\fs20\insrsid5383878 
- the Manager classes, which provide the functionality needed to update, retrieve and search from the data store.  Batch operations are also available in the Manager classes.  The next layer is composed of the DAOs
+\par \hich\af1\dbch\af13\loch\f1 The design is separated into 2\hich\af1\dbch\af13\loch\f1  layers of management: The topmost layer }{\f1\fs20\insrsid2510413 \hich\af1\dbch\af13\loch\f1 is}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+ the Manager classes, which provide the functionality needed to update, retrieve and search from the data store.  Batch operations are also available in the Manager classes.  The next layer is composed of the DAOs\hich\af1\dbch\af13\loch\f1 
 , which interact directly with the data store.  There is also a sublayer, called the FilterFactory layer, which is responsible for building search filters which can be used to search the filter.
 \par 
-\par }{\f1\fs20\cf6\insrsid5383878 An additional layer is built on top of the first two layers.
+\par }{\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 An additional layer is built on top of the first two layers.\hich\af1\dbch\af13\loch\f1 
   This layer is the J2EE layer, which consists of a Local, LocalHome, Delegate, and SessionBean classes for each of the different entities.  The Local and LocalHome interfaces define the methods needed by the J2EE container to create the implementing clas
-s
+\hich\af1\dbch\af13\loch\f1 s\hich\af1\dbch\af13\loch\f1 
 es.  The Delegate, Local and SessionBean classes all implement/extend from their respective Manager interface, and therefore have the same set of business methods.  The Delegate looks up the Local interface and routes all method calls to the Local interfa
-ce.  The Local interface then routes those calls to the SessionBean.  The SessionBean finally routes those calls to the Manager implementation, where the actual business logic resides.
+\hich\af1\dbch\af13\loch\f1 c\hich\af1\dbch\af13\loch\f1 e.  The Local interface then routes those calls to the SessionBean.  The SessionBean finally routes those calls to the Manager implementation, where the actual business logic resides.
 \par 
-\par The final version of 3.1 included most of the functionality for the J2EE layer.  The design makes some slight modifications and improves upon the documentation provided by this final version:
+\par \hich\af1\dbch\af13\loch\f1 The final version of 3.1 included most of the functionality for the J2E\hich\af1\dbch\af13\loch\f1 E layer.  The design makes some slight modifications and improves upon the documentation provided by this final version:
 \par 
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 A ConfigurationException class was added to handle problems with configuration.  This is relevant for the Delegate classes, as well as another newly introduced ManagerFactory class.
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 No more state is maintained within the SessionBeans.  The SessionBean 'looks up' the relevant Manager using a ManagerFactory.  The ManagerFactory acts like a singleton, and functions as a global access point for the Managers.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 A ConfigurationException class was added to handle problems with configuration.  This is relevant for the Delegate classes, as well
+\hich\af1\dbch\af13\loch\f1  as another newly introduced ManagerFactory class.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+No more state is maintained within the SessionBeans.  The SessionBean 'looks up' the relevant Manager using a ManagerFactory.  The ManagerFactory acts like a singleton, and functions as a global access \hich\af1\dbch\af13\loch\f1 point for the Managers.
 
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 A sample Deployment Descriptor is provided in the docs directory.
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 A new Sequence Diagram was added to depict the J2EE functionality.
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 A note was added to the Use Cases, saying that the application may now run under a J2EE contai
-ner.  Since the requirements for the new changes are not actual business functionality, but rather more on the inner functionality of the component, it did not seem appropriate to introduce a new use case for the new requirements.
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 There was no need to refactor the DAOs, since no business logic was found in the DAOs.  The JBoss Transaction DataSource may be configured using ConnectionFactory.
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 The design attempts to adhere to the J2EE specification of not allowing File access by delegating all file access
- to an external ManagerFactory class.  This is a pragmatic approach which has been proven to work in previous designs (see the Orpheus Application components, like Game Persistence, Administration Persistence components).  File access does not occur withi
-n the SessionBean itself, but rather within external classes when the application is called.  It is also possible for File Access to occur before any SessionBean calls occur, since the ConfigManager may be initialized beforehand.
-\par {\pntext\pard\plain\f3\fs20\cf6\insrsid5383878 \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \'b7}}\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {
-\f1\fs20\cf6\insrsid5383878 Note that the only other 
-alternative to not using ConfigManager and configuration files will be to restrict usage of ANY TC components that utilize configuration files - these include the Connection Factory, Search Builder and ID Generator components, which are a core part of the
- given component.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 A sample Deployment Descriptor is provided in the docs directory.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 A new Sequence Diagram was added to depict the J2EE functionality.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 A note was added to the Use Cases, saying that the application may now run under a J2EE co\hich\af1\dbch\af13\loch\f1 
+ntainer.  Since the requirements for the new changes are not actual business functionality, but rather more on the inner functionality of the component, it did not seem appropriate to introduce a new use case for the new requirements.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 There was no need \hich\af1\dbch\af13\loch\f1 
+to refactor the DAOs, since no business logic was found in the DAOs.  The JBoss Transaction DataSource may be configured using ConnectionFactory.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 The design attempts to adhere to the J2EE specification of not allowing File access by delegating all file \hich\af1\dbch\af13\loch\f1 
+access to an external ManagerFactory class.  This is a pragmatic approach which has been proven to work in previous designs (see the Orpheus Application components, like Game Persistence, Administration Persistence components).  File access does not occur
+\hich\af1\dbch\af13\loch\f1  \hich\af1\dbch\af13\loch\f1 
+within the SessionBean itself, but rather within external classes when the application is called.  It is also possible for File Access to occur before any SessionBean calls occur, since the ConfigManager may be initialized beforehand.
+\par {\pntext\pard\plain\f3\fs20\cf6\lang1033\langfe1033\langfenp1033\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab}}\pard \ql \fi-720\li1440\ri0\nowidctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnf3 {\pntxtb \hich \'b7}}
+\faauto\ls1\rin0\lin1440\itap0\pararsid11874141 {\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Note that the only\hich\af1\dbch\af13\loch\f1 
+ other alternative to not using ConfigManager and configuration files will be to restrict usage of ANY TC components that utilize configuration files - these include the Connection Factory, Search Builder and ID Generator components, which are a core part
+\hich\af1\dbch\af13\loch\f1  \hich\af1\dbch\af13\loch\f1 of the given component.
 \par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
 \par 
 \par }{\i\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx720\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 1.1Design Patterns 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx720\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.1Design Patterns 
 \par }{\f1\insrsid5383878 
-\par }\pard \ql \li720\ri0\sa120\sl240\slmult0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\i\f1\fs20\insrsid5383878 The Strategy Pattern.}{\i\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\sa120\sl240\slmult0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 The Strategy Pattern.}{\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
  The DAO classes such as TimeEntryDAO, TimeStatusDAO, and TaskTypeDAO  are strategies for persisting and retrieving information from a data store.}{\f1\insrsid5383878 
-\par }{\b\i\f1\fs20\insrsid5383878 The Facade Pattern.}{\i\f1\fs20\insrsid5383878 
+\par }{\b\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 The Facade Pattern.}{\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
  The manager classes [TimeEntryManager, TimeStatusManager, TaskTypeManager]  encapsulate subsystem DAOs and other components to provide a unified API that makes it easier to manage the Time Tracker Entries.
-\par }{\b\i\f1\fs20\insrsid5383878 The Factory Pattern.}{\i\f1\fs20\insrsid5383878  The Factory pattern is used 
+\par }{\b\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 The Factory Pattern.}{\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  The Factory pattern is used \hich\af1\dbch\af13\loch\f1 
 in the FilterFactory layer to create search filters.  The TimeEntryFilterFactory, TimeStatusFilterFactory and TaskTypeFilterFactory employ this pattern.
-\par }{\b\i\f1\fs20\cf6\insrsid5383878 The Business Delegate  Pattern.}{\i\f1\fs20\cf6\insrsid5383878  The Business Delegate pattern is utilized in the TimeEntryManagerDelegate, TimeStatusManagerDelegate, and TaskTypeManagerDelegate classes.}{
-\f1\cf6\insrsid5383878 
-\par }{\b\i\f1\fs20\cf6\insrsid16719269 T}{\b\i\f1\fs20\cf6\insrsid5383878 he Singleton Pattern.}{\i\f1\fs20\cf6\insrsid5383878 
+\par }{\b\i\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 The Business Delegate  Pattern.}{\i\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1  The Business Delegate pattern is utilized in the TimeEntryManagerDelega\hich\af1\dbch\af13\loch\f1 
+te, TimeStatusManagerDelegate, and TaskTypeManagerDelegate classes.}{\f1\cf6\insrsid5383878 
+\par }{\b\i\f1\fs20\cf6\insrsid16719269 \hich\af1\dbch\af13\loch\f1 T}{\b\i\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 he Singleton Pattern.}{\i\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
  While not technically a singleton, the ManagerFactory behaves very similarly, and may be considered a close relative, if not a member of, the singleton pattern.}{\f1\cf6\insrsid5383878 
 \par }{\f1\insrsid5383878 
 \par }\pard \ql \li0\ri0\sa120\nowidctlpar\faauto\rin0\lin0\itap0 {\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 1.2Industry Standards 
-\par }\pard \ql \li720\ri0\sa120\sl240\slmult0\nowidctlpar\faauto\rin0\lin720\itap0 {\i\f1\fs20\cf6\insrsid5383878 EJB}{\i\f1\fs20\insrsid5383878 
-\par JDBC
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.\hich\af1\dbch\af13\loch\f1 2Industry Standards 
+\par }\pard \ql \li720\ri0\sa120\sl240\slmult0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\i\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 EJB}{\i\f1\fs20\insrsid5383878 
+\par \hich\af1\dbch\af13\loch\f1 JDBC
 \par }\pard \ql \li0\ri0\sa120\nowidctlpar\faauto\rin0\lin0\itap0 {\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 1.3 Required Algorithms
-\par }\pard \ql \li720\ri0\sb120\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 There were no algorithms required and the component is straightforward enough.  We will discuss the database schema, and the method of searching in this section.
-
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.3 Required Algorithms
+\par }\pard \ql \li720\ri0\sb120\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+There were no algorithms required and the component is straightforward enough.  We will discuss the database schema, and the method of searching in this section.
 \par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\f1\insrsid5383878 
-\par }\pard \ql \fi-360\li742\ri0\nowidctlpar\tx382\tx742\faauto\rin0\lin742\itap0 {\i\f1\fs18\insrsid5383878 1.3.1 }{\i\f1\fs20\insrsid5383878 Data Mapping}{\f1\insrsid5383878 
-\par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
-This section will deal with mapping the different values in the beans to their respective columns. The developer is responsible for generating the necessary SQL to insert/retrieve the data in the beans from the appropriate columns.  The 
-SQL will require some simple table joins at the most.  Please refer to the ERD diagrams for more information [see TimeTrackerTimeEntry_ERD.jpg].
+\par }\pard \ql \fi-360\li742\ri0\nowidctlpar\tx382\tx742\faauto\rin0\lin742\itap0 {\i\f1\fs18\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.3.1 }{\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Data Mapping}{\f1\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This s\hich\af1\dbch\af13\loch\f1 
+ection will deal with mapping the different values in the beans to their respective columns. The developer is responsible for generating the necessary SQL to insert/retrieve the data in the beans from the appropriate columns.  The SQL will require some si
+\hich\af1\dbch\af13\loch\f1 m\hich\af1\dbch\af13\loch\f1 ple table joins at the most.  Please refer to the ERD diagrams for more information [see TimeTrackerTimeEntry_ERD.jpg].
 \par 
-\par }{\f1\fs20\ul\insrsid5383878 1.3.1.1 TimeEntry Class and time_entry Table}{\f1\fs20\insrsid5383878 
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column time_entry_id maps to the id property in the TimeTrackerBean base class.  
-\par }\pard \ql \li1080\ri0\nowidctlpar\tx670\faauto\rin0\lin1080\itap0 {\i\f1\fs20\insrsid5383878 \tab Note: The id generator is used to create a new id when a new record is inserted.}{\f1\fs20\insrsid5383878 
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column company_id maps to the companyId property in the BaseEntry superclass.
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column time_status_id maps to the timeStatus property in the TimeEntry class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column task_type_id maps to the taskType property in the TimeEntry class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column description maps to the description property in the TimeEntry class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column invoice_id maps to the invoice id property in the TimeEntry class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column creation_date maps to the creationDate property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column creation_user maps to the creationUser property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column modification_date maps to the modificationDate property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column modification_user maps to the modificationUser property in the TimeTrackerBean base class.
+\par }{\f1\fs20\ul\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.3.1.1 TimeEntry Class and time_entry Table}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Column time_entry_id maps to the id property in the TimeTrackerBean base class.  
+\par }\pard \ql \li1080\ri0\nowidctlpar\tx670\faauto\rin0\lin1080\itap0 {\i\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Note: The id generator is used to create a new id when a new record is inserted.}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Column company_id maps to the companyId property in the BaseEntry superclass.
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Column time_status_id maps to the timeStatus property in the TimeEntry class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column task_t\hich\af1\dbch\af13\loch\f1 ype_id maps to the taskType property in the TimeEntry class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column description maps to the description property in the TimeEntry class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column invoice_id maps to the invoice id property in the TimeEntry class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column creation_date maps to the creati\hich\af1\dbch\af13\loch\f1 onDate property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column creation_user maps to the creationUser property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column modification_date maps to the modificationDate property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column modi\hich\af1\dbch\af13\loch\f1 fication_user maps to the modificationUser property in the TimeTrackerBean base class.
 \par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab }{\b\f1\fs20\insrsid5383878 
 \par }{\f1\fs20\insrsid5383878 \tab 
-\par }{\f1\fs20\ul\insrsid5383878 1.3.1.2 TaskType Class and task_type Table
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column task_type_id maps to the id property in the TaskType class.  
-\par }\pard \ql \li1080\ri0\nowidctlpar\tx670\faauto\rin0\lin1080\itap0 {\i\f1\fs20\insrsid5383878 \tab Note: The id generator is used to create a new id when a new record is inserted.}{\f1\fs20\insrsid5383878 
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column description maps to the description property in the TaskType class.  
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column active maps to the active property in the TaskType class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column creation_date maps to the creationDate property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column creation_user maps to the creationUser property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column modification_date maps to the modificationDate property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column modification_user maps to the modificationUser property in the TimeTrackerBean base class.
+\par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\f1\fs20\ul\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.3.1.2 TaskType Class and task_type Table
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Column task_type_id maps to the id property in the TaskType class.  
+\par }\pard \ql \li1080\ri0\nowidctlpar\tx670\faauto\rin0\lin1080\itap0 {\i\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Note: The id generator is used to create a new id when a new record is inserted.}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Column description maps to the description property in the TaskType class.  
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column active maps to the active property in the TaskType class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column creation_date maps t\hich\af1\dbch\af13\loch\f1 o the creationDate property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column creation_user maps to the creationUser property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column modification_date maps to the modificationDate property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column modification_user maps to the modificationUser property in the TimeTrackerBean base class.
 \par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
-\par \tab The companyId property is filled by retrieving the companyId from company_id column in comp_task_type table with task_type_id equal to the desired \tab task_type.}{\f1\fs20\ul\insrsid5383878 
-\par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\ul\insrsid5383878 1.3.1.3 TimeStatus Class and time_status Table
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column time_status_id maps to the id property in the TaskType class.  
-\par }\pard \ql \li1080\ri0\nowidctlpar\tx670\faauto\rin0\lin1080\itap0 {\i\f1\fs20\insrsid5383878 \tab Note: The id generator is used to create a new id when a new record is inserted.}{\f1\fs20\insrsid5383878 
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column description maps to the description property in the TaskType class.  
-\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column creation_date maps to the creationDate property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column creation_user maps to the creationUser property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column modification_date maps to the modificationDate property in the TimeTrackerBean base class.
-\par }{\f3\fs20\insrsid5383878 \'b7\tab }{\f1\fs20\insrsid5383878 Column modification_user maps to the modificationUser property in the TimeTrackerBean base class.
-\par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
-\par 
-\par 
-\par }\pard \ql \li368\ri0\nowidctlpar\faauto\rin0\lin368\itap0 {\i\f1\fs20\insrsid5383878 1.3.2 Searching
-\par }\pard \ql \li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\i\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 
-\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f1\fs20\insrsid5383878 
-Searching is executed in this component by using the Search Builder component and the FilterFactory layer.  First off, the developer needs to develop a search query off which to base the search on.  The search query will retrieve all the necessary attribu
-t
-es, and join with the tables of any possible criterion.  Once a query has been defined, in the constructor, the appropriate FilterFactory will be initialized with the column names used in the query.  This FilterFactory can then be returned by the appropri
-ate getFilterFactory method.
-\par 
-\par The user may then use the Factory to build the search filters.  Once the filters are provided back to the DAO implementation, it may use the DatabaseSearchStrategy to build the search.  The DatabaseSearchStrategy will then add 
-the necessary WHERE clauses to constrain the search to the search criterion specified in the Filters.
-\par 
-\par }{\b\f1\fs20\insrsid5383878 Example:
-\par }{\f1\fs20\insrsid5383878 
-\par The following query may be used as the context for searching the Time Entries (we reduce the retrieved data to only the id, but developer may modify it to retrieve all relevant fields):
-\par \tab }{\f2\fs20\insrsid5383878 SELECT 
-\par \tab \tab time_entry_id
-\par \tab FROM
-\par \tab \tab time_entry
-\par \tab INNER JOIN
-\par \tab \tab time_reject_reason
-\par \tab \tab ON
-\par \tab \tab time_reject_reason.time_entry_id = time_entry.time_entry_id
-\par }{\f1\fs20\insrsid5383878 \tab }{\f2\fs20\insrsid5383878 WHERE
-\par }{\f1\fs20\insrsid5383878 
-\par From this context, the Search Builder can then add the different WHERE clauses, depending on the filter that was provided.  For example, if a filter for the Time Entry was created using createCompanyIdFilter, then the Search Builder would add:
-\par \tab }{\f2\fs20\insrsid5383878 WHERE (continued from above)
-\par \tab \tab time_entry.company_id = [value of filter]
-\par }{\f1\fs20\insrsid5383878 
-\par To accomplish this, in the constructor of the DAO, the FilterFactory must be configured according to the context query that was used.  In this example, the mapped value for the COMPANY_ID_COLUMN_NAME should be "time_entry.company_id".
-\par }\pard \ql \li368\ri0\nowidctlpar\faauto\rin0\lin368\itap0 {\i\f1\fs20\insrsid5383878 
-\par 1.3.3 Auditing
-\par \tab }{\f1\fs20\insrsid5383878 The method implementation notes contain the audit header information that should be used}{\i\f1\fs20\insrsid5383878 \tab }{\f1\fs20\insrsid5383878 
-when performing the audit.  The following clarifies how to create AuditDetail objects to add to the AuditHeader.  When creating a new entry (audit header action type is CREATE), then the oldValue for each detail is null.  When deleting an entry (audit hea
-der action type is DELETE), then the newValue for each detail is null.  When updating an entry, the old value is retrieved from the datastore to populate the AuditDetail's old value. }{\i\f1\fs20\insrsid5383878 
-\par 
-\par }\pard \ql \li368\ri0\nowidctlpar\faauto\rin0\lin368\itap0\pararsid11874141 {\i\f1\fs20\insrsid11874141 1.3.4 Transaction Rollback
-\par \tab }{\f1\fs20\insrsid11874141 The business methods of the SessionBean shou
-ld signal a rollback to the EJB container in the event that an exception was encountered.  The SessionBean should catch any exceptions and call setRollbackOnly() method in the SessionContext before rethrowing the exception.}{\i\f1\fs20\insrsid11874141 
+\par \tab \hich\af1\dbch\af13\loch\f1 The companyId property is filled by retrieving the companyId from company_id column in comp_task_type table with task_type_id equal to the desired \tab task_ty\hich\af1\dbch\af13\loch\f1 pe.}{\f1\fs20\ul\insrsid5383878 
 
+\par }{\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\f1\fs20\ul\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.3.1.3 TimeStatus Class and time_status Table
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Column time_status_id maps to the id property in the TaskType class.  
+\par }\pard \ql \li1080\ri0\nowidctlpar\tx670\faauto\rin0\lin1080\itap0 {\i\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Note: The id generator is used to create a new id when a new record is inserted.}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\tx670\tx1440\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column description maps to the description prop
+\hich\af1\dbch\af13\loch\f1 erty in the TaskType class.  
+\par }\pard \ql \fi-360\li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Column creation_date maps to the creationDate property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column creation_user maps to the creationUser property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column modification_date maps to the mod\hich\af1\dbch\af13\loch\f1 ificationDate property in the TimeTrackerBean base class.
+\par }{\f3\fs20\insrsid5383878 \loch\af3\dbch\af13\hich\f3 \'b7\tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Column modification_user maps to the modificationUser property in the TimeTrackerBean base class.
+\par }\pard \ql \li720\ri0\nowidctlpar\tx670\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
+\par 
+\par 
+\par }\pard \ql \li368\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin368\itap0\pararsid14775437 {\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.3.2 Searching
+\par }\pard \ql \li1440\ri0\nowidctlpar\faauto\rin0\lin1440\itap0 {\i\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Searching is executed in this component by using the Search Builder component and the FilterFactory layer.  First off, the developer needs to develop a search query off which to base the search on.  The search query will retrieve all the necessary attribu
+\hich\af1\dbch\af13\loch\f1 t\hich\af1\dbch\af13\loch\f1 
+es, and join with the tables of any possible criterion.  Once a query has been defined, in the constructor, the appropriate FilterFactory will be initialized with the column names used in the query.  This FilterFactory can then be returned by the appropri
+\hich\af1\dbch\af13\loch\f1 a\hich\af1\dbch\af13\loch\f1 te getFilterFactory method.
+\par 
+\par \hich\af1\dbch\af13\loch\f1 The user may then use the Factory to build the search filters.  Once the filters are provided back to the DAO implementation, it may use the DatabaseSearchStrategy to build the search.  The DatabaseSearchStrategy will then add 
+\hich\af1\dbch\af13\loch\f1 the necessary WHERE clauses to constrain the search to the search criterion specified in the Filters.
+\par 
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\outlinelevel0\rin0\lin1134\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Example:
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f1\fs20\insrsid5383878 
+\par \hich\af1\dbch\af13\loch\f1 The following query may be used as the context for searching the Time Entries (we reduce the retrieved data to only the id, but developer may m\hich\af1\dbch\af13\loch\f1 odify it to retrieve all relevant fields):
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\outlinelevel0\rin0\lin1134\itap0\pararsid14775437 {\f1\fs20\insrsid5383878 \tab }{\f2\fs20\insrsid5383878 \hich\af2\dbch\af13\loch\f2 SELECT 
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f2\fs20\insrsid5383878 \tab \tab \hich\af2\dbch\af13\loch\f2 time_entry_id
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\outlinelevel0\rin0\lin1134\itap0\pararsid14775437 {\f2\fs20\insrsid5383878 \tab \hich\af2\dbch\af13\loch\f2 FROM
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f2\fs20\insrsid5383878 \tab \tab \hich\af2\dbch\af13\loch\f2 time_entry
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\outlinelevel0\rin0\lin1134\itap0\pararsid14775437 {\f2\fs20\insrsid5383878 \tab \hich\af2\dbch\af13\loch\f2 INNER JOIN
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f2\fs20\insrsid5383878 \tab \tab \hich\af2\dbch\af13\loch\f2 time_reject_reason
+\par \tab \tab \hich\af2\dbch\af13\loch\f2 ON
+\par \tab \tab \hich\af2\dbch\af13\loch\f2 time_reject_reason.time_entry_id = time_entry.time_entry_id
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\outlinelevel0\rin0\lin1134\itap0\pararsid14775437 {\f1\fs20\insrsid5383878 \tab }{\f2\fs20\insrsid5383878 \hich\af2\dbch\af13\loch\f2 WHERE
+\par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f1\fs20\insrsid5383878 
+\par \hich\af1\dbch\af13\loch\f1 
+From this context, the Search Builder can then add the different WHERE clauses, depending on the filter that was provided.  For example, if a filter for the Time Entry was created using createCompanyIdFilter, then the Search Builder would add:
+\par \tab }{\f2\fs20\insrsid5383878 \hich\af2\dbch\af13\loch\f2 WHERE (cont\hich\af2\dbch\af13\loch\f2 inued from above)
+\par \tab \tab \hich\af2\dbch\af13\loch\f2 time_entry.company_id = [value of filter]
+\par }{\f1\fs20\insrsid5383878 
+\par \hich\af1\dbch\af13\loch\f1 To accomplish this, in the constructor of the DAO, the FilterFactory must be configured according to the context query that was used.  In this example, the mapped value for the COMPANY_ID_COLUM\hich\af1\dbch\af13\loch\f1 
+N_NAME should be "time_entry.company_id".
+\par }\pard \ql \li368\ri0\nowidctlpar\faauto\rin0\lin368\itap0 {\i\f1\fs20\insrsid5383878 
+\par }\pard \ql \li368\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin368\itap0\pararsid14775437 {\i\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.3.3 Auditing
+\par }\pard \ql \li368\ri0\nowidctlpar\faauto\rin0\lin368\itap0 {\i\f1\fs20\insrsid5383878 \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 The method implementation notes contain the audit header information that should be used}{
+\i\f1\fs20\insrsid5383878 \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 when performing the audit.  The following clarifies how to create AuditDetail objects to add to the AuditHea\hich\af1\dbch\af13\loch\f1 
+der.  When creating a new entry (audit header action type is CREATE), then the oldValue for each detail is null.  When deleting an entry (audit header action type is DELETE), then the newValue for each detail is null.  When updating an entry, the old valu
+\hich\af1\dbch\af13\loch\f1 e\hich\af1\dbch\af13\loch\f1  is retrieved from the datastore to populate the AuditDetail's old value. }{\i\f1\fs20\insrsid5383878 
+\par 
+\par }\pard \ql \li368\ri0\nowidctlpar\faauto\rin0\lin368\itap0\pararsid11874141 {\i\f1\fs20\insrsid11874141 \hich\af1\dbch\af13\loch\f1 1.3.4 Transaction Rollback
+\par \tab }{\f1\fs20\insrsid11874141 \hich\af1\dbch\af13\loch\f1 The business methods of the SessionBean should signal a rollback to the EJB container in the event that an exception was encountered.  The SessionBean s\hich\af1\dbch\af13\loch\f1 
+hould catch any exceptions and call setRollbackOnly() method in the SessionContext before rethrowing the exception.}{\i\f1\fs20\insrsid11874141 
 \par }\pard \ql \li1134\ri0\sb57\nowidctlpar\faauto\rin0\lin1134\itap0 {\f1\fs16\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 1.4Component Class Overview
-\par \tab Package com.topcoder.time.tracker.entry.time
-\par \tab TimeEntryManager (interface)
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab 
-This interface represents the API that may be used in order to manipulate the various details involving a Time Tracker Time Entry.  CRUDE and search methods are provided to manage th
-e Time Entries inside a persistent store.  There are also methods for the manipulation of RejectReasons associated with the Time Entry.
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.4Component Class Overview
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Package com.topcoder.time.tracker.entry.time
+\par \tab \hich\af1\dbch\af13\loch\f1 TimeEntryManager (interface)
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This interface represents the API \hich\af1\dbch\af13\loch\f1 
+that may be used in order to manipulate the various details involving a Time Tracker Time Entry.  CRUDE and search methods are provided to manage the Time Entries inside a persistent store.  There are also methods for the manipulation of RejectReasons ass
+\hich\af1\dbch\af13\loch\f1 o\hich\af1\dbch\af13\loch\f1 ciated with the Time Entry.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TimeEntryDAO (interface)
-\par }{\f1\fs20\insrsid5383878 \tab This is an interface definition for the DAO that is responsible for handling the retrieval, s
-torage, and searching of Time Tracker TimeEntry data from a persistent store.  It is also responsible for generating ids for any entities within its scope, whenever an id is required.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeEntryDAO (interface)
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This is an interface definition for the DAO that is responsible for handling the retrieval, storage, and searching of Time Tracker TimeEntry data from a persistent store.  It is also responsible for ge\hich\af1\dbch\af13\loch\f1 
+nerating ids for any entities within its scope, whenever an id is required.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TimeEntryFilterFactory (interface)
-\par }{\f1\fs20\insrsid5383878 \tab 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeEntryFilterFactory (interface)
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
 This interface defines a factory that is capable of creating search filters used for searching through Time Tracker Time Entries.  It offers a convenient way of specifying search criteria to use.  The factory is capable of producing filters that conform t
-o a specific schema, and is associated with the TimeEntryManager that supports the given schema.}{\b\f1\fs20\insrsid5383878 
+\hich\af1\dbch\af13\loch\f1 o\hich\af1\dbch\af13\loch\f1  a specific schema, and is associated with the TimeEntryManager that supports the given schema.}{\b\f1\fs20\insrsid5383878 
 \par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 
-\par \tab BaseFilterFactory (interface)
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab This is a base FilterFactory interface that provides filter creation methods that may be used for filters of any Time Tracker B
-ean.  It encapsulates filters for the common functionality - namely, the creation and modification date and user.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 BaseFilterFactory (interface)
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is a base FilterFactory interface that provides filter creation methods that may be used for filters of any Time Tracker B
+\hich\af1\dbch\af13\loch\f1 ean.  It encapsulates filters for the common functionality - namely, the creation and modification date and user.}{\b\f1\fs20\insrsid5383878 
 \par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab 
-\par \tab TimeEntryRejectReasonDAO (interface)
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab }{\f1\fs20\insrsid5383878 This is an interface definition for the DAO that is responsible for handling the association between 
-Time Tracker Entries and the Reject Reasons.  Simple CRUDE methods are specified.
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TimeEntryRejectReasonDAO (interface)
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This is an interface definition for the DAO that is responsible for handling the association between 
+\hich\af1\dbch\af13\loch\f1 Time Tracker Entries and the Reject Reasons.  Simple CRUDE methods are specified.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TimeStatusManager (interface)
-\par }{\f1\fs20\insrsid5383878 \tab This interface represents the API that may be used in order to manipulate the various details involving a TimeStatus.  CRUDE and search methods are provided to manage the TimeStatuses inside a persistent store.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeStatusManager (interface)
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This interface represents the API that may be used in order to manipulate the various details involving a TimeStatus.  CRUDE and search method\hich\af1\dbch\af13\loch\f1 s are provided to manage the TimeStatuses inside a persistent store.
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TimeStatusDAO (interface)
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 
-This is an interface definition for the DAO that is responsible for handling the retrieval, storage, and searching of TimeStatus data from a persistent store
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TimeStatusDAO (interface)
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+This is an interface definition for the DAO that is responsible for handling the retrieval, storage, and searching of TimeStatus data from a persistent store\hich\af1\dbch\af13\loch\f1 
 .  It is also responsible for generating ids for any entities within it's scope, whenever an id is required.
 \par }{\b\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TimeStatusFilterFactory (interface)
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 This interface defines a factory that is capable of creating search filters used for searching through Time
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TimeStatusFilterFactory (interface)
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+This interface defines a factory that is capable of creating search filters used for searching through Time\hich\af1\dbch\af13\loch\f1 
 Statuses.  It offers a convenient way of specifying search criteria to use.  The factory is capable of producing filters that conform to a specific schema, and is associated with the TimeStatusManager that supports the given schema.
 \par }{\b\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TaskTypeManager (interface)
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TaskTypeManager (inte\hich\af1\dbch\af13\loch\f1 rface)
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
 This interface represents the API that may be used in order to manipulate the various details involving a TaskType.  CRUDE and search methods are provided to manage the TaskTypes inside a persistent store.
 \par }{\b\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TaskTypeDAO (interface)
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 This is an in
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TaskTypeDAO (interface)
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This is an in\hich\af1\dbch\af13\loch\f1 
 terface definition for the DAO that is responsible for handling the retrieval, storage, and searching of TaskType data from a persistent store.  It is also responsible for generating ids for any entities within it's scope, whenever an id is required.
 
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TaskTypeFilterFactory (interface)
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 
-This interface defines a factory that is capable of creating search filters used for searching through TaskTypes.  It offers a convenient way of specifying search cr
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Tas\hich\af1\dbch\af13\loch\f1 kTypeFilterFactory (interface)
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+This interface defines a factory that is capable of creating search filters used for searching through TaskTypes.  It offers a convenient way of specifying search cr\hich\af1\dbch\af13\loch\f1 
 iteria to use.  The factory is capable of producing filters that conform to a specific schema, and is associated with the TaskTypeManager that supports the given schema.
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TimeEntry
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 This is the main data class of the component, and includes getters and s
-etters to access the various properties of a Time Entry,   A Time Entry is an amount of time spent by a user on a specific task.  
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TimeEntry
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This is the main data class of the component, and includes getters and s
+\hich\af1\dbch\af13\loch\f1 etters to access the various properties of a Time Entry,   A Time Entry is an amount of time spent by a user on a specific task.  
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TimeStatus
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 This is a bean that represents a TimeStatus, which represents a possible state that a TimeEntry can have in th
-e context of the Time Tracker system.
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TimeStatus
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 
+This is a bean that represents a TimeStatus, which represents a possible state that a TimeEntry can have in th\hich\af1\dbch\af13\loch\f1 e context of the Time Tracker system.
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TaskType
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 This is a bean class that indicates a type of task for which a Time Entry may be submitted.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TaskType
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This is a bean class that indicates a type of task for which a Time Entry may be submitted.}{
+\b\f1\fs20\insrsid5383878 
 \par }{\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \tab TimeEntryManagerImpl
-\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab }{\f1\fs20\insrsid5383878 \tab This is a default implementation of the TimeEntryManager interface.  it utilizes instanc
-es of the TimeEntryDAO in order to fulfill the necessary CRUDE and search operations defined for the Time Tracker User.  It also uses TimeEntryRejectReasonDAO to associate any RejectReasons with the TimeEntries.
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TimeEntryManagerImpl
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab }{\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is a default implementation of the TimeEntryManager interface.  it utilizes instanc
+\hich\af1\dbch\af13\loch\f1 es of the TimeEntryDAO in order to fulfill the necessary CRUDE and search operations defined for the Time Tracker User.  It also uses TimeEntryRejectReasonDAO to associate any RejectReasons with the TimeEntries.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 \tab TaskTypeManagerImpl}{\f1\fs20\insrsid5383878 
-\par \tab \tab This is a default implementation of the TaskTypeManager interface.  it utilizes instances of the TaskTypeDAO in order to fulfill the necessary CRUDE and search operations defined for the Time Tracker TaskType.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TaskTypeManagerImpl}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \tab \hich\af1\dbch\af13\loch\f1 This is a default im\hich\af1\dbch\af13\loch\f1 
+plementation of the TaskTypeManager interface.  it utilizes instances of the TaskTypeDAO in order to fulfill the necessary CRUDE and search operations defined for the Time Tracker TaskType.}{\b\f1\fs20\insrsid5383878 
 \par }{\f1\fs20\insrsid5383878 
-\par }{\b\f1\fs20\insrsid5383878 \tab TimeStatusManagerImpl
-\par \tab \tab }{\f1\fs20\insrsid5383878 This is a default implementation of the TimeStatusManager interface.  it utilizes instances of the TimeStatusDAO in order to fulfill the necessary CRUDE and search operations defined for the TimeStatus.
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 TimeStatusManagerImpl
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \tab \tab }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This is a default implementation of the \hich\af1\dbch\af13\loch\f1 
+TimeStatusManager interface.  it utilizes instances of the TimeStatusDAO in order to fulfill the necessary CRUDE and search operations defined for the TimeStatus.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 \tab }{\b\f1\fs20\cf6\insrsid5383878 ManagerFactory
-\par \tab \tab }{\f1\fs20\cf6\insrsid5383878 This class is used to create Manager implementations to use by the delegate classes.}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab }{\b\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 ManagerFactory
+\par }\pard \ql \fi-720\li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\cf6\insrsid5383878 \tab \tab }{\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This class is used to create Manager implementations to use by the delegat
+\hich\af1\dbch\af13\loch\f1 e classes.}{\f1\fs20\insrsid5383878 
 \par 
 \par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 
-\par \tab Package com.topcoder.time.tracker.entry.time.db
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Package com.topcoder.time.tracker.entry.time.db
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 BaseDAO
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This is a base DAO class that encapsulates the common elements that may be found within a DAO such as the connection details, id generator, search strategy and audit manager.
 \par 
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 BaseDAO
-\par }{\f1\fs20\insrsid5383878 \tab This is a base DAO class that encapsulates the common elements that may be found within a DAO such as the connection details, id generator, search strategy and audit manager.
-\par 
-\par }{\b\f1\fs20\insrsid5383878 DbTimeEntryDAO
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the TimeEntryDAO interface that utilizes a database with the schema provided in the Requirements Section of Time Tracker Time Entry 3.1.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbTimeEntryDAO
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This is an implementation of the TimeEntryDAO interface that utilizes a database with the schema provided in the Requirements Section of Time Tracker Time Entry 3.1.
 \par }{\b\f1\fs20\insrsid5383878 
-\par DbTimeStatusDAO
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the TimeStatusDAO interface that utilizes a database with the schema provided in the Requirements Section of Time Tracker Time Entry 3.1.  
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbTimeStatusDAO
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is an implementation of the TimeStatusDAO interface\hich\af1\dbch\af13\loch\f1 
+ that utilizes a database with the schema provided in the Requirements Section of Time Tracker Time Entry 3.1.  
 \par 
-\par }{\b\f1\fs20\insrsid5383878 DbTaskTypeDAO
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the TaskTypeDAO interface that utilizes a database with the schema provided in the Requirements Section of Time Tracker Time Entry 3.1.  
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbTaskTypeDAO
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is an implementation of the TaskTypeDAO interface that utilizes a database with the schema provided in the Requirements Se
+\hich\af1\dbch\af13\loch\f1 ction of Time Tracker Time Entry 3.1.  
 \par 
-\par }{\b\f1\fs20\insrsid5383878 DbTimeEntryRejectReasonDAO
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the TimeEntryRejectReasonDAO interface that utilizes a database with the schema provided in the Requirements Section of Time Tracker Time Entry 3.1.  
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbTimeEntryRejectReasonDAO
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This is an implementation of the TimeEntryRejectReasonDAO interface that utilizes a database with the schema provided in the Requirements Section of Time Tracker Time Entry 3.1.  
 \par 
-\par }{\b\f1\fs20\insrsid5383878 DbBaseFilterFactory
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the BaseFilterFactory that may be used for building searches in the database.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbBase\hich\af1\dbch\af13\loch\f1 FilterFactory
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is an implementation of the BaseFilterFactory that may be used for building searches in the database.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 DbTimeEntryFilterFactory
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the TimeEntryFilterFactory that may be used for building searches in the database.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbTimeEntryFilterFactory
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is an implementation of the TimeEntryFilterFactory that may be used for building searches in the datab\hich\af1\dbch\af13\loch\f1 
+ase.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 DbTimeStatusFilterFactory
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the TimeStatusFactory that may be used for building searches in the database.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbTimeStatusFilterFactory
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is an implementation of the TimeStatusFactory that may be used for building searches in the database.
 \par }{\b\f1\fs20\insrsid5383878 
-\par DbTaskTypeFilterFactory
-\par }{\f1\fs20\insrsid5383878 \tab This is an implementation of the TaskTypeFactory that may be used for building searches in the database.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DbTaskTypeFilterFactory
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is an implementation of the TaskTypeFactory that may be used for building searches in\hich\af1\dbch\af13\loch\f1  the database.
+
 \par 
-\par }{\b\f1\fs20\insrsid5383878 Package com.topcoder.time.tracker.entry.time.}{\b\f1\fs20\insrsid12089197 ejb}{\b\f1\fs20\insrsid5383878 
-\par 
-\par TimeEntryManagerLocal
-\par }{\f1\fs20\insrsid5383878 \tab Local interface for TimeEntryManager.  It contains exactly the same methods as TimeEntryManager interface.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Package com.topcoder.time.tracker.entry.time.}{\b\f1\fs20\insrsid12089197 \hich\af1\dbch\af13\loch\f1 ejb}{
+\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeEntryManagerLocal
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Local interface for TimeEntryManager.  It contains exactly the same methods as TimeEntryManager interface.
 \par }{\b\f1\fs20\insrsid5383878 
-\par TimeStatusManagerLocal
-\par }{\f1\fs20\insrsid5383878 \tab Local interface for TimeStatusManager.  It contains exactly the same methods as TimeStatusManager interface.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeStatusManagerLocal
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Local interface for TimeStatusManager.  It contains exactly the same methods as TimeStatusManager interface.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TaskTypeManagerLocal
-\par }{\f1\fs20\insrsid5383878 \tab Local interface for TaskTypeManager.  It contains exactly the same methods as TaskTypeManager interface.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TaskTypeManagerLocal
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 Local interface for TaskTypeManager.  It contains exactly the same methods as TaskTypeManager interface.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TimeEntryManagerLocalHome
-\par }{\f1\fs20\insrsid5383878 \tab LocalHome interface for the TimeEntryManager.  It contains only a single no-param create method that produces an instance of the
-\par local interface.  it is used to obtain a handle to the Stateless SessionBean.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeEntryManagerLo\hich\af1\dbch\af13\loch\f1 calHome
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 LocalHome interface for the TimeEntryManager.  It contains only a single no-param create method that produces an instance of the
+\par \hich\af1\dbch\af13\loch\f1 local interface.  it is used to obtain a handle to the Stateless SessionBean.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TimeStatusManagerLocalHome
-\par }{\f1\fs20\insrsid5383878 \tab LocalHome interface for the TimeStatusManager.  It contains only a single no-param create method that produces an instance of the
-\par local interface.  it is used to obtain a handle to the Stateless SessionBean.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeStatusManagerLocalHome
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 LocalHome i\hich\af1\dbch\af13\loch\f1 
+nterface for the TimeStatusManager.  It contains only a single no-param create method that produces an instance of the
+\par \hich\af1\dbch\af13\loch\f1 local interface.  it is used to obtain a handle to the Stateless SessionBean.}{\b\f1\fs20\insrsid5383878 
 \par 
-\par TaskTypeManagerLocalHome
-\par }{\f1\fs20\insrsid5383878 \tab LocalHome interface for the TaskTypeManager.  It contains only a single no-param create method that produces an instance of the
-\par local interface.  it is used to obtain a handle to the Stateless SessionBean.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TaskTypeManagerLocalHome
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 LocalHome interface for the Task\hich\af1\dbch\af13\loch\f1 
+TypeManager.  It contains only a single no-param create method that produces an instance of the
+\par \hich\af1\dbch\af13\loch\f1 local interface.  it is used to obtain a handle to the Stateless SessionBean.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TimeEntryManagerDelegate}{\f1\fs20\insrsid5383878 
-\par \tab This is a Business Delegate/Service Locator that may be used within a J2EE application.  It is responsible for looking up the local interface
-\par of the SessionBean for TimeEntryManager, and delegating any calls to the bean.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeEntryManagerDelegate}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This is a Business Delegate/Service Locator that may be used within a J2EE application.  It is responsible for looking up the local interface
+\par \hich\af1\dbch\af13\loch\f1 of the SessionBean for TimeEntryManager, and delegating any calls to the bean.
 \par 
-\par }{\b\f1\fs20\insrsid5383878 TaskTypeManagerDelegate}{\f1\fs20\insrsid5383878 
-\par \tab This is a Business Delegate/Service Locator that may be used within a J2EE application.  It is responsible for looking up the local interface
-\par of the SessionBean for TaskTypeManager, and delegating any calls to the bean.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TaskTypeManagerDelegate}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This is a Business Delegate/Service Locator that may be used within a J2EE application.  It is responsible for looking up the local interface
+\par \hich\af1\dbch\af13\loch\f1 of the SessionBean for TaskTypeManager, and delegating any calls to the bean.}{\b\f1\fs20\insrsid5383878 
 \par 
-\par TimeStatusManagerDelegate}{\f1\fs20\insrsid5383878 
-\par \tab This is a Business Delegate/Service Locator that may be used within a J2EE application.  It is responsible for looking up the local interface
-\par of the SessionBean for TimeStatusManager, and delegating any calls to the bean.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeStatusManagerDelegate}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is \hich\af1\dbch\af13\loch\f1 
+a Business Delegate/Service Locator that may be used within a J2EE application.  It is responsible for looking up the local interface
+\par \hich\af1\dbch\af13\loch\f1 of the SessionBean for TimeStatusManager, and delegating any calls to the bean.}{\b\f1\fs20\insrsid5383878 
 \par 
-\par TimeEntryManagerSessionBean
-\par }{\f1\fs20\insrsid5383878 \tab This is a Stateless SessionBean that is used to provide business services to manage TimeEntries within the Time Tracker Application.
-\par It contains the same methods as TimeEntryManager, and delegates to an instance of TimeEntryManager.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeEntryManagerSessionBean
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is a St\hich\af1\dbch\af13\loch\f1 
+ateless SessionBean that is used to provide business services to manage TimeEntries within the Time Tracker Application.
+\par \hich\af1\dbch\af13\loch\f1 It contains the same methods as TimeEntryManager, and delegates to an instance of TimeEntryManager.}{\b\f1\fs20\insrsid5383878 
 \par 
-\par TimeStatusManagerSessionBean
-\par }{\f1\fs20\insrsid5383878 \tab This is a Stateless SessionBean that is used to provide business services to manage TimeStatuses within the Time Tracker Application.
-\par It contains the same methods as TimeStatusManager, and delegates to an instance of TimeStatusManager.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TimeStatusManagerSessionBean
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This\hich\af1\dbch\af13\loch\f1 
+ is a Stateless SessionBean that is used to provide business services to manage TimeStatuses within the Time Tracker Application.
+\par \hich\af1\dbch\af13\loch\f1 It contains the same methods as TimeStatusManager, and delegates to an instance of TimeStatusManager.}{\b\f1\fs20\insrsid5383878 
 \par 
-\par TaskTypeManagerSessionBean
-\par }{\f1\fs20\insrsid5383878 \tab This is a Stateless SessionBean that is used to provide business services to manage TaskTypes within the Time Tracker Application.
-\par It contains the same methods as TaskTypeManager, and delegates to an instance of TaskTypeManager.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 TaskTypeManagerSessionB\hich\af1\dbch\af13\loch\f1 ean
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This is a Stateless SessionBean that is used to provide business services to manage TaskTypes within the Time Tracker Application.
+\par \hich\af1\dbch\af13\loch\f1 It contains the same methods as TaskTypeManager, and delegates to an instance of TaskTypeManager.}{\b\f1\fs20\insrsid5383878 
 \par 
 \par }\pard \ql \li1140\ri0\nowidctlpar\faauto\rin0\lin1140\itap0 {\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 1.5Component Exception Definitions
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 DataAccessException 
-\par }{\f1\fs20\insrsid5383878 \tab This exception is thrown when a problem occurs while this component is interacting with the persistent store.  It is thrown by all the DAO and Manager interfaces (and their respective implementations).
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.5Component Excepti\hich\af1\dbch\af13\loch\f1 on Definitions
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DataAccessException 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This exception is thrown when a problem occurs while this component is interacting with the persistent store.  It is thrown by all the DAO and Manager interfaces (and their respective implementations).
 \par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 UnrecognizedEntityException
-\par }{\f1\fs20\insrsid5383878 \tab This exception is thrown when interacting with the data store and an entity cannot be recognized.  It may be thrown when an entity with
-\par a specified identifier cannot be found.  It is thrown by all the Manager and DAO interfaces (and their implementations).
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 UnrecognizedEntityException
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This exception is thrown when interacting with the data store and an entity cannot be recognized.  It may be thrown when an entity with
+
+\par \hich\af1\dbch\af13\loch\f1 a specified identifier cannot be found.  It is thrown by all the Manager and DAO interfaces\hich\af1\dbch\af13\loch\f1  (and their implementations).
 \par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 InvalidCompanyException
-\par }{\f1\fs20\insrsid5383878 \tab This exception is thrown when there is an attempt to relate a Time Tracker entity to a TimeEntry whose companies do not match.  For example, adding a TaskType to a TimeEntry when their companies are different.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 InvalidCompanyException
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 
+This exception is thrown when there is an attempt to relate a Time Tracker entity to a TimeEntry whose companies do not match.  For example, adding a TaskType to a TimeEntry when their companies are d\hich\af1\dbch\af13\loch\f1 ifferent.
 \par 
-\par }{\b\f1\fs20\cf6\insrsid5383878 ConfigurationException
-\par }{\f1\fs20\cf6\insrsid5383878 \tab This exception is thrown when there is a problem that occurs when configuring this component.}{\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 ConfigurationException
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\cf6\insrsid5383878 \tab \hich\af1\dbch\af13\loch\f1 This exception is thrown when there is a problem that occurs when configuring this component.}{\f1\fs20\insrsid5383878 
 \par 
 \par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 1.6Thread Safety
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 1.6Thread Safety
 \par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 
-\par }\pard \ql \li735\ri0\sa120\nowidctlpar\faauto\rin0\lin735\itap0 {\f1\fs20\insrsid5383878 
-This component is not completely thread-safe, The Bean instances are not thread safe, and it is expected to be used concurrently only for read-only access.  Otherwise, each thread is expected to work with its own instance.
-\par The Manager classes are required to be thread-safe, and this is achieved via the thread safety of the implementations of the DAO Layer, and the FilterFactory Layer.  
-\par The FilterFactory layer is thread-safe by virtue of being immutable.
-\par }{\f1\fs20\cf6\insrsid5383878\charrsid5383878 Thread-safety of the J2EE layer is dependent on the s
-tatelessness and thread safety of the manager classes, and also on the application container controlling them. The only thing to pay attention to is that the inner state of the classes are not modified after creation.
-\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 2.Environment Requirements\tab \tab 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 2.1Environment
-\par }\pard \ql \li735\ri0\sa57\nowidctlpar\faauto\rin0\lin735\itap0 {\f1\fs20\insrsid5383878 Java 1.4
+\par }\pard \ql \li735\ri0\sa120\nowidctlpar\faauto\rin0\lin735\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This component is not completely thread-safe, The Bean instances are not thread safe, and it is expected to\hich\af1\dbch\af13\loch\f1 
+ be used concurrently only for read-only access.  Otherwise, each thread is expected to work with its own instance.
+\par \hich\af1\dbch\af13\loch\f1 The Manager classes are required to be thread-safe, and this is achieved via the thread safety of the implementations of the DAO Layer, and \hich\af1\dbch\af13\loch\f1 the FilterFactory Layer.  
+\par \hich\af1\dbch\af13\loch\f1 The FilterFactory layer is thread-safe by virtue of being immutable.
+\par }{\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Thread-safety of the J2EE layer is dependent on the statelessness and thread safety of the manager classes, and also on the application container controlling th
+\hich\af1\dbch\af13\loch\f1 em. The only thing to pay attention to is that the inner state of the classes are not modified after creation.
+\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\insrsid5383878 \hich\af1\dbch\af13\loch\f1 2.Environment Requirements\tab \tab 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 2.1Environment
+\par }\pard \ql \li735\ri0\sa57\nowidctlpar\faauto\rin0\lin735\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Java 1.4
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 2.2TopCoder Software Components
-\par }\pard \ql \li720\ri0\sa57\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 DB Connection Factory 1.0}{\f1\fs20\insrsid5383878  \endash  for creating the DB connections}{\f1\insrsid5383878 
-\par }{\b\f1\fs20\insrsid5383878 Base Exception 1.0}{\f1\fs20\insrsid5383878  \endash  base class for custom exception is taken from it}{\f1\insrsid5383878 
-\par }{\b\f1\fs20\insrsid5383878 Object Factory 2.0}{\f1\fs20\insrsid5383878  \endash  is used to configure the component.
-\par }{\b\f1\fs20\insrsid5383878 ID Generator 3.0}{\f1\fs20\insrsid5383878  \endash  for generating IDs in the persistence implementation.
-\par }{\b\f1\fs20\insrsid5383878 JNDI Context Utility 1.0 - }{\f1\fs20\insrsid5383878 for retrieving the LocalHome interface implementations from the container.
-\par }{\b\f1\fs20\insrsid5383878 Search Builder 1.3.1}{\f1\fs20\insrsid5383878  \endash  is used to perform the searches
-\par }{\b\f1\fs20\insrsid5383878 Time Tracker Audit 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 2}{\f1\fs20\insrsid5383878  \endash  is used to perform the optional audit.
-\par }{\b\f1\fs20\insrsid5383878 Time Tracker Base Entry 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 2}{\f1\fs20\insrsid5383878  \endash  is used to provide the base entry class.
-\par }{\b\f1\fs20\insrsid5383878 Time Tracker Reject Reason 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 2}{\f1\fs20\insrsid5383878  \endash  is used to retrieve the RejectReason information.}{\b\f1\fs20\insrsid5383878 
-\par Time Tracker Common 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 2}{\f1\fs20\insrsid5383878  \endash  is used to provide the TimeTrackerBean base class.
-\par }{\b\f1\fs20\insrsid5383878 ConfigManager 2.1.5 }{\f1\fs20\insrsid5383878 \endash  was used to configure the Business Delegate classes.}{\b\f1\fs20\insrsid5383878 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 2.2TopCoder Software Components
+\par }\pard \ql \li720\ri0\sa57\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 DB Connection Factory 1.0}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash 
+\loch\f1  for creating the DB connections}{\f1\insrsid5383878 
+\par }\pard \ql \li720\ri0\sa57\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Base Exception 1.0}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1 
+ base class for custom exception is taken from it}{\f1\insrsid5383878 
+\par }{\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Object Factory 2.0}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1  is used to configure the component.
+\par }{\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 ID Generator 3.0}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1  for generating IDs in the persistence implementation.
+\par }{\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 JNDI Context Utility 1.0 - }{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 for retrieving the LocalHome\hich\af1\dbch\af13\loch\f1  interface implementations from the container.
+\par }\pard \ql \li720\ri0\sa57\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Search Builder 1.3.1}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1 
+ is used to perform the searches
+\par }\pard \ql \li720\ri0\sa57\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Time Tracker Audit 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 2}{\f1\fs20\insrsid5383878 
+\hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1  is used to perform the optional audit.
+\par }{\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Time Tracker Base Entry 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 2}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1 
+ is used to provide the base entry class.
+\par }{\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Time Tracker Reject Reason 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 2}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1 
+ is used to retrieve the RejectReason information.}{\b\f1\fs20\insrsid5383878 
+\par \hich\af1\dbch\af13\loch\f1 Time Tracker Common 3.}{\b\f1\fs20\cf2\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 2}{\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1  \hich\f1 \endash \loch\f1 
+ is used to provide the TimeTrackerBean base class.
+\par }{\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 ConfigManager 2.1.5 }{\f1\fs20\insrsid5383878 \loch\af1\dbch\af13\hich\f1 \endash \loch\f1  was used to configure the Business Delegate classes.}{\b\f1\fs20\insrsid5383878 
 \par }{\f1\fs20\insrsid5383878 
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 2.3Third Party Components
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 None
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 2.3Third Party Comp\hich\af1\dbch\af13\loch\f1 onents
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 None
 \par }\pard \ql \li720\ri0\sb120\sa60\sl240\slmult0\nowidctlpar\tx720\faauto\rin0\lin720\itap0 {\i\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 3.Installation and Configuration
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 3.1Package Names
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 com.topcoder.time.tracker.entry.time
-\par com.topcoder.time.tracker.entry.time.db
-\par com.topcoder.time.tracker.entry.time.}{\f1\fs20\insrsid12089197 ejb}{\f1\fs20\insrsid5383878 
-\par 
+\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 \hich\af1\dbch\af13\loch\f1 3.Installation and Configuration
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 3.1Package Names
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 com.topcoder.time.tracker.entry.time
+\par \hich\af1\dbch\af13\loch\f1 com.topcoder.time.tracker.entry.time.db
+\par \hich\af1\dbch\af13\loch\f1 com.topcoder.time.tracker.entry.time.}{\f1\fs20\insrsid12089197 \hich\af1\dbch\af13\loch\f1 ejb}{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0\pararsid14775437 {\f1\fs20\insrsid14775437 \hich\af1\dbch\af13\loch\f1 com.topcoder.time.tracker.entry.time.}{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid14775437 \hich\af1\dbch\af13\loch\f1 
+de\hich\af1\dbch\af13\loch\f1 l\hich\af1\dbch\af13\loch\f1 e\hich\af1\dbch\af13\loch\f1 g\hich\af1\dbch\af13\loch\f1 a\hich\af1\dbch\af13\loch\f1 t\hich\af1\dbch\af13\loch\f1 e}{\f1\fs20\lang1033\langfe2052\langfenp2052\insrsid14775437\charrsid14775437 
+
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
 \par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 3.2Configuration Parameters
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 This component relies on Object Factory 2.0 for configuration that is based from a file.}{\b\f1\fs20\ul\insrsid5383878 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 3.2Configuration Parameters
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 This component relies on Object Factory 2.0 for configuration that is based from a file.}{\b\f1\fs20\ul\insrsid5383878 
 \par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf6\insrsid5383878\charrsid5383878 For the }{\f1\fs20\cf6\insrsid12089197\charrsid5383878 ejb}{\f1\fs20\cf6\insrsid5383878\charrsid5383878  portion, the following config parameters are used by all business delegates:
+\par }{\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 For the }{\f1\fs20\cf6\insrsid12089197\charrsid5383878 \hich\af1\dbch\af13\loch\f1 ejb}{\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 
+ portion, the following config parameters are used by all business delegates:
 \par 
-\par }{\b\f1\fs20\ul\cf6\insrsid5383878\charrsid5383878 For TimeEntryManagerDelegate and TimeStatusManagerDelegate and TaskTypeManagerDelegate:
+\par }{\b\f1\fs20\ul\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 For TimeEntryManagerDelegate and TimeStatusManagerDelegate and TaskTypeManag\hich\af1\dbch\af13\loch\f1 erDelegate:
 \par 
-\par }{\b\f1\fs20\cf6\insrsid5383878\charrsid5383878 Property Name: }{\i\f1\fs20\cf6\insrsid5383878\charrsid5383878 contextName}{\f1\fs20\cf6\insrsid5383878\charrsid5383878 
-\par }{\b\f1\fs20\cf6\insrsid5383878\charrsid5383878 Property Description: }{\f1\fs20\cf6\insrsid5383878\charrsid5383878 This is the context name used to retrieve the home object of the respective session bean.  If not specified, then the 
-default context provided by JNDIUtils is used.
-\par }{\b\f1\fs20\cf6\insrsid5383878\charrsid5383878 Is Required: }{\i\f1\fs20\cf6\insrsid5383878\charrsid5383878 Optional}{\b\i\f1\fs20\ul\cf6\insrsid5383878\charrsid5383878 
-\par }{\f1\fs20\insrsid5383878 
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0\pararsid9310010 {\b\f1\fs20\cf6\insrsid9310010\charrsid5383878 Property Name: }{\i\f1\fs20\cf6\insrsid9310010 localHome}{\i\f1\fs20\cf6\insrsid9310010\charrsid5383878 Name}{
-\f1\fs20\cf6\insrsid9310010\charrsid5383878 
-\par }{\b\f1\fs20\cf6\insrsid9310010\charrsid5383878 Property Description: }{\f1\fs20\cf6\insrsid9310010\charrsid5383878 This is the }{\f1\fs20\cf6\insrsid9310010 name used to provide the LocalHome object from the configured context.}{
-\f1\fs20\cf6\insrsid9310010\charrsid5383878 
-\par }{\b\f1\fs20\cf6\insrsid9310010\charrsid5383878 Is Required: }{\i\f1\fs20\cf6\insrsid9310010 Required}{\b\i\f1\fs20\ul\cf6\insrsid9310010\charrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Property Name: }{\i\f1\fs20\cf6\insrsid5383878\charrsid5383878 
+\hich\af1\dbch\af13\loch\f1 contextName}{\f1\fs20\cf6\insrsid5383878\charrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\b\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Property Description: }{\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 
+This is the context name used to retrieve the home object of the respective session bean.  If not specified, then the default context provided by JNDIUtils is used.
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Is Required: }{\i\f1\fs20\cf6\insrsid5383878\charrsid5383878 \hich\af1\dbch\af13\loch\f1 
+Optional}{\b\i\f1\fs20\ul\cf6\insrsid5383878\charrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\cf6\insrsid9310010\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Property Name: }{\i\f1\fs20\cf6\insrsid9310010 \hich\af1\dbch\af13\loch\f1 localHome}{
+\i\f1\fs20\cf6\insrsid9310010\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Name}{\f1\fs20\cf6\insrsid9310010\charrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0\pararsid9310010 {\b\f1\fs20\cf6\insrsid9310010\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Property Description: }{\f1\fs20\cf6\insrsid9310010\charrsid5383878 \hich\af1\dbch\af13\loch\f1 
+This is the }{\f1\fs20\cf6\insrsid9310010 \hich\af1\dbch\af13\loch\f1 name used to provide the LocalHome object from the configured context.}{\f1\fs20\cf6\insrsid9310010\charrsid5383878 
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\outlinelevel0\rin0\lin720\itap0\pararsid14775437 {\b\f1\fs20\cf6\insrsid9310010\charrsid5383878 \hich\af1\dbch\af13\loch\f1 Is Required: }{\i\f1\fs20\cf6\insrsid9310010 \hich\af1\dbch\af13\loch\f1 Required}{
+\b\i\f1\fs20\ul\cf6\insrsid9310010\charrsid5383878 
 \par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid9310010 
 \par 
 \par }{\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 3.3Dependencies Configuration
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 All the dependencies are to be configured according to their component specifications.
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 3.3Dependencies Configuration
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 All the dependencies are to be configured according to their component specifications.
 \par 
-\par Do note that the default configuration for Search Builder is desired to be able to build the search string correctly.
+\par \hich\af1\dbch\af13\loch\f1 Do note that the default configuration for Search Builder is desired to be able to build the search string correctly.
 \par }\pard \ql \li720\ri0\sa120\sl240\slmult0\nowidctlpar\faauto\rin0\lin720\itap0 {\i\f1\fs20\cf2\insrsid5383878 
-\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 4.Usage Notes
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 4.1Required steps to test the component
-\par }\pard \ql \li720\ri0\sa120\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 Extract the component distribution.
-\par Follow Dependencies Configuration.
-\par Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.
+\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 \hich\af1\dbch\af13\loch\f1 4.Usage Notes
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\outlinelevel0\rin0\lin0\itap0\pararsid14775437 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 4.1Required steps to test the compo\hich\af1\dbch\af13\loch\f1 nent
+\par }\pard \ql \li720\ri0\sa120\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Extract the component distribution.
+\par \hich\af1\dbch\af13\loch\f1 Follow Dependencies Configuration.
+\par \hich\af1\dbch\af13\loch\f1 Execute \hich\f1 \lquote \loch\f1 ant test\hich\f1 \rquote \loch\f1  within the directory that the distribution was extracted to.
 \par 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 4.2Required steps to use the component
-\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 Configure the dependency components. 
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 4.2Required steps to use the component
+\par }\pard \ql \li720\ri0\nowidctlpar\faauto\rin0\lin720\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Configure the dependency components. 
 \par }\pard \ql \li0\ri0\sa120\nowidctlpar\faauto\rin0\lin0\itap0 {\f1\fs20\insrsid5383878 
-\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 4.3 Demo
+\par }\pard \ql \li0\ri0\nowidctlpar\tx0\faauto\rin0\lin0\itap0 {\b\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 4.3 Demo
 \par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf6\insrsid5383878 Please see the ejb-jar.xml file in docs directory for the deployment descriptor for the J2EE layer of this component.
+\par }{\f1\fs20\cf6\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Please see the ejb-jar.xml file in docs directory for the deployment descriptor for the J2EE layer of this component.
 \par }{\f1\fs20\insrsid5383878 
-\par We will assume here that everything is configured properly.  Try/catch clauses have been removed to enhance clarity.
+\par \hich\af1\dbch\af13\loch\f1 We will assume here that everything is configured properly.  Try/catch clauses have been removed to enhance clarity.
 \par }{\i\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf11\insrsid5383878 // Create a TimeEntryManager using the DB DAOs, and rejectReasonManager}{\f1\fs20\cf4\insrsid5383878 
-\par }{\f1\fs20\cf9\insrsid5383878 TimeEntryManager entryManager = new TimeEntryManagerDelegate("applicationNamespace.time.entry");
-\par TaskTypeManager taskManager = new TaskTypeManagerDelegate("applicationNamespace.time.tasktype");
-\par TimeStatusManager statusManager = new TimeStatusManagerDelegate("applicationNamespace.time.status");
-\par }{\f1\fs20\insrsid5383878 
-\par }{\b\f1\fs20\cf11\insrsid5383878 //  4.3.1 Creating a new Time Entry with a Task Type of "Topcoder Design" and a Status of "Pending"}{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf9\insrsid5383878 TimeEntry newEntry = new TimeEntry();
-\par newEntry.setCompanyId(tcCompanyId);
-\par newEntry.setDescription("Pluggable Persistence 3.0");
-\par newEntry.entryDate(new Date());
-\par newEntry.setBillable(false);
-\par newEntry.setHours(10);
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{
+\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 // Create a TimeEntryManager using the DB DAOs, and rejectReasonManager}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \fi-800\li800\ri0\nowidctlpar\faauto\rin0\lin800\itap0\cufi-500\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TimeEntryManager entryManager = }{
+\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 new}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  }{
+\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737 \hich\af2\dbch\af13\loch\f2  }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 TimeEntryManagerDelegate(TimeEntryManagerDelegate.}{
+\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 class}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 .getName());}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TaskTypeManager taskManager = }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 new}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  TaskTypeManagerDelegate(TaskT\hich\af2\dbch\af13\loch\f2 ypeManagerDelegate.}{
+\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 class}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 .getName());}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TimeStatusManager statusManager = }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 new}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  TimeStatusManagerDelegate(TimeStatusManagerDelegate.}{
+\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 class}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 .getName());}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid11612737 {\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \fi-800\li800\ri0\nowidctlpar\faauto\rin0\lin800\itap0\cufi-500\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{
+\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 // Creating a new Time Entry with a Task Type of "Topcoder Design" and a Status of "Pending"}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  \hich\af2\dbch\af13\loch\f2        TimeEntry newEntry = }{
+\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 new}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  TimeEntry();}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setCompanyId(1);}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setDescription(}{\f2\fs16\cf19\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+"Pluggable Persistence 3.0"}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setDate(}{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 new}{
+\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  Date());}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setBillable(}{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 false
+}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setHours(10);}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setCreationUser(}{\f2\fs16\cf19\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+"topcoder"}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setModificationUser(}{\f2\fs16\cf19\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 "topcoder"}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }{\f1\fs20\cf11\insrsid5383878 // Retrieve a task type with a description of "Topcoder Design"
-\par }{\f1\fs20\cf9\insrsid5383878 TaskTypeFilterFactory taskFilterFactory = taskManager.getTaskTypeFilterFactory();
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Retrieve a task type with a description of "Topcoder Design"}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TaskTypeFilterFactory }{\f2\fs16\ul\cf2\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+taskFilterFactory}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  = taskManager.getTaskTypeFilterFactory(\hich\af2\dbch\af13\loch\f2 );}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par List taskCriterion = new ArrayList();
-\par taskCriterion.add(taskFilterFactory.createCompanyIdFilter(TOPCODER_ID));
-\par taskCriterion.add(taskFilterFactory.createDescriptionFilter("Design"));
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         Filter taskCriterion = }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 new
+}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  AndFilter(taskFilterFactory.createCompanyIdFilter(1),}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \fi-880\li880\ri0\nowidctlpar\faauto\rin0\lin880\itap0\cufi-550\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737 \hich\af2\dbch\af13\loch\f2         }{
+\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 taskFilterFactory.createDescriptionFilter(}{\f2\fs16\cf19\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 "Design"}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 , StringMatchType.}{\i\f2\fs16\cf20\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 SUBSTRING}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 ));}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid11612737 {\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 // Perform the search}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2   \hich\af2\dbch\af13\loch\f2       TaskType tcDesignType = taskManager.searchTaskTypes(taskCriterion)[0];}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }{\f1\fs20\cf11\insrsid5383878 // Perform the search
-\par }{\f1\fs20\cf9\insrsid5383878 TaskType TcDesignType = taskManager.search(taskCriterion)[0];
-\par  
-\par }{\f1\fs20\cf11\insrsid5383878 // Assign the type to the entry}{\f1\fs20\cf9\insrsid5383878 
-\par newEntry.setTaskType(TcDesignType);
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Assign the type to the entry}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setTaskType(tcDesignType);}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }{\f1\fs20\cf11\insrsid5383878 // Retrieve a status with a description of "Pending"}{\f1\fs20\cf9\insrsid5383878 
-\par TimeStatus pendingStatus = statusManager.getTimeStatus(PENDING_ID));
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Retrieve a status with a description of "Pending"}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TimeStatus pendingStatus\hich\af2\dbch\af13\loch\f2  = statusManager.getTimeStatus(}{
+\f2\fs16\cf20\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 pendingStatusId}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }{\f1\fs20\cf11\insrsid5383878 // Assign the status to the entry
-\par }{\f1\fs20\cf9\insrsid5383878 newEntry.setStatus(pendingStatus);
-\par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf11\insrsid5383878 // Register the entry with the manager, with auditing.}{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf9\insrsid5383878 entryManager.createTimeEntry(newEntry, true);
-\par }{\f1\fs20\insrsid5383878 
-\par }{\b\f1\fs20\cf11\insrsid5383878 // 4.3.2 Changing the Entry Details}{\f1\fs20\insrsid5383878 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Assign the status to the entry}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         newEntry.setStatus(pendingStatus);}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }{\f1\fs20\cf11\insrsid5383878 // Retrieve an entry from the manager
-\par }{\f1\fs20\cf9\insrsid5383878 TimeEntry changingEntry = entryManager.getEntry(entryIdToChange);
-\par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf11\insrsid5383878 // Update the entry details.}{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf9\insrsid5383878 changingEntry.setDescription("Pluggable Persistence 3.1");
-\par changingEntry.setStatus(approvedStatus);
-\par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf11\insrsid5383878 // Update the entry in the manager}{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf9\insrsid5383878 entryManager.updateEntry(changingEntry);
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Register the entry with the manager, with auditing.}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         entryManager.createTimeEntry(newEntry, }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 true}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }{\f1\fs20\cf11\insrsid5383878 // Add a RejectReason to the Entry
-\par }{\f1\fs20\cf9\insrsid5383878 entryManager.addRejectReasonToEntry(changingEntry, rejectReasonId);
-\par }{\f1\fs20\insrsid5383878 
-\par }{\b\f1\fs20\cf11\insrsid5383878 // 4.3.3 Search for a group of Entries with "design" in the description and status of "pending" and delete them.  The delete operation should be atomic.
-\par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf11\insrsid5383878 // Define the search criteria.
-\par }{\f1\fs20\cf9\insrsid5383878 TimeEntryFilterFactory filterFactory = entryManager.getTimeEntryFilterFactory();
-\par List criteria = new ArrayList();
-\par criteria.add(filterFactory.createDescriptionFilter("SS:design"));
-\par criteria.add(filterFactory.createStatusFilter(pendingStatus));
-\par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf11\insrsid5383878 // Create a search filter that aggregates the criteria.
-\par }{\f1\fs20\cf9\insrsid5383878 Filter searchFilter = new AndFilter(criteria);}{\f1\fs20\insrsid5383878 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Updating the Entry Details}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }{\f1\fs20\cf11\insrsid5383878 // Perform the actual search.}{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf9\insrsid5383878 TimeEntry[] matchingEntries = entryManager.searchEntries(searchFilter);
-\par }{\f1\fs20\insrsid5383878 
-\par }{\f1\fs20\cf11\insrsid5383878 // Delete the users using atomic mode; auditing is performed.
-\par }{\f1\fs20\cf9\insrsid5383878 entryManager.deleteEntries(matchingEntries, true, true);
-\par }{\f1\fs20\insrsid5383878 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Retrieve an entry from the manager}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TimeEntry changingEntry = entryManager.getTimeEntry(newEntry.getId());}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
 \par 
-\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 5.Future Enhancements
-\par }\pard \ql \li750\ri0\sa120\nowidctlpar\faauto\rin0\lin750\itap0 {\f1\fs20\insrsid5383878 Provide implementations for different RDBMS. 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 // Update the entry details.
+}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         changingEntry.setDescription(}{\f2\fs16\cf19\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 "Pluggable Persis\hich\af2\dbch\af13\loch\f2 tence 3.1"}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TimeStatus approvedStatus = statusManager.getTimeStatus(}{\f2\fs16\cf20\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 approvedStatusId}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         changingEntry.setStatus(approvedStatus);}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Update the entry in the manager}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         entryManager.updateTimeEntry(changingEntry, }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 true}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2        \hich\af2\dbch\af13\loch\f2  }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Add a RejectReason to the Entry}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         entryManager.addRejectReasonToEntry(changingEntry, 1, }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 true}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par 
+\par }\pard \ql \fi-800\li800\ri0\nowidctlpar\faauto\rin0\lin800\itap0\cufi-500\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{
+\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 // Search for a group of Entries with "design" in the description and status of "pending" and delete them.}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid11612737 {\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Define the search criteria.}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TimeEntryFilterFactory filterFactory = entryManager.getTimeEntryFilterFactory();}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par 
+\par }\pard \ql \fi-800\li800\ri0\nowidctlpar\faauto\rin0\lin800\itap0\cufi-500\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         Filter searchFilter = }{
+\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 new}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+ AndFilter(filterFactory.createDescriptionFilter(}{\f2\fs16\cf19\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 "Persistence"}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 ,}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0\pararsid11612737 {\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 StringMatchType.}{\i\f2\fs16\cf20\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 SUBSTRING}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 ), fi\hich\af2\dbch\af13\loch\f2 lterFactory.createTimeStatusFilter(approvedStatus));}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Perform the actual search.}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         TimeEntry[] matchingEntries = entryManager.searchTimeEntries(searchFilter);}{
+\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\f2\fs16\cf17\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+// Delete the users using atomic mode; auditing is performed.}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 l
+\hich\af2\dbch\af13\loch\f2 ong}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 [] timeEntryIds = }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 new}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 
+long}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 [matchingEntries.}{\f2\fs16\cf20\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 length}{
+\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 ];}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 for}{
+\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  (}{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 int}{
+\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2  i = 0; i < matchingEntries.}{\f2\fs16\cf20\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 length}{
+\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 ; i++) \{}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2             timeEntryIds[i] = matchingEntries[i].getId();}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         \}}{\f2\fs16\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\par }{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2         entryManager.deleteTimeEntries(timeEntryIds, }{\b\f2\fs16\cf18\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 
+\hich\af2\dbch\af13\loch\f2 true}{\f2\fs16\cf1\lang1033\langfe2052\langfenp2052\insrsid11612737\charrsid11612737 \hich\af2\dbch\af13\loch\f2 );}{\f1\fs16\insrsid5383878\charrsid11612737 
+\par }\pard \ql \li0\ri0\nowidctlpar\faauto\rin0\lin0\itap0 {\f1\fs20\insrsid5383878 
+\par }\pard \ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\tx0\tx77\faauto\rin0\lin0\itap0 {\b\f1\insrsid5383878 \hich\af1\dbch\af13\loch\f1 5.Future Enhancements
+\par }\pard \ql \li750\ri0\sa120\nowidctlpar\faauto\rin0\lin750\itap0 {\f1\fs20\insrsid5383878 \hich\af1\dbch\af13\loch\f1 Provide implementations for different RDBMS. 
 \par }}

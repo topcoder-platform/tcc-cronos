@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+	<!-- configuration for manager facotry -->
+	<Config name="com.topcoder.timetracker.entry.time">
+		<Property name="com/topcoder/timetracker/entry/time/TimeEntryManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.TimeEntryManagerImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>timeEntryDao</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="name">
+						<Value>timeEntryRejectReasonDao</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="name">
+						<Value>rejectReasonManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="com/topcoder/timetracker/entry/time/TimeStatusManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.TimeStatusManagerImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>timeStatusDao</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="taskTypeDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TaskTypeIdGenerator</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="timeEntryDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTimeEntryDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TimeEntryIdGenerator</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
+					<Property name="name">
+						<Value>taskTypeDAO</Value>
+					</Property>
+				</Property>
+
+				<Property name="param7">
+					<Property name="name">
+						<Value>timeStatusDao</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="timeEntryRejectReasonDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTimeEntryRejectReasonDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="rejectReasonManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager</Value>
+			</Property>
+						<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager</Value>
+					</Property>
+				</Property>
+							</Property>
+		</Property>
+
+		<Property name="timeStatusDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TaskTypeIdGenerator</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="auditManager">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.audit.ejb.AuditDelegate</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>java.lang.String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.timetracker.audit.ejb.AuditDelegate</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+		</Property>
+
+		<!-- For the ConnectionFactory -->
+		<Property name="DBConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<!-- Namespace parameter for the connection factory. -->
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+</CMConfig>

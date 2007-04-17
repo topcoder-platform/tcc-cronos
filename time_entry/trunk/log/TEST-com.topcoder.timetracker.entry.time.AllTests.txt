@@ -1,0 +1,1821 @@
+Testsuite: com.topcoder.timetracker.entry.time.AllTests
+Tests run: 1196, Failures: 0, Errors: 0, Time elapsed: 364.766 sec
+------------- Standard Output ---------------
+Creating 100 task types takes 4937 ms
+Updating 100 task types takes 219 ms
+Searching 50 task types in 100 task types takes 63 ms
+Creating 100 time entries takes 11954 ms
+Updating 100 time entries takes 12578 ms
+Searching 2 time entries in 100 time entries takes 219 ms
+Creating 100 task statuses takes 282 ms
+Updating 100 time statuses takes 156 ms
+Searching 1 time status in 100 time statuses takes 47 ms
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO.searchTimeStatuses(DbTimeStatusDAO.java:611)
+	at com.topcoder.timetracker.entry.time.TimeStatusManagerImpl.searchTimeStatuses(TimeStatusManagerImpl.java:185)
+	at com.topcoder.timetracker.entry.time.TimeStatusManagerImplTests.testSearchTimeStatuses_DataAccessException(TimeStatusManagerImplTests.java:1047)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO.searchTaskTypes(DbTaskTypeDAO.java:720)
+	at com.topcoder.timetracker.entry.time.TaskTypeManagerImpl.searchTaskTypes(TaskTypeManagerImpl.java:183)
+	at com.topcoder.timetracker.entry.time.TaskTypeManagerImplTests.testSearchTaskTypes_DataAccessException(TaskTypeManagerImplTests.java:1041)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeEntryDAO.searchTimeEntries(DbTimeEntryDAO.java:1054)
+	at com.topcoder.timetracker.entry.time.TimeEntryManagerImpl.searchTimeEntries(TimeEntryManagerImpl.java:254)
+	at com.topcoder.timetracker.entry.time.TimeEntryManagerImplTests.testSearchTimeEntries_DataAccessException(TimeEntryManagerImplTests.java:1502)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO.searchTaskTypes(DbTaskTypeDAO.java:720)
+	at com.topcoder.timetracker.entry.time.db.DbTaskTypeDAOTests.testSearchTaskTypes_DataAccessException(DbTaskTypeDAOTests.java:993)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO.searchTimeStatuses(DbTimeStatusDAO.java:611)
+	at com.topcoder.timetracker.entry.time.db.DbTimeStatusDAOTests.testSearchTimeStatuses_DataAccessException(DbTimeStatusDAOTests.java:1000)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeEntryDAO.searchTimeEntries(DbTimeEntryDAO.java:1054)
+	at com.topcoder.timetracker.entry.time.db.DbTimeEntryDAOTests.testSearchTimeEntries_DataAccessException(DbTimeEntryDAOTests.java:1251)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeEntryDAO.searchTimeEntries(DbTimeEntryDAO.java:1054)
+	at com.topcoder.timetracker.entry.time.TimeEntryManagerImpl.searchTimeEntries(TimeEntryManagerImpl.java:254)
+	at com.topcoder.timetracker.entry.time.ejb.TimeEntryManagerSessionBean.searchTimeEntries(TimeEntryManagerSessionBean.java:241)
+	at com.topcoder.timetracker.entry.time.ejb.TimeEntryManagerSessionBean$$FastClassByCGLIB$$99ed6ffc.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:87)
+	at org.mockejb.interceptor.InterceptorInvoker$CglibMethodInvoker.intercept(InterceptorInvoker.java:95)
+	at org.mockejb.interceptor.InvocationContext.proceed(InvocationContext.java:177)
+	at org.mockejb.interceptor.InterceptorInvoker.invoke(InterceptorInvoker.java:53)
+	at org.mockejb.MockEjbObject.invoke(MockEjbObject.java:147)
+	at $Proxy4.searchTimeEntries(Unknown Source)
+	at com.topcoder.timetracker.entry.time.delegate.TimeEntryManagerDelegate.searchTimeEntries(TimeEntryManagerDelegate.java:188)
+	at com.topcoder.timetracker.entry.time.ejb.TimeEntryManagerSessionBeanTests.testSearchTimeEntries_DataAccessException(TimeEntryManagerSessionBeanTests.java:1063)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO.searchTaskTypes(DbTaskTypeDAO.java:720)
+	at com.topcoder.timetracker.entry.time.TaskTypeManagerImpl.searchTaskTypes(TaskTypeManagerImpl.java:183)
+	at com.topcoder.timetracker.entry.time.ejb.TaskTypeManagerSessionBean.searchTaskTypes(TaskTypeManagerSessionBean.java:223)
+	at com.topcoder.timetracker.entry.time.ejb.TaskTypeManagerSessionBean$$FastClassByCGLIB$$7ae6167a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:87)
+	at org.mockejb.interceptor.InterceptorInvoker$CglibMethodInvoker.intercept(InterceptorInvoker.java:95)
+	at org.mockejb.interceptor.InvocationContext.proceed(InvocationContext.java:177)
+	at org.mockejb.interceptor.InterceptorInvoker.invoke(InterceptorInvoker.java:53)
+	at org.mockejb.MockEjbObject.invoke(MockEjbObject.java:147)
+	at $Proxy5.searchTaskTypes(Unknown Source)
+	at com.topcoder.timetracker.entry.time.delegate.TaskTypeManagerDelegate.searchTaskTypes(TaskTypeManagerDelegate.java:171)
+	at com.topcoder.timetracker.entry.time.ejb.TaskTypeManagerSessionBeanTests.testSearchTaskTypes_DataAccessException(TaskTypeManagerSessionBeanTests.java:800)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO.searchTimeStatuses(DbTimeStatusDAO.java:611)
+	at com.topcoder.timetracker.entry.time.TimeStatusManagerImpl.searchTimeStatuses(TimeStatusManagerImpl.java:185)
+	at com.topcoder.timetracker.entry.time.ejb.TimeStatusManagerSessionBean.searchTimeStatuses(TimeStatusManagerSessionBean.java:221)
+	at com.topcoder.timetracker.entry.time.ejb.TimeStatusManagerSessionBean$$FastClassByCGLIB$$ab3bf0ba.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:87)
+	at org.mockejb.interceptor.InterceptorInvoker$CglibMethodInvoker.intercept(InterceptorInvoker.java:95)
+	at org.mockejb.interceptor.InvocationContext.proceed(InvocationContext.java:177)
+	at org.mockejb.interceptor.InterceptorInvoker.invoke(InterceptorInvoker.java:53)
+	at org.mockejb.MockEjbObject.invoke(MockEjbObject.java:147)
+	at $Proxy7.searchTimeStatuses(Unknown Source)
+	at com.topcoder.timetracker.entry.time.delegate.TimeStatusManagerDelegate.searchTimeStatuses(TimeStatusManagerDelegate.java:169)
+	at com.topcoder.timetracker.entry.time.ejb.TimeStatusManagerSessionBeanTests.testSearchTimeStatuses_DataAccessException(TimeStatusManagerSessionBeanTests.java:802)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO.searchTaskTypes(DbTaskTypeDAO.java:720)
+	at com.topcoder.timetracker.entry.time.TaskTypeManagerImpl.searchTaskTypes(TaskTypeManagerImpl.java:183)
+	at com.topcoder.timetracker.entry.time.failuretests.TaskTypeManagerImplFailureTests.testSearchTaskTypes2(TaskTypeManagerImplFailureTests.java:804)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO.searchTimeStatuses(DbTimeStatusDAO.java:611)
+	at com.topcoder.timetracker.entry.time.TimeStatusManagerImpl.searchTimeStatuses(TimeStatusManagerImpl.java:185)
+	at com.topcoder.timetracker.entry.time.failuretests.TimeStatusManagerImplFailureTests.testSearchTimeStatuses2(TimeStatusManagerImplFailureTests.java:839)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO.searchTaskTypes(DbTaskTypeDAO.java:720)
+	at com.topcoder.timetracker.entry.time.failuretests.db.DbTaskTypeDAOFailureTests.testSearchTaskTypes2(DbTaskTypeDAOFailureTests.java:839)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeEntryDAO.searchTimeEntries(DbTimeEntryDAO.java:1054)
+	at com.topcoder.timetracker.entry.time.failuretests.db.DbTimeEntryDAOFailureTests.testSearchTimeEntries2(DbTimeEntryDAOFailureTests.java:1039)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO.searchTimeStatuses(DbTimeStatusDAO.java:611)
+	at com.topcoder.timetracker.entry.time.failuretests.db.DbTimeStatusDAOFailureTests.testSearchTimeStatuses2(DbTimeStatusDAOFailureTests.java:847)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTaskTypeDAO.searchTaskTypes(DbTaskTypeDAO.java:720)
+	at com.topcoder.timetracker.entry.time.TaskTypeManagerImpl.searchTaskTypes(TaskTypeManagerImpl.java:183)
+	at com.topcoder.timetracker.entry.time.ejb.TaskTypeManagerSessionBean.searchTaskTypes(TaskTypeManagerSessionBean.java:223)
+	at com.topcoder.timetracker.entry.time.ejb.TaskTypeManagerSessionBean$$FastClassByCGLIB$$7ae6167a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:87)
+	at org.mockejb.interceptor.InterceptorInvoker$CglibMethodInvoker.intercept(InterceptorInvoker.java:95)
+	at org.mockejb.interceptor.InvocationContext.proceed(InvocationContext.java:177)
+	at org.mockejb.interceptor.InterceptorInvoker.invoke(InterceptorInvoker.java:53)
+	at org.mockejb.MockEjbObject.invoke(MockEjbObject.java:147)
+	at $Proxy5.searchTaskTypes(Unknown Source)
+	at com.topcoder.timetracker.entry.time.delegate.TaskTypeManagerDelegate.searchTaskTypes(TaskTypeManagerDelegate.java:171)
+	at com.topcoder.timetracker.entry.time.failuretests.ejb.TaskTypeManagerSessionBeanFailureTests.testSearchTaskTypes2(TaskTypeManagerSessionBeanFailureTests.java:587)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeEntryDAO.searchTimeEntries(DbTimeEntryDAO.java:1054)
+	at com.topcoder.timetracker.entry.time.TimeEntryManagerImpl.searchTimeEntries(TimeEntryManagerImpl.java:254)
+	at com.topcoder.timetracker.entry.time.ejb.TimeEntryManagerSessionBean.searchTimeEntries(TimeEntryManagerSessionBean.java:241)
+	at com.topcoder.timetracker.entry.time.ejb.TimeEntryManagerSessionBean$$FastClassByCGLIB$$99ed6ffc.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:87)
+	at org.mockejb.interceptor.InterceptorInvoker$CglibMethodInvoker.intercept(InterceptorInvoker.java:95)
+	at org.mockejb.interceptor.InvocationContext.proceed(InvocationContext.java:177)
+	at org.mockejb.interceptor.InterceptorInvoker.invoke(InterceptorInvoker.java:53)
+	at org.mockejb.MockEjbObject.invoke(MockEjbObject.java:147)
+	at $Proxy4.searchTimeEntries(Unknown Source)
+	at com.topcoder.timetracker.entry.time.delegate.TimeEntryManagerDelegate.searchTimeEntries(TimeEntryManagerDelegate.java:188)
+	at com.topcoder.timetracker.entry.time.failuretests.ejb.TimeEntryManagerSessionBeanFailureTests.testSearchTimeEntries2(TimeEntryManagerSessionBeanFailureTests.java:769)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
+	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
+	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
+	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
+	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
+	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
+	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
+	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
+	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
+	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
+	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
+	at com.topcoder.timetracker.entry.time.db.DbTimeStatusDAO.searchTimeStatuses(DbTimeStatusDAO.java:611)
+	at com.topcoder.timetracker.entry.time.TimeStatusManagerImpl.searchTimeStatuses(TimeStatusManagerImpl.java:185)
+	at com.topcoder.timetracker.entry.time.ejb.TimeStatusManagerSessionBean.searchTimeStatuses(TimeStatusManagerSessionBean.java:221)
+	at com.topcoder.timetracker.entry.time.ejb.TimeStatusManagerSessionBean$$FastClassByCGLIB$$ab3bf0ba.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:87)
+	at org.mockejb.interceptor.InterceptorInvoker$CglibMethodInvoker.intercept(InterceptorInvoker.java:95)
+	at org.mockejb.interceptor.InvocationContext.proceed(InvocationContext.java:177)
+	at org.mockejb.interceptor.InterceptorInvoker.invoke(InterceptorInvoker.java:53)
+	at org.mockejb.MockEjbObject.invoke(MockEjbObject.java:147)
+	at $Proxy7.searchTimeStatuses(Unknown Source)
+	at com.topcoder.timetracker.entry.time.delegate.TimeStatusManagerDelegate.searchTimeStatuses(TimeStatusManagerDelegate.java:169)
+	at com.topcoder.timetracker.entry.time.failuretests.ejb.TimeStatusManagerSessionBeanFailureTests.testSearchTimeStatuses2(TimeStatusManagerSessionBeanFailureTests.java:587)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:289)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:656)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:558)
+------------- ---------------- ---------------
+
+Testcase: testCtor took 0.016 sec
+Testcase: testBatchOperationExceptionInheritance took 0 sec
+Testcase: testGetCauses took 0 sec
+Testcase: testCtor took 1.125 sec
+Testcase: testCtor_NullTimeStatusDao took 0.234 sec
+Testcase: testCreateTimeStatus took 0.391 sec
+Testcase: testCreateTimeStatus_NullTimeStatus took 0.234 sec
+Testcase: testCreateTimeStatus_DataAccessException took 0.281 sec
+Testcase: testUpdateTimeStatus took 0.391 sec
+Testcase: testUpdateTimeStatus_NullTimeStatus took 0.234 sec
+Testcase: testUpdateTimeStatus_UnrecognizedEntityException took 0.313 sec
+Testcase: testUpdateTimeStatus_DataAccessException took 0.343 sec
+Testcase: testDeleteTimeStatus took 0.391 sec
+Testcase: testDeleteTimeStatus_UnrecognizedEntityException took 0.313 sec
+Testcase: testDeleteTimeStatus_DataAccessException took 0.468 sec
+Testcase: testGetTimeStatus took 0.313 sec
+Testcase: testGetTimeStatus_UnrecognizedEntityException took 0.265 sec
+Testcase: testGetTimeStatus_DataAccessException took 0.297 sec
+Testcase: testCreateTimeStatuses took 0.297 sec
+Testcase: testCreateTimeStatuses_NullTimeEntries took 0.219 sec
+Testcase: testCreateTimeStatuses_EmptyTimeEntries took 0.219 sec
+Testcase: testCreateTimeStatuses_SameElement took 0.25 sec
+Testcase: testCreateTimeStatuses_NullInTimeEntries took 0.25 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithIdSet took 0.281 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullCreationUser took 0.219 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullModificationUser took 0.25 sec
+Testcase: testCreateTimeStatuses_DataAccessException took 0.297 sec
+Testcase: testUpdateTimeStatuses took 0.406 sec
+Testcase: testUpdateTimeStatuses_NullTimeEntries took 0.234 sec
+Testcase: testUpdateTimeStatuses_EmptyTimeEntries took 0.235 sec
+Testcase: testUpdateTimeStatuses_SameTimeStatus took 0.25 sec
+Testcase: testUpdateTimeStatuses_NullInTimeEntries took 0.25 sec
+Testcase: testUpdateTimeStatuses_TimeStatusWithIdSet took 0.25 sec
+Testcase: testUpdateTimeStatuses_TimeStatusWithNullModificationUser took 0.25 sec
+Testcase: testUpdateTimeStatuses_DataAccessException took 0.328 sec
+Testcase: testDeleteTimeStatuses took 0.406 sec
+Testcase: testDeleteTimeStatuses_NullTimeStatusIds took 0.219 sec
+Testcase: testDeleteTimeStatuses_EmptyTimeStatusIds took 0.218 sec
+Testcase: testDeleteTimeStatuses_EqualTimeStatusId took 0.266 sec
+Testcase: testDeleteTimeStatuses_DataAccessException took 0.484 sec
+Testcase: testGetTimeStatuses took 0.344 sec
+Testcase: testGetTimeStatuses_NullTimeStatusIds took 0.25 sec
+Testcase: testGetTimeStatuses_DataAccessException took 0.391 sec
+Testcase: testSearchTimeStatuses took 0.594 sec
+Testcase: testSearchTimeStatuses_NullCriteria took 0.437 sec
+Testcase: testSearchTimeStatuses_DataAccessException took 0.313 sec
+Testcase: testGetTimeStatusFilterFactory took 0.218 sec
+Testcase: testGetAllTimeStatuses took 0.25 sec
+Testcase: testGetAllTimeStatuses_DataAccessException took 0.282 sec
+Testcase: testCtor took 0 sec
+Testcase: testGetCompanyId took 0 sec
+Testcase: testSetCompanyId took 0 sec
+Testcase: testSetCompanyId_Negative took 0 sec
+Testcase: testGetActive took 0 sec
+Testcase: testIsActive took 0 sec
+Testcase: testSetActive took 0 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testSetDescription took 0 sec
+Testcase: testSetDescription_NullDescription took 0 sec
+Testcase: testSetDescription_EmptyDescription took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testInvalidCompanyExceptionInheritance1 took 0 sec
+Testcase: testInvalidCompanyExceptionInheritance2 took 0 sec
+Testcase: testGetTimeEntryCompanyId took 0 sec
+Testcase: testGetOtherEntityCompanyId took 0 sec
+Testcase: testCtor took 0 sec
+Testcase: testIsBillable took 0 sec
+Testcase: testGetBillable took 0 sec
+Testcase: testSetBillable took 0 sec
+Testcase: testGetTaskType took 0 sec
+Testcase: testSetTaskType took 0 sec
+Testcase: testSetTaskType_NullTaskType took 0 sec
+Testcase: testGetInvoiceId took 0 sec
+Testcase: testSetInvoiceId took 0 sec
+Testcase: testSetInvoiceId_LessThan took 0 sec
+Testcase: testGetHours took 0 sec
+Testcase: testGetStatus took 0 sec
+Testcase: testSetStatus took 0 sec
+Testcase: testSetStatus_NullTimeStatus took 0 sec
+Testcase: testSetHours took 0 sec
+Testcase: testSetHours_Negative took 0 sec
+Testcase: testCtor took 0.281 sec
+Testcase: testGetTaskType took 0.359 sec
+Testcase: testCtor_NullTaskTypeDAO took 4.875 sec
+Testcase: testGetTaskType_DataAccessException took 0.391 sec
+Testcase: testGetTaskType_UnrecognizedEntityException took 0.25 sec
+Testcase: testCreateTaskType took 0.359 sec
+Testcase: testCreateTaskType_NullTaskType took 0.219 sec
+Testcase: testCreateTaskType_DataAccessException took 0.297 sec
+Testcase: testUpdateTaskType took 0.469 sec
+Testcase: testUpdateTaskType_NullTaskType took 0.25 sec
+Testcase: testUpdateTaskType_UnrecognizedEntityException took 0.312 sec
+Testcase: testUpdateTaskType_DataAccessException took 0.375 sec
+Testcase: testDeleteTaskType took 0.5 sec
+Testcase: testDeleteTaskType_UnrecognizedEntityException took 0.281 sec
+Testcase: testDeleteTaskType_DataAccessException took 0.375 sec
+Testcase: testCreateTaskTypes took 0.391 sec
+Testcase: testCreateTaskTypes_NullTimeEntries took 0.469 sec
+Testcase: testCreateTaskTypes_EmptyTimeEntries took 0.218 sec
+Testcase: testCreateTaskTypes_SameElement took 0.219 sec
+Testcase: testCreateTaskTypes_NullInTimeEntries took 0.219 sec
+Testcase: testCreateTaskTypes_TaskTypeWithIdSet took 0.219 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullCreationUser took 0.218 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullModificationUser took 0.235 sec
+Testcase: testCreateTaskTypes_DataAccessException took 0.328 sec
+Testcase: testUpdateTaskTypes took 0.484 sec
+Testcase: testUpdateTaskTypes_NullTimeEntries took 0.219 sec
+Testcase: testUpdateTaskTypes_EmptyTimeEntries took 0.219 sec
+Testcase: testUpdateTaskTypes_SameTaskType took 0.297 sec
+Testcase: testUpdateTaskTypes_NullInTimeEntries took 0.312 sec
+Testcase: testUpdateTaskTypes_TaskTypeWithIdSet took 0.297 sec
+Testcase: testUpdateTaskTypes_TaskTypeWithNullModificationUser took 0.297 sec
+Testcase: testUpdateTaskTypes_DataAccessException took 0.406 sec
+Testcase: testDeleteTaskTypes took 0.469 sec
+Testcase: testDeleteTaskTypes_NullTaskTypeIds took 0.219 sec
+Testcase: testDeleteTaskTypes_EmptyTaskTypeIds took 0.218 sec
+Testcase: testDeleteTaskTypes_EqualTaskTypeId took 0.344 sec
+Testcase: testDeleteTaskTypes_DataAccessException took 0.406 sec
+Testcase: testGetTaskTypes took 0.391 sec
+Testcase: testGetTaskTypes_NullTaskTypeIds took 0.219 sec
+Testcase: testGetTaskTypes_DataAccessException took 0.344 sec
+Testcase: testSearchTaskTypes took 0.359 sec
+Testcase: testSearchTaskTypes_NullCriteria took 0.219 sec
+Testcase: testSearchTaskTypes_DataAccessException took 0.265 sec
+Testcase: testGetTaskTypeFilterFactory took 0.219 sec
+Testcase: testGetAllTaskTypes took 0.266 sec
+Testcase: testGetAllTaskTypes_DataAccessException took 0.25 sec
+Testcase: testConfigurationException1 took 0 sec
+Testcase: testConfigurationException2 took 0 sec
+Testcase: testConfigurationExceptionInheritance1 took 0 sec
+Testcase: testConfigurationExceptionInheritance2 took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testUnrecognizedEntityExceptionInheritance1 took 0 sec
+Testcase: testUnrecognizedEntityExceptionInheritance2 took 0 sec
+Testcase: testGetId took 0 sec
+Testcase: testCtor took 0 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testSetDescription took 0 sec
+Testcase: testSetDescription_NullDescription took 0 sec
+Testcase: testSetDescription_EmptyDescription took 0 sec
+Testcase: testGetTimeEntryManager took 0.406 sec
+Testcase: testGetTimeEntryManager_NamespaceNotExist took 0.203 sec
+Testcase: testGetTimeEntryManager_TimeEntryManagerMissing took 0.156 sec
+Testcase: testGetTimeEntryManager_TimeEntryManagerWrongConfig took 0.813 sec
+Testcase: testGetTimeEntryManager_InvalidReference took 0.203 sec
+Testcase: testGetTimeEntryManager_TimeEntryManagerWrongType took 0.219 sec
+Testcase: testGetTimeStatusManager took 0.218 sec
+Testcase: testGetTimeStatusManager_NamespaceNotExist took 0.157 sec
+Testcase: testGetTimeStatusManager_TimeStatusManagerMissing took 0.187 sec
+Testcase: testGetTimeStatusManager_TimeStatusManagerWrongConfig took 0.172 sec
+Testcase: testGetTimeStatusManager_InvalidReference took 0.203 sec
+Testcase: testGetTimeStatusManager_TimeStatusManagerWrongType took 0.203 sec
+Testcase: testGetTaskTypeManager took 0.219 sec
+Testcase: testGetTaskTypeManager_NamespaceNotExist took 0.14 sec
+Testcase: testGetTaskTypeManager_TaskTypeManagerMissing took 0.203 sec
+Testcase: testGetTaskTypeManager_TaskTypeManagerWrongConfig took 0.219 sec
+Testcase: testGetTaskTypeManager_InvalidReference took 0.156 sec
+Testcase: testGetTaskTypeManager_TaskTypeManagerWrongType took 0.204 sec
+Testcase: testCtor took 0.218 sec
+Testcase: testCtor_NullTimeEntryDao took 0.235 sec
+Testcase: testCtor_NullTimeEntryRejectReasonDao took 0.265 sec
+Testcase: testCtor_NullRejectReasonManager took 0.219 sec
+Testcase: testAddRejectReasonToEntry took 0.828 sec
+Testcase: testAddRejectReasonToEntry_NullTimeEntry took 0.219 sec
+Testcase: testAddRejectReasonToEntry_DataAccessException took 0.437 sec
+Testcase: testRemoveRejectReasonFromEntry took 0.907 sec
+Testcase: testRemoveRejectReasonFromEntry_NullTimeEntry took 0.218 sec
+Testcase: testRemoveRejectReasonFromEntry_DataAccessException took 0.579 sec
+Testcase: testGetAllRejectReasonsForEntry took 0.531 sec
+Testcase: testGetAllRejectReasonsForEntry_DataAccessException took 0.437 sec
+Testcase: testRemoveAllRejectReasonsFromEntry took 1.219 sec
+Testcase: testRemoveAllRejectReasonsFromEntry_NullTimeEntry took 0.234 sec
+Testcase: testRemoveAllRejectReasonsFromEntry_DataAccessException took 0.422 sec
+Testcase: testCreateTimeEntry took 0.563 sec
+Testcase: testCreateTimeEntry_NullEntry took 0.219 sec
+Testcase: testCreateTimeEntry_DataAccessException took 0.39 sec
+Testcase: testUpdateTimeEntry took 0.672 sec
+Testcase: testUpdateTimeEntry_NullEntry took 0.219 sec
+Testcase: testUpdateTimeEntry_UnrecognizedEntityException took 0.265 sec
+Testcase: testUpdateTimeEntry_DataAccessException took 0.5 sec
+Testcase: testDeleteTimeEntry took 0.672 sec
+Testcase: testDeleteTimeEntry_UnrecognizedEntityException took 0.266 sec
+Testcase: testDeleteTimeEntry_DataAccessException took 0.953 sec
+Testcase: testGetTimeEntry took 0.578 sec
+Testcase: testGetTimeEntry_UnrecognizedEntityException took 0.297 sec
+Testcase: testGetTimeEntry_DataAccessException took 0.609 sec
+Testcase: testCreateTimeEntries took 0.766 sec
+Testcase: testCreateTimeEntries_NullTimeEntries took 0.234 sec
+Testcase: testCreateTimeEntries_EmptyTimeEntries took 0.219 sec
+Testcase: testCreateTimeEntries_SameElement took 0.235 sec
+Testcase: testCreateTimeEntries_NullInTimeEntries took 0.218 sec
+Testcase: testCreateTimeEntries_TimeEntryWithIdSet took 0.235 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullCreationUser took 0.234 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullModificationUser took 0.234 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullDate took 0.235 sec
+Testcase: testCreateTimeEntries_DataAccessException took 0.422 sec
+Testcase: testUpdateTimeEntries took 0.968 sec
+Testcase: testUpdateTimeEntries_NullTimeEntries took 0.25 sec
+Testcase: testUpdateTimeEntries_EmptyTimeEntries took 0.219 sec
+Testcase: testUpdateTimeEntries_SameTimeEntry took 0.406 sec
+Testcase: testUpdateTimeEntries_NullInTimeEntries took 0.375 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithIdSet took 0.375 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithNullModificationUser took 0.407 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithNullDate took 0.375 sec
+Testcase: testUpdateTimeEntries_BatchOperationException took 0.531 sec
+Testcase: testUpdateTimeEntries_DataAccessException took 0.469 sec
+Testcase: testDeleteTimeEntries took 0.906 sec
+Testcase: testDeleteTimeEntries_NullTimeEntryIds took 0.625 sec
+Testcase: testDeleteTimeEntries_EmptyTimeEntryIds took 0.219 sec
+Testcase: testDeleteTimeEntries_EqualTimeEntryId took 0.468 sec
+Testcase: testDeleteTimeEntries_BatchOperationException took 0.61 sec
+Testcase: testDeleteTimeEntries_DataAccessException took 0.484 sec
+Testcase: testGetTimeEntries took 0.781 sec
+Testcase: testGetTimeEntries_NullTimeEntryIds took 0.219 sec
+Testcase: testGetTimeEntries_BatchOperationException took 0.547 sec
+Testcase: testGetTimeEntries_DataAccessException took 0.469 sec
+Testcase: testSearchTimeEntries took 0.562 sec
+Testcase: testSearchTimeEntries_NullFilter took 0.219 sec
+Testcase: testSearchTimeEntries_DataAccessException took 0.266 sec
+Testcase: testGetAllTimeEntries took 0.265 sec
+Testcase: testGetAllTimeEntries_DataAccessException took 0.282 sec
+Testcase: testGetTimeEntryFilterFactory took 0.234 sec
+Testcase: testDataAccessException1 took 0 sec
+Testcase: testDataAccessException2 took 0 sec
+Testcase: testDataAccessExceptionInheritance1 took 0 sec
+Testcase: testDataAccessExceptionInheritance2 took 0 sec
+Testcase: testGetFilterPrefix took 0 sec
+Testcase: testToString took 0 sec
+Testcase: testCtor took 0 sec
+Testcase: testGetType took 0 sec
+Testcase: testCtor took 0.219 sec
+Testcase: testCreateTaskTypes took 0.375 sec
+Testcase: testCreateTaskTypes_NullTimeEntries took 0.218 sec
+Testcase: testCreateTaskTypes_EmptyTimeEntries took 0.282 sec
+Testcase: testCreateTaskTypes_SameElement took 0.265 sec
+Testcase: testCreateTaskTypes_NullInTimeEntries took 0.235 sec
+Testcase: testCreateTaskTypes_TaskTypeWithIdSet took 0.218 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullCreationUser took 0.219 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullModificationUser took 0.219 sec
+Testcase: testCreateTaskTypes_DataAccessException took 0.344 sec
+Testcase: testUpdateTaskTypes took 0.484 sec
+Testcase: testUpdateTaskTypes_NullTimeEntries took 0.203 sec
+Testcase: testUpdateTaskTypes_EmptyTimeEntries took 0.219 sec
+Testcase: testUpdateTaskTypes_SameTaskType took 0.469 sec
+Testcase: testUpdateTaskTypes_NullInTimeEntries took 0.297 sec
+Testcase: testUpdateTaskTypes_TaskTypeWithIdSet took 0.296 sec
+Testcase: testUpdateTaskTypes_TaskTypeWithNullModificationUser took 0.297 sec
+Testcase: testUpdateTaskTypes_DataAccessException took 0.407 sec
+Testcase: testDeleteTaskTypes took 0.765 sec
+Testcase: testDeleteTaskTypes_NullTaskTypeIds took 0.219 sec
+Testcase: testDeleteTaskTypes_EmptyTaskTypeIds took 0.203 sec
+Testcase: testDeleteTaskTypes_EqualTaskTypeId took 0.297 sec
+Testcase: testDeleteTaskTypes_DataAccessException took 0.375 sec
+Testcase: testGetTaskTypes took 0.375 sec
+Testcase: testGetTaskTypes_NullTaskTypeIds took 0.531 sec
+Testcase: testGetTaskTypes_DataAccessException took 0.344 sec
+Testcase: testSearchTaskTypes took 0.531 sec
+Testcase: testSearchTaskTypes_NullCriteria took 0.219 sec
+Testcase: testSearchTaskTypes_DataAccessException took 0.25 sec
+Testcase: testGetTaskTypeFilterFactory took 0.219 sec
+Testcase: testGetAllTaskTypes took 0.406 sec
+Testcase: testGetAllTaskTypes_DataAccessException took 0.266 sec
+Testcase: testCtor_NullConnFactory took 0.218 sec
+Testcase: testCtor_EmptyConnName took 0.219 sec
+Testcase: testCtor_NullIdGen took 0.219 sec
+Testcase: testCtor_EmptyIdGen took 0.234 sec
+Testcase: testCtor_NullSearchStrategyNamespace took 0.219 sec
+Testcase: testCtor_EmptySearchStrategyNamespace took 0.219 sec
+Testcase: testCtor_NullAuditor took 0.218 sec
+Testcase: testCtor1_ConfigurationException took 0.219 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullCreationDate took 0.219 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullModificationDate took 0.219 sec
+Testcase: testUpdateTaskTypes_TaskTypeWithNullModificationDate took 0.312 sec
+Testcase: testExtractBatchOperationException_DataAccessException took 0.203 sec
+Testcase: testCheckStepResult took 0.203 sec
+Testcase: testCheckStepResult_BatchOperationException took 0.157 sec
+Testcase: testUpdateCauses took 0.203 sec
+Testcase: testFinishBatchOperation took 0.14 sec
+Testcase: testFinishBatchOperation_BatchOperationException took 0.188 sec
+Testcase: testCheckNull_NotNullObject took 0.219 sec
+Testcase: testCheckNull_NullObject took 0.14 sec
+Testcase: testCheckString_NotNullNotEmptyString took 0.203 sec
+Testcase: testCheckString_NullString took 0.141 sec
+Testcase: testCheckString_EmptyString took 0.203 sec
+Testcase: testCheckMapForKeys took 0.141 sec
+Testcase: testCheckMapForKeys_NotContainKey took 0.203 sec
+Testcase: testCreateFilter took 0.141 sec
+Testcase: testCreateFilter_NullMatchType took 0.187 sec
+Testcase: testUpdateTimeTrackerBeanDates took 0.203 sec
+Testcase: testUpdateTimeTrackerBeanDates_NullBeans took 0.219 sec
+Testcase: testUpdateTimeTrackerBeanDates_NullInBeans took 0.172 sec
+Testcase: testCreateEJBLocalHome took 0.187 sec
+Testcase: testCreateEJBLocalHome_NullNamespace took 0.219 sec
+Testcase: testCreateEJBLocalHome_EmptyNamespace took 0.141 sec
+Testcase: testCreateEJBLocalHome_UnknownNamespace took 0.203 sec
+Testcase: testCreateEJBLocalHome_WrongClassType took 0.14 sec
+Testcase: testCheckIdValue took 0.204 sec
+Testcase: testCheckIdValue_Negative took 0.14 sec
+Testcase: testCreateRangeFilter took 0.203 sec
+Testcase: testCreateAuditDetail took 0.219 sec
+Testcase: testCtor took 0 sec
+Testcase: testCtor_NullColumnNames took 0 sec
+Testcase: testCtor_EmptyKey took 0 sec
+Testcase: testCtor_KeyNotString took 0 sec
+Testcase: testCtor_MissSomeKey took 0 sec
+Testcase: testCtor_EmptyValue took 0 sec
+Testcase: testCtor_ValueNotString took 0 sec
+Testcase: testCreateDescriptionFilter took 0 sec
+Testcase: testCreateDescriptionFilter_NullDescription took 0 sec
+Testcase: testCreateDescriptionFilter_EmptyDescription took 0 sec
+Testcase: testCreateDescriptionFilter_NullMatchtype took 0 sec
+Testcase: testCreateInvoiceIdFilter took 0 sec
+Testcase: testCreateInvoiceIdFilter_Negative took 0 sec
+Testcase: testCreateEntryDateFilter took 0 sec
+Testcase: testCreateEntryDateFilter_NullRangeStart took 0.016 sec
+Testcase: testCreateEntryDateFilter_NullRangeEnd took 0 sec
+Testcase: testCreateEntryDateFilter_NullBothArguments took 0 sec
+Testcase: testCreateEntryDateFilter_InvalidArguments took 0 sec
+Testcase: testCreateHoursFilter took 0 sec
+Testcase: testCreateHoursFilter_NaNRangeStart took 0 sec
+Testcase: testCreateHoursFilter_NaNRangeEnd took 0 sec
+Testcase: testCreateHoursFilter_BothNaN took 0 sec
+Testcase: testCreateHoursFilter_Invalid took 0 sec
+Testcase: testCreateTaskTypeFilter took 0 sec
+Testcase: testCreateTaskTypeFilter_NullTaskType took 0 sec
+Testcase: testCreateTimeStatusFilter took 0 sec
+Testcase: testCreateTimeStatusFilter_NullTimeStatus took 0 sec
+Testcase: testCreateBillableFilter took 0 sec
+Testcase: testCreateRejectReasonFilter took 0 sec
+Testcase: testCreateRejectReasonFilter_Negative took 0 sec
+Testcase: testCreateCompanyIdFilter took 0 sec
+Testcase: testCreateCompanyIdFilter_Negative took 0 sec
+Testcase: testCtor took 0.578 sec
+Testcase: testAddRejectReasonToEntry took 0.547 sec
+Testcase: testAddRejectReasonToEntry_NullTimeEntry took 0.406 sec
+Testcase: testAddRejectReasonToEntry_DataAccessException took 0.453 sec
+Testcase: testRemoveRejectReasonFromEntry took 0.609 sec
+Testcase: testRemoveRejectReasonFromEntry_NullTimeEntry took 0.438 sec
+Testcase: testRemoveRejectReasonFromEntry_DataAccessException took 0.531 sec
+Testcase: testGetAllRejectReasonsForEntry took 0.406 sec
+Testcase: testGetAllRejectReasonsForEntry_DataAccessException took 0.454 sec
+Testcase: testRemoveAllRejectReasonsFromEntry took 0.765 sec
+Testcase: testRemoveAllRejectReasonsFromEntry_NullTimeEntry took 0.391 sec
+Testcase: testRemoveAllRejectReasonsFromEntry_DataAccessException took 0.484 sec
+Testcase: testCtor_NullConnFactory took 0.344 sec
+Testcase: testCtor_EmptyConnName took 0.406 sec
+Testcase: testCtor_NullConnName took 0.406 sec
+Testcase: testCtor_NullAuditManager took 0.407 sec
+Testcase: testCtor took 0 sec
+Testcase: testCtor_NullColumnNames took 0 sec
+Testcase: testCtor_EmptyKey took 0 sec
+Testcase: testCtor_KeyNotString took 0 sec
+Testcase: testCtor_MissSomeKey took 0 sec
+Testcase: testCtor_EmptyValue took 0 sec
+Testcase: testCtor_ValueNotString took 0 sec
+Testcase: testCreateCreationDateFilter took 0 sec
+Testcase: testCreateCreationDateFilter_NullRangeStart took 0 sec
+Testcase: testCreateCreationDateFilter_NullRangeEnd took 0 sec
+Testcase: testCreateCreationDateFilter_NullBothArguments took 0 sec
+Testcase: testCreateCreationDateFilter_InvalidArguments took 0 sec
+Testcase: testCreateModificationDateFilter took 0 sec
+Testcase: testCreateModificationDateFilter_NullRangeStart took 0 sec
+Testcase: testCreateModificationDateFilter_NullRangeEnd took 0 sec
+Testcase: testCreateModificationDateFilter_NullBothArguments took 0 sec
+Testcase: testCreateModificationDateFilter_InvalidArguments took 0 sec
+Testcase: testCreateCreationUserFilter took 0.015 sec
+Testcase: testCreateCreationUserFilter_NullMatchType took 0 sec
+Testcase: testCreateCreationUserFilter_NullUsername took 0 sec
+Testcase: testCreateCreationUserFilter_EmptyUsername took 0 sec
+Testcase: testCreateModificationUserFilter took 0 sec
+Testcase: testCreateModificationUserFilter_NullMatchType took 0 sec
+Testcase: testCreateModificationUserFilter_NullUsername took 0 sec
+Testcase: testCreateModificationUserFilter_EmptyUsername took 0 sec
+Testcase: testGetColumnNames took 0 sec
+Testcase: testCtor took 0 sec
+Testcase: testCtor_NullColumnNames took 0 sec
+Testcase: testCtor_EmptyKey took 0 sec
+Testcase: testCtor_KeyNotString took 0 sec
+Testcase: testCtor_MissSomeKey took 0 sec
+Testcase: testCtor_EmptyValue took 0 sec
+Testcase: testCtor_ValueNotString took 0 sec
+Testcase: testCreateDescriptionFilter took 0 sec
+Testcase: testCreateDescriptionFilter_NullDescription took 0 sec
+Testcase: testCreateDescriptionFilter_EmptyDescription took 0 sec
+Testcase: testCreateCompanyIdFilter took 0 sec
+Testcase: testCreateCompanyIdFilter_Negative took 0 sec
+Testcase: testCreateDescriptionFilter_NullMatchType took 0 sec
+Testcase: testCreateActiveFilter took 0 sec
+Testcase: testCtor took 0.157 sec
+Testcase: testCreateTimeStatuses took 0.296 sec
+Testcase: testCreateTimeStatuses_NullTimeEntries took 0.219 sec
+Testcase: testCreateTimeStatuses_EmptyTimeEntries took 0.219 sec
+Testcase: testCreateTimeStatuses_SameElement took 0.219 sec
+Testcase: testCreateTimeStatuses_NullInTimeEntries took 0.172 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithIdSet took 0.203 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullCreationUser took 0.234 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullModificationUser took 0.219 sec
+Testcase: testCreateTimeStatuses_DataAccessException took 0.219 sec
+Testcase: testUpdateTimeStatuses took 0.375 sec
+Testcase: testUpdateTimeStatuses_NullTimeEntries took 0.218 sec
+Testcase: testUpdateTimeStatuses_EmptyTimeEntries took 0.235 sec
+Testcase: testUpdateTimeStatuses_SameTimeStatus took 0.218 sec
+Testcase: testUpdateTimeStatuses_NullInTimeEntries took 0.266 sec
+Testcase: testUpdateTimeStatuses_TimeStatusWithIdSet took 0.281 sec
+Testcase: testUpdateTimeStatuses_TimeStatusWithNullModificationUser took 0.266 sec
+Testcase: testUpdateTimeStatuses_DataAccessException took 0.344 sec
+Testcase: testDeleteTimeStatuses took 0.343 sec
+Testcase: testDeleteTimeStatuses_NullTimeStatusIds took 0.219 sec
+Testcase: testDeleteTimeStatuses_EmptyTimeStatusIds took 0.219 sec
+Testcase: testDeleteTimeStatuses_EqualTimeStatusId took 0.203 sec
+Testcase: testDeleteTimeStatuses_DataAccessException took 0.313 sec
+Testcase: testGetTimeStatuses took 0.312 sec
+Testcase: testGetTimeStatuses_NullTimeStatusIds took 0.219 sec
+Testcase: testGetTimeStatuses_DataAccessException took 0.297 sec
+Testcase: testSearchTimeStatuses took 0.343 sec
+Testcase: testSearchTimeStatuses_NullCriteria took 0.891 sec
+Testcase: testSearchTimeStatuses_DataAccessException took 0.281 sec
+Testcase: testGetTimeStatusFilterFactory took 0.219 sec
+Testcase: testGetAllTimeStatuses took 0.391 sec
+Testcase: testGetAllTimeStatuses_DataAccessException took 0.281 sec
+Testcase: testCtor_NullConnFactory took 0.234 sec
+Testcase: testCtor_EmptyConnName took 0.172 sec
+Testcase: testCtor_NullIdGen took 0.219 sec
+Testcase: testCtor_EmptyIdGen took 0.297 sec
+Testcase: testCtor_NullSearchStrategyNamespace took 0.187 sec
+Testcase: testCtor_EmptySearchStrategyNamespace took 0.219 sec
+Testcase: testCtor_NullAuditor took 0.219 sec
+Testcase: testCtor1_ConfigurationException took 0.234 sec
+Testcase: testCtor_NullConnName took 0.156 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullCreationDate took 0.235 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullModificationDate took 0.219 sec
+Testcase: testUpdateTimeStatuses_TimeStatusWithNullModificationDate took 0.25 sec
+Testcase: testCtor took 0.234 sec
+Testcase: testCtor_NullTimeStatusDao took 0.266 sec
+Testcase: testCreateTimeEntries took 0.734 sec
+Testcase: testCreateTimeEntries_NullTimeEntries took 0.234 sec
+Testcase: testCreateTimeEntries_EmptyTimeEntries took 0.235 sec
+Testcase: testCreateTimeEntries_SameElement took 0.234 sec
+Testcase: testCreateTimeEntries_NullInTimeEntries took 0.234 sec
+Testcase: testCreateTimeEntries_TimeEntryWithIdSet took 0.454 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullCreationUser took 0.25 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullModificationUser took 0.234 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullDate took 0.219 sec
+Testcase: testCreateTimeEntries_DataAccessException took 0.453 sec
+Testcase: testUpdateTimeEntries took 1.031 sec
+Testcase: testUpdateTimeEntries_NullTimeEntries took 0.234 sec
+Testcase: testUpdateTimeEntries_EmptyTimeEntries took 0.235 sec
+Testcase: testUpdateTimeEntries_SameTimeEntry took 0.422 sec
+Testcase: testUpdateTimeEntries_NullInTimeEntries took 0.39 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithIdSet took 0.391 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithNullModificationUser took 0.422 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithNullDate took 0.375 sec
+Testcase: testUpdateTimeEntries_BatchOperationException took 0.531 sec
+Testcase: testUpdateTimeEntries_DataAccessException took 0.484 sec
+Testcase: testDeleteTimeEntries took 0.907 sec
+Testcase: testDeleteTimeEntries_NullTimeEntryIds took 0.234 sec
+Testcase: testDeleteTimeEntries_EmptyTimeEntryIds took 0.234 sec
+Testcase: testDeleteTimeEntries_EqualTimeEntryId took 0.438 sec
+Testcase: testDeleteTimeEntries_BatchOperationException took 0.594 sec
+Testcase: testDeleteTimeEntries_DataAccessException took 0.562 sec
+Testcase: testGetTimeEntries took 1.36 sec
+Testcase: testGetTimeEntries_NullTimeEntryIds took 0.265 sec
+Testcase: testGetTimeEntries_BatchOperationException took 0.563 sec
+Testcase: testGetTimeEntries_DataAccessException took 0.5 sec
+Testcase: testSearchTimeEntries took 1.406 sec
+Testcase: testSearchTimeEntries_NullFilter took 0.234 sec
+Testcase: testSearchTimeEntries_DataAccessException took 0.266 sec
+Testcase: testGetAllTimeEntries took 0.828 sec
+Testcase: testGetAllTimeEntries_DataAccessException took 0.313 sec
+Testcase: testGetTimeEntryFilterFactory took 0.234 sec
+Testcase: testCtor_NullConnFactory took 0.234 sec
+Testcase: testCtor_EmptyConnName took 0.235 sec
+Testcase: testCtor_NullIdGen took 0.25 sec
+Testcase: testCtor_EmptyIdGen took 0.265 sec
+Testcase: testCtor_NullSearchStrategyNamespace took 0.282 sec
+Testcase: testCtor_EmptySearchStrategyNamespace took 0.218 sec
+Testcase: testCtor_NullAuditor took 0.235 sec
+Testcase: testCtor_NullConnName took 0.234 sec
+Testcase: testCtor_NullTaskTypeDao took 0.234 sec
+Testcase: testCtor_ConfigurationException took 0.172 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullCreationDate took 0.219 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullModificationDate took 0.234 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithNullModificationDate took 0.422 sec
+Testcase: testSearchTimeEntries2 took 0.516 sec
+Testcase: testCtor took 0.234 sec
+Testcase: testCtor_NullConnFactory took 0.157 sec
+Testcase: testCtor_EmptyConnName took 0.234 sec
+Testcase: testCtor_EmptyIdGen took 0.219 sec
+Testcase: testCtor_NullSearchStrategyNamespace took 0.234 sec
+Testcase: testCtor_EmptySearchStrategyNamespace took 0.156 sec
+Testcase: testCtor_NullAuditor took 0.25 sec
+Testcase: testCtor_NullConnName took 0.25 sec
+Testcase: testCtor_ConfigurationException took 0.235 sec
+Testcase: testCtor_UnknownIdGen took 0.25 sec
+Testcase: testGetAuditManager took 0.234 sec
+Testcase: testGetSearchStrategy took 0.172 sec
+Testcase: testGetNextId took 0.203 sec
+Testcase: testGetNextId_DataAccessException took 0.234 sec
+Testcase: testGetConnection took 0.204 sec
+Testcase: testGetConnection_DataAccessException took 0.234 sec
+Testcase: testCtor took 0 sec
+Testcase: testCtor_NullColumnNames took 0 sec
+Testcase: testCtor_EmptyKey took 0 sec
+Testcase: testCtor_KeyNotString took 0 sec
+Testcase: testCtor_MissSomeKey took 0 sec
+Testcase: testCtor_EmptyValue took 0 sec
+Testcase: testCtor_ValueNotString took 0 sec
+Testcase: testCreateDescriptionFilter took 0 sec
+Testcase: testCreateDescriptionFilter_NullDescription took 0 sec
+Testcase: testCreateDescriptionFilter_EmptyDescription took 0 sec
+Testcase: testCreateDescriptionFilter_NullMatchType took 0 sec
+Testcase: testCtor took 0.172 sec
+Testcase: testAddRejectReasonToEntry took 0.797 sec
+Testcase: testAddRejectReasonToEntry_NullTimeEntry took 0.172 sec
+Testcase: testRemoveRejectReasonFromEntry took 0.937 sec
+Testcase: testRemoveRejectReasonFromEntry_NullTimeEntry took 0.156 sec
+Testcase: testGetAllRejectReasonsForEntry took 0.578 sec
+Testcase: testRemoveAllRejectReasonsFromEntry took 1.391 sec
+Testcase: testRemoveAllRejectReasonsFromEntry_NullTimeEntry took 0.219 sec
+Testcase: testCreateTimeEntry took 0.578 sec
+Testcase: testCreateTimeEntry_NullEntry took 0.203 sec
+Testcase: testUpdateTimeEntry took 0.625 sec
+Testcase: testUpdateTimeEntry_NullEntry took 0.203 sec
+Testcase: testUpdateTimeEntry_UnrecognizedEntityException took 0.203 sec
+Testcase: testDeleteTimeEntry took 0.688 sec
+Testcase: testDeleteTimeEntry_UnrecognizedEntityException took 0.187 sec
+Testcase: testGetTimeEntry took 0.578 sec
+Testcase: testGetTimeEntry_UnrecognizedEntityException took 0.204 sec
+Testcase: testCreateTimeEntries took 0.843 sec
+Testcase: testCreateTimeEntries_NullTimeEntries took 0.141 sec
+Testcase: testCreateTimeEntries_EmptyTimeEntries took 0.219 sec
+Testcase: testCreateTimeEntries_SameElement took 0.14 sec
+Testcase: testCreateTimeEntries_NullInTimeEntries took 0.203 sec
+Testcase: testCreateTimeEntries_TimeEntryWithIdSet took 0.172 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullCreationUser took 0.25 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullModificationUser took 0.141 sec
+Testcase: testCreateTimeEntries_TimeEntryWithNullDate took 0.203 sec
+Testcase: testUpdateTimeEntries took 0.938 sec
+Testcase: testUpdateTimeEntries_NullTimeEntries took 0.203 sec
+Testcase: testUpdateTimeEntries_EmptyTimeEntries took 0.156 sec
+Testcase: testUpdateTimeEntries_SameTimeEntry took 0.406 sec
+Testcase: testUpdateTimeEntries_NullInTimeEntries took 0.375 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithIdSet took 0.391 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithNullModificationUser took 0.375 sec
+Testcase: testUpdateTimeEntries_TimeEntryWithNullDate took 0.469 sec
+Testcase: testUpdateTimeEntries_BatchOperationException took 0.484 sec
+Testcase: testDeleteTimeEntries took 0.906 sec
+Testcase: testDeleteTimeEntries_NullTimeEntryIds took 0.172 sec
+Testcase: testDeleteTimeEntries_EmptyTimeEntryIds took 0.203 sec
+Testcase: testDeleteTimeEntries_EqualTimeEntryId took 0.5 sec
+Testcase: testDeleteTimeEntries_BatchOperationException took 0.656 sec
+Testcase: testGetTimeEntries took 0.891 sec
+Testcase: testGetTimeEntries_NullTimeEntryIds took 0.219 sec
+Testcase: testGetTimeEntries_BatchOperationException took 0.531 sec
+Testcase: testSearchTimeEntries took 0.594 sec
+Testcase: testSearchTimeEntries_NullFilter took 0.156 sec
+Testcase: testSearchTimeEntries_DataAccessException took 0.25 sec
+Testcase: testGetAllTimeEntries took 0.188 sec
+Testcase: testGetTimeEntryFilterFactory took 0.218 sec
+Testcase: testGetSessionContext took 0.157 sec
+Testcase: testEjbCreate took 0.203 sec
+Testcase: testEjbActivate took 0.156 sec
+Testcase: testEjbPassivate took 0.547 sec
+Testcase: testEjbRemove took 0.172 sec
+Testcase: testSetSessionContext took 0.203 sec
+Testcase: testCtor took 0.187 sec
+Testcase: testGetTaskType took 0.36 sec
+Testcase: testGetTaskType_UnrecognizedEntityException took 0.187 sec
+Testcase: testCreateTaskType took 0.344 sec
+Testcase: testCreateTaskType_NullTaskType took 0.156 sec
+Testcase: testUpdateTaskType took 0.438 sec
+Testcase: testUpdateTaskType_NullTaskType took 0.156 sec
+Testcase: testUpdateTaskType_UnrecognizedEntityException took 0.281 sec
+Testcase: testDeleteTaskType took 0.344 sec
+Testcase: testDeleteTaskType_UnrecognizedEntityException took 0.281 sec
+Testcase: testCreateTaskTypes took 0.328 sec
+Testcase: testCreateTaskTypes_NullTimeEntries took 0.203 sec
+Testcase: testCreateTaskTypes_EmptyTimeEntries took 0.157 sec
+Testcase: testCreateTaskTypes_SameElement took 0.203 sec
+Testcase: testCreateTaskTypes_NullInTimeEntries took 0.14 sec
+Testcase: testCreateTaskTypes_TaskTypeWithIdSet took 0.204 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullCreationUser took 0.718 sec
+Testcase: testCreateTaskTypes_TaskTypeWithNullModificationUser took 0.219 sec
+Testcase: testUpdateTaskTypes took 0.391 sec
+Testcase: testUpdateTaskTypes_NullTimeEntries took 0.203 sec
+Testcase: testUpdateTaskTypes_EmptyTimeEntries took 0.156 sec
+Testcase: testUpdateTaskTypes_SameTaskType took 0.281 sec
+Testcase: testUpdateTaskTypes_NullInTimeEntries took 0.219 sec
+Testcase: testUpdateTaskTypes_TaskTypeWithIdSet took 0.281 sec
+Testcase: testUpdateTaskTypes_TaskTypeWithNullModificationUser took 0.235 sec
+Testcase: testDeleteTaskTypes took 0.453 sec
+Testcase: testDeleteTaskTypes_NullTaskTypeIds took 0.172 sec
+Testcase: testDeleteTaskTypes_EmptyTaskTypeIds took 0.203 sec
+Testcase: testDeleteTaskTypes_EqualTaskTypeId took 0.234 sec
+Testcase: testGetTaskTypes took 0.36 sec
+Testcase: testGetTaskTypes_NullTaskTypeIds took 0.14 sec
+Testcase: testSearchTaskTypes took 0.328 sec
+Testcase: testSearchTaskTypes_NullCriteria took 0.157 sec
+Testcase: testSearchTaskTypes_DataAccessException took 0.234 sec
+Testcase: testGetTaskTypeFilterFactory took 0.172 sec
+Testcase: testGetAllTaskTypes took 0.234 sec
+Testcase: testGetSessionContext took 0.156 sec
+Testcase: testEjbCreate took 0.204 sec
+Testcase: testEjbActivate took 0.156 sec
+Testcase: testEjbPassivate took 0.203 sec
+Testcase: testEjbRemove took 0.141 sec
+Testcase: testSetSessionContext took 0.203 sec
+Testcase: testCtor took 0.172 sec
+Testcase: testCreateTimeStatus took 0.343 sec
+Testcase: testCreateTimeStatus_NullTimeStatus took 0.141 sec
+Testcase: testUpdateTimeStatus took 0.406 sec
+Testcase: testUpdateTimeStatus_NullTimeStatus took 0.141 sec
+Testcase: testUpdateTimeStatus_UnrecognizedEntityException took 0.281 sec
+Testcase: testDeleteTimeStatus took 0.344 sec
+Testcase: testDeleteTimeStatus_UnrecognizedEntityException took 0.281 sec
+Testcase: testGetTimeStatus took 0.563 sec
+Testcase: testGetTimeStatus_UnrecognizedEntityException took 0.265 sec
+Testcase: testCreateTimeStatuses took 0.313 sec
+Testcase: testCreateTimeStatuses_NullTimeEntries took 0.218 sec
+Testcase: testCreateTimeStatuses_EmptyTimeEntries took 0.157 sec
+Testcase: testCreateTimeStatuses_SameElement took 0.203 sec
+Testcase: testCreateTimeStatuses_NullInTimeEntries took 0.14 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithIdSet took 0.219 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullCreationUser took 0.141 sec
+Testcase: testCreateTimeStatuses_TimeStatusWithNullModificationUser took 0.203 sec
+Testcase: testUpdateTimeStatuses took 0.406 sec
+Testcase: testUpdateTimeStatuses_NullTimeEntries took 0.203 sec
+Testcase: testUpdateTimeStatuses_EmptyTimeEntries took 0.157 sec
+Testcase: testUpdateTimeStatuses_SameTimeStatus took 0.281 sec
+Testcase: testUpdateTimeStatuses_NullInTimeEntries took 0.219 sec
+Testcase: testUpdateTimeStatuses_TimeStatusWithIdSet took 0.281 sec
+Testcase: testUpdateTimeStatuses_TimeStatusWithNullModificationUser took 0.234 sec
+Testcase: testDeleteTimeStatuses took 0.438 sec
+Testcase: testDeleteTimeStatuses_NullTimeStatusIds took 0.156 sec
+Testcase: testDeleteTimeStatuses_EmptyTimeStatusIds took 0.203 sec
+Testcase: testDeleteTimeStatuses_EqualTimeStatusId took 0.25 sec
+Testcase: testGetTimeStatuses took 0.391 sec
+Testcase: testGetTimeStatuses_NullTimeStatusIds took 0.14 sec
+Testcase: testSearchTimeStatuses took 0.328 sec
+Testcase: testSearchTimeStatuses_NullCriteria took 0.141 sec
+Testcase: testSearchTimeStatuses_DataAccessException took 0.25 sec
+Testcase: testGetTimeStatusFilterFactory took 0.14 sec
+Testcase: testGetAllTimeStatuses took 0.25 sec
+Testcase: testGetSessionContext took 0.141 sec
+Testcase: testEjbCreate took 0.969 sec
+Testcase: testEjbActivate took 0.156 sec
+Testcase: testEjbPassivate took 0.203 sec
+Testcase: testEjbRemove took 0.141 sec
+Testcase: testSetSessionContext took 0.203 sec
+Testcase: testDemo took 1.797 sec
+Testcase: testCtor took 0 sec
+Testcase: testBatchOperationExceptionInheritance took 0 sec
+Testcase: testGetCauses took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testIsBillable took 0 sec
+Testcase: testGetBillable took 0 sec
+Testcase: testSetBillable took 0 sec
+Testcase: testGetTaskType took 0 sec
+Testcase: testSetTaskType took 0 sec
+Testcase: testGetInvoiceId took 0 sec
+Testcase: testSetInvoiceId took 0 sec
+Testcase: testGetHours took 0 sec
+Testcase: testGetStatus took 0 sec
+Testcase: testSetStatus took 0 sec
+Testcase: testSetHours took 0 sec
+Testcase: testCtor1 took 0.218 sec
+Testcase: testGetTaskType took 0.344 sec
+Testcase: testCreateTaskType took 0.375 sec
+Testcase: testUpdateTaskType took 0.453 sec
+Testcase: testDeleteTaskType took 0.391 sec
+Testcase: testCreateTaskTypes took 0.359 sec
+Testcase: testUpdateTaskTypes took 0.422 sec
+Testcase: testDeleteTaskTypes took 0.422 sec
+Testcase: testGetTaskTypes took 0.297 sec
+Testcase: testSearchTaskTypes took 0.328 sec
+Testcase: testGetTaskTypeFilterFactory took 0.234 sec
+Testcase: testGetAllTaskTypes took 0.219 sec
+Testcase: testCtor1 took 0.219 sec
+Testcase: testAddRejectReasonToEntry took 0.797 sec
+Testcase: testRemoveRejectReasonFromEntry took 1.094 sec
+Testcase: testGetAllRejectReasonsForEntry took 0.578 sec
+Testcase: testRemoveAllRejectReasonsFromEntry took 1.265 sec
+Testcase: testCreateTimeEntry took 0.563 sec
+Testcase: testUpdateTimeEntry took 0.625 sec
+Testcase: testDeleteTimeEntry took 0.672 sec
+Testcase: testGetTimeEntry took 0.922 sec
+Testcase: testCreateTimeEntries took 0.578 sec
+Testcase: testUpdateTimeEntries took 0.718 sec
+Testcase: testDeleteTimeEntries took 0.594 sec
+Testcase: testGetTimeEntries took 0.61 sec
+Testcase: testSearchTimeEntries took 0.578 sec
+Testcase: testGetAllTimeEntries took 0.265 sec
+Testcase: testGetTimeEntryFilterFactory took 0.25 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testUnrecognizedEntityExceptionInheritance1 took 0 sec
+Testcase: testUnrecognizedEntityExceptionInheritance2 took 0 sec
+Testcase: testGetId took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testInvalidCompanyExceptionInheritance1 took 0 sec
+Testcase: testInvalidCompanyExceptionInheritance2 took 0 sec
+Testcase: testGetTimeEntryCompanyId took 0 sec
+Testcase: testGetOtherEntityCompanyId took 0 sec
+Testcase: testCreateTimeStatus took 0.266 sec
+Testcase: testUpdateTimeStatus took 0.375 sec
+Testcase: testDeleteTimeStatus took 0.359 sec
+Testcase: testGetTimeStatus took 0.297 sec
+Testcase: testCreateTimeStatuses took 0.375 sec
+Testcase: testUpdateTimeStatuses took 0.39 sec
+Testcase: testDeleteTimeStatuses took 0.954 sec
+Testcase: testGetTimeStatuses took 0.296 sec
+Testcase: testSearchTimeStatuses took 0.344 sec
+Testcase: testGetTimeStatusFilterFactory took 0.156 sec
+Testcase: testGetAllTimeStatuses took 0.266 sec
+Testcase: testCtor1 took 0.219 sec
+Testcase: testGetFilterPrefix took 0 sec
+Testcase: testToString took 0 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testSetDescription took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testGetCompanyId took 0 sec
+Testcase: testSetCompanyId took 0 sec
+Testcase: testGetActive took 0 sec
+Testcase: testIsActive took 0 sec
+Testcase: testSetActive took 0 sec
+Testcase: testGetDescription took 0 sec
+Testcase: testSetDescription took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testGetTimeEntryManager took 0.156 sec
+Testcase: testGetTimeStatusManager took 0.203 sec
+Testcase: testGetTaskTypeManager took 0.156 sec
+Testcase: testConfigurationException1 took 0 sec
+Testcase: testConfigurationException2 took 0 sec
+Testcase: testConfigurationExceptionInheritance1 took 0 sec
+Testcase: testConfigurationExceptionInheritance2 took 0 sec
+Testcase: testDataAccessException1 took 0 sec
+Testcase: testDataAccessException2 took 0 sec
+Testcase: testDataAccessExceptionInheritance1 took 0 sec
+Testcase: testDataAccessExceptionInheritance2 took 0 sec
+Testcase: testCtor1 took 0.407 sec
+Testcase: testAddRejectReasonToEntry took 0.468 sec
+Testcase: testRemoveRejectReasonFromEntry took 0.625 sec
+Testcase: testGetAllRejectReasonsForEntry took 0.469 sec
+Testcase: testRemoveAllRejectReasonsFromEntry took 1.078 sec
+Testcase: testCreateTimeStatuses took 0.297 sec
+Testcase: testUpdateTimeStatuses took 0.375 sec
+Testcase: testDeleteTimeStatuses took 0.313 sec
+Testcase: testGetTimeStatuses took 0.297 sec
+Testcase: testSearchTimeStatuses took 0.312 sec
+Testcase: testGetTimeStatusFilterFactory took 0.156 sec
+Testcase: testGetAllTimeStatuses took 0.297 sec
+Testcase: testCtor1 took 0.235 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCreateCreationDateFilter took 0 sec
+Testcase: testCreateModificationDateFilter took 0 sec
+Testcase: testCreateCreationUserFilter took 0 sec
+Testcase: testCreateModificationUserFilter took 0 sec
+Testcase: testCtor1 took 0.171 sec
+Testcase: testCreateTaskTypes took 0.344 sec
+Testcase: testUpdateTaskTypes took 0.438 sec
+Testcase: testDeleteTaskTypes took 0.359 sec
+Testcase: testGetTaskTypes took 0.344 sec
+Testcase: testSearchTaskTypes took 0.344 sec
+Testcase: testGetTaskTypeFilterFactory took 0.156 sec
+Testcase: testGetAllTaskTypes took 0.265 sec
+Testcase: testCtor1 took 0.235 sec
+Testcase: testCreateTimeEntries took 0.5 sec
+Testcase: testUpdateTimeEntries took 0.703 sec
+Testcase: testDeleteTimeEntries took 0.969 sec
+Testcase: testGetTimeEntries took 0.562 sec
+Testcase: testSearchTimeEntries took 0.563 sec
+Testcase: testGetAllTimeEntries took 0.25 sec
+Testcase: testGetTimeEntryFilterFactory took 0.234 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCreateDescriptionFilter took 0 sec
+Testcase: testCreateInvoiceIdFilter took 0 sec
+Testcase: testCreateEntryDateFilter took 0 sec
+Testcase: testCreateHoursFilter took 0 sec
+Testcase: testCreateTaskTypeFilter took 0 sec
+Testcase: testCreateTimeStatusFilter took 0 sec
+Testcase: testCreateBillableFilter took 0 sec
+Testcase: testCreateRejectReasonFilter took 0 sec
+Testcase: testCreateCompanyIdFilter took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCreateDescriptionFilter took 0 sec
+Testcase: testCreateCompanyIdFilter took 0 sec
+Testcase: testCreateActiveFilter took 0 sec
+Testcase: testCtor1 took 0.016 sec
+Testcase: testCreateDescriptionFilter took 0 sec
+Testcase: testCtor1 took 0.14 sec
+Testcase: testGetTaskType took 0.344 sec
+Testcase: testCreateTaskType took 0.266 sec
+Testcase: testUpdateTaskType took 0.422 sec
+Testcase: testDeleteTaskType took 0.343 sec
+Testcase: testCreateTaskTypes took 0.328 sec
+Testcase: testUpdateTaskTypes took 0.36 sec
+Testcase: testDeleteTaskTypes took 0.39 sec
+Testcase: testGetTaskTypes took 0.266 sec
+Testcase: testSearchTaskTypes took 0.328 sec
+Testcase: testGetTaskTypeFilterFactory took 0.141 sec
+Testcase: testGetAllTaskTypes took 0.25 sec
+Testcase: testCreateTimeStatus took 0.25 sec
+Testcase: testUpdateTimeStatus took 0.39 sec
+Testcase: testDeleteTimeStatus took 0.344 sec
+Testcase: testGetTimeStatus took 0.344 sec
+Testcase: testCreateTimeStatuses took 0.266 sec
+Testcase: testUpdateTimeStatuses took 0.406 sec
+Testcase: testDeleteTimeStatuses took 0.328 sec
+Testcase: testGetTimeStatuses took 0.312 sec
+Testcase: testSearchTimeStatuses took 0.282 sec
+Testcase: testGetTimeStatusFilterFactory took 0.203 sec
+Testcase: testGetAllTimeStatuses took 0.172 sec
+Testcase: testCtor1 took 0.203 sec
+Testcase: testCtor1 took 0.156 sec
+Testcase: testAddRejectReasonToEntry took 0.797 sec
+Testcase: testRemoveRejectReasonFromEntry took 0.906 sec
+Testcase: testGetAllRejectReasonsForEntry took 0.641 sec
+Testcase: testRemoveAllRejectReasonsFromEntry took 1.422 sec
+Testcase: testCreateTimeEntry took 0.562 sec
+Testcase: testUpdateTimeEntry took 0.641 sec
+Testcase: testDeleteTimeEntry took 0.687 sec
+Testcase: testGetTimeEntry took 0.516 sec
+Testcase: testCreateTimeEntries took 0.562 sec
+Testcase: testUpdateTimeEntries took 0.672 sec
+Testcase: testDeleteTimeEntries took 1 sec
+Testcase: testGetTimeEntries took 0.547 sec
+Testcase: testSearchTimeEntries took 0.578 sec
+Testcase: testGetAllTimeEntries took 0.203 sec
+Testcase: testGetTimeEntryFilterFactory took 0.219 sec
+Testcase: testGetTimeEntryManager1 took 0.156 sec
+Testcase: testGetTimeEntryManager2 took 0.204 sec
+Testcase: testGetTimeEntryManager3 took 0.156 sec
+Testcase: testGetTimeEntryManager4 took 0.203 sec
+Testcase: testGetTimeEntryManager5 took 0.172 sec
+Testcase: testGetTimeStatusManager1 took 0.203 sec
+Testcase: testGetTimeStatusManager2 took 0.156 sec
+Testcase: testGetTimeStatusManager3 took 0.203 sec
+Testcase: testGetTimeStatusManager4 took 0.157 sec
+Testcase: testGetTimeStatusManager5 took 0.203 sec
+Testcase: testGetTaskTypeManager1 took 0.156 sec
+Testcase: testGetTaskTypeManager2 took 0.203 sec
+Testcase: testGetTaskTypeManager3 took 0.172 sec
+Testcase: testGetTaskTypeManager4 took 0.203 sec
+Testcase: testGetTaskTypeManager5 took 0.156 sec
+Testcase: testSetCompanyId took 0 sec
+Testcase: testSetDescription1 took 0 sec
+Testcase: testSetDescription2 took 0 sec
+Testcase: testCtor took 0.219 sec
+Testcase: testGetAllTaskTypes took 0.266 sec
+Testcase: testGetTaskType1 took 0.281 sec
+Testcase: testGetTaskType2 took 0.25 sec
+Testcase: testCreateTaskType1 took 0.172 sec
+Testcase: testCreateTaskType2 took 0.297 sec
+Testcase: testUpdateTaskType1 took 0.156 sec
+Testcase: testUpdateTaskType2 took 0.281 sec
+Testcase: testUpdateTaskType3 took 0.328 sec
+Testcase: testDeleteTaskType1 took 0.282 sec
+Testcase: testDeleteTaskType2 took 0.375 sec
+Testcase: testCreateTaskTypes1 took 0.171 sec
+Testcase: testCreateTaskTypes2 took 0.204 sec
+Testcase: testCreateTaskTypes3 took 0.171 sec
+Testcase: testCreateTaskTypes4 took 0.219 sec
+Testcase: testCreateTaskTypes5 took 0.156 sec
+Testcase: testCreateTaskTypes6 took 0.219 sec
+Testcase: testCreateTaskTypes7 took 0.156 sec
+Testcase: testCreateTaskTypes8 took 0.344 sec
+Testcase: testUpdateTaskTypes1 took 0.219 sec
+Testcase: testUpdateTaskTypes2 took 0.156 sec
+Testcase: testUpdateTaskTypes3 took 0.297 sec
+Testcase: testUpdateTaskTypes4 took 0.234 sec
+Testcase: testUpdateTaskTypes5 took 0.313 sec
+Testcase: testUpdateTaskTypes6 took 0.266 sec
+Testcase: testUpdateTaskTypes7 took 0.406 sec
+Testcase: testDeleteTaskTypes1 took 0.219 sec
+Testcase: testDeleteTaskTypes2 took 0.187 sec
+Testcase: testDeleteTaskTypes3 took 0.313 sec
+Testcase: testDeleteTaskTypes4 took 0.343 sec
+Testcase: testGetTaskTypes1 took 0.219 sec
+Testcase: testGetTaskTypes2 took 0.359 sec
+Testcase: testSearchTaskTypes1 took 0.172 sec
+Testcase: testSearchTaskTypes2 took 0.25 sec
+Testcase: testSetTaskType took 0 sec
+Testcase: testSetInvoiceId took 0 sec
+Testcase: testSetStatus took 0 sec
+Testcase: testSetHours took 0 sec
+Testcase: testSetDescription1 took 0 sec
+Testcase: testSetDescription2 took 0 sec
+Testcase: testCtor took 0.188 sec
+Testcase: testGetAllTimeStatuses took 0.25 sec
+Testcase: testCreateTimeStatus1 took 0.156 sec
+Testcase: testCreateTimeStatus2 took 0.266 sec
+Testcase: testUpdateTimeStatus1 took 0.156 sec
+Testcase: testUpdateTimeStatus2 took 0.328 sec
+Testcase: testUpdateTimeStatus3 took 0.328 sec
+Testcase: testDeleteTimeStatus1 took 0.235 sec
+Testcase: testDeleteTimeStatus2 took 0.375 sec
+Testcase: testGetTimeStatus1 took 0.203 sec
+Testcase: testGetTimeStatus2 took 0.297 sec
+Testcase: testCreateTimeStatuses1 took 0.156 sec
+Testcase: testCreateTimeStatuses2 took 0.234 sec
+Testcase: testCreateTimeStatuses3 took 0.344 sec
+Testcase: testCreateTimeStatuses4 took 0.156 sec
+Testcase: testCreateTimeStatuses5 took 0.219 sec
+Testcase: testCreateTimeStatuses6 took 0.156 sec
+Testcase: testCreateTimeStatuses7 took 0.219 sec
+Testcase: testCreateTimeStatuses8 took 0.203 sec
+Testcase: testUpdateTimeStatuses1 took 0.219 sec
+Testcase: testUpdateTimeStatuses2 took 0.156 sec
+Testcase: testUpdateTimeStatuses3 took 0.266 sec
+Testcase: testUpdateTimeStatuses4 took 0.187 sec
+Testcase: testUpdateTimeStatuses5 took 0.266 sec
+Testcase: testUpdateTimeStatuses6 took 0.234 sec
+Testcase: testUpdateTimeStatuses7 took 0.328 sec
+Testcase: testDeleteTimeStatuses1 took 0.219 sec
+Testcase: testDeleteTimeStatuses2 took 0.172 sec
+Testcase: testDeleteTimeStatuses3 took 0.25 sec
+Testcase: testDeleteTimeStatuses4 took 0.5 sec
+Testcase: testGetTimeStatuses1 took 0.219 sec
+Testcase: testGetTimeStatuses2 took 0.25 sec
+Testcase: testSearchTimeStatuses1 took 0.203 sec
+Testcase: testSearchTimeStatuses2 took 0.203 sec
+Testcase: testCtor1 took 0.219 sec
+Testcase: testCtor2 took 0.218 sec
+Testcase: testCtor3 took 0.172 sec
+Testcase: testCtor4 took 0.25 sec
+Testcase: testCtor5 took 0.469 sec
+Testcase: testCtor6 took 0.234 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testCtor3 took 0 sec
+Testcase: testCtor4 took 0 sec
+Testcase: testCtor5 took 0 sec
+Testcase: testCtor6 took 0 sec
+Testcase: testCreateCreationDateFilter1 took 0 sec
+Testcase: testCreateCreationDateFilter2 took 0 sec
+Testcase: testCreateModificationDateFilter1 took 0 sec
+Testcase: testCreateModificationDateFilter2 took 0 sec
+Testcase: testCreateCreationUserFilter1 took 0 sec
+Testcase: testCreateCreationUserFilter2 took 0 sec
+Testcase: testCreateCreationUserFilter3 took 0 sec
+Testcase: testCreateModificationUserFilter1 took 0 sec
+Testcase: testCreateModificationUserFilter2 took 0 sec
+Testcase: testCreateModificationUserFilter3 took 0 sec
+Testcase: testCtor1 took 0.219 sec
+Testcase: testCtor2 took 0.188 sec
+Testcase: testGetAllTaskTypes took 0.265 sec
+Testcase: testCreateTaskTypes1 took 0.235 sec
+Testcase: testCreateTaskTypes2 took 0.172 sec
+Testcase: testCreateTaskTypes3 took 0.218 sec
+Testcase: testCreateTaskTypes4 took 0.235 sec
+Testcase: testCreateTaskTypes5 took 0.172 sec
+Testcase: testCreateTaskTypes6 took 0.218 sec
+Testcase: testCreateTaskTypes7 took 0.172 sec
+Testcase: testCreateTaskTypes8 took 0.219 sec
+Testcase: testUpdateTaskTypes1 took 0.156 sec
+Testcase: testUpdateTaskTypes2 took 0.219 sec
+Testcase: testUpdateTaskTypes3 took 0.297 sec
+Testcase: testUpdateTaskTypes4 took 0.25 sec
+Testcase: testUpdateTaskTypes5 took 0.281 sec
+Testcase: testUpdateTaskTypes6 took 0.25 sec
+Testcase: testUpdateTaskTypes7 took 0.281 sec
+Testcase: testDeleteTaskTypes1 took 0.172 sec
+Testcase: testDeleteTaskTypes2 took 0.219 sec
+Testcase: testDeleteTaskTypes3 took 0.234 sec
+Testcase: testDeleteTaskTypes4 took 0.375 sec
+Testcase: testGetTaskTypes1 took 0.219 sec
+Testcase: testGetTaskTypes2 took 0.281 sec
+Testcase: testSearchTaskTypes1 took 0.578 sec
+Testcase: testSearchTaskTypes2 took 0.204 sec
+Testcase: testCtor3 took 0.218 sec
+Testcase: testCtor4 took 0.219 sec
+Testcase: testCtor5 took 0.172 sec
+Testcase: testCtor6 took 0.219 sec
+Testcase: testCtor7 took 0.172 sec
+Testcase: testCtor8 took 0.203 sec
+Testcase: testCreateTaskTypes9 took 0.172 sec
+Testcase: testCreateTaskTypes10 took 0.328 sec
+Testcase: testUpdateTaskTypes8 took 0.437 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testCreateCompanyIdFilter took 0 sec
+Testcase: testCtor3 took 0 sec
+Testcase: testCtor4 took 0 sec
+Testcase: testCtor5 took 0 sec
+Testcase: testCtor6 took 0 sec
+Testcase: testCreateDescriptionFilter1 took 0 sec
+Testcase: testCreateDescriptionFilter2 took 0 sec
+Testcase: testCreateDescriptionFilter3 took 0 sec
+Testcase: testCtor1 took 0.188 sec
+Testcase: testCtor2 took 0.218 sec
+Testcase: testGetAllTimeEntries took 0.266 sec
+Testcase: testSearchTimeEntries2 took 0.281 sec
+Testcase: testCtor3 took 0.172 sec
+Testcase: testCtor4 took 0.219 sec
+Testcase: testCtor5 took 0.234 sec
+Testcase: testCtor6 took 0.172 sec
+Testcase: testCtor7 took 0.235 sec
+Testcase: testCtor8 took 0.234 sec
+Testcase: testCtor9 took 0.234 sec
+Testcase: testCtor10 took 0.172 sec
+Testcase: testCreateTimeEntries1 took 0.219 sec
+Testcase: testCreateTimeEntries2 took 0.234 sec
+Testcase: testCreateTimeEntries3 took 0.172 sec
+Testcase: testCreateTimeEntries4 took 0.219 sec
+Testcase: testCreateTimeEntries5 took 0.234 sec
+Testcase: testCreateTimeEntries6 took 0.172 sec
+Testcase: testCreateTimeEntries7 took 0.219 sec
+Testcase: testCreateTimeEntries8 took 0.172 sec
+Testcase: testCreateTimeEntries9 took 0.234 sec
+Testcase: testCreateTimeEntries10 took 0.235 sec
+Testcase: testCreateTimeEntries11 took 0.437 sec
+Testcase: testUpdateTimeEntries1 took 0.172 sec
+Testcase: testUpdateTimeEntries2 took 0.219 sec
+Testcase: testUpdateTimeEntries3 took 0.375 sec
+Testcase: testUpdateTimeEntries4 took 0.328 sec
+Testcase: testUpdateTimeEntries5 took 0.375 sec
+Testcase: testUpdateTimeEntries6 took 0.375 sec
+Testcase: testUpdateTimeEntries7 took 0.328 sec
+Testcase: testUpdateTimeEntries8 took 0.437 sec
+Testcase: testUpdateTimeEntries9 took 0.516 sec
+Testcase: testUpdateTimeEntries10 took 0.406 sec
+Testcase: testDeleteTimeEntries1 took 0.219 sec
+Testcase: testDeleteTimeEntries2 took 0.234 sec
+Testcase: testDeleteTimeEntries3 took 0.438 sec
+Testcase: testDeleteTimeEntries4 took 0.516 sec
+Testcase: testDeleteTimeEntries5 took 0.515 sec
+Testcase: testGetTimeEntries1 took 0.219 sec
+Testcase: testGetTimeEntries2 took 0.594 sec
+Testcase: testGetTimeEntries3 took 0.406 sec
+Testcase: testSearchTimeEntries1 took 0.234 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testCreateInvoiceIdFilter took 0 sec
+Testcase: testCreateTaskTypeFilter took 0 sec
+Testcase: testCreateTimeStatusFilter took 0 sec
+Testcase: testCreateRejectReasonFilter took 0 sec
+Testcase: testCreateCompanyIdFilter took 0 sec
+Testcase: testCtor3 took 0 sec
+Testcase: testCtor4 took 0 sec
+Testcase: testCtor5 took 0 sec
+Testcase: testCtor6 took 0 sec
+Testcase: testCreateDescriptionFilter1 took 0 sec
+Testcase: testCreateDescriptionFilter2 took 0 sec
+Testcase: testCreateDescriptionFilter3 took 0 sec
+Testcase: testCreateEntryDateFilter1 took 0 sec
+Testcase: testCreateEntryDateFilter2 took 0 sec
+Testcase: testCreateHoursFilter1 took 0 sec
+Testcase: testCreateHoursFilter2 took 0 sec
+Testcase: testCtor1 took 0.516 sec
+Testcase: testCtor2 took 0.625 sec
+Testcase: testCtor3 took 0.344 sec
+Testcase: testAddRejectReasonToEntry1 took 0.406 sec
+Testcase: testAddRejectReasonToEntry2 took 0.375 sec
+Testcase: testRemoveRejectReasonFromEntry1 took 0.406 sec
+Testcase: testRemoveRejectReasonFromEntry2 took 0.469 sec
+Testcase: testGetAllTimeStatuses took 1.062 sec
+Testcase: testCtor1 took 0.25 sec
+Testcase: testCtor2 took 0.172 sec
+Testcase: testCreateTimeStatuses1 took 0.219 sec
+Testcase: testCreateTimeStatuses2 took 0.219 sec
+Testcase: testCreateTimeStatuses3 took 0.172 sec
+Testcase: testCreateTimeStatuses4 took 0.25 sec
+Testcase: testCreateTimeStatuses5 took 0.25 sec
+Testcase: testCreateTimeStatuses6 took 0.218 sec
+Testcase: testCreateTimeStatuses7 took 0.235 sec
+Testcase: testCreateTimeStatuses8 took 0.172 sec
+Testcase: testUpdateTimeStatuses1 took 0.218 sec
+Testcase: testUpdateTimeStatuses2 took 0.172 sec
+Testcase: testUpdateTimeStatuses3 took 0.25 sec
+Testcase: testUpdateTimeStatuses4 took 0.203 sec
+Testcase: testUpdateTimeStatuses5 took 0.266 sec
+Testcase: testUpdateTimeStatuses6 took 0.25 sec
+Testcase: testUpdateTimeStatuses7 took 0.219 sec
+Testcase: testDeleteTimeStatuses1 took 0.219 sec
+Testcase: testDeleteTimeStatuses2 took 0.156 sec
+Testcase: testDeleteTimeStatuses3 took 0.25 sec
+Testcase: testDeleteTimeStatuses4 took 0.344 sec
+Testcase: testGetTimeStatuses1 took 0.171 sec
+Testcase: testGetTimeStatuses2 took 0.297 sec
+Testcase: testSearchTimeStatuses1 took 0.219 sec
+Testcase: testSearchTimeStatuses2 took 0.203 sec
+Testcase: testCtor3 took 0.235 sec
+Testcase: testCtor4 took 0.218 sec
+Testcase: testCtor5 took 0.172 sec
+Testcase: testCtor6 took 0.219 sec
+Testcase: testCtor7 took 0.234 sec
+Testcase: testCtor8 took 0.157 sec
+Testcase: testCreateTimeStatuses9 took 0.218 sec
+Testcase: testCreateTimeStatuses10 took 0.219 sec
+Testcase: testUpdateTimeStatuses8 took 0.328 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testCtor3 took 0 sec
+Testcase: testCtor4 took 0 sec
+Testcase: testCtor5 took 0 sec
+Testcase: testCtor6 took 0 sec
+Testcase: testCreateDescriptionFilter1 took 0 sec
+Testcase: testCreateDescriptionFilter2 took 0 sec
+Testcase: testCreateDescriptionFilter3 took 0 sec
+Testcase: testGetTaskType took 0.203 sec
+Testcase: testCreateTaskType took 0.203 sec
+Testcase: testDeleteTaskType took 0.235 sec
+Testcase: testGetTaskTypes took 0.203 sec
+Testcase: testUpdateTaskType1 took 0.141 sec
+Testcase: testUpdateTaskType2 took 0.281 sec
+Testcase: testCreateTaskTypes1 took 0.156 sec
+Testcase: testCreateTaskTypes2 took 0.219 sec
+Testcase: testCreateTaskTypes3 took 0.156 sec
+Testcase: testCreateTaskTypes4 took 0.203 sec
+Testcase: testCreateTaskTypes5 took 0.141 sec
+Testcase: testCreateTaskTypes6 took 0.204 sec
+Testcase: testCreateTaskTypes7 took 0.14 sec
+Testcase: testUpdateTaskTypes1 took 0.219 sec
+Testcase: testUpdateTaskTypes2 took 0.141 sec
+Testcase: testUpdateTaskTypes3 took 0.296 sec
+Testcase: testUpdateTaskTypes4 took 0.219 sec
+Testcase: testUpdateTaskTypes5 took 0.297 sec
+Testcase: testUpdateTaskTypes6 took 0.234 sec
+Testcase: testDeleteTaskTypes1 took 0.204 sec
+Testcase: testDeleteTaskTypes2 took 0.14 sec
+Testcase: testDeleteTaskTypes3 took 0.313 sec
+Testcase: testSearchTaskTypes1 took 0.156 sec
+Testcase: testSearchTaskTypes2 took 0.25 sec
+Testcase: testAddRejectReasonToEntry took 0.156 sec
+Testcase: testRemoveRejectReasonFromEntry took 0.203 sec
+Testcase: testRemoveAllRejectReasonsFromEntry took 0.157 sec
+Testcase: testCreateTimeEntry took 0.203 sec
+Testcase: testDeleteTimeEntry took 0.187 sec
+Testcase: testGetTimeEntry took 0.25 sec
+Testcase: testSearchTimeEntries2 took 0.188 sec
+Testcase: testCreateTimeEntries1 took 0.218 sec
+Testcase: testCreateTimeEntries2 took 0.141 sec
+Testcase: testCreateTimeEntries3 took 0.219 sec
+Testcase: testCreateTimeEntries4 took 0.156 sec
+Testcase: testCreateTimeEntries5 took 0.219 sec
+Testcase: testCreateTimeEntries6 took 0.14 sec
+Testcase: testCreateTimeEntries7 took 0.219 sec
+Testcase: testCreateTimeEntries8 took 0.156 sec
+Testcase: testUpdateTimeEntries1 took 0.204 sec
+Testcase: testUpdateTimeEntries2 took 0.156 sec
+Testcase: testUpdateTimeEntries3 took 0.39 sec
+Testcase: testUpdateTimeEntries4 took 0.344 sec
+Testcase: testUpdateTimeEntries5 took 0.406 sec
+Testcase: testUpdateTimeEntries6 took 0.344 sec
+Testcase: testUpdateTimeEntries7 took 0.422 sec
+Testcase: testUpdateTimeEntries8 took 0.484 sec
+Testcase: testDeleteTimeEntries1 took 0.219 sec
+Testcase: testDeleteTimeEntries2 took 0.141 sec
+Testcase: testDeleteTimeEntries3 took 0.453 sec
+Testcase: testDeleteTimeEntries4 took 0.562 sec
+Testcase: testGetTimeEntries1 took 0.204 sec
+Testcase: testGetTimeEntries2 took 0.562 sec
+Testcase: testSearchTimeEntries1 took 0.219 sec
+Testcase: testUpdateTimeEntry1 took 0.14 sec
+Testcase: testUpdateTimeEntry2 took 0.25 sec
+Testcase: testCreateTimeStatus took 0.172 sec
+Testcase: testDeleteTimeStatus took 0.266 sec
+Testcase: testGetTimeStatus took 0.203 sec
+Testcase: testGetTimeStatuses took 0.203 sec
+Testcase: testUpdateTimeStatus1 took 0.156 sec
+Testcase: testUpdateTimeStatus2 took 0.266 sec
+Testcase: testCreateTimeStatuses1 took 0.156 sec
+Testcase: testCreateTimeStatuses2 took 0.203 sec
+Testcase: testCreateTimeStatuses3 took 0.157 sec
+Testcase: testCreateTimeStatuses4 took 0.203 sec
+Testcase: testCreateTimeStatuses5 took 0.156 sec
+Testcase: testCreateTimeStatuses6 took 0.203 sec
+Testcase: testCreateTimeStatuses7 took 0.141 sec
+Testcase: testUpdateTimeStatuses1 took 0.219 sec
+Testcase: testUpdateTimeStatuses2 took 0.14 sec
+Testcase: testUpdateTimeStatuses3 took 0.281 sec
+Testcase: testUpdateTimeStatuses4 took 0.235 sec
+Testcase: testUpdateTimeStatuses5 took 0.297 sec
+Testcase: testUpdateTimeStatuses6 took 0.234 sec
+Testcase: testDeleteTimeStatuses1 took 0.203 sec
+Testcase: testDeleteTimeStatuses2 took 0.156 sec
+Testcase: testDeleteTimeStatuses3 took 0.297 sec
+Testcase: testSearchTimeStatuses1 took 0.141 sec
+Testcase: testSearchTimeStatuses2 took 0.25 sec
+Testcase: testCreateTaskType took 0.484 sec
+Testcase: testUpdateTaskType took 0.422 sec
+Testcase: testCreateTaskTypes took 5.235 sec
+Testcase: testUpdateTaskTypes took 5.109 sec
+Testcase: testSearchTaskTypes took 4.812 sec
+Testcase: testCreateTimeEntries took 20.36 sec
+Testcase: testUpdateTimeEntries took 29.14 sec
+Testcase: testSearchTimeEntries took 5.313 sec
+Testcase: testCreateTimeStatus took 0.437 sec
+Testcase: testCreateTimeStatuses took 0.516 sec
+Testcase: testUpdateTimeStatuses took 0.719 sec
+Testcase: testDeleteTimeStatuses took 0.75 sec
+Testcase: testGetTimeStatuses took 0.547 sec
+Testcase: testSearchTimeStatuses took 0.281 sec
