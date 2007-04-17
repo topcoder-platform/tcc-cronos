@@ -198,13 +198,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://JaG:1527/tt_company:informixserver=topcoder_test</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/rates:INFORMIXSERVER=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>topcoder</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -217,13 +217,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://JaG:1526/tt:informixserver=ol_jag</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1527/rates:INFORMIXSERVER=notexist</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>topcoder</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
