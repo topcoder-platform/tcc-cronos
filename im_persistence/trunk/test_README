@@ -1,0 +1,4 @@
+1. Initialize your informix service.
+2. Modify the connection string in all the configuration files under /test_files directory.
+3. Execute /test/script.sql to set up the testing environment.
+4. Update build.xml and run.

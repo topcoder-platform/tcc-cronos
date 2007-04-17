@@ -7,6 +7,8 @@ CREATE TABLE id_sequences (
         exhausted               INTEGER default 0
 );
 
+INSERT INTO id_sequences (name, next_block_start, block_size) values ('generator', 1, 20);
+INSERT INTO id_sequences (name, next_block_start, block_size) values ('accuracy', 1, 20);
 INSERT INTO id_sequences (name, next_block_start, block_size) values ('stress', 1, 20);
 
 CREATE TABLE entity_status (

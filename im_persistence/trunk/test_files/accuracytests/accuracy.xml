@@ -14,13 +14,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.11.105:1526/im_persistence:INFORMIXSERVER=tcs</Value>
+						<Value>jdbc:informix-sqli://IBM-68C4DC40CEA:1526/dev:informixserver=tcs</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>topcoder</Value>
+						<Value>informix</Value>
 					</Property>
 				</Property>
             </Property>
