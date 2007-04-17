@@ -1,0 +1,10 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.audit.ejb.AuditDelegate">
+		<Property name="context_name">
+			<Value>audit</Value>
+		</Property>
+		<Property name="jndi_name">
+			<Value>java:comp/env/ejb/AuditLocal</Value>
+		</Property>
+	</Config>
+</CMConfig>

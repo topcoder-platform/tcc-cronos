@@ -1,0 +1,27 @@
+<CMConfig>
+    <Config name="AddressManagerLocalDelegate_Error0">
+        <Property name="jndi_reference">
+			<!-- required value is missing -->
+			<Value></Value>
+		</Property>
+    </Config>
+    <Config name="AddressManagerLocalDelegate_Error1">
+        <Property name="jndi_reference">
+			<!-- required value is wrong -->
+			<Value>JNDI</Value>
+		</Property>
+    </Config>
+
+    <Config name="ContactManagerLocalDelegate_Error0">
+        <Property name="jndi_reference">
+			<!-- required value is missing -->
+			<Value></Value>
+		</Property>
+    </Config>
+    <Config name="ContactManagerLocalDelegate_Error1">
+        <Property name="jndi_reference">
+			<!-- required value is wrong -->
+			<Value>JNDI</Value>
+		</Property>
+    </Config>
+</CMConfig>

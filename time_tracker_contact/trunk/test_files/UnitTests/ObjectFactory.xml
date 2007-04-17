@@ -1,0 +1,56 @@
+<CMConfig>
+   <Config name="ObjectFactoryNS">
+
+	  <!-- For AddressDAO -->
+      <Property name="AddressDAO">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.contact.persistence.InformixAddressDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.timetracker.contact.persistence.InformixAddressDAO</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+      
+      <!-- For ContactDAO -->
+      <Property name="ContactDAO">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.contact.persistence.InformixContactDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.timetracker.contact.persistence.InformixContactDAO</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+      
+      <!-- For AuditManager -->
+      <Property name="AuditManager">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.audit.ejb.AuditDelegate</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>com.topcoder.timetracker.audit.ejb.AuditDelegate</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+      
+   </Config>
+</CMConfig>

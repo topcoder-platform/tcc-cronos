@@ -1,0 +1,12 @@
+<CMConfig>
+    <Config name="com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate">
+        <Property name="jndi_reference">
+			<Value>java:comp/env/ejb/AddressLocal</Value>
+		</Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.contact.ejb.ContactManagerLocalDelegate">
+        <Property name="jndi_reference">
+			<Value>java:comp/env/ejb/ContactLocal</Value>
+		</Property>
+    </Config>
+</CMConfig>

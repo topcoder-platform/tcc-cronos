@@ -1,0 +1,11 @@
+1. create tables as audit_tables.sql and contact & address_tables.sql
+
+2. ensure required jars exist in classpath, see build.xml
+
+3. Correct configuration according your environment
+
+   3.1 /test_files/UnitTests/Informix.properties
+   3.2 /test_files/UnitTests/DBConnectionFactory.xml
+
+4. Cobertura1.8 collides with Mockejb, so Cobertura1.0 is used, download it from https://sourceforge.net/project/showfiles.php?group_id=130558&package_id=143781
+   , and see build.xml for configuration

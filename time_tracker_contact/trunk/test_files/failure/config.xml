@@ -1,0 +1,643 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate">
+		<Property name="jndi_reference">
+			<Value>timetracker/addressEJB</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate.failure1">
+		
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate.failure2">
+		<Property name="jndi_reference">
+			<Value>timetracker/contactEJB</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.contact.ejb.ContactManagerLocalDelegate">
+		<Property name="jndi_reference">
+			<Value>timetracker/contactEJB</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.contact.ejb.ContactManagerLocalDelegate.failure1">
+		
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.contact.ejb.ContactManagerLocalDelegate.failure2">
+		<Property name="jndi_reference">
+			<Value>timetracker/addressEJB</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+		 <Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure1">
+		<!--  required 
+			<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		-->
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure2">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl.notExist</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure3">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>oracle</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure4">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required 
+			<Property name="idgenerator_name">
+			<Value>address</Value>
+			</Property>
+		-->
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure5">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required 
+			<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+			</Property>
+		-->
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure6">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch.NotExist</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure7">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required 
+			<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+			</Property>
+		-->
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure8">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager.notExist</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixAddressDAO.failure9">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>address_not_exist</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+		 <Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure1">
+		<!--  required 
+			<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		-->
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure2">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl.notExist</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure3">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>oracle</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure4">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required 
+			<Property name="idgenerator_name">
+			<Value>contact</Value>
+			</Property>
+		-->
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure5">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required 
+			<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+			</Property>
+		-->
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure6">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required 
+			<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+			</Property>
+		-->
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure7">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager.notExist</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure8">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>contact</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch.NotExist</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO.failure9">
+		<!--  required -->
+		<Property name="connection_factory_namespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<!-- required -->
+		<Property name="idgenerator_name">
+			<Value>notExist</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<!-- required -->
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<!-- optional -->
+		<Property name="audit_manager_namespace">
+			<Value>objectfactory</Value>
+		</Property>
+	</Config>
+	<Config name="objectfactory">
+		<Property name="AuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.contact.failuretests.MockAuditManager</Value>
+			</Property>
+		</Property>
+		<Property name="addressDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.contact.persistence.InformixAddressDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.contact.persistence.InformixAddressDAO</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>com.topcoder.timetracker.contact.failuretests.MockAuditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		
+		<Property name="contactDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.contact.persistence.InformixContactDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.contact.persistence.InformixContactDAO</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>com.topcoder.timetracker.contact.failuretests.MockAuditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix</Value>
+			</Property>
+			<Property name="informix">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.175:1526/time_tracker_contact:informixserver=tcs</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>topcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

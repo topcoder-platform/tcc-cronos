@@ -1,0 +1,133 @@
+<CMConfig>
+   <Config name="ObjectFactoryNS_Error_0">
+   	      <Property name="AddressDAO">
+	        <!-- type property is missing -->
+	        <!-- Property name="type">
+	            <Value>com.topcoder.timetracker.contact.persistence.InformixAddressDAO</Value>
+	        </Property-->
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- unknown namspace for AddressDAO -->
+	                <Property name="value">
+	                    <Value>UnknownNamespace</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      	</Property>
+   </Config>
+   
+   <Config name="ObjectFactoryNS_Error_1">
+      <Property name="AddressDAO">
+	        <Property name="type">
+	            <Value>com.topcoder.timetracker.contact.persistence.InformixAddressDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <!-- unknown namspace for AddressDAO -->
+	                <Property name="value">
+	                    <Value>UnknownNamespace</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+   <Config name="ObjectFactoryNS_Error_2">
+      <Property name="AddressDAO">
+      		<!-- type is wrong -->
+	        <Property name="type">
+	            <Value>java.lang.String</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>string</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+   <Config name="ObjectFactoryNS_Error_3">
+      <Property name="AuditManager">
+      		<!-- type is wrong -->
+	        <Property name="type">
+	            <Value>java.lang.String</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>string</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+    
+    <Config name="ObjectFactoryNS_Error_4">
+      <Property name="AuditManager">
+      		<Property name="type">
+	            <Value>com.topcoder.timetracker.audit.ejb.AuditDelegate</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                	<!-- namespace is unknown -->
+	                    <Value>UnknownNamespace</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+    <Config name="ObjectFactoryNS_Error_5">
+      <Property name="AddressDAO">
+      		<Property name="type">
+	            <Value>com.topcoder.timetracker.contact.persistence.InformixAddressDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>InformixAddressDAO_Error_4</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+
+    <Config name="ObjectFactoryNS_Error_6">
+      <Property name="ContactDAO">
+      		<Property name="type">
+	            <Value>com.topcoder.timetracker.contact.persistence.InformixContactDAO</Value>
+	        </Property>
+	        <Property name="params">
+	            <Property name="param1">
+	                <Property name="type">
+	                    <Value>String</Value>
+	                </Property>
+	                <Property name="value">
+	                    <Value>InformixContactDAO_Error_4</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+      </Property>
+    </Config>
+</CMConfig>

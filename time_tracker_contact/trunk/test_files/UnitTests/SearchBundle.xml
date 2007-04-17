@@ -1,0 +1,504 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.contact.persistence.SearchBundleManager">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+		
+		<!-- searchBundles start -->
+		<Property name="searchBundles">
+		
+		    <!-- AddressSearch start -->
+			<Property name="AddressSearch">
+			
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>AddressDBStrategy</Value>
+					</Property>
+				</Property>
+				
+				<Property name="context">
+					<Value>Select address.*,state_name.name as state_name,state_name.abbreviation,
+state_name.creation_date as state_creation_date,state_name.modification_date as state_modification_date,
+state_name.creation_user as state_creation_user,state_name.modification_user as state_modification_user,
+country_name.name as country_name,country_name.creation_date as country_creation_date,
+country_name.modification_date as country_modification_date,country_name.creation_user as country_creation_user,
+country_name.modification_user as country_modification_user, address_relation.address_type_id,
+address_relation.entity_id,address_relation.creation_date as relation_creation_date,
+address_relation.modification_date as relation_modification_date,
+address_relation.creation_user as relation_creation_user,
+address_relation.modification_user as relation_modification_user
+from address inner join state_name on address.state_name_id = state_name.state_name_id inner join
+country_name on address.country_name_id = country_name.country_name_id left join address_relation
+on address.address_id = address_relation.address_id where </Value>
+				</Property>
+				
+				<Property name="alias">
+					<Property name="creation_date">
+						<Value>address.creation_date</Value>
+					</Property>
+					<Property name="modification_date">
+						<Value>address.modification_date</Value>
+					</Property>
+					<Property name="creation_user">
+						<Value>address.creation_user</Value>
+					</Property>
+					<Property name="modification_user">
+						<Value>address.modification_user</Value>
+					</Property>
+					<Property name="country_name">
+						<Value>country_name.name</Value>
+					</Property>
+					<Property name="country_name_id">
+						<Value>country_name.country_name_id</Value>
+					</Property>
+					<Property name="state_name">
+						<Value>state_name.name</Value>
+					</Property>
+					<Property name="state_name_id">
+						<Value>state_name.state_name_id</Value>
+					</Property>
+				</Property>
+				
+				<Property name="searchableFields">
+				    <Property name="creation_date">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="modification_date">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="creation_user">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="modification_user">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="country_name">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="state_name">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="city">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="zip_code">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="country_name_id">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="state_name_id">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="address_type_id">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="entity_id">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		        </Property>
+				
+			</Property>
+			<!-- AddressSearch end -->
+
+			<!-- ContactSearch start -->
+			<Property name="ContactSearch">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>ContactDBStrategy</Value>
+					</Property>
+				</Property>
+				<Property name="context">
+					<Value>Select contact.*,contact_relation.contact_type_id,
+contact_relation.entity_id, contact_relation.creation_date as relation_creation_date,
+contact_relation.modification_date as relation_modification_date,
+contact_relation.creation_user as relation_creation_user,
+contact_relation.modification_user as relation_modification_user from contact left join contact_relation
+on contact.contact_id = contact_relation.contact_id where </Value>
+				</Property>
+				
+				<Property name="alias">
+					<Property name="creation_date">
+						<Value>contact.creation_date</Value>
+					</Property>
+					<Property name="modification_date">
+						<Value>contact.modification_date</Value>
+					</Property>
+					<Property name="creation_user">
+						<Value>contact.creation_user</Value>
+					</Property>
+					<Property name="modification_user">
+						<Value>contact.modification_user</Value>
+					</Property>
+				</Property>
+				
+				<Property name="searchableFields">
+					<Property name="creation_date">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="modification_date">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="creation_user">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="modification_user">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="first_name">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="last_name">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="phone">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="email">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="contact_type_id">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+		            <Property name="entity_id">
+		                <Property name="validator">
+		                    <Property name="class">
+		                        <Value>validator</Value>
+		                    </Property>
+		                    <Property name="identifier">
+		                        <Value>default</Value>
+		                    </Property>
+		                </Property>
+		            </Property>
+				</Property>
+			</Property>
+			<!-- ContactSearch end -->
+		</Property>
+		<!-- searchBundles end -->
+	</Config>
+
+    <Config name="com.topcoder.search.builder.validator.factory">
+		<Property name="validator:default">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.contact.MockAlwaysTrueValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+    <Config name="com.topcoder.search.builder.strategy.factory">
+		<Property name="AddressDBStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="ContactDBStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.search.builder.fragments">
+	</Config>
+	
+	<Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
+        <Property name="connectionFactory">
+            <Property name="name">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="class">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+        </Property>
+        <!-- The name to request from the connection factory when acquiring a connection. If not present, then the default connection is used. -->
+        <Property name="connectionName">
+            <Value>InformixJNDIConnection</Value>
+        </Property>
+        
+        <Property name="searchFragmentFactoryNamespace">
+            <Value>com.topcoder.search.builder.fragments</Value>
+        </Property>
+
+        <Property name="searchFragmentBuilders">
+            <Property name="And">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.AndFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Or">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.OrFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Like">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Not">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NotFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="EqualTo">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="In">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.InFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+                </Property>
+            </Property>
+            
+            <Property name="Null">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NullFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+                </Property>
+            </Property>
+            
+            <Property name="GreaterThan">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="GreaterOrEqual">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Between">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="LessOrEqual">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Less">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+        </Property>
+	</Config>
+	
+</CMConfig>

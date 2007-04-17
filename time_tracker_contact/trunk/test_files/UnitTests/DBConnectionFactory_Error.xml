@@ -1,0 +1,101 @@
+<CMConfig>
+   <Config name="DBConnectionFactory_Error_0">
+		<Property name="connections">
+		<!-- default connection name is empty -->
+			<Property name="default">
+				<Value> </Value>
+			</Property>
+			
+			<Property name="InformixJNDIConnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jndi_name">
+						<Value>jdbc/informix</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+   <Config name="DBConnectionFactory_Error_1">
+		<Property name="connections">
+		<!-- default connection name is unknown -->
+			<Property name="default">
+				<Value>unknown</Value>
+			</Property>
+			
+			<Property name="InformixJNDIConnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jndi_name">
+						<Value>jdbc/informix</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+   <Config name="DBConnectionFactory_Error_2">
+		<!-- "connections" property is missing -->
+		<Property name="connectionsssss">
+			<Property name="default">
+				<Value>InformixJNDIConnection</Value>
+			</Property>
+			
+			<Property name="InformixJNDIConnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jndi_name">
+						<Value>jdbc/informix</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+   <Config name="DBConnectionFactory_Error_3">
+		<Property name="connections">
+			<Property name="default">
+				<Value>InformixJNDIConnection</Value>
+			</Property>
+			
+			<Property name="InformixJNDIConnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jndi_name">
+					<!-- JNDI name is unknown -->
+						<Value>jdbc/unknownJNDIName</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="DBConnectionFactory_Error_4">
+		<Property name="connections">
+			<Property name="default">
+				<Value>InformixJNDIConnection</Value>
+			</Property>
+			
+			<Property name="InformixJNDIConnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jndi_name">
+					<!-- JNDI name binded to a datasource which always throws SQLException when getting connection -->
+						<Value>java:comp/env/jdbc/wrong</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

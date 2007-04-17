@@ -1,0 +1,147 @@
+<CMConfig>
+	<Config name="InformixAddressDAO_Error_0">
+		<Property name="connection_factory_namespace">
+			<Value>DBConnectionFactory_Error_0</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>InformixJNDIConnection</Value>
+		</Property>
+		<Property name="idgenerator_name">
+			<Value>NoSuchIDGenerator</Value>
+		</Property>
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<Property name="search_bundle_namespace">
+			<Value>SearchBundleManager_Error_0</Value>
+		</Property>
+		<Property name="audit_manager_namespace">
+			<Value>ObjectFactoryNS</Value>
+		</Property>
+		<Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="InformixAddressDAO_Error_1">
+		<Property name="connection_factory_namespace">
+			<Value>DBConnectionFactory_Error_1</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>InformixJNDIConnection</Value>
+		</Property>
+		<Property name="idgenerator_name">
+			<Value>AddressIDGenerator</Value>
+		</Property>
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<Property name="search_bundle_namespace">
+			<Value>SearchBundleManager_Error_1</Value>
+		</Property>
+		<Property name="audit_manager_namespace">
+			<Value>ObjectFactoryNS</Value>
+		</Property>
+		<Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="InformixAddressDAO_Error_2">
+		<Property name="connection_factory_namespace">
+			<Value>DBConnectionFactory_Error_2</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>InformixJNDIConnection</Value>
+		</Property>
+		<Property name="idgenerator_name">
+			<Value>AddressIDGenerator</Value>
+		</Property>
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<Property name="audit_manager_namespace">
+			<Value>ObjectFactoryNS_Error_3</Value>
+		</Property>
+		<Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="InformixAddressDAO_Error_3">
+		<Property name="connection_factory_namespace">
+			<Value>DBConnectionFactory_Error_3</Value>
+		</Property>
+		<Property name="connection_name">
+			<Value>InformixJNDIConnection</Value>
+		</Property>
+		<Property name="idgenerator_name">
+			<Value>AddressIDGenerator</Value>
+		</Property>
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<Property name="audit_manager_namespace">
+			<Value>ObjectFactoryNS_Error_4</Value>
+		</Property>
+		<Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="InformixAddressDAO_Error_4">
+		<Property name="connection_factory_namespace">
+			<Value>DBConnectionFactory_Error_4</Value>
+		</Property>
+		<!-- use JNDI connection -->
+		<Property name="connection_name">
+			<Value>InformixJNDIConnection</Value>
+		</Property>
+		<Property name="idgenerator_name">
+			<Value>AddressIDGenerator</Value>
+		</Property>
+		<Property name="search_bundle_name">
+			<Value>AddressSearch</Value>
+		</Property>
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<Property name="audit_manager_namespace">
+			<Value>ObjectFactoryNS</Value>
+		</Property>
+		<Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="InformixContactDAO_Error_4">
+		<Property name="connection_factory_namespace">
+			<Value>DBConnectionFactory_Error_4</Value>
+		</Property>
+		<!-- use JNDI connection -->
+		<Property name="connection_name">
+			<Value>InformixJNDIConnection</Value>
+		</Property>
+		<Property name="idgenerator_name">
+			<Value>ContactIDGenerator</Value>
+		</Property>
+		<Property name="search_bundle_name">
+			<Value>ContactSearch</Value>
+		</Property>
+		<Property name="search_bundle_namespace">
+			<Value>com.topcoder.timetracker.contact.persistence.SearchBundleManager</Value>
+		</Property>
+		<Property name="audit_manager_namespace">
+			<Value>ObjectFactoryNS</Value>
+		</Property>
+		<Property name="AuditManager">
+			<Value>AuditManager</Value>
+		</Property>
+	</Config>
+</CMConfig>

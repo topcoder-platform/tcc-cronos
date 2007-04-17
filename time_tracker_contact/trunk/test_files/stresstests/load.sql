@@ -1,0 +1,14 @@
+insert into id_sequences (name, next_block_start, block_size, exhausted) values ('AddressIDStressGenerator', 1, 1, 0);
+insert into id_sequences (name, next_block_start, block_size, exhausted) values ('ContactIDStressGenerator', 1, 1, 0);
+insert into address_type(address_type_id,description,creation_date,creation_user,modification_date,modification_user) values (1 , 'PROJECT', CURRENT, 'user', CURRENT, 'user');
+insert into address_type(address_type_id,description,creation_date,creation_user,modification_date,modification_user) values (2 , 'CLIENT', CURRENT, 'user', CURRENT, 'user');
+insert into address_type(address_type_id,description,creation_date,creation_user,modification_date,modification_user) values (3 , 'COMPANY', CURRENT, 'user', CURRENT, 'user');
+insert into address_type(address_type_id,description,creation_date,creation_user,modification_date,modification_user) values (4 , 'USER', CURRENT, 'user', CURRENT, 'user');
+insert into contact_type(contact_type_id,description,creation_date,creation_user,modification_date,modification_user) values (1 , 'PROJECT', CURRENT, 'user', CURRENT, 'user');
+insert into contact_type(contact_type_id,description,creation_date,creation_user,modification_date,modification_user) values (2 , 'CLIENT', CURRENT, 'user', CURRENT, 'user');
+insert into contact_type(contact_type_id,description,creation_date,creation_user,modification_date,modification_user) values (3 , 'COMPANY', CURRENT, 'user', CURRENT, 'user');
+insert into contact_type(contact_type_id,description,creation_date,creation_user,modification_date,modification_user) values (4 , 'USER', CURRENT, 'user', CURRENT, 'user');
+insert into country_name(country_name_id,name,creation_date,creation_user,modification_date,modification_user) values (1, 'China', CURRENT, 'user', CURRENT, 'user');
+insert into country_name(country_name_id,name,creation_date,creation_user,modification_date,modification_user) values (2, 'USA', CURRENT, 'user', CURRENT, 'user');
+insert into state_name(state_name_id,name,abbreviation,creation_date,creation_user,modification_date,modification_user) values (1, 'ZheJiang', 'ZJ', CURRENT, 'user', CURRENT, 'user');
+insert into state_name(state_name_id,name,abbreviation,creation_date,creation_user,modification_date,modification_user) values (2, 'Alaska', 'AK', CURRENT, 'user', CURRENT, 'user');

@@ -1,0 +1,37 @@
+<CMConfig>
+	<Config name="SearchBundleManager_Error_0">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+		
+		<Property name="searchBundles">
+		
+		    <Property name="AddressSearch">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>AddressDBStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		
+		    <!-- context is missing -->
+		</Property>
+	
+	</Config>
+	
+	<Config name="SearchBundleManager_Error_1">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+		
+		<!-- no bundles configured, this is improper -->	
+	</Config>
+</CMConfig>
