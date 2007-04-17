@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.client.objectfactory">
+		<Property name="ClientDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.client.db.InformixClientDAO</Value>
+			</Property>
+		</Property>
+		<Property name="AddressManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.client.MockAddressManager</Value>
+			</Property>
+		</Property>
+		<Property name="ContactManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.client.MockContactManager</Value>
+			</Property>
+		</Property>
+		<Property name="CommonManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.client.MockCommonManager</Value>
+			</Property>
+		</Property>
+		<Property name="ProjectUtility">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.client.MockProjectUtility</Value>
+			</Property>
+		</Property>
+		<Property name="AuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.client.MockAuditManager</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

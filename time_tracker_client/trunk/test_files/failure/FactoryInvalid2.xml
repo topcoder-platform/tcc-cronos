@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!--
+		Harcoded namespace for ClientUtilityFactory
+		It must be a valid ConfigManagerSpecificationFactory namespace
+	-->
+	<Config name="com.topcoder.timetracker.client">
+	  <!--
+		Harcoded key for the ClientUtility implementation to be used
+	  -->
+      <Property name="com.topcoder.timetracker.client.ClientUtility">
+          <Property name="type">
+            <Value> </Value>
+          </Property>
+      </Property>
+	</Config>
+</CMConfig>

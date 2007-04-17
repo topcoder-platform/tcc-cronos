@@ -1,0 +1,237 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <Config name="com.topcoder.search.builder">
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.topcoder.search.builder.strategy.factory</Value>
+        </Property>
+
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.topcoder.search.builder.validator.factory</Value>
+        </Property>
+
+        <Property name="searchBundles">
+
+            <Property name="ClientDaoSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="context">
+                    <Value>
+                        SELECT distinct
+                        client.client_id
+                        FROM
+						client INNER JOIN client_project On
+						client.client_id = client_project.client_id
+                        WHERE
+                    </Value>
+                </Property>
+                <Property name="alias">
+                    <Property name="ALL">
+                        <Value>*</Value>
+                    </Property>
+                    <Property name="ID">
+                        <Value>client.client_id</Value>
+					</Property>
+					<Property name="CLIENT_ID">
+                        <Value>client.client_id</Value>
+                    </Property>
+                    <Property name="PAYMENT_TERM_ID">
+                        <Value>client.payment_term_id</Value>
+                    </Property>
+                    <Property name="ACTIVE">
+                        <Value>client.status</Value>
+                    </Property>
+                    <Property name="SALES_TAX">
+                        <Value>client.salesTax</Value>
+                    </Property>
+                    <Property name="END_DATE">
+                        <Value>client.end_date</Value>
+                    </Property>
+                    <Property name="START_DATE">
+                        <Value>client.start_date</Value>
+					</Property>
+					<Property name="MODIFICATION_DATE">
+						<Value>client.modification_date</Value>
+					</Property>
+					<Property name="MODIFICATION_USER">
+						<Value>client.modification_user</Value>
+					</Property>
+					<Property name="CREATION_DATE">
+						<Value>client.creation_date</Value>
+					</Property>
+					<Property name="CREATION_USER">
+						<Value>client.creation_user</Value>
+					</Property>
+					<Property name="COMPANY_ID">
+						<Value>client.company_id</Value>
+					</Property>
+					<Property name="NAME">
+						<Value>client.name</Value>
+					</Property>
+					<Property name="PROJECT_ID">
+						<Value>client_project.project_id</Value>
+					</Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="ALL">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="ID">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="PAYMENT_TERM_ID">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="ACTIVE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="SALES_TAX">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="END_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="START_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+					</Property>
+					<Property name="MODIFICATION_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+					</Property>
+					<Property name="MODIFICATION_USER">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+					</Property>	
+					<Property name="CREATION_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+					</Property>
+					<Property name="CREATION_USER">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+					</Property>
+					<Property name="COMPANY_ID">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+					<Property name="NAME">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+				</Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.search.builder.validator.factory">
+        <Property name="validator:default">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.client.MockValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.search.builder.strategy.factory">
+        <Property name="dbStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder.SearchStrategy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,112 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.client.ClientUtilityImpl">
+	    <Property name="ObjectFactoryNamespace">
+            <Value>com.topcoder.timetracker.client.ObjectFactory</Value>
+        </Property>
+		<Property name="IDName">
+			<Value>unit_test_id_sequence</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.client.ObjectFactory">
+      <Property name="ClientDAO">
+          <Property name="type">
+            <Value>com.topcoder.timetracker.client.db.InformixClientDAO</Value>
+          </Property>
+      </Property>
+	</Config>
+
+<Config name="ClientUtilityImpl.fail1">
+	    <!--Property name="ObjectFactoryNamespace">
+            <Value>com.topcoder.timetracker.client.ObjectFactory</Value>
+        </Property-->
+		<Property name="IDName">
+			<Value>unit_test_id_sequence</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+	</Config>
+<Config name="ClientUtilityImpl.fail2">
+	    <Property name="ObjectFactoryNamespace">
+            <Value>com.topcoder.timetracker.client.ObjectFactory.lost</Value>
+        </Property>
+		<Property name="IDName">
+			<Value>unit_test_id_sequence</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+	</Config>
+
+	<Config name="ClientUtilityImpl.fail3">
+	    <Property name="ObjectFactoryNamespace">
+            <Value>ObjectFactory.fail3</Value>
+        </Property>
+		<Property name="IDName">
+			<Value>unit_test_id_sequence</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+	</Config>
+	<Config name="ObjectFactory.fail3">
+      <!--Property name="ClientDAO">
+          <Property name="type">
+            <Value>com.topcoder.timetracker.client.db.InformixClientDAO</Value>
+          </Property>
+      </Property-->
+	</Config>
+
+	<Config name="ClientUtilityImpl.fail4">
+	    <Property name="ObjectFactoryNamespace">
+            <Value> </Value>
+        </Property>
+		<Property name="IDName">
+			<Value>unit_test_id_sequence</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+	</Config>
+
+	<Config name="ClientUtilityImpl.fail5">
+	    <Property name="ObjectFactoryNamespace">
+            <Value>ObjectFactory.fail5</Value>
+        </Property>
+		<Property name="IDName">
+			<Value>unit_test_id_sequence</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+	</Config>
+	<Config name="ObjectFactory.fail5">
+      <Property name="ClientDAO">
+          <Property name="type">
+            <Value> </Value>
+          </Property>
+      </Property>
+	</Config>
+
+</CMConfig>

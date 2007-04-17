@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.client.db.InformixClientDAO">
+		<Property name="ConnectionFactoryNamespace">
+			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+		</Property>
+		<Property name="ConnectionName">
+			<Value>empty_connect</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+		<Property name="ObjectFactoryNamespace">
+			<Value>com.topcoder.timetracker.client.objectfactory</Value>
+		</Property>
+	</Config>
+</CMConfig>

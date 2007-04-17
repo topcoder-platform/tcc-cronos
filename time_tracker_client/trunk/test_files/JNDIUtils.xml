@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.topcoder.naming.jndiutility">
+        <Property name="context.default.factory">
+            <!--
+            <Value>org.jnp.interfaces.NamingContextFactory</Value>
+            -->
+            <Value>org.mockejb.jndi.MockContextFactory</Value>
+        </Property>
+        <Property name="context.default.url">
+            <!--
+            <Value>localhost:1099</Value>
+            -->
+            <Value>org.mockejb.jndi</Value>
+        </Property>
+
+        <Property name="context.RejectReason.factory">
+            <!--
+            <Value>org.jnp.interfaces.NamingContextFactory</Value>
+            -->
+            <Value>org.mockejb.jndi.MockContextFactory</Value>
+        </Property>
+        <Property name="context.RejectReason.url">
+            <!--
+            <Value>localhost:1099</Value>
+            -->
+            <Value>org.mockejb.jndi</Value>
+        </Property>
+    </Config>
+</CMConfig>

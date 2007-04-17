@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.client.ClientUtilityImpl">
+		<Property name="ObjectFactoryNamespace">
+			<Value>com.topcoder.timetracker.client.objectfactory</Value>
+		</Property>
+		<Property name="IDName">
+			<Value>unit_test_id_sequence</Value>
+		</Property>
+		<Property name="SearchBundleNamespace">
+			<Value>com.topcoder.search.builder</Value>
+		</Property>
+		<Property name="SearchBundleName">
+			<Value>ClientDaoSearchBundle</Value>
+		</Property>
+	</Config>
+</CMConfig>

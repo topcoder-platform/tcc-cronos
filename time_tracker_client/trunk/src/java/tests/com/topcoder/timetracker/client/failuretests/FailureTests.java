@@ -1,25 +1,30 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
- package com.topcoder.timetracker.client.failuretests;
+package com.topcoder.timetracker.client.failuretests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
+ * <p>This test case aggregates all Unit test cases.</p>
  *
- * @author TopCoder
- * @version 1.0
+ * @author TCSDEVELOPER
+ * @version 3.2
  */
 public class FailureTests extends TestCase {
 
+    /**
+     * Returns the test suite.
+     * @return the test suite.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(FailureTestClientUtilityDelegate32.class);
+        suite.addTestSuite(FailureTestClientUtilityFactory32.class);
+        suite.addTestSuite(FailureTestClientUtilityImpl32.class);
+        suite.addTestSuite(FailureTestClientUtilitySessionBean32.class);
         return suite;
     }
 

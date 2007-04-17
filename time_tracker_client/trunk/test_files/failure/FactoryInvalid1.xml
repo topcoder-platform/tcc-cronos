@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.client">
+      <Property name="com.topcoder.timetracker.client.ClientUtility1">
+          <Property name="type">
+            <Value>com.topcoder.timetracker.client.ClientUtilityImpl</Value>
+          </Property>
+      </Property>
+	</Config>
+</CMConfig>

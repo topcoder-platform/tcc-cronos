@@ -1,0 +1,7 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.client.ejb.ClientUtilityDelegate">
+		<Property name="LocalHomeName">
+			<Value>java:com/topcoder/timetracker/client</Value>
+		</Property>
+	</Config>
+</CMConfig>

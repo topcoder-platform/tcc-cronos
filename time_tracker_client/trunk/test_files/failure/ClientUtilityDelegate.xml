@@ -1,0 +1,22 @@
+<CMConfig>
+	<Config name="ClientUtilityDelegate.fail1">
+	    <Property name="LocalHomeName">
+            <Value>ejb/ClientUtilityLocal</Value>
+        </Property>
+	    <Property name="ContextName">
+            <Value> </Value>
+        </Property>
+	</Config>
+
+<Config name="ClientUtilityDelegate.fail2">
+	    <!--Property name="LocalHomeName">
+            <Value>ejb/ClientUtilityLocal</Value>
+        </Property-->
+	</Config>
+
+	<Config name="ClientUtilityDelegate.fail3">
+	    <Property name="LocalHomeName">
+            <Value> </Value>
+        </Property>
+	</Config>
+</CMConfig>
