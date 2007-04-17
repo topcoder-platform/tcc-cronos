@@ -16,7 +16,7 @@
     <property name="srcdir" value="src" />
     <property name="tcs_libdir" value="lib/tcs" />
     <property name="ext_libdir" value="lib" />
-    <property name="cronos_libdir" value="../lib" />
+    <property name="cronos_libdir" value="${tcs_libdir}" />
     <property name="jar_tcs_libdir" value="lib/tcs" />
     <property name="jar_ext_libdir" value="lib" />
     <property name="docsdir" value="docs" />
@@ -70,6 +70,11 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
     
     <!-- TCS Dependencies -->
+    <property name="logging_wrapper.version" value="1.2" />
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
+    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
+	
     <property name="configmanager.version" value="2.1.5"/>
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
@@ -115,7 +120,7 @@
     <property name="project_phases.path" value="project_phases/${project_phases.version}"/>
     <property name="project_phases.jar" value="${tcs_libdir}/${project_phases.path}/${project_phases.jar.name}"/>
 
-    <property name="phase_management.version" value="1.0.2"/>
+    <property name="phase_management.version" value="1.0.3"/>
     <property name="phase_management.jar.name" value="phase_management.jar"/>
     <property name="phase_management.path" value="phase_management/${phase_management.version}"/>
     <property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}"/>
@@ -130,7 +135,7 @@
     <property name="review_score_aggregator.path" value="review_score_aggregator/${review_score_aggregator.version}"/>
     <property name="review_score_aggregator.jar" value="${tcs_libdir}/${review_score_aggregator.path}/${review_score_aggregator.jar.name}"/>
     
-    <property name="deliverable_management.version" value="1.0"/>
+    <property name="deliverable_management.version" value="1.0.1"/>
     <property name="deliverable_management.jar.name" value="deliverable_management.jar"/>
     <property name="deliverable_management.path" value="deliverable_management/${deliverable_management.version}"/>
     <property name="deliverable_management.jar" value="${tcs_libdir}/${deliverable_management.path}/${deliverable_management.jar.name}"/>
@@ -192,6 +197,7 @@
         <pathelement location="${junit.jar}" />
         <pathelement location="${mail.jar}" />
         <pathelement location="${activation.jar}" />
+    	<pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${data_validation.jar}" />
