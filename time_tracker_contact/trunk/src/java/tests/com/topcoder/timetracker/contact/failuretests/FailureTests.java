@@ -1,26 +1,35 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 Topcoder Inc., All Rights Reserved.
  */
- package com.topcoder.timetracker.contact.failuretests;
+package com.topcoder.timetracker.contact.failuretests;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
- *
- * @author TopCoder
+ * All failure test cases.
+ * @author waits
+ * @since Apr 11, 2007
  * @version 1.0
  */
-public class FailureTests extends TestCase {
+public class FailureTests {
 
-    public static Test suite() {
-        final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
-        return suite;
-    }
+	public static Test suite() {
+		TestSuite suite = new TestSuite("Test for com.topcoder.timetracker.contact.failuretests");
+		suite.addTestSuite(CountryFailureTests.class);
+		suite.addTestSuite(AddressFilterFactoryFailureTests.class);
+		suite.addTestSuite(ContactFailureTests.class);
+		suite.addTestSuite(InformixAddressDAOFailureTests.class);
+		suite.addTestSuite(ContactBeanFailureTests.class);
+		suite.addTestSuite(ContactManagerLocalDelegateFailureTests.class);
+		suite.addTestSuite(ContactFilterFactoryFailureTests.class);
+		suite.addTestSuite(StateFailureTests.class);
+		suite.addTestSuite(InformixContactDAOFailureTests.class);
+		suite.addTestSuite(AddressBeanFailureTests.class);
+		suite.addTestSuite(AddressFailureTests.class);
+		suite.addTestSuite(AddressManagerLocalDelegateFailureTests.class);
+		return suite;
+	}
 
 }
+
