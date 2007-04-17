@@ -2,6 +2,10 @@
 @import url("source-viewer.css");
 @import url("tooltip.css");
 
+.hidden {
+	display: none;
+}
+
 a.dfn {
 	border-bottom: 1px dotted #00aa00;
 	cursor: help;
@@ -25,8 +29,81 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 0.5em;
 }
 
+h5 {
+	margin-top: 0.5em;
+}
+
+div.footer {
+	font-size: 68%;
+	margin-top: 1.5em;
+}
+
+div.percentgraph
+{
+	background-color: #f02020;
+	border: #808080 1px solid;
+	height: 1.3em;
+	magin: 0px;
+	padding: 0px;
+	width: 100px;
+}
+
+div.percentgraph div.greenbar
+{
+	background-color: #00f000;
+	height: 1.3em;
+	magin: 0px;
+	padding: 0px;
+}
+
+div.percentgraph div.na
+{
+	background-color: #eaeaea;
+	height: 1.3em;
+	magin: 0px;
+	padding: 0px;
+}
+
+div.percentgraph span.text
+{
+	display: block;
+	position: absolute;
+	text-align: center;
+	width: 100px;
+}
+
+div.separator {
+	height: 10px;
+}
+
 table tr td, table tr th {
 	font-size: 68%;
+}
+
+td.value table tr td {
+    font-size: 11px;
+}
+
+table.percentgraph {
+	border: 0px;
+	font-size: 130%;
+	margin: 0px;
+	margin-left: auto;
+	margin-right: 0px;
+	padding: 0px;
+}
+
+table.percentgraph tr.percentgraph {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+table.percentgraph td.percentgraph {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 4px;
 }
 
 table.report {
@@ -34,9 +111,12 @@ table.report {
 	width: 100%;
 }
 
+table.report td {
+	border: #d0d0d0 1px solid;
+}
+
 table.report td.heading {
     background: #dcecff;
-	border: #d0d0d0 1px solid;
 	font-weight: bold;
 	text-align: center;
 }
@@ -46,26 +126,6 @@ table.report td.heading:hover {
 	cursor: pointer;
 }
 
-table.report td.text {
-	border: #d0d0d0 1px solid;
-}
-
 table.report td.value {
-	border: #d0d0d0 1px solid;
 	text-align: right;
-}
-
-table.percentGraph {
-	border: #808080 1px solid;
-	height: 12px;
-}
-
-table.percentGraph td.covered {
-    background: #00f000;
-	empty-cells: show;
-}
-
-table.percentGraph td.uncovered {
-    background: #e00000;
-	empty-cells: show;
 }

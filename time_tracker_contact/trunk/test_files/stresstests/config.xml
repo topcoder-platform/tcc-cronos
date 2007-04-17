@@ -25,7 +25,7 @@
 			<Value>AuditManager</Value>
 		</Property>
 	</Config>
-	
+
 	<Config name="com.topcoder.timetracker.contact.persistence.InformixContactDAO">
 		<Property name="connection_factory_namespace">
 			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -50,7 +50,7 @@
 			<Value>AuditManager</Value>
 		</Property>
 	</Config>
-	
+
 	<Config name="com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate">
     <Property name="jndi_reference">
 			<Value>java:comp/env/ejb/AddressLocal</Value>
@@ -61,7 +61,7 @@
 			<Value>java:comp/env/ejb/ContactLocal</Value>
 		</Property>
     </Config>
-    
+
   <Config name="ObjectFactoryNS">
 
 	  <!-- For AddressDAO -->
@@ -80,7 +80,7 @@
 	            </Property>
 	        </Property>
       </Property>
-      
+
       <!-- For ContactDAO -->
       <Property name="ContactDAO">
 	        <Property name="type">
@@ -97,15 +97,15 @@
 	            </Property>
 	        </Property>
       </Property>
-      
+
       <!-- For AuditManager -->
 		<Property name="AuditManager">
 			<Property name="type">
 				<Value>com.topcoder.timetracker.contact.stresstests.MockAuditManager</Value>
 			</Property>
-		</Property>    
+		</Property>
    </Config>
-    
+
 	<Config name="com.topcoder.timetracker.contact.persistence.SearchBundleManager">
 		<Property name="searchStrategyFactoryNamespace">
 			<Value>com.topcoder.search.builder.strategy.factory</Value>
@@ -114,19 +114,19 @@
 		<Property name="fieldValidatorFactoryNamespace">
 			<Value>com.topcoder.search.builder.validator.factory</Value>
 		</Property>
-		
+
 		<!-- searchBundles start -->
 		<Property name="searchBundles">
-		
+
 		    <!-- AddressSearch start -->
 			<Property name="AddressSearch">
-			
+
 				<Property name="searchStrategy">
 					<Property name="class">
 						<Value>AddressDBStrategy</Value>
 					</Property>
 				</Property>
-				
+
 				<Property name="context">
 					<Value>Select address.*,state_name.name as state_name,state_name.abbreviation,
 state_name.creation_date as state_creation_date,state_name.modification_date as state_modification_date,
@@ -142,7 +142,7 @@ from address inner join state_name on address.state_name_id = state_name.state_n
 country_name on address.country_name_id = country_name.country_name_id left join address_relation
 on address.address_id = address_relation.address_id where </Value>
 				</Property>
-				
+
 				<Property name="alias">
 					<Property name="creation_date">
 						<Value>address.creation_date</Value>
@@ -169,7 +169,7 @@ on address.address_id = address_relation.address_id where </Value>
 						<Value>state_name.state_name_id</Value>
 					</Property>
 				</Property>
-				
+
 				<Property name="searchableFields">
 				    <Property name="creation_date">
 		                <Property name="validator">
@@ -292,7 +292,7 @@ on address.address_id = address_relation.address_id where </Value>
 		                </Property>
 		            </Property>
 		        </Property>
-				
+
 			</Property>
 			<!-- AddressSearch end -->
 
@@ -311,7 +311,7 @@ contact_relation.creation_user as relation_creation_user,
 contact_relation.modification_user as relation_modification_user from contact left join contact_relation
 on contact.contact_id = contact_relation.contact_id where </Value>
 				</Property>
-				
+
 				<Property name="alias">
 					<Property name="creation_date">
 						<Value>contact.creation_date</Value>
@@ -326,7 +326,7 @@ on contact.contact_id = contact_relation.contact_id where </Value>
 						<Value>contact.modification_user</Value>
 					</Property>
 				</Property>
-				
+
 				<Property name="searchableFields">
 					<Property name="creation_date">
 		                <Property name="validator">
@@ -442,7 +442,7 @@ on contact.contact_id = contact_relation.contact_id where </Value>
 			</Property>
 		</Property>
 	</Config>
-	
+
     <Config name="com.topcoder.search.builder.strategy.factory">
 		<Property name="AddressDBStrategy">
 			<Property name="type">
@@ -475,10 +475,10 @@ on contact.contact_id = contact_relation.contact_id where </Value>
 			</Property>
 		</Property>
 	</Config>
-	
+
 	<Config name="com.topcoder.search.builder.fragments">
 	</Config>
-	
+
 	<Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
         <Property name="connectionFactory">
             <Property name="name">
@@ -492,7 +492,7 @@ on contact.contact_id = contact_relation.contact_id where </Value>
         <Property name="connectionName">
             <Value>InformixJDBCConnection</Value>
         </Property>
-        
+
         <Property name="searchFragmentFactoryNamespace">
             <Value>com.topcoder.search.builder.fragments</Value>
         </Property>
@@ -551,7 +551,7 @@ on contact.contact_id = contact_relation.contact_id where </Value>
                     <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
                 </Property>
             </Property>
-            
+
             <Property name="Null">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.NullFilter</Value>
@@ -560,7 +560,7 @@ on contact.contact_id = contact_relation.contact_id where </Value>
                     <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
                 </Property>
             </Property>
-            
+
             <Property name="GreaterThan">
                 <Property name="targetFilter">
                     <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
@@ -608,7 +608,7 @@ on contact.contact_id = contact_relation.contact_id where </Value>
         </Property>
 	</Config>
 	
-	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">  
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
 		<Property name="connections">
 			<Property name="default">
 				<Value>InformixJDBCConnection</Value>
@@ -622,17 +622,17 @@ on contact.contact_id = contact_relation.contact_id where </Value>
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.175:1526/time_tracker_contact:informixserver=tcs</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/tcs:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>topcoder</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
-			</Property>		
+			</Property>
     	</Property>
 	</Config>
-	
+
 </CMConfig>

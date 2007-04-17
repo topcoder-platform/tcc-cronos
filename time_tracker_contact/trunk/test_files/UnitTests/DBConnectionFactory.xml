@@ -1,15 +1,15 @@
 <CMConfig>
-	
-   
+
+
    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
-   
+
 		<Property name="connections">
-		
+
 		    <!-- The default is InformixJNDIConnection-->
 			<Property name="default">
 				<Value>InformixJNDIConnection</Value>
 			</Property>
-			
+
 		    <!-- The JNDIConnection will be used by EJB/DAO to access database-->
 			<Property name="InformixJNDIConnection">
 				<Property name="producer">
@@ -21,7 +21,7 @@
 					</Property>
 				</Property>
 			</Property>
-			
+
 			<!-- The JDBCConnection will be used by UnitTests-->
 			<Property name="InformixJDBCConnection">
 				<Property name="producer">
@@ -32,17 +32,17 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.175:1526/time_tracker_contact:informixserver=tcs</Value>
+						<Value>jdbc:informix-sqli://192.168.0.155:1526/tcs:informixserver=yux</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>topcoder</Value>
+						<Value>123</Value>
 					</Property>
 				</Property>
 			</Property>
-			
+
     	</Property>
 	</Config>
 
