@@ -32,7 +32,7 @@
 	</session>
 	<session>
      <ejb-name>AddressEJB</ejb-name>
-      <local-home>com.topcoder.timetracker.contact.ejb.AddressHomeLocal</local-home>
+      <local-home>com.topcoder.timetracker.contact.ejb.AddressLocalHome</local-home>
       <local>com.topcoder.timetracker.contact.ejb.AddressLocal</local>
       <ejb-class>com.topcoder.timetracker.contact.ejb.AddressBean</ejb-class>
      <session-type>Stateless</session-type>
