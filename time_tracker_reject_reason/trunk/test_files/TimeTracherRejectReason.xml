@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.topcoder.timetracker.rejectreason.informix.DbRejectEmailDAO">
+        <Property name="search_bundle_manager_namespace">
+            <Value>com.topcoder.search.builder.SearchBundle</Value>
+        </Property>
+        <Property name="search_bundle_name">
+            <Value>DbRejectEmailSearchBundle</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.rejectreason.ejb.RejectEmailManager">
+        <Property name="context_name">
+            <Value>RejectReason</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.rejectreason.ejb.RejectEmailManager.NoContextName">
+    </Config>
+
+    <Config name="com.topcoder.timetracker.rejectreason.informix.DbRejectReasonDAO">
+        <Property name="search_bundle_manager_namespace">
+            <Value>com.topcoder.search.builder.SearchBundle</Value>
+        </Property>
+        <Property name="search_bundle_name">
+            <Value>DbRejectReasonSearchBundle</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager">
+        <Property name="context_name">
+            <Value>RejectReason</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager.NoContextName">
+    </Config>
+
+    <Config name="object.factory">
+        <Property name="AuditManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.rejectreason.informix.MockAuditManager</Value>
+            </Property>
+        </Property>
+        <Property name="connection_factory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="String">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <!--
+            The "default" property refers to a configured connection.
+            -->
+            <Property name="default">
+                <Value>reject_reason</Value>
+            </Property>
+            <!--
+            The following property configures the ConnectionProducer obtaining the Connections
+            from a JDBC URL
+            -->
+            <Property name="reject_reason">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://JAG:1527/reject_reason:informixserver=topcoder_test</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>topcoder</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <!--
+            The following property configures the ConnectionProducer obtaining the Connections from a DataSource
+            object located through JNDI. This producer is provided with a JNDI name to be used to lookup for the
+            DataSource along with a set of initial parameters to be used to configure the JNDI context to be used to
+            locate the requested DataSource. The names of such initial parameters represent the names of context
+            parameters specified by the JNDI specification having the '.' character replaced with '_' character. This is
+            caused by a restriction applied by Configuration Manager for the property names.
+            -->
+            <!--
+            <Property name="InformixConnectionJNDI">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jndi_name">
+                        <Value>java:comp/env/jdbc/tcs</Value>
+                    </Property>
+                    <Property name="java_naming_factory_initial">
+                        <Value>foo.bar.ContextFactory</Value>
+                    </Property>
+                    <Property name="java_naming_provider_url">
+                        <Value>protocol://localhost:port</Value>
+                    </Property>
+                </Property>
+            </Property>
+            -->
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <!-- Search Bundle Manager configuration -->
+	<Config name="com.topcoder.timetracker.rejectreason.informix.DbRejectReasonDAO.searchbundle">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+
+		<Property name="searchBundles">
+
+			<Property name="FirstSearchBundle">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>dbStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="context">
+					<Value>
+						SELECT reject_reason.reject_reason_id, reject_reason.description, reject_reason.active, 
+						reject_reason.creation_date, reject_reason.creation_user, reject_reason.modification_date,	
+						reject_reason.modification_user, comp_rej_reason.company_id 
+						FROM reject_reason INNER JOIN comp_rej_reason ON 
+						reject_reason.reject_reason_id = comp_rej_reason.reject_reason_id WHERE
+					</Value>
+				</Property>
+
+				<Property name="alias">
+					<!-- This filter is for base filter. It's a filter, used with equal filter 
+						  represents "reject_reason.reject_reason_id = comp_rej_reason.reject_reason_id" 
+					 -->
+					<Property name="search_company_id">
+						<Value>comp_rej_reason.company_id</Value>
+					</Property>
+					
+					<Property name="search_description">
+						<Value>reject_reason.description</Value>
+					</Property>
+					
+					<Property name="search_active_status">
+						<Value>reject_reason.active</Value>
+					</Property>
+					
+					<Property name="search_created_date">
+						<Value>reject_reason.creation_date</Value>
+					</Property>
+					
+					<Property name="search_created_user">
+						<Value>reject_reason.creation_user</Value>
+					</Property>
+					
+					<Property name="search_modification_date">
+						<Value>reject_reason.modification_date</Value>
+					</Property>
+					
+					<Property name="search_modification_user">
+						<Value>reject_reason.modification_user</Value>
+					</Property>					
+					
+				</Property>
+				
+				<Property name="searchableFields">
+					<Property name="search_company_id">
+						<Value>comp_rej_reason.company_id</Value>
+					</Property>
+					
+					<Property name="search_description">
+						<Value>reject_reason.description</Value>
+					</Property>
+					
+					<Property name="search_active_status">
+						<Value>reject_reason.active</Value>
+					</Property>
+					
+					<Property name="search_created_date">
+						<Value>reject_reason.creation_date</Value>
+					</Property>
+					
+					<Property name="search_created_user">
+						<Value>reject_reason.creation_user</Value>
+					</Property>
+					
+					<Property name="search_modification_date">
+						<Value>reject_reason.modification_date</Value>
+					</Property>
+					
+					<Property name="search_modification_user">
+						<Value>reject_reason.modification_user</Value>
+					</Property>	
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

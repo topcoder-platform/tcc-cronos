@@ -1,0 +1,1 @@
+INSERT INTO id_sequences (name, next_block_start, block_size,max_id, exhausted) VALUES ("RejectReasonFailure", 1, 20,10000,0);

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.topcoder.timetracker.rejectreason.informix.DbRejectReasonDAO">
+        <Property name="search_bundle_name">
+            <Value>DbRejectReasonSearchBundle</Value>
+        </Property>
+    </Config>
+</CMConfig>

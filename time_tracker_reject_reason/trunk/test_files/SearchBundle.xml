@@ -1,0 +1,318 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <Config name="com.topcoder.search.builder.SearchBundle">
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.topcoder.search.builder.strategy.factory</Value>
+        </Property>
+
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.topcoder.search.builder.validator.factory</Value>
+        </Property>
+
+        <Property name="searchBundles">
+
+            <Property name="DbRejectEmailSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <!-- please do not modify the context (at least the order of the SELECT list) -->
+                <Property name="context">
+                    <Value>
+                        SELECT
+                        reject_email.reject_email_id,
+                        comp_rej_email.company_id,
+                        reject_email.body,
+                        reject_email.creation_date,
+                        reject_email.creation_user,
+                        reject_email.modification_date,
+                        reject_email.modification_user
+                        FROM
+                        reject_email,
+                        comp_rej_email
+                        WHERE
+                        reject_email.reject_email_id = comp_rej_email.reject_email_id
+                        AND
+                    </Value>
+                </Property>
+                <!-- please do not modify the alies -->
+                <Property name="alias">
+                    <Property name="reject_email_id">
+                        <Value>reject_email.reject_email_id</Value>
+                    </Property>
+                    <Property name="search_company_id">
+                        <Value>comp_rej_email.company_id</Value>
+                    </Property>
+                    <Property name="search_body">
+                        <Value>reject_email.body</Value>
+                    </Property>
+                    <Property name="search_created_date">
+                        <Value>reject_email.creation_date</Value>
+                    </Property>
+                    <Property name="search_created_user">
+                        <Value>reject_email.creation_user</Value>
+                    </Property>
+                    <Property name="search_modification_date">
+                        <Value>reject_email.modification_date</Value>
+                    </Property>
+                    <Property name="search_modification_user">
+                        <Value>reject_email.modification_user</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="reject_email_id">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_company_id">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_body">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_created_date">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_created_user">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_modification_date">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_modification_user">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="DbRejectReasonSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <!-- please do not modify the context (at least the order of the SELECT list) -->
+                <Property name="context">
+                    <Value>
+                        SELECT
+                        reject_reason.reject_reason_id,
+                        comp_rej_reason.company_id,
+                        reject_reason.description,
+                        reject_reason.active,
+                        reject_reason.creation_date,
+                        reject_reason.creation_user,
+                        reject_reason.modification_date,
+                        reject_reason.modification_user
+                        FROM
+                        reject_reason,
+                        comp_rej_reason
+                        WHERE
+                        reject_reason.reject_reason_id = comp_rej_reason.reject_reason_id
+                        AND
+                    </Value>
+                </Property>
+                <!-- please do not modify the alies -->
+                <Property name="alias">
+                    <Property name="reject_reason_id">
+                        <Value>reject_reason.reject_reason_id</Value>
+                    </Property>
+                    <Property name="search_company_id">
+                        <Value>comp_rej_reason.company_id</Value>
+                    </Property>
+                    <Property name="search_description">
+                        <Value>reject_reason.description</Value>
+                    </Property>
+                    <Property name="search_active_status">
+                        <Value>reject_reason.active</Value>
+                    </Property>
+                    <Property name="search_created_date">
+                        <Value>reject_reason.creation_date</Value>
+                    </Property>
+                    <Property name="search_created_user">
+                        <Value>reject_reason.creation_user</Value>
+                    </Property>
+                    <Property name="search_modification_date">
+                        <Value>reject_reason.modification_date</Value>
+                    </Property>
+                    <Property name="search_modification_user">
+                        <Value>reject_reason.modification_user</Value>
+                    </Property>
+                </Property>
+                <Property name="searchableFields">
+                    <Property name="reject_reason_id">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_company_id">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_description">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_active_status">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_created_date">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_created_user">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_modification_date">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="search_modification_user">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.search.builder.validator.factory">
+        <Property name="validator:default">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.rejectreason.informix.AlwaysTrueValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.search.builder.strategy.factory">
+        <!--
+        <Property name="ldapStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.ldap.LDAPSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>LDAPSearchStrategy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        -->
+        <Property name="dbStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder.SearchStrategy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,27 @@
+<CMConfig>
+	<!-- Configuration for Object Factory -->
+	<Config name="com.topcoder.timetracker.rejectreason">
+		<Property name="db_connection_factory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+		 				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="audit_manager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.rejectreason.accuracytests.MockAuditManager</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>
+

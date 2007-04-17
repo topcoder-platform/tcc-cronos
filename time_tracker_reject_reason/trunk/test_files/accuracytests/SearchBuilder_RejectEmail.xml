@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <!-- Search Bundle Manager configuration -->
+	<Config name="com.topcoder.timetracker.rejectreason.informix.DbRejectEmailDAO.searchbundle">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+
+		<Property name="searchBundles">
+
+			<Property name="FirstSearchBundle">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>dbStrategy</Value>
+					</Property>
+				</Property>
+
+				<Property name="context">
+					<Value>
+						SELECT reject_email.reject_email_id, reject_email.body, reject_email.creation_date,
+						reject_email.creation_user, reject_email.modification_date,	reject_email.modification_user,
+						comp_rej_email.company_id FROM reject_email INNER JOIN comp_rej_email ON
+						reject_email.reject_email_id = comp_rej_email.reject_email_id WHERE
+					</Value>
+				</Property>
+
+				<Property name="alias">
+					<!-- This filter is for base filter. It's a filter, used with equal filter
+						  represents "reject_email.reject_email_id = comp_rej_email.reject_email_id"
+					 -->
+					<Property name="search_company_id">
+						<Value>comp_rej_email.company_id</Value>
+					</Property>
+
+					<Property name="search_body">
+						<Value>reject_email.body</Value>
+					</Property>
+
+					<Property name="search_created_date">
+						<Value>reject_email.creation_date</Value>
+					</Property>
+
+					<Property name="search_created_user">
+						<Value>reject_email.creation_user</Value>
+					</Property>
+
+					<Property name="search_modification_date">
+						<Value>reject_email.modification_date</Value>
+					</Property>
+
+					<Property name="search_modification_user">
+						<Value>reject_email.modification_user</Value>
+					</Property>
+
+				</Property>
+
+				<Property name="searchableFields">
+					<Property name="search_company_id">
+						<Value>comp_rej_email.company_id</Value>
+					</Property>
+
+					<Property name="search_body">
+						<Value>reject_email.body</Value>
+					</Property>
+
+					<Property name="search_created_date">
+						<Value>reject_email.creation_date</Value>
+					</Property>
+
+					<Property name="search_created_user">
+						<Value>reject_email.creation_user</Value>
+					</Property>
+
+					<Property name="search_modification_date">
+						<Value>reject_email.modification_date</Value>
+					</Property>
+
+					<Property name="search_modification_user">
+						<Value>reject_email.modification_user</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+    <!-- Specify that SearchBundleManager should use DatabaseSearchStrategy -->
+	<Config name="com.topcoder.search.builder.strategy.factory">
+		<Property name="dbStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<!-- Specify that DatabaseSearchStrategy should use the default DBConnectionFactoryImpl configuration -->
+	<Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
+		<Property name="connectionFactory">
+			<Property name="class">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="name">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		</Property>
+
+		<!-- No search fragment factory -->
+		<Property name="searchFragmentFactoryNamespace">
+			<Value>com.topcoder.search.builder.database.factory</Value>
+		</Property>
+
+		<Property name="searchFragmentBuilders">
+			    <Property name="first">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.AndFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="second">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.OrFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="third">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="fourth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.NotFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="fifth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="sixth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.InFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="eighth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.NullFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="ninth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="tenth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="eleventh">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="twelvth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+
+			    <Property name="thirteenth">
+			        <Property name="targetFilter">
+			            <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+			        </Property>
+			        <Property name="className">
+			            <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+			        </Property>
+			    </Property>
+			</Property>
+	</Config>
+
+	<!-- No search fragment factory -->
+	<Config name="com.topcoder.search.builder.database.factory">
+	</Config>
+
+</CMConfig>
