@@ -1,0 +1,109 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.expense.objectfactory">
+		<Property name="DBConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="InformixExpenseTypeDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseTypeDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseTypeDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="InformixExpenseStatusDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseStatusDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseStatusDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="InformixExpenseEntryDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseEntryDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseEntryDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="MockAuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.MockAuditManager</Value>
+			</Property>
+		</Property>
+		<Property name="MockInvoiceManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.MockInvoiceManager</Value>
+			</Property>
+		</Property>
+		<Property name="MockRejectReasonDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.MockRejectReasonDAO</Value>
+			</Property>
+		</Property>
+		<Property name="ExpenseTypeManagerLocalDelegate">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseTypeManagerLocalDelegate</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseTypeManagerLocalDelegate</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="ExpenseStatusManagerLocalDelegate">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseStatusManagerLocalDelegate</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseStatusManagerLocalDelegate</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

@@ -1,0 +1,13 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.expense.persistence.InformixExpenseTypeDAO">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+	</Config>
+</CMConfig>

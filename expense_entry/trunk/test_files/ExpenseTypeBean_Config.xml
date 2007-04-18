@@ -1,0 +1,7 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.expense.ejb.ExpenseTypeBean">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+	</Config>
+</CMConfig>
