@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+    <Config name="com.topcoder.timetracker.entry.expense.persistence.InformixExpenseStatusDAO">
+        <Property name="specification_namespace">
+            <Value>objectFactoryStatusType</Value>
+        </Property>
+        <Property name="db_connection_factory_key">
+            <Value>dbConnectionFactoryKey</Value>
+        </Property>
+    </Config>
+
+    <Config name="objectFactoryStatusType">
+        <Property name="dbConnectionFactoryKey">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>
