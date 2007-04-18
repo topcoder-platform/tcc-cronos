@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+	    <Property name="connections">
+	        <!--The "default" property refers to a configured connection.-->
+	        <Property name="default">
+	            <Value>informix</Value>
+	        </Property>
+	        <Property name="informix">
+	            <Property name="producer">
+	                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+	            </Property>
+	            <Property name="parameters">
+	                <Property name="jdbc_driver">
+	                    <Value>com.informix.jdbc.IfxDriver</Value>
+	                </Property>
+	                <Property name="jdbc_url">
+	                    <Value>jdbc:informix-sqli://192.168.1.101:1526/entry:informixserver=topcoder</Value>
+	                </Property>
+	                <Property name="user">
+	                    <Value>informix</Value>
+	                </Property>
+	                <Property name="password">
+	                    <Value>123456</Value>
+	                </Property>
+	            </Property>
+	        </Property>
+	    </Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.entry.expense.ejb.ExpenseStatusBean">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseEntryManagerLocalDelegate">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+		<Property name="jndi_reference">
+			<Value>java:comp/env/ejb/entry/ExpenseEntryEJB</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.ejb.BasicExpenseEntryBean">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.objectfactory">
+		<Property name="DBConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="InformixExpenseTypeDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseTypeDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseTypeDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="InformixExpenseStatusDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseStatusDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseStatusDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="InformixExpenseEntryDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseEntryDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.persistence.InformixExpenseEntryDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="MockAuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.accuracytests.AuditManagerTester</Value>
+			</Property>
+		</Property>
+		<Property name="MockInvoiceManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.accuracytests.InvoiceManagerTester</Value>
+			</Property>
+		</Property>
+		<Property name="MockRejectReasonDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.accuracytests.RejectReasonDAOTester</Value>
+			</Property>
+		</Property>
+		<Property name="ExpenseTypeManagerLocalDelegate">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseTypeManagerLocalDelegate</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseTypeManagerLocalDelegate</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="ExpenseStatusManagerLocalDelegate">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseStatusManagerLocalDelegate</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.entry.expense.delegate.ExpenseStatusManagerLocalDelegate</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.persistence.InformixExpenseTypeDAO">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.persistence.InformixExpenseStatusDAO">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.persistence.InformixExpenseEntryDAO">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+		<Property name="audit_manager_key">
+			<Value>MockAuditManager</Value>
+		</Property>
+		<Property name="type_manager_key">
+			<Value>ExpenseTypeManagerLocalDelegate</Value>
+		</Property>
+		<Property name="status_manager_key">
+			<Value>ExpenseStatusManagerLocalDelegate</Value>
+		</Property>
+		<Property name="invoice_manager_key">
+			<Value>MockInvoiceManager</Value>
+		</Property>
+		<Property name="rejectreason_dao_key">
+			<Value>MockRejectReasonDAO</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseTypeManagerLocalDelegate">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+		<Property name="jndi_reference">
+			<Value>java:comp/env/ejb/entry/EntryTypeEJB</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.ejb.ExpenseTypeBean">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.ejb.ExpenseEntryBean">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseStatusManagerLocalDelegate">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+		<Property name="jndi_reference">
+			<Value>java:comp/env/ejb/entry/EntryStatusEJB</Value>
+		</Property>
+	</Config>
+</CMConfig>
