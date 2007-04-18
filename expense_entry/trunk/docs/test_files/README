@@ -1,5 +1,0 @@
-1: Changes in CS are marked with dark blue.
-2: run the create_db.sql under folder test_files/sql
-3: update the config file DBConnectionFactory_Config.xml to adjust the database settings
-4: mockejb is used to test.
-5: add the dependency.jar under /test_files into the classpath before running the unit test.
