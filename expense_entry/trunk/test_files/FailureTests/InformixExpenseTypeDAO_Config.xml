@@ -1,0 +1,97 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.expense.persistence.InformixExpenseTypeDAO">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+	</Config>
+
+    <Config name="InformixExpenseTypeDAO.invalid1">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value></Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+	</Config>
+
+    <Config name="InformixExpenseTypeDAO.invalid2">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>   </Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+	</Config>
+
+    <Config name="InformixExpenseTypeDAO.invalid3">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value> invalid   </Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+	</Config>
+
+    <Config name="InformixExpenseTypeDAO.invalid4">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value></Value>
+		</Property>
+	</Config>
+
+    <Config name="InformixExpenseTypeDAO.invalid5">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>   </Value>
+		</Property>
+	</Config>
+
+    <Config name="InformixExpenseTypeDAO.invalid6">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>MockInvoiceManager</Value>
+		</Property>
+	</Config>
+
+    <Config name="InformixExpenseTypeDAO.invalid7">
+		<Property name="connection_name">
+			<Value>informix</Value>
+		</Property>
+		<Property name="specification_namespace">
+			<Value>com.topcoder.timetracker.entry.expense.objectfactory</Value>
+		</Property>
+		<Property name="db_connection_factory_key">
+			<Value>This is invalid</Value>
+		</Property>
+	</Config>
+</CMConfig>

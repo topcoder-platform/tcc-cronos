@@ -1,0 +1,13 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.expense.ejb.ExpenseEntryBean">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+	</Config>
+
+    <Config name="invalid">
+		<Property name="jndi_context">
+			<Value>This is invalid</Value>
+		</Property>
+	</Config>
+</CMConfig>
