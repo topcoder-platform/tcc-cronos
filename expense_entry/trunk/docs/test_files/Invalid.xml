@@ -1,0 +1,29 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.expense.objectfactory">
+		<Property name="DBConnectionFactoryImpl">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="Test">
+		<Property name="Name1">
+		</Property>
+		<Property name="Name2">
+			<Value> </Value>
+		</Property>
+		<Property name="Name3">
+			<Value>Value</Value>
+		</Property>
+	</Config>
+</CMConfig>

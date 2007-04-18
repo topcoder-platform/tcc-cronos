@@ -1,0 +1,39 @@
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseEntryManagerLocalDelegate">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+		<Property name="jndi_reference">
+			<Value>java:comp/env/ejb/entry/ExpenseEntryEJB</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseEntryManagerLocalDelegate.InvalidJndiContext">
+		<Property name="jndi_context">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="jndi_reference">
+			<Value>java:comp/env/ejb/entry/ExpenseEntryEJB</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseEntryManagerLocalDelegate.MissingJndiReference">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseEntryManagerLocalDelegate.EmptyJndiReference">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+		<Property name="jndi_reference">
+			<Value> </Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.entry.expense.delegate.ExpenseEntryManagerLocalDelegate.InvalidJndiReference">
+		<Property name="jndi_context">
+			<Value>entry</Value>
+		</Property>
+		<Property name="jndi_reference">
+			<Value>invalid</Value>
+		</Property>
+	</Config>
+</CMConfig>

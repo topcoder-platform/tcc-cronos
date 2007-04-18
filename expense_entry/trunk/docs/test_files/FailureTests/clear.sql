@@ -1,0 +1,12 @@
+delete from exp_reject_reason
+delete from expense_entry
+delete from expense_status
+delete from comp_exp_type
+delete from expense_type
+delete from invoice
+delete from project
+delete from payment_terms
+delete from invoice_status
+delete from comp_rej_reason
+delete from company
+delete from reject_reason
