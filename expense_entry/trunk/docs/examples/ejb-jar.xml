@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd"
+         version="2.1">
+
+ <enterprise-beans>
+
+   <session>
+     <ejb-name>BasicExpenseEntryEJB</ejb-name>
+      <local-home>com.topcoder.timetracker.entry.expense.ejb.BasicExpenseEntryLocalHome</local-home>
+      <local>com.topcoder.timetracker.entry.expense.ejb.BasicExpenseEntryLocal</local>
+      <ejb-class>com.topcoder.timetracker.entry.expense.ejb.BasicExpenseEntryBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+     <env-entry>
+       <env-entry-name>SpecificationNamespace</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>myNamespace</env-entry-value>
+     </env-entry>
+     <env-entry>
+       <env-entry-name>ExpenseEntryDAOKey</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>daoKey</env-entry-value>
+     </env-entry>
+     <resource-ref>
+       <res-ref-name>jdbc/ExpenseEntry</res-ref-name>
+       <res-type>javax.sql.DataSource</res-type>
+       <res-auth>Container</res-auth>
+       <res-sharing-scope>Shareable</res-sharing-scope>
+     </resource-ref>
+   </session>
+
+   <session>
+     <ejb-name>ExpenseEntryEJB</ejb-name>
+      <local-home>com.topcoder.timetracker.entry.expense.ejb.ExpenseEntryLocalHome</local-home>
+      <local>com.topcoder.timetracker.entry.expense.ejb.ExpenseEntryLocal</local>
+      <ejb-class>com.topcoder.timetracker.entry.expense.ejb.ExpenseEntryBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+     <env-entry>
+       <env-entry-name>SpecificationNamespace</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>myNamespace</env-entry-value>
+     </env-entry>
+     <env-entry>
+       <env-entry-name>ExpenseEntryDAOKey</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>daoKey</env-entry-value>
+     </env-entry>
+      <ejb-local-ref>
+        <ejb-ref-name>ejb/BasicExpenseEntry</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <local-home>com.topcoder.timetracker.entry.expense.ejb.BasicExpenseEntryLocalHome</local-home>
+        <local>com.topcoder.timetracker.entry.expense.ejb.BasicExpenseEntryLocal</local>
+        <ejb-link>BasicExpenseEntryEJB</ejb-link>
+      </ejb-local-ref>
+     <resource-ref>
+       <res-ref-name>jdbc/ExpenseEntry</res-ref-name>
+       <res-type>javax.sql.DataSource</res-type>
+       <res-auth>Container</res-auth>
+       <res-sharing-scope>Shareable</res-sharing-scope>
+     </resource-ref>
+   </session>
+
+
+   <session>
+     <ejb-name>ExpenseTypeEJB</ejb-name>
+      <local-home>com.topcoder.timetracker.entry.expense.ejb.ExpenseTypeLocalHome</local-home>
+      <local>com.topcoder.timetracker.entry.expense.ejb.ExpenseTypeLocal</local>
+      <ejb-class>com.topcoder.timetracker.entry.expense.ejb.ExpenseTypeBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+     <env-entry>
+       <env-entry-name>SpecificationNamespace</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>myNamespace</env-entry-value>
+     </env-entry>
+     <env-entry>
+       <env-entry-name>ExpenseTypeDAOKey</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>daoKey</env-entry-value>
+     </env-entry>
+     <resource-ref>
+       <res-ref-name>jdbc/ExpenseType</res-ref-name>
+       <res-type>javax.sql.DataSource</res-type>
+       <res-auth>Container</res-auth>
+       <res-sharing-scope>Shareable</res-sharing-scope>
+     </resource-ref>
+   </session>
+
+   <session>
+     <ejb-name>ExpenseStatusEJB</ejb-name>
+      <local-home>com.topcoder.timetracker.entry.expense.ejb.ExpenseStatusLocalHome</local-home>
+      <local>com.topcoder.timetracker.entry.expense.ejb.ExpenseStatusLocal</local>
+      <ejb-class>com.topcoder.timetracker.entry.expense.ejb.ExpenseStatusBean</ejb-class>
+     <session-type>Stateless</session-type>
+     <transaction-type>Container</transaction-type>
+     <env-entry>
+       <env-entry-name>SpecificationNamespace</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>myNamespace</env-entry-value>
+     </env-entry>
+     <env-entry>
+       <env-entry-name>ExpenseStatusDAOKey</env-entry-name>
+       <env-entry-type>java.lang.String</env-entry-type>
+       <env-entry-value>daoKey</env-entry-value>
+     </env-entry>
+     <resource-ref>
+       <res-ref-name>jdbc/ExpenseStatus</res-ref-name>
+       <res-type>javax.sql.DataSource</res-type>
+       <res-auth>Container</res-auth>
+       <res-sharing-scope>Shareable</res-sharing-scope>
+     </resource-ref>
+   </session>
+
+ </enterprise-beans>
+
+ <assembly-descriptor>
+
+   <container-transaction>
+     <method>
+        <ejb-name>BasicExpenseEntryEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>RequiresNew</trans-attribute>
+   </container-transaction>
+
+   <container-transaction>
+     <method>
+        <ejb-name>ExpenseEntryEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+
+   <container-transaction>
+     <method>
+        <ejb-name>ExpenseStatusEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+
+   <container-transaction>
+     <method>
+        <ejb-name>ExpenseTypeEJB</ejb-name>
+        <method-name>*</method-name>
+     </method>
+     <trans-attribute>Required</trans-attribute>
+   </container-transaction>
+
+ </assembly-descriptor>
+
+</ejb-jar>
