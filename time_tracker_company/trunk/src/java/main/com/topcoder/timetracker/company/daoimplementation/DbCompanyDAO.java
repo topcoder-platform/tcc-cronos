@@ -3,34 +3,27 @@
  */
 package com.topcoder.timetracker.company.daoimplementation;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
-
+import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
-import com.topcoder.search.builder.database.AndFragmentBuilder;
-import com.topcoder.search.builder.database.DatabaseSearchStrategy;
-import com.topcoder.search.builder.database.EqualsFragmentBuilder;
-import com.topcoder.search.builder.database.InFragmentBuilder;
-import com.topcoder.search.builder.database.LikeFragmentBuilder;
-import com.topcoder.search.builder.database.NotFragmentBuilder;
-import com.topcoder.search.builder.database.NullFragmentBuilder;
-import com.topcoder.search.builder.database.OrFragmentBuilder;
-import com.topcoder.search.builder.database.RangeFragmentBuilder;
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.BetweenFilter;
-import com.topcoder.search.builder.filter.EqualToFilter;
+import com.topcoder.search.builder.SearchBundleManager;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.GreaterThanFilter;
-import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
-import com.topcoder.search.builder.filter.InFilter;
-import com.topcoder.search.builder.filter.LessThanFilter;
-import com.topcoder.search.builder.filter.LessThanOrEqualToFilter;
-import com.topcoder.search.builder.filter.LikeFilter;
-import com.topcoder.search.builder.filter.NotFilter;
-import com.topcoder.search.builder.filter.NullFilter;
-import com.topcoder.search.builder.filter.OrFilter;
-
 import com.topcoder.timetracker.audit.ApplicationArea;
 import com.topcoder.timetracker.audit.AuditConfigurationException;
 import com.topcoder.timetracker.audit.AuditDetail;
@@ -57,28 +50,13 @@ import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.contact.ContactType;
 import com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate;
 import com.topcoder.timetracker.contact.ejb.ContactManagerLocalDelegate;
-
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -161,27 +139,6 @@ public class DbCompanyDAO implements CompanyDAO {
 
     /** Represents the SQL statement used to delete one record of company via id from the database. */
     private static final String SQL_DELETE_COMPANY_BY_ID = "DELETE FROM company WHERE company_id = ?";
-
-    /**
-     * <p>
-     * Represents the associations map used for search bundle.
-     * </p>
-     */
-    private static Map associations;
-
-    /**
-     * <p>
-     * Represents the alias map used for search bundle.
-     * </p>
-     */
-    private static Map alias;
-
-    /**
-     * <p>
-     * Represents the fields map used for search bundle.
-     * </p>
-     */
-    private static Map fields;
 
     /**
      * <p>
@@ -274,20 +231,18 @@ public class DbCompanyDAO implements CompanyDAO {
      * @param connFactory The connection factory to use.
      * @param connName The connection name to use when retrieving a connection from the connection factory.
      * @param idGen The Id Generator String name to use.
-     * @param contactManagerNamespace the namespace for the default implementation class of
-     *        <code>ContactManager</code>.
-     * @param addressManagerNamespace the namespace for the default implementation class of
-     *        <code>AddressManager</code>.
-     * @param auditManagerNamespace the namespace for the default implementation class of <code>AuditManager</code>.
+     * @param namespace the namespace to create the <code>ContactManager</code>, <code>AddressManager</code>,
+     *        <code>AuditManager</code> and <code>SearchBundle</code>.
      *
      * @throws IllegalArgumentException if any parameter is null or any string parameter is empty string.
      * @throws InvalidIdException if negative id will be generated.
      * @throws CompanyDAOException if it fails to create the id generator, or the xxxManager instances
      */
-    public DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String contactManagerNamespace,
-        String addressManagerNamespace, String auditManagerNamespace) throws CompanyDAOException {
-        this(connFactory, connName, idGen, createDefaultContactManager(contactManagerNamespace),
-            createDefaultAddressManager(addressManagerNamespace), createDefaultAuditManager(auditManagerNamespace));
+    public DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String namespace)
+        throws CompanyDAOException {
+        this(connFactory, connName, idGen, createDefaultContactManager(namespace),
+            createDefaultAddressManager(namespace), createDefaultAuditManager(namespace),
+            createDefaultSearchBundle(namespace));
     }
 
     /**
@@ -302,13 +257,15 @@ public class DbCompanyDAO implements CompanyDAO {
      * @param contactManager the contact manager to be used.
      * @param addressManager the address manager to be used.
      * @param auditManager the audit manager to be used.
+     * @param searchBundle the search bundle to be used.
      *
      * @throws IllegalArgumentException if any parameter is null or any string parameter is empty string.
      * @throws InvalidIdException if negative id will be generated.
      * @throws CompanyDAOException if it fails to create the id generator.
      */
     public DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, ContactManager contactManager,
-        AddressManager addressManager, AuditManager auditManager) throws CompanyDAOException {
+        AddressManager addressManager, AuditManager auditManager, SearchBundle searchBundle)
+        throws CompanyDAOException {
         // validate arguments
         TimeTrackerCompanyHelper.validateNotNull(connFactory, "connFactory");
         TimeTrackerCompanyHelper.validateString(connName, "connName");
@@ -316,6 +273,7 @@ public class DbCompanyDAO implements CompanyDAO {
         TimeTrackerCompanyHelper.validateNotNull(contactManager, "contactManager");
         TimeTrackerCompanyHelper.validateNotNull(addressManager, "addressManager");
         TimeTrackerCompanyHelper.validateNotNull(auditManager, "auditManager");
+        TimeTrackerCompanyHelper.validateNotNull(searchBundle, "searchBundle");
 
         // assign the private fields
         this.connectionFactory = connFactory;
@@ -338,79 +296,41 @@ public class DbCompanyDAO implements CompanyDAO {
         }
 
         // create the SearchBundle
-        this.searchBundle = createSearchBundle(connFactory, connName);
+        this.searchBundle = searchBundle;
     }
 
     /**
      * <p>
-     * Create the SearchBundle using given connection factory and connection name. The context, searchable fields,
-     * alias and associations will also be hard-coded here.
+     * Get the string property value in <code>ConfigManager</code> with specified namespace and name.
      * </p>
      *
-     * @param connFactory the connection factory.
-     * @param connName the connection name.
+     * @param namespace the namespace of the config string property value .
+     * @param name the name of the config string property value.
      *
-     * @return the created SearchBundle instance.
+     * @return the config string property value in <code>ConfigManager</code>.
+     *
+     * @throws CompanyDAOException if the namespace doesn't exist, or the parameter doesn't exist,
+     *         or the parameter value is an empty string.
      */
-    private SearchBundle createSearchBundle(DBConnectionFactory connFactory, String connName) {
-        String context = "SELECT"
-            + "   company.company_id, company.name, company.passcode, company.creation_date, company.creation_user,"
-            + "   company.modification_date, company.modification_user,"
-            + "   C.first_name, C.last_name, C.phone, C.email,"
-            + "   ADR.line1, ADR.line2, ADR.city, ADR.zip_code, SN.name"
-            + " FROM company"
-            + " INNER JOIN contact_relation CR"
-            + "   ON CR.entity_id = company.company_id AND CR.contact_type_id = " + ContactType.COMPANY.getId()
-            + " INNER JOIN contact AS C"
-            + "   ON C.contact_id = CR.contact_id"
-            + " INNER JOIN address_relation AR"
-            + "   ON AR.entity_id = company.company_id AND AR.address_type_id = " + AddressType.COMPANY.getId()
-            + " INNER JOIN address AS ADR"
-            + "   ON ADR.address_id = AR.address_id"
-            + " INNER JOIN state_name SN"
-            + "   ON SN.state_name_id = ADR.state_name_id WHERE";
-        if (alias == null) {
-            // the static alias is used here. it will only be intialized once when used.
-            alias = new HashMap();
-            alias.put(CompanyDAO.SEARCH_COMPANY_NAME, "company.name");
-            alias.put(CompanyDAO.SEARCH_CREATED_DATE, "company.creation_date");
-            alias.put(CompanyDAO.SEARCH_CREATED_USER, "company.creation_user");
-            alias.put(CompanyDAO.SEARCH_MODIFICATION_DATE, "company.modification_date");
-            alias.put(CompanyDAO.SEARCH_MODIFICATION_USER, "company.modification_user");
-            alias.put(CompanyDAO.SEARCH_CONTACT_FIRST_NAME, "C.first_name");
-            alias.put(CompanyDAO.SEARCH_CONTACT_LAST_NAME, "C.last_name");
-            alias.put(CompanyDAO.SEARCH_CONTACT_PHONE, "C.phone");
-            alias.put(CompanyDAO.SEARCH_CONTACT_EMAIL, "C.email");
-            alias.put(CompanyDAO.SEARCH_STREET_ADDRESS1, "ADR.line1");
-            alias.put(CompanyDAO.SEARCH_STREET_ADDRESS2, "ADR.line2");
-            alias.put(CompanyDAO.SEARCH_CITY, "ADR.city");
-            alias.put(CompanyDAO.SEARCH_ZIP_CODE, "ADR.zip_code");
-            alias.put(CompanyDAO.SEARCH_STATE, "SN.name");
+    private static String getStringPropertyValue(String namespace, String name)
+        throws CompanyDAOException {
+        try {
+            String value = ConfigManager.getInstance().getString(namespace, name);
 
-            fields = new HashMap();
-
-            for (Iterator iter = alias.keySet().iterator(); iter.hasNext();) {
-                fields.put(iter.next(), null);
+            if ((value == null)) {
+                throw new CompanyDAOException("The required parameter " + name + " in namespace " + namespace
+                    + " doesn't exist.", null);
             }
 
-            associations = new HashMap();
-            associations.put(AndFilter.class, new AndFragmentBuilder());
-            associations.put(OrFilter.class, new OrFragmentBuilder());
-            associations.put(LikeFilter.class, new LikeFragmentBuilder());
-            associations.put(NotFilter.class, new NotFragmentBuilder());
-            associations.put(EqualToFilter.class, new EqualsFragmentBuilder());
-            associations.put(InFilter.class, new InFragmentBuilder());
-            associations.put(NullFilter.class, new NullFragmentBuilder());
-            associations.put(GreaterThanFilter.class, new RangeFragmentBuilder());
-            associations.put(GreaterThanOrEqualToFilter.class, new RangeFragmentBuilder());
-            associations.put(BetweenFilter.class, new RangeFragmentBuilder());
-            associations.put(LessThanOrEqualToFilter.class, new RangeFragmentBuilder());
-            associations.put(LessThanFilter.class, new RangeFragmentBuilder());
+            if (value.trim().length() == 0) {
+                throw new CompanyDAOException("The parameter value of " + name + " in namespace " + namespace
+                    + " is an empty string.", null);
+            }
+
+            return value;
+        } catch (UnknownNamespaceException une) {
+            throw new CompanyDAOException("The namespace with the name of " + namespace + " doesn't exist.", une, null);
         }
-
-        DatabaseSearchStrategy stategy = new DatabaseSearchStrategy(connFactory, connName, associations);
-
-        return new SearchBundle("DbCompanyDAO", fields, alias, context, stategy);
     }
 
     /**
@@ -418,19 +338,19 @@ public class DbCompanyDAO implements CompanyDAO {
      * Create the <code>ContactManagerLocalDelegate</code> instance with given namespace.
      * </p>
      *
-     * @param contactManagerNamespace the given namespace.
+     * @param namespace the given namespace.
      *
      * @return the created instance.
      *
      * @throws IllegalArgumentException if the namespace is null or empty string.
      * @throws CompanyDAOException if it fails to create the instance.
      */
-    private static ContactManager createDefaultContactManager(String contactManagerNamespace)
+    private static ContactManager createDefaultContactManager(String namespace)
         throws CompanyDAOException {
-        TimeTrackerCompanyHelper.validateString(contactManagerNamespace, "contactManagerNamespace");
+        TimeTrackerCompanyHelper.validateString(namespace, "namespace");
 
         try {
-            return new ContactManagerLocalDelegate(contactManagerNamespace);
+            return new ContactManagerLocalDelegate(getStringPropertyValue(namespace, "contactManagerNamespace"));
         } catch (ConfigurationException e) {
             throw new CompanyDAOException("Can not create the ContactManagerLocalDelegate instance.", e, null);
         }
@@ -441,19 +361,19 @@ public class DbCompanyDAO implements CompanyDAO {
      * Create the <code>AddressManagerLocalDelegate</code> instance with given namespace.
      * </p>
      *
-     * @param addressManagerNamespace the given namespace.
+     * @param namespace the given namespace.
      *
      * @return the created instance.
      *
      * @throws IllegalArgumentException if the namespace is null or empty string.
      * @throws CompanyDAOException if it fails to create the instance.
      */
-    private static AddressManager createDefaultAddressManager(String addressManagerNamespace)
+    private static AddressManager createDefaultAddressManager(String namespace)
         throws CompanyDAOException {
-        TimeTrackerCompanyHelper.validateString(addressManagerNamespace, "addressManagerNamespace");
+        TimeTrackerCompanyHelper.validateString(namespace, "namespace");
 
         try {
-            return new AddressManagerLocalDelegate(addressManagerNamespace);
+            return new AddressManagerLocalDelegate(getStringPropertyValue(namespace, "addressManagerNamespace"));
         } catch (ConfigurationException e) {
             throw new CompanyDAOException("Can not create the addressManagerNamespace instance.", e, null);
         }
@@ -464,19 +384,49 @@ public class DbCompanyDAO implements CompanyDAO {
      * Create the <code>AuditDelegate</code> instance with given namespace.
      * </p>
      *
-     * @param auditManagerNamespace the given namespace.
+     * @param namespace the given namespace.
      *
      * @return the created instance.
      *
      * @throws IllegalArgumentException if the namespace is null or empty string.
      * @throws CompanyDAOException if it fails to create the instance.
      */
-    private static AuditManager createDefaultAuditManager(String auditManagerNamespace) throws CompanyDAOException {
-        TimeTrackerCompanyHelper.validateString(auditManagerNamespace, "auditManagerNamespace");
+    private static AuditManager createDefaultAuditManager(String namespace) throws CompanyDAOException {
+        TimeTrackerCompanyHelper.validateString(namespace, "namespace");
 
         try {
-            return new AuditDelegate(auditManagerNamespace);
+            return new AuditDelegate(getStringPropertyValue(namespace, "auditManagerNamespace"));
         } catch (AuditConfigurationException e) {
+            throw new CompanyDAOException("Can not create the AuditDelegate instance.", e, null);
+        }
+    }
+
+    /**
+     * <p>
+     * Create the <code>SearchBundle</code> instance with given namespace.
+     * </p>
+     *
+     * @param namespace the given namespace.
+     *
+     * @return the created instance.
+     *
+     * @throws IllegalArgumentException if the namespace is null or empty string.
+     * @throws CompanyDAOException if it fails to create the instance.
+     */
+    private static SearchBundle createDefaultSearchBundle(String namespace) throws CompanyDAOException {
+        TimeTrackerCompanyHelper.validateString(namespace, "namespace");
+
+        try {
+            String searchBundleNamespace = getStringPropertyValue(namespace, "searchBundleNamespace");
+            String searchBundleName = getStringPropertyValue(namespace, "searchBundleName");
+            SearchBundle bundle = new SearchBundleManager(searchBundleNamespace).getSearchBundle(searchBundleName);
+
+            if (bundle == null) {
+                throw new CompanyDAOException("Fail to get the searchBundle since the bundle with name of "
+                    + searchBundleName + " does not exist.", null);
+            }
+            return bundle;
+        } catch (SearchBuilderConfigurationException e) {
             throw new CompanyDAOException("Can not create the AuditDelegate instance.", e, null);
         }
     }

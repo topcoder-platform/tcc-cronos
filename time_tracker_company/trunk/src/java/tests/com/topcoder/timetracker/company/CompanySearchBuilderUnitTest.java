@@ -54,7 +54,8 @@ public class CompanySearchBuilderUnitTest extends TestCase {
         // add some testing data
         DBConnectionFactory connFactory = UnitTestHelper.getDBConnectionFactory();
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                new MockContactManager(false), new MockAddressManager(false), new MockAuditManager(false));
+                new MockContactManager(false), new MockAddressManager(false), new MockAuditManager(false),
+                UnitTestHelper.createSearchBundle());
         companies = new Company[5];
 
         for (int i = 0; i < companies.length; i++) {

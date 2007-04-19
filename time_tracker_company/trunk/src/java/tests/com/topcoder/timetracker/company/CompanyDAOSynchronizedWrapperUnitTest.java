@@ -58,7 +58,8 @@ public class CompanyDAOSynchronizedWrapperUnitTest extends TestCase {
         addressManager = new MockAddressManager(false);
         auditManager = new MockAuditManager(false);
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME,
-                UnitTestHelper.IDGEN_NAME, contactManager, addressManager, auditManager);
+                UnitTestHelper.IDGEN_NAME, contactManager, addressManager, auditManager,
+                UnitTestHelper.createSearchBundle());
         wrapper = new CompanyDAOSynchronizedWrapper(dao);
     }
 

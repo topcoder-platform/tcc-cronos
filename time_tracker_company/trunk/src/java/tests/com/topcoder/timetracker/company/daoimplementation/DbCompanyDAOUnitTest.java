@@ -3,9 +3,12 @@
  */
 package com.topcoder.timetracker.company.daoimplementation;
 
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import java.sql.Connection;
 
-import com.topcoder.timetracker.audit.AuditManager;
+import junit.framework.TestCase;
+
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.timetracker.company.Company;
 import com.topcoder.timetracker.company.CompanyDAOException;
 import com.topcoder.timetracker.company.CompanyNotFoundException;
@@ -14,12 +17,6 @@ import com.topcoder.timetracker.company.MockAddressManager;
 import com.topcoder.timetracker.company.MockAuditManager;
 import com.topcoder.timetracker.company.MockContactManager;
 import com.topcoder.timetracker.company.UnitTestHelper;
-import com.topcoder.timetracker.contact.AddressManager;
-import com.topcoder.timetracker.contact.ContactManager;
-
-import junit.framework.TestCase;
-
-import java.sql.Connection;
 
 
 /**
@@ -39,6 +36,9 @@ public class DbCompanyDAOUnitTest extends TestCase {
 
     /** Represents the <code>AuditManager</code> instance used for testing. */
     private MockAuditManager auditManager = null;
+
+    /** Represents the <code>SearchBundle</code> instance used for testing. */
+    private SearchBundle searchBundle = null;
 
     /** Represents the <code>DbCompanyDAO</code> instance used for testing. */
     private DbCompanyDAO dao = null;
@@ -69,8 +69,9 @@ public class DbCompanyDAOUnitTest extends TestCase {
         contactManager = new MockContactManager(false);
         addressManager = new MockAddressManager(false);
         auditManager = new MockAuditManager(false);
+        searchBundle = UnitTestHelper.createSearchBundle();
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                addressManager, auditManager);
+                addressManager, auditManager, searchBundle);
     }
 
     /**
@@ -103,8 +104,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO1_NullConnFactory() throws Exception {
         try {
-            new DbCompanyDAO(null, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, ContactManager.class.getName(),
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(null, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, DbCompanyDAO.class.getName());
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -122,8 +122,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO1_NullConnName() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, null, UnitTestHelper.IDGEN_NAME, ContactManager.class.getName(),
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(connFactory, null, UnitTestHelper.IDGEN_NAME, DbCompanyDAO.class.getName());
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -141,8 +140,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO1_EmptyConnName() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, " ", UnitTestHelper.IDGEN_NAME, ContactManager.class.getName(),
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(connFactory, " ", UnitTestHelper.IDGEN_NAME, DbCompanyDAO.class.getName());
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -160,8 +158,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO1_NullIdGen() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, null, ContactManager.class.getName(),
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, null, DbCompanyDAO.class.getName());
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -179,8 +176,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO1_EmptyIdGen() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, " ", ContactManager.class.getName(),
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, " ", DbCompanyDAO.class.getName());
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -198,8 +194,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO1_InvalidIdGen() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, "invalid", ContactManager.class.getName(),
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, "invalid", DbCompanyDAO.class.getName());
             fail("CompanyDAOException should be thrown.");
         } catch (CompanyDAOException e) {
             // good
@@ -210,15 +205,14 @@ public class DbCompanyDAOUnitTest extends TestCase {
      * <p>
      * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
      * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * contactManagerNamespace is null, IllegalArgumentException is expected.
+     * name is null, IllegalArgumentException is expected.
      * </p>
      *
      * @throws Exception any exception to JUnit.
      */
-    public void testDbCompanyDAO1_NullContactManagerNamespace() throws Exception {
+    public void testDbCompanyDAO1_NullNamespace() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, null,
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -229,150 +223,16 @@ public class DbCompanyDAOUnitTest extends TestCase {
      * <p>
      * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
      * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * contactManagerNamespace is empty, IllegalArgumentException is expected.
+     * namespace is empty, IllegalArgumentException is expected.
      * </p>
      *
      * @throws Exception any exception to JUnit.
      */
-    public void testDbCompanyDAO1_EmptyContactManagerNamespace() throws Exception {
+    public void testDbCompanyDAO1_EmptyNamespace() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, " ",
-                AddressManager.class.getName(), AuditManager.class.getName());
+            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, " ");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
-     * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * contactManagerNamespace is invalid, CompanyDAOException is expected.
-     * </p>
-     *
-     * @throws Exception any exception to JUnit.
-     */
-    public void testDbCompanyDAO1_InvalidContactManagerNamespace() throws Exception {
-        try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, "invalid",
-                AddressManager.class.getName(), AuditManager.class.getName());
-            fail("CompanyDAOException should be thrown.");
-        } catch (CompanyDAOException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
-     * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * addressManagerNamespace is null, IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception any exception to JUnit.
-     */
-    public void testDbCompanyDAO1_NullAddressManagerNamespace() throws Exception {
-        try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                ContactManager.class.getName(), null, AuditManager.class.getName());
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
-     * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * addressManagerNamespace is empty, IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception any exception to JUnit.
-     */
-    public void testDbCompanyDAO1_EmptyAddressManagerNamespace() throws Exception {
-        try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                ContactManager.class.getName(), " ", AuditManager.class.getName());
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
-     * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * addressManagerNamespace is invalid, CompanyDAOException is expected.
-     * </p>
-     *
-     * @throws Exception any exception to JUnit.
-     */
-    public void testDbCompanyDAO1_InvalidAddressManagerNamespace() throws Exception {
-        try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                ContactManager.class.getName(), "invalid", AuditManager.class.getName());
-            fail("CompanyDAOException should be thrown.");
-        } catch (CompanyDAOException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
-     * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * auditManagerNamespace is null, IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception any exception to JUnit.
-     */
-    public void testDbCompanyDAO1_NullAuditManagerNamespace() throws Exception {
-        try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                ContactManager.class.getName(), AddressManager.class.getName(), null);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
-     * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * auditManagerNamespace is empty, IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception any exception to JUnit.
-     */
-    public void testDbCompanyDAO1_EmptyAuditManagerNamespace() throws Exception {
-        try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                ContactManager.class.getName(), AddressManager.class.getName(), " ");
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test the constructor <code>DbCompanyDAO(DBConnectionFactory connFactory, String connName, String idGen, String
-     * contactManagerNamespace, String addressManagerNamespace, String auditManagerNamespace)</code> when the given
-     * auditManagerNamespace is invalid, CompanyDAOException is expected.
-     * </p>
-     *
-     * @throws Exception any exception to JUnit.
-     */
-    public void testDbCompanyDAO1_InvalidAuditManagerNamespace() throws Exception {
-        try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                ContactManager.class.getName(), AddressManager.class.getName(), "invalid");
-            fail("CompanyDAOException should be thrown.");
-        } catch (CompanyDAOException e) {
             // good
         }
     }
@@ -388,7 +248,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO1_Accuracy() throws Exception {
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                ContactManager.class.getName(), AddressManager.class.getName(), AuditManager.class.getName());
+                DbCompanyDAO.class.getName());
         assertNotNull("The DbCompanyDAO instance should be created.", dao);
         assertNotNull("The idGenerator should be created.",
             UnitTestHelper.getPrivateField(dao.getClass(), dao, "idGenerator"));
@@ -418,7 +278,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDbCompanyDAO2_NullConnFactory() throws Exception {
         try {
             new DbCompanyDAO(null, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager, addressManager,
-                auditManager);
+                auditManager, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -437,7 +297,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDbCompanyDAO2_NullConnName() throws Exception {
         try {
             new DbCompanyDAO(connFactory, null,
-                    UnitTestHelper.IDGEN_NAME, contactManager, addressManager, auditManager);
+                    UnitTestHelper.IDGEN_NAME, contactManager, addressManager, auditManager, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -455,7 +315,8 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO2_EmptyConnName() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, " ", UnitTestHelper.IDGEN_NAME, contactManager, addressManager, auditManager);
+            new DbCompanyDAO(connFactory, " ", UnitTestHelper.IDGEN_NAME, contactManager, addressManager,
+                    auditManager, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -473,7 +334,8 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO2_NullIdGen() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, null, contactManager, addressManager, auditManager);
+            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, null, contactManager, addressManager,
+                    auditManager, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -491,7 +353,8 @@ public class DbCompanyDAOUnitTest extends TestCase {
      */
     public void testDbCompanyDAO2_EmptyIdGen() throws Exception {
         try {
-            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, " ", contactManager, addressManager, auditManager);
+            new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, " ", contactManager, addressManager,
+                    auditManager, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -510,7 +373,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDbCompanyDAO2_InvalidIdGen() throws Exception {
         try {
             new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, "invalid", contactManager, addressManager,
-                auditManager);
+                auditManager, searchBundle);
             fail("CompanyDAOException should be thrown.");
         } catch (CompanyDAOException e) {
             // good
@@ -529,7 +392,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDbCompanyDAO2_NullContactManager() throws Exception {
         try {
             new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, null, addressManager,
-                auditManager);
+                auditManager, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -548,7 +411,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDbCompanyDAO2_NullAddressManager() throws Exception {
         try {
             new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager, null,
-                auditManager);
+                auditManager, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -567,7 +430,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDbCompanyDAO2_NullAuditManager() throws Exception {
         try {
             new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                addressManager, null);
+                addressManager, null, searchBundle);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // good
@@ -747,7 +610,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testCreateCompany_InvalidConnectionName() throws Exception {
         Company company = UnitTestHelper.buildCompany();
         dao = new DbCompanyDAO(connFactory, "invalid", UnitTestHelper.IDGEN_NAME, contactManager, addressManager,
-                auditManager);
+                auditManager, searchBundle);
 
         try {
             dao.createCompany(company, user, true);
@@ -788,7 +651,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testCreateCompany_ContactManagerError() throws Exception {
         Company company = UnitTestHelper.buildCompany();
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                new MockContactManager(true), addressManager, auditManager);
+                new MockContactManager(true), addressManager, auditManager, searchBundle);
 
         try {
             dao.createCompany(company, user, true);
@@ -809,7 +672,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testCreateCompany_AddressManagerError() throws Exception {
         Company company = UnitTestHelper.buildCompany();
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                new MockAddressManager(true), auditManager);
+                new MockAddressManager(true), auditManager, searchBundle);
 
         try {
             dao.createCompany(company, user, true);
@@ -830,7 +693,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testCreateCompany_AuditManagerError() throws Exception {
         Company company = UnitTestHelper.buildCompany();
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                addressManager, new MockAuditManager(true));
+                addressManager, new MockAuditManager(true), searchBundle);
 
         try {
             dao.createCompany(company, user, true);
@@ -939,7 +802,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         dao.createCompany(company, user, true);
         dao = new DbCompanyDAO(connFactory, "invalid", UnitTestHelper.IDGEN_NAME, contactManager, addressManager,
-                auditManager);
+                auditManager, searchBundle);
 
         try {
             dao.retrieveCompany(company.getId());
@@ -961,7 +824,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         dao.createCompany(company, user, true);
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                new MockAddressManager(true), auditManager);
+                new MockAddressManager(true), auditManager, searchBundle);
 
         try {
             dao.retrieveCompany(company.getId());
@@ -1004,7 +867,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         dao.createCompany(company, user, true);
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                new MockContactManager(true), addressManager, auditManager);
+                new MockContactManager(true), addressManager, auditManager, searchBundle);
 
         try {
             dao.retrieveCompany(company.getId());
@@ -1194,7 +1057,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         company.setId(1);
         dao = new DbCompanyDAO(connFactory, "invalid", UnitTestHelper.IDGEN_NAME, contactManager, addressManager,
-                auditManager);
+                auditManager, searchBundle);
 
         try {
             dao.updateCompany(company, user, true);
@@ -1236,7 +1099,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         dao.createCompany(company, user, false);
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                new MockContactManager(true), addressManager, auditManager);
+                new MockContactManager(true), addressManager, auditManager, searchBundle);
 
         try {
             dao.updateCompany(company, user, true);
@@ -1258,7 +1121,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         dao.createCompany(company, user, false);
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                new MockAddressManager(true), auditManager);
+                new MockAddressManager(true), auditManager, searchBundle);
 
         try {
             dao.updateCompany(company, user, true);
@@ -1280,7 +1143,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         dao.createCompany(company, user, false);
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                addressManager, new MockAuditManager(true));
+                addressManager, new MockAuditManager(true), searchBundle);
 
         try {
             dao.updateCompany(company, user, true);
@@ -1534,7 +1397,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDeleteCompany_ContactManagerError() throws Exception {
         Company company = UnitTestHelper.buildCompany();
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME,
-                new MockContactManager(true, true), addressManager, auditManager);
+                new MockContactManager(true, true), addressManager, auditManager, searchBundle);
         dao.createCompany(company, user, false);
 
         try {
@@ -1556,7 +1419,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
     public void testDeleteCompany_AddressManagerError() throws Exception {
         Company company = UnitTestHelper.buildCompany();
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                new MockAddressManager(true, true), auditManager);
+                new MockAddressManager(true, true), auditManager, searchBundle);
         dao.createCompany(company, user, false);
 
         try {
@@ -1579,7 +1442,7 @@ public class DbCompanyDAOUnitTest extends TestCase {
         Company company = UnitTestHelper.buildCompany();
         dao.createCompany(company, user, false);
         dao = new DbCompanyDAO(connFactory, UnitTestHelper.CONN_NAME, UnitTestHelper.IDGEN_NAME, contactManager,
-                addressManager, new MockAuditManager(true));
+                addressManager, new MockAuditManager(true), searchBundle);
 
         try {
             dao.deleteCompany(company, true, user);

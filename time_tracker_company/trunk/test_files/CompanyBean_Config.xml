@@ -41,6 +41,11 @@
 						<Value>auditManager</Value>
 					</Property>
 				</Property>
+				<Property name="param7">
+					<Property name="name">
+						<Value>searchBundle</Value>
+					</Property>
+				</Property>
 			</Property>
 		</Property>
 		<Property name="DBConnectionFactory">
@@ -101,6 +106,11 @@
 						<Value>false</Value>
 					</Property>
 				</Property>
+			</Property>
+		</Property>
+		<Property name="searchBundle">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.company.MockSearchBundle</Value>
 			</Property>
 		</Property>
 	</Config>
