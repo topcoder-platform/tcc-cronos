@@ -317,7 +317,7 @@ public class DbCompanyDAO implements CompanyDAO {
         try {
             String value = ConfigManager.getInstance().getString(namespace, name);
 
-            if ((value == null)) {
+            if (value == null) {
                 throw new CompanyDAOException("The required parameter " + name + " in namespace " + namespace
                     + " doesn't exist.", null);
             }
@@ -427,7 +427,9 @@ public class DbCompanyDAO implements CompanyDAO {
             }
             return bundle;
         } catch (SearchBuilderConfigurationException e) {
-            throw new CompanyDAOException("Can not create the AuditDelegate instance.", e, null);
+            throw new CompanyDAOException(
+                "Error occurred while reading the configuration of search bundle from namespace: "
+                    + searchBundleNamespace + ".", e, null);
         }
     }
 
