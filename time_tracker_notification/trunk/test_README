@@ -1,0 +1,31 @@
+Modify the "build.xml" to update the value of "junit", maybe you also need to configure the path for dependencies.
+And
+1.modify
+test_files\db_config.xml
+test_files\accuracytests\config.xml
+test_files\failuretests\DBConnectionFactory.xml
+
+according your Informix database setting.
+
+2.Modify
+test_files\com\topcoder\message\email\EmailEngine.xml
+test_files\accuracytests\config.xml
+
+according your smtp server setting.
+
+3.Modify
+test_fies\EmailEngineTest.xml (NOTE: make sure sender and reciever are different, and reiever must esist.)
+
+4. exceute
+the create_db.sql in your informix database.
+
+5. This component needs
+java mail and jaf.
+NOTE:
+the java mail must be 1.3.2
+and jaf must be the 1.0.2, and you should remove j2ee.jar 's activation package.
+Or the test can not pass.
+
+6. time components are not built. So here use mock class to build it.
+
+7. You can run the test.

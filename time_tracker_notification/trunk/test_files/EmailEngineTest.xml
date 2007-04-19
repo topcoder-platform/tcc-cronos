@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<CMConfig>
+  <Config name="email.source">
+    <Property name="from">
+        <Value>zk@db.org</Value>
+    </Property>
+    <Property name="to">
+        <Value>zkz@db.org</Value>
+    </Property>
+ </Config>
+</CMConfig>

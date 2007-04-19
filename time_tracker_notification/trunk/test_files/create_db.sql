@@ -51,9 +51,9 @@ primary key (notification_id, user_account_id)
 );
 CREATE TABLE id_sequences (
     name                VARCHAR(255) NOT NULL  PRIMARY KEY,
-    next_block_start    BIGINT NOT NULL,
+    next_block_start    INT NOT NULL,
     block_size          INT NOT NULL,
-    exhausted		int NOT NULL default 0
+    exhausted		int NOT NULL
 );
 
 INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) 
