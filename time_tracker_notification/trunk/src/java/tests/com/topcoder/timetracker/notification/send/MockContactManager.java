@@ -13,6 +13,9 @@ import com.topcoder.timetracker.contact.EntityNotFoundException;
 import com.topcoder.timetracker.contact.IDGenerationException;
 import com.topcoder.timetracker.contact.InvalidPropertyException;
 import com.topcoder.timetracker.contact.PersistenceException;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.UnknownNamespaceException;
 
 
 /**
@@ -74,7 +77,26 @@ public class MockContactManager implements ContactManager {
      */
     public Contact retrieveContact(long id) throws PersistenceException {
         Contact contact = new Contact();
-        contact.setEmailAddress("zk@db.org");
+        ConfigManager cm = ConfigManager.getInstance();
+        if (cm.existsNamespace("email.source")) {
+            try {
+                cm.removeNamespace("email.source");
+            } catch (UnknownNamespaceException e) {
+                //do nothing.
+            }
+        }
+        try {
+            cm.add("EmailEngineTest.xml");
+        } catch (ConfigManagerException e) {
+            //do nothing.
+        }
+        String receiver = null;
+        try {
+            receiver = cm.getString("email.source", "to");
+        } catch (UnknownNamespaceException e) {
+            //do nothing.
+        }
+        contact.setEmailAddress(receiver);
         contact.setFirstName("Firstname");
         contact.setLastName("LastName");
 

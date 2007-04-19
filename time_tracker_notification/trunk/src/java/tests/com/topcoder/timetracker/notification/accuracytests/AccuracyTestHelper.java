@@ -17,6 +17,8 @@ import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.timetracker.notification.Notification;
 import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.UnknownNamespaceException;
 
 /**
  * <p>
@@ -188,7 +190,26 @@ public class AccuracyTestHelper {
         notification.setCreationUser("tc");
         notification.setModificationDate(new Date());
         notification.setModificationUser("tc");
-        notification.setFromAddress("zk@db.org");
+        ConfigManager cm = ConfigManager.getInstance();
+        if (cm.existsNamespace("email.source")) {
+            try {
+                cm.removeNamespace("email.source");
+            } catch (UnknownNamespaceException e) {
+                //do nothing.
+            }
+        }
+        try {
+            cm.add("EmailEngineTest.xml");
+        } catch (ConfigManagerException e) {
+            //do nothing.
+        }
+        String sender = null;
+        try {
+            sender = cm.getString("email.source", "from");
+        } catch (UnknownNamespaceException e) {
+            //do nothing.
+        }
+        notification.setFromAddress(sender);
         notification.setId(id);
         notification.setLastTimeSent(new Date());
         notification.setMessage("You Got A Message.");

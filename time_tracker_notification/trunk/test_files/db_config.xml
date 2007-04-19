@@ -14,13 +14,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/notification:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://59.66.77.226:1527/notification:informixserver=test</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 				<Property name="empty_connect">
@@ -32,13 +32,13 @@
 							<Value>com.informix.jdbc.IfxDriver</Value>
 						</Property>
 						<Property name="jdbc_url">
-							<Value>jdbc:informix-sqli://192.168.1.102:1526/meEmpty:informixserver=topcoder</Value>
+							<Value>jdbc:informix-sqli://59.66.77.226:1527/meEmpty:informixserver=test</Value>
 						</Property>
 						<Property name="user">
 							<Value>informix</Value>
 						</Property>
 						<Property name="password">
-							<Value>810814</Value>
+							<Value>123456</Value>
 						</Property>
 					</Property>
 				</Property>

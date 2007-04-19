@@ -6,6 +6,9 @@ package com.topcoder.timetracker.notification.accuracytests;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactManager;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.UnknownNamespaceException;
 
 /**
  * <p>
@@ -51,7 +54,26 @@ public class MockContactManager implements ContactManager {
     public Contact retrieveContact(long id) {
         Contact contact = new Contact();
         contact.setId(id);
-        contact.setEmailAddress("zk@db.org");
+        ConfigManager cm = ConfigManager.getInstance();
+        if (cm.existsNamespace("email.source")) {
+            try {
+                cm.removeNamespace("email.source");
+            } catch (UnknownNamespaceException e) {
+                //do nothing.
+            }
+        }
+        try {
+            cm.add("EmailEngineTest.xml");
+        } catch (ConfigManagerException e) {
+            //do nothing.
+        }
+        String receiver = null;
+        try {
+            receiver = cm.getString("email.source", "to");
+        } catch (UnknownNamespaceException e) {
+            //do nothing.
+        }
+        contact.setEmailAddress(receiver);
         contact.setFirstName("jess");
         contact.setLastName("jin");
 
