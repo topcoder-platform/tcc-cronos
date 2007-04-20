@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.invoice.InvoiceStatusDAO">
+		<Property name="objectFactoryNameSpace">
+			<Value>objectFactory</Value>
+		</Property>
+		<Property name="dbConnectionFactoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.invoice.InvoiceDAOFactory">
+		<Property name="objectFactoryNameSpace">
+			<Value>objectFactory</Value>
+		</Property>
+		<Property name="invoiceDAOKey">
+			<Value>invoiceDAO</Value>
+		</Property>
+		<Property name="invoiceStatusDAOKey">
+			<Value>invoiceStatusDAO</Value>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.timetracker.invoice.informix.InformixInvoiceDAO">
+		<Property name="objectFactoryNameSpace">
+			<Value>objectFactory</Value>
+		</Property>
+		<Property name="auditManagerKey">
+			<Value>auditManager</Value>
+		</Property>
+		<Property name="invoiceStatusDAOKey">
+			<Value>invoiceStatusDAO</Value>
+		</Property>
+		<Property name="commonManagerKey">
+			<Value>commonManager</Value>
+		</Property>
+		<Property name="idGeneratorKey">
+			<Value>idGenerator</Value>
+		</Property>
+		<Property name="expenseManagerKey">
+			<Value>expenseManager</Value>
+		</Property>
+		<Property name="fixedBillingManagerKey">
+			<Value>fixedBillingManager</Value>
+		</Property>
+		<Property name="dbConnectionFactoryKey">
+			<Value>dbConnectionFactory</Value>
+		</Property>
+		<Property name="projectUtilityKey">
+			<Value>projectUtility</Value>
+		</Property>
+		<Property name="serviceDetailManagerKey">
+			<Value>serviceDetail</Value>
+		</Property>
+		<Property name="searchBundleManagerNamespace">
+			<Value>searchBundleManager</Value>
+		</Property>
+	</Config>
+	
+	<Config name="invoiceManagerDelegate">
+		<Property name="contextName">
+			<Value>myContext</Value>
+		</Property>
+		
+		<Property name="jndiLocation">
+			<Value>myJNDILocation</Value>
+		</Property>
+	</Config>
+
+	<Config name="searchBundleManager">
+		<Property name="searchBundles">
+			
+			<Property name="INVOICE_ONLY">
+				<Property name="type">
+					<Value>Database</Value>
+				</Property>
+				<Property name="name">
+					<Value>INVOICE_ONLY</Value>
+				</Property>
+				
+				<Property name="context">
+					<Value>   
+						<!-- put here the query for retrieve the invoice informations -->
+					</Value>
+				</Property>
+				
+				<Property name="DBNamespace">
+					<Value><!-- dbConnectionFactory namespace--></Value>
+				</Property>
+				
+				<Property name="connectionProducerName">
+					<Value>dbconnection</Value>
+				</Property>
+				
+				<!-- These are the alias for create the filters. It's possible (and simple) to add other aliases -->
+				<Property name="alias">
+					
+					<!-- put here the alias for create the filters -->
+					<!-- example:
+						<Property name="alias">
+						<Value>columnName</Value>
+						</Property>
+					-->
+				</Property>
+			</Property>
+			
+			<Property name="INVOICE_ALL">
+				<Property name="type">
+					<Value>Database</Value>
+				</Property>
+				<Property name="name">
+					<Value>INVOICE_ALL</Value>
+				</Property>
+				
+				<Property name="context">
+					<Value>   
+						<!-- put here the query for retrieve the invoice informations and also the beans associated-->
+					</Value>
+				</Property>
+				
+				<Property name="DBNamespace">
+					<Value><!-- dbConnectionFactory namespace--></Value>
+				</Property>
+				
+				<Property name="connectionProducerName">
+					<Value>dbconnection</Value>
+				</Property>
+				
+				<!-- These are the alias for create the filters. It's possible (and simple) to add other aliases -->
+				<Property name="alias">
+					
+					<!-- put here the alias for create the filters -->	
+					<!-- example:
+					<Property name="alias">
+						<Value>columnName</Value>
+					</Property>
+					-->
+					
+				</Property>
+			</Property>
+		</Property>
+		
+	</Config>
+
+</CMConfig>
