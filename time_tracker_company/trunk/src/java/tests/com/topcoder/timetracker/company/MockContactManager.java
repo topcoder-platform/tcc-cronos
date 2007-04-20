@@ -5,6 +5,7 @@ package com.topcoder.timetracker.company;
 
 import com.topcoder.search.builder.filter.Filter;
 
+import com.topcoder.timetracker.contact.AssociationException;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.contact.PersistenceException;
@@ -310,5 +311,10 @@ public class MockContactManager implements ContactManager {
      */
     public void updateContacts(Contact[] contacts, boolean doAudit) {
         throw new UnsupportedOperationException("not implemented.");
+    }
+
+    public Contact[] retrieveContacts(long[] arg0) throws PersistenceException, AssociationException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
