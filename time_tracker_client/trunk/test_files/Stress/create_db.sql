@@ -29,7 +29,7 @@ create table project  (
   company_id           INTEGER                         not null,
   active               SMALLINT                        not null,
   sales_tax             decimal(7,3) 				   NOT NULL,
-  
+  payment_terms_id     integer 				NOT NULL,
   description          VARCHAR(255),
   start_date           DATETIME YEAR TO SECOND         not null,
   end_date             DATETIME YEAR TO SECOND         not null,
