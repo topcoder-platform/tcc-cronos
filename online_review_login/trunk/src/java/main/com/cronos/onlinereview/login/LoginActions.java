@@ -215,6 +215,7 @@ public class LoginActions extends DispatchAction {
             String userName = getFormProperty(validatorForm, Util.USERNAME);
             String password = getFormProperty(validatorForm, Util.PASSWORD);
             String projectId = request.getParameter(Util.REDIRECT_TO_PROJECT_ID);
+            String forwardUrl = request.getParameter(Util.FOWARD_URL);
 
             // create a principal with user name and password
             Principal principal = new Principal("dummy");
@@ -225,7 +226,10 @@ public class LoginActions extends DispatchAction {
             Response authResponse = authenticator.authenticate(principal);
             authResponseParser.setLoginState(principal, authResponse, request, response);
             if (authResponse.isSuccessful()) {
-                if (projectId == null || projectId.trim().length() == 0) {
+                if (forwardUrl != null && forwardUrl.trim().length() != 0) {
+                    return cloneForwardAndAppendToPath(
+                            mapping.findForward("redirectToURL"), "&url=" + forwardUrl);
+                } else if (projectId == null || projectId.trim().length() == 0) {
                     return mapping.findForward("success");
                 } else {            
                     return cloneForwardAndAppendToPath(
