@@ -165,12 +165,15 @@ public class AddressFilterFactory {
      *   </ol>
      * </p>
      *
+     * <p>
+     * If the from and to are both not null, then the from date must not exceed the end date with precision of second.
+     * </p>
+     *
      * @param from possible null start date of the range
      * @param to possible null end date of the range
-     *
      * @return non null filter
-     *
-     * @throws IllegalArgumentException if both to and from are null
+     * @throws IllegalArgumentException if both to and from are null;
+     *         Or they are both not null, but the from exceeds to.
      */
     public static Filter createCreatedInFilter(Date from, Date to) {
         Helper.validateDatesRange(from, to, "filtering creation_date");
@@ -186,7 +189,6 @@ public class AddressFilterFactory {
      * @param from possible null start date of the range
      * @param to possible null end date of the range
      * @param forCreation Indicates whether for creation or for modification
-     *
      * @return non null filter
      */
     private static Filter createDatesFilter(Date from, Date to, boolean forCreation) {
@@ -213,10 +215,15 @@ public class AddressFilterFactory {
      *   </ol>
      * </p>
      *
+     * <p>
+     * If the from and to are both not null, then the from date must not exceed the end date with precision of second.
+     * </p>
+     *
      * @param from possible null start date of the range
      * @param to possible null end date of the range
      * @return non null filter
-     * @throws IllegalArgumentException if both to and from are null
+     * @throws IllegalArgumentException if both to and from are null;
+     *         Or they are both not null, but the from exceeds to.
      */
     public static Filter createModifiedInFilter(Date from, Date to) {
         Helper.validateDatesRange(from, to, "filtering modification_date");

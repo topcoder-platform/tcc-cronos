@@ -223,85 +223,6 @@ public class ContactBeanTestExp extends BaseTestCase {
             this.assertTransactionRollbacked(transaction);
         }
     }
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
-     * First name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact_IPE1() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setFirstName(this.getStringWithLengthGreaterThan100());
-            localBean.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
-     * Last name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact_IPE2() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setLastName(this.getStringWithLengthGreaterThan100());
-            localBean.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
-     * Phone is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact_IPE3() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setPhoneNumber(this.getStringWithLengthGreaterThan100());
-            localBean.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
-     * Email is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact_IPE4() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setEmailAddress(this.getStringWithLengthGreaterThan100());
-            localBean.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
 
     /**
      * <p>
@@ -311,7 +232,7 @@ public class ContactBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddContact_IPE5() throws Exception {
+    public void testAddContact_IPE1() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setCreationUser(null);
@@ -331,7 +252,7 @@ public class ContactBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddContact_IPE6() throws Exception {
+    public void testAddContact_IPE2() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setModificationUser(null);
@@ -426,8 +347,8 @@ public class ContactBeanTestExp extends BaseTestCase {
     }
     /**
      * <p>
-     * Test method <code>addContact()</code>.
-     * FirstName is with length greater than 100, IPE expected.
+     * Test method <code>addContacts()</code>.
+     * Creation user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
@@ -435,7 +356,7 @@ public class ContactBeanTestExp extends BaseTestCase {
     public void testAddContacts_IPE() throws Exception {
         try {
             Contact contact = this.getContact();
-            contact.setFirstName(this.getStringWithLengthGreaterThan100());
+            contact.setCreationUser(null);
             localBean.addContacts(new Contact[]{contact}, false);
             fail("IPE expected");
         } catch (InvalidPropertyException e) {
@@ -656,92 +577,12 @@ public class ContactBeanTestExp extends BaseTestCase {
     /**
      * <p>
      * Test method <code>updateContact()</code>.
-     * First name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact_IPE1() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setFirstName(this.getStringWithLengthGreaterThan100());
-            localBean.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
-     * Last name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact_IPE2() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setLastName(this.getStringWithLengthGreaterThan100());
-            localBean.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
-     * Phone is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact_IPE3() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setPhoneNumber(this.getStringWithLengthGreaterThan100());
-            localBean.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
-     * Email is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact_IPE4() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setEmailAddress(this.getStringWithLengthGreaterThan100());
-            localBean.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
      * Creation user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact_IPE5() throws Exception {
+    public void testUpdateContact_IPE1() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setCreationUser(null);
@@ -761,7 +602,7 @@ public class ContactBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact_IPE6() throws Exception {
+    public void testUpdateContact_IPE2() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setModificationUser(null);
@@ -780,7 +621,7 @@ public class ContactBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact_IPE7() throws Exception {
+    public void testUpdateContact_IPE3() throws Exception {
         try {
             Contact contact = this.getContact();
             localBean.updateContact(contact, false);
@@ -798,7 +639,7 @@ public class ContactBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact_IPE8() throws Exception {
+    public void testUpdateContact_IPE4() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setCreationDate(new Date());
@@ -927,7 +768,7 @@ public class ContactBeanTestExp extends BaseTestCase {
     /**
      * <p>
      * Test method <code>updateContacts()</code>.
-     * First name is with length greater than 100, IPE expected.
+     * Modification user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
@@ -935,7 +776,7 @@ public class ContactBeanTestExp extends BaseTestCase {
     public void testUpdateContacts_IPE() throws Exception {
         try {
             Contact contact = this.getContact();
-            contact.setFirstName(this.getStringWithLengthGreaterThan100());
+            contact.setModificationUser(null);
             localBean.updateContacts(new Contact[]{contact}, false);
             fail("IPE expected");
         } catch (InvalidPropertyException e) {

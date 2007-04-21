@@ -544,25 +544,6 @@ public class BaseTestCase extends TestCase {
 
     /**
      * <p>
-     * Get a string with length greater than 100.
-     * </p>
-     *
-     * @return A string with length greater than 100.
-     */
-    protected String getStringWithLengthGreaterThan100() {
-        if (sb != null) {
-            return sb;
-        }
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < 10; i++) {
-            b.append("12345678901");
-        }
-        sb = b.toString();
-        return sb;
-    }
-
-    /**
-     * <p>
      * Create a new instance of <code>Contact</code>.
      * The returned contact will have type set as {@link ContactType#PROJECT}.
      * </p>

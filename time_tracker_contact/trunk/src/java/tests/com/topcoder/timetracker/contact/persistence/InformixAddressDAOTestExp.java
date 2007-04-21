@@ -141,88 +141,12 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
     /**
      * <p>
      * Test method <code>addAddress()</code>.
-     * Line2 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress2() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine2(this.getStringWithLengthGreaterThan100());
-            this.dao.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
-     * City is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress3() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setCity(this.getStringWithLengthGreaterThan100());
-            this.dao.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
-     * PostalCode is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress4() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setPostalCode(this.getStringWithLengthGreaterThan100());
-            this.dao.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
-     * Line1 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress5() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine1(this.getStringWithLengthGreaterThan100());
-            this.dao.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
      * Creation user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress6() throws Exception {
+    public void testAddAddress2() throws Exception {
         try {
             Address address = this.getAddress();
             address.setCreationUser(null);
@@ -241,7 +165,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress7() throws Exception {
+    public void testAddAddress3() throws Exception {
         try {
             Address address = this.getAddress();
             address.setModificationUser(null);
@@ -260,7 +184,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress8() throws Exception {
+    public void testAddAddress4() throws Exception {
         try {
             Address address = this.getAddress();
             address.getCountry().setId(-1);
@@ -279,7 +203,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress9() throws Exception {
+    public void testAddAddress5() throws Exception {
         try {
             Address address = this.getAddress();
             address.getState().setId(-1);
@@ -726,81 +650,6 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
             //good
         }
     }
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * Line2 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress2() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine2(this.getStringWithLengthGreaterThan100());
-            this.dao.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * City is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress3() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setCity(this.getStringWithLengthGreaterThan100());
-            this.dao.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * PostalCode is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress4() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setPostalCode(this.getStringWithLengthGreaterThan100());
-            this.dao.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * Line1 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress5() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine1(this.getStringWithLengthGreaterThan100());
-            this.dao.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
 
     /**
      * <p>
@@ -810,7 +659,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress6() throws Exception {
+    public void testUpdateAddress2() throws Exception {
         try {
             Address address = this.getAddress();
             address.setCreationUser(null);
@@ -829,7 +678,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress7() throws Exception {
+    public void testUpdateAddress3() throws Exception {
         try {
             Address address = this.getAddress();
             address.setModificationUser(null);
@@ -848,7 +697,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress8() throws Exception {
+    public void testUpdateAddress4() throws Exception {
         try {
             Address address = this.getAddress();
             address.getCountry().setId(-1);
@@ -867,7 +716,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress9() throws Exception {
+    public void testUpdateAddress5() throws Exception {
         try {
             Address address = this.getAddress();
             address.getState().setId(-1);
@@ -885,7 +734,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress10() throws Exception {
+    public void testUpdateAddress6() throws Exception {
         try {
             Address address = this.getAddress();
             this.dao.updateAddress(address, false);
@@ -902,7 +751,7 @@ public class InformixAddressDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress11() throws Exception {
+    public void testUpdateAddress7() throws Exception {
         try {
             Address address = this.getAddress();
             address.setCreationDate(new Date());

@@ -37,14 +37,13 @@ public interface AddressManager {
      *  <ul>
      *   <li>The id of address will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -89,14 +88,13 @@ public interface AddressManager {
      *  <ul>
      *   <li>The id of address will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -153,14 +151,13 @@ public interface AddressManager {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of address must be positive.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -220,14 +217,13 @@ public interface AddressManager {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of address must be positive.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -459,7 +455,7 @@ public interface AddressManager {
      *  <ul>
      *   <li>The id of address must be positive.</li>
      *   <li>The type of address must be non-null.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed modification date.</li>
      *   <li>The modification date must not be null, and must not exceed current date.</li>
      *  </ul>
@@ -503,7 +499,7 @@ public interface AddressManager {
      *  <ul>
      *   <li>The id of address must be positive.</li>
      *   <li>The type of address must be non-null.</li>
-     *   <li>The modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The modification user must be non-null, non-empty.</li>
      *  </ul>
      *  If any validation fails, <code>InvalidPropertyException</code> will be raised.
      * </p>

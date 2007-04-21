@@ -36,7 +36,7 @@ public class Address extends TimeTrackerBean {
     /**
      * <p>
      * Represents the first line of the address. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 100 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -45,7 +45,7 @@ public class Address extends TimeTrackerBean {
     /**
      * <p>
      * Represents the second line of the address. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to null, or a non empty string with length &lt;= 100 by the setter.
+     * It is only allowed to be set to null, or a non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -54,7 +54,7 @@ public class Address extends TimeTrackerBean {
     /**
      * <p>
      * Represents the city of the address. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 30 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -63,7 +63,7 @@ public class Address extends TimeTrackerBean {
     /**
      * <p>
      * Represents the postal code of the address. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 10 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -108,7 +108,7 @@ public class Address extends TimeTrackerBean {
      * Get the first line.
      * </p>
      *
-     * @return possible null, non empty string with length &lt;= 100 representing line1
+     * @return possible null, non empty string representing line1
      */
     public String getLine1() {
         return this.line1;
@@ -119,11 +119,6 @@ public class Address extends TimeTrackerBean {
      *
      * <p>
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
-     * </p>
-     *
-     * <p>
-     * If the given value is with length greater than 100, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this address.
      * </p>
      *
      * @param line1 non null, non empty string representing line1
@@ -154,11 +149,6 @@ public class Address extends TimeTrackerBean {
      *
      * <p>
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
-     * </p>
-     *
-     * <p>
-     * If the given value is with length greater than 100, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this address.
      * </p>
      *
      * @param line2 possibly null, non empty string representing line2
@@ -197,11 +187,6 @@ public class Address extends TimeTrackerBean {
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
      * </p>
      *
-     * <p>
-     * If the given value is with length greater than 30, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this address.
-     * </p>
-     *
      * @param city non null, non empty string representing city
      *
      * @throws IllegalArgumentException if the city is null or empty(trim'd).
@@ -230,11 +215,6 @@ public class Address extends TimeTrackerBean {
      *
      * <p>
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
-     * </p>
-     *
-     * <p>
-     * If the given value is with length greater than 10, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this address.
      * </p>
      *
      * @param postalCode non null, non empty string representing postal code

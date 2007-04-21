@@ -36,7 +36,7 @@ public class Country extends TimeTrackerBean {
     /**
      * <p>
      * Represents the name of the country. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 64 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -52,7 +52,7 @@ public class Country extends TimeTrackerBean {
     /**
      * <p>Get the name.</p>
      *
-     * @return possible null, non empty name with length &lt;= 64
+     * @return possible null, non empty name
      */
     public String getName() {
         return this.name;

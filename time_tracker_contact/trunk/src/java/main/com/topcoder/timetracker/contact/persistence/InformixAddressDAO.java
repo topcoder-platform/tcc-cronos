@@ -99,32 +99,6 @@ import java.util.Map;
 public class InformixAddressDAO implements AddressDAO {
 
     /**
-     * <p>
-     * The max length of columns line1 and line2.
-     * </p>
-     */
-    private static final int LINE_MAX_LENGTH = 100;
-
-    /**
-     * <p>
-     * The max length of column city.
-     * </p>
-     */
-    private static final int CITY_MAX_LENGTH = 30;
-
-    /**
-     * <p>
-     * The max length of column zip_code.
-     * </p>
-     */
-    private static final int PC_MAX_LENGTH = 10;
-
-    /**
-     * <p>The max length of <em>creation_user</em> and <em>modification_user</em>.</p>
-     */
-    private static final int USERNAME_MAX_LENGTH = 64;
-
-    /**
      * <p>The count of columns of <em>address</em> table.</p>
      */
     private static final int ADDRESS_COLUMNS_COUNT = 11;
@@ -185,7 +159,7 @@ public class InformixAddressDAO implements AddressDAO {
         + "from state_name order by state_name_id";
 
     /**
-     * <p>SQL clause used to delete all records from <em>address</em> table.</p>
+     * <p>SQL clause used to delete records from <em>address</em> table based on given address id.</p>
      */
     private static final String DELETE_ADDRESS = "delete from address where address_id = ?";
 
@@ -347,9 +321,8 @@ public class InformixAddressDAO implements AddressDAO {
      * <p>
      *  <strong>Validation:</strong>
      *  <ul>
-     *   <li>The line1, postal code, creation/modification user must not be null, must not be empty,
-     *   must within range of max length. The line2 could be null, but not empty and also should not
-     *   exceed max length.</li>
+     *   <li>The line1, postal code, creation/modification user must not be null, must not be empty.
+     *   The line2 could be null.</li>
      *   <li>For update, the creation date must not be null and must not exceed current date.</li>
      *   <li>For update, the id must be positive.</li>
      *  </ul>
@@ -369,18 +342,15 @@ public class InformixAddressDAO implements AddressDAO {
         int i = 0;
 
         String line1 = address.getLine1();
-        Helper.validateStringWithMaxLengthWithIPE(line1, LINE_MAX_LENGTH, "Line1 of" + usage);
+        Helper.validateNotNullWithIPE(line1, "Line1 of" + usage);
         objects[i++] = line1;
 
         String line2 = address.getLine2();
         //line2 is null-able
-        if (line2 != null) {
-            Helper.validateStringWithMaxLengthWithIPE(line2, LINE_MAX_LENGTH, "Line2 of" + usage);
-        }
         objects[i++] = line2;
 
         String city = address.getCity();
-        Helper.validateStringWithMaxLengthWithIPE(city, CITY_MAX_LENGTH, "City of" + usage);
+        Helper.validateNotNullWithIPE(city, "City of" + usage);
         objects[i++] = city;
 
         State state = address.getState();
@@ -394,7 +364,7 @@ public class InformixAddressDAO implements AddressDAO {
         objects[i++] = new Long(country.getId());
 
         String postalCode = address.getPostalCode();
-        Helper.validateStringWithMaxLengthWithIPE(postalCode, PC_MAX_LENGTH, "Postal code of" + usage);
+        Helper.validateNotNullWithIPE(postalCode, "Postal code of" + usage);
         objects[i++] = postalCode;
 
         //Convert creation/modification user/date
@@ -440,12 +410,11 @@ public class InformixAddressDAO implements AddressDAO {
                                        Boolean condition)
         throws InvalidPropertyException {
         String creationUser = address.getCreationUser();
-        Helper.validateStringWithMaxLengthWithIPE(creationUser, USERNAME_MAX_LENGTH, "Creation user of" + usage);
+        Helper.validateNotNullWithIPE(creationUser, "Creation user of" + usage);
         objects[i++] = creationUser;
 
         String modificationUser = address.getModificationUser();
-        Helper.validateStringWithMaxLengthWithIPE(modificationUser, USERNAME_MAX_LENGTH,
-                                                  "Modification user of" + usage);
+        Helper.validateNotNullWithIPE(modificationUser, "Modification user of" + usage);
         objects[i++] = modificationUser;
 
         Date currentDate = new Date();
@@ -578,8 +547,8 @@ public class InformixAddressDAO implements AddressDAO {
         boolean update = (oldAddress != null) && (newAddress != null);
 
         //For DATETIME YEAR TO SECOND, the precision is second
-        if ((!update) || (update && (oldAddress.getCreationDate().getTime() / DAOHelper.MILLISECOND
-            != newAddress.getCreationDate().getTime() / DAOHelper.MILLISECOND))) {
+        if ((!update) || (update && (oldAddress.getCreationDate().getTime() / Helper.MILLISECOND
+            != newAddress.getCreationDate().getTime() / Helper.MILLISECOND))) {
             details.add(DAOHelper.getAuditDetail("creation_date",
                                                  insert ? null : oldAddress.getCreationDate().toString(),
                                                  delete ? null : newAddress.getCreationDate().toString()));
@@ -591,8 +560,8 @@ public class InformixAddressDAO implements AddressDAO {
                                                  delete ? null : newAddress.getCreationUser()));
         }
 
-        if ((!update) || (update && (oldAddress.getModificationDate().getTime() / DAOHelper.MILLISECOND
-                != newAddress.getModificationDate().getTime() / DAOHelper.MILLISECOND))) {
+        if ((!update) || (update && (oldAddress.getModificationDate().getTime() / Helper.MILLISECOND
+                != newAddress.getModificationDate().getTime() / Helper.MILLISECOND))) {
             details.add(DAOHelper.getAuditDetail("modification_date",
                                                  insert ? null : oldAddress.getModificationDate().toString(),
                                                  delete ? null : newAddress.getModificationDate().toString()));
@@ -618,14 +587,13 @@ public class InformixAddressDAO implements AddressDAO {
      *  <ul>
      *   <li>The id of address will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -672,14 +640,13 @@ public class InformixAddressDAO implements AddressDAO {
      *  <ul>
      *   <li>The id of address will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -995,7 +962,7 @@ public class InformixAddressDAO implements AddressDAO {
      * Populate <code>Address</code> with data from database.
      * </p>
      *
-     * @param addresses The map contains mapping from <code>Address</code> to its associtaion
+     * @param addresses The map contains mapping from <code>Address</code> to its association
      * @param rs The <code>ResultSet</code>. Will be null when called by <code>searchAddresses()</code>
      * @param crs The <code>CustomResultSet</code>. Will be null when called by <code>selectAddresses()</code>
      * @param operation Represents the meaningful operation performed
@@ -1012,7 +979,7 @@ public class InformixAddressDAO implements AddressDAO {
             if (addresses.containsKey(address)) {
                 throw new AssociationException(
                     "Given an Address, it can be associated at most once. But address with id '"
-                    + address.getId() + "' is associated with mutiple entities currently.");
+                    + address.getId() + "' is associated with multiple entities currently.");
             }
             address.setLine1((rs != null) ? rs.getString("line1") : crs.getString("line1"));
             address.setLine2((rs != null) ? rs.getString("line2") : crs.getString("line2"));
@@ -1061,7 +1028,7 @@ public class InformixAddressDAO implements AddressDAO {
      *   <li><em>modification_date</em></li>
      *   <li><em>modification_user</em></li>
      *  </ul>
-     *  The values of these volumns will be populated into given address.
+     *  The values of these columns will be populated into given address.
      * </p>
      *
      * @param address <code>Address</code> to populate
@@ -1100,7 +1067,7 @@ public class InformixAddressDAO implements AddressDAO {
      *
      * @return <code>AddressType</code> corresponding to type id
      *
-     * @throws PersistenceException If error occurs while accessing datebase or type id is not recongnized.
+     * @throws PersistenceException If error occurs while accessing database or type id is not recognized.
      */
     private AddressType populateAddressType(ResultSet rs, CustomResultSet crs, String operation)
         throws PersistenceException {
@@ -1114,7 +1081,7 @@ public class InformixAddressDAO implements AddressDAO {
             if (type instanceof AddressType) {
                 return (AddressType) type;
             } else {
-                throw new PersistenceException("AddressType Id '" + addressTypeId + "' is not recongnized.");
+                throw new PersistenceException("AddressType Id '" + addressTypeId + "' is not recognized.");
             }
         } catch (NumberFormatException e) {
             throw new PersistenceException("Error occurs while " + operation, e);
@@ -1381,14 +1348,13 @@ public class InformixAddressDAO implements AddressDAO {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of address must be positive.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -1450,14 +1416,13 @@ public class InformixAddressDAO implements AddressDAO {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of address must be positive.</li>
-     *   <li>The line1 of address must be non-null, non-empty, with length &lt;=100.</li>
-     *   <li>The line2 of address could be null.
-     *       If it is not null, then it must be non-empty, with length &lt;=100.</li>
-     *   <li>The city of address must be non-null, non-empty, with length &lt;=30.</li>
+     *   <li>The line1 of address must be non-null, non-empty.</li>
+     *   <li>The line2 of address could be null. If it is not null, then it must be non-empty.</li>
+     *   <li>The city of address must be non-null, non-empty.</li>
      *   <li>The state of address must be non-null, must be with positive state id.</li>
      *   <li>The country of address must be non-null, must be with positive country id.</li>
-     *   <li>The postal code of address must be non-null, non-empty, with length &lt;=10.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The postal code of address must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -1715,7 +1680,7 @@ public class InformixAddressDAO implements AddressDAO {
      *  <ul>
      *   <li>The id of address must be positive.</li>
      *   <li>The type of address must be non-null.</li>
-     *   <li>The modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The modification user must be non-null, non-empty.</li>
      *  </ul>
      *  If any validation fails, <code>InvalidPropertyException</code> will be raised.
      * </p>
@@ -1791,10 +1756,9 @@ public class InformixAddressDAO implements AddressDAO {
         if (deassociate) {
             //For deassociate, validate modification user
             String modificationUser = address.getModificationUser();
-            Helper.validateStringWithMaxLengthWithIPE(modificationUser,
-                USERNAME_MAX_LENGTH, "Modification user of " + usage);
+            Helper.validateNotNullWithIPE(modificationUser, "Modification user of " + usage);
         } else {
-            //For associate, validate creation/modication user/date
+            //For associate, validate creation/modification user/date
             associateParams = new Object[ADDRESS_RELATION_COLUMNS_COUNT];
             this.convertAddressPartial(address, associateParams, 0, usage, null);
         }
@@ -1907,7 +1871,7 @@ public class InformixAddressDAO implements AddressDAO {
      *  <ul>
      *   <li>The id of address must be positive.</li>
      *   <li>The type of address must be non-null.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed modification date.</li>
      *   <li>The modification date must not be null, and must not exceed current date.</li>
      *  </ul>

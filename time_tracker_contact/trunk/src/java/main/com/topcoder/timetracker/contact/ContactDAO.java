@@ -41,11 +41,11 @@ public interface ContactDAO {
      *  <ul>
      *   <li>The id of contact will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -89,11 +89,11 @@ public interface ContactDAO {
      *  <ul>
      *   <li>The id of contact will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -264,11 +264,11 @@ public interface ContactDAO {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of contact must be positive.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -328,11 +328,11 @@ public interface ContactDAO {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of contact must be positive.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -448,7 +448,7 @@ public interface ContactDAO {
      *  <ul>
      *   <li>The id of contact must be positive.</li>
      *   <li>The type of contact must be non-null.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed modification date.</li>
      *   <li>The modification date must not be null, and must not exceed current date.</li>
      *  </ul>
@@ -492,7 +492,7 @@ public interface ContactDAO {
      *  <ul>
      *   <li>The id of contact must be positive.</li>
      *   <li>The type of contact must be non-null.</li>
-     *   <li>The modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The modification user must be non-null, non-empty.</li>
      *  </ul>
      *  If any validation fails, <code>InvalidPropertyException</code> will be raised.
      * </p>

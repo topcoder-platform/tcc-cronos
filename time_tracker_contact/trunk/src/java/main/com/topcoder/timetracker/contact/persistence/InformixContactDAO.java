@@ -97,32 +97,6 @@ import java.util.Map;
 public class InformixContactDAO implements ContactDAO {
 
     /**
-     * <p>The max length of <em>creation_user</em> and <em>modification_user</em>.</p>
-     */
-    private static final int USERNAME_MAX_LENGTH = 64;
-
-    /**
-     * <p>
-     * The max length of columns <em>first_name</em> and <em>last_name</em>.
-     * </p>
-     */
-    private static final int NAME_MAX_LENGTH = 64;
-
-    /**
-     * <p>
-     * The max length of column <em>phone</em>.
-     * </p>
-     */
-    private static final int PHONE_MAX_LENGTH = 30;
-
-    /**
-     * <p>
-     * The max length of columns <em>email</em>.
-     * </p>
-     */
-    private static final int EMAIL_MAX_LENGTH = 64;
-
-    /**
      * <p>The count of columns of <em>contact</em> table.</p>
      */
     private static final int CONTACT_COLUMNS_COUNT = 9;
@@ -152,7 +126,7 @@ public class InformixContactDAO implements ContactDAO {
 
     /**
      * <p>
-     * SQL clause used to delete all records from <em>contact</em> table.
+     * SQL clause used to delete records from <em>contact</em> table based on contact id.
      * </p>
      */
     private static final String DELETE_CONTACT = "delete from contact where contact_id = ?";
@@ -321,11 +295,11 @@ public class InformixContactDAO implements ContactDAO {
      *  <ul>
      *   <li>The id of contact will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -371,11 +345,11 @@ public class InformixContactDAO implements ContactDAO {
      *  <ul>
      *   <li>The id of contact will not be validated. The previous value will be ignored and replaced by id got from
      *      <code>IDGenerator</code>.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation/modification date will not be validated. The previous values will be ignored and replaced
      *       by current date.</li>
      *  </ul>
@@ -616,7 +590,7 @@ public class InformixContactDAO implements ContactDAO {
      *
      * @param list The <code>List</code> contains <code>Contact</code>
      *
-     * @return An array containing all <code>Contact</code>es in the given list
+     * @return An array containing all <code>Contact</code>s in the given list
      */
     private Contact[] listToArray(List list) {
         return (Contact[]) (list.toArray(new Contact[list.size()]));
@@ -627,7 +601,7 @@ public class InformixContactDAO implements ContactDAO {
      * Populate <code>Contact</code> with data from database.
      * </p>
      *
-     * @param contacts The map contains mapping from <code>Contact</code> to its associtaion
+     * @param contacts The map contains mapping from <code>Contact</code> to its association
      * @param rs The <code>ResultSet</code>. Will be null when called by <code>searchContacts()</code>
      * @param crs The <code>CustomResultSet</code>. Will be null when called by <code>selectContacts()</code>.
      * @param operation Represents the meaningful operation performed
@@ -644,7 +618,7 @@ public class InformixContactDAO implements ContactDAO {
             if (contacts.containsKey(contact)) {
                 throw new AssociationException(
                         "Given an Contact, it can be associated at most once. But contact with id '"
-                        + contact.getId() + "' is associated with mutiple entities currently.");
+                        + contact.getId() + "' is associated with multiple entities currently.");
             }
             contact.setFirstName((rs != null) ? rs.getString("first_name") : crs.getString("first_name"));
             contact.setLastName((rs != null) ? rs.getString("last_name") : crs.getString("last_name"));
@@ -690,7 +664,7 @@ public class InformixContactDAO implements ContactDAO {
      *   <li><em>modification_date</em></li>
      *   <li><em>modification_user</em></li>
      *  </ul>
-     *  The values of these volumns will be populated into given contact.
+     *  The values of these columns will be populated into given contact.
      * </p>
      *
      * @param contact <code>Contact</code> to populate
@@ -729,7 +703,7 @@ public class InformixContactDAO implements ContactDAO {
      *
      * @return <code>ContactType</code> corresponding to type id
      *
-     * @throws PersistenceException If error occurs while accessing datebase or type id is not recongnized.
+     * @throws PersistenceException If error occurs while accessing database or type id is not recognized.
      */
     private ContactType populateContactType(ResultSet rs, CustomResultSet crs, String operation)
         throws PersistenceException {
@@ -743,7 +717,7 @@ public class InformixContactDAO implements ContactDAO {
             if (type instanceof ContactType) {
                 return (ContactType) type;
             } else {
-                throw new PersistenceException("ContactType Id '" + contactTypeId + "' is not recongnized.");
+                throw new PersistenceException("ContactType Id '" + contactTypeId + "' is not recognized.");
             }
         } catch (NumberFormatException e) {
             throw new PersistenceException("Error occurs while " + operation, e);
@@ -982,11 +956,11 @@ public class InformixContactDAO implements ContactDAO {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of contact must be positive.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -1047,11 +1021,11 @@ public class InformixContactDAO implements ContactDAO {
      *  <strong>Validation Details:</strong>
      *  <ul>
      *   <li>The id of contact must be positive.</li>
-     *   <li>The first name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The last name of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The phone number of contact must be non-null, non-empty, with length &lt;=30.</li>
-     *   <li>The email address of contact must be non-null, non-empty, with length &lt;=64.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The first name of contact must be non-null, non-empty.</li>
+     *   <li>The last name of contact must be non-null, non-empty.</li>
+     *   <li>The phone number of contact must be non-null, non-empty.</li>
+     *   <li>The email address of contact must be non-null, non-empty.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed current date.</li>
      *   <li>The modification date will not be validated. The previous value will be ignored and replaced
      *       by current date.</li>
@@ -1303,7 +1277,7 @@ public class InformixContactDAO implements ContactDAO {
      *  <ul>
      *   <li>The id of contact must be positive.</li>
      *   <li>The type of contact must be non-null.</li>
-     *   <li>The modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The modification user must be non-null, non-empty.</li>
      *  </ul>
      *  If any validation fails, <code>InvalidPropertyException</code> will be raised.
      * </p>
@@ -1414,8 +1388,8 @@ public class InformixContactDAO implements ContactDAO {
         boolean update = (oldContact != null) && (newContact != null);
 
         //For DATETIME YEAR TO SECOND, the precision is second
-        if ((!update) || (update && (oldContact.getCreationDate().getTime() / DAOHelper.MILLISECOND
-            != newContact.getCreationDate().getTime() / DAOHelper.MILLISECOND))) {
+        if ((!update) || (update && (oldContact.getCreationDate().getTime() / Helper.MILLISECOND
+            != newContact.getCreationDate().getTime() / Helper.MILLISECOND))) {
             details.add(DAOHelper.getAuditDetail("creation_date",
                                                  insert ? null : oldContact.getCreationDate().toString(),
                                                  delete ? null : newContact.getCreationDate().toString()));
@@ -1427,8 +1401,8 @@ public class InformixContactDAO implements ContactDAO {
                                                  delete ? null : newContact.getCreationUser()));
         }
 
-        if ((!update) || (update && (oldContact.getModificationDate().getTime() / DAOHelper.MILLISECOND
-            != newContact.getModificationDate().getTime() / DAOHelper.MILLISECOND))) {
+        if ((!update) || (update && (oldContact.getModificationDate().getTime() / Helper.MILLISECOND
+            != newContact.getModificationDate().getTime() / Helper.MILLISECOND))) {
             details.add(DAOHelper.getAuditDetail("modification_date",
                                                  insert ? null : oldContact.getModificationDate().toString(),
                                                  delete ? null : newContact.getModificationDate().toString()));
@@ -1454,7 +1428,7 @@ public class InformixContactDAO implements ContactDAO {
      *  <strong>Validation:</strong>
      *  <ul>
      *   <li>The first_name, last_name, phone, email, creation/modification user must not be null,
-     *   must not be empty, must within range of max length.</li>
+     *   must not be empty.</li>
      *   <li>For update, the creation date must not be null and must not exceed current date.</li>
      *   <li>For update, the id must be positive.</li>
      *  </ul>
@@ -1474,19 +1448,19 @@ public class InformixContactDAO implements ContactDAO {
         int i = 0;
 
         String firstName = contact.getFirstName();
-        Helper.validateStringWithMaxLengthWithIPE(firstName, NAME_MAX_LENGTH, "First name of" + usage);
+        Helper.validateNotNullWithIPE(firstName, "First name of" + usage);
         objects[i++] = firstName;
 
         String lastName = contact.getLastName();
-        Helper.validateStringWithMaxLengthWithIPE(lastName, NAME_MAX_LENGTH, "Last name of" + usage);
+        Helper.validateNotNullWithIPE(lastName, "Last name of" + usage);
         objects[i++] = lastName;
 
         String phone = contact.getPhoneNumber();
-        Helper.validateStringWithMaxLengthWithIPE(phone, PHONE_MAX_LENGTH, "Phone of" + usage);
+        Helper.validateNotNullWithIPE(phone, "Phone of" + usage);
         objects[i++] = phone;
 
         String email = contact.getEmailAddress();
-        Helper.validateStringWithMaxLengthWithIPE(email, EMAIL_MAX_LENGTH, "Email of" + usage);
+        Helper.validateNotNullWithIPE(email, "Email of" + usage);
         objects[i++] = email;
 
         this.convertContactPartial(contact, objects, i, usage, new Boolean(forUpdate));
@@ -1533,12 +1507,11 @@ public class InformixContactDAO implements ContactDAO {
     private void convertContactPartial(Contact contact, Object[] objects, int i, String usage,
         Boolean condition) throws InvalidPropertyException {
         String creationUser = contact.getCreationUser();
-        Helper.validateStringWithMaxLengthWithIPE(creationUser, USERNAME_MAX_LENGTH, "Creation user of" + usage);
+        Helper.validateNotNullWithIPE(creationUser, "Creation user of" + usage);
         objects[i++] = creationUser;
 
         String modificationUser = contact.getModificationUser();
-        Helper.validateStringWithMaxLengthWithIPE(modificationUser, USERNAME_MAX_LENGTH,
-            "Modification user of" + usage);
+        Helper.validateNotNullWithIPE(modificationUser, "Modification user of" + usage);
         objects[i++] = modificationUser;
 
         Date currentDate = new Date();
@@ -1590,7 +1563,7 @@ public class InformixContactDAO implements ContactDAO {
      *  <ul>
      *   <li>The id of contact must be positive.</li>
      *   <li>The type of contact must be non-null.</li>
-     *   <li>The creation/modification user must be non-null, non-empty, with length &lt;=64.</li>
+     *   <li>The creation/modification user must be non-null, non-empty.</li>
      *   <li>The creation date must not be null, and must not exceed modification date.</li>
      *   <li>The modification date must not be null, and must not exceed current date.</li>
      *  </ul>
@@ -1698,10 +1671,9 @@ public class InformixContactDAO implements ContactDAO {
         if (deassociate) {
             //For deassociate, validate modification user
             String modificationUser = contact.getModificationUser();
-            Helper.validateStringWithMaxLengthWithIPE(modificationUser,
-                USERNAME_MAX_LENGTH, "Modification user of " + usage);
+            Helper.validateNotNullWithIPE(modificationUser, "Modification user of " + usage);
         } else {
-            //For associate, validate creation/modication user/date
+            //For associate, validate creation/modification user/date
             associateParams = new Object[CONTACT_RELATION_COLUMNS_COUNT];
             this.convertContactPartial(contact, associateParams, 0, usage, null);
         }

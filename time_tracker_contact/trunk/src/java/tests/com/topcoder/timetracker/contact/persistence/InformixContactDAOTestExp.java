@@ -137,88 +137,12 @@ public class InformixContactDAOTestExp extends BaseTestCase {
     /**
      * <p>
      * Test method <code>addContact()</code>.
-     * First name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact2() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setFirstName(this.getStringWithLengthGreaterThan100());
-            this.dao.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
-     * Last Name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact3() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setLastName(this.getStringWithLengthGreaterThan100());
-            this.dao.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
-     * Phone is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact4() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setPhoneNumber(this.getStringWithLengthGreaterThan100());
-            this.dao.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
-     * Email is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddContact5() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setEmailAddress(this.getStringWithLengthGreaterThan100());
-            this.dao.addContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addContact()</code>.
      * Creation user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
      */
-    public void testAddContact6() throws Exception {
+    public void testAddContact2() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setCreationUser(null);
@@ -237,7 +161,7 @@ public class InformixContactDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddContact7() throws Exception {
+    public void testAddContact3() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setModificationUser(null);
@@ -683,81 +607,6 @@ public class InformixContactDAOTestExp extends BaseTestCase {
             //good
         }
     }
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
-     * First name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact2() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setFirstName(this.getStringWithLengthGreaterThan100());
-            this.dao.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
-     * Last name is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact3() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setLastName(this.getStringWithLengthGreaterThan100());
-            this.dao.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
-     * Phone is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact4() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setPhoneNumber(this.getStringWithLengthGreaterThan100());
-            this.dao.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateContact()</code>.
-     * Email is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateContact5() throws Exception {
-        try {
-            Contact contact = this.getContact();
-            contact.setEmailAddress(this.getStringWithLengthGreaterThan100());
-            this.dao.updateContact(contact, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
 
     /**
      * <p>
@@ -767,7 +616,7 @@ public class InformixContactDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact6() throws Exception {
+    public void testUpdateContact2() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setCreationUser(null);
@@ -786,7 +635,7 @@ public class InformixContactDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact7() throws Exception {
+    public void testUpdateContact3() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setModificationUser(null);
@@ -804,7 +653,7 @@ public class InformixContactDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact8() throws Exception {
+    public void testUpdateContact4() throws Exception {
         try {
             Contact contact = this.getContact();
             this.dao.updateContact(contact, false);
@@ -821,7 +670,7 @@ public class InformixContactDAOTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateContact9() throws Exception {
+    public void testUpdateContact5() throws Exception {
         try {
             Contact contact = this.getContact();
             contact.setCreationDate(new Date());

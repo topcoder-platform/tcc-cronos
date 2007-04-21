@@ -58,13 +58,6 @@ class DAOHelper {
 
     /**
      * <p>
-     * The count of milliseconds within one second.
-     * </p>
-     */
-    static final int MILLISECOND = 1000;
-
-    /**
-     * <p>
      * The property defined within namespace of  <code>InformixAddressDAO</code> and <code>InformixContaceDAO</code>
      * whose value gives the namespace for <code>DBConnectionFactory</code>. Required.
      * </p>

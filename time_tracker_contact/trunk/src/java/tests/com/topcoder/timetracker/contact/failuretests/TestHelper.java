@@ -232,13 +232,6 @@ public class TestHelper {
         if ( type !=3){
         	address.setLine2("line2");	
         }
-        if ( type == 3){
-        	StringBuffer sb = new StringBuffer("l");
-        	for(int i = 0 ; i < 1000;i++){
-        		sb.append("l");
-        	}
-        	address.setLine2(sb.toString());
-        }
         if ( type != 4){
         	address.setCreationUser("user");
         }

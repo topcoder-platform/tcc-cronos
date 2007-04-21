@@ -192,22 +192,6 @@ public class HelperTestAcc extends BaseTestCase {
 
     /**
      * <p>
-     * Test validateStringWithMaxLengthWithIPE(String, int, String).
-     * Given string is greater than the given max length,
-     * InvalidPropertyException expected.
-     * </p>
-     */
-    public void testValidateStringWithMaxLengthWithIPE() {
-        try {
-            Helper.validateStringWithMaxLengthWithIPE("maxlength", 5, "test");
-            fail("InvalidPropertyException expected");
-        } catch (InvalidPropertyException e) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
      * Test getPropertyValue(String, String, boolean).
      * Given namespace is unknown, ConfigurationException expected.
      * </p>
@@ -313,7 +297,7 @@ public class HelperTestAcc extends BaseTestCase {
     /**
      * <p>
      * Test getDAO(boolean).
-     * Requried JNDI binding is not found, CreateException expected.
+     * Required JNDI binding is not found, CreateException expected.
      * </p>
      *
      * @throws Exception to JUnit
@@ -335,7 +319,7 @@ public class HelperTestAcc extends BaseTestCase {
     /**
      * <p>
      * Test getDAO(boolean).
-     * Requried JNDI is binded with an unknown namespace for Object Factory, CreateException expected.
+     * Required JNDI is binded with an unknown namespace for Object Factory, CreateException expected.
      * </p>
      *
      * @throws Exception to JUnit
@@ -357,7 +341,7 @@ public class HelperTestAcc extends BaseTestCase {
     /**
      * <p>
      * Test getDAO(boolean).
-     * Requried JNDI is binded with an namespace within which Object Factory points to an unknown namspace
+     * Required JNDI is binded with an namespace within which Object Factory points to an unknown namspace
      * for AddressDAO. CreateException expected.
      * </p>
      *

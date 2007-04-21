@@ -176,23 +176,6 @@ public class AddressManagerLocalDelegateFailureTests extends TestCase {
      * @throws Exception into jUnit
      */
     public void testAddAddress_invalidAddress3() throws Exception {
-        //address without line2
-        Address address = TestHelper.getAddress(3);
-
-        try {
-            this.delegate.addAddress(address, false);
-            fail("The address to add is invalid.");
-        } catch (InvalidPropertyException e) {
-            AddressBeanFailureTests.assertTransactionRollbacked(userTransaction);
-        }
-    }
-
-    /**
-     * Test addAddress(Address address, boolean doAudit) with invalid address. InvalidPropertyException expected.
-     *
-     * @throws Exception into jUnit
-     */
-    public void testAddAddress_invalidAddress4() throws Exception {
         //address without setCreationUser
         Address address = TestHelper.getAddress(4);
 
@@ -209,7 +192,7 @@ public class AddressManagerLocalDelegateFailureTests extends TestCase {
      *
      * @throws Exception into jUnit
      */
-    public void testAddAddress_invalidAddress5() throws Exception {
+    public void testAddAddress_invalidAddress4() throws Exception {
         //address without setModifyUser
         Address address = TestHelper.getAddress(5);
 
@@ -226,7 +209,7 @@ public class AddressManagerLocalDelegateFailureTests extends TestCase {
      *
      * @throws Exception into jUnit
      */
-    public void testAddAddress_invalidAddress6() throws Exception {
+    public void testAddAddress_invalidAddress5() throws Exception {
         //address without state
         Address address = TestHelper.getAddress(6);
 
@@ -243,7 +226,7 @@ public class AddressManagerLocalDelegateFailureTests extends TestCase {
      *
      * @throws Exception into jUnit
      */
-    public void testAddAddress_invalidAddress7() throws Exception {
+    public void testAddAddress_invalidAddress6() throws Exception {
         //address without country
         Address address = TestHelper.getAddress(7);
 
@@ -260,7 +243,7 @@ public class AddressManagerLocalDelegateFailureTests extends TestCase {
      *
      * @throws Exception into jUnit
      */
-    public void testAddAddress_invalidAddress8() throws Exception {
+    public void testAddAddress_invalidAddress7() throws Exception {
         //address without AddressType
         Address address = TestHelper.getAddress(8);
 

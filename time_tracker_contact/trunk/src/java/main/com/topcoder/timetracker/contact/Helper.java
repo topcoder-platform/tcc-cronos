@@ -34,9 +34,17 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * @version 3.2
  */
 public class Helper {
+
     /**
      * <p>
-     * The prefix of the JNDI name of the enviroment entries bound in EJB.
+     * The count of milliseconds within one second.
+     * </p>
+     */
+    public static final int MILLISECOND = 1000;
+
+    /**
+     * <p>
+     * The prefix of the JNDI name of the environment entries bound in EJB.
      * </p>
      */
     private static final String JNDI_PREFIX = "java:comp/env/";
@@ -252,6 +260,10 @@ public class Helper {
      * Validate given from and to date range are not both null.
      * </p>
      *
+     * <p>
+     * If they are both not null, then the from date must not exceed the end date with precision of second.
+     * </p>
+     *
      * @param from The from date range
      * @param to The to date range
      * @param usage The usage of the date range
@@ -261,6 +273,14 @@ public class Helper {
     public static void validateDatesRange(Date from, Date to, String usage) {
         if (from == null && to == null) {
             throw new IllegalArgumentException("Both ends of date range for " + usage + " are null");
+        }
+
+        //Informix type DATETIME YEAR TO SECOND, precision is second
+        if ((from != null) && (to != null)) {
+            if (from.getTime() / MILLISECOND > to.getTime() / MILLISECOND) {
+                throw new IllegalArgumentException("The range specified is invalid, start Date exceeds end Date: "
+                    + from + " > " + to);
+            }
         }
     }
     /**
@@ -325,49 +345,6 @@ public class Helper {
         if (string.trim().length() == 0) {
             throw new IllegalArgumentException(usage + " should not be empty (trimmed).");
         }
-    }
-
-    /**
-     * <p>
-     * Validates whether the given <code>String</code> is not null and not empty(trimmed), and the length(not trimmed)
-     * is not greater than the given max length. If given string is not valid, <code>InvalidPropertyException</code>
-     * will be thrown.
-     * </p>
-     *
-     * @param string the <code>String</code> to validate.
-     * @param maxLength The max length of the given <code>String</code>. Must be positive.
-     * @param usage the usage of the <code>String</code>.
-     *
-     * @throws IllegalArgumentException - If the given max length is non-positive.
-     * @throws InvalidPropertyException - If the given <code>String</code> is null or empty string (trimmed), or with
-     *         length(not trimmed) greater than given max length.
-     */
-    public static void validateStringWithMaxLengthWithIPE(String string,
-        int maxLength, String usage) throws InvalidPropertyException {
-        if (!checkStringWithManLength(string, maxLength)) {
-            throw new InvalidPropertyException(usage
-                + " should be non-null, non-empty, with length <= " + maxLength + ", but is: " + string);
-        }
-    }
-
-    /**
-     * <p>
-     * Check the given <code>String</code> is not null and not empty(trimmed), and the length(not trimmed) is not
-     * greater than the given max length.
-     * </p>
-     *
-     * @param string the <code>String</code> to check.
-     * @param maxLength The max length of the given <code>String</code>. Must be positive.
-     *
-     * @return true If the given string is non-null, non-empty, and with length(not trimmed) less than or equals given
-     *         max length; False otherwise.
-     *
-     * @throws IllegalArgumentException - If the given max length is non-positive.
-     */
-    private static boolean checkStringWithManLength(String string, int maxLength) {
-        validatePositiveWithIAE(maxLength, "The max length of string");
-
-        return (string != null) && (string.trim().length() != 0) && (string.length() <= maxLength);
     }
 
     /**
@@ -501,7 +478,7 @@ public class Helper {
         } catch (IllegalArgumentException iae) {
             throw new CreateException("Error occurs while creating DAO: " + iae.getMessage());
         } catch (InvalidClassSpecificationException icse) {
-        	throw new CreateException("Error occurs while creating DAO: " + icse.getMessage());
+            throw new CreateException("Error occurs while creating DAO: " + icse.getMessage());
         } catch (ClassCastException cce) {
             throw new CreateException("Error occurs while casting object to DAO: " + cce.getMessage());
         }

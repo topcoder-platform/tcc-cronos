@@ -37,7 +37,7 @@ public class Contact extends TimeTrackerBean {
     /**
      * <p>
      * Represents the first name of this contact. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 64 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -46,7 +46,7 @@ public class Contact extends TimeTrackerBean {
     /**
      * <p>
      * Represents the last name of this contact. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 64 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -55,7 +55,7 @@ public class Contact extends TimeTrackerBean {
     /**
      * <p>
      * Represents the phone number of this contact. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 30 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -64,7 +64,7 @@ public class Contact extends TimeTrackerBean {
     /**
      * <p>
      * Represents the email address of this contact. This variable is set to null initially, is mutable.
-     * It is only allowed to be set to non null, non empty string with length &lt;= 64 by the setter.
+     * It is only allowed to be set to non null, non empty string by the setter.
      * It is access by its getter and setter methods.
      * </p>
      */
@@ -89,7 +89,7 @@ public class Contact extends TimeTrackerBean {
     /**
      * <p>Get the first name.</p>
      *
-     * @return the possible null, non empty first name with length &lt;= 64
+     * @return the possible null, non empty first name
      */
     public String getFirstName() {
         return this.firstName;
@@ -100,11 +100,6 @@ public class Contact extends TimeTrackerBean {
      *
      * <p>
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
-     * </p>
-     *
-     * <p>
-     * If the given value is with length greater than 64, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this contact.
      * </p>
      *
      * @param firstName the non null, non empty first name
@@ -135,11 +130,6 @@ public class Contact extends TimeTrackerBean {
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
      * </p>
      *
-     * <p>
-     * If the given value is with length greater than 64, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this contact.
-     * </p>
-     *
      * @param lastName the non null, non empty last name
      *
      * @throws IllegalArgumentException if the name is null or empty(trim'd)
@@ -155,7 +145,7 @@ public class Contact extends TimeTrackerBean {
     /**
      * <p>Get the phone number.</p>
      *
-     * @return the non null, non empty phone number
+     * @return the possible null, non empty phone number
      */
     public String getPhoneNumber() {
         return this.phoneNumber;
@@ -166,11 +156,6 @@ public class Contact extends TimeTrackerBean {
      *
      * <p>
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
-     * </p>
-     *
-     * <p>
-     * If the given value is with length greater than 30, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this contact.
      * </p>
      *
      * @param phoneNumber the non null, non empty phone number
@@ -199,11 +184,6 @@ public class Contact extends TimeTrackerBean {
      *
      * <p>
      * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
-     * </p>
-     *
-     * <p>
-     * If the given value is with length greater than 64, <code>InvalidPropertyException</code> will be raised
-     * when adding/updating this contact.
      * </p>
      *
      * @param emailAddress the non null, non empty email address

@@ -229,92 +229,12 @@ public class AddressBeanTestExp extends BaseTestCase {
     /**
      * <p>
      * Test method <code>addAddress()</code>.
-     * Line2 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress_IPE1() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine2(this.getStringWithLengthGreaterThan100());
-            localBean.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
-     * City is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress_IPE2() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setCity(this.getStringWithLengthGreaterThan100());
-            localBean.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
-     * PostalCode is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress_IPE3() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setPostalCode(this.getStringWithLengthGreaterThan100());
-            localBean.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
-     * Line1 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddAddress_IPE4() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine1(this.getStringWithLengthGreaterThan100());
-            localBean.addAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>addAddress()</code>.
      * Creation user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress_IPE5() throws Exception {
+    public void testAddAddress_IPE1() throws Exception {
         try {
             Address address = this.getAddress();
             address.setCreationUser(null);
@@ -334,7 +254,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress_IPE6() throws Exception {
+    public void testAddAddress_IPE2() throws Exception {
         try {
             Address address = this.getAddress();
             address.setModificationUser(null);
@@ -354,7 +274,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress_IPE7() throws Exception {
+    public void testAddAddress_IPE3() throws Exception {
         try {
             Address address = this.getAddress();
             address.getCountry().setId(-1);
@@ -374,7 +294,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testAddAddress_IPE8() throws Exception {
+    public void testAddAddress_IPE4() throws Exception {
         try {
             Address address = this.getAddress();
             address.getState().setId(-1);
@@ -470,7 +390,7 @@ public class AddressBeanTestExp extends BaseTestCase {
     /**
      * <p>
      * Test method <code>addAddress()</code>.
-     * Line2 is with length greater than 100, IPE expected.
+     * Creation user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
@@ -478,7 +398,7 @@ public class AddressBeanTestExp extends BaseTestCase {
     public void testAddAddresses_IPE() throws Exception {
         try {
             Address address = this.getAddress();
-            address.setLine2(this.getStringWithLengthGreaterThan100());
+            address.setCreationUser(null);
             localBean.addAddresses(new Address[]{address}, false);
             fail("IPE expected");
         } catch (InvalidPropertyException e) {
@@ -705,85 +625,6 @@ public class AddressBeanTestExp extends BaseTestCase {
             this.assertTransactionRollbacked(transaction);
         }
     }
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * Line2 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress_IPE1() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine2(this.getStringWithLengthGreaterThan100());
-            localBean.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * City is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress_IPE2() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setCity(this.getStringWithLengthGreaterThan100());
-            localBean.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * PostalCode is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress_IPE3() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setPostalCode(this.getStringWithLengthGreaterThan100());
-            localBean.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
-
-    /**
-     * <p>
-     * Test method <code>updateAddress()</code>.
-     * Line1 is with length greater than 100, IPE expected.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateAddress_IPE4() throws Exception {
-        try {
-            Address address = this.getAddress();
-            address.setLine1(this.getStringWithLengthGreaterThan100());
-            localBean.updateAddress(address, false);
-            fail("IPE expected");
-        } catch (InvalidPropertyException e) {
-            //good
-            this.assertTransactionRollbacked(transaction);
-        }
-    }
 
     /**
      * <p>
@@ -793,7 +634,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress_IPE5() throws Exception {
+    public void testUpdateAddress_IPE1() throws Exception {
         try {
             Address address = this.getAddress();
             address.setCreationUser(null);
@@ -813,7 +654,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress_IPE6() throws Exception {
+    public void testUpdateAddress_IPE2() throws Exception {
         try {
             Address address = this.getAddress();
             address.setModificationUser(null);
@@ -833,7 +674,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress_IPE7() throws Exception {
+    public void testUpdateAddress_IPE3() throws Exception {
         try {
             Address address = this.getAddress();
             address.getCountry().setId(-1);
@@ -853,7 +694,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress_IPE8() throws Exception {
+    public void testUpdateAddress_IPE4() throws Exception {
         try {
             Address address = this.getAddress();
             address.getState().setId(-1);
@@ -872,7 +713,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress_IPE9() throws Exception {
+    public void testUpdateAddress_IPE5() throws Exception {
         try {
             Address address = this.getAddress();
             localBean.updateAddress(address, false);
@@ -890,7 +731,7 @@ public class AddressBeanTestExp extends BaseTestCase {
      *
      * @throws Exception to JUnit
      */
-    public void testUpdateAddress_IPE10() throws Exception {
+    public void testUpdateAddress_IPE6() throws Exception {
         try {
             Address address = this.getAddress();
             address.setCreationDate(new Date());
@@ -1019,7 +860,7 @@ public class AddressBeanTestExp extends BaseTestCase {
     /**
      * <p>
      * Test method <code>updateAddresses()</code>.
-     * Line2 is with length greater than 100, IPE expected.
+     * Modification user is null, IPE expected.
      * </p>
      *
      * @throws Exception to JUnit
@@ -1027,7 +868,7 @@ public class AddressBeanTestExp extends BaseTestCase {
     public void testUpdateAddresses_IPE() throws Exception {
         try {
             Address address = this.getAddress();
-            address.setLine2(this.getStringWithLengthGreaterThan100());
+            address.setModificationUser(null);
             localBean.updateAddresses(new Address[]{address}, false);
             fail("IPE expected");
         } catch (InvalidPropertyException e) {
