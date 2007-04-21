@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+    <Config name="dbConnectionFactoryClassCast">
+        <Property name="objectFactoryNamespace">
+            <Value>objectFactoryClassCast</Value>
+        </Property>
+        <Property name="dbConnectionFactoryKey">
+            <Value>dbConnectionFactoryKey</Value>
+        </Property>
+    </Config>
+
+    <Config name="objectFactoryClassCast">
+        <Property name="dbConnectionFactoryKey">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

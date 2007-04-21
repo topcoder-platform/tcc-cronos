@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+    <Config name="objectFactoryNamespaceNotAvailable">
+        <Property name="objectFactoryNamespace">
+            <Value>objectFactoryNotAvailable</Value>
+        </Property>
+        <Property name="dbConnectionFactoryKey">
+            <Value>dbConnectionFactoryKey</Value>
+        </Property>
+    </Config>
+</CMConfig>

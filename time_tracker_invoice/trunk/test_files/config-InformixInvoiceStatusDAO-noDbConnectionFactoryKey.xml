@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+    <Config name="noDbConnectionFactoryKey">
+        <Property name="objectFactoryNamespace">
+            <Value>objectFactory</Value>
+        </Property>
+    </Config>
+</CMConfig>

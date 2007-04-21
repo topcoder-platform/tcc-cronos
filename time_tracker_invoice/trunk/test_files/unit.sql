@@ -1,0 +1,18 @@
+delete from invoice_status;
+insert into invoice_status values (1,"testDescription","2009-02-24 05:45:14","l5igdBz l oU12vvnzbG8Rlcl06ev2Jo76K8o9YuFi131VxR35O6KqSqYoz2w5Sb","2009-09-22 14:45:44","CLexqhCc3l7w9cr6RSiW1pLJrDx5B06GgBz2QRZx493F20a0BVzW23LyDpMMh8xv");
+insert into invoice_status values (2,"2mBAPL0WD5c27QNYIN3pY8Hyebg8m3y9sobL1T13QnFm0AZE45c1KnW84g76ReYv","2010-10-24 06:45:54","F32iEE5Qz26e8kjnF1oEXTbV02LprTJ9d8vJAoP4VK0Kzlfy4PHr4AAZq","2008-05-05 00:50:51","VB4ailVsn XP96C1Hd1Xt sZW2CD4402NOP9VkXjRR2Gw1AxnNQNdC3nFZUQnCJn");
+insert into invoice_status values (3,"7F2ET31t9ne1FQr5MhtGe13AYkX7 yOeFxZm0QcvVy251834fi1vjIkN0orzI1k3","2008-04-29 14:11:35","3C2sfVTMnD7IrWpT07a5At276UD9yldS9J35XzdjlbGA0ajK8PnwOJ85SiH8mXT4","2007-11-30 23:08:17","wkstUDW97Oj8w4BmOPsMih2Ts6Liv0c0rJy Wb3bIkGM6spN6zvuYQ6F I9y8936");
+insert into invoice_status values (4,"NifS0","2007-12-12 11:07:36","BNMP","2011-02-02 05:43:57","2acU");
+insert into invoice_status values (5,"k6 CV45u4RdpJN jOTb67dhEcy4WOER4BuSdn9SwvV0Q63NqSHO562mEM3GJ2mI3","2011-04-20 02:04:33","McRXG21ZTj6ONNhMzYA3rL","2007-09-22 21:46:20","KVO32RB9P1l56w71h");
+delete from invoice;
+insert into invoice values (1,"51751","2007-11-14 12:25:43","laGyp0LXrsL pZ5F6pDBiP31aT1oZXBOOd0m 7jnI1YCste9pC23N3Qd8UoV81c4","2007-07-17 07:17:50","0x7Qag3oYo6Y73LGmqw0txgdhhz6lNn40f5F9L6RZpw0g14aPGLyvH3HNJo70855",1122.033,1,"unELx43l9063oC1GgqSvwwDqYP7rTnDW","0mRV7CIGuk1zB83VAl2J7etxoGNv2eEccbZbV32ISHvdoHQFTnlH22hk3 MS x1C","2008-01-06","2011-09-14",1,57709,1);
+insert into invoice values (2,"4161","2010-02-08 14:07:56","aspKALG8M4qKqm12dN87CAzJadFsKoCDvBKA9r76jjwT2gb4ot2M1xMA8cRCreh7","2011-03-27 11:24:54","t30oiAm2kV",3616.979,83579,"Mp7s9r0aD1NK45s5tdGlpCl9InYTlOcBZZ9Ye0dt8ApeDR9kx4TeL 18IsI7kx7Z","1q4Vca5FlPeQT2","2008-08-12","2010-04-08",16405,21655,2);
+insert into invoice values (3,"64851","2011-07-28 22:55:24","tqAf0S3ifK7DpS SIAEvZ0zK8wXvmHC9l3cKd1jB10d1A4Lg4EF08 12G12BZrRK","2011-12-27 18:28:41","FXz745R3G7 e",5815.792,44862,"ZyamCa9BE9iNh4V9dI8VDfa7h3T5FsLjCftP8znAzTtt1QQGLNFeZPIuhuo785cT","jfwN4E7RkKwH0Afezh7 7zO14ykD59q8n7baI9K76jNdl9v5iy2uutfsB6RHwY R","2008-10-25","2009-12-23",1681,2259,3);
+insert into invoice values (4,"8","2007-04-18 20:21:59","tc","2007-04-18 20:21:59","tc",5.0,3,"invoiceNumber","purchaseOrderNumber","2009-04-18","2009-04-18",1,5,4);
+insert into invoice values (5,"20164","2010-05-31 09:09:40","q7DTXmm0brb1e4a4m826mAodr5lMgHg7vZf5A04esQ7X8D54zW3sQD207PKq68 U","2009-10-30 10:22:09","9FNpA702kT0EsU6o63EpDa2BObSro58663wDqW7TIp2iknLyVYNDR4HqEaPV8r4Z",1464.073,50990,"YDanBGbCd2TfUsu8Mp41h2OuZ50F7zF4EfDGtN335CeO0mA","cVUgeWXnN4e18uS9rsUGBKwR4zUiNsRC708VcQS9Z4","2009-04-29","2009-07-02",23535,78914,5);
+delete from payment_terms;
+insert into payment_terms values (1,"Rbv8JLcHis1Ca4Gd2Mj1bg0CP63H2ka0HJ3FxMK870WF9e7yq5mgi85w3qlJgaol","2011-08-07 03:42:13","KE354nG 7lUT0oWRvRZ4hi4PR5J5e0rNbeK6KwC9SK2 u7O62WNNYD8Lw19e6Mvc","2009-01-02 08:24:47","JOEks83w7Uqxw8y9Q82srtC44gHCZAwQ42eh2iTSzePTio8X7792Ub7LW0Yd19iY",13048,93284);
+delete from id_sequences;
+insert into id_sequences values ("invoice",1130,20,0);
+insert into id_sequences values ("unit_test_id_sequence",10,20,0);
+insert into id_sequences values ("stress",175,20,0);

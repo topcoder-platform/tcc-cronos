@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+    <Config name="objectFactoryNamespaceNotCorrect">
+        <Property name="objectFactoryNamespace">
+            <Value>objectFactoryNamespaceNotCorrect</Value>
+        </Property>
+        <Property name="dbConnectionFactoryKey">
+            <Value>dbConnectionFactoryKey</Value>
+        </Property>
+    </Config>
+</CMConfig>

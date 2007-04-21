@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+
+    <Config name="com.topcoder.timetracker.invoice.informix.InformixInvoiceDAO">
+        <Property name="objectFactoryNamespace">
+            <Value>objectFactory</Value>
+        </Property>
+        <Property name="auditManagerKey">
+            <Value>auditManager</Value>
+        </Property>
+        <Property name="invoiceStatusDAOKey">
+            <Value>invoiceStatusDAO</Value>
+        </Property>
+        <Property name="commonManagerKey">
+            <Value>commonManager</Value>
+        </Property>
+        <Property name="idGeneratorKey">
+            <Value>invoice</Value>
+        </Property>
+        <Property name="expenseManagerKey">
+            <Value>expenseManager</Value>
+        </Property>
+        <Property name="fixedBillingManagerKey">
+            <Value>fixedBillingManager</Value>
+        </Property>
+        <Property name="dbConnectionFactoryKey">
+            <Value>dbConnectionFactory</Value>
+        </Property>
+        <Property name="projectUtilityKey">
+            <Value>projectUtility</Value>
+        </Property>
+        <Property name="searchBundleManagerNamespace">
+            <Value>searchBundleManager</Value>
+        </Property>
+    </Config>
+
+    <Config name="objectFactory">
+        <Property name="dbConnectionFactory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="auditManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockAuditManager</Value>
+            </Property>
+        </Property>
+        <Property name="invoiceStatusDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockInvoiceStatusDAO</Value>
+            </Property>
+        </Property>
+        <Property name="commonManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockCommonManager</Value>
+            </Property>
+        </Property>
+        <Property name="expenseManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockExpenseManager</Value>
+            </Property>
+        </Property>
+        <Property name="fixedBillingManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockFixedBillingManager</Value>
+            </Property>
+        </Property>
+        <Property name="projectUtility">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockProjectUtility</Value>
+            </Property>
+        </Property>
+        <Property name="serviceDetail">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockServiceDetail</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <Property name="default">
+                <Value>informix</Value>
+            </Property>
+            <Property name="informix">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://10.120.32.151:1526/tt_invoice:informixserver=tc</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>topcoder</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="searchBundleManager">
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.topcoder.search.builder.strategy.factory</Value>
+        </Property>
+
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.topcoder.search.builder.validator.factory</Value>
+        </Property>
+        <Property name="searchBundles">
+
+            <Property name="INVOICE_ONLY">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="context">
+                    <Value>select invoice.invoice_id from invoice inner join payment_terms
+                            on invoice.payment_terms_id = payment_terms.payment_terms_id
+                            inner join invoice_status on invoice.invoice_status_id = invoice_status.invoice_status_id
+                            where</Value>
+                </Property>
+
+                <Property name="searchableFields">
+                    <Property name="all">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+
+                    </Property>
+                    <Property name="invoice id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="invoice_number">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="invoice_invoice_status_id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+
+                <!-- These are the alias for create the filters. It's possible (and simple) to add other aliases -->
+                <Property name="alias">
+                    <!-- This filter is for return all entries. It's a dummy filter, used with equal filter represents "1=1" condition always true -->
+                    <Property name="all">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="invoice id">
+                        <Value>invoice_id</Value>
+                    </Property>
+                    <Property name="invoice number">
+                        <Value>invoice_number</Value>
+                    </Property>
+                    <Property name="invoice_invoice_status_id">
+                        <Value>invoice.invoice_status_id</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="INVOICE_ALL">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="context">
+                    <Value>select invoice.invoice_id from invoice inner join payment_terms
+                            on invoice.payment_terms_id = payment_terms.payment_terms_id
+                            inner join invoice_status
+                            on invoice.invoice_status_id = invoice_status.invoice_status_id
+                            inner join fix_bill_entry
+                            on fix_bill_entry.invoice_id = invoice.invoice_id
+                            inner join expense_entry
+                            on expense_entry.invoice_id = invoice.invoice_id
+                            inner join time_entry
+                            on time_entry.invoice_id = invoice.invoice_id
+                            where</Value>
+                </Property>
+
+                <Property name="searchableFields">
+                    <Property name="all">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+
+                    </Property>
+                    <Property name="invoice.invoice_id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="invoice.invoice_number">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="invoice_invoice_status_id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+
+                <!-- These are the alias for create the filters. It's possible (and simple) to add other aliases -->
+                <Property name="alias">
+                    <!-- This filter is for return all entries. It's a dummy filter, used with equal filter represents "1=1" condition always true -->
+                    <Property name="all">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="invoice id">
+                        <Value>invoice_id</Value>
+                    </Property>
+                    <Property name="invoice number">
+                        <Value>invoice_number</Value>
+                    </Property>
+                    <Property name="invoice_invoice_status_id">
+                        <Value>invoice.invoice_status_id</Value>
+                    </Property>
+                </Property>
+            </Property>
+
+
+            <!-- search bundle : fixed billing entry -->
+            <Property name="fixedBillingEntries">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+
+                <!-- This is the query for get all informations about FixedBilling entries -->
+                <Property name="context">
+                    <Value>
+                        select client.client_id as client_client_id, client.name as client_name, client.company_id as client_company_id, client.creation_date as client_creation_date,
+                        client.creation_user as client_creation_user, client.modification_date as client_modification_date, client.modification_user as client_modification_user,
+
+                        project.project_id as project_project_id, project.name as project_name, project.company_id as project_company_id, project.description as project_description, project.start_date
+                        as project_start_date, project.end_date as project_end_date, project.creation_date as project_creation_date, project.creation_user as project_creation_user,
+                        project.modification_date as project_modification_date, project.modification_user as project_modification_user,
+
+                        user_account.user_account_id as user_account_user_account_id, user_account.company_id as user_account_company_id, user_account.account_status_id as
+                        user_account_account_status_id, user_account.user_name as user_account_user_name, user_account.password as user_account_password, user_account.creation_date as
+                        user_account_creation_date, user_account.creation_user as user_account_creation_user, user_account.modification_date as user_account_modification_date,
+                        user_account.modification_user as user_account_modification_user,
+
+
+                        fix_bill_entry.fix_bill_entry_id as fix_bill_entry_fix_bill_entry_id, fix_bill_entry.company_id as fix_bill_entry_company_id, fix_bill_entry.invoice_id as
+                        fix_bill_entry_invoice_id, fix_bill_entry.fix_bill_type_id as fix_bill_entry_fix_bill_type_id, fix_bill_entry.fix_bill_status_id as fix_bill_entry_fix_bill_status_id,
+                        fix_bill_entry.description as fix_bill_entry_description, fix_bill_entry.entry_date as fix_bill_entry_entry_date, fix_bill_entry.amount as fix_bill_entry_amount,
+                        fix_bill_entry.creation_date as fix_bill_entry_creation_date, fix_bill_entry.creation_user as fix_bill_entry_creation_user, fix_bill_entry.modification_date as
+                        fix_bill_entry_modification_date, fix_bill_entry.modification_user as fix_bill_entry_modification_user,
+
+
+                        fix_bill_status.fix_bill_status_id as fix_bill_status_fix_bill_status_id, fix_bill_status.description as fix_bill_status_description, fix_bill_status.creation_date as
+                        fix_bill_status_creation_date, fix_bill_status.creation_user as fix_bill_status_creation_user, fix_bill_status.modification_date as fix_bill_status_modification_date,
+                        fix_bill_status.modification_user as fix_bill_status_modification_user,
+
+
+                        fix_bill_type.fix_bill_type_id as fix_bill_type_fix_bill_type_id, fix_bill_type.description as fix_bill_type_description, fix_bill_type.active as fix_bill_type_active,
+                        fix_bill_type.creation_date as fix_bill_type_creation_date, fix_bill_type.creation_user as fix_bill_type_creation_user, fix_bill_type.modification_date as
+                        fix_bill_type_modification_date, fix_bill_type.modification_user as fix_bill_type_modification_user
+
+                        from client inner join client_project on client.client_id = client_project.client_id inner join project on project.project_id = client_project.project_id
+
+                        inner join project_fix_bill on project.project_id = project_fix_bill.project_id inner join fix_bill_entry on project_fix_bill.fix_bill_entry_id =
+                        fix_bill_entry.fix_bill_entry_id inner join fix_bill_type on fix_bill_entry.fix_bill_type_id = fix_bill_type.fix_bill_type_id inner join fix_bill_status on
+                        fix_bill_entry.fix_bill_status_id = fix_bill_status.fix_bill_status_id
+
+                        inner join user_account on fix_bill_entry.creation_user=user_account.user_name where
+                    </Value>
+                </Property>
+
+
+
+                <Property name="searchableFields">
+                    <Property name="all">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="company id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="status">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="entry date">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="username">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="project id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="client id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+
+                <!-- These are the alias for create the filters. It's possible (and simple) to add other aliases -->
+                <Property name="alias">
+                    <Property name="company id">
+                        <Value>fix_bill_entry.company_id</Value>
+                    </Property>
+                    <Property name="status">
+                        <Value>fix_bill_entry.fix_bill_status_id</Value>
+                    </Property>
+                    <Property name="entry date">
+                        <Value>fix_bill_entry.entry_date</Value>
+                    </Property>
+                    <Property name="username">
+                        <Value>user_account.user_name</Value>
+                    </Property>
+                    <Property name="project id">
+                        <Value>project.project_id</Value>
+                    </Property>
+                    <Property name="client id">
+                        <Value>client.client_id</Value>
+                    </Property>
+
+                    <!-- This filter is for return all entries. It's a dummy filter, used with equal filter represents "1=1" condition always true -->
+                    <Property name="all">
+                        <Value>1</Value>
+                    </Property>
+                </Property>
+
+            </Property><!-- end of fixedBillingEntryEntries -->
+
+
+            <!-- search bundle : expense entry -->
+            <Property name="clientsExpenseEntries">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+
+                <!-- This is the query for get all informations about Expense entries -->
+                <Property name="context">
+                    <Value>
+                        select client.client_id as client_client_id, client.name as client_name, client.company_id as client_company_id, client.creation_date as client_creation_date,
+                        client.creation_user as client_creation_user, client.modification_date as client_modification_date, client.modification_user as client_modification_user,
+
+                        project.project_id as project_project_id, project.name as project_name, project.company_id as project_company_id, project.description as project_description, project.start_date
+                        as project_start_date, project.end_date as project_end_date, project.creation_date as project_creation_date, project.creation_user as project_creation_user,
+                        project.modification_date as project_modification_date, project.modification_user as project_modification_user,
+
+                        user_account.user_account_id as user_account_user_account_id, user_account.company_id as user_account_company_id, user_account.account_status_id as
+                        user_account_account_status_id, user_account.user_name as user_account_user_name, user_account.password as user_account_password, user_account.creation_date as
+                        user_account_creation_date, user_account.creation_user as user_account_creation_user, user_account.modification_date as user_account_modification_date,
+                        user_account.modification_user as user_account_modification_user,
+
+
+                        expense_entry.expense_entry_id as expense_entry_expense_entry_id, expense_entry.company_id as expense_entry_company_id, expense_entry.invoice_id as expense_entry_invoice_id,
+                        expense_entry.expense_type_id as expense_entry_expense_type_id, expense_entry.expense_status_id as expense_entry_expense_status_id, expense_entry.description as
+                        expense_entry_description, expense_entry.entry_date as expense_entry_entry_date, expense_entry.amount as expense_entry_amount, expense_entry.billable as expense_entry_billable,
+                        expense_entry.creation_date as expense_entry_creation_date, expense_entry.creation_user as expense_entry_creation_user, expense_entry.modification_date as
+                        expense_entry_modification_date, expense_entry.modification_user as expense_entry_modification_user,
+
+
+                        expense_status.expense_status_id as expense_status_expense_status_id, expense_status.description as expense_status_description, expense_status.creation_date as
+                        expense_status_creation_date, expense_status.creation_user as expense_status_creation_user, expense_status.modification_date as expense_status_modification_date,
+                        expense_status.modification_user as expense_status_modification_user,
+
+
+                        expense_type.expense_type_id as expense_type_expense_type_id, expense_type.description as expense_type_description, expense_type.active as expense_type_active,
+                        expense_type.creation_date as expense_type_creation_date, expense_type.creation_user as expense_type_creation_user, expense_type.modification_date as
+                        expense_type_modification_date, expense_type.modification_user as expense_type_modification_user
+
+                        from client inner join client_project on client.client_id = client_project.client_id inner join project on project.project_id = client_project.project_id
+
+                        inner join project_expense on project.project_id = project_expense.project_id inner join expense_entry on project_expense.expense_entry_id = expense_entry.expense_entry_id
+                        inner join expense_type on expense_entry.expense_type_id = expense_type.expense_type_id inner join expense_status on expense_entry.expense_status_id =
+                        expense_status.expense_status_id
+
+                        inner join user_account on expense_entry.creation_user=user_account.user_name where
+
+                    </Value>
+                </Property>
+
+                <Property name="searchableFields">
+                    <Property name="all">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="company id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="status">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="entry date">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="username">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="project id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="client id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+
+                <!-- These are the alias for create the filters. It's possible (and simple) to add other aliases -->
+                <Property name="alias">
+                    <Property name="company id">
+                        <Value>expense_entry.company_id</Value>
+                    </Property>
+                    <Property name="status">
+                        <Value>expense_entry.expense_status_id</Value>
+                    </Property>
+                    <Property name="type">
+                        <Value>expense_entry.expense_type_id</Value>
+                    </Property>
+                    <Property name="entry date">
+                        <Value>expense_entry.entry_date</Value>
+                    </Property>
+                    <Property name="username">
+                        <Value>user_account.user_name</Value>
+                    </Property>
+                    <Property name="project id">
+                        <Value>project.project_id</Value>
+                    </Property>
+                    <Property name="client id">
+                        <Value>client.client_id</Value>
+                    </Property>
+
+                    <!-- This filter is for return all entries. It's a dummy filter, used with equal filter represents "1=1" condition always true -->
+                    <Property name="all">
+                        <Value>1</Value>
+                    </Property>
+                </Property>
+
+            </Property><!-- end of clientsExpenseEntries -->
+
+
+
+
+            <!-- search bundle : time entry -->
+            <Property name="timeEntries">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+
+                <!-- This is the query for get all informations about Expense entries -->
+                <Property name="context">
+                    <Value>
+                        select client.client_id as client_client_id, client.name as client_name, client.company_id as client_company_id, client.creation_date as client_creation_date,
+                        client.creation_user as client_creation_user, client.modification_date as client_modification_date, client.modification_user as client_modification_user,
+
+                        project.project_id as project_project_id, project.name as project_name, project.company_id as project_company_id, project.description as project_description, project.start_date
+                        as project_start_date, project.end_date as project_end_date, project.creation_date as project_creation_date, project.creation_user as project_creation_user,
+                        project.modification_date as project_modification_date, project.modification_user as project_modification_user,
+
+                        user_account.user_account_id as user_account_user_account_id, user_account.company_id as user_account_company_id, user_account.account_status_id as
+                        user_account_account_status_id, user_account.user_name as user_account_user_name, user_account.password as user_account_password, user_account.creation_date as
+                        user_account_creation_date, user_account.creation_user as user_account_creation_user, user_account.modification_date as user_account_modification_date,
+                        user_account.modification_user as user_account_modification_user,
+
+
+                        time_entry.time_entry_id as time_entry_time_entry_id, time_entry.company_id as time_entry_company_id, time_entry.invoice_id as time_entry_invoice_id, time_entry.time_status_id
+                        as time_entry_time_status_id, time_entry.task_type_id as time_entry_task_type_id, time_entry.description as time_entry_description, time_entry.entry_date as
+                        time_entry_entry_date, time_entry.hours as time_entry_hours, time_entry.billable as time_entry_billable, time_entry.creation_date as time_entry_creation_date,
+                        time_entry.creation_user as time_entry_creation_user, time_entry.modification_date as time_entry_modification_date, time_entry.modification_user as
+                        time_entry_modification_user,
+
+
+                        time_status.time_status_id as time_status_time_status_id, time_status.description as time_status_description, time_status.creation_date as time_status_creation_date,
+                        time_status.creation_user as time_status_creation_user, time_status.modification_date as time_status_modification_date, time_status.modification_user as
+                        time_status_modification_user,
+
+
+                        task_type.task_type_id as task_type_task_type_id, task_type.description as task_type_description, task_type.active as task_type_active, task_type.creation_date as
+                        task_type_creation_date, task_type.creation_user as task_type_creation_user, task_type.modification_date as task_type_modification_date, task_type.modification_user as
+                        task_type_modification_user,
+
+
+                        project_worker.project_id as project_worker_project_id, project_worker.user_account_id as project_worker_user_account_id, project_worker.start_date as
+                        project_worker_start_date, project_worker.end_date as project_worker_end_date, project_worker.pay_rate as project_worker_pay_rate, project_worker.creation_date as
+                        project_worker_creation_date, project_worker.creation_user as project_worker_creation_user, project_worker.modification_date as project_worker_modification_date,
+                        project_worker.modification_user as project_worker_modification_user
+
+                        from client inner join client_project on client.client_id = client_project.client_id inner join project on project.project_id = client_project.project_id
+
+                        inner join project_time on project.project_id = project_time.project_id inner join time_entry on project_time.time_entry_id = time_entry.time_entry_id inner join task_type on
+                        time_entry.task_type_id = task_type.task_type_id inner join time_status on time_entry.time_status_id = time_status.time_status_id
+
+                        inner join user_account on time_entry.creation_user = user_account.user_name inner join project_worker on project_worker.user_account_id = user_account.user_account_id where
+
+                    </Value>
+                </Property>
+
+
+
+                <Property name="searchableFields">
+                    <Property name="all">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="company id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="status">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="entry date">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="username">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="project id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                    <Property name="client id">
+                        <Property name="class">
+                            <Value>validator</Value>
+                        </Property>
+                        <Property name="identifier">
+                            <Value>default</Value>
+                        </Property>
+                    </Property>
+                </Property>
+
+                <!-- These are the alias for create the filters. It's possible (and simple) to add other aliases -->
+                <Property name="alias">
+                    <Property name="company id">
+                        <Value>time_entry.company_id</Value>
+                    </Property>
+                    <Property name="status">
+                        <Value>time_entry.time_status_id</Value>
+                    </Property>
+                    <Property name="type">
+                        <Value>time_entry.task_type_id</Value>
+                    </Property>
+                    <Property name="entry date">
+                        <Value>time_entry.entry_date</Value>
+                    </Property>
+                    <Property name="username">
+                        <Value>user_account.user_name</Value>
+                    </Property>
+                    <Property name="project id">
+                        <Value>project.project_id</Value>
+                    </Property>
+                    <Property name="client id">
+                        <Value>client.client_id</Value>
+                    </Property>
+
+                    <!-- This filter is for return all entries. It's a dummy filter, used with equal filter represents "1=1" condition always true -->
+                    <Property name="all">
+                        <Value>1</Value>
+                    </Property>
+                </Property>
+
+            </Property><!-- end of timeEntries -->
+        </Property>
+
+    </Config>
+
+    <!-- strategy factory and validator factor -->
+    <Config name="com.topcoder.search.builder.strategy.factory">
+        <Property name="dbStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.search.builder.validator.factory">
+        <Property name="validator:default">
+            <Property name="type">
+                <Value>com.topcoder.util.datavalidator.LongValidator</Value>
+            </Property>
+        </Property>
+        <Property name="validator:default2">
+            <Property name="type">
+                <Value>com.topcoder.util.datavalidator.StringValidator</Value>
+            </Property>
+        </Property>
+    </Config><!-- end of stratey and validator factories -->
+
+
+
+    <!-- DBSearchStrategy -->
+    <Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
+        <!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
+        <Property name="connectionFactory">
+            <!-- The namespace of the ConnectionFactory -->
+            <Property name="name">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+        </Property>
+
+        <Property name="searchFragmentFactoryNamespace">
+            <Value>com.topcoder.search.builder.database.factory</Value>
+        </Property>
+
+        <Property name="searchFragmentBuilders">
+            <Property name="first">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.AndFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="second">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.OrFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="third">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="fourth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NotFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="fifth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="sixth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.InFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="eighth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NullFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="ninth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="tenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="eleventh">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="twelvth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="thirteenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.search.builder.database.factory"></Config>
+</CMConfig>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+
+    <Config name="com.topcoder.timetracker.invoice.informix.InformixInvoiceStatusDAO">
+        <Property name="objectFactoryNamespace">
+            <Value>objectFactory</Value>
+        </Property>
+        <Property name="dbConnectionFactoryKey">
+            <Value>dbConnectionFactory</Value>
+        </Property>
+    </Config>
+
+    <Config name="objectFactory">
+        <Property name="dbConnectionFactory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="auditManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockAuditManager</Value>
+            </Property>
+        </Property>
+        <Property name="commonManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockCommonManager</Value>
+            </Property>
+        </Property>
+        <Property name="expenseManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockExpenseManager</Value>
+            </Property>
+        </Property>
+        <Property name="fixedBillingManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockFixedBillingManager</Value>
+            </Property>
+        </Property>
+        <Property name="projectUtility">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockProjectUtility</Value>
+            </Property>
+        </Property>
+        <Property name="serviceDetail">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockServiceDetail</Value>
+            </Property>
+        </Property>
+        <Property name="invoiceDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.informix.InformixInvoiceDAO</Value>
+            </Property>
+        </Property>
+        <Property name="invoiceStatusDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.informix.InformixInvoiceStatusDAO</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <Property name="default">
+                <Value>informix</Value>
+            </Property>
+            <Property name="informix">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://10.120.32.151:1526/tt_invoice:informixserver=tc</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>topcoder</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+
+
+<Config name="InformixInvoiceStatusDAO.fail1">
+	<!--Property name="objectFactoryNamespace">
+		<Value>objectFactory</Value>
+	</Property-->
+	<Property name="dbConnectionFactoryKey">
+		<Value>dbConnectionFactory</Value>
+	</Property>
+</Config>
+<Config name="InformixInvoiceStatusDAO.fail2">
+	<Property name="objectFactoryNamespace">
+		<Value> </Value>
+	</Property>
+	<Property name="dbConnectionFactoryKey">
+		<Value>dbConnectionFactory</Value>
+	</Property>
+</Config>
+<Config name="InformixInvoiceStatusDAO.fail3">
+	<Property name="objectFactoryNamespace">
+		<Value>invalid</Value>
+	</Property>
+	<Property name="dbConnectionFactoryKey">
+		<Value>dbConnectionFactory</Value>
+	</Property>
+</Config>
+<Config name="InformixInvoiceStatusDAO.fail4">
+	<Property name="objectFactoryNamespace">
+		<Value>objectFactory</Value>
+	</Property>
+	<!--Property name="dbConnectionFactoryKey">
+		<Value>dbConnectionFactory</Value>
+	</Property-->
+</Config>
+<Config name="InformixInvoiceStatusDAO.fail5">
+	<Property name="objectFactoryNamespace">
+		<Value>objectFactory</Value>
+	</Property>
+	<Property name="dbConnectionFactoryKey">
+		<Value> </Value>
+	</Property>
+</Config>
+
+<Config name="InformixInvoiceStatusDAO.fail6">
+	<Property name="objectFactoryNamespace">
+		<Value>objectFactory</Value>
+	</Property>
+	<Property name="dbConnectionFactoryKey">
+		<Value>invalid</Value>
+	</Property>
+</Config>
+<Config name="InformixInvoiceStatusDAO.fail7">
+	<Property name="objectFactoryNamespace">
+		<Value>objectFactory.fail</Value>
+	</Property>
+	<Property name="dbConnectionFactoryKey">
+		<Value>dbConnectionFactory</Value>
+	</Property>
+</Config>
+
+<Config name="objectFactory.fail">
+        <Property name="dbConnectionFactory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.invalid</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.invalid</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="auditManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockAuditManager</Value>
+            </Property>
+        </Property>
+        <Property name="commonManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockCommonManager</Value>
+            </Property>
+        </Property>
+        <Property name="expenseManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockExpenseManager</Value>
+            </Property>
+        </Property>
+        <Property name="fixedBillingManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockFixedBillingManager</Value>
+            </Property>
+        </Property>
+        <Property name="projectUtility">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockProjectUtility</Value>
+            </Property>
+        </Property>
+        <Property name="serviceDetail">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.MockServiceDetail</Value>
+            </Property>
+        </Property>
+        <Property name="invoiceDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.informix.InformixInvoiceDAO</Value>
+            </Property>
+        </Property>
+        <Property name="invoiceStatusDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.informix.InformixInvoiceStatusDAO</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>
