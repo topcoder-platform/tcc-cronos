@@ -12,7 +12,7 @@ import com.topcoder.timetracker.rejectreason.ejb.RejectReasonDAOConfigurationExc
 import com.topcoder.timetracker.rejectreason.ejb.RejectReasonDAOLocalHomeTests;
 import com.topcoder.timetracker.rejectreason.ejb.RejectReasonManagerTests;
 import com.topcoder.timetracker.rejectreason.ejb.RejectReasonSessionBeanTests;
-import com.topcoder.timetracker.rejectreason.informix.AuditHelperTests;
+import com.topcoder.timetracker.rejectreason.informix.DAOHeperTests;
 import com.topcoder.timetracker.rejectreason.informix.DbRejectEmailDAOAccuracyTests;
 import com.topcoder.timetracker.rejectreason.informix.DbRejectEmailDAOFailureTests;
 import com.topcoder.timetracker.rejectreason.informix.DbRejectReasonDAOAccuracyTests;
@@ -64,7 +64,7 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(RejectReasonSessionBeanTests.class);
 
         // com.topcoder.timetracker.rejectreason.informix package
-        suite.addTestSuite(AuditHelperTests.class);
+        suite.addTestSuite(DAOHeperTests.class);
         suite.addTestSuite(DbRejectEmailDAOAccuracyTests.class);
         suite.addTestSuite(DbRejectEmailDAOFailureTests.class);
         suite.addTestSuite(DbRejectReasonDAOAccuracyTests.class);
