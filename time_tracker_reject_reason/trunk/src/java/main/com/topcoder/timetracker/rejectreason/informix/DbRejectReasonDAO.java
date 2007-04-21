@@ -766,6 +766,9 @@ public class DbRejectReasonDAO implements RejectReasonDAO {
         rejectReason.setModificationDate(modificationDate);
         rejectReason.setModificationUser(modificationUser);
 
+        // Retrieved reject reason is not changed
+        rejectReason.setChanged(false);
+
         return rejectReason;
     }
 }

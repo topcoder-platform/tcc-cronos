@@ -3,12 +3,9 @@
  */
 package com.topcoder.timetracker.rejectreason.ejb;
 
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-
-import com.topcoder.timetracker.audit.AuditManager;
+import com.topcoder.timetracker.rejectreason.RejectEmailDAO;
+import com.topcoder.timetracker.rejectreason.RejectReasonDAO;
 import com.topcoder.timetracker.rejectreason.RejectReasonDAOException;
-import com.topcoder.timetracker.rejectreason.informix.DbRejectEmailDAO;
-import com.topcoder.timetracker.rejectreason.informix.DbRejectReasonDAO;
 
 import com.topcoder.util.errorhandling.BaseException;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
@@ -30,23 +27,17 @@ import javax.naming.NamingException;
  * @version 3.2
  */
 final class DAOFactory {
-    /** The JNDI name for Connection Factory key used by Object Factory. */
-    private static final String CONNECTION_FACTORY_KEY_NAME = "db_connection_factory_key";
+    /** The JNDI name for RejectEmailDAO key used by Object Factory. */
+    private static final String REJECT_EMAIL_DAO = "reject_email_dao";
 
-    /** The JNDI name for connection name. */
-    private static final String CONNECTION_NAME_NAME = "connection_name";
+    /** The JNDI name for RejectReasonDAO key used by Object Factory. */
+    private static final String REJECT_REASON_DAO = "reject_reason_dao";
 
     /** The JNDI name for environment variables. */
     private static final String ENV_JNDI_NAME = "java:comp/env";
 
     /** The JNDI name for object factory namespace. */
     private static final String OF_NAMESPACE_JNDI_NAME = "of_namespace";
-
-    /** The JNDI name for Object Factory key of AuditManager. */
-    private static final String AUDIT_MANAGER_KEY_JNDI_NAME = "audit_manager_key";
-
-    /** The JNDI name for id generator name. */
-    private static final String ID_GENERATOR_NAME_JNDI_NAME = "id_generator_name";
 
     /**
      * Private constructor to avoid instantiation.
@@ -109,10 +100,6 @@ final class DAOFactory {
             // Lookup environment variables from JNDI initial context.
             Context context = (Context) lookupObject(initialContext, ENV_JNDI_NAME, Context.class);
 
-            // Lookup Connection Factory key and connection name from JNDI initial context.
-            String factoryKey = lookupObject(context, CONNECTION_FACTORY_KEY_NAME, String.class).toString();
-            String connName = lookupObject(context, CONNECTION_NAME_NAME, String.class).toString();
-
             // Get namespace of Object Factory, can't be null or empty
             String ofNamespace = lookupObject(context, OF_NAMESPACE_JNDI_NAME, String.class).toString();
 
@@ -120,45 +107,26 @@ final class DAOFactory {
                 throw new BaseException("The environment variable '" + OF_NAMESPACE_JNDI_NAME + "' can't be empty.");
             }
 
-            // Get Object Factory key for AuditManager, can't be null or empty
-            String auditManagerKey = lookupObject(context, AUDIT_MANAGER_KEY_JNDI_NAME, String.class).toString();
-
-            if (auditManagerKey.trim().length() == 0) {
-                throw new BaseException("The environment variable '" + AUDIT_MANAGER_KEY_JNDI_NAME
-                    + "' can't be empty.");
-            }
-
-            // Get id generator name, can't be null or empty
-            String idGeneratorName = lookupObject(context, ID_GENERATOR_NAME_JNDI_NAME, String.class).toString();
-
-            if (idGeneratorName.trim().length() == 0) {
-                throw new BaseException("The environment variable '" + ID_GENERATOR_NAME_JNDI_NAME
-                    + "' can't be empty.");
-            }
-
             // Create a new Connection Factory and AuditManager instance through Object Factory
             ObjectFactory factory = new ObjectFactory(new ConfigManagerSpecificationFactory(ofNamespace));
-            Object object = factory.createObject(factoryKey);
-
-            if (!(object instanceof DBConnectionFactory)) {
-                throw new BaseException("The type of connection factory configured should be DBConnectionFactory.");
-            }
-
-            DBConnectionFactory connectionFactory = (DBConnectionFactory) object;
-
-            object = factory.createObject(auditManagerKey);
-
-            if (!(object instanceof AuditManager)) {
-                throw new BaseException("The AuditManager configured should be an instance of AuditManager.");
-            }
-
-            AuditManager auditManager = (AuditManager) object;
 
             // Create a new DAO instance and return
             if (emailDAO) {
-                return new DbRejectEmailDAO(connectionFactory, connName, auditManager, idGeneratorName);
+                Object object = factory.createObject(REJECT_EMAIL_DAO);
+
+                if (!(object instanceof RejectEmailDAO)) {
+                    throw new BaseException("The DAO configured should be an instance of RejectEmailDAO.");
+                }
+
+                return object;
             } else {
-                return new DbRejectReasonDAO(connectionFactory, connName, auditManager, idGeneratorName);
+                Object object = factory.createObject(REJECT_REASON_DAO);
+
+                if (!(object instanceof RejectReasonDAO)) {
+                    throw new BaseException("The DAO configured should be an instance of RejectReasonDAO.");
+                }
+
+                return object;
             }
         } catch (InvalidClassSpecificationException e) {
             throw new BaseException("Failed to create AuditManager through Object Factory.", e);

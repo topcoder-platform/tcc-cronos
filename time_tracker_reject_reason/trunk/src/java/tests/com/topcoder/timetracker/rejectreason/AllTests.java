@@ -7,9 +7,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.topcoder.timetracker.rejectreason.accuracytests.AccuracyTests;
-import com.topcoder.timetracker.rejectreason.failuretests.FailureTests;
-import com.topcoder.timetracker.rejectreason.stresstests.StressTests;
 
 /**
  * <p>
@@ -27,16 +24,8 @@ public class AllTests extends TestCase {
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        // stress tests
-        suite.addTest(StressTests.suite());
 
-        // accuracy tests
-        suite.addTest(AccuracyTests.suite());
-
-        // failure tests
-        suite.addTest(FailureTests.suite());
-
-        // unit tests
+        //unit tests
         suite.addTest(UnitTests.suite());
 
         return suite;

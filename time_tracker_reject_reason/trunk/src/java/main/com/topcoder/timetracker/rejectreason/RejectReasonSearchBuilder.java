@@ -10,7 +10,7 @@ import com.topcoder.search.builder.filter.LikeFilter;
 import com.topcoder.search.builder.filter.NotFilter;
 import com.topcoder.search.builder.filter.OrFilter;
 
-import java.util.Date;
+import java.sql.Date;
 
 import java.util.Arrays;
 

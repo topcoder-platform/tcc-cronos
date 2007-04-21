@@ -128,10 +128,6 @@ public class TestHelper extends TestCase {
         // Bind necessary environment variables
         context.rebind("java:comp/env", context);
         context.rebind("of_namespace", "object.factory");
-        context.rebind("audit_manager_key", "AuditManager");
-        context.rebind("id_generator_name", ID_GENERATOR_NAME);
-        context.rebind("db_connection_factory_key", "connection_factory");
-        context.rebind("connection_name", "reject_reason");
         context.rebind("javax.transaction.UserTransaction", new MockTransaction());
     }
 }

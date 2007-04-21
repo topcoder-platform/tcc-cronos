@@ -12,11 +12,9 @@ import com.topcoder.timetracker.audit.AuditHeader;
 import com.topcoder.timetracker.audit.AuditType;
 import com.topcoder.timetracker.rejectreason.RejectEmail;
 import com.topcoder.timetracker.rejectreason.RejectEmailSearchBuilder;
-import com.topcoder.timetracker.rejectreason.RejectReasonSearchBuilder;
 import com.topcoder.timetracker.rejectreason.TestHelper;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -677,8 +675,9 @@ public class DbRejectEmailDAOAccuracyTests extends TestHelper {
             email2 = dao.createRejectEmail(email2, "user", false);
 
             // Search RejectEmail whose creation date within certain datetime range
-            Filter filter = new RejectReasonSearchBuilder().createdWithinDateRangeFilter(new Timestamp(System
-                    .currentTimeMillis() - 10000), new Timestamp(System.currentTimeMillis() + 10000));
+            Date now = new Date(new java.util.Date().getTime());
+            Filter filter = new RejectEmailSearchBuilder().createdWithinDateRangeFilter(new Date(now.getTime()
+                - 1000000), new Date(now.getTime() + 1000000));
             RejectEmail[] emails = dao.searchRejectEmails(filter);
             assertEquals("The number of RejectEmails returned is not correct.", 2, emails.length);
         } finally {
@@ -708,8 +707,9 @@ public class DbRejectEmailDAOAccuracyTests extends TestHelper {
             email2 = dao.createRejectEmail(email2, "user", false);
 
             // Search RejectEmail whose modification date within certain datetime range
-            Filter filter = new RejectReasonSearchBuilder().createdWithinDateRangeFilter(new Timestamp(System
-                    .currentTimeMillis() - 10000), new Timestamp(System.currentTimeMillis() + 10000));
+            Date now = new Date(new java.util.Date().getTime());
+            Filter filter = new RejectEmailSearchBuilder().modifiedWithinDateRangeFilter(new Date(now.getTime()
+                - 1000000), new Date(now.getTime() + 1000000));
             RejectEmail[] emails = dao.searchRejectEmails(filter);
             assertEquals("The number of RejectEmails returned is not correct.", 2, emails.length);
         } finally {

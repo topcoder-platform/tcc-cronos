@@ -747,6 +747,9 @@ public class DbRejectEmailDAO implements RejectEmailDAO {
         rejectEmail.setModificationDate(modificationDate);
         rejectEmail.setModificationUser(modificationUser);
 
+        // Retrieved reject email is not changed
+        rejectEmail.setChanged(false);
+
         return rejectEmail;
     }
 }
