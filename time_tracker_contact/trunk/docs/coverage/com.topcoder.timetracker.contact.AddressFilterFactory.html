@@ -350,443 +350,457 @@
 <tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param from possible null start date of the range</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param to possible null end date of the range</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * If the from and to are both not null, then the from date must not exceed the end date with precision of second.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;171</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;172</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param from possible null start date of the range</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;173</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if both to and from are null</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param to possible null end date of the range</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;174</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCreatedInFilter(Date from, Date to) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;176</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateDatesRange(from, to, <span class="string">"filtering creation_date"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;177</td>  <td class="nbHitsCovered">&nbsp;20</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> createDatesFilter(from, to, <span class="keyword">true</span>);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if both to and from are null;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;176</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *         Or they are both not null, but the from exceeds to.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;177</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;178</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;179</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;180</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCreatedInFilter(Date from, Date to) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;179</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateDatesRange(from, to, <span class="string">"filtering creation_date"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;180</td>  <td class="nbHitsCovered">&nbsp;20</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> createDatesFilter(from, to, <span class="keyword">true</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;182</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Called by &lt;code&gt;createCreatedInFilter()&lt;/code&gt; and &lt;code&gt;createModifiedInFilter()&lt;/code&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * to create filter based on the given date range.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;184</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;185</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Called by &lt;code&gt;createCreatedInFilter()&lt;/code&gt; and &lt;code&gt;createModifiedInFilter()&lt;/code&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param from possible null start date of the range</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * to create filter based on the given date range.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param to possible null end date of the range</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;188</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param forCreation Indicates whether for creation or for modification</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;189</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;192</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> Filter createDatesFilter(Date from, Date to, <span class="keyword">boolean</span> forCreation) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;193</td>  <td class="nbHitsCovered">&nbsp;40</td>  <td class="src"><pre class="src">&nbsp;        String alias = forCreation ? CREATION_DATE : MODIFICATION_DATE;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;194</td>  <td class="nbHitsCovered">&nbsp;40</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (from == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;14</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> LessThanOrEqualToFilter(alias, <span class="keyword">new</span> Timestamp(to.getTime()));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;26</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> <span class="keyword">if</span> (to == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> GreaterThanOrEqualToFilter(alias, <span class="keyword">new</span> Timestamp(from.getTime()));</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;198</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;199</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> BetweenFilter(alias, <span class="keyword">new</span> Timestamp(to.getTime()), <span class="keyword">new</span> Timestamp(from.getTime()));</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;201</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;202</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;204</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses modified within a given inclusive date range (may be open-ended).</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;205</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;206</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;207</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;208</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *  &lt;strong&gt;Notes:&lt;/strong&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;209</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *   &lt;ol&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;210</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *    &lt;li&gt;If to is null, &lt;code&gt;GreaterThanOrEqualToFilter&lt;/code&gt; with from as comparator will be returned&lt;/li&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;211</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *    &lt;li&gt;Else if from is null, &lt;code&gt;LessThanOrEqualToFilter&lt;/code&gt; with to as comparator will be returned&lt;/li&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;212</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *    &lt;li&gt;Else &lt;code&gt;BetweenFilter&lt;/code&gt; will be returned&lt;/li&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;213</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *   &lt;/ol&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;214</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;215</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;216</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param from possible null start date of the range</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;217</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param to possible null end date of the range</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param forCreation Indicates whether for creation or for modification</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;192</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;193</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;194</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> Filter createDatesFilter(Date from, Date to, <span class="keyword">boolean</span> forCreation) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;40</td>  <td class="src"><pre class="src">&nbsp;        String alias = forCreation ? CREATION_DATE : MODIFICATION_DATE;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;40</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (from == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;14</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> LessThanOrEqualToFilter(alias, <span class="keyword">new</span> Timestamp(to.getTime()));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;26</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> <span class="keyword">if</span> (to == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;199</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> GreaterThanOrEqualToFilter(alias, <span class="keyword">new</span> Timestamp(from.getTime()));</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;201</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> BetweenFilter(alias, <span class="keyword">new</span> Timestamp(to.getTime()), <span class="keyword">new</span> Timestamp(from.getTime()));</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;202</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;204</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;205</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;206</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses modified within a given inclusive date range (may be open-ended).</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;207</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;208</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;209</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;210</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *  &lt;strong&gt;Notes:&lt;/strong&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;211</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *   &lt;ol&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;212</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *    &lt;li&gt;If to is null, &lt;code&gt;GreaterThanOrEqualToFilter&lt;/code&gt; with from as comparator will be returned&lt;/li&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;213</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *    &lt;li&gt;Else if from is null, &lt;code&gt;LessThanOrEqualToFilter&lt;/code&gt; with to as comparator will be returned&lt;/li&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;214</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *    &lt;li&gt;Else &lt;code&gt;BetweenFilter&lt;/code&gt; will be returned&lt;/li&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;215</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *   &lt;/ol&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;216</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;217</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;218</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;219</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if both to and from are null</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * If the from and to are both not null, then the from date must not exceed the end date with precision of second.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;220</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;221</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createModifiedInFilter(Date from, Date to) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;222</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateDatesRange(from, to, <span class="string">"filtering modification_date"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;223</td>  <td class="nbHitsCovered">&nbsp;20</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> createDatesFilter(from, to, <span class="keyword">false</span>);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;222</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param from possible null start date of the range</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;223</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param to possible null end date of the range</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;224</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;225</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if both to and from are null;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;226</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *         Or they are both not null, but the from exceeds to.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;227</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;228</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses created by a given user name.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;229</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;230</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createModifiedInFilter(Date from, Date to) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;229</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateDatesRange(from, to, <span class="string">"filtering modification_date"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;230</td>  <td class="nbHitsCovered">&nbsp;20</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> createDatesFilter(from, to, <span class="keyword">false</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;231</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param userName non null, non empty(trim'd) name of the user</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;232</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;233</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the name is null/empty(trim'd)</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;234</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;235</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCreatedByFilter(String userName) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;236</td>  <td class="nbHitsCovered">&nbsp;22</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(userName, <span class="string">"CreationUser name to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;237</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(CREATION_USER, userName);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses created by a given user name.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;236</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;237</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;238</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;240</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;241</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;242</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses modified by given user name.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;243</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;244</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;245</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param userName non null, non empty(trim'd) name of the user</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;246</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;247</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;240</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the name is null/empty(trim'd)</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;241</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;242</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCreatedByFilter(String userName) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;243</td>  <td class="nbHitsCovered">&nbsp;22</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(userName, <span class="string">"CreationUser name to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;244</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(CREATION_USER, userName);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;245</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;246</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;247</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;248</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;249</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createModifiedByFilter(String userName) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;250</td>  <td class="nbHitsCovered">&nbsp;19</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(userName, <span class="string">"ModificationUser name to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;251</td>  <td class="nbHitsCovered">&nbsp;15</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(MODIFICATION_USER, userName);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses modified by given user name.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;250</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;251</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;252</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param userName non null, non empty(trim'd) name of the user</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;253</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;254</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the name is null/empty(trim'd)</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;255</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;256</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given city.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;257</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;258</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createModifiedByFilter(String userName) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;257</td>  <td class="nbHitsCovered">&nbsp;19</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(userName, <span class="string">"ModificationUser name to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;258</td>  <td class="nbHitsCovered">&nbsp;15</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(MODIFICATION_USER, userName);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;259</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param city non null, non empty(trim'd) city of the user</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;260</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;261</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the city is null/empty(trim'd)</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;262</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;263</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCityFilter(String city) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;264</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(city, <span class="string">"City name to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;265</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(CITY, city);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given city.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;264</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;265</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;266</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param city non null, non empty(trim'd) city of the user</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;267</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;268</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the city is null/empty(trim'd)</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;269</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;270</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addressed with a given ID of state.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;271</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;272</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCityFilter(String city) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;271</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(city, <span class="string">"City name to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;272</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(CITY, city);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;273</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param stateId positive id of state</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;274</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;275</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the state id is non-positive</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;276</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;277</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createStateIDFilter(<span class="keyword">long</span> stateId) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;278</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validatePositiveWithIAE(stateId, <span class="string">"State id to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;279</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(STATE_NAME_ID, <span class="keyword">new</span> Long(stateId));</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addressed with a given ID of state.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;278</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;279</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;280</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param stateId positive id of state</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;282</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the state id is non-positive</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;283</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;284</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given zip code.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;285</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;286</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createStateIDFilter(<span class="keyword">long</span> stateId) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;285</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validatePositiveWithIAE(stateId, <span class="string">"State id to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;286</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(STATE_NAME_ID, <span class="keyword">new</span> Long(stateId));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;287</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param zipCode non null, non empty(trim'd) zip code</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;288</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;289</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @exception IllegalArgumentException if the zipCode is null/empty(trim'd)</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;290</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;291</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createZipCodeFilter(String zipCode) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(zipCode, <span class="string">"Zip code to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;293</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> LikeFilter(ZIP_CODE, LikeFilter.CONTAIN_TAGS + zipCode);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given zip code.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;292</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;293</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;294</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param zipCode non null, non empty(trim'd) zip code</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;295</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;296</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @exception IllegalArgumentException if the zipCode is null/empty(trim'd)</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;297</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;298</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given ID of country.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;299</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;300</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createZipCodeFilter(String zipCode) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;299</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(zipCode, <span class="string">"Zip code to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;300</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> LikeFilter(ZIP_CODE, LikeFilter.CONTAIN_TAGS + zipCode);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;301</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param countryId positive id of the country</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;302</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;303</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the country id is non-positive</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;304</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;305</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCountryIDFilter(<span class="keyword">long</span> countryId) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;306</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validatePositiveWithIAE(countryId, <span class="string">"Country id to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;307</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(COUNTRY_NAME_ID, <span class="keyword">new</span> Long(countryId));</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given ID of country.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;306</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;307</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;308</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param countryId positive id of the country</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;309</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;310</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the country id is non-positive</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;311</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;312</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given type.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;313</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;314</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCountryIDFilter(<span class="keyword">long</span> countryId) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;313</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validatePositiveWithIAE(countryId, <span class="string">"Country id to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;314</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(COUNTRY_NAME_ID, <span class="keyword">new</span> Long(countryId));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;315</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param type the non null address type</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;316</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;317</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the address type is null</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;318</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;319</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createTypeFilter(AddressType type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;320</td>  <td class="nbHitsCovered">&nbsp;14</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(type, <span class="string">"Address type to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;321</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(ADDRESS_TYPE_ID, <span class="keyword">new</span> Long(type.getId()));</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given type.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;320</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;321</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;322</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param type the non null address type</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;323</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;324</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the address type is null</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;325</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;326</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given entity id and address type.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;327</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;328</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createTypeFilter(AddressType type) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;327</td>  <td class="nbHitsCovered">&nbsp;14</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(type, <span class="string">"Address type to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;328</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(ADDRESS_TYPE_ID, <span class="keyword">new</span> Long(type.getId()));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;329</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param entityId the positive entity id</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;330</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param type non null type</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;331</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;332</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the id is non-positive or type is null</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;333</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;334</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createEntityIDFilter(<span class="keyword">long</span> entityId, AddressType type) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;335</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        Helper.validatePositiveWithIAE(entityId, <span class="string">"Entity id to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;336</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> AndFilter(createTypeFilter(type), <span class="keyword">new</span> EqualToFilter(ENTITY_ID, <span class="keyword">new</span> Long(entityId)));</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;337</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;338</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;339</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;340</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;341</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given name of country.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;342</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;333</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given entity id and address type.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;334</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;343</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;335</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;336</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param entityId the positive entity id</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;337</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param type non null type</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;338</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;339</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the id is non-positive or type is null</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;340</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;341</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createEntityIDFilter(<span class="keyword">long</span> entityId, AddressType type) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;342</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        Helper.validatePositiveWithIAE(entityId, <span class="string">"Entity id to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;343</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> AndFilter(createTypeFilter(type), <span class="keyword">new</span> EqualToFilter(ENTITY_ID, <span class="keyword">new</span> Long(entityId)));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;344</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param countryName non null. non empty name of country</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;345</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;346</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the countryName is null or empty(trim'd)</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;347</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;348</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCountryNameFilter(String countryName) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;349</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(countryName, <span class="string">"Country name to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;350</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(COUNTRY_NAME, countryName);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Create filter which will return all addresses with a given name of country.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;349</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;350</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;351</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param countryName non null. non empty name of country</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;352</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;353</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;354</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create filter which will return all addressed with a given name of state.&lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;355</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;356</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param stateName non null, non empty(trim'd) name of state</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;357</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;353</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the countryName is null or empty(trim'd)</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;354</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;355</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createCountryNameFilter(String countryName) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;356</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(countryName, <span class="string">"Country name to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;357</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(COUNTRY_NAME, countryName);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;358</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the stateName is null or empty(trim'd)</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;359</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;360</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createStateNameFilter(String stateName) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;361</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(stateName, <span class="string">"State name to compare"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;362</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(STATE_NAME, stateName);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;361</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create filter which will return all addressed with a given name of state.&lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;362</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;363</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param stateName non null, non empty(trim'd) name of state</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;364</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;365</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the stateName is null or empty(trim'd)</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;366</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create AND filter of given filters.&lt;/p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;367</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;368</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param first non null first original filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;369</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param second non null second original filter</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter createStateNameFilter(String stateName) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;368</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateStringWithIAE(stateName, <span class="string">"State name to compare"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;369</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> EqualToFilter(STATE_NAME, stateName);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;370</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null and filter of given filters</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;371</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if any filter is null</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;372</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;373</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter andFilter(Filter first, Filter second) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;374</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(first, <span class="string">"First Filter to create AndFilter"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;375</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(second, <span class="string">"Second Filter to create AndFilter"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;376</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> AndFilter(first, second);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;378</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;379</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;380</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create OR filter of given filters.&lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;381</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create AND filter of given filters.&lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;374</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;382</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;375</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param first non null first original filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;383</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;376</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param second non null second original filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;384</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null or filter of given filters</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;385</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null and filter of given filters</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;378</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if any filter is null</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;386</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;379</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;387</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter orFilter(Filter first, Filter second) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;388</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(first, <span class="string">"First Filter to create OrFilter"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;389</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(second, <span class="string">"Second Filter to create OrFilter"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;390</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> OrFilter(first, second);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;391</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;380</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter andFilter(Filter first, Filter second) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;381</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(first, <span class="string">"First Filter to create AndFilter"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;382</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(second, <span class="string">"Second Filter to create AndFilter"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;383</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> AndFilter(first, second);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;384</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;392</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;385</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;393</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;386</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;394</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create NOT filter of given filter.&lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;395</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;387</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create OR filter of given filters.&lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;388</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;396</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param filter non null original filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;397</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter which is the not filter of the original one</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;398</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the filter is null</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;399</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;389</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param first non null first original filter</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;390</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param second non null second original filter</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;391</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null or filter of given filters</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;392</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if any filter is null</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;393</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;400</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter notFilter(Filter filter) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;401</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(filter, <span class="string">"Filter to create NotFilter"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;402</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> NotFilter(filter);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;403</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;394</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter orFilter(Filter first, Filter second) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;395</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(first, <span class="string">"First Filter to create OrFilter"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;396</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(second, <span class="string">"Second Filter to create OrFilter"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;397</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> OrFilter(first, second);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;398</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;399</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;400</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;401</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;Create NOT filter of given filter.&lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;402</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;403</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param filter non null original filter</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;404</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return non null filter which is the not filter of the original one</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;405</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException if the filter is null</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;406</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;407</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Filter notFilter(Filter filter) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        Helper.validateNotNullWithIAE(filter, <span class="string">"Filter to create NotFilter"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;409</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> NotFilter(filter);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;410</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;411</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-4-17 ÏÂÎç3:27.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-4-22 ÉÏÎç4:18.</div>
 </body>
 </html>
