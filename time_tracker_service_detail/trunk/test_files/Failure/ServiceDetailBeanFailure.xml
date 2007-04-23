@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="com.topcoder.timetracker.invoice.servicedetail.ServiceDetailBean">
+        <Property name="DAOName">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.servicedetail.dao.impl.ServiceDetailDAOImpl</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="TypeError">
+        <Property name="DAOName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

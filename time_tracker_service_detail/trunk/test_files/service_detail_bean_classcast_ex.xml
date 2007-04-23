@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="objectFactoryNamespace_test">
+        <Property name="dao_key">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

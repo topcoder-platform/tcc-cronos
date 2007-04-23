@@ -1,0 +1,8 @@
+-- Final Fix
+
+1. I can't use checkBatchError in deleteServiceDetails since the input is array of long and
+   checkBatchError parameter is array of Invoice
+
+2. KLW 3.1.4 I've fixed it, please be careful
+
+3. KLW 4.1.2 I've deleted all EntityNotFoundException from add retrieveServiceDetails(#invoiceId)

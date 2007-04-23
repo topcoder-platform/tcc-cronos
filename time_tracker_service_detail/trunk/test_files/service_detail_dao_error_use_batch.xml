@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="service_detail_dao_error_use_batch">
+        <Property name="use_batch">
+            <Value>test</Value>
+        </Property>
+        <Property name="connection_namespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="connection_name">
+            <Value>informix</Value>
+        </Property>
+        <Property name="id_generator">
+            <Value>com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail</Value>
+        </Property>
+        <Property name="factory_namespace">
+            <Value>objectFactory</Value>
+        </Property>
+        <Property name="audit_manager_name">
+            <Value>audit_manager</Value>
+        </Property>
+        <Property name="time_entry_manager_name">
+            <Value>time_entry_manager</Value>
+        </Property>
+        <Property name="project_worker_utility_name">
+            <Value>project_worker_utility</Value>
+        </Property>
+        <Property name="user_manager_name">
+            <Value>user_manager</Value>
+        </Property>
+    </Config>
+</CMConfig>

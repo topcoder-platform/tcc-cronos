@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="objectFactoryNamespace">
+        <Property name="dao_key">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.servicedetail.dao.impl.ServiceDetailDAOImpl</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="com.topcoder.timetracker.invoice.servicedetail.impl">
+        <Property name="connection_string">
+            <Value>sessionBean</Value>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="com.topcoder.timetracker.invoice.servicedetail.dao.impl">
+        <Property name="use_batch">
+            <Value>true</Value>
+        </Property>
+        <Property name="connection_namespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="connection_name">
+            <Value>informix</Value>
+        </Property>
+        <Property name="id_generator">
+            <Value>com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail</Value>
+        </Property>
+        <Property name="factory_namespace">
+            <Value>objectFactory</Value>
+        </Property>
+        <Property name="audit_manager_name">
+            <Value>audit_manager</Value>
+        </Property>
+        <Property name="time_entry_manager_name">
+            <Value>time_entry_manager</Value>
+        </Property>
+        <Property name="project_worker_utility_name">
+            <Value>project_worker_utility</Value>
+        </Property>
+        <Property name="user_manager_name">
+            <Value>user_manager</Value>
+        </Property>
+    </Config>
+    <Config name="objectFactory">
+        <Property name="audit_manager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.servicedetail.MockAuditManager</Value>
+            </Property>
+        </Property>
+        <Property name="time_entry_manager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.servicedetail.MockTimeEntryManager</Value>
+            </Property>
+        </Property>
+        <Property name="project_worker_utility">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.servicedetail.MockProjectWorkerUtility</Value>
+            </Property>
+        </Property>
+        <Property name="user_manager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.invoice.servicedetail.MockUserManager</Value>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <!--
+                The "default" property refers to a configured connection.
+            -->
+            <Property name="default">
+                <Value>informix</Value>
+            </Property>
+            <!--
+                The following property configures the ConnectionProducer obtaining the Connections
+                from a JDBC URL
+            -->
+            <Property name="informix">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://192.168.1.101:1526/service_details:INFORMIXSERVER=topcoder</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>123456</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+</CMConfig>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="notExistNS">
+        <Property name="use_batch">
+            <Value>true</Value>
+        </Property>
+        <Property name="connection_namespace">
+            <Value>notExist</Value>
+        </Property>
+        <Property name="connection_name">
+            <Value>informix</Value>
+        </Property>
+        <Property name="id_generator">
+            <Value>com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail</Value>
+        </Property>
+        <Property name="factory_namespace">
+            <Value>objectFactory</Value>
+        </Property>
+        <Property name="audit_manager_name">
+            <Value>audit_manager</Value>
+        </Property>
+        <Property name="time_entry_manager_name">
+            <Value>time_entry_manager</Value>
+        </Property>
+        <Property name="project_worker_utility_name">
+            <Value>project_worker_utility</Value>
+        </Property>
+        <Property name="user_manager_name">
+            <Value>user_manager</Value>
+        </Property>
+    </Config>
+    <Config name="notExist">
+        <Property name="connections">
+            <!--
+                The "default" property refers to a configured connection.
+            -->
+            <Property name="default">
+                <Value>informix</Value>
+            </Property>
+            <!--
+                The following property configures the ConnectionProducer obtaining the Connections
+                from a JDBC URL
+            -->
+            <Property name="informix">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://192.168.1.101:9088/time_tracker:INFORMIXSERVER=ol_ids_1110_2</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>informix2</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+</CMConfig>

@@ -1,0 +1,15 @@
+com.topcoder.security.authorization.Action|1|20|0|
+com.topcoder.security.authorization.ActionContext|1|20|0|
+com.topcoder.security.authorization.Principal|1|20|0|
+com.topcoder.security.authorization.SecurityRole|1|20|0|
+TimeTrackerID|60000001|20|0|
+TimeTrackerUser|50000001|20|0|
+com.topcoder.timetracker.user.User|1|20|0|
+com.topcoder.timetracker.entry.time.RejectReason|1|20|0|
+com.topcoder.timetracker.entry.time.Company|1|20|0|
+com.topcoder.timetracker.entry.time.RejectEmail|1|20|0|
+com.topcoder.timetracker.entry.time.TaskType|500000|20|0|
+com.topcoder.timetracker.entry.time.TimeEntry|600000|20|0|
+com.topcoder.timetracker.entry.time.TimeStatus|700000000|20|0|
+com.topcoder.timetracker.entry.time.Rate|1|20|0|
+com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail|2361|20|0|

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+    <Config name="empty">
+        <Property name="connection_string">
+            <Value>   </Value>
+        </Property>
+    </Config>
+
+    <Config name="null">
+        <Property name="connection_string">
+            <Value></Value>
+        </Property>
+    </Config>
+
+    <Config name="unknown">
+        <Property name="connection_string">
+            <Value>unknown</Value>
+        </Property>
+    </Config>
+</CMConfig>

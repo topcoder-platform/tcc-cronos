@@ -1,0 +1,19 @@
+1|com.topcoder.security.authorization.persistence.GeneralAction|Login|
+2|com.topcoder.security.authorization.persistence.GeneralAction|Enter Time|
+3|com.topcoder.security.authorization.persistence.GeneralAction|Enter Expense|
+4|com.topcoder.security.authorization.persistence.GeneralAction|Project Report|
+5|com.topcoder.security.authorization.persistence.GeneralAction|Employee Report|
+6|com.topcoder.security.authorization.persistence.GeneralAction|Personal Employee Report|
+7|com.topcoder.security.authorization.persistence.GeneralAction|Client Report|
+8|com.topcoder.security.authorization.persistence.GeneralAction|Approve Any Contractor Time|
+9|com.topcoder.security.authorization.persistence.GeneralAction|Approve Managed Contractor Time|
+10|com.topcoder.security.authorization.persistence.GeneralAction|Add Any Project|
+11|com.topcoder.security.authorization.persistence.GeneralAction|Add Managed Project|
+12|com.topcoder.security.authorization.persistence.GeneralAction|Edit Any Project|
+13|com.topcoder.security.authorization.persistence.GeneralAction|Edit Managed Project|
+14|com.topcoder.security.authorization.persistence.GeneralAction|Delete Any Project|
+15|com.topcoder.security.authorization.persistence.GeneralAction|Delete Managed Project|
+16|com.topcoder.security.authorization.persistence.GeneralAction|Add Client|
+17|com.topcoder.security.authorization.persistence.GeneralAction|Edit Client|
+18|com.topcoder.security.authorization.persistence.GeneralAction|Delete Client|
+19|com.topcoder.security.authorization.persistence.GeneralAction|Edit User|
