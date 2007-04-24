@@ -118,8 +118,7 @@ public class InformixAddressDAO implements AddressDAO {
      *
      * <p>
      * Since the address may not be associated, in other words, mapped to zero entity, so "left join" is used for
-     * table <em>address_relation</em>. But address must have state and country, so "inner join" is used for tables
-     * <em>state_name</em> and <em>country_name</em>.
+     * table <em>address_relation</em>..
      * </p>
      */
     private static final String SELECT_ADDRESS =
