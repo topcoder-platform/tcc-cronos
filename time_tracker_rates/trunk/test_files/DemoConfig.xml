@@ -2,53 +2,56 @@
 
 <!-- File containing sample configuration details for use with
  the Time Tracker Rates 1.0 component -->
-    
+
 <CMConfig>
     <!-- configuration for Rate manager (at default location) -->
     <Config name="com.topcoder.timetracker.rates">
-        <!-- required parameter: 
+        <!-- required parameter:
              reference name to get RateLocalHome -->
         <Property name="rate_local_ejb_reference_name">
             <Value>rate.rateLocalHome</Value>
         </Property>
     </Config>
-    
+
     <!-- configuration for default (Informix) persistence -->
     <Config name="RatesInformixConfig">
-        <!-- optional parameter: 
-             connection name used with DB Connection factory 
+        <!-- optional parameter:
+             connection name used with DB Connection factory
              If not provided, default connection is used instead -->
         <Property name="connectionName">
             <Value>TimeTrackerConnection</Value> <!-- for example -->
         </Property>
-        
-        <!-- optional parameter: 
+
+        <!-- optional parameter:
              Logging name for use with LogFactory, otherwise default log is used -->
         <Property name="logName">
             <Value>TimeTrackerLog</Value>
-        </Property>     
+        </Property>
+		<Property name="useLog">
+            <Value>false</Value>
+        </Property>
 
-        <!-- required parameter: 
+        <!-- required parameter:
              namespace for use with the object factory -->
         <Property name="objectFactoryNamespace">
             <Value>TimeTrackerObjectFactory</Value>
-        </Property>        
-        
+        </Property>
+
         <!-- required parameter:
              name of DB connection factory to obtain from object factory -->
         <Property name="connectionFactoryKey">
             <Value>TTDBFactory</Value>
-        </Property> 
-        
+        </Property>
+
         <!-- required parameter:
              name of audit manager to obtain from object factory -->
         <Property name="auditManagerKey">
             <Value>TTAuditManager</Value>
-        </Property> 
+        </Property>
     </Config>
-   
+
     <!-- Namespace for possible use with the object factory component -->
-    <Config name="TimeTrackerObjectFactory">  
+    <Config name="TimeTrackerObjectFactory">
         <!-- Object factory configuration for the default DB persistence -->
         <Property name="informixPersistence">
             <Property name="type">
@@ -62,13 +65,13 @@
                     </Property>
                     <Property name="value">
                         <!-- see above -->
-                        <Value>RatesInformixConfig</Value> 
+                        <Value>RatesInformixConfig</Value>
                     </Property>
                 </Property>
             </Property>
         </Property>
 		<!-- end of  informixPersistence-->
-		
+
         <Property name="TTDBFactory">
 			<Property name="type">
 				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -79,13 +82,13 @@
 						<Value>String</Value>
 					</Property>
 					<Property name="value">
-						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>	
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
 					</Property>
 				</Property>
 			</Property>
         </Property>
 		<!-- end of  TTDBFactory-->
-		
+
 		<Property name="TTAuditManager">
 			<Property name="type">
 				<Value>com.topcoder.timetracker.rates.MockAuditManager</Value>
@@ -93,7 +96,7 @@
         </Property>
 		<!-- end of  TTAuditManager-->
     </Config>
-	
+
 	<!-- Config for logger-->
 <Config name="com.topcoder.util.log">
     <Property name="logClass">
@@ -103,6 +106,6 @@
         <Value>com.topcoder.util.log.basic.BasicLog</Value>
     </Property>
 </Config>
-	
-	
+
+
 </CMConfig>
