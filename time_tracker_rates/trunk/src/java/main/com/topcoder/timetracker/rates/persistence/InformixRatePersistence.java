@@ -46,8 +46,7 @@ import java.util.List;
  * well as to auditing any insert/delete/update action. All internal members are set on construction and immutable
  * thereafter - the log and connection names are optional parameters read from configuration, and the connection
  * factory, log and audit managers are initialized using default constructors. As all internal members are immutable
- * and thread safe, this persistence implementation is also thread-safe (providing the database connection is secure)
- * </p>
+ * and thread safe, this persistence implementation is also thread-safe (providing the database connection is secure)</p>
  *  <p></p>
  *  <P><b>Note</b>When we need to rollback the Audit actions we need todo it at the level of the transaction
  * itself. We do not utilize here the auditManager's ability to rollback the audit steps. This means that we do not
@@ -64,38 +63,38 @@ public class InformixRatePersistence implements RatePersistence {
     private static final String AUDIT_TABLE_NAME = "comp_rate";
 
     /** SQL constant used to insert a single row into the table. */
-    private static final String SQL_INSERT_RATE = "INSERT INTO comp_rate (company_id, rate_id, rate, creation_date, "
-            + "creation_user, modification_date, modification_user) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_RATE = "INSERT INTO comp_rate (company_id, rate_id, rate, creation_date, " +
+        "creation_user, modification_date, modification_user) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     /** SQL constant used to update a single row in the table, identified by the current ID/ID pair. */
-    private static final String SQL_UPDATE_RATE = "UPDATE comp_rate SET creation_date = ?, creation_user = ?, "
-            + "rate = ?, modification_date = ?, modification_user = ? WHERE company_id = ? AND rate_id = ? ";
+    private static final String SQL_UPDATE_RATE = "UPDATE comp_rate SET creation_date = ?, creation_user = ?, " +
+        "rate = ?, modification_date = ?, modification_user = ? WHERE company_id = ? AND rate_id = ? ";
 
     /** SQL constant used to remove a rate, identified by the ID/ID pair. */
     private static final String SQL_DELETE_RATE = "DELETE FROM comp_rate WHERE company_id = ? AND rate_id = ? ";
 
     /** SQL constant used to obtain all rates that belong to a given company id. */
-    private static final String SQL_SELECT_RATES = "SELECT CR.rate_id, CR.rate, CR.creation_date, CR.creation_user, "
-            + "CR.modification_date, CR.modification_user, R.description FROM comp_rate as CR INNER JOIN rate as R ON "
-                    + "R.rate_id = CR.rate_id WHERE CR.company_id = ?";
+    private static final String SQL_SELECT_RATES = "SELECT CR.rate_id, CR.rate, CR.creation_date, CR.creation_user, " +
+        "CR.modification_date, CR.modification_user, R.description FROM comp_rate as CR, rate as R " +
+        "WHERE R.rate_id = CR.rate_id AND CR.company_id = ?";
 
     /** SQL constant used to obtain the first rate that belongs to a given company id, identified by its description. */
-    private static final String SQL_SELECT_BY_DESC = "SELECT CR.rate_id, CR.rate, CR.creation_date, CR.creation_user,"
-            + " CR.modification_date, CR.modification_user, R.description FROM comp_rate as CR INNER JOIN rate as R "
-                    + "ON R.rate_id = CR.rate_id WHERE CR.company_id = ? AND R.description = ?";
+    private static final String SQL_SELECT_BY_DESC = "SELECT CR.rate_id, CR.rate, CR.creation_date, CR.creation_user," +
+        " CR.modification_date, CR.modification_user, R.description FROM comp_rate as CR, rate as R " +
+        "WHERE R.rate_id = CR.rate_id AND CR.company_id = ? AND R.description = ?";
 
     /** SQL constant used to obtain the rate that belongs to a given company id, identified by its rate id. */
-    private static final String SQL_SELECT_BY_ID = "SELECT CR.rate_id, CR.rate, CR.creation_date, CR.creation_user, "
-            + "CR.modification_date, CR.modification_user, R.description FROM comp_rate as CR INNER JOIN rate as R "
-                    + "ON R.rate_id = CR.rate_id WHERE CR.company_id = ? AND CR.rate_id = ?";
+    private static final String SQL_SELECT_BY_ID = "SELECT CR.rate_id, CR.rate, CR.creation_date, CR.creation_user, " +
+        "CR.modification_date, CR.modification_user, R.description FROM comp_rate as CR, rate as R " +
+        "WHERE R.rate_id = CR.rate_id AND CR.company_id = ? AND CR.rate_id = ?";
 
     /**
      * Represents the columns name for table "comp_rate" in database. This constant is used to parse the Rate
      * into array of String representation of its field.
      */
     private static final String[] COMPANY_RATE_COLUMNS = {
-        "company_id", "rate_id", "rate", "creation_date", "creation_user", "modification_date", "modification_user"
-    };
+            "company_id", "rate_id", "rate", "creation_date", "creation_user", "modification_date", "modification_user"
+        };
 
     /**
      * This audit manager gives the persistence layer the ability to audit each insert/update/delete action
@@ -129,7 +128,7 @@ public class InformixRatePersistence implements RatePersistence {
      */
     private final String connectionName;
 
-    /**
+/**
      * Constructs a new Informix Rate Persistence implementation, taking values from configuration. This reads in the
      * (optional) log and connection names, setting them to null if nothing is configured. In addition, the connection
      * factory and audit manager are initialized for later use. If there are any troubles setting up the members, a
@@ -148,8 +147,13 @@ public class InformixRatePersistence implements RatePersistence {
 
         // initializes the logger
         String logName = ConfigHelper.getStringProperty(namespace, "logName", false);
+        String useLog = ConfigHelper.getStringProperty(namespace, "useLog", false);
 
-        this.log = LogFactory.getLog(logName);
+        if ((useLog != null) && "true".equals(useLog)) {
+            this.log = LogFactory.getLog(logName);
+        } else {
+            this.log = null;
+        }
 
         // connection name
         this.connectionName = ConfigHelper.getStringProperty(namespace, "connectionName", false);
@@ -174,8 +178,8 @@ public class InformixRatePersistence implements RatePersistence {
         } catch (InvalidClassSpecificationException e) {
             throw new RateConfigurationException("failed to create DBConnectionFactory with key:" + connFactoryKey, e);
         } catch (ClassCastException e) {
-            throw new RateConfigurationException("the created instance is not type of DBConnectionFactory, key:"
-                + connFactoryKey, e);
+            throw new RateConfigurationException("the created instance is not type of DBConnectionFactory, key:" +
+                connFactoryKey, e);
         }
 
         // creates AuditManager via ObjectFactory
@@ -186,8 +190,8 @@ public class InformixRatePersistence implements RatePersistence {
         } catch (InvalidClassSpecificationException e) {
             throw new RateConfigurationException("failed to create AuditManager with key:" + auditManagerKey, e);
         } catch (ClassCastException e) {
-            throw new RateConfigurationException("the created instance is not type of AuditManager, key:"
-                + auditManagerKey, e);
+            throw new RateConfigurationException("the created instance is not type of AuditManager, key:" +
+                auditManagerKey, e);
         }
     }
 
@@ -201,63 +205,51 @@ public class InformixRatePersistence implements RatePersistence {
      * @param rates The array of Rates to add - this cannot be null, or contain null values, but may be empty
      * @param audit Boolean flag indication whether auditing should occur.
      *
-     * @throws RatePersistenceException if none of the rates can be added to persistence or any other persistence error
-     * occurs
+     * @throws RatePersistenceException any error occurs in persistence
      * @throws IllegalArgumentException if the array of rates is null, or contains null values, or is empty
      */
     public void addRates(Rate[] rates, boolean audit) throws RatePersistenceException {
         ParameterCheck.checkArray("rates", rates);
 
-        int successCount = 0;
-
         Connection conn = null;
+
+        int i = 0;
 
         try {
             conn = getConnection();
 
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_RATE);
 
-            for (int i = 0; i < rates.length; i++) {
+            for (; i < rates.length; i++) {
                 Company comp = rates[i].getCompany();
 
                 //if company is null, skip this record
                 if (comp == null) {
-                    log.log(Level.ERROR,
-                        "failed to persist rate[" + i + "] id:" + rates[i].getId() + " msg: company is not set");
-
-                    continue;
+                    String msg = "failed to persist rate[" + i + "] id:" + rates[i].getId() +
+                        " msg: company is not set";
+                    logErr(msg);
+                    throw new RatePersistenceException(msg);
                 }
 
-                try {
-                    pstmt.setLong(1, comp.getId());
-                    pstmt.setLong(2, rates[i].getId());
-                    pstmt.setDouble(3, rates[i].getRate());
-                    pstmt.setTimestamp(4, new Timestamp(rates[i].getCreationDate().getTime()));
-                    pstmt.setString(5, rates[i].getCreationUser());
-                    pstmt.setTimestamp(6, new Timestamp(rates[i].getModificationDate().getTime()));
-                    pstmt.setString(7, rates[i].getModificationUser());
-                    pstmt.executeUpdate();
+                pstmt.setLong(1, comp.getId());
+                pstmt.setLong(2, rates[i].getId());
+                pstmt.setDouble(3, rates[i].getRate());
+                pstmt.setTimestamp(4, new Timestamp(rates[i].getCreationDate().getTime()));
+                pstmt.setString(5, rates[i].getCreationUser());
+                pstmt.setTimestamp(6, new Timestamp(rates[i].getModificationDate().getTime()));
+                pstmt.setString(7, rates[i].getModificationUser());
+                pstmt.executeUpdate();
 
-                    successCount++;
-                    //audit if successfully persist
-                    auditAction(null, rates[i], audit);
-                } catch (Throwable e) {
-                    log.log(Level.ERROR,
-                        "failed to persist rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId()
-                        + " msg:" + e.getMessage());
-                }
+                //audit if successfully persist
+                auditAction(null, rates[i], audit);
             }
         } catch (SQLException e) {
-            String msg = "failed to create rates";
-            log.log(Level.ERROR, msg + " " + e.getMessage());
+            String msg = "failed to persist rate[" + i + "] id:" + rates[i].getId() + " compId:" +
+                rates[i].getCompany() + " msg:" + e.getMessage();
+            logErr(msg + " " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
-        }
-
-        // if none of the rates is successfully created, RatePersistenceException will be thrown
-        if (successCount == 0) {
-            throw new RatePersistenceException("none of the rates can be created");
         }
     }
 
@@ -270,65 +262,53 @@ public class InformixRatePersistence implements RatePersistence {
      * @param rates The array of Rates to removed - this cannot be null, or contain null values, but may be empty
      * @param audit Boolean flag indication whether auditing should occur.
      *
-     * @throws RatePersistenceException if none of the rate can be deleted there are problems persisting the rates
+     * @throws RatePersistenceException any error occurs in persistence
      * @throws IllegalArgumentException if the array of rates is null, or contains null values or is empty
      */
     public void deleteRates(Rate[] rates, boolean audit)
         throws RatePersistenceException {
         ParameterCheck.checkArray("rates", rates);
 
-        int successCount = 0;
-
         Connection conn = null;
+        int i = 0;
 
         try {
             conn = getConnection();
 
             PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE_RATE);
 
-            for (int i = 0; i < rates.length; i++) {
+            for (; i < rates.length; i++) {
                 Company comp = rates[i].getCompany();
 
                 //if company is null, skip this record
                 if (comp == null) {
-                    log.log(Level.ERROR,
-                        "failed to update rate[" + i + "] id:" + rates[i].getId() + " msg: company is not set");
-
-                    continue;
+                    String msg = "failed to delete rate[" + i + "] id:" + rates[i].getId() +
+                        " msg: company is not set";
+                    logErr(msg);
+                    throw new RatePersistenceException(msg);
                 }
 
-                try {
-                    pstmt.setLong(1, comp.getId());
-                    pstmt.setLong(2, rates[i].getId());
+                pstmt.setLong(1, comp.getId());
+                pstmt.setLong(2, rates[i].getId());
 
-                    int result = pstmt.executeUpdate();
+                int result = pstmt.executeUpdate();
 
-                    if (result == 1) {
-                        successCount++;
-                        //audit if successfully persist
-                        auditAction(rates[i], null, audit);
-                    } else {
-                        log.log(Level.ERROR,
-                            "failed to delete rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId()
-                            + " msg: record not exists");
-                    }
-                } catch (Throwable e) {
-                    log.log(Level.ERROR,
-                        "failed to delete rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId()
-                         + " msg:" + e.getMessage());
+                if (result == 1) {
+                    //audit if successfully persist
+                    auditAction(rates[i], null, audit);
+                } else {
+                    logErr("failed to delete rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId() +
+                        " msg: record not exists");
                 }
             }
         } catch (SQLException e) {
-            String msg = "failed to delete rates";
-            log.log(Level.ERROR, msg + " " + e.getMessage());
+            String msg = "failed to delete rate[" + i + "] id:" + rates[i].getId() + " compId:" +
+                rates[i].getCompany().getId() + " msg:" + e.getMessage();
+
+            logErr(msg + " " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
-        }
-
-        // if none of the rates is successfully created, RatePersistenceException will be thrown
-        if (successCount == 0) {
-            throw new RatePersistenceException("none of the rates can be deleted");
         }
     }
 
@@ -355,7 +335,7 @@ public class InformixRatePersistence implements RatePersistence {
             return getRate(conn, rateId, companyId);
         } catch (SQLException e) {
             String msg = "failed to retrieve rate id:" + rateId + " companyId:" + companyId;
-            log.log(Level.ERROR, msg + " msg:" + e.getMessage());
+            logErr(msg + " msg:" + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -398,7 +378,7 @@ public class InformixRatePersistence implements RatePersistence {
             }
         } catch (SQLException e) {
             String msg = "failed to retrieve rate, companyId:" + companyId + " desc:" + description;
-            log.log(Level.ERROR, msg);
+            logErr(msg);
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -435,7 +415,7 @@ public class InformixRatePersistence implements RatePersistence {
             return (Rate[]) list.toArray(new Rate[list.size()]);
         } catch (SQLException e) {
             String msg = "failed to retrieve rate, companyId:" + companyId;
-            log.log(Level.ERROR, msg + " msg:" + e.getMessage());
+            logErr(msg + " msg:" + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -452,16 +432,15 @@ public class InformixRatePersistence implements RatePersistence {
      * @param rates The array of Rates to update - this cannot be null, or contain null values, but may be empty
      * @param audit Boolean flag indication whether auditing should occur.
      *
-     * @throws RatePersistenceException if none of the rate can be updated or any other error occurs in persistence
+     * @throws RatePersistenceException any error occurs in persistence
      * @throws IllegalArgumentException if the array of rates is null, or contains null values, or it's empty
      */
     public void updateRates(Rate[] rates, boolean audit)
         throws RatePersistenceException {
         ParameterCheck.checkArray("rates", rates);
 
-        int successCount = 0;
-
         Connection conn = null;
+        int i = 0;
 
         try {
             conn = getConnection();
@@ -470,54 +449,43 @@ public class InformixRatePersistence implements RatePersistence {
 
             PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE_RATE);
 
-            for (int i = 0; i < rates.length; i++) {
+            for (; i < rates.length; i++) {
                 Company comp = rates[i].getCompany();
 
                 //if company is null, skip this record
                 if (comp == null) {
-                    log.log(Level.ERROR,
-                        "failed to update rate[" + i + "] id:" + rates[i].getId() + " msg: company is not set");
-
-                    continue;
+                    String msg = "failed to update rate[" + i + "] id:" + rates[i].getId() +
+                        " msg: company is not set";
+                    logErr(msg);
+                    throw new RatePersistenceException(msg);
                 }
 
-                try {
-                    pstmt.setTimestamp(1, new Timestamp(rates[i].getCreationDate().getTime()));
-                    pstmt.setString(2, rates[i].getCreationUser());
-                    pstmt.setDouble(3, rates[i].getRate());
-                    pstmt.setTimestamp(4, new Timestamp(rates[i].getModificationDate().getTime()));
-                    pstmt.setString(5, rates[i].getModificationUser());
-                    pstmt.setLong(6, comp.getId());
-                    pstmt.setLong(7, rates[i].getId());
+                pstmt.setTimestamp(1, new Timestamp(rates[i].getCreationDate().getTime()));
+                pstmt.setString(2, rates[i].getCreationUser());
+                pstmt.setDouble(3, rates[i].getRate());
+                pstmt.setTimestamp(4, new Timestamp(rates[i].getModificationDate().getTime()));
+                pstmt.setString(5, rates[i].getModificationUser());
+                pstmt.setLong(6, comp.getId());
+                pstmt.setLong(7, rates[i].getId());
 
-                    int result = pstmt.executeUpdate();
+                int result = pstmt.executeUpdate();
 
-                    if (result == 1) {
-                        successCount++;
-                        //audit if successfully persist
-                        auditAction(oldRates[i], rates[i], audit);
-                    } else {
-                        log.log(Level.ERROR,
-                            "failed to update rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId()
-                            + " msg:record not exists");
-                    }
-                } catch (Throwable e) {
-                    log.log(Level.ERROR,
-                        "failed to update rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId()
-                        + " msg:" + e.getMessage());
+                if (result == 1) {
+                    //audit if successfully persist
+                    auditAction(oldRates[i], rates[i], audit);
+                } else {
+                    logErr("failed to update rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId() +
+                        " msg:record not exists");
                 }
             }
         } catch (SQLException e) {
-            String msg = "failed to update rates";
-            log.log(Level.ERROR, msg + " " + e.getMessage());
+            String msg = "failed to update rate[" + i + "] id:" + rates[i].getId() + " compId:" +
+                rates[i].getCompany().getId() + " msg:" + e.getMessage();
+
+            logErr(msg + " " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
-        }
-
-        // if none of the rates is successfully created, RatePersistenceException will be thrown
-        if (successCount == 0) {
-            throw new RatePersistenceException("none of the rates can be updated");
         }
     }
 
@@ -569,7 +537,7 @@ public class InformixRatePersistence implements RatePersistence {
 
             for (int i = 0; i < oldColumns.length; i++) {
                 //when in update type, the non-changed columns will not be audited
-                if (type == AuditType.UPDATE && oldColumns[i].equals(newColumns[i])) {
+                if ((type == AuditType.UPDATE) && oldColumns[i].equals(newColumns[i])) {
                     continue;
                 }
 
@@ -580,7 +548,7 @@ public class InformixRatePersistence implements RatePersistence {
                 details.add(detail);
             }
 
-            header.setDetails((AuditDetail[]) details.toArray(new AuditDetail[] {}));
+            header.setDetails((AuditDetail[]) details.toArray(new AuditDetail[] {  }));
 
             //the entity used to create header
             Rate entity = (newValue == null) ? oldValue : newValue;
@@ -594,7 +562,7 @@ public class InformixRatePersistence implements RatePersistence {
                 auditManager.createAuditRecord(header);
             } catch (AuditManagerException e) {
                 String msg = "error occurs while auditing";
-                log.log(Level.ERROR, msg);
+                logErr(msg);
                 throw new RatePersistenceException(msg, e);
             }
         }
@@ -613,7 +581,7 @@ public class InformixRatePersistence implements RatePersistence {
                                             : connectionFactory.createConnection(connectionName);
         } catch (DBConnectionException e) {
             String msg = "failed to get connection";
-            log.log(Level.ERROR, msg + " msg:" + e.getMessage());
+            logErr(msg + " msg:" + e.getMessage());
             throw new RatePersistenceException(msg, e);
         }
     }
@@ -678,11 +646,23 @@ public class InformixRatePersistence implements RatePersistence {
     }
 
     /**
+     * Logs the given message to logger with Error level.
+     *
+     * @param msg the message to be logged
+     */
+    private void logErr(String msg) {
+        if (log != null) {
+            log.log(Level.ERROR, msg);
+        }
+    }
+
+    /**
      * Utility method that takes a ResultSet row from a database, and converts it into a rate.
      *
      * @param res The result set cursor at the rate row to be parsed, not null.
      *
      * @return Returns a Rate representation of the value the result set currently points to.
+     *
      * @throws SQLException if any persistence error occurs
      */
     private Rate parseRate(ResultSet res) throws SQLException {
