@@ -135,9 +135,9 @@ public class InformixAddressDAO implements AddressDAO {
         + "address_relation.modification_date as relation_modification_date,"
         + "address_relation.creation_user as relation_creation_user,"
         + "address_relation.modification_user as relation_modification_user "
-        + "from address inner join state_name on address.state_name_id = state_name.state_name_id inner join "
-        + "country_name on address.country_name_id = country_name.country_name_id left join address_relation "
-        + "on address.address_id = address_relation.address_id ";
+        + "from address left join address_relation on address.address_id = address_relation.address_id, state_name,"
+        + "country_name where address.state_name_id = state_name.state_name_id and "
+        + "address.country_name_id = country_name.country_name_id";
 
     /**
      * <p>SQL clause used to select all records from <em>country_name</em> table.</p>
@@ -932,7 +932,7 @@ public class InformixAddressDAO implements AddressDAO {
         String inClause = null;
 
         if (ids != null) {
-            inClause = DAOHelper.convertIds(new StringBuffer(" WHERE address.address_id in "), ids,
+            inClause = DAOHelper.convertIds(new StringBuffer(" AND address.address_id in "), ids,
                                                 "ID of Address");
         }
 

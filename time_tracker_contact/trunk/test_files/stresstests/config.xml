@@ -129,18 +129,20 @@
 
 				<Property name="context">
 					<Value>Select address.*,state_name.name as state_name,state_name.abbreviation,
-state_name.creation_date as state_creation_date,state_name.modification_date as state_modification_date,
-state_name.creation_user as state_creation_user,state_name.modification_user as state_modification_user,
-country_name.name as country_name,country_name.creation_date as country_creation_date,
-country_name.modification_date as country_modification_date,country_name.creation_user as country_creation_user,
-country_name.modification_user as country_modification_user, address_relation.address_type_id,
-address_relation.entity_id,address_relation.creation_date as relation_creation_date,
-address_relation.modification_date as relation_modification_date,
-address_relation.creation_user as relation_creation_user,
-address_relation.modification_user as relation_modification_user
-from address inner join state_name on address.state_name_id = state_name.state_name_id inner join
-country_name on address.country_name_id = country_name.country_name_id left join address_relation
-on address.address_id = address_relation.address_id where </Value>
+        state_name.creation_date as state_creation_date,state_name.modification_date as state_modification_date,
+        state_name.creation_user as state_creation_user,state_name.modification_user as state_modification_user,
+        country_name.name as country_name,
+        country_name.creation_date as country_creation_date,
+        country_name.modification_date as country_modification_date,
+        country_name.creation_user as country_creation_user,
+        country_name.modification_user as country_modification_user, address_relation.address_type_id,
+        address_relation.entity_id,address_relation.creation_date as relation_creation_date,
+        address_relation.modification_date as relation_modification_date,
+        address_relation.creation_user as relation_creation_user,
+        address_relation.modification_user as relation_modification_user 
+        from address left join address_relation on address.address_id = address_relation.address_id, state_name,
+        country_name where address.state_name_id = state_name.state_name_id and 
+        address.country_name_id = country_name.country_name_id and </Value>
 				</Property>
 
 				<Property name="alias">
