@@ -79,45 +79,6 @@ public class RateManagerTest extends TestCase {
     }
 
     /**
-     * Tests {@link RateEjb#addRates(Rate[], boolean)}. One of the rate is invalid, but the rest should be
-     * added successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        rates[0].setCompany(null);
-        manager.addRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            if (rates[i].getCompany() == null) {
-                continue;
-            }
-
-            assertNotNull("rate should be persisted",
-                manager.retrieveRate(rates[i].getId(), rates[i].getCompany().getId()));
-        }
-    }
-
-    /**
-     * Tests {@link RateEjb#addRates(Rate[], boolean)}. Duplicate Rates are added, only one of them can be
-     * added. Then retrieve them to test whether it's added successfully
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddRatesDuplicateRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        rates[1] = rates[0];
-
-        manager.addRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            assertNotNull("rate should be persisted",
-                manager.retrieveRate(rates[i].getId(), rates[i].getCompany().getId()));
-        }
-    }
-
-    /**
      * Tests {@link RateEjb#addRates(Rate[], boolean)} with empty rates, IAE is expected.
      *
      * @throws Exception to JUnit
@@ -214,21 +175,7 @@ public class RateManagerTest extends TestCase {
             manager.retrieveRate(rates[0].getId(), rates[0].getCompany().getId()));
     }
 
-    /**
-     * Tests {@link RateManager#addRates(Rate, boolean)}. Deleting a not existent rate will cause exception.
-     *
-     * @throws Exception to junit
-     */
-    public void testDeleteRateNotExist() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            manager.deleteRate(rates[0], true);
-            fail("rate does not exist in persistence and RateManagerException is expected");
-        } catch (RateManagerException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link RateManager#addRates(Rate, boolean)} with null rate and IllegalArgumentException is
@@ -263,29 +210,6 @@ public class RateManagerTest extends TestCase {
     }
 
     /**
-     * Tests {@link RateEjb#deleteRates(Rate[], boolean)}. One of the rate is invalid but the rest should be
-     * deleted successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testDeleteRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        manager.addRates(rates, true);
-
-        rates[0].setCompany(null); //invalid rate
-        manager.deleteRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            if (rates[i].getCompany() == null) {
-                continue;
-            }
-
-            assertNull("rate should be deleted, id:" + rates[i].getId() + " compId:" + rates[i].getCompany().getId(),
-                manager.retrieveRate(rates[i].getId(), rates[i].getCompany().getId()));
-        }
-    }
-
-    /**
      * Tests {@link RateEjb#deleteRates(Rate[], boolean)} with empty rates, IAE is expected.
      *
      * @throws Exception to JUnit
@@ -299,22 +223,7 @@ public class RateManagerTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link RateEjb#deleteRates(Rate[], boolean)}. Deleting a list of not existent rates should be
-     * failed and RateManagerException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testDeleteRatesNotExistentRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            manager.deleteRates(rates, true);
-            fail("none of the rate exists in persistence, RateManagerException is expected since no rate is deleted");
-        } catch (RateManagerException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link RateEjb#deleteRates(Rate[], boolean)} with null rates, IAE is expected.
@@ -553,22 +462,7 @@ public class RateManagerTest extends TestCase {
         assertEquals("modificationUser should be updated", modUser, result.getModificationUser());
     }
 
-    /**
-     * Tests {@link RateManager#updateRate(Rate, boolean)} for not persisted rate, {@link RateManagerException}
-     * is expected.
-     *
-     * @throws Exception to junit
-     */
-    public void testUpdateRateNotExist() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            manager.updateRate(rates[0], true);
-            fail("rate is not persisted, RateManagerException is expected");
-        } catch (RateManagerException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link RateManager#updateRate(Rate, boolean)} with null, IAE is expected.
@@ -603,27 +497,6 @@ public class RateManagerTest extends TestCase {
     }
 
     /**
-     * Tests {@link RateEjb#updateRates(Rate[], boolean)} for existent rates. One of the rate is invalid but
-     * the rest should be updated successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        manager.addRates(rates, true);
-
-        String modUser = "new user";
-        rates[0].setModificationUser(modUser);
-
-        rates[1].setCompany(null); //invalid rate
-        manager.updateRates(rates, true);
-
-        Rate result = manager.retrieveRate(rates[0].getId(), rates[0].getCompany().getId());
-
-        assertEquals("modificationUser should be updated", modUser, result.getModificationUser());
-    }
-
-    /**
      * Tests {@link RateEjb#updateRates(Rate[], boolean)} with empty rates, IAE is expected.
      *
      * @throws Exception to JUnit
@@ -637,22 +510,7 @@ public class RateManagerTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link RateEjb#updateRates(Rate[], boolean)} for not existent rates, no rates should be updated
-     * and RateManagerException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateRatesNotExistentRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            manager.updateRates(rates, true);
-            fail("none of the rate exists in persistence, RateManagerException is expected since no rate is updated");
-        } catch (RateManagerException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link RateEjb#updateRates(Rate[], boolean)} with null rates, IAE is expected.

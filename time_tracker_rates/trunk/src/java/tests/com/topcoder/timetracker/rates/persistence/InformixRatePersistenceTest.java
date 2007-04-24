@@ -40,44 +40,6 @@ public class InformixRatePersistenceTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link InformixRatePersistence#addRates(Rate[], boolean)}. One of the rate is invalid, but the
-     * rest should be added successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        rates[0].setCompany(null);
-        persistence.addRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            if (rates[i].getCompany() == null) {
-                continue;
-            }
-
-            assertNotNull("rate should be persisted",
-                persistence.retrieveRate(rates[i].getId(), rates[i].getCompany().getId()));
-        }
-    }
-
-    /**
-     * Tests {@link InformixRatePersistence#addRates(Rate[], boolean)}. Duplicate Rates are added, only one of
-     * them can be added. Then retrieve them to test whether it's added successfully
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddRatesDuplicateRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        rates[1] = rates[0];
-
-        persistence.addRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            assertNotNull("rate should be persisted",
-                persistence.retrieveRate(rates[i].getId(), rates[i].getCompany().getId()));
-        }
-    }
 
     /**
      * Tests {@link InformixRatePersistence#addRates(Rate[], boolean)} with empty rates, IAE is expected.
@@ -180,28 +142,7 @@ public class InformixRatePersistenceTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link InformixRatePersistence#deleteRates(Rate[], boolean)}. One of the rate is invalid but the
-     * rest should be deleted successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testDeleteRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        persistence.addRates(rates, true);
 
-        rates[0].setCompany(null); //invalid rate
-        persistence.deleteRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            if (rates[i].getCompany() == null) {
-                continue;
-            }
-
-            assertNull("rate should be deleted, id:" + rates[i].getId() + " compId:" + rates[i].getCompany().getId(),
-                persistence.retrieveRate(rates[i].getId(), rates[i].getCompany().getId()));
-        }
-    }
 
     /**
      * Tests {@link InformixRatePersistence#deleteRates(Rate[], boolean)} with empty rates, IAE is expected.
@@ -217,24 +158,7 @@ public class InformixRatePersistenceTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link InformixRatePersistence#deleteRates(Rate[], boolean)}. Deleting a list of not existent
-     * rates should be failed and RatePersistenceException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testDeleteRatesNotExistentRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            persistence.deleteRates(rates, true);
-            fail(
-                "none of the rate exists in persistence, RatePersistenceException is expected since"
-                + "no rate is deleted");
-        } catch (RatePersistenceException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link InformixRatePersistence#deleteRates(Rate[], boolean)} with null rates, IAE is expected.
@@ -548,27 +472,6 @@ public class InformixRatePersistenceTest extends TestCase {
     }
 
     /**
-     * Tests {@link InformixRatePersistence#updateRates(Rate[], boolean)} for existent rates. One of the rate
-     * is invalid but the rest should be updated successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        persistence.addRates(rates, true);
-
-        String modUser = "new user";
-        rates[0].setModificationUser(modUser);
-
-        rates[1].setCompany(null); //invalid rate
-        persistence.updateRates(rates, true);
-
-        Rate result = persistence.retrieveRate(rates[0].getId(), rates[0].getCompany().getId());
-
-        assertEquals("modificationUser should be updated", modUser, result.getModificationUser());
-    }
-
-    /**
      * Tests {@link InformixRatePersistence#updateRates(Rate[], boolean)} with empty rates, IAE is expected.
      *
      * @throws Exception to JUnit
@@ -582,24 +485,7 @@ public class InformixRatePersistenceTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link InformixRatePersistence#updateRates(Rate[], boolean)} for not existent rates, no rates
-     * should be updated and RatePersistenceException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateRatesNotExistentRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            persistence.updateRates(rates, true);
-            fail(
-                "none of the rate exists in persistence, RatePersistenceException is expected since no rate"
-                + "is updated");
-        } catch (RatePersistenceException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link InformixRatePersistence#updateRates(Rate[], boolean)} with null rates, IAE is expected.

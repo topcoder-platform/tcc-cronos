@@ -45,45 +45,6 @@ public class RateEjbTest extends TestCase {
     }
 
     /**
-     * Tests {@link RateEjb#addRates(Rate[], boolean)}. One of the rate is invalid, but the rest should be
-     * added successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        rates[0].setCompany(null);
-        ejb.addRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            if (rates[i].getCompany() == null) {
-                continue;
-            }
-
-            assertNotNull("rate should be persisted", ejb.retrieveRate(rates[i].getId(),
-                    rates[i].getCompany().getId()));
-        }
-    }
-
-    /**
-     * Tests {@link RateEjb#addRates(Rate[], boolean)}. Duplicate Rates are added, only one of them can be
-     * added. Then retrieve them to test whether it's added successfully
-     *
-     * @throws Exception to JUnit
-     */
-    public void testAddRatesDuplicateRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        rates[1] = rates[0];
-
-        ejb.addRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            assertNotNull("rate should be persisted", ejb.retrieveRate(rates[i].getId(),
-                    rates[i].getCompany().getId()));
-        }
-    }
-
-    /**
      * Tests {@link RateEjb#addRates(Rate[], boolean)} with empty rates, IAE is expected.
      *
      * @throws Exception to JUnit
@@ -182,28 +143,6 @@ public class RateEjbTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link RateEjb#deleteRates(Rate[], boolean)}. One of the rate is invalid but the rest should be
-     * deleted successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testDeleteRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        ejb.addRates(rates, true);
-
-        rates[0].setCompany(null); //invalid rate
-        ejb.deleteRates(rates, true);
-
-        for (int i = 0; i < rates.length; i++) {
-            if (rates[i].getCompany() == null) {
-                continue;
-            }
-
-            assertNull("rate should be deleted, id:" + rates[i].getId() + " compId:" + rates[i].getCompany().getId(),
-                ejb.retrieveRate(rates[i].getId(), rates[i].getCompany().getId()));
-        }
-    }
 
     /**
      * Tests {@link RateEjb#deleteRates(Rate[], boolean)} with empty rates, IAE is expected.
@@ -219,23 +158,7 @@ public class RateEjbTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link RateEjb#deleteRates(Rate[], boolean)}. Deleting a list of not existent rates should be
-     * failed and RatePersistenceException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testDeleteRatesNotExistentRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            ejb.deleteRates(rates, true);
-            fail("none of the rate exists in persistence, RatePersistenceException is expected since no"
-                    + "rate is deleted");
-        } catch (RatePersistenceException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link RateEjb#deleteRates(Rate[], boolean)} with null rates, IAE is expected.
@@ -527,26 +450,6 @@ public class RateEjbTest extends TestCase {
         assertEquals("modificationUser should be updated", modUser, result.getModificationUser());
     }
 
-    /**
-     * Tests {@link RateEjb#updateRates(Rate[], boolean)} for existent rates. One of the rate is invalid but
-     * the rest should be updated successfully.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateRates2() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
-        ejb.addRates(rates, true);
-
-        String modUser = "new user";
-        rates[0].setModificationUser(modUser);
-
-        rates[1].setCompany(null); //invalid rate
-        ejb.updateRates(rates, true);
-
-        Rate result = ejb.retrieveRate(rates[0].getId(), rates[0].getCompany().getId());
-
-        assertEquals("modificationUser should be updated", modUser, result.getModificationUser());
-    }
 
     /**
      * Tests {@link RateEjb#updateRates(Rate[], boolean)} with empty rates, IAE is expected.
@@ -562,24 +465,7 @@ public class RateEjbTest extends TestCase {
         }
     }
 
-    /**
-     * Tests {@link RateEjb#updateRates(Rate[], boolean)} for not existent rates, no rates should be updated
-     * and RatePersistenceException is expected.
-     *
-     * @throws Exception to JUnit
-     */
-    public void testUpdateRatesNotExistentRates() throws Exception {
-        Rate[] rates = TestHelper.getDefaultRates();
 
-        try {
-            ejb.updateRates(rates, true);
-            fail(
-                "none of the rate exists in persistence, RatePersistenceException is expected since"
-                + "no rate is updated");
-        } catch (RatePersistenceException e) {
-            //success
-        }
-    }
 
     /**
      * Tests {@link RateEjb#updateRates(Rate[], boolean)} with null rates, IAE is expected.
