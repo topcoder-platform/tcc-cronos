@@ -1,133 +1,150 @@
 <CMConfig>
-  <!-- Configuration of Game Interface Logic component -->
-  <Config name="com.orpheus.game.GameDataManagerImpl">
-    <Property name="game_data_ejb_jndi_names">
-      <Value>localjbossBean, Local</Value>
-      <Value>remotejbossBean, Remote</Value>
-    </Property>
-    <!-- the jndi names for admin data ejb -->
-    <Property name="admin_data_ejb_jndi_names">
-      <Value>localAdminDataBean, Local</Value>
-      <Value>remoteAdminDataBean, Remote</Value>
-    </Property>
-    <!-- config shifting from admin logic -->
-    <Property name="jigsaw">
-      <Property name="puzzleTypeName">
-        <Value>jigsaw</Value>
-      </Property>
-      <Property name="width">
-        <Value>120</Value>
-      </Property>
-      <Property name="height">
-        <Value>100</Value>
-      </Property>
-    </Property>
-    <!-- config shifting from admin logic -->
-    <Property name="slidingTile">
-      <Property name="puzzleTypeName">
-        <Value>slidingTile</Value>
-      </Property>
-      <Property name="width">
-        <Value>120</Value>
-      </Property>
-      <Property name="height">
-        <Value>100</Value>
-      </Property>
-    </Property>
-    <!-- config shifting from admin logic -->
-    <Property name="missingLetter">
-      <Property name="puzzleTypeName">
-        <Value>missingLetter</Value>
-      </Property>
-      <Property name="seriesSize">
-        <Value>12</Value>
-      </Property>
-    </Property>
-    <!-- config shifting from admin logic -->
-    <Property name="letterScramble">
-      <Property name="puzzleTypeName">
-        <Value>letterScramble</Value>
-      </Property>
-      <Property name="seriesSize">
-        <Value>12</Value>
-      </Property>
-    </Property>
-    <!-- config shifting from admin logic -->
-    <Property name="RandomStringImageFile">
-      <Value>test_files/accuracy/RandomStringImage.xml</Value>
-    </Property>
-    <Property name="new_game_poll_interval">
-      <Value>1000</Value>
-    </Property>
-    <Property name="game_started_poll_interval">
-      <Value>1000</Value>
-    </Property>
-    <Property name="target_update_poll_interval">
-      <Value>60000</Value>
-    </Property>
-    <Property name="capacity">
-      <Value>1000</Value>
-    </Property>
-    <Property name="errorRate">
-      <Value>0.5</Value>
-    </Property>
-    <Property name="messengerPluginNS">
-      <Value>messengerPluginNS</Value>
-    </Property>
-    <Property name="category">
-      <Value>category</Value>
-    </Property>
-  </Config>
-  <!-- Configuration of Web Site Statistics component -->
-  <Config name="com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl">
-    <Property name="case_sensitive_element">
-      <Value>false</Value>
-    </Property>
-    <Property name="case_sensitive_word">
-      <Value>false</Value>
-    </Property>
-    <Property name="ignore_punctuation">
-      <Value>true</Value>
-    </Property>
-    <Property name="object_factory">
-      <Value>com.topcoder.util.web.sitestatistics.inclusion.rule</Value>
-    </Property>
-    <Property name="element_inclusion_rule">
-      <Value>ElementInclusionRule</Value>
-    </Property>
-    <Property name="word_inclusion_rule">
-      <Value>WordInclusionRule</Value>
-    </Property>
-  </Config>
-  <!-- Configuration of Object Factory component (for Web Site Statistics) -->
-  <Config name="com.topcoder.util.web.sitestatistics.inclusion.rule">
-    <Property name="WordInclusionRule">
-      <Property name="type">
-        <Value>com.topcoder.util.web.sitestatistics.impl.rules.LengthRule</Value>
-      </Property>
-      <Property name="params">
-        <Property name="param1">
-          <Property name="type">
-            <Value>int</Value>
-          </Property>
-          <Property name="value">
-            <Value>2</Value>
-          </Property>
-        </Property>
-        <Property name="param2">
-          <Property name="type">
-            <Value>int</Value>
-          </Property>
-          <Property name="value">
-            <Value>10</Value>
-          </Property>
-        </Property>
-      </Property>
-    </Property>
-    <Property name="ElementInclusionRule">
-      <Property name="type">
-        <Value>com.topcoder.util.web.sitestatistics.impl.rules.TextOnlyElementRule</Value>
-      </Property>
-    </Property>
-  </Config>
+	<!-- Configuration of Game Interface Logic component -->
+	<Config name="com.orpheus.game.GameDataManagerImpl">
+		<Property name="game_data_ejb_jndi_names">
+			<Value>localjbossBean, Local</Value>
+			<Value>remotejbossBean, Remote</Value>
+		</Property>
+		<!-- the jndi names for admin data ejb -->
+		<Property name="admin_data_ejb_jndi_names">
+			<Value>localAdminDataBean, Local</Value>
+			<Value>remoteAdminDataBean, Remote</Value>
+		</Property>
+		<!-- config shifting from admin logic -->
+		<Property name="jigsaw">
+			<Property name="puzzleTypeName">
+				<Value>jigsaw</Value>
+			</Property>
+			<Property name="width">
+				<Value>120</Value>
+			</Property>
+			<Property name="height">
+				<Value>100</Value>
+			</Property>
+		</Property>
+		<!-- config shifting from admin logic -->
+		<Property name="slidingTile">
+			<Property name="puzzleTypeName">
+				<Value>slidingTile</Value>
+			</Property>
+			<Property name="width">
+				<Value>120</Value>
+			</Property>
+			<Property name="height">
+				<Value>100</Value>
+			</Property>
+		</Property>
+		<!-- config shifting from admin logic -->
+		<Property name="missingLetter">
+			<Property name="puzzleTypeName">
+				<Value>missingLetter</Value>
+			</Property>
+			<Property name="seriesSize">
+				<Value>12</Value>
+			</Property>
+		</Property>
+		<!-- config shifting from admin logic -->
+		<Property name="letterScramble">
+			<Property name="puzzleTypeName">
+				<Value>letterScramble</Value>
+			</Property>
+			<Property name="seriesSize">
+				<Value>12</Value>
+			</Property>
+		</Property>
+		<!-- config shifting from admin logic -->
+		<Property name="RandomStringImageFile">
+			<Value>test_files/accuracy/RandomStringImage.xml</Value>
+		</Property>
+		<Property name="new_game_poll_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="game_started_poll_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="target_update_poll_interval">
+			<Value>60000</Value>
+		</Property>
+		<Property name="capacity">
+			<Value>1000</Value>
+		</Property>
+		<Property name="errorRate">
+			<Value>0.5</Value>
+		</Property>
+		<Property name="messengerPluginNS">
+			<Value>messengerPluginNS</Value>
+		</Property>
+		<Property name="category">
+			<Value>category</Value>
+		</Property>
+		<!--  add for the email notification when the domain is updated -->
+		<Property name="emailNotification">
+			<Property name="MessengerPluginID">
+				<Value>1</Value>
+			</Property>
+			<Property name="fromAddress">
+				<Value>service@topcoder.com</Value>
+			</Property>
+			<Property name="subject">
+				<Value>Hello,Game domain target Updated!</Value>
+			</Property>
+			<Property name="recipients">
+				<Value>ivern@topcoder.com</Value>
+				<Value>wuyanbo@topcoder.com</Value>
+				<Value>isvisv@topcoder.com</Value>
+			</Property>
+		</Property>
+	</Config>
+	<!-- Configuration of Web Site Statistics component -->
+	<Config name="com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl">
+		<Property name="case_sensitive_element">
+			<Value>false</Value>
+		</Property>
+		<Property name="case_sensitive_word">
+			<Value>false</Value>
+		</Property>
+		<Property name="ignore_punctuation">
+			<Value>true</Value>
+		</Property>
+		<Property name="object_factory">
+			<Value>com.topcoder.util.web.sitestatistics.inclusion.rule</Value>
+		</Property>
+		<Property name="element_inclusion_rule">
+			<Value>ElementInclusionRule</Value>
+		</Property>
+		<Property name="word_inclusion_rule">
+			<Value>WordInclusionRule</Value>
+		</Property>
+	</Config>
+	<!-- Configuration of Object Factory component (for Web Site Statistics) -->
+	<Config name="com.topcoder.util.web.sitestatistics.inclusion.rule">
+		<Property name="WordInclusionRule">
+			<Property name="type">
+				<Value>com.topcoder.util.web.sitestatistics.impl.rules.LengthRule</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>int</Value>
+					</Property>
+					<Property name="value">
+						<Value>2</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>int</Value>
+					</Property>
+					<Property name="value">
+						<Value>10</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="ElementInclusionRule">
+			<Property name="type">
+				<Value>com.topcoder.util.web.sitestatistics.impl.rules.TextOnlyElementRule</Value>
+			</Property>
+		</Property>
+	</Config>
 </CMConfig>

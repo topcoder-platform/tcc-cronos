@@ -31,6 +31,8 @@ import com.topcoder.bloom.BloomFilter;
 import com.topcoder.bloom.serializers.DefaultBitSetSerializer;
 import com.topcoder.message.messenger.MessageAPI;
 import com.topcoder.message.messenger.MessageException;
+import com.topcoder.message.messenger.Messenger;
+import com.topcoder.message.messenger.MessengerPlugin;
 import com.topcoder.randomstringimg.Configuration;
 import com.topcoder.randomstringimg.InvalidConfigException;
 import com.topcoder.randomstringimg.ObfuscationAlgorithm;
@@ -43,6 +45,7 @@ import com.topcoder.util.auction.Bid;
 import com.topcoder.util.auction.impl.AuctionImpl;
 import com.topcoder.util.compression.CompressionUtility;
 import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.generator.guid.UUIDType;
@@ -344,6 +347,26 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     private final BitSetSerializer bitSetSerializer;
 
     /**
+     * The messengerPlugin name for instantiating the plugin to send email notification.
+     */
+    private final String emailNotificationMessengerPluginName;
+    /**
+     * The email notification from address.
+     */
+    private final String emailNotificationFromAddress;
+    /**
+     * The email notification subject for the domain target update event.
+     */
+    private final String emailNotificationSubject;
+    /**
+     * Array of email notification recipient address. 
+     */
+    private final String [] emailNotificationRecipients;
+    /**
+     * Email notification messenger plugin.
+     */
+    private final MessengerPlugin emailNotificationPlugin;
+    /**
      * <p>
      * Creates a new GameDataManagerImpl instance based on default namespace configuration.
      * </p>
@@ -475,7 +498,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             errorRate = Float.parseFloat(Helper.getMandatoryProperty(namespace, "errorRate"));
             messagerPluginNS = Helper.getMandatoryProperty(namespace, "messengerPluginNS");
             category = Helper.getMandatoryProperty(namespace, "category");
+            
+            //get the email notification setting
+            emailNotificationMessengerPluginName =  Helper.getMandatoryProperty(namespace, "emailNotification.MessengerPluginName");
+            emailNotificationFromAddress = Helper.getMandatoryProperty(namespace, "emailNotification.fromAddress");
+            emailNotificationSubject = Helper.getMandatoryProperty(namespace, "emailNotification.subject");
+            emailNotificationRecipients = Helper.getMandatoryPropertyArray(namespace, "emailNotification.recipients");
 
+            emailNotificationPlugin = Messenger.createInstance().getPlugin(emailNotificationMessengerPluginName);
             //check the intervals should be > 0
             if (gameStartInterval <= 0) {
                 throw new GameDataManagerConfigurationException(
@@ -491,7 +521,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         } catch (NumberFormatException e) {
             throw new GameDataManagerConfigurationException("The value of interval properties should be numbers.",
                 e);
-        }
+        } catch (Exception e) {
+			throw new GameDataManagerConfigurationException("The email notification messenger plugin name is wrongly configed.",e);
+		}
 
 
         Game[] games;
@@ -563,7 +595,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     public GameDataManagerImpl(PuzzleTypeSource puzzleTypeSource, Map puzzleConfigMap, String[] gameDataJndiNames,
             String[] gameDataJndiDesignations, String[] adminDataJndiNames, String[] adminDataJndiDesignations,
             long newGameDiscoveryPollInterval, long gameStartedPollInterval, long targetCheckPollInterval,
-            int capacity, float errorRate, String messengerPluginNS, String category, String randomStringImageFile)
+            int capacity, float errorRate, String messengerPluginNS, String category, String randomStringImageFile,
+            String emailNotificationMessengerPluginName, String emailNotificationFromAddress, String emailSubject, String [] recipients)
         throws GameDataException, GameDataManagerConfigurationException {
         Helper.checkObjectNotNull(puzzleTypeSource, "puzzleTypeSource");
         Helper.checkObjectNotNull(puzzleConfigMap, "puzzleConfigMap");
@@ -572,7 +605,19 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         Helper.checkObjectNotNull(adminDataJndiNames, "adminDataJndiNames");
         Helper.checkObjectNotNull(adminDataJndiDesignations, "adminDataJndiDesignations");
         Helper.checkStringNotNullOrEmpty(messengerPluginNS, "messengerPluginNS");
-
+        Helper.checkStringNotNullOrEmpty(emailNotificationFromAddress, " email notification from address");
+        Helper.checkStringNotNullOrEmpty(emailSubject, "email notification  subject");
+        Helper.checkStringNotNullOrEmpty(emailNotificationMessengerPluginName, "emailNotificationMessengerPluginName");
+        
+        //check the recipients email address array
+        Helper.checkObjectNotNull(recipients, "email recipient");
+        for(int i = 0 ; i < recipients.length; i++){
+        	if ( recipients[i] == null || recipients[i].trim().length() == 0){
+        		throw new IllegalArgumentException("The recipients array contains null email address.");
+        	}
+        }
+        
+        
         this.puzzleTypeSource = puzzleTypeSource;
 
         this.puzzleConfigMap = puzzleConfigMap;
@@ -630,7 +675,18 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         this.errorRate = errorRate;
         this.messagerPluginNS = messengerPluginNS;
         this.category = category;
+        
+        this.emailNotificationFromAddress = emailNotificationFromAddress;
+        this.emailNotificationMessengerPluginName = emailNotificationMessengerPluginName;
+        this.emailNotificationSubject = emailSubject;
+        this.emailNotificationRecipients = recipients;
 
+        try {
+			emailNotificationPlugin = Messenger.createInstance().getPlugin(emailNotificationMessengerPluginName);
+		} catch (Exception e1) {
+			throw new GameDataManagerConfigurationException("The email notification messenger plugin name is wrongly configed.",e1);
+		}
+        
         /*
          * Create Hash Algorithm Manager
          */
@@ -2189,6 +2245,15 @@ public class GameDataManagerImpl extends BaseGameDataManager {
               + "for that site, you don't need to do anything. If you are on site and looking for the old target, "
               + "don't forget to switch to the new one. Happy Hunting!";
         /**
+         * Send an email message to intended recipients (for example, administrators) 
+         * notifying them on a domain target which has been changed.
+         * This is the message content pattern. {0},{1},{2},{3} will be replaced by old target name, site,game name,
+         * new target and the url. 
+         */
+        private static final String TARGET_UPDATED_EMAIL_CONTENT_PATTERN
+            = "Alert: Target {0} from site {1} in game {2} has changed to {3}. The clue can be found at {4}.";
+        
+        /**
          * <p>
          * Creates a new instance initialized with the parameters.
          * </p>
@@ -2275,15 +2340,37 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             for (int gameIndex = 0; gameIndex < games.length; ++gameIndex) {
                 HostingBlock[] hostingBlocks = games[gameIndex].getBlocks();
 
+                //it holds the upcoming slot after the currently slot
+                HostingSlot upComingSlot = null;
+                //is the upcoming slot will be the first slot of the block
+                boolean firstElement = true;
+                
                 for (int blockIndex = 0; blockIndex < hostingBlocks.length; ++blockIndex) {
                     HostingSlot[] slots = hostingBlocks[blockIndex].getSlots();
 
+                    //the upcoming slot will be the first slot of the next block after checking one block
+                    if (blockIndex > 0 && firstElement){
+                    	upComingSlot = slots[0];
+                    }
+                    boolean inarray = false;
+                    
                     for (int slotIndex = 0; slotIndex < slots.length; ++slotIndex) {
                         Date hostingStart = slots[slotIndex].getHostingStart();
 
-                        // Skip slots that have not yet begun hosting
+                        //if the current slot is not the last one in the block, the next slot will be the upcoming slot
+                        if ( hostingStart != null && slots[slotIndex].getHostingEnd() == null && slotIndex < slots.length -1){
+                        	upComingSlot = slots[slotIndex+1];
+                    		firstElement = false;
+                    		inarray = true;
+                        }
+                        // Skip slots that have not yet begun hosting except the upcomming slots
                         if (hostingStart == null) {
-                            continue;
+                        	if ( upComingSlot == null){
+                        		continue;
+                        	} else {
+                        		//for the upcoming slot, it also need to check the update and this is the only except
+                        		upComingSlot = null;
+                        	}
                         }
 
                         DomainTarget[] targets = slots[slotIndex].getDomainTargets();
@@ -2303,6 +2390,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                                 //broadcast a message notifying the players in case some domain target has been changed
                                 sendTargetChangeBroadCastMsg(games[gameIndex].getName(), updatedTarget,
                                                              oldTarget, slots[slotIndex].getDomain());
+                                
+                                //send email notification to the configed intended recipients (for example, administrators) 
+                                sendEmailNotificationOnTargetChange(games[gameIndex].getName(), updatedTarget,
+                                        oldTarget, slots[slotIndex].getDomain());
                             }
                         }
 
@@ -2326,6 +2417,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                             }
                         }
                     }
+                    if ( !inarray){
+                    	firstElement = true;
+                    }
+              
                 }
             }
         }
@@ -2343,8 +2438,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                                                   Domain domain) {
 	        try{
 	        	String content = MessageFormat.format(TARGET_UPDATED_MSG_CONTENT_PATTERN,
-	        			new Object[] {gameName, domain.getDomainName(), "'" + oldTarget.getIdentifierText() + "'",
-                            "'" + updatedTarget.getIdentifierText() + "'"});
+	        			new Object[] {"'" + oldTarget.getIdentifierText() + "'", domain.getDomainName(), gameName, 
+	        						  "'" + updatedTarget.getIdentifierText() + "'"});
 	        	
 	            OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
 	            MessageAPI message = plugin.createMessage();
@@ -2360,6 +2455,33 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 	        }
 		}
 
+        /**
+         * <p>
+         * This method is used to send email notification to the intended recipients when the domain target is updated.
+         * </p>
+         * @param gameName the game name will be part of the message content
+         * @param updatedTarget the updated target to be part of message content
+         * @param oldTarget the old target to be part of message content
+         * @param domain the domain which the updated target belongs to
+         */
+        private void sendEmailNotificationOnTargetChange(String gameName, DomainTarget newTarget, DomainTarget oldTarget,
+        		                                         Domain domain){
+        	try{
+	        	String content = MessageFormat.format(TARGET_UPDATED_EMAIL_CONTENT_PATTERN,
+	        			new Object[] {gameName, domain.getDomainName(), "'" + oldTarget.getIdentifierText() + "'",
+                            "'" + newTarget.getIdentifierText() + "'", newTarget.getUriPath()});
+
+	            MessageAPI msg = emailNotificationPlugin.createMessage();
+	            msg.setParameterValue("from", emailNotificationFromAddress);
+	            msg.setParameterValue("to", emailNotificationRecipients);
+	            msg.setParameterValue("body", content);
+	            msg.setParameterValue("subject", emailNotificationSubject);
+	            emailNotificationPlugin.sendMessage(msg);
+	            
+	        }catch(Exception e){
+	        	//eat all the exception here
+	        }
+        }
 		/**
          * <p>
          * Checks target for existence and updates it if needed. If this method fails for any
