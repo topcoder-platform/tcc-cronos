@@ -2343,17 +2343,16 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 //it holds the upcoming slot after the currently slot
                 HostingSlot upComingSlot = null;
                 //is the upcoming slot will be the first slot of the block
-                boolean inarray = false;
+                boolean firstElementOfNextBlock = true;
                 //the flag to note the uncoming slot has been found or not
                 boolean foundupcoming = false;
-                //already find the current slot
+                //the current slot has been found
                 boolean foundcurrent = false;
-                
                 for (int blockIndex = 0; blockIndex < hostingBlocks.length; ++blockIndex) {
                     HostingSlot[] slots = hostingBlocks[blockIndex].getSlots();
 
                     //the upcoming slot will be the first slot of the next not empty block 
-                    if (blockIndex > 0 && !inarray && !foundupcoming && foundcurrent){
+                    if (blockIndex > 0 && firstElementOfNextBlock && !foundupcoming && foundcurrent){
                     	if ( slots.length > 0){
                     		upComingSlot = slots[0];
                     		foundupcoming = true;
@@ -2372,66 +2371,69 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                         	break;
                         }
                         
-                        //only the current slot and the upcoming slot need to check
-                        if ( ( hostingStart != null && slots[slotIndex].getHostingEnd() == null ) || upComingSlot != null){
-                        	//it is checking upcoming slot now
-                        	if ( upComingSlot != null){
+                        //if the current slot is not the last one in the block, the next slot will be the upcoming slot
+                        if ( hostingStart != null && slots[slotIndex].getHostingEnd() == null && slotIndex < slots.length -1){
+                        	upComingSlot = slots[slotIndex+1];
+                        	firstElementOfNextBlock = false;
+                        	foundupcoming = true;
+                        }
+                        // Skip slots that have not yet begun hosting except the upcomming slots
+                        if (hostingStart == null) {
+                        	if ( upComingSlot == null){
+                        		continue;
+                        	} else {
+                        		//for the upcoming slot, it also need to check the update and this is the only except
                         		upComingSlot = null;
                         	}
-                        	//if the current slot is not the last one in the block, the next slot will be the upcoming slot
-                        	if ( slotIndex < slots.length -1){
-	                        	upComingSlot = slots[slotIndex+1];
-	                        	inarray = true;
-	                        	foundupcoming = true;
-                        	}
-                        
-                        	foundcurrent = true;
+                        }
 
-	                        DomainTarget[] targets = slots[slotIndex].getDomainTargets();
-	                        boolean anyUpdated = false;
-	                        boolean firstUpdated = false;
-	
-	                        for (int targetIndex = 0; targetIndex < targets.length; ++targetIndex) {
-	                            DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[targetIndex], pageCache);
-	
-	                            if (updatedTarget != null) {
-	                                DomainTarget oldTarget = targets[targetIndex];
-	                                targets[targetIndex] = updatedTarget;
-	                                anyUpdated = true;
-	                                if (targetIndex == 0) {
-	                                    firstUpdated = true;
-	                                }
-	                                //broadcast a message notifying the players in case some domain target has been changed
-	                                sendTargetChangeBroadCastMsg(games[gameIndex].getName(), updatedTarget,
-	                                                             oldTarget, slots[slotIndex].getDomain());
-	                                
-	                                //send email notification to the configed intended recipients (for example, administrators) 
-	                                sendEmailNotificationOnTargetChange(games[gameIndex].getName(), updatedTarget,
-	                                        oldTarget, slots[slotIndex].getDomain());
-	                            }
-	                        }
-	
-	                        // Persist the slot if any target has been updated
-	                        if (anyUpdated) {
-	                            // Create a new HostingSlotImpl instance
-	                            HostingSlotImpl newSlot = Helper.doCopy(slots[slotIndex]);
-	                            // Set the new domain targets
-	                            newSlot.setDomainTargets(targets);
-	                            // Update slot
-	                            persistSlot(newSlot);
-	
-	                            if (firstUpdated) {
-	                                try {
-	                                    regenerateBrainTeaser(slots[slotIndex].getId().longValue());
-	                                } catch (GameDataException gde) {
-	                                    System.err.println("Unable to generate a new brain teaser for slot "
-	                                            + slots[slotIndex].getId().longValue());
-	                                    gde.printStackTrace(System.err);
-	                                }
-	                            }
-	                        }
+                        foundcurrent = true;
+                        
+                        DomainTarget[] targets = slots[slotIndex].getDomainTargets();
+                        boolean anyUpdated = false;
+                        boolean firstUpdated = false;
+
+                        for (int targetIndex = 0; targetIndex < targets.length; ++targetIndex) {
+                            DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[targetIndex], pageCache);
+
+                            if (updatedTarget != null) {
+                                DomainTarget oldTarget = targets[targetIndex];
+                                targets[targetIndex] = updatedTarget;
+                                anyUpdated = true;
+                                if (targetIndex == 0) {
+                                    firstUpdated = true;
+                                }
+                                //broadcast a message notifying the players in case some domain target has been changed
+                                sendTargetChangeBroadCastMsg(games[gameIndex].getName(), updatedTarget,
+                                                             oldTarget, slots[slotIndex].getDomain());
+                                
+                                //send email notification to the configed intended recipients (for example, administrators) 
+                                sendEmailNotificationOnTargetChange(games[gameIndex].getName(), updatedTarget,
+                                        oldTarget, slots[slotIndex].getDomain());
+                            }
+                        }
+
+                        // Persist the slot if any target has been updated
+                        if (anyUpdated) {
+                            // Create a new HostingSlotImpl instance
+                            HostingSlotImpl newSlot = Helper.doCopy(slots[slotIndex]);
+                            // Set the new domain targets
+                            newSlot.setDomainTargets(targets);
+                            // Update slot
+                            persistSlot(newSlot);
+
+                            if (firstUpdated) {
+                                try {
+                                    regenerateBrainTeaser(slots[slotIndex].getId().longValue());
+                                } catch (GameDataException gde) {
+                                    System.err.println("Unable to generate a new brain teaser for slot "
+                                            + slots[slotIndex].getId().longValue());
+                                    gde.printStackTrace(System.err);
+                                }
+                            }
                         }
                     }
+              
                 }
             }
         }
