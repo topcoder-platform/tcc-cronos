@@ -2343,25 +2343,38 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 //it holds the upcoming slot after the currently slot
                 HostingSlot upComingSlot = null;
                 //is the upcoming slot will be the first slot of the block
-                boolean firstElement = true;
+                boolean firstElementOfNextBlock = true;
+                //the flag to note the uncoming slot has been found or not
+                boolean foundupcoming = false;
                 
                 for (int blockIndex = 0; blockIndex < hostingBlocks.length; ++blockIndex) {
                     HostingSlot[] slots = hostingBlocks[blockIndex].getSlots();
 
-                    //the upcoming slot will be the first slot of the next block after checking one block
-                    if (blockIndex > 0 && firstElement){
-                    	upComingSlot = slots[0];
+                    //the upcoming slot will be the first slot of the next not empty block 
+                    if (blockIndex > 0 && firstElementOfNextBlock && !foundupcoming){
+                    	if ( slots.length > 0){
+                    		upComingSlot = slots[0];
+                    		foundupcoming = true;
+                    	}
                     }
-                    boolean inarray = false;
+                    //if the uncoming slot is already checked, finish checking for this game
+                    if ( foundupcoming && upComingSlot == null){
+                    	break;
+                    }
                     
                     for (int slotIndex = 0; slotIndex < slots.length; ++slotIndex) {
                         Date hostingStart = slots[slotIndex].getHostingStart();
 
+                        //if the uncoming slot which is in this slot has been checked, skip the left slots
+                        if ( foundupcoming && upComingSlot == null){
+                        	break;
+                        }
+                        
                         //if the current slot is not the last one in the block, the next slot will be the upcoming slot
                         if ( hostingStart != null && slots[slotIndex].getHostingEnd() == null && slotIndex < slots.length -1){
                         	upComingSlot = slots[slotIndex+1];
-                    		firstElement = false;
-                    		inarray = true;
+                        	firstElementOfNextBlock = false;
+                        	foundupcoming = true;
                         }
                         // Skip slots that have not yet begun hosting except the upcomming slots
                         if (hostingStart == null) {
@@ -2417,9 +2430,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                             }
                         }
                     }
-                    if ( !inarray){
-                    	firstElement = true;
-                    }
               
                 }
             }
@@ -2438,8 +2448,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                                                   Domain domain) {
 	        try{
 	        	String content = MessageFormat.format(TARGET_UPDATED_MSG_CONTENT_PATTERN,
-	        			new Object[] {"'" + oldTarget.getIdentifierText() + "'", domain.getDomainName(), gameName, 
-	        						  "'" + updatedTarget.getIdentifierText() + "'"});
+	        			new Object[] {gameName, domain.getDomainName(), "'" + oldTarget.getIdentifierText() + "'",
+                            "'" + updatedTarget.getIdentifierText() + "'"});
 	        	
 	            OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
 	            MessageAPI message = plugin.createMessage();
@@ -2468,7 +2478,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         		                                         Domain domain){
         	try{
 	        	String content = MessageFormat.format(TARGET_UPDATED_EMAIL_CONTENT_PATTERN,
-	        			new Object[] {gameName, domain.getDomainName(), "'" + oldTarget.getIdentifierText() + "'",
+	        			new Object[] {"'" + oldTarget.getIdentifierText() + "'",domain.getDomainName(),gameName,
                             "'" + newTarget.getIdentifierText() + "'", newTarget.getUriPath()});
 
 	            MessageAPI msg = emailNotificationPlugin.createMessage();
