@@ -25,12 +25,10 @@ import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.ImageInfo;
 import com.orpheus.game.persistence.PersistenceException;
 import com.orpheus.game.persistence.entities.DomainTargetImpl;
-
 import com.topcoder.bloom.BitSetSerializer;
 import com.topcoder.bloom.BloomFilter;
 import com.topcoder.bloom.serializers.DefaultBitSetSerializer;
 import com.topcoder.message.messenger.MessageAPI;
-import com.topcoder.message.messenger.MessageException;
 import com.topcoder.message.messenger.Messenger;
 import com.topcoder.message.messenger.MessengerPlugin;
 import com.topcoder.randomstringimg.Configuration;
@@ -45,10 +43,12 @@ import com.topcoder.util.auction.Bid;
 import com.topcoder.util.auction.impl.AuctionImpl;
 import com.topcoder.util.compression.CompressionUtility;
 import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.generator.guid.UUIDType;
+import com.topcoder.util.generator.guid.UUIDUtility;
+import com.topcoder.util.image.manipulation.Image;
+import com.topcoder.util.image.manipulation.image.MutableMemoryImage;
 import com.topcoder.util.net.httputility.HttpException;
 import com.topcoder.util.net.httputility.HttpUtility;
 import com.topcoder.util.objectfactory.ObjectFactory;
@@ -57,26 +57,24 @@ import com.topcoder.util.puzzle.PuzzleData;
 import com.topcoder.util.puzzle.PuzzleGenerator;
 import com.topcoder.util.puzzle.PuzzleType;
 import com.topcoder.util.puzzle.PuzzleTypeSource;
-import com.topcoder.util.url.validation.SiteValidationResults;
-import com.topcoder.util.url.validation.SiteValidator;
-import com.topcoder.util.url.validation.URLAndFilter;
-import com.topcoder.util.url.validation.URLFilter;
-import com.topcoder.util.url.validation.URLHostFilter;
-import com.topcoder.util.url.validation.SiteValidator;
 import com.topcoder.util.web.sitestatistics.SiteStatistics;
 import com.topcoder.util.web.sitestatistics.StatisticsException;
 import com.topcoder.util.web.sitestatistics.TextStatistics;
+import com.topcoder.web.frontcontroller.results.DownloadData;
 
-import java.net.MalformedURLException;
-
-import java.awt.Color;
+import javax.ejb.EJBHome;
+import javax.ejb.EJBLocalHome;
+import javax.imageio.ImageIO;
+import javax.naming.InitialContext;
+import javax.rmi.PortableRemoteObject;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
+import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -90,17 +88,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-
-import javax.ejb.EJBHome;
-import javax.ejb.EJBLocalHome;
-import javax.imageio.ImageIO;
-import javax.naming.InitialContext;
-import javax.rmi.PortableRemoteObject;
-
-import com.topcoder.util.generator.guid.UUIDUtility;
-import com.topcoder.util.image.manipulation.Image;
-import com.topcoder.util.image.manipulation.image.MutableMemoryImage;
-import com.topcoder.web.frontcontroller.results.DownloadData;
 
 
 /**
@@ -359,7 +346,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      */
     private final String emailNotificationSubject;
     /**
-     * Array of email notification recipient address. 
+     * Array of email notification recipient address.
      */
     private final String [] emailNotificationRecipients;
     /**
@@ -498,7 +485,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             errorRate = Float.parseFloat(Helper.getMandatoryProperty(namespace, "errorRate"));
             messagerPluginNS = Helper.getMandatoryProperty(namespace, "messengerPluginNS");
             category = Helper.getMandatoryProperty(namespace, "category");
-            
+
             //get the email notification setting
             emailNotificationMessengerPluginName =  Helper.getMandatoryProperty(namespace, "emailNotification.MessengerPluginName");
             emailNotificationFromAddress = Helper.getMandatoryProperty(namespace, "emailNotification.fromAddress");
@@ -608,7 +595,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         Helper.checkStringNotNullOrEmpty(emailNotificationFromAddress, " email notification from address");
         Helper.checkStringNotNullOrEmpty(emailSubject, "email notification  subject");
         Helper.checkStringNotNullOrEmpty(emailNotificationMessengerPluginName, "emailNotificationMessengerPluginName");
-        
+
         //check the recipients email address array
         Helper.checkObjectNotNull(recipients, "email recipient");
         for(int i = 0 ; i < recipients.length; i++){
@@ -616,8 +603,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         		throw new IllegalArgumentException("The recipients array contains null email address.");
         	}
         }
-        
-        
+
+
         this.puzzleTypeSource = puzzleTypeSource;
 
         this.puzzleConfigMap = puzzleConfigMap;
@@ -675,7 +662,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         this.errorRate = errorRate;
         this.messagerPluginNS = messengerPluginNS;
         this.category = category;
-        
+
         this.emailNotificationFromAddress = emailNotificationFromAddress;
         this.emailNotificationMessengerPluginName = emailNotificationMessengerPluginName;
         this.emailNotificationSubject = emailSubject;
@@ -686,7 +673,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 		} catch (Exception e1) {
 			throw new GameDataManagerConfigurationException("The email notification messenger plugin name is wrongly configed.",e1);
 		}
-        
+
         /*
          * Create Hash Algorithm Manager
          */
@@ -961,7 +948,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
         Set testedURLs = new HashSet();
         HttpUtility http = new HttpUtility(HttpUtility.GET);
-        String baseURL = "http://" + domain.getDomainName() + "/"; 
+        String baseURL = "http://" + domain.getDomainName() + "/";
 
         http.setFollowRedirects(true);
         http.setDepthLimit(10);
@@ -1018,7 +1005,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             });
 
             String contentType = http.getResponseHeaders().getByName("content-type");
-        
+
             return ((http.getResponseStatusCode() == 200) && (contentType != null)
                     && contentType.replaceFirst("[+;].*", "").toLowerCase().equals("text/html"));
         } catch (HttpException he) {
@@ -2240,19 +2227,19 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * old target and new target.
          */
         private static final String TARGET_UPDATED_MSG_CONTENT_PATTERN
-            = "Hi - its your friend Game Administrators here. To make the game more fun we "
+            = "Hi - its your friendly Game Administrators here. To make the game more fun we "
               + "have changed one of the targets in Game {0} for site {1} from {2} to {3}. If you already have a key "
               + "for that site, you don't need to do anything. If you are on site and looking for the old target, "
               + "don't forget to switch to the new one. Happy Hunting!";
         /**
-         * Send an email message to intended recipients (for example, administrators) 
+         * Send an email message to intended recipients (for example, administrators)
          * notifying them on a domain target which has been changed.
          * This is the message content pattern. {0},{1},{2},{3} will be replaced by old target name, site,game name,
-         * new target and the url. 
+         * new target and the url.
          */
         private static final String TARGET_UPDATED_EMAIL_CONTENT_PATTERN
             = "Alert: Target {0} from site {1} in game {2} has changed to {3}. The clue can be found at {4}.";
-        
+
         /**
          * <p>
          * Creates a new instance initialized with the parameters.
@@ -2290,7 +2277,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                         break;
                     }
                 }
-
+                System.err.println("TargetCheckNotifier is awaken and starts checking the games for invalid targets ...");
                 try {
                     // Get games that have not ended yet
                     Game[] games;
@@ -2304,8 +2291,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                     // This will check whether any targets are in ned of update,
                     // and update those ones that need to be updated
                     updateGames(games);
+                    System.err.println("TargetCheckNotifier has finished checking the games for invalid targets. "
+                                       + "The thread will sleep for " + this.sleepInterval + " ms");
                 } catch (Exception e) {
                     // eat the exception
+                    System.err.println("TargetCheckNotifier got an exception while checking the targets for existence. "
+                                       + "(The thread is not interrupted): "
+                                       + e.getMessage());
+                    e.printStackTrace(System.err);
                 }
             }
 
@@ -2339,6 +2332,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
             for (int gameIndex = 0; gameIndex < games.length; ++gameIndex) {
                 HostingBlock[] hostingBlocks = games[gameIndex].getBlocks();
+                System.err.println("TargetCheckNotifier is going to check game " + games[gameIndex].getName()
+                                   + " for invalid targets ...");
 
                 //it holds the upcoming slot after the currently slot
                 HostingSlot upComingSlot = null;
@@ -2351,7 +2346,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 for (int blockIndex = 0; blockIndex < hostingBlocks.length; ++blockIndex) {
                     HostingSlot[] slots = hostingBlocks[blockIndex].getSlots();
 
-                    //the upcoming slot will be the first slot of the next not empty block 
+                    //the upcoming slot will be the first slot of the next not empty block
                     if (blockIndex > 0 && firstElementOfNextBlock && !foundupcoming && foundcurrent){
                     	if ( slots.length > 0){
                     		upComingSlot = slots[0];
@@ -2362,7 +2357,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                     if ( foundupcoming && upComingSlot == null){
                     	break;
                     }
-                    
+
                     for (int slotIndex = 0; slotIndex < slots.length; ++slotIndex) {
                         Date hostingStart = slots[slotIndex].getHostingStart();
 
@@ -2370,7 +2365,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                         if ( foundupcoming && upComingSlot == null){
                         	break;
                         }
-                        
+
                         //if the current slot is not the last one in the block, the next slot will be the upcoming slot
                         if ( hostingStart != null && slots[slotIndex].getHostingEnd() == null && slotIndex < slots.length -1){
                         	upComingSlot = slots[slotIndex+1];
@@ -2388,7 +2383,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                         }
 
                         foundcurrent = true;
-                        
+
+                        System.err.println("TargetCheckNotifier is checking slot [" + slots[slotIndex].getId()
+                                                                   + "] for game [" + games[gameIndex].getName() + "] for invalid targets ...");
+
                         DomainTarget[] targets = slots[slotIndex].getDomainTargets();
                         boolean anyUpdated = false;
                         boolean firstUpdated = false;
@@ -2397,6 +2395,14 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                             DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[targetIndex], pageCache);
 
                             if (updatedTarget != null) {
+                                System.err.println("TargetCheckNotifier has found invalid target ["
+                                                   + targets[targetIndex].getIdentifierText() + "] for game "
+                                                   + games[gameIndex].getName() + " and page ["
+                                                   + targets[targetIndex].getUriPath() + "] and slot ["
+                                                   + slots[slotIndex].getId() + "]"
+                                                   + " and replaces it with new target ["
+                                                   + updatedTarget.getIdentifierText() + "]");
+
                                 DomainTarget oldTarget = targets[targetIndex];
                                 targets[targetIndex] = updatedTarget;
                                 anyUpdated = true;
@@ -2406,8 +2412,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                                 //broadcast a message notifying the players in case some domain target has been changed
                                 sendTargetChangeBroadCastMsg(games[gameIndex].getName(), updatedTarget,
                                                              oldTarget, slots[slotIndex].getDomain());
-                                
-                                //send email notification to the configed intended recipients (for example, administrators) 
+
+                                //send email notification to the configed intended recipients (for example, administrators)
                                 sendEmailNotificationOnTargetChange(games[gameIndex].getName(), updatedTarget,
                                         oldTarget, slots[slotIndex].getDomain());
                             }
@@ -2421,20 +2427,23 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                             newSlot.setDomainTargets(targets);
                             // Update slot
                             persistSlot(newSlot);
-
+                            System.err.println("TargetCheckNotifier saved slot [" + slots[slotIndex].getId()
+                                               + "] with updated targets to DB");
                             if (firstUpdated) {
                                 try {
                                     regenerateBrainTeaser(slots[slotIndex].getId().longValue());
                                 } catch (GameDataException gde) {
-                                    System.err.println("Unable to generate a new brain teaser for slot "
+                                    System.err.println("TargetCheckNotifier is unable to generate a new brain teaser for slot "
                                             + slots[slotIndex].getId().longValue());
                                     gde.printStackTrace(System.err);
                                 }
                             }
                         }
                     }
-              
+
                 }
+                System.err.println("TargetCheckNotifier has checked game " + games[gameIndex].getName()
+                                   + " for invalid targets.");
             }
         }
 
@@ -2450,22 +2459,32 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         private void sendTargetChangeBroadCastMsg(String gameName, DomainTarget updatedTarget, DomainTarget oldTarget,
                                                   Domain domain) {
 	        try{
+                System.err.println("TargetCheckNotifier is going to send a message notifying on replaced "
+                                   + "target [" + oldTarget.getIdentifierText() + "] for domain ["
+                                   + domain.getDomainName() + "] and game [" + gameName + "] ...");
 	        	String content = MessageFormat.format(TARGET_UPDATED_MSG_CONTENT_PATTERN,
 	        			new Object[] {gameName, domain.getDomainName(), "'" + oldTarget.getIdentifierText() + "'",
                             "'" + updatedTarget.getIdentifierText() + "'"});
-	        	
+
 	            OrpheusMessengerPlugin plugin = new RemoteOrpheusMessengerPlugin(messagerPluginNS);
 	            MessageAPI message = plugin.createMessage();
-	
+
 	            message.setParameterValue(ADMIN_MESSAGE_GUID, UUIDUtility.getNextUUID(UUIDType.TYPE1).toString());
 	            message.setParameterValue(ADMIN_MESSAGE_CATEGORY, gameName);
 	            message.setParameterValue(ADMIN_MESSAGE_CONTENT_TYPE, "text");
 	            message.setParameterValue(ADMIN_MESSAGE_CONTENT, content);
 	            message.setParameterValue(ADMIN_MESSAGE_TIMESTAMP, new Date());
 	            plugin.sendMessage(message);
-	        }catch(Exception e){
+                System.err.println("TargetCheckNotifier has sent a message notifying on replaced "
+                                   + "target [" + oldTarget.getIdentifierText() + "] for domain ["
+                                   + domain.getDomainName() + "] and game [" + gameName + "].");
+	        } catch(Exception e){
 	        	//eat all the exception here
-	        }
+                System.err.println("TargetCheckNotifier got an exception while broadcasting a message on replaced "
+                                   + "target [" + oldTarget.getIdentifierText() + "] for domain ["
+                                   + domain.getDomainName() + "] and game [" + gameName + "]. (The thread is not interrupted.)");
+                e.printStackTrace(System.err);
+            }
 		}
 
         /**
@@ -2490,9 +2509,15 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 	            msg.setParameterValue("body", content);
 	            msg.setParameterValue("subject", emailNotificationSubject);
 	            emailNotificationPlugin.sendMessage(msg);
-	            
+                System.err.println("TargetCheckNotifier has emailed a message notifying admins on replaced "
+                                   + "target [" + oldTarget.getIdentifierText() + "] for domain ["
+                                   + domain.getDomainName() + "] and game [" + gameName + "].");
 	        }catch(Exception e){
 	        	//eat all the exception here
+                System.err.println("TargetCheckNotifier got an exception while emailing a message to admins notifying on replaced "
+                                   + "target [" + oldTarget.getIdentifierText() + "] for domain ["
+                                   + domain.getDomainName() + "] and game [" + gameName + "]. (The thread is not interrupted.)");
+                e.printStackTrace(System.err);
 	        }
         }
 		/**
