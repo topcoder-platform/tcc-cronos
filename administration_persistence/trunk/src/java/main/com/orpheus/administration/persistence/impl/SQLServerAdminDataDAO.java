@@ -71,6 +71,9 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     /**
      * The query used to retrieve the set of pending winners.
      */
+    private static final String PENDING_WINNER_QUERY =
+        "SELECT t1.player_id, t1.game_id FROM plyr_compltd_game t1 WHERE t1.is_handled = 0 ORDER BY t1.sequence_number";
+/*
     private static final String PENDING_WINNER_QUERY = "SELECT t1.player_id, t1.game_id "
         + "FROM plyr_compltd_game t1 INNER JOIN "
             + "(SELECT t2.game_id AS compltd_game_id, MIN(t2.sequence_number) as min_sequence_number "
@@ -79,6 +82,7 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             + "GROUP BY t2.game_id) t4 "
         + "ON (t1.game_id = t4.compltd_game_id AND t1.sequence_number = t4.min_sequence_number) "
         + "ORDER BY t1.sequence_number ";
+*/
 
     /**
      * The query used to determine the pending winner count.
