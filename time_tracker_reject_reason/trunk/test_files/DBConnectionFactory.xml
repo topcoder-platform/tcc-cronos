@@ -21,7 +21,7 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://10.214.62.189:1526/time_tracker_reject_reason:informixserver=informix</Value>
+                        <Value>jdbc:informix-sqli://10.37.129.3:1526/time_tracker_reject_reason:informixserver=ol_topcoder</Value>
                     </Property>
                     <Property name="SelectMethod">
                         <Value>cursor</Value>
@@ -30,7 +30,7 @@
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>informix</Value>
+                        <Value>sa</Value>
                     </Property>
                 </Property>
             </Property>

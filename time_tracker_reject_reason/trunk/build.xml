@@ -163,7 +163,7 @@
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="j2ee.jar" value="${ext_libdir}/j2ee/1.4/jboss-j2ee.jar"/>
-    <property name="cglib.jar" value="${ext_libdir}/cglib-nodep-2.1_3.jar.jar"/>
+    <property name="cglib.jar" value="${ext_libdir}/cglib-nodep-2.1_3.jar"/>
     <property name="commons-logging.jar" value="${ext_libdir}/commons-logging.jar"/>
     <property name="jakarta-oro.jar" value="${ext_libdir}/jakarta-oro-2.0.8.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
@@ -349,7 +349,6 @@
 
     <target name="main" depends="deploy,test">
     </target>
-
     <!-- ************************************************************************** -->
     <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
     <!-- ************************************************************************** -->
@@ -359,36 +358,34 @@
 
         <mkdir dir="${dist_conf}"/>
         <copy todir="${dist_conf}">
-            <fileset dir="${configdir}"/>
+            <fileset dir="${configdir}" />
         </copy>
 
         <mkdir dir="${dist_coverage}"/>
         <mkdir dir="${docs_coverage}"/>
 
-        <!--
         <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
 
         <copy todir="${dist_coverage}">
-            <fileset dir="${testlogdir}/coverage"/>
+            <fileset dir="${testlogdir}/coverage" />
         </copy>
         <copy todir="${docs_coverage}">
-            <fileset dir="${testlogdir}/coverage"/>
+            <fileset dir="${testlogdir}/coverage" />
         </copy>
-        -->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
-            <fileset dir="${srcdir}"/>
+            <fileset dir="${srcdir}" />
         </copy>
 
-        <copy todir="${dist_docs}">
+        <copy todir="${dist_docs}" >
             <fileset dir="${docsdir}">
                 <include name="${component}_Class_Diagram*"/>
                 <include name="${component}_Use_Case_Diagram*"/>
                 <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification.*"/>
-                <include name="${component}_Component Specification.*"/>
+                <include name="${component}_Requirements_Specification*"/>
+                <include name="${component}_Component_Specification*"/>
                 <include name="${component}.zargo"/>
                 <include name="${component}.zuml"/>
             </fileset>
@@ -396,52 +393,48 @@
 
         <mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
-            <fileset dir="${javadocsdir}"/>
+            <fileset dir="${javadocsdir}" />
         </copy>
 
-        <antcall target="package_docs"/>
+        <antcall target="package_docs" />
 
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
-            <fileset dir="${testfiles}"/>
+            <fileset dir="${testfiles}" />
         </copy>
 
-        <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
-        <copy file="README" tofile="${build_tcsdistdir}/README"/>
+        <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
+        <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
 
         <antcall target="move_to_tcs"/>
     </target>
 
     <target name="package_docs" depends="javadoc">
-        <mkdir dir="${dist_docpackage}"/>
-        <mkdir dir="${dist_docpackage}/coverage"/>
+        <mkdir dir="${dist_docpackage}" />
+        <mkdir dir="${dist_docpackage}/coverage" />
 
-        <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${build_tcsdistdir}/${javadocsdir}"/>
+        <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${build_tcsdistdir}/${javadocsdir}" />
 
         <copy todir="${dist_docpackage}">
             <fileset dir="${docsdir}">
                 <include name="${component}_Class_Diagram*"/>
                 <include name="${component}_Use_Case_Diagram*"/>
                 <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification.*"/>
-                <include name="${component}_Component Specification.*"/>
+                <include name="${component}_Requirements_Specification*"/>
+                <include name="${component}_Component_Specification*"/>
             </fileset>
 
-            <!--
             <fileset dir="${testlogdir}">
                 <include name="cobertura.ser"/>
             </fileset>
-            -->
         </copy>
 
-        <!--
         <copy todir="${dist_docpackage}/coverage">
-            <fileset dir="${testlogdir}/coverage"/>
+            <fileset dir="${testlogdir}/coverage" />
         </copy>
-        -->
 
-        <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}"/>
+        <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}" />
     </target>
 
     <target name="move_to_tcs">
@@ -458,14 +451,14 @@
              includes="${configdir}/**,${javamain}/**/*.java,${javatests}/${packagedir}/**,${testlogdir}/**,${testfiles}/**,${docsdir}/**"
              excludes="${javatests}/${packagedir}/AllTests.java,${javatests}/${packagedir}/stresstests/*,${javatests}/${packagedir}/failuretests/*,
                        ${javatests}/${packagedir}/accuracytests/*"
-                />
+        />
     </target>
 
     <target name="design_submission">
         <jar jarfile="${design_submission.jar}"
              basedir="."
              includes="${configdir}/**,${javamain}/**,${docsdir}/**,${testfiles}/**"
-                />
+        />
     </target>
 
     <target name="dev_dist">
@@ -479,7 +472,7 @@
                        ${docsdir}/**,
                        ${jar_tcs_libdir}/**,
                        ${testfiles}/**"
-                />
+        />
 
         <delete dir="${jar_tcs_libdir}"/>
     </target>
@@ -493,19 +486,7 @@
                        ${docsdir}/**,
                        ${jar_tcs_libdir}/**,
                        ${testfiles}/**"
-                />
-    </target>
-
-    <taskdef resource="checkstyletask.properties"/>
-
-    <target name="checkstyle" depends="compile">
-        <mkdir dir="${testlogdir}"/>
-        <checkstyle config="${ext_libdir}/tcs_checkstyle_config/tc_checks.xml"
-                    classpath="${ext_libdir}/tcs_checkstyle_config">
-            <fileset dir="src/java/main" includes="**/*.java"/>
-            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt"/>
-            <property key="basedir" value="${ext_libdir}/tcs_checkstyle_config"/>
-        </checkstyle>
+        />
     </target>
 
     <!-- ************************************************************************** -->

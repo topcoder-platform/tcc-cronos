@@ -48,7 +48,7 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://JAG:1527/reject_reason:informixserver=topcoder_test</Value>
+						<Value>jdbc:informix-sqli://10.37.129.3:1526/time_tracker_reject_reason:informixserver=ol_topcoder</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
@@ -67,13 +67,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://JAG:1527/reject_reason:informixserver=topcoder_test</Value>
+						<Value>jdbc:informix-sqli://10.37.129.3:1526/time_tracker_reject_reason:informixserver=ol_topcoder</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>t0pcoder</Value>
+						<Value>s0</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -86,13 +86,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://JAG:1527/fixed_billing_failure:informixserver=topcoder_test</Value>
+						<Value>jdbc:informix-sqli://10.37.129.3:1526/fixed_billing_failure:informixserver=ol_topcoder</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>topcoder</Value>
+						<Value>sa</Value>
 					</Property>
 				</Property>
 			</Property>

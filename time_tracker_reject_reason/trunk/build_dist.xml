@@ -163,7 +163,7 @@
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="j2ee.jar" value="${ext_libdir}/j2ee/1.4/jboss-j2ee.jar"/>
-    <property name="cglib.jar" value="${ext_libdir}/cglib-nodep-2.1_3.jar.jar"/>
+    <property name="cglib.jar" value="${ext_libdir}/cglib-nodep-2.1_3.jar"/>
     <property name="commons-logging.jar" value="${ext_libdir}/commons-logging.jar"/>
     <property name="jakarta-oro.jar" value="${ext_libdir}/jakarta-oro-2.0.8.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
