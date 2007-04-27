@@ -81,6 +81,7 @@ public class Rate extends TimeTrackerBean {
      */
     public void setCompany(Company company) {
         this.company = company;
+        setChanged(true);
     }
 
     /**
@@ -90,6 +91,7 @@ public class Rate extends TimeTrackerBean {
      */
     public void setDescription(String desc) {
         this.description = desc;
+        setChanged(true);
     }
 
     /**
@@ -99,5 +101,6 @@ public class Rate extends TimeTrackerBean {
      */
     public void setRate(double rate) {
         this.rate = rate;
+        setChanged(true);
     }
 }
