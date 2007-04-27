@@ -158,6 +158,8 @@ public class UnitTestHelper {
         // Create the expense entry
         ExpenseEntry entry = new ExpenseEntry();
         entry.setCompanyId(COMPANY_ID);
+        entry.setClientId(1);
+        entry.setProjectId(1);
         entry.setDescription("Description");
         entry.setCreationUser("Create");
         entry.setModificationUser("Modify");
@@ -172,7 +174,7 @@ public class UnitTestHelper {
         Map rejectReasons = new HashMap();
         rejectReasons.put(new Long(UnitTestHelper.BuildRejectReason().getId()), UnitTestHelper.BuildRejectReason());
         entry.setRejectReasons(rejectReasons);
-
+        
         return entry;
     }
 
