@@ -68,12 +68,12 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
     public static final ApplicationArea APPLICATION_AREA = ApplicationArea.TT_FIXED_BILLING;
 
     /** The SQL String for insert. */
-    private static final String INSERT_ENTRY_SQL = "insert into fix_bill_entry(fix_bill_entry_id, company_id, "
+    private static final String INSERT_ENTRY_SQL = "insert into fix_bill_entry(fix_bill_entry_id, company_id, client_id, project_id,"
         + "invoice_id, fix_bill_status_id, description, entry_date, amount, creation_date, creation_user, "
         + "modification_date, modification_user) values (?,?,?,?,?,?,?,?,?,?,?)";
 
     /** The SQL String for update. */
-    private static final String UPDATE_ENTRY_SQL = "update fix_bill_entry set company_id=?, invoice_id=?, "
+    private static final String UPDATE_ENTRY_SQL = "update fix_bill_entry set company_id=?, invoice_id=?, client_id=?, project_id=?,"
         + "fix_bill_status_id=?, description=?, entry_date=?, amount=?, creation_date=?, "
         + "creation_user=?, modification_date=?, modification_user=? where fix_bill_entry_id= ?";
 
@@ -91,6 +91,12 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
 
     /** The SQL String field for company_id. */
     private static final String COMPANY_ID_FIELD = "company_id";
+
+    /** The SQL String field for client_id. */
+    private static final String CLIENT_ID_FIELD = "client_id";
+
+    /** The SQL String field for project_id. */
+    private static final String PROJECT_ID_FIELD = "project_id";
 
     /** The SQL String field for fix_bill_status_id. */
     private static final String FIX_BILL_STATUS_ID_FIELD = "fix_bill_status_id";
@@ -199,6 +205,8 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
                 entries[i].setId(getNextId());
                 state.setLong(++index, entries[i].getId());
                 state.setLong(++index, entries[i].getCompanyId());
+                state.setLong(++index, entries[i].getClientId());
+                state.setLong(++index, entries[i].getProjectId());
 
                 if (entries[i].getInvoiceId() == 0) {
                     state.setNull(++index, Types.DOUBLE);
@@ -264,6 +272,8 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
         //Create the audit header.
         AuditHeader auditHeader = new AuditHeader();
         auditHeader.setCompanyId(entry.getCompanyId());
+        auditHeader.setClientId(entry.getClientId());
+        auditHeader.setProjectId(entry.getProjectId());
         auditHeader.setTableName("fix_bill_entry");
         auditHeader.setApplicationArea(ApplicationArea.TT_FIXED_BILLING);
         auditHeader.setEntityId(entry.getId());
@@ -277,6 +287,12 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
         addAuditDetail(auditDetails, COMPANY_ID_FIELD,
             (oldEntry == null) ? null : String.valueOf(oldEntry.getCompanyId()),
             (newEntry == null) ? null : String.valueOf(newEntry.getCompanyId()), actionType);
+        addAuditDetail(auditDetails, CLIENT_ID_FIELD,
+                (oldEntry == null) ? null : String.valueOf(oldEntry.getClientId()),
+                (newEntry == null) ? null : String.valueOf(newEntry.getClientId()), actionType);
+        addAuditDetail(auditDetails, PROJECT_ID_FIELD,
+                (oldEntry == null) ? null : String.valueOf(oldEntry.getProjectId()),
+                (newEntry == null) ? null : String.valueOf(newEntry.getProjectId()), actionType);
         addAuditDetail(auditDetails, FIX_BILL_STATUS_ID_FIELD,
             (oldEntry == null) ? null : String.valueOf(oldEntry.getFixedBillingStatus().getId()),
             (newEntry == null) ? null : String.valueOf(newEntry.getFixedBillingStatus().getId()), actionType);
@@ -447,6 +463,8 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
 
                     int index = 0;
                     state.setLong(++index, entries[i].getCompanyId());
+                    state.setLong(++index, entries[i].getClientId());
+                    state.setLong(++index, entries[i].getProjectId());
 
                     //If invoice id is 0, should set it as null.
                     if (entries[i].getInvoiceId() == 0) {
@@ -626,6 +644,8 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
             FixedBillingEntry entry = new FixedBillingEntry();
             entry.setId(rs.getLong(FIX_BILL_ENTRY_ID_FIELD));
             entry.setCompanyId(rs.getLong(COMPANY_ID_FIELD));
+            entry.setClientId(rs.getLong(CLIENT_ID_FIELD));
+            entry.setProjectId(rs.getLong(PROJECT_ID_FIELD));
             entry.setInvoiceId(rs.getLong(INVOICE_ID_FIELD));
 
             FixedBillingStatus[] status = fixedBillingStatusDAO.getFixedBillingStatuses(new long[] {
