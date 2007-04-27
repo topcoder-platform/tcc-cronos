@@ -1,0 +1,219 @@
+<?xml version="1.0" ?>  
+<CMConfig>
+
+
+<!-- For the ConnectionFactory -->
+<property name="com.topcoder.db.connectionfactory.DBConnectionFactory;timetracker.entry.fixedbilling">
+    <property name="type">
+        <value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</value>
+    </property>
+
+    <property name="params">
+        <!-- Namespace parameter for the connection factory. -->
+        <property name="param1">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+            <property name="value">
+                <value>com.topcoder.timetracker.application.connectionfactory.namespace</value>
+            </property>
+         </property>
+    </property>
+</property>
+
+<!-- Object Factory definition for FixedBillingEntryDAO -->
+<property name="com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryDAO">
+    <property name="type">
+        <value>com.topcoder.timetracker.entry.fixedbilling.db.DbFixedBillingEntryDAO</value>
+    </property>
+
+    <property name="params">
+        <!-- ConnectionFactory parameter for the DAO. -->
+        <property name="param1">
+            <property name="name">
+                <value>com.topcoder.db.connectionfactory.DBConnectionFactory;timetracker.entry.fixedbilling</value>
+            </property>
+        </property>
+
+        <!-- Connection name parameter for the DAO (we use null). -->
+        <property name="param2">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+        </property>
+
+        <!-- Id Generator parameter for the DAO. -->
+        <property name="param3">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+            <property name="value">
+                <value>TT_Id_Generator</value>
+            </property>
+         </property>
+
+        <!-- Search Strategy Namespace parameter for the DAO. -->
+        <property name="param4">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+            <property name="value">
+                <value>com.topcoder.search.builder.database.factory</value>
+            </property>
+         </property>
+
+        <!-- AuditManager parameter for the DAO. -->
+        <property name="param5">
+            <property name="name">
+                <value>com.topcoder.timetracker.audit.AuditManager;default</value>
+            </property>
+        </property>
+
+        <!-- FixedBillingStatusDAO parameter for the DAO. -->
+        <property name="param6">
+            <property name="name">
+                <value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusDAO;default</value>
+            </property>
+        </property>
+    </property>
+</property>
+
+<!-- Object Factory definition for FixedBillingStatusDAO -->
+<property name="com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusDAO;default">
+    <property name="type">
+        <value>com.topcoder.timetracker.entry.fixedbilling.db.DbFixedBillingStatusDAO</value>
+    </property>
+
+    <property name="params">
+        <!-- ConnectionFactory parameter for the DAO. -->
+        <property name="param1">
+            <property name="name">
+                <value>com.topcoder.db.connectionfactory.DBConnectionFactory;timetracker.entry.fixedbilling</value>
+            </property>
+        </property>
+
+        <!-- Connection name parameter for the DAO (we use null). -->
+        <property name="param2">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+        </property>
+
+        <!-- Id Generator parameter for the DAO. -->
+        <property name="param3">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+            <property name="value">
+                <value>TT_Id_Generator</value>
+            </property>
+         </property>
+
+        <!-- Search Strategy Namespace parameter for the DAO. -->
+        <property name="param4">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+            <property name="value">
+                <value>com.topcoder.search.builder.database.factory</value>
+            </property>
+        </property>
+
+        <!-- useBatching parameter for the DAO. -->
+        <property name="param5">
+            <property name="type">
+                <value>boolean</value>
+            </property>
+            <property name="value">
+                <value>false</value>
+            </property>
+        </property>
+    </property>
+</property>
+
+<!-- Object Factory definition for FixedBillingEntryRejectReasonDAO -->
+<property name="com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryRejectReasonDAO;default">
+    <property name="type">
+        <value>com.topcoder.timetracker.entry.fixedbilling.db.DbFixedBillingEntryRejectReasonDAO</value>
+    </property>
+
+    <property name="params">
+        <!-- ConnectionFactory parameter for the DAO. -->
+        <property name="param1">
+            <property name="name">
+                <value>com.topcoder.db.connectionfactory.DBConnectionFactory;timetracker.entry.fixedbilling</value>
+            </property>
+        </property>
+
+        <!-- Connection name parameter for the DAO (we use null). -->
+        <property name="param2">
+            <property name="type">
+                <value>java.lang.String</value>
+            </property>
+        </property>
+
+        <!-- useBatching parameter for the DAO. -->
+        <property name="param3">
+            <property name="type">
+                <value>boolean</value>
+            </property>
+            <property name="value">
+                <value>false</value>
+            </property>
+        </property>
+    </property>
+</property>
+
+
+<!-- Object Factory definition for FixedBillingStatusManager -->
+<property name="com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusManager;default">
+    <property name="type">
+        <value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusManagerImpl</value>
+    </property>
+
+    <property name="params">
+        <!-- FixedBillingStatusDAO for the Manager -->
+        <property name="param1">
+            <property name="name">
+                <value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusDAO;default</value>
+            </property>
+        </property>
+    </property>
+</property>
+
+
+<!-- Object Factory definition for FixedBillingEntryManager -->
+<property name="com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryManager;default">
+    <property name="type">
+        <value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryManagerImpl</value>
+    </property>
+
+    <property name="params">
+        <!-- FixedBillingEntryDAO for the Manager -->
+        <property name="param1">
+            <property name="name">
+                <value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryDAO;default</value>
+            </property>
+        </property>
+
+        <!-- FixedBillingEntryRejectReasonDAO for the Manager -->
+        <property name="param2">
+            <property name="name">
+                <value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryRejectReasonDAO;default</value>
+            </property>
+        </property>
+
+        <!-- RejectReasonManager for the FixedBillingEntryManager -->
+        <property name="param3">
+            <property name="name">
+                <value>com.topcoder.timetracker.rejectreason.RejectReasonManager;default</value>
+            </property>
+        </property>
+
+
+    </property>
+</property>
+
+</CMConfig>
+
+
