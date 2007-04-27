@@ -86,6 +86,8 @@ public class DbFixedBillingEntryDAOTest extends TestCase {
             entries[i].setDescription("desc" + i);
             entries[i].setDate(new Date());
             entries[i].setCompanyId(100);
+            entries[i].setClientId(1);
+            entries[i].setProjectId(1);
             entries[i].setCreationUser("user" + i);
             entries[i].setCreationDate(new Date());
             entries[i].setModificationDate(new Date());
