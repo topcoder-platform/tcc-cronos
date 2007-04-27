@@ -100,15 +100,15 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
      * </p>
      */
     private static final String INSERT_TIME_ENTRY = "insert into time_entry(time_entry_id, company_id, "
-        + "invoice_id, time_status_id, task_type_id, description, entry_date, hours, billable, creation_date, "
-        + "creation_user, modification_date, modification_user) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        + "client_id, project_id, invoice_id, time_status_id, task_type_id, description, entry_date, hours, billable, creation_date, "
+        + "creation_user, modification_date, modification_user) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * Represents the sql script to update a record in <b>time_entry</b> table.
      * </p>
      */
-    private static final String UPDATE_TIME_ENTRY = "update time_entry set company_id = ?, invoice_id = ?, "
+    private static final String UPDATE_TIME_ENTRY = "update time_entry set company_id = ?, client_id = ?, project_id = ?, invoice_id = ?, "
         + "time_status_id = ?, task_type_id = ?, description = ?, entry_date = ?, hours = ?, billable = ?, "
         + "modification_date = ?, modification_user= ? where time_entry_id = ?";
 
@@ -124,7 +124,7 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
      * Represents the sql script to select some records in <b>time_entry</b> table.
      * </p>
      */
-    private static final String SELECT_TIME_ENTRIES = "select time_entry_id, company_id, invoice_id, time_status_id, "
+    private static final String SELECT_TIME_ENTRIES = "select time_entry_id, company_id, client_id, project_id, invoice_id, time_status_id, "
         + "task_type_id, description, entry_date, hours, billable, creation_date, creation_user, modification_date, "
         + "modification_user from time_entry";
 
@@ -138,7 +138,7 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
      * It is created when declared and never changed afterwards.
      * </p>
      */
-    private static final String CONTEXT = "select time_entry.time_entry_id, company_id, invoice_id, time_status_id, "
+    private static final String CONTEXT = "select time_entry.time_entry_id, company_id, client_id, project_id, invoice_id, time_status_id, "
         + "task_type_id, description, entry_date, hours, billable, time_entry.creation_date, time_entry.creation_user, "
         + "time_entry.modification_date, time_entry.modification_user from time_entry left join time_reject_reason "
         + "on time_entry.time_entry_id = time_reject_reason.time_entry_id where";
@@ -210,6 +210,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.BILLABLE_COLUMN_NAME, "time_entry.billable");
         COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.REJECT_REASONS_COLUMN_NAME, "time_reject_reason.reject_reason_id");
         COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.COMPANY_ID_COLUMN_NAME, "time_entry.company_id");
+        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.CLIENT_ID_COLUMN_NAME, "time_entry.client_id");
+        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.PROJECT_ID_COLUMN_NAME, "time_entry.project_id");
     }
 
     /**
@@ -351,6 +353,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
 
         params.add(new Long(timeEntry.getId()));
         params.add(new Long(timeEntry.getCompanyId()));
+        params.add(new Long(timeEntry.getClientId()));
+        params.add(new Long(timeEntry.getProjectId()));
         params.add(new Long(timeEntry.getInvoiceId()));
         params.add(new Long(timeEntry.getStatus().getId()));
         params.add(new Long(timeEntry.getTaskType().getId()));
@@ -592,6 +596,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
             header.setActionType(AuditType.INSERT);
             auditDetails.add(Util.createAuditDetail("time_entry_id", null, String.valueOf(newTimeEntry.getId())));
             auditDetails.add(Util.createAuditDetail("company_id", null, String.valueOf(newTimeEntry.getCompanyId())));
+            auditDetails.add(Util.createAuditDetail("client_id", null, String.valueOf(newTimeEntry.getClientId())));
+            auditDetails.add(Util.createAuditDetail("project_id", null, String.valueOf(newTimeEntry.getProjectId())));
             auditDetails.add(Util.createAuditDetail("invoice_id", null, String.valueOf(newTimeEntry.getInvoiceId())));
             auditDetails.add(Util.createAuditDetail("time_status_id", null,
                 String.valueOf(newTimeEntry.getStatus().getId())));
@@ -632,6 +638,10 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
                 String.valueOf(newTimeEntry.getId())));
             auditDetails.add(Util.createAuditDetail("company_id", String.valueOf(oldTimeEntry.getCompanyId()),
                 String.valueOf(newTimeEntry.getCompanyId())));
+            auditDetails.add(Util.createAuditDetail("client_id", String.valueOf(oldTimeEntry.getClientId()),
+                    String.valueOf(newTimeEntry.getClientId())));
+            auditDetails.add(Util.createAuditDetail("project_id", String.valueOf(oldTimeEntry.getProjectId()),
+                    String.valueOf(newTimeEntry.getProjectId())));
             auditDetails.add(Util.createAuditDetail("invoice_id", String.valueOf(oldTimeEntry.getInvoiceId()),
                 String.valueOf(newTimeEntry.getInvoiceId())));
             auditDetails.add(Util.createAuditDetail("time_status_id", String.valueOf(oldTimeEntry.getStatus().getId()),
@@ -761,6 +771,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         List params = new ArrayList();
 
         params.add(new Long(entry.getCompanyId()));
+        params.add(new Long(entry.getClientId()));
+        params.add(new Long(entry.getProjectId()));
         params.add(new Long(entry.getInvoiceId()));
         params.add(new Long(entry.getStatus().getId()));
         params.add(new Long(entry.getTaskType().getId()));
@@ -998,6 +1010,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         int index = 1;
         timeEntry.setId(rs.getLong(index++));
         timeEntry.setCompanyId(rs.getLong(index++));
+        timeEntry.setClientId(rs.getLong(index++));
+        timeEntry.setProjectId(rs.getLong(index++));
         timeEntry.setInvoiceId(rs.getLong(index++));
 
         // get the time status association
@@ -1096,6 +1110,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         int index = 1;
         timeEntry.setId(result.getLong(index++));
         timeEntry.setCompanyId(result.getLong(index++));
+        timeEntry.setClientId(result.getLong(index++));
+        timeEntry.setProjectId(result.getLong(index++));
         timeEntry.setInvoiceId(result.getLong(index++));
 
         // get the time status association
