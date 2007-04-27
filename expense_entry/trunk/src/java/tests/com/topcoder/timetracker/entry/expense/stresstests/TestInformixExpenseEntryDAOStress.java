@@ -129,6 +129,8 @@ public class TestInformixExpenseEntryDAOStress extends TestCase {
         entry.setBillable(true);
         entry.setChanged(false);
         entry.setCompanyId(1);
+        entry.setClientId(1);
+        entry.setProjectId(1);
         entry.setCreationUser("user");
         entry.setDate(new Date());
         entry.setModificationUser("userM");
