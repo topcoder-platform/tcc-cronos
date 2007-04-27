@@ -120,6 +120,20 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      * </p>
      */
     public static final String COMPANY_ID_COLUMN_NAME = "COMPANY_ID_COLUMN_NAME";
+    
+    /**
+     * <p>
+     * This is the map key to use to specify the column name for the client id.
+     * </p>
+     */
+    public static final String CLIENT_ID_COLUMN_NAME = "CLIENT_ID_COLUMN_NAME";
+    
+    /**
+     * <p>
+     * This is the map key to use to specify the column name for the project id.
+     * </p>
+     */
+    public static final String PROJECT_ID_COLUMN_NAME = "PROJECT_ID_COLUMN_NAME";
 
     /**
      * <p>
