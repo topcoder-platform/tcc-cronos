@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="FixedBillingEntryManagerDelegateTest">
+		<Property name="contextName">
+			<Value>mockEJBContext</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>FixedBillingEntryManagerDelegateTest</Value>
+		</Property>
+	</Config>
+	<Config name="FixedBillingStatusManagerDelegateTest">
+		<Property name="contextName">
+			<Value>mockEJBContext</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>FixedBillingStatusManagerDelegateTest</Value>
+		</Property>
+	</Config>
+	<Config name="FixedBillingEntryManagerDelegateTestEmptyLocalHomeName">
+		<Property name="contextName">
+			<Value>  </Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>  </Value>
+		</Property>
+	</Config>
+	<Config name="FixedBillingStatusManagerDelegateTestEmptyLocalHomeName">
+		<Property name="contextName">
+			<Value>  </Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>  </Value>
+		</Property>
+	</Config>
+	<Config name="FixedBillingEntryManagerDelegateTestContext">
+		<Property name="contextName">
+			<Value>  </Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>FixedBillingEntryManagerDelegateTest</Value>
+		</Property>
+	</Config>
+	<Config name="FixedBillingStatusManagerDelegateTestContext">
+		<Property name="contextName">
+			<Value>  </Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>FixedBillingStatusManagerDelegateTest</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>org.mockejb.jndi.MockContextFactory</Value>
+				</Property>
+			</Property>
+			<Property name="mockEJBContext">
+				<Property name="factory">
+					<Value>org.mockejb.jndi.MockContextFactory</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

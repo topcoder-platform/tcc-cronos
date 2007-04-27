@@ -1,0 +1,700 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.timetracker.entry.fixedbilling">
+		<Property name="FixedBillingEntryManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryManagerImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>fixedBillingEntryDAO</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="name">
+						<Value>fixedBillingEntryRejectReasonDAO</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="name">
+						<Value>rejectReasonManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="FixedBillingStatusManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusManagerImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>fixedBillingStatusDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="fixedBillingEntryDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.fixedbilling.db.DbFixedBillingEntryDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>dbConnectionFactory</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>informix_connect_failure_1</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>FixedBillingFailure</Value>
+					</Property>
+				</Property>
+				<Property name="param4">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder</Value>
+					</Property>
+				</Property>
+				<Property name="param5">
+					<Property name="name">
+						<Value>mockAuditManager</Value>
+					</Property>
+				</Property>
+				<Property name="param6">
+					<Property name="name">
+						<Value>fixedBillingStatusDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="dbConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="rejectReasonManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="fixedBillingStatusDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.fixedbilling.db.DbFixedBillingStatusDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>dbConnectionFactory</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>informix_connect_failure_2</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>FixedBillingFailure</Value>
+					</Property>
+				</Property>
+				<Property name="param4">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="fixedBillingEntryRejectReasonDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.fixedbilling.db.DbFixedBillingEntryRejectReasonDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>dbConnectionFactory</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>informix_connect_failure_1</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="name">
+						<Value>mockAuditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="mockAuditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.entry.fixedbilling.failuretests.MockAuditManager</Value>
+			</Property>
+			<Property name="params">
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.entry.fb.ejb.failure">
+		<Property name="localHomeName">
+			<Value>java:comp/env/fb/failuretest</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.entry.fb.ejb.failure2">
+		<Property name="localHomeName">
+			<Value>java:comp/env/fb/failuretest1</Value>
+		</Property>
+	</Config>
+	<Config name="wrong">
+		<Property name="localHomeName">
+			<Value>java:comp/env/notdeployed</Value>
+		</Property>
+	</Config>
+	<Config name="empty">
+	</Config>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>informix_connect</Value>
+			</Property>
+			<Property name="informix_connect">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://JAG:1527/fixed_billing:informixserver=topcoder_test</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>topcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="informix_connect_failure_1">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://JAG:1527/fixed_billing:informixserver=topcoder_test</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>t0pcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="informix_connect_failure_2">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://JAG:1527/fixed_billing_failure:informixserver=topcoder_test</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>topcoder</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+<Config name="com.topcoder.search.builder">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+		<Property name="searchBundles">
+			<Property name="StatusSearchBundle">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>dbStrategy</Value>
+					</Property>
+				</Property>
+				<Property name="context">
+					<Value>select fix_bill_status_id from fix_bill_status where </Value>
+				</Property>
+				<Property name="searchableFields">
+					<Property name="FIX_BILLING_STATUS_ID_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="DESCRIPTION_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="CREATION_DATE_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="MODIFICATION_DATE_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="CREATION_USER_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="MODIFICATION_USER_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+				</Property>
+				<Property name="alias">
+					<Property name="FIX_BILLING_STATUS_ID_COLUMN_NAME">
+						<Value>fix_bill_status_id</Value>
+					</Property>
+					<Property name="DESCRIPTION_COLUMN_NAME">
+						<Value>description</Value>
+					</Property>
+					<Property name="CREATION_DATE_COLUMN_NAME">
+						<Value>creation_date</Value>
+					</Property>
+					<Property name="MODIFICATION_DATE_COLUMN_NAME">
+						<Value>creation_user</Value>
+					</Property>
+					<Property name="CREATION_USER_COLUMN_NAME">
+						<Value>modification_date</Value>
+					</Property>
+					<Property name="MODIFICATION_USER_COLUMN_NAME">
+						<Value>modification_user</Value>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="EntrySearchBundle">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>dbStrategy</Value>
+					</Property>
+				</Property>
+				<Property name="context">
+					<Value>select fix_bill_entry_id from fix_bill_entry where </Value>
+				</Property>
+				<Property name="searchableFields">
+					<Property name="FIX_BILLING_ENTRY_ID_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="DESCRIPTION_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="CREATION_DATE_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="MODIFICATION_DATE_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="CREATION_USER_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="MODIFICATION_USER_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+										<Property name="AMOUNT_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+										<Property name="COMPANY_ID_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+										<Property name="ENTRY_DATE_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+										<Property name="FIXED_BILLING_STATUS_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+										<Property name="INVOICE_ID_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+										<Property name="REJECT_REASON_COLUMN_NAME">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+				</Property>
+				<Property name="alias">
+					<Property name="FIX_BILLING_ENTRY_ID_COLUMN_NAME">
+						<Value>fix_bill_status_id</Value>
+					</Property>
+					<Property name="DESCRIPTION_COLUMN_NAME">
+						<Value>description</Value>
+					</Property>
+					<Property name="CREATION_DATE_COLUMN_NAME">
+						<Value>creation_date</Value>
+					</Property>
+					<Property name="MODIFICATION_DATE_COLUMN_NAME">
+						<Value>creation_user</Value>
+					</Property>
+					<Property name="CREATION_USER_COLUMN_NAME">
+						<Value>modification_date</Value>
+					</Property>
+					<Property name="MODIFICATION_USER_COLUMN_NAME">
+						<Value>modification_user</Value>
+					</Property>
+										<Property name="AMOUNT_COLUMN_NAME">
+						<Value>amount</Value>
+					</Property>
+										<Property name="COMPANY_ID_COLUMN_NAME">
+						<Value>company_id</Value>
+					</Property>
+										<Property name="REJECT_REASON_COLUMN_NAME">
+						<Value>modification_user</Value>
+					</Property>
+										<Property name="ENTRY_DATE_COLUMN_NAME">
+						<Value>entry_date</Value>
+					</Property>
+										<Property name="FIXED_BILLING_STATUS_COLUMN_NAME">
+						<Value>fix_bill_status_id</Value>
+					</Property>
+										<Property name="INVOICE_ID_COLUMN_NAME">
+						<Value>invoice_id</Value>
+					</Property>
+				</Property>
+		</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.validator.factory">
+		<Property name="validator:default">
+			<Property name="type">
+				<Value>com.topcoder.util.datavalidator.NotValidator</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>NullValidator</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="NullValidator">
+			<Property name="type">
+				<Value>com.topcoder.util.datavalidator.NullValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.strategy.factory">
+		<Property name="dbStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>DBSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="DBSearchStrategy">
+		<Property name="connectionFactory">
+			<!-- The namespace of the ConnectionFactory -->
+			<Property name="name">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="class">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		</Property>
+		<!-- 
+			    The name to request from the connection factory when acquiring a connection. If not present, then the default connection is used. 
+			     -->
+		<Property name="connectionName">
+			<Value>Informix_Connection_Producer</Value>
+		</Property>
+		<Property name="searchFragmentFactoryNamespace">
+			<Value>com.topcoder.search.builder.database.factory</Value>
+		</Property>
+		<Property name="searchFragmentBuilders">
+			<Property name="first">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.AndFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="second">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.OrFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="third">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="fourth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NotFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="fifth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="sixth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.InFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="eighth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NullFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="ninth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="tenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="eleventh">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="twelvth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+			<Property name="thirteenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.database.factory">
+  </Config>
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context.default.factory">
+			<Value>org.mockejb.jndi.MockContextFactory</Value>
+		</Property>
+		<Property name="context.default.url">
+			<Value>localhost:1099</Value>
+		</Property>
+	</Config>
+</CMConfig>
