@@ -1,25 +1,31 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.entry.fixedbilling.accuracytests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Accuracy test cases.</p>
  *
- * @author TopCoder
+ * @author TCSDEVELOPER
  * @version 1.0
  */
 public class AccuracyTests extends TestCase {
-
+    /**
+     * <p>
+     * This test case aggregates all accuracy test cases.
+     * </p>
+     *
+     * @return all accuracy test cases.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+
+        suite.addTestSuite(FixedBillingEntryManagerAccuracyDelegateTest.class);
+        suite.addTestSuite(FixedBillingStatusManagerDelegateAccuracyTest.class);
         return suite;
     }
 

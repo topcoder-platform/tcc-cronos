@@ -1,25 +1,29 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.entry.fixedbilling.stresstests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
- * <p>This test case aggregates all Stress test cases.</p>
+ * This test case aggregates all stress test cases.
  *
- * @author TopCoder
+ * @author myxgyy
  * @version 1.0
  */
 public class StressTests extends TestCase {
-
+    /**
+     * Aggregates all Stress test cases.
+     *
+     * @return the aggregated stress test cases
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(DbFixedBillingStatusDAOStressTests.class);
+        suite.addTestSuite(DbFixedBillingEntryDAOStressTests.class);
+        suite.addTestSuite(DbFixedBillingEntryRejectReasonDAOStressTests.class);
         return suite;
     }
 }
