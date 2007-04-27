@@ -1296,8 +1296,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             // Set properties
             entry = new ExpenseEntry(resultSet.getLong(ID_COLUMN));
             entry.setCompanyId(resultSet.getLong(COMPANY_ID_COLUMN));
-            entry.setCompanyId(resultSet.getLong(CLIENT_ID_COLUMN));
-            entry.setCompanyId(resultSet.getLong(PROJECT_ID_COLUMN));
+            entry.setClientId(resultSet.getLong(CLIENT_ID_COLUMN));
+            entry.setProjectId(resultSet.getLong(PROJECT_ID_COLUMN));
             
             long invoiceId = resultSet.getLong(INVOICE_ID_COLUMN);
 
