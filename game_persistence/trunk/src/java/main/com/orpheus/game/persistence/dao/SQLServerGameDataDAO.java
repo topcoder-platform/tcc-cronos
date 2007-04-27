@@ -426,6 +426,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /** Constant represents the sql clause get game id that has registered player. */
     private static final String SQL_SELECT_PLYR_REGSTRD_GAME = "SELECT game_id as id FROM plyr_regstrd_game WHERE plyr_regstrd_game.player_id =";
+    
+    /** Constant represents the sql clause get game id that is completed by the player. */
+    private static final String SQL_SELECT_PLYR_COMPLETE_GAME = "SELECT game_id as id FROM plyr_compltd_game WHERE plyr_compltd_game.player_id =";
 
     /** Constant represents the sql clause get sponsor with id. */
     private static final String SQL_SELECT_SPONSOR_WITH_ID = "SELECT * FROM sponsor WHERE any_user_id = ";
@@ -2431,7 +2434,60 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throw new PersistenceException("Error in findGameRegistrations.", e);
         }
     }
+    /**
+     * <p>
+     * Looks up all the games for which is completed by specified player , and returns an array of their IDs.
+     * </p>
+     *
+     * @param playerId the player id
+     *
+     * @return the array of game ids
+     *
+     * @throws EntryNotFoundException If playerId is not in persistence
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public long[] findCompletedGameIds(long playerId) throws PersistenceException {
+    	try {
+            Connection conn = getConnection();
 
+            try {
+                // checks if the playerId exists in the 'player' table
+                checkPlayerNotExist(playerId, conn);
+
+                // query the registered game id from 'plyr_compltd_game' table
+                List gameIds = new ArrayList();
+                ResultSet rs = query(conn, SQL_SELECT_PLYR_COMPLETE_GAME + playerId, null);
+
+                try {
+                    while (rs.next()) {
+                        gameIds.add(new Long(rs.getLong(FIELD_ID)));
+                    }
+                } finally {
+                    close(rs);
+                }
+
+                // return the game id array
+                long[] ids = new long[gameIds.size()];
+
+                for (int i = 0; i < ids.length; i++) {
+                    ids[i] = ((Long) gameIds.get(i)).longValue();
+                }
+
+                return ids;
+            } finally {
+                close(conn);
+            }
+        } catch(PersistenceException e){
+            throw e;
+        } catch (DBConnectionException e) {
+            throw new PersistenceException("Error create the connection from db connection factory.", e);
+        } catch (SQLException e) {
+            throw new PersistenceException("Error in operation the database while find Complete games by the player.", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error in find complete games by the player.", e);
+        }
+	}
+    
     /**
      * <p>
      * Looks up all domains associated with the specified sponsor and returns an array of Domain objects representing them.
@@ -2969,4 +3025,6 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             }
         }
     }
+
+	
 }
