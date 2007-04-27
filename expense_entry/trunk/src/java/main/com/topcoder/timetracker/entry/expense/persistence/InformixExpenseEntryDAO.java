@@ -139,8 +139,9 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         + "expense_entry.entry_date, expense_entry.amount, expense_entry.billable, expense_entry.creation_date, "
         + "expense_entry.creation_user, expense_entry.modification_date, expense_entry.modification_user,"
         + "expense_entry.mileage FROM expense_entry "
-        + "inner JOIN expense_type ON expense_entry.expense_type_id = expense_type.expense_type_id "
-        + "inner JOIN expense_status ON expense_entry.expense_status_id = expense_status.expense_status_id";
+        + ", expense_type, expense_status "
+        + "WHERE expense_entry.expense_type_id = expense_type.expense_type_id "
+        + "AND expense_entry.expense_status_id = expense_status.expense_status_id";
 
     /** Represents the prepared SQL statement to check the expense type id is associated with the company id. */
     private static final String CHECK_COMPANY_ID_EXPENSE_TYPE_SQL = "Select 1 counts from comp_exp_type "
@@ -1227,7 +1228,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
      *         invalid.
      */
     private ExpenseEntry retrieveEntry(Connection conn, long entryId) throws PersistenceException {
-        ExpenseEntry[] entries = retrieveEntries(conn, " WHERE expense_entry.expense_entry_id=?",
+        ExpenseEntry[] entries = retrieveEntries(conn, " AND expense_entry.expense_entry_id=?",
                 new Object[] {new Long(entryId)});
 
         return (entries.length == 0) ? null : entries[0];
@@ -1508,7 +1509,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
                 }
             }
 
-            return retrieveEntries(conn, " Where " + criteria.getWhereClause(), parameters);
+            return retrieveEntries(conn, " AND " + criteria.getWhereClause(), parameters);
         } finally {
             ExpenseEntryHelper.releaseConnection(conn);
         }
@@ -1765,7 +1766,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
             // use the where clause of "id in ()" to be more efficient
             StringBuffer buffer = new StringBuffer();
-            buffer.append(" where expense_entry.expense_entry_id in (");
+            buffer.append(" AND expense_entry.expense_entry_id in (");
 
             for (int i = 0; i < entryIds.length; i++) {
                 buffer.append(entryIds[i]);

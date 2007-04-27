@@ -88,8 +88,8 @@ public class InformixExpenseTypeDAO implements ExpenseEntryTypeDAO {
     private static final String RETRIEVE_TYPE_SQL = "SELECT expense_type.expense_type_id, expense_type.description,"
         + "expense_type.creation_date, expense_type.creation_user, expense_type.modification_date, "
         + "expense_type.modification_user, expense_type.active, comp_exp_type.company_id FROM expense_type "
-        + "inner join comp_exp_type on comp_exp_type.expense_type_id = expense_type.expense_type_id "
-        + "WHERE expense_type.expense_type_id=?";
+        + ", comp_exp_type "
+        + "WHERE comp_exp_type.expense_type_id = expense_type.expense_type_id and expense_type.expense_type_id=?";
 
     /** Represents the prepared SQL statement to check the existence of an expense type. */
     private static final String EXIST_TYPE_SQL = "SELECT 1 counts FROM expense_type WHERE expense_type_id=?";
@@ -99,7 +99,8 @@ public class InformixExpenseTypeDAO implements ExpenseEntryTypeDAO {
         + "expense_type.description, expense_type.creation_date, expense_type.creation_user, "
         + "expense_type.modification_date, expense_type.modification_user, expense_type.active, "
         + "comp_exp_type.company_id FROM expense_type "
-        + "inner join comp_exp_type on expense_type.expense_type_id = comp_exp_type.expense_type_id ";
+        + ", comp_exp_type "
+        + "WHERE expense_type.expense_type_id = comp_exp_type.expense_type_id ";
 
     /** Represents the column name for description. */
     private static final String DESCRIPTION_COLUMN = "description";
@@ -764,7 +765,7 @@ public class InformixExpenseTypeDAO implements ExpenseEntryTypeDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = conn.prepareStatement(RETRIEVE_ALL_TYPE_SQL + " Where " + criteria.getWhereClause());
+            statement = conn.prepareStatement(RETRIEVE_ALL_TYPE_SQL + " AND " + criteria.getWhereClause());
 
             // Set parameter
             Object[] parameters = criteria.getParameters();
