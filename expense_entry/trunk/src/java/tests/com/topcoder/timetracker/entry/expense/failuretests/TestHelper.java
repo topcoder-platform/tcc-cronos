@@ -158,6 +158,8 @@ public class TestHelper {
         // Create the expense entry
         ExpenseEntry entry = new ExpenseEntry();
         entry.setCompanyId(COMPANY_ID);
+        entry.setClientId(1);
+        entry.setProjectId(1);
         entry.setDescription("Description");
         entry.setCreationUser("Create");
         entry.setModificationUser("Modify");
