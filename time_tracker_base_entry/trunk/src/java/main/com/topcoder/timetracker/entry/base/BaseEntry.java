@@ -47,6 +47,20 @@ public abstract class BaseEntry extends TimeTrackerBean {
      * it has been set.
      */
     private long companyId;
+    
+    /**
+     * This is a unique client id that identifies this entry (i.e. which company this belongs to) This is
+     * initialized/set/get through the appropriate getter/setter. Generally the user should not change this value once
+     * it has been set.
+     */
+    private long clientId;
+    
+    /**
+     * This is a unique project id that identifies this entry (i.e. which company this belongs to) This is
+     * initialized/set/get through the appropriate getter/setter. Generally the user should not change this value once
+     * it has been set.
+     */
+    private long projectId;
 
 /**
      * Empty constructor.
@@ -63,6 +77,26 @@ public abstract class BaseEntry extends TimeTrackerBean {
      */
     public long getCompanyId() {
         return companyId;
+    }
+    
+    /**
+     * Return the client id for this entry. This is important in identifying the cot off time for a particular
+     * entry based on the client settings.
+     *
+     * @return client id
+     */
+    public long getClientId() {
+        return clientId;
+    }
+    
+    /**
+     * Return the project id for this entry. This is important in identifying the cot off time for a particular
+     * entry based on the project settings.
+     *
+     * @return project id
+     */
+    public long getProjectId() {
+        return projectId;
     }
 
     /**
@@ -101,6 +135,26 @@ public abstract class BaseEntry extends TimeTrackerBean {
      */
     public void setCompanyId(long companyId) {
         this.companyId = companyId;
+    }
+    
+    /**
+     * Set the client id for this entry. This is important in identifying the cut off time for a particular
+     * entry based on the client settings.
+     *
+     * @param clientId client id
+     */
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
+    }
+    
+    /**
+     * Set the project id for this entry. This is important in identifying the cut off time for a particular
+     * entry based on the project settings.
+     *
+     * @param projectId project id
+     */
+    public void setProjectId(long projectId) {
+        this.projectId = projectId;
     }
 
     /**
