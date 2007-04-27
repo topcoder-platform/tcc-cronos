@@ -21,6 +21,7 @@ import java.util.Map;
 import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.AddressType;
+import com.topcoder.timetracker.contact.AssociationException;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactException;
 import com.topcoder.timetracker.contact.ContactManager;
@@ -1244,8 +1245,17 @@ public class DbUserDAO implements UserDAO {
         User user = getSimpleUser(conn, userId);
         long addressId = getAddressId(conn, userId);
         long contactId = getContactId(conn, userId);
-        user.setAddress(addressManager.retrieveAddress(addressId));
-        user.setContact(contactManager.retrieveContact(contactId));
+
+        try {
+            user.setAddress(addressManager.retrieveAddress(addressId));
+        } catch (AssociationException ae) {
+            throw new PersistenceException("Error retrieving user's address information.", ae);
+        }
+        try {
+            user.setContact(contactManager.retrieveContact(contactId));
+        } catch (AssociationException ae) {
+            throw new PersistenceException("Error retrieving user's contact information.", ae);
+        }
 
         return user;
     }
