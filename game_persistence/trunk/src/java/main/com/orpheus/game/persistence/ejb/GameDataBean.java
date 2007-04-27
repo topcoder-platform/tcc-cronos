@@ -712,7 +712,7 @@ public class GameDataBean implements SessionBean {
      * @throws EntryNotFoundException If playerId is not in persistence
      * @throws PersistenceException If there is any problem in the persistence layer
      */
-    long [] findCompletedGameIds(long playerId) throws PersistenceException{
+    public long [] findCompletedGameIds(long playerId) throws PersistenceException{
     	 try {
              return getDAO().findCompletedGameIds(playerId);
          } catch (PersistenceException e) {
