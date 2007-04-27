@@ -705,6 +705,22 @@ public class GameDataBean implements SessionBean {
     }
 
     /**
+     * Find the list of IDs of games completed by the player regardless of the approval status by Administrator.
+     * 
+     * @param playerId the player id
+     * @return array of game ids
+     * @throws EntryNotFoundException If playerId is not in persistence
+     * @throws PersistenceException If there is any problem in the persistence layer
+     */
+    long [] findCompletedGameIds(long playerId) throws PersistenceException{
+    	 try {
+             return getDAO().findCompletedGameIds(playerId);
+         } catch (PersistenceException e) {
+             sessionContext.setRollbackOnly();
+             throw e;
+         }
+    }
+    /**
      * <p>
      * Looks up all domains associated with the specified sponsor and returns an array of Domain objects representing
      * them.

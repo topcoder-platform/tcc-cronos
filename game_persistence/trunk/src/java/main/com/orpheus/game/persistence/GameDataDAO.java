@@ -465,4 +465,13 @@ public interface GameDataDAO {
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     BallColor[] findAllBallColors() throws PersistenceException;
+    /**
+     * Find the list of IDs of games completed by the player regardless of the approval status by Administrator.
+     * 
+     * @param playerId the player id
+     * @return array of game ids
+     * @throws EntryNotFoundException If playerId is not in persistence
+     * @throws PersistenceException If there is any problem in the persistence layer
+     */
+    long [] findCompletedGameIds(long playerId) throws PersistenceException;
 }
