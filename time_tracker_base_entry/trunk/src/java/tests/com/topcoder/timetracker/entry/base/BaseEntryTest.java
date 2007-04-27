@@ -43,6 +43,26 @@ public class BaseEntryTest extends TestCase {
 
         assertEquals("id should be obtained as expected", id, entry.getCompanyId());
     }
+    
+    /**
+     * Tests {@link BaseEntry#getClientId()}.
+     */
+    public void testGetClientId() {
+        long id = 123;
+        entry.setClientId(id);
+
+        assertEquals("id should be obtained as expected", id, entry.getClientId());
+    }
+    
+    /**
+     * Tests {@link BaseEntry#getProjectId()}.
+     */
+    public void testGetProjectId() {
+        long id = 123;
+        entry.setProjectId(id);
+
+        assertEquals("id should be obtained as expected", id, entry.getProjectId());
+    }
 
     /**
      * Tests {@link BaseEntry#getDate()}, date should be obtained.
@@ -89,6 +109,26 @@ public class BaseEntryTest extends TestCase {
         entry.setCompanyId(id);
 
         assertEquals("id should be obtained as expected", id, entry.getCompanyId());
+    }
+    
+    /**
+     * Tests {@link BaseEntry#setClientId()}.
+     */
+    public void testSetClientId() {
+        long id = 123;
+        entry.setClientId(id);
+
+        assertEquals("id should be obtained as expected", id, entry.getClientId());
+    }
+    
+    /**
+     * Tests {@link BaseEntry#setProjectId()}.
+     */
+    public void testSetProjectId() {
+        long id = 123;
+        entry.setProjectId(id);
+
+        assertEquals("id should be obtained as expected", id, entry.getProjectId());
     }
 
     /**
