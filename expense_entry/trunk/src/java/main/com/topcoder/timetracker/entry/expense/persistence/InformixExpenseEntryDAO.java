@@ -97,9 +97,9 @@ import java.util.Map;
 public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
     /** Represents the prepared SQL statement to add an expense entry. */
     private static final String ADD_ENTRY_SQL =
-        "INSERT INTO expense_entry (expense_entry_id, company_id, invoice_id, expense_type_id, "
+        "INSERT INTO expense_entry (expense_entry_id, company_id, client_id, project_id, invoice_id, expense_type_id, "
         + "expense_status_id, description, entry_date, amount, billable, creation_date, creation_user, "
-        + "modification_date, modification_user, mileage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        + "modification_date, modification_user, mileage) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     /** Represents the prepared SQL statement to add into the exp_reject_reason table. */
     private static final String ADD_EXP_REJECT_REASON_SQL = "INSERT INTO exp_reject_reason (expense_entry_id,"
@@ -108,7 +108,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
     /** Represents the prepared SQL statement to update an expense entry. */
     private static final String UPDATE_ENTRY_SQL =
-        "UPDATE expense_entry SET company_id=?, invoice_id=?, expense_type_id=?, expense_status_id=?, "
+        "UPDATE expense_entry SET company_id=?, client_id=?, projectId=?, invoice_id=?, expense_type_id=?, expense_status_id=?, "
         + "description=?, entry_date=?, amount=?, billable=?, modification_date=?, modification_user=?, "
         + "mileage=? WHERE expense_entry_id=?";
 
@@ -134,7 +134,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
     /** Represents the prepared SQL statement to get all expense entries, including their entry types and statuses. */
     private static final String RETRIEVE_ALL_ENTRY_SQL =
-        "SELECT expense_entry.expense_entry_id, expense_entry.company_id, expense_entry.invoice_id, "
+        "SELECT expense_entry.expense_entry_id, expense_entry.company_id, expense_entry.client_id, expense_entry.project_id, expense_entry.invoice_id, "
         + "expense_entry.expense_type_id, expense_entry.expense_status_id, expense_entry.description, "
         + "expense_entry.entry_date, expense_entry.amount, expense_entry.billable, expense_entry.creation_date, "
         + "expense_entry.creation_user, expense_entry.modification_date, expense_entry.modification_user,"
@@ -158,6 +158,12 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
     /** Represents the column name for company id. */
     private static final String COMPANY_ID_COLUMN = "company_id";
+    
+    /** Represents the column name for client id. */
+    private static final String CLIENT_ID_COLUMN = "client_id";
+    
+    /** Represents the column name for project id. */
+    private static final String PROJECT_ID_COLUMN = "project_id";
 
     /** Represents the column name for invoice id. */
     private static final String INVOICE_ID_COLUMN = "invoice_id";
@@ -224,7 +230,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
     /** Represents all the columns hold be the expense entry table. */
     private static final String[] ENTRY_COLUMNS = new String[] {
-        ID_COLUMN, COMPANY_ID_COLUMN, INVOICE_ID_COLUMN, TYPE_ID_COLUMN, STATUS_ID_COLUMN, DESCRIPTION_COLUMN,
+        ID_COLUMN, COMPANY_ID_COLUMN, CLIENT_ID_COLUMN, PROJECT_ID_COLUMN, INVOICE_ID_COLUMN, TYPE_ID_COLUMN, STATUS_ID_COLUMN, DESCRIPTION_COLUMN,
         DATE_COLUMN, AMOUNT_COLUMN, BILLABLE_COLUMN, CREATION_DATE_COLUMN, CREATION_USER_COLUMN,
         MODIFICATION_DATE_COLUMN, MODIFICATION_USER_COLUMN, MILEAGE_COLUMN
     };
@@ -694,6 +700,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             int index = 0;
             statement.setLong(++index, entry.getId());
             statement.setLong(++index, entry.getCompanyId());
+            statement.setLong(++index, entry.getClientId());
+            statement.setLong(++index, entry.getProjectId());
 
             if (entry.getInvoice() != null) {
                 statement.setLong(++index, entry.getInvoice().getId());
@@ -1099,6 +1107,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             // Set parameters
             int index = 0;
             statement.setLong(++index, entry.getCompanyId());
+            statement.setLong(++index, entry.getClientId());
+            statement.setLong(++index, entry.getProjectId());
 
             if (entry.getInvoice() != null) {
                 statement.setLong(++index, entry.getInvoice().getId());
@@ -1285,7 +1295,9 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             // Set properties
             entry = new ExpenseEntry(resultSet.getLong(ID_COLUMN));
             entry.setCompanyId(resultSet.getLong(COMPANY_ID_COLUMN));
-
+            entry.setCompanyId(resultSet.getLong(CLIENT_ID_COLUMN));
+            entry.setCompanyId(resultSet.getLong(PROJECT_ID_COLUMN));
+            
             long invoiceId = resultSet.getLong(INVOICE_ID_COLUMN);
 
             if (!resultSet.wasNull()) {

@@ -389,7 +389,15 @@ public final class ExpenseEntryHelper {
         }
 
         if (value.getCompanyId() <= 0) {
-            throw new IllegalArgumentException("The ID of company shoule be positive.");
+            throw new IllegalArgumentException("The ID of company should be positive.");
+        }
+        
+        if (value.getClientId() <= 0) {
+            throw new IllegalArgumentException("The ID of client should be positive.");
+        }
+        
+        if (value.getProjectId() <= 0) {
+            throw new IllegalArgumentException("The ID of project should be positive.");
         }
 
         if (value.getExpenseType().getId() <= 0) {
