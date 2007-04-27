@@ -4,8 +4,8 @@
 package com.topcoder.timetracker.entry.time.db;
 
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
-import com.topcoder.search.builder.SearchStrategy;
-import com.topcoder.search.builder.database.DatabaseSearchStrategy;
+import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.SearchBundleManager;
 import com.topcoder.timetracker.entry.time.ConfigurationException;
 import com.topcoder.timetracker.entry.time.DataAccessException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
@@ -84,18 +84,18 @@ public abstract class BaseDAO {
 
     /**
      * <p>
-     * This is the DatabaseSearchStrategy used to search the database.
+     * This is the <code>SearchBundle</code> used to search the database.
+     * </p>
+     *
+     * <p>
+     * It may be null in case the concrete class passes <code>null</code> to the constructor.
      * </p>
      *
      * <p>
      * It is set in the constructor and never changed afterwards.
      * </p>
-     *
-     * <p>
-     * It may be null in case the concrete class doesn't pass any to the constructor.
-     * </p>
      */
-    private final SearchStrategy searchStrategy;
+    private final SearchBundle searchBundle;
 
     /**
      * <p>
@@ -125,31 +125,44 @@ public abstract class BaseDAO {
      * @param searchStrategyNamespace The configuration namespace of the database search strategy that will be used.
      * @param auditor The AuditManager used to create audit entries.
      *
-     * @throws IllegalArgumentException if connFactory is null or any one of connName, idGen and
-     * searchStrategyNamespace is empty string when it is not null
-     * @throws ConfigurationException if unable to create the search strategy instance according to the given
-     * namespace or create the id generator according to the given id generator name
+     * @throws IllegalArgumentException if connFactory is null, or if idGen, connName or
+     * searchStrategyNamespace is an empty String or searchBundleName is empty string when the
+     * searchBundleManagerNamespace is null or searchBundleName is null or empty string when
+     * searchBundleManagerNamespace is not null and not empty
+     @throws ConfigurationException if unable to create the search bundle instance according to the given
+     * namespace and search bundle name or create the id generator according to the given id generator name
      */
-    protected BaseDAO(DBConnectionFactory connFactory, String connName, String idGen, String searchStrategyNamespace,
-        AuditManager auditor) throws ConfigurationException {
+    protected BaseDAO(DBConnectionFactory connFactory, String connName, String idGen,
+        String searchBundleManagerNamespace, String searchBundleName, AuditManager auditor)
+        throws ConfigurationException {
         Util.checkNull(connFactory, "connFactory");
         checkEmptyString(connName, "connName");
         checkEmptyString(idGen, "idGen");
-        checkEmptyString(searchStrategyNamespace, "searchStrategyNamespace");
+        checkEmptyString(searchBundleManagerNamespace, "searchBundleManagerNamespace");
+        if (searchBundleManagerNamespace == null) {
+            checkEmptyString(searchBundleName, "searchBundleName");
+        } else {
+            Util.checkString(searchBundleName, "searchBundleName");
+        }
 
         this.connFactory = connFactory;
         this.connName = connName;
 
         this.idGenerator = (idGen == null) ? null : createIDGenerator(idGen);
 
-        // create the searchStrategy using the given namespace
+        // create the search bundle using the given namespace
         // note, it is null if the given search strategy namespace is null
         try {
-            this.searchStrategy = (searchStrategyNamespace == null) ? null : new DatabaseSearchStrategy(
-                searchStrategyNamespace);
+            this.searchBundle = (searchBundleManagerNamespace == null) ? null : new SearchBundleManager(
+                searchBundleManagerNamespace).getSearchBundle(searchBundleName);
+
+            if (searchBundleManagerNamespace != null && this.searchBundle == null) {
+                throw new ConfigurationException("The given search bundle [" + searchBundleName + "] doesn't exist.");
+            }
+
         } catch (SearchBuilderConfigurationException e) {
             throw new ConfigurationException("SearchBuilderConfigurationException occurs "
-                + "when creating DatabaseSearchStrategy instance.", e);
+                + "when creating SearchBundleManager instance.", e);
         }
 
         this.auditManager = auditor;
@@ -239,17 +252,17 @@ public abstract class BaseDAO {
 
     /**
      * <p>
-     * Retrieves the <code>DatabaseSearchStrategy</code> used to search the database.
+     * Retrieves the <code>SearchBundle</code> used to search the database.
      * </p>
      *
      * <p>
      * Note, the return value may be null.
      * </p>
      *
-     * @return the <code>DatabaseSearchStrategy</code> used to search the database.
+     * @return the <code>SearchBundle</code> used to search the database.
      */
-    protected SearchStrategy getSearchStrategy() {
-        return searchStrategy;
+    protected SearchBundle getSearchBundle() {
+        return searchBundle;
     }
 
     /**

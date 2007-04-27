@@ -59,6 +59,7 @@ public class DbTaskTypeDAOTests extends TestCase {
     protected void setUp() throws Exception {
         TestHelper.clearConfig();
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.SEARCH_CONFIG_FILE);
         TestHelper.loadXMLConfig(TestHelper.AUDIT_CONFIG_FILE);
         TestHelper.setUpDataBase();
         TestHelper.setUpEJBEnvironment(null, null, null);
@@ -67,7 +68,7 @@ public class DbTaskTypeDAOTests extends TestCase {
         auditManager = new AuditDelegate(TestHelper.AUDIT_NAMESPACE);
 
         taskTypeDao = new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager);
+            TestHelper.SEARCH_NAMESPACE, "TaskTypeBundle", auditManager);
     }
 
     /**
@@ -124,7 +125,7 @@ public class DbTaskTypeDAOTests extends TestCase {
     public void testCtor_NullConnFactory() throws Exception {
         try {
             new DbTaskTypeDAO(null, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
-                auditManager);
+                "TaskTypeBundle", auditManager);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -144,7 +145,8 @@ public class DbTaskTypeDAOTests extends TestCase {
      */
     public void testCtor_EmptyConnName() throws Exception {
         try {
-            new DbTaskTypeDAO(dbFactory, " ", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+            new DbTaskTypeDAO(dbFactory, " ", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, "TaskTypeBundle",
+                auditManager);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -164,7 +166,8 @@ public class DbTaskTypeDAOTests extends TestCase {
      */
     public void testCtor_NullIdGen() throws Exception {
         try {
-            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, null, TestHelper.SEARCH_NAMESPACE, auditManager);
+            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, null, TestHelper.SEARCH_NAMESPACE,
+                "TaskTypeBundle", auditManager);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -184,7 +187,8 @@ public class DbTaskTypeDAOTests extends TestCase {
      */
     public void testCtor_EmptyIdGen() throws Exception {
         try {
-            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, " ", TestHelper.SEARCH_NAMESPACE, auditManager);
+            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, " ", TestHelper.SEARCH_NAMESPACE,
+                "TaskTypeBundle", auditManager);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -204,7 +208,8 @@ public class DbTaskTypeDAOTests extends TestCase {
      */
     public void testCtor_NullSearchStrategyNamespace() throws Exception {
         try {
-            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator", null, auditManager);
+            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator", null, "TaskTypeBundle",
+                auditManager);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -224,7 +229,8 @@ public class DbTaskTypeDAOTests extends TestCase {
      */
     public void testCtor_EmptySearchStrategyNamespace() throws Exception {
         try {
-            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator", " ", auditManager);
+            new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator", " ", "TaskTypeBundle",
+                auditManager);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -245,7 +251,7 @@ public class DbTaskTypeDAOTests extends TestCase {
     public void testCtor_NullAuditor() throws Exception {
         try {
             new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator",
-                TestHelper.SEARCH_NAMESPACE, null);
+                TestHelper.SEARCH_NAMESPACE, "TaskTypeBundle", null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -264,7 +270,7 @@ public class DbTaskTypeDAOTests extends TestCase {
     public void testCtor1_ConfigurationException() {
         try {
             new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator", "unknown_namespace",
-                auditManager);
+                "TaskTypeBundle", auditManager);
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
             //good
@@ -509,7 +515,7 @@ public class DbTaskTypeDAOTests extends TestCase {
         TaskType taskType1 = TestHelper.createTestingTaskType(null);
         TaskType taskType2 = TestHelper.createTestingTaskType(null);
         taskTypeDao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TaskTypeBundle", auditManager);
 
         try {
             taskTypeDao.createTaskTypes(new TaskType[] {taskType1, taskType2});
@@ -721,7 +727,7 @@ public class DbTaskTypeDAOTests extends TestCase {
         taskTypeDao.createTaskTypes(new TaskType[] {taskType1, taskType2});
 
         taskTypeDao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TaskTypeBundle", auditManager);
         try {
             taskTypeDao.updateTaskTypes(new TaskType[] {taskType1, taskType2});
             fail("DataAccessException expected.");
@@ -830,7 +836,7 @@ public class DbTaskTypeDAOTests extends TestCase {
         taskTypeDao.createTaskTypes(new TaskType[] {taskType1});
 
         taskTypeDao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TaskTypeBundle", auditManager);
 
         try {
             taskTypeDao.deleteTaskTypes(new long[] {taskType1.getId()});
@@ -898,7 +904,7 @@ public class DbTaskTypeDAOTests extends TestCase {
         taskTypeDao.createTaskTypes(new TaskType[] {taskType1});
 
         taskTypeDao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TaskTypeBundle", auditManager);
 
         try {
             taskTypeDao.getTaskTypes(new long[] {taskType1.getId()});
@@ -951,8 +957,8 @@ public class DbTaskTypeDAOTests extends TestCase {
         TestHelper.assertTaskTypeEquals(taskType1, taskTypes[0]);
 
         // verify the modification user filter
-        filter = taskTypeDao.getTaskTypeFilterFactory().createModificationUserFilter(
-            taskType1.getModificationUser(), StringMatchType.ENDS_WITH);
+        filter = taskTypeDao.getTaskTypeFilterFactory().createModificationUserFilter(taskType1.getModificationUser(),
+            StringMatchType.ENDS_WITH);
         taskTypes = taskTypeDao.searchTaskTypes(filter);
         assertEquals("Failed to search the task types.", 1, taskTypes.length);
         TestHelper.assertTaskTypeEquals(taskType1, taskTypes[0]);
@@ -1048,7 +1054,7 @@ public class DbTaskTypeDAOTests extends TestCase {
      */
     public void testGetAllTaskTypes_DataAccessException() throws Exception {
         taskTypeDao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TaskTypeBundle", auditManager);
         try {
             taskTypeDao.getAllTaskTypes();
             fail("DataAccessException expected.");

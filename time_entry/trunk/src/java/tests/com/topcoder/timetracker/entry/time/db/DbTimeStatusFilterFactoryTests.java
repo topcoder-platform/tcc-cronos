@@ -31,26 +31,12 @@ public class DbTimeStatusFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * The columnNames map for testing.
-     * </p>
-     */
-    private Map columnNames;
-
-    /**
-     * <p>
      * Sets up test environment.
      * </p>
      *
      */
     protected void setUp() {
-        columnNames = new HashMap();
-        columnNames.put(DbTimeStatusFilterFactory.CREATION_DATE_COLUMN_NAME, "creation_date");
-        columnNames.put(DbTimeStatusFilterFactory.MODIFICATION_DATE_COLUMN_NAME, "modification_date");
-        columnNames.put(DbTimeStatusFilterFactory.CREATION_USER_COLUMN_NAME, "creation_user");
-        columnNames.put(DbTimeStatusFilterFactory.MODIFICATION_USER_COLUMN_NAME, "modification_user");
-        columnNames.put(DbTimeStatusFilterFactory.DESCRIPTION_COLUMN_NAME, "description");
-
-        factory = new DbTimeStatusFilterFactory(columnNames);
+        factory = new DbTimeStatusFilterFactory();
     }
 
     /**
@@ -61,7 +47,6 @@ public class DbTimeStatusFilterFactoryTests extends TestCase {
      */
     protected void tearDown() {
         factory = null;
-        columnNames = null;
     }
 
     /**
@@ -90,119 +75,6 @@ public class DbTimeStatusFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * Tests ctor DbTimeStatusFilterFactory#DbTimeStatusFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is null and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_NullColumnNames() {
-        try {
-            new DbTimeStatusFilterFactory(null);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeStatusFilterFactory#DbTimeStatusFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyKey() {
-        columnNames.put(" ", "modification_user");
-        try {
-            new DbTimeStatusFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeStatusFilterFactory#DbTimeStatusFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_KeyNotString() {
-        columnNames.put(new Long(8), "modification_user");
-        try {
-            new DbTimeStatusFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeStatusFilterFactory#DbTimeStatusFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is missing some keys and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_MissSomeKey() {
-        columnNames.remove(DbTimeStatusFilterFactory.MODIFICATION_USER_COLUMN_NAME);
-        try {
-            new DbTimeStatusFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeStatusFilterFactory#DbTimeStatusFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyValue() {
-        columnNames.put(DbTimeStatusFilterFactory.MODIFICATION_USER_COLUMN_NAME, " ");
-        try {
-            new DbTimeStatusFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeStatusFilterFactory#DbTimeStatusFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_ValueNotString() {
-        columnNames.put(DbTimeStatusFilterFactory.MODIFICATION_USER_COLUMN_NAME, new Long(8));
-        try {
-            new DbTimeStatusFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
      * Tests DbTimeStatusFilterFactory#createDescriptionFilter(String,StringMatchType) for accuracy.
      * </p>
      *
@@ -212,7 +84,7 @@ public class DbTimeStatusFilterFactoryTests extends TestCase {
      */
     public void testCreateDescriptionFilter() {
         LikeFilter filter = (LikeFilter) factory.createDescriptionFilter("description", StringMatchType.ENDS_WITH);
-        assertEquals("Failed to create the description filter correctly.", "description", filter.getName());
+        assertEquals("Failed to create the description filter correctly.", "DESCRIPTION", filter.getName());
         assertEquals("Failed to create the description filter correctly.", "EW:description", filter.getValue());
     }
 

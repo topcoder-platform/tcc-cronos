@@ -76,6 +76,7 @@ public class DbTimeEntryDAOTests extends TestCase {
     protected void setUp() throws Exception {
         TestHelper.clearConfig();
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.SEARCH_CONFIG_FILE);
         TestHelper.loadXMLConfig(TestHelper.AUDIT_CONFIG_FILE);
         TestHelper.setUpDataBase();
         TestHelper.setUpEJBEnvironment(null, null, null);
@@ -84,11 +85,11 @@ public class DbTimeEntryDAOTests extends TestCase {
         auditManager = new AuditDelegate(TestHelper.AUDIT_NAMESPACE);
 
         taskTypeDao = new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager);
+            TestHelper.SEARCH_NAMESPACE, "TaskTypeBundle", auditManager);
         timeStatusDao = new DbTimeStatusDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeStatusIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager);
+            TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle", auditManager);
         timeEntryDao = new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager, taskTypeDao, timeStatusDao);
+            TestHelper.SEARCH_NAMESPACE, "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
     }
 
     /**
@@ -149,7 +150,7 @@ public class DbTimeEntryDAOTests extends TestCase {
     public void testCtor_NullConnFactory() throws Exception {
         try {
             new DbTimeEntryDAO(null, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
-                auditManager, taskTypeDao, timeStatusDao);
+                "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -170,7 +171,8 @@ public class DbTimeEntryDAOTests extends TestCase {
      */
     public void testCtor_NullConnName() throws Exception {
         assertNotNull("Failed to create a new DbTimeEntryDAO instance.", new DbTimeEntryDAO(dbFactory, null,
-            "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager, taskTypeDao, timeStatusDao));
+            "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, "TimeEntryBundle", auditManager, taskTypeDao,
+            timeStatusDao));
     }
 
     /**
@@ -187,8 +189,8 @@ public class DbTimeEntryDAOTests extends TestCase {
      */
     public void testCtor_EmptyConnName() throws Exception {
         try {
-            new DbTimeEntryDAO(dbFactory, " ", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-                taskTypeDao, timeStatusDao);
+            new DbTimeEntryDAO(dbFactory, " ", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, "TimeEntryBundle",
+                auditManager, taskTypeDao, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -209,8 +211,8 @@ public class DbTimeEntryDAOTests extends TestCase {
      */
     public void testCtor_NullIdGen() throws Exception {
         try {
-            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, null, TestHelper.SEARCH_NAMESPACE, auditManager,
-                taskTypeDao, timeStatusDao);
+            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, null, TestHelper.SEARCH_NAMESPACE,
+                "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -231,8 +233,8 @@ public class DbTimeEntryDAOTests extends TestCase {
      */
     public void testCtor_EmptyIdGen() throws Exception {
         try {
-            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "  ", TestHelper.SEARCH_NAMESPACE, auditManager,
-                taskTypeDao, timeStatusDao);
+            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "  ", TestHelper.SEARCH_NAMESPACE,
+                "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -253,8 +255,8 @@ public class DbTimeEntryDAOTests extends TestCase {
      */
     public void testCtor_NullSearchStrategyNamespace() throws Exception {
         try {
-            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator", null, auditManager,
-                taskTypeDao, timeStatusDao);
+            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator", null, "TimeEntryBundle",
+                auditManager, taskTypeDao, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -275,8 +277,8 @@ public class DbTimeEntryDAOTests extends TestCase {
      */
     public void testCtor_EmptySearchStrategyNamespace() throws Exception {
         try {
-            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator", "  ", auditManager,
-                taskTypeDao, timeStatusDao);
+            new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator", "  ", "TimeEntryBundle",
+                auditManager, taskTypeDao, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -298,7 +300,7 @@ public class DbTimeEntryDAOTests extends TestCase {
     public void testCtor_NullAuditor() throws Exception {
         try {
             new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator",
-                TestHelper.SEARCH_NAMESPACE, null, taskTypeDao, timeStatusDao);
+                TestHelper.SEARCH_NAMESPACE, "TimeEntryBundle", null, taskTypeDao, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -320,7 +322,7 @@ public class DbTimeEntryDAOTests extends TestCase {
     public void testCtor_NullTaskTypeDao() throws Exception {
         try {
             new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator",
-                TestHelper.SEARCH_NAMESPACE, auditManager, null, timeStatusDao);
+                TestHelper.SEARCH_NAMESPACE, "TimeEntryBundle", auditManager, null, timeStatusDao);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -342,7 +344,7 @@ public class DbTimeEntryDAOTests extends TestCase {
     public void testCtor_NullTimeStatusDao() throws Exception {
         try {
             new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator",
-                TestHelper.SEARCH_NAMESPACE, auditManager, taskTypeDao, null);
+                TestHelper.SEARCH_NAMESPACE, "TimeEntryBundle", auditManager, taskTypeDao, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -362,7 +364,7 @@ public class DbTimeEntryDAOTests extends TestCase {
     public void testCtor_ConfigurationException() {
         try {
             new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator", "unknown_namespace",
-                auditManager, taskTypeDao, timeStatusDao);
+                "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
             //good
@@ -631,7 +633,7 @@ public class DbTimeEntryDAOTests extends TestCase {
         TimeEntry timeEntry1 = TestHelper.createTestingTimeEntry(null);
         TimeEntry timeEntry2 = TestHelper.createTestingTimeEntry(null);
         timeEntryDao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager, taskTypeDao, timeStatusDao);
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
 
         try {
             timeEntryDao.createTimeEntries(new TimeEntry[] {timeEntry1, timeEntry2}, true);
@@ -893,7 +895,7 @@ public class DbTimeEntryDAOTests extends TestCase {
         timeEntryDao.createTimeEntries(new TimeEntry[] {timeEntry1, timeEntry2}, false);
 
         timeEntryDao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager, taskTypeDao, timeStatusDao);
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         try {
             timeEntryDao.updateTimeEntries(new TimeEntry[] {timeEntry1, timeEntry2}, true);
             fail("DataAccessException expected.");
@@ -1025,7 +1027,7 @@ public class DbTimeEntryDAOTests extends TestCase {
         timeEntryDao.createTimeEntries(new TimeEntry[] {timeEntry1}, true);
 
         timeEntryDao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager, taskTypeDao, timeStatusDao);
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
 
         try {
             timeEntryDao.deleteTimeEntries(new long[] {timeEntry1.getId()}, true);
@@ -1116,7 +1118,7 @@ public class DbTimeEntryDAOTests extends TestCase {
         timeEntryDao.createTimeEntries(new TimeEntry[] {timeEntry1}, true);
 
         timeEntryDao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager, taskTypeDao, timeStatusDao);
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
 
         try {
             timeEntryDao.getTimeEntries(new long[] {timeEntry1.getId()});
@@ -1294,7 +1296,7 @@ public class DbTimeEntryDAOTests extends TestCase {
      */
     public void testGetAllTimeEntries_DataAccessException() throws Exception {
         timeEntryDao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager, taskTypeDao, timeStatusDao);
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
 
         try {
             timeEntryDao.getAllTimeEntries();

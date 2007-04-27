@@ -4,8 +4,6 @@
 package com.topcoder.timetracker.entry.time.db;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.topcoder.search.builder.filter.BetweenFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
@@ -37,25 +35,12 @@ public class DbBaseFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * The columnNames map for testing.
-     * </p>
-     */
-    private Map columnNames;
-
-    /**
-     * <p>
      * Sets up test environment.
      * </p>
      *
      */
     protected void setUp() {
-        columnNames = new HashMap();
-        columnNames.put(DbBaseFilterFactory.CREATION_DATE_COLUMN_NAME, "creation_date");
-        columnNames.put(DbBaseFilterFactory.MODIFICATION_DATE_COLUMN_NAME, "modification_date");
-        columnNames.put(DbBaseFilterFactory.CREATION_USER_COLUMN_NAME, "creation_user");
-        columnNames.put(DbBaseFilterFactory.MODIFICATION_USER_COLUMN_NAME, "modification_user");
-
-        factory = new DbBaseFilterFactory(columnNames);
+        factory = new DbBaseFilterFactory();
     }
 
     /**
@@ -66,7 +51,6 @@ public class DbBaseFilterFactoryTests extends TestCase {
      */
     protected void tearDown() {
         factory = null;
-        columnNames = null;
     }
 
     /**
@@ -95,119 +79,6 @@ public class DbBaseFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * Tests ctor DbBaseFilterFactory#DbBaseFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is null and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_NullColumnNames() {
-        try {
-            new DbBaseFilterFactory(null);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbBaseFilterFactory#DbBaseFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyKey() {
-        columnNames.put(" ", "modification_user");
-        try {
-            new DbBaseFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbBaseFilterFactory#DbBaseFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_KeyNotString() {
-        columnNames.put(new Long(8), "modification_user");
-        try {
-            new DbBaseFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbBaseFilterFactory#DbBaseFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is missing some keys and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_MissSomeKey() {
-        columnNames.remove(DbBaseFilterFactory.MODIFICATION_USER_COLUMN_NAME);
-        try {
-            new DbBaseFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbBaseFilterFactory#DbBaseFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyValue() {
-        columnNames.put(DbBaseFilterFactory.MODIFICATION_USER_COLUMN_NAME, " ");
-        try {
-            new DbBaseFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbBaseFilterFactory#DbBaseFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_ValueNotString() {
-        columnNames.put(DbBaseFilterFactory.MODIFICATION_USER_COLUMN_NAME, new Long(8));
-        try {
-            new DbBaseFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
      * Tests DbBaseFilterFactory#createCreationDateFilter(Date,Date) for accuracy.
      * </p>
      *
@@ -217,9 +88,11 @@ public class DbBaseFilterFactoryTests extends TestCase {
      */
     public void testCreateCreationDateFilter() {
         BetweenFilter filter = (BetweenFilter) factory.createCreationDateFilter(new Date(10000), new Date(20000));
-        assertEquals("Failed to create the creation date filter correctly.", "creation_date", filter.getName());
-        assertEquals("Failed to create the creation date filter correctly.", new Date(10000), filter.getLowerThreshold());
-        assertEquals("Failed to create the creation date filter correctly.", new Date(20000), filter.getUpperThreshold());
+        assertEquals("Failed to create the creation date filter correctly.", "CREATION_DATE", filter.getName());
+        assertEquals("Failed to create the creation date filter correctly.", new Date(10000),
+            filter.getLowerThreshold());
+        assertEquals("Failed to create the creation date filter correctly.", new Date(20000),
+            filter.getUpperThreshold());
     }
 
     /**
@@ -235,7 +108,7 @@ public class DbBaseFilterFactoryTests extends TestCase {
         Filter filter = factory.createCreationDateFilter(null, new Date(20000));
         assertEquals("Failed to create the creation date filter correctly.", LessThanOrEqualToFilter.class,
             filter.getClass());
-        assertEquals("Failed to create the creation date filter correctly.", "creation_date",
+        assertEquals("Failed to create the creation date filter correctly.", "CREATION_DATE",
             ((LessThanOrEqualToFilter) filter).getName());
 
     }
@@ -253,7 +126,7 @@ public class DbBaseFilterFactoryTests extends TestCase {
         Filter filter = factory.createCreationDateFilter(new Date(20000), null);
         assertEquals("Failed to create the creation date filter correctly.", GreaterThanOrEqualToFilter.class,
             filter.getClass());
-        assertEquals("Failed to create the creation date filter correctly.", "creation_date",
+        assertEquals("Failed to create the creation date filter correctly.", "CREATION_DATE",
             ((GreaterThanOrEqualToFilter) filter).getName());
     }
 
@@ -304,9 +177,11 @@ public class DbBaseFilterFactoryTests extends TestCase {
      */
     public void testCreateModificationDateFilter() {
         BetweenFilter filter = (BetweenFilter) factory.createModificationDateFilter(new Date(10000), new Date(20000));
-        assertEquals("Failed to create the modification date filter correctly.", "modification_date", filter.getName());
-        assertEquals("Failed to create the modification date filter correctly.", new Date(10000), filter.getLowerThreshold());
-        assertEquals("Failed to create the modification date filter correctly.", new Date(20000), filter.getUpperThreshold());
+        assertEquals("Failed to create the modification date filter correctly.", "MODIFICATION_DATE", filter.getName());
+        assertEquals("Failed to create the modification date filter correctly.", new Date(10000),
+            filter.getLowerThreshold());
+        assertEquals("Failed to create the modification date filter correctly.", new Date(20000),
+            filter.getUpperThreshold());
     }
 
     /**
@@ -322,7 +197,7 @@ public class DbBaseFilterFactoryTests extends TestCase {
         Filter filter = factory.createModificationDateFilter(null, new Date(20000));
         assertEquals("Failed to create the creation date filter correctly.", LessThanOrEqualToFilter.class,
             filter.getClass());
-        assertEquals("Failed to create the creation date filter correctly.", "modification_date",
+        assertEquals("Failed to create the creation date filter correctly.", "MODIFICATION_DATE",
             ((LessThanOrEqualToFilter) filter).getName());
     }
 
@@ -339,7 +214,7 @@ public class DbBaseFilterFactoryTests extends TestCase {
         Filter filter = factory.createModificationDateFilter(new Date(20000), null);
         assertEquals("Failed to create the creation date filter correctly.", GreaterThanOrEqualToFilter.class,
             filter.getClass());
-        assertEquals("Failed to create the creation date filter correctly.", "modification_date",
+        assertEquals("Failed to create the creation date filter correctly.", "MODIFICATION_DATE",
             ((GreaterThanOrEqualToFilter) filter).getName());
     }
 
@@ -391,7 +266,7 @@ public class DbBaseFilterFactoryTests extends TestCase {
     public void testCreateCreationUserFilter() {
         LikeFilter filter = (LikeFilter) factory.createCreationUserFilter("username", StringMatchType.ENDS_WITH);
 
-        assertEquals("Failed to create the creation user filter correctly.", "creation_user", filter.getName());
+        assertEquals("Failed to create the creation user filter correctly.", "CREATION_USER", filter.getName());
         assertEquals("Failed to create the creation user filter correctly.", "EW:username", filter.getValue());
     }
 
@@ -461,7 +336,7 @@ public class DbBaseFilterFactoryTests extends TestCase {
     public void testCreateModificationUserFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createModificationUserFilter("username",
             StringMatchType.EXACT_MATCH);
-        assertEquals("Failed to create the modification user filter correctly.", "modification_user", filter.getName());
+        assertEquals("Failed to create the modification user filter correctly.", "MODIFICATION_USER", filter.getName());
         assertEquals("Failed to create the modification user filter correctly.", "username", filter.getValue());
     }
 
@@ -518,23 +393,4 @@ public class DbBaseFilterFactoryTests extends TestCase {
             //good
         }
     }
-
-    /**
-     * <p>
-     * Tests DbBaseFilterFactory#getColumnNames() for accuracy.
-     * </p>
-     *
-     * <p>
-     * It verifies DbBaseFilterFactory#getColumnNames() is correct.
-     * </p>
-     */
-    public void testGetColumnNames() {
-        Map map = factory.getColumnNames();
-        assertEquals("Expected the size of map is two.", 4, map.size());
-        assertTrue("Failed to get the column names map correctly.", map.containsKey("CREATION_DATE_COLUMN_NAME"));
-        assertTrue("Failed to get the column names map correctly.", map.containsKey("CREATION_USER_COLUMN_NAME"));
-        assertTrue("Failed to get the column names map correctly.", map.containsKey("MODIFICATION_USER_COLUMN_NAME"));
-        assertTrue("Failed to get the column names map correctly.", map.containsKey("MODIFICATION_DATE_COLUMN_NAME"));
-    }
-
 }

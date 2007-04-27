@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,21 +54,6 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 public class DbTimeStatusDAO extends BaseDAO implements TimeStatusDAO {
     /**
      * <p>
-     * Represents the column names mapping used for <code>DbTimeStatusFilterFactory</code>.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and initialized in a static initialization block.
-     * </p>
-     *
-     * <p>
-     * It will not changed after initialization, including the reference and content.
-     * </p>
-     */
-    private static final Map COLUMNNAMES_MAP = new HashMap();
-
-    /**
-     * <p>
      * Represents the sql script to insert a record to <b>time_status</b> table.
      * </p>
      */
@@ -101,18 +85,6 @@ public class DbTimeStatusDAO extends BaseDAO implements TimeStatusDAO {
 
     /**
      * <p>
-     * Represents the context string for searching. It is used in the
-     * {@link DbTimeStatusDAO#searchTimeStatuses(Filter)} to search time statuses.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and never changed afterwards.
-     * </p>
-     */
-    private static final String CONTEXT = SELECT_TIME_STATUSES + " where";
-
-    /**
-     * <p>
      * This is the filter factory that is used to create Search Filters for
      * searching the data store for Time Statuses using this implementation.
      * </p>
@@ -129,19 +101,6 @@ public class DbTimeStatusDAO extends BaseDAO implements TimeStatusDAO {
 
     /**
      * <p>
-     * This is a static block and is used to initialize the <code>COLUMNNAMES_MAP</code> variable.
-     * </p>
-     */
-    static {
-        COLUMNNAMES_MAP.put(DbTimeStatusFilterFactory.CREATION_DATE_COLUMN_NAME, "time_status.creation_date");
-        COLUMNNAMES_MAP.put(DbTimeStatusFilterFactory.MODIFICATION_DATE_COLUMN_NAME, "time_status.modification_date");
-        COLUMNNAMES_MAP.put(DbTimeStatusFilterFactory.CREATION_USER_COLUMN_NAME, "time_status.creation_user");
-        COLUMNNAMES_MAP.put(DbTimeStatusFilterFactory.MODIFICATION_USER_COLUMN_NAME, "time_status.modification_user");
-        COLUMNNAMES_MAP.put(DbTimeStatusFilterFactory.DESCRIPTION_COLUMN_NAME, "time_status.description");
-    }
-
-    /**
-     * <p>
      * Constructor that accepts the necessary parameters to construct a <code>DbTimeStatusDAO</code>.
      * </p>
      *
@@ -151,20 +110,21 @@ public class DbTimeStatusDAO extends BaseDAO implements TimeStatusDAO {
      * @param searchStrategyNamespace The configuration namespace of the database search strategy that will be used.
      * @param auditor The auditManager used to perform the edits.
      *
-     * @throws IllegalArgumentException if connFactory or auditor is null, or idGen, searchStrategyNamespace is
-     * null or empty string, or connName is empty string when it is not null
-     * @throws ConfigurationException if unable to create the search strategy from the given namespace or create
+     * @throws IllegalArgumentException if connFactory or auditor is null, or idGen, searchBundleManagerNamespace,
+     * searchBundleName is null or empty string, or connName is empty string when it is not null
+     * @throws ConfigurationException if unable to create the search bundle from the given namespace or create
      * id generator using the id generator name
      */
     public DbTimeStatusDAO(DBConnectionFactory connFactory, String connName, String idGen,
-        String searchStrategyNamespace, AuditManager auditor) throws ConfigurationException {
-        super(connFactory, connName, idGen, searchStrategyNamespace, auditor);
+        String searchBundleManagerNamespace, String searchBundleName, AuditManager auditor)
+        throws ConfigurationException {
+        super(connFactory, connName, idGen, searchBundleManagerNamespace, searchBundleName, auditor);
 
         Util.checkNull(idGen, "idGen");
-        Util.checkNull(searchStrategyNamespace, "searchStrategyNamespace");
+        Util.checkNull(searchBundleManagerNamespace, "searchBundleManagerNamespace");
         Util.checkNull(auditor, "auditor");
 
-        this.timeStatusFilterFactory = new DbTimeStatusFilterFactory(COLUMNNAMES_MAP);
+        this.timeStatusFilterFactory = new DbTimeStatusFilterFactory();
     }
 
     /**
@@ -513,7 +473,7 @@ public class DbTimeStatusDAO extends BaseDAO implements TimeStatusDAO {
             Throwable[] causes = new Throwable[timeStatusIds.length];
 
             // select the time statuses using the IN clause
-            pstmt = conn.prepareStatement(SELECT_TIME_STATUSES
+            pstmt = conn.prepareStatement(SELECT_TIME_STATUSES + " WHERE "
                 + Util.buildInClause("time_status.time_status_id", timeStatusIds));
 
             rs = pstmt.executeQuery();
@@ -608,8 +568,7 @@ public class DbTimeStatusDAO extends BaseDAO implements TimeStatusDAO {
         Util.checkNull(criteria, "criteria");
 
         try {
-            CustomResultSet result = (CustomResultSet) getSearchStrategy().search(CONTEXT, criteria,
-                Collections.EMPTY_LIST, Collections.EMPTY_MAP);
+            CustomResultSet result = (CustomResultSet) getSearchBundle().search(criteria);
 
             int size = result.getRecordCount();
 

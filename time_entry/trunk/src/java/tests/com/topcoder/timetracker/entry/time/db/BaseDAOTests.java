@@ -62,6 +62,7 @@ public class BaseDAOTests extends TestCase {
     protected void setUp() throws Exception {
         TestHelper.clearConfig();
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.SEARCH_CONFIG_FILE);
         TestHelper.loadXMLConfig(TestHelper.AUDIT_CONFIG_FILE);
         TestHelper.setUpDataBase();
         TestHelper.setUpEJBEnvironment(null, null, null);
@@ -69,7 +70,8 @@ public class BaseDAOTests extends TestCase {
         connFactory = new DBConnectionFactoryImpl(TestHelper.DB_FACTORY_NAMESPACE);
         auditor = new AuditDelegate(TestHelper.AUDIT_NAMESPACE);
 
-        dao = new MockBaseDAO(connFactory, "tt_time_entry", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, auditor);
+        dao = new MockBaseDAO(connFactory, "tt_time_entry", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE,
+            "TimeStatusBundle", auditor);
     }
 
     /**
@@ -124,7 +126,7 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_NullConnName() throws Exception {
         assertNotNull("Failed to create a new BaseDAO instance.", new MockBaseDAO(connFactory, null, ID_GENERATOR_NAME,
-            TestHelper.SEARCH_NAMESPACE, auditor));
+            TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle", auditor));
     }
 
     /**
@@ -140,7 +142,7 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_NullSearchStrategyNamespace() throws Exception {
         assertNotNull("Failed to create a new BaseDAO instance.", new MockBaseDAO(connFactory, "tt_time_entry",
-            ID_GENERATOR_NAME, null, auditor));
+            ID_GENERATOR_NAME, null, "TimeStatusBundle", auditor));
     }
 
     /**
@@ -155,7 +157,7 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_NullAuditor() throws Exception {
         assertNotNull("Failed to create a new BaseDAO instance.", new MockBaseDAO(connFactory, "tt_time_entry",
-            ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, null));
+            ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle", null));
     }
 
     /**
@@ -170,7 +172,8 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_NullConnFactory() throws Exception {
         try {
-            new MockBaseDAO(null, "tt_time_entry", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, auditor);
+            new MockBaseDAO(null, "tt_time_entry", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle",
+                auditor);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -189,7 +192,8 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_EmptyConnName() throws Exception {
         try {
-            new MockBaseDAO(connFactory, " ", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, auditor);
+            new MockBaseDAO(connFactory, " ", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle",
+                auditor);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -208,7 +212,8 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_EmptyIdGen() throws Exception {
         try {
-            new MockBaseDAO(connFactory, "tt_time_entry", "  ", TestHelper.SEARCH_NAMESPACE, auditor);
+            new MockBaseDAO(connFactory, "tt_time_entry", "  ", TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle",
+                auditor);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -227,7 +232,8 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_UnknownIdGen() throws Exception {
         try {
-            new MockBaseDAO(connFactory, "tt_time_entry", "HelloWorld", TestHelper.SEARCH_NAMESPACE, auditor);
+            new MockBaseDAO(connFactory, "tt_time_entry", "HelloWorld", TestHelper.SEARCH_NAMESPACE,
+                "TimeStatusBundle", auditor);
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
             //good
@@ -246,7 +252,7 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_EmptySearchStrategyNamespace() throws Exception {
         try {
-            new MockBaseDAO(connFactory, "tt_time_entry", ID_GENERATOR_NAME, " ", auditor);
+            new MockBaseDAO(connFactory, "tt_time_entry", ID_GENERATOR_NAME, " ", "TimeStatusBundle", auditor);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
             //good
@@ -264,7 +270,7 @@ public class BaseDAOTests extends TestCase {
      */
     public void testCtor_ConfigurationException() {
         try {
-            new MockBaseDAO(connFactory, "tt_time_entry", ID_GENERATOR_NAME, "invalid", auditor);
+            new MockBaseDAO(connFactory, "tt_time_entry", ID_GENERATOR_NAME, "invalid", "TimeStatusBundle", auditor);
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
             //good
@@ -286,15 +292,15 @@ public class BaseDAOTests extends TestCase {
 
     /**
      * <p>
-     * Tests BaseDAO#getSearchStrategy() for accuracy.
+     * Tests BaseDAO#getSearchBundle() for accuracy.
      * </p>
      *
      * <p>
-     * It verifies BaseDAO#getSearchStrategy() is correct.
+     * It verifies BaseDAO#getSearchBundle() is correct.
      * </p>
      */
     public void testGetSearchStrategy() {
-        assertNotNull("Failed to get the search strategy correctly.", dao.getSearchStrategy());
+        assertNotNull("Failed to get the search bundle correctly.", dao.getSearchBundle());
     }
 
     /**
@@ -327,7 +333,8 @@ public class BaseDAOTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetNextId_DataAccessException() throws Exception {
-        dao = new MockBaseDAO(connFactory, "tt_time_entry", null, TestHelper.SEARCH_NAMESPACE, auditor);
+        dao = new MockBaseDAO(connFactory, "tt_time_entry", null, TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle",
+            auditor);
 
         try {
             dao.getNextId();
@@ -362,7 +369,8 @@ public class BaseDAOTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetConnection_DataAccessException() throws Exception {
-        dao = new MockBaseDAO(connFactory, "invalid", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE, auditor);
+        dao = new MockBaseDAO(connFactory, "invalid", ID_GENERATOR_NAME, TestHelper.SEARCH_NAMESPACE,
+            "TimeStatusBundle", auditor);
         try {
             dao.getConnection();
             fail("DataAccessException expected.");

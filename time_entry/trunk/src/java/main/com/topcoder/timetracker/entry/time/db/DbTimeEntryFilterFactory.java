@@ -6,7 +6,6 @@ package com.topcoder.timetracker.entry.time.db;
 import com.topcoder.timetracker.entry.time.TimeEntryFilterFactory;
 import com.topcoder.timetracker.entry.time.TimeStatus;
 
-import java.util.Map;
 import java.util.Date;
 
 import com.topcoder.search.builder.filter.BetweenFilter;
@@ -63,81 +62,81 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      * This is the map key to use to specify the column name for the Invoice Id.
      * </p>
      */
-    public static final String INVOICE_ID_COLUMN_NAME = "INVOICE_ID_COLUMN_NAME";
+    public static final String INVOICE_ID_COLUMN_NAME = "INVOICE_ID";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the description.
      * </p>
      */
-    public static final String DESCRIPTION_COLUMN_NAME = "DESCRIPTION_COLUMN_NAME";
+    public static final String DESCRIPTION_COLUMN_NAME = "DESCRIPTION";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the entry date.
      * </p>
      */
-    public static final String ENTRY_DATE_COLUMN_NAME = "ENTRY_DATE_COLUMN_NAME";
+    public static final String ENTRY_DATE_COLUMN_NAME = "ENTRY_DATE";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the hours.
      * </p>
      */
-    public static final String HOURS_COLUMN_NAME = "HOURS_COLUMN_NAME";
+    public static final String HOURS_COLUMN_NAME = "HOURS";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the task type.
      * </p>
      */
-    public static final String TASK_TYPE_COLUMN_NAME = "TASK_TYPE_COLUMN_NAME";
+    public static final String TASK_TYPE_COLUMN_NAME = "TASK_TYPE_ID";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the time status.
      * </p>
      */
-    public static final String TIME_STATUS_COLUMN_NAME = "TIME_STATUS_COLUMN_NAME";
+    public static final String TIME_STATUS_COLUMN_NAME = "TIME_STATUS_ID";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the billable flag.
      * </p>
      */
-    public static final String BILLABLE_COLUMN_NAME = "BILLABLE_COLUMN_NAME";
+    public static final String BILLABLE_COLUMN_NAME = "BILLABLE";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the rejectReasons.
      * </p>
      */
-    public static final String REJECT_REASONS_COLUMN_NAME = "REJECT_REASONS_COLUMN_NAME";
+    public static final String REJECT_REASONS_COLUMN_NAME = "REJECT_REASONS_ID";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the company id.
      * </p>
      */
-    public static final String COMPANY_ID_COLUMN_NAME = "COMPANY_ID_COLUMN_NAME";
+    public static final String COMPANY_ID_COLUMN_NAME = "COMPANY";
     
     /**
      * <p>
      * This is the map key to use to specify the column name for the client id.
      * </p>
      */
-    public static final String CLIENT_ID_COLUMN_NAME = "CLIENT_ID_COLUMN_NAME";
+    public static final String CLIENT_ID_COLUMN_NAME = "CLIENT";
     
     /**
      * <p>
      * This is the map key to use to specify the column name for the project id.
      * </p>
      */
-    public static final String PROJECT_ID_COLUMN_NAME = "PROJECT_ID_COLUMN_NAME";
+    public static final String PROJECT_ID_COLUMN_NAME = "PROJECT";
 
     /**
      * <p>
-     * Creates a <code>DbTimeEntryFilterFactory</code> with the specified column definitions.
+     * Creates a <code>DbTimeEntryFilterFactory</code>.
      * </p>
      *
      * @param columnNames The column definitions to use.
@@ -145,12 +144,8 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      * @throws IllegalArgumentException if columnNames contains null or empty String keys
      * or values, or if it is missing a Map Entry for the static constants defined in this class.
      */
-    public DbTimeEntryFilterFactory(Map columnNames) {
-        super(columnNames);
-
-        Util.checkMapForKeys(columnNames, new String[] {INVOICE_ID_COLUMN_NAME, DESCRIPTION_COLUMN_NAME,
-            ENTRY_DATE_COLUMN_NAME, HOURS_COLUMN_NAME, TASK_TYPE_COLUMN_NAME, TIME_STATUS_COLUMN_NAME,
-            BILLABLE_COLUMN_NAME, REJECT_REASONS_COLUMN_NAME, COMPANY_ID_COLUMN_NAME});
+    public DbTimeEntryFilterFactory() {
+        // empty
     }
 
     /**
@@ -168,7 +163,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
             throw new IllegalArgumentException("The invoice id is less than -1.");
         }
 
-        return new EqualToFilter((String) getColumnNames().get(INVOICE_ID_COLUMN_NAME), new Long(invoiceId));
+        return new EqualToFilter(INVOICE_ID_COLUMN_NAME, new Long(invoiceId));
     }
 
     /**
@@ -199,7 +194,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
         Util.checkString(description, "description");
         Util.checkNull(matchtype, "matchType");
 
-        return Util.createFilter(matchtype, (String) getColumnNames().get(DESCRIPTION_COLUMN_NAME), description);
+        return Util.createFilter(matchtype, DESCRIPTION_COLUMN_NAME, description);
     }
 
     /**
@@ -237,7 +232,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      * @throws IllegalArgumentException if both parameters are null, or rangeStart &gt; rangeEnd.
      */
     public Filter createEntryDateFilter(Date rangeStart, Date rangeEnd) {
-        return Util.createRangeFilter((String) getColumnNames().get(ENTRY_DATE_COLUMN_NAME), rangeStart, rangeEnd);
+        return Util.createRangeFilter(ENTRY_DATE_COLUMN_NAME, rangeStart, rangeEnd);
     }
 
     /**
@@ -272,25 +267,23 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      * rangeStart &gt; rangeEnd.
      */
     public Filter createHoursFilter(double rangeStart, double rangeEnd) {
-        String columnName = (String) getColumnNames().get(HOURS_COLUMN_NAME);
-
         if (Double.isNaN(rangeStart) && Double.isNaN(rangeEnd)) {
             throw new IllegalArgumentException("Both range start and end are NaN.");
         }
 
         if (Double.isNaN(rangeStart) && !Double.isNaN(rangeEnd)) {
-            return new LessThanOrEqualToFilter(columnName, new Double(rangeEnd));
+            return new LessThanOrEqualToFilter(HOURS_COLUMN_NAME, new Double(rangeEnd));
         }
 
         if (!Double.isNaN(rangeStart) && Double.isNaN(rangeEnd)) {
-            return new GreaterThanOrEqualToFilter(columnName, new Double(rangeStart));
+            return new GreaterThanOrEqualToFilter(HOURS_COLUMN_NAME, new Double(rangeStart));
         }
 
         if (rangeStart > rangeEnd) {
             throw new IllegalArgumentException("The given range start is larger than the range end.");
         }
 
-        return new BetweenFilter(columnName, new Double(rangeEnd), new Double(rangeStart));
+        return new BetweenFilter(HOURS_COLUMN_NAME, new Double(rangeEnd), new Double(rangeStart));
     }
 
     /**
@@ -306,7 +299,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      */
     public Filter createTaskTypeFilter(TaskType taskType) {
         Util.checkNull(taskType, "taskType");
-        return new EqualToFilter((String) getColumnNames().get(TASK_TYPE_COLUMN_NAME), new Long(taskType.getId()));
+        return new EqualToFilter(TASK_TYPE_COLUMN_NAME, new Long(taskType.getId()));
     }
 
     /**
@@ -322,7 +315,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      */
     public Filter createTimeStatusFilter(TimeStatus timeStatus) {
         Util.checkNull(timeStatus, "timeStatus");
-        return new EqualToFilter((String) getColumnNames().get(TIME_STATUS_COLUMN_NAME), new Long(timeStatus.getId()));
+        return new EqualToFilter(TIME_STATUS_COLUMN_NAME, new Long(timeStatus.getId()));
     }
 
     /**
@@ -334,7 +327,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      * @return A filter that will be based off the specified criteria.
      */
     public Filter createBillableFilter(boolean isBillable) {
-        return new EqualToFilter((String) getColumnNames().get(BILLABLE_COLUMN_NAME), new Long(isBillable ? 1 : 0));
+        return new EqualToFilter(BILLABLE_COLUMN_NAME, new Long(isBillable ? 1 : 0));
     }
 
     /**
@@ -351,7 +344,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
     public Filter createRejectReasonFilter(long rejectReasonId) {
         Util.checkIdValue(rejectReasonId, "rejectReasonId");
 
-        return new EqualToFilter((String) getColumnNames().get(REJECT_REASONS_COLUMN_NAME), new Long(rejectReasonId));
+        return new EqualToFilter(REJECT_REASONS_COLUMN_NAME, new Long(rejectReasonId));
     }
 
     /**
@@ -367,6 +360,7 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      */
     public Filter createCompanyIdFilter(long companyId) {
         Util.checkIdValue(companyId, "companyId");
-        return new EqualToFilter((String) getColumnNames().get(COMPANY_ID_COLUMN_NAME), new Long(companyId));
+
+        return new EqualToFilter(COMPANY_ID_COLUMN_NAME, new Long(companyId));
     }
 }

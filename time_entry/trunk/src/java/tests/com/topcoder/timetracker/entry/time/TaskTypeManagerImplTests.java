@@ -62,6 +62,7 @@ public class TaskTypeManagerImplTests extends TestCase {
     protected void setUp() throws Exception {
         TestHelper.clearConfig();
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.SEARCH_CONFIG_FILE);
         TestHelper.loadXMLConfig(TestHelper.AUDIT_CONFIG_FILE);
         TestHelper.setUpDataBase();
         TestHelper.setUpEJBEnvironment(null, null, null);
@@ -69,7 +70,7 @@ public class TaskTypeManagerImplTests extends TestCase {
         dbFactory = new DBConnectionFactoryImpl(TestHelper.DB_FACTORY_NAMESPACE);
         auditManager = new AuditDelegate(TestHelper.AUDIT_NAMESPACE);
         dao = new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager);
+            TestHelper.SEARCH_NAMESPACE, "TaskTypeBundle", auditManager);
 
         impl = new TaskTypeManagerImpl(dao);
     }
@@ -166,7 +167,8 @@ public class TaskTypeManagerImplTests extends TestCase {
         TaskType taskType = TestHelper.createTestingTaskType(null);
         impl.createTaskType(taskType);
 
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -248,7 +250,8 @@ public class TaskTypeManagerImplTests extends TestCase {
      */
     public void testCreateTaskType_DataAccessException() throws Exception {
         TaskType taskType = TestHelper.createTestingTaskType(null);
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -338,7 +341,8 @@ public class TaskTypeManagerImplTests extends TestCase {
         TaskType taskType = TestHelper.createTestingTaskType(null);
         impl.createTaskType(taskType);
 
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -403,7 +407,8 @@ public class TaskTypeManagerImplTests extends TestCase {
     public void testDeleteTaskType_DataAccessException() throws Exception {
         TaskType taskType = TestHelper.createTestingTaskType(null);
         impl.createTaskType(taskType);
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -606,7 +611,8 @@ public class TaskTypeManagerImplTests extends TestCase {
         TaskType taskType1 = TestHelper.createTestingTaskType(null);
         TaskType taskType2 = TestHelper.createTestingTaskType(null);
 
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -793,7 +799,8 @@ public class TaskTypeManagerImplTests extends TestCase {
         TaskType taskType2 = TestHelper.createTestingTaskType(null);
         impl.createTaskTypes(new TaskType[] {taskType1, taskType2});
 
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -903,7 +910,8 @@ public class TaskTypeManagerImplTests extends TestCase {
         TaskType taskType1 = TestHelper.createTestingTaskType(null);
         impl.createTaskTypes(new TaskType[] {taskType1});
 
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -971,7 +979,8 @@ public class TaskTypeManagerImplTests extends TestCase {
         TaskType taskType1 = TestHelper.createTestingTaskType(null);
         impl.createTaskTypes(new TaskType[] {taskType1});
 
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {
@@ -1085,7 +1094,8 @@ public class TaskTypeManagerImplTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllTaskTypes_DataAccessException() throws Exception {
-        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager);
+        dao = new DbTaskTypeDAO(dbFactory, "empty", "TaskTypeIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TaskTypeBundle", auditManager);
         impl = new TaskTypeManagerImpl(dao);
 
         try {

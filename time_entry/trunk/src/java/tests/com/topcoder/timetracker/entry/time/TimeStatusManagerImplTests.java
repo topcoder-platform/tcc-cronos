@@ -62,6 +62,7 @@ public class TimeStatusManagerImplTests extends TestCase {
     protected void setUp() throws Exception {
         TestHelper.clearConfig();
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.SEARCH_CONFIG_FILE);
         TestHelper.loadXMLConfig(TestHelper.AUDIT_CONFIG_FILE);
         TestHelper.setUpDataBase();
         TestHelper.setUpEJBEnvironment(null, null, null);
@@ -69,7 +70,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         dbFactory = new DBConnectionFactoryImpl(TestHelper.DB_FACTORY_NAMESPACE);
         auditManager = new AuditDelegate(TestHelper.AUDIT_NAMESPACE);
         dao = new DbTimeStatusDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeStatusIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager);
+            TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle", auditManager);
 
         impl = new TimeStatusManagerImpl(dao);
     }
@@ -185,7 +186,7 @@ public class TimeStatusManagerImplTests extends TestCase {
     public void testCreateTimeStatus_DataAccessException() throws Exception {
         TimeStatus timeStatus = TestHelper.createTestingTimeStatus(null);
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -275,7 +276,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         TimeStatus timeStatus = TestHelper.createTestingTimeStatus(null);
         impl.createTimeStatus(timeStatus);
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -341,7 +342,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         TimeStatus timeStatus = TestHelper.createTestingTimeStatus(null);
         impl.createTimeStatus(timeStatus);
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -405,7 +406,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         TimeStatus timeStatus = TestHelper.createTestingTimeStatus(null);
         impl.createTimeStatus(timeStatus);
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -609,7 +610,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         TimeStatus timeStatus2 = TestHelper.createTestingTimeStatus(null);
 
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -797,7 +798,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         impl.createTimeStatuses(new TimeStatus[] {timeStatus1, timeStatus2});
 
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -908,7 +909,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         impl.createTimeStatuses(new TimeStatus[] {timeStatus1});
 
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -977,7 +978,7 @@ public class TimeStatusManagerImplTests extends TestCase {
         impl.createTimeStatuses(new TimeStatus[] {timeStatus1});
 
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {
@@ -1092,7 +1093,7 @@ public class TimeStatusManagerImplTests extends TestCase {
      */
     public void testGetAllTimeStatuses_DataAccessException() throws Exception {
         dao = new DbTimeStatusDAO(dbFactory, "empty", "TimeStatusIdGenerator", TestHelper.SEARCH_NAMESPACE,
-            auditManager);
+            "TimeStatusBundle", auditManager);
         impl = new TimeStatusManagerImpl(dao);
 
         try {

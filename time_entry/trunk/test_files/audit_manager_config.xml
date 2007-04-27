@@ -68,7 +68,7 @@
 			<Value>FirstSearchBundle</Value>
 		</Property>
 		<Property name="searchBundleNamespace">
-			<Value>com.topcoder.search.builder</Value>
+			<Value>com.topcoder.search.builder.audit</Value>
 		</Property>
 		<Property name="defaultValueNamespace">
 			<Value>com.topcoder.timetracker.audit.persistence.DefaultValuesContainer</Value>
@@ -84,12 +84,12 @@
 		</Property>
 	</Config>
 
-	<Config name="com.topcoder.search.builder">
+	<Config name="com.topcoder.search.builder.audit">
 		<Property name="searchStrategyFactoryNamespace">
-			<Value>com.topcoder.search.builder.strategy.factory</Value>
+			<Value>com.topcoder.search.builder.audit.strategy.factory</Value>
 		</Property>
 		<Property name="fieldValidatorFactoryNamespace">
-			<Value>com.topcoder.search.builder.validator.factory</Value>
+			<Value>com.topcoder.search.builder.audit.validator.factory</Value>
 		</Property>
 		<Property name="searchBundles">
 			<Property name="FirstSearchBundle">
@@ -174,7 +174,7 @@ from audit a inner join client c on a.client_id = c.client_id inner join project
 			</Property>
 		</Property>
 	</Config>
-	<Config name="com.topcoder.search.builder.validator.factory">
+	<Config name="com.topcoder.search.builder.audit.validator.factory">
 		<Property name="validator:default">
 			<Property name="type">
 				<Value>com.topcoder.util.datavalidator.NotValidator</Value>
@@ -193,7 +193,7 @@ from audit a inner join client c on a.client_id = c.client_id inner join project
 			</Property>
 		</Property>
 	</Config>
-	<Config name="com.topcoder.search.builder.strategy.factory">
+	<Config name="com.topcoder.search.builder.audit.strategy.factory">
 		<Property name="dbStrategy">
 			<Property name="type">
 				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
@@ -204,13 +204,13 @@ from audit a inner join client c on a.client_id = c.client_id inner join project
 						<Value>String</Value>
 					</Property>
 					<Property name="value">
-						<Value>DBSearchStrategy</Value>
+						<Value>DBSearchStrategy.audit</Value>
 					</Property>
 				</Property>
 			</Property>
 		</Property>
 	</Config>
-	<Config name="DBSearchStrategy">
+	<Config name="DBSearchStrategy.audit">
 		<Property name="connectionFactory">
 			<Property name="name">
 				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -225,7 +225,7 @@ from audit a inner join client c on a.client_id = c.client_id inner join project
 		</Property>
 
 		<Property name="searchFragmentFactoryNamespace">
-			<Value>com.topcoder.search.builder.database.factory</Value>
+			<Value>com.topcoder.search.builder.audit.database.factory</Value>
 		</Property>
 		<Property name="searchFragmentBuilders">
 			<Property name="first">
@@ -326,6 +326,6 @@ from audit a inner join client c on a.client_id = c.client_id inner join project
 			</Property>
 		</Property>
 	</Config>
-	<Config name="com.topcoder.search.builder.database.factory.audit">
+	<Config name="com.topcoder.search.builder.audit.database.factory">
 	</Config>
 </CMConfig>

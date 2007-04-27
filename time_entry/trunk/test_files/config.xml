@@ -118,11 +118,20 @@
 						<Value>java.lang.String</Value>
 					</Property>
 					<Property name="value">
-						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+						<Value>com.topcoder.search.builder</Value>
 					</Property>
 				</Property>
 
 				<Property name="param5">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TaskTypeBundle</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
 					<Property name="name">
 						<Value>auditManager</Value>
 					</Property>
@@ -161,23 +170,32 @@
 						<Value>java.lang.String</Value>
 					</Property>
 					<Property name="value">
-						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+						<Value>com.topcoder.search.builder</Value>
 					</Property>
 				</Property>
 
 				<Property name="param5">
-					<Property name="name">
-						<Value>auditManager</Value>
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TimeEntryBundle</Value>
 					</Property>
 				</Property>
 
 				<Property name="param6">
 					<Property name="name">
-						<Value>taskTypeDAO</Value>
+						<Value>auditManager</Value>
 					</Property>
 				</Property>
 
 				<Property name="param7">
+					<Property name="name">
+						<Value>taskTypeDAO</Value>
+					</Property>
+				</Property>
+
+				<Property name="param8">
 					<Property name="name">
 						<Value>timeStatusDao</Value>
 					</Property>
@@ -257,11 +275,20 @@
 						<Value>java.lang.String</Value>
 					</Property>
 					<Property name="value">
-						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+						<Value>com.topcoder.search.builder</Value>
 					</Property>
 				</Property>
 
 				<Property name="param5">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>TimeStatusBundle</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
 					<Property name="name">
 						<Value>auditManager</Value>
 					</Property>
@@ -319,13 +346,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://IBM-68C4DC40CEA:1526/dev:informixserver=tcs</Value>
+						<Value>jdbc:informix-sqli://192.168.1.55:1526/tt_time_entry:informixserver=topcoder</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>informix</Value>
+						<Value>root</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -338,148 +365,17 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://IBM-68C4DC40CEA:1526/empty:informixserver=tcs</Value>
+						<Value>jdbc:informix-sqli://192.168.1.55:1526/empty:informixserver=topcoder</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>informix</Value>
+						<Value>root</Value>
 					</Property>
 				</Property>
 			</Property>
 		</Property>
-	</Config>
-
-	<Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
-		<!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
-		<Property name="connectionFactory">
-			<!-- The namespace of the ConnectionFactory -->
-			<Property name="name">
-				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-			</Property>
-			<Property name="class">
-				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-			</Property>
-		</Property>
-
-		<Property name="searchFragmentFactoryNamespace">
-			<Value>com.topcoder.search.builder.database.factory</Value>
-		</Property>
-
-		<Property name="searchFragmentBuilders">
-			<Property name="first">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.AndFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="second">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.OrFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="third">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.LikeFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="fourth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.NotFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="fifth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="sixth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.InFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="eighth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.NullFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="ninth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="tenth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="eleventh">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="twelvth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
-
-			<Property name="thirteenth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
-		</Property>
-	</Config>
-
-	<!-- No search fragment factory -->
-	<Config name="com.topcoder.search.builder.database.factory">
 	</Config>
 
 	<Config name="com.topcoder.naming.jndiutility">

@@ -29,14 +29,17 @@ public class MockBaseDAO extends BaseDAO {
      * @param searchStrategyNamespace The configuration namespace of the database search strategy that will be used.
      * @param auditor The AuditManager used to create audit entries.
      *
-     * @throws IllegalArgumentException if connFactory is null or any one of connName, idGen and
-     * searchStrategyNamespace is empty string when it is not null
-     * @throws ConfigurationException if unable to create the search strategy instance according to the given
-     * namespace or create the id generator according to the given id generator name
+     * @throws IllegalArgumentException if connFactory is null, or if idGen, connName or
+     * searchStrategyNamespace is an empty String or searchBundleName is empty string when the
+     * searchBundleManagerNamespace is null or searchBundleName is null or empty string when
+     * searchBundleManagerNamespace is not null and not empty
+     @throws ConfigurationException if unable to create the search bundle instance according to the given
+     * namespace and search bundle name or create the id generator according to the given id generator name
      */
-    public MockBaseDAO(DBConnectionFactory connFactory, String connName, String idGen, String searchStrategyNamespace,
-        AuditManager auditor) throws ConfigurationException {
-        super(connFactory, connName, idGen, searchStrategyNamespace, auditor);
+    protected MockBaseDAO(DBConnectionFactory connFactory, String connName, String idGen,
+        String searchBundleManagerNamespace, String searchBundleName, AuditManager auditor)
+        throws ConfigurationException {
+        super(connFactory, connName, idGen, searchBundleManagerNamespace, searchBundleName, auditor);
     }
 
 }

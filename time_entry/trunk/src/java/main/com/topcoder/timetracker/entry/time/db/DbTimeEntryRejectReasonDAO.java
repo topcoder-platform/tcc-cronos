@@ -89,7 +89,7 @@ public class DbTimeEntryRejectReasonDAO extends BaseDAO implements TimeEntryReje
      */
     public DbTimeEntryRejectReasonDAO(DBConnectionFactory connFactory, String connName, AuditManager auditManager)
         throws ConfigurationException {
-        super(connFactory, connName, null, null, auditManager);
+        super(connFactory, connName, null, null, null, auditManager);
 
         Util.checkNull(auditManager, "auditManager");
     }

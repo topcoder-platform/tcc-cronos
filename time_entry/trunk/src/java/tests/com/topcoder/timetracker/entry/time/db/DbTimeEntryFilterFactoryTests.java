@@ -4,8 +4,6 @@
 package com.topcoder.timetracker.entry.time.db;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.topcoder.search.builder.filter.BetweenFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
@@ -38,34 +36,12 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * The columnNames map for testing.
-     * </p>
-     */
-    private Map columnNames;
-
-    /**
-     * <p>
      * Sets up test environment.
      * </p>
      *
      */
     protected void setUp() {
-        columnNames = new HashMap();
-        columnNames.put(DbTimeEntryFilterFactory.CREATION_DATE_COLUMN_NAME, "creation_date");
-        columnNames.put(DbTimeEntryFilterFactory.MODIFICATION_DATE_COLUMN_NAME, "modification_date");
-        columnNames.put(DbTimeEntryFilterFactory.CREATION_USER_COLUMN_NAME, "creation_user");
-        columnNames.put(DbTimeEntryFilterFactory.MODIFICATION_USER_COLUMN_NAME, "modification_user");
-        columnNames.put(DbTimeEntryFilterFactory.INVOICE_ID_COLUMN_NAME, "invoice_id");
-        columnNames.put(DbTimeEntryFilterFactory.DESCRIPTION_COLUMN_NAME, "description");
-        columnNames.put(DbTimeEntryFilterFactory.ENTRY_DATE_COLUMN_NAME, "entry_date");
-        columnNames.put(DbTimeEntryFilterFactory.HOURS_COLUMN_NAME, "hours");
-        columnNames.put(DbTimeEntryFilterFactory.TASK_TYPE_COLUMN_NAME, "task_type_id");
-        columnNames.put(DbTimeEntryFilterFactory.TIME_STATUS_COLUMN_NAME, "time_status_id");
-        columnNames.put(DbTimeEntryFilterFactory.BILLABLE_COLUMN_NAME, "billable");
-        columnNames.put(DbTimeEntryFilterFactory.REJECT_REASONS_COLUMN_NAME, "reject_reason_id");
-        columnNames.put(DbTimeEntryFilterFactory.COMPANY_ID_COLUMN_NAME, "company_id");
-
-        factory = new DbTimeEntryFilterFactory(columnNames);
+        factory = new DbTimeEntryFilterFactory();
     }
 
     /**
@@ -76,7 +52,6 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     protected void tearDown() {
         factory = null;
-        columnNames = null;
     }
 
     /**
@@ -105,119 +80,6 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * Tests ctor DbTimeEntryFilterFactory#DbTimeEntryFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is null and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_NullColumnNames() {
-        try {
-            new DbTimeEntryFilterFactory(null);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeEntryFilterFactory#DbTimeEntryFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyKey() {
-        columnNames.put(" ", "modification_user");
-        try {
-            new DbTimeEntryFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeEntryFilterFactory#DbTimeEntryFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_KeyNotString() {
-        columnNames.put(new Long(8), "modification_user");
-        try {
-            new DbTimeEntryFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeEntryFilterFactory#DbTimeEntryFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is missing some keys and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_MissSomeKey() {
-        columnNames.remove(DbTimeEntryFilterFactory.MODIFICATION_USER_COLUMN_NAME);
-        try {
-            new DbTimeEntryFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeEntryFilterFactory#DbTimeEntryFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyValue() {
-        columnNames.put(DbTimeEntryFilterFactory.MODIFICATION_USER_COLUMN_NAME, " ");
-        try {
-            new DbTimeEntryFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTimeEntryFilterFactory#DbTimeEntryFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_ValueNotString() {
-        columnNames.put(DbTimeEntryFilterFactory.MODIFICATION_USER_COLUMN_NAME, new Long(8));
-        try {
-            new DbTimeEntryFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
      * Tests DbTimeEntryFilterFactory#createDescriptionFilter(String,StringMatchType) for accuracy.
      * </p>
      *
@@ -228,7 +90,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
     public void testCreateDescriptionFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createDescriptionFilter("description",
             StringMatchType.EXACT_MATCH);
-        assertEquals("Failed to create the description filter correctly.", "description", filter.getName());
+        assertEquals("Failed to create the description filter correctly.", "DESCRIPTION", filter.getName());
         assertEquals("Failed to create the description filter correctly.", "description", filter.getValue());
     }
 
@@ -297,7 +159,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateInvoiceIdFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createInvoiceIdFilter(8);
-        assertEquals("Failed to create the invoice id filter correctly.", "invoice_id", filter.getName());
+        assertEquals("Failed to create the invoice id filter correctly.", "INVOICE_ID", filter.getName());
         assertEquals("Failed to create the invoice id filter correctly.", new Long(8), filter.getValue());
     }
 
@@ -330,7 +192,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateEntryDateFilter() {
         BetweenFilter filter = (BetweenFilter) factory.createEntryDateFilter(new Date(10000), new Date(20000));
-        assertEquals("Failed to create the creation date filter correctly.", "entry_date", filter.getName());
+        assertEquals("Failed to create the creation date filter correctly.", "ENTRY_DATE", filter.getName());
         assertEquals("Failed to create the creation date filter correctly.", new Date(10000),
             filter.getLowerThreshold());
         assertEquals("Failed to create the creation date filter correctly.", new Date(20000),
@@ -350,7 +212,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
         Filter filter = factory.createEntryDateFilter(null, new Date(20000));
         assertEquals("Failed to create the creation date filter correctly.", LessThanOrEqualToFilter.class,
             filter.getClass());
-        assertEquals("Failed to create the creation date filter correctly.", "entry_date",
+        assertEquals("Failed to create the creation date filter correctly.", "ENTRY_DATE",
             ((LessThanOrEqualToFilter) filter).getName());
 
     }
@@ -368,7 +230,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
         Filter filter = factory.createEntryDateFilter(new Date(20000), null);
         assertEquals("Failed to create the creation date filter correctly.", GreaterThanOrEqualToFilter.class,
             filter.getClass());
-        assertEquals("Failed to create the creation date filter correctly.", "entry_date",
+        assertEquals("Failed to create the creation date filter correctly.", "ENTRY_DATE",
             ((GreaterThanOrEqualToFilter) filter).getName());
     }
 
@@ -419,7 +281,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateHoursFilter() {
         BetweenFilter filter = (BetweenFilter) factory.createHoursFilter(5.0, 8.0);
-        assertEquals("Failed to create the hours filter correctly.", "hours", filter.getName());
+        assertEquals("Failed to create the hours filter correctly.", "HOURS", filter.getName());
         assertEquals("Failed to create the hours filter correctly.", 5.0,
             ((Double) filter.getLowerThreshold()).doubleValue(), 0.01);
         assertEquals("Failed to create the hours filter correctly.", 8.0,
@@ -437,7 +299,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateHoursFilter_NaNRangeStart() {
         LessThanOrEqualToFilter filter = (LessThanOrEqualToFilter) factory.createHoursFilter(Double.NaN, 8.0);
-        assertEquals("Failed to create the hours filter correctly.", "hours", filter.getName());
+        assertEquals("Failed to create the hours filter correctly.", "HOURS", filter.getName());
     }
 
     /**
@@ -451,7 +313,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateHoursFilter_NaNRangeEnd() {
         GreaterThanOrEqualToFilter filter = (GreaterThanOrEqualToFilter) factory.createHoursFilter(5.0, Double.NaN);
-        assertEquals("Failed to create the hours filter correctly.", "hours", filter.getName());
+        assertEquals("Failed to create the hours filter correctly.", "HOURS", filter.getName());
     }
 
     /**
@@ -501,7 +363,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateTaskTypeFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createTaskTypeFilter(new TaskType());
-        assertEquals("Failed to create the task type filter correctly.", "task_type_id", filter.getName());
+        assertEquals("Failed to create the task type filter correctly.", "TASK_TYPE_ID", filter.getName());
         assertEquals("Failed to create the task type filter correctly.", new Long(-1), filter.getValue());
     }
 
@@ -534,7 +396,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateTimeStatusFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createTimeStatusFilter(new TimeStatus());
-        assertEquals("Failed to create the time status filter correctly.", "time_status_id", filter.getName());
+        assertEquals("Failed to create the time status filter correctly.", "TIME_STATUS_ID", filter.getName());
         assertEquals("Failed to create the time status filter correctly.", new Long(-1), filter.getValue());
     }
 
@@ -567,7 +429,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateBillableFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createBillableFilter(true);
-        assertEquals("Failed to create the billable filter correctly.", "billable", filter.getName());
+        assertEquals("Failed to create the billable filter correctly.", "BILLABLE", filter.getName());
         assertEquals("Failed to create the billable filter correctly.", new Long(1), filter.getValue());
     }
 
@@ -582,7 +444,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateRejectReasonFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createRejectReasonFilter(8);
-        assertEquals("Failed to create the reject reason filter correctly.", "reject_reason_id", filter.getName());
+        assertEquals("Failed to create the reject reason filter correctly.", "REJECT_REASONS_ID", filter.getName());
         assertEquals("Failed to create the reject reason filter correctly.", new Long(8), filter.getValue());
     }
 
@@ -615,7 +477,7 @@ public class DbTimeEntryFilterFactoryTests extends TestCase {
      */
     public void testCreateCompanyIdFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createCompanyIdFilter(8);
-        assertEquals("Failed to create the company id filter correctly.", "company_id", filter.getName());
+        assertEquals("Failed to create the company id filter correctly.", "COMPANY_ID", filter.getName());
         assertEquals("Failed to create the company id filter correctly.", new Long(8), filter.getValue());
     }
 

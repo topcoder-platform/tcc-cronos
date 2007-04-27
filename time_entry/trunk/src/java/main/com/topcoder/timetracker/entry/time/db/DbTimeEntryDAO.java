@@ -130,21 +130,6 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
 
     /**
      * <p>
-     * Represents the context string for searching. It is used in the
-     * {@link DbTimeEntryDAO#searchTimeEntries(Filter)} to search task types.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and never changed afterwards.
-     * </p>
-     */
-    private static final String CONTEXT = "select time_entry.time_entry_id, company_id, client_id, project_id, invoice_id, time_status_id, "
-        + "task_type_id, description, entry_date, hours, billable, time_entry.creation_date, time_entry.creation_user, "
-        + "time_entry.modification_date, time_entry.modification_user from time_entry left join time_reject_reason "
-        + "on time_entry.time_entry_id = time_reject_reason.time_entry_id where";
-
-    /**
-     * <p>
      * This is the <code>TaskTypeDAO</code> which is used to retrieve any TaskTypes related
      * to the <code>TimeEntry</code>.
      * </p>
@@ -193,29 +178,6 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
 
     /**
      * <p>
-     * This is a static block and is used to initialize the <code>COLUMNNAMES_MAP</code> variable.
-     * </p>
-     */
-    static {
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.CREATION_DATE_COLUMN_NAME, "time_entry.creation_date");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.MODIFICATION_DATE_COLUMN_NAME, "time_entry.modification_date");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.CREATION_USER_COLUMN_NAME, "time_entry.creation_user");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.MODIFICATION_USER_COLUMN_NAME, "time_entry.modification_user");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.INVOICE_ID_COLUMN_NAME, "time_entry.invoice_id");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.DESCRIPTION_COLUMN_NAME, "time_entry.description");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.ENTRY_DATE_COLUMN_NAME, "time_entry.entry_date");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.HOURS_COLUMN_NAME, "time_entry.hours");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.TASK_TYPE_COLUMN_NAME, "time_entry.task_type_id");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.TIME_STATUS_COLUMN_NAME, "time_entry.time_status_id");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.BILLABLE_COLUMN_NAME, "time_entry.billable");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.REJECT_REASONS_COLUMN_NAME, "time_reject_reason.reject_reason_id");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.COMPANY_ID_COLUMN_NAME, "time_entry.company_id");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.CLIENT_ID_COLUMN_NAME, "time_entry.client_id");
-        COLUMNNAMES_MAP.put(DbTimeEntryFilterFactory.PROJECT_ID_COLUMN_NAME, "time_entry.project_id");
-    }
-
-    /**
-     * <p>
      * Constructor that accepts the necessary parameters to construct a <code>DbTimeEntryDAO</code>.
      * </p>
      *
@@ -228,24 +190,25 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
      * @param timeStatusDao The time status dao to use.
      *
      * @throws IllegalArgumentException if connFactory, auditor, taskTypeDao or timeStatusDao is null, or
-     * idGen, searchStrategyNamespace is null or empty string, or connName is empty string when it is not null
-     * @throws ConfigurationException if unable to create the search strategy from the given namespace or create
+     * idGen, searchBundleManagerNamespace, searchBundleName is null or empty string, or connName is
+     * empty string when it is not null
+     * @throws ConfigurationException if unable to create the search bundle from the given namespace or create
      * id generator using the id generator name
      */
     public DbTimeEntryDAO(DBConnectionFactory connFactory, String connName, String idGen,
-        String searchStrategyNamespace, AuditManager auditor, TaskTypeDAO taskTypeDao, TimeStatusDAO timeStatusDao)
-        throws ConfigurationException {
-        super(connFactory, connName, idGen, searchStrategyNamespace, auditor);
+        String searchBundleManagerNamespace, String searchBundleName, AuditManager auditor, TaskTypeDAO taskTypeDao,
+        TimeStatusDAO timeStatusDao) throws ConfigurationException {
+        super(connFactory, connName, idGen, searchBundleManagerNamespace, searchBundleName, auditor);
 
         Util.checkNull(idGen, "idGen");
-        Util.checkNull(searchStrategyNamespace, "searchStrategyNamespace");
+        Util.checkNull(searchBundleManagerNamespace, "searchBundleManagerNamespace");
         Util.checkNull(auditor, "auditor");
         Util.checkNull(taskTypeDao, "taskTypeDao");
         Util.checkNull(timeStatusDao, "timeStatusDao");
 
         this.taskTypeDao = taskTypeDao;
         this.timeStatusDao = timeStatusDao;
-        this.timeEntryFilterFactory = new DbTimeEntryFilterFactory(COLUMNNAMES_MAP);
+        this.timeEntryFilterFactory = new DbTimeEntryFilterFactory();
     }
 
     /**
@@ -954,7 +917,7 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
 
         try {
             pstmt = conn.prepareStatement(SELECT_TIME_ENTRIES
-                + Util.buildInClause("time_entry.time_entry_id", timeEntryIds));
+                + " WHERE " + Util.buildInClause("time_entry.time_entry_id", timeEntryIds));
 
             rs = pstmt.executeQuery();
 
@@ -1065,8 +1028,7 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         Util.checkNull(filter, "filter");
 
         try {
-            CustomResultSet result = (CustomResultSet) getSearchStrategy().search(CONTEXT, filter,
-                Collections.EMPTY_LIST, Collections.EMPTY_MAP);
+            CustomResultSet result = (CustomResultSet) getSearchBundle().search(filter);
 
             int size = result.getRecordCount();
 

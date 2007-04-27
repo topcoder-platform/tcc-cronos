@@ -3,7 +3,6 @@
  */
 package com.topcoder.timetracker.entry.time.db;
 
-import java.util.Map;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.entry.time.TimeStatusFilterFactory;
 import com.topcoder.timetracker.entry.time.StringMatchType;
@@ -48,22 +47,15 @@ public class DbTimeStatusFilterFactory extends DbBaseFilterFactory implements Ti
      * This is the map key to use to specify the column name for the description.
      * </p>
      */
-    public static final String DESCRIPTION_COLUMN_NAME = "DESCRIPTION_COLUMN_NAME";
+    public static final String DESCRIPTION_COLUMN_NAME = "DESCRIPTION";
 
     /**
      * <p>
-     * Creates a <code>DbBaseFilterFactory</code> with the specified column definitions.
+     * Creates a <code>DbBaseFilterFactory</code>.
      * </p>
-     *
-     * @param columnNames The column definitions to use.
-     *
-     * @throws IllegalArgumentException if columnNames contains null or empty String keys or values,
-     * or if it is missing a Map Entry for the static constants defined in this class.
      */
-    public DbTimeStatusFilterFactory(Map columnNames) {
-        super(columnNames);
-
-        Util.checkMapForKeys(columnNames, new String[] {DESCRIPTION_COLUMN_NAME});
+    public DbTimeStatusFilterFactory() {
+        // empty
     }
 
     /**
@@ -93,6 +85,6 @@ public class DbTimeStatusFilterFactory extends DbBaseFilterFactory implements Ti
         Util.checkString(description, "description");
         Util.checkNull(matchType, "matchType");
 
-        return Util.createFilter(matchType, (String) getColumnNames().get(DESCRIPTION_COLUMN_NAME), description);
+        return Util.createFilter(matchType, DESCRIPTION_COLUMN_NAME, description);
     }
 }

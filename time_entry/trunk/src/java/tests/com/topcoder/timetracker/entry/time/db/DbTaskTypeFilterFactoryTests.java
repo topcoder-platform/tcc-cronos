@@ -3,9 +3,6 @@
  */
 package com.topcoder.timetracker.entry.time.db;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.LikeFilter;
 import com.topcoder.timetracker.entry.time.StringMatchType;
@@ -32,28 +29,12 @@ public class DbTaskTypeFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * The columnNames map for testing.
-     * </p>
-     */
-    private Map columnNames;
-
-    /**
-     * <p>
      * Sets up test environment.
      * </p>
      *
      */
     protected void setUp() {
-        columnNames = new HashMap();
-        columnNames.put(DbTaskTypeFilterFactory.CREATION_DATE_COLUMN_NAME, "creation_date");
-        columnNames.put(DbTaskTypeFilterFactory.MODIFICATION_DATE_COLUMN_NAME, "modification_date");
-        columnNames.put(DbTaskTypeFilterFactory.CREATION_USER_COLUMN_NAME, "creation_user");
-        columnNames.put(DbTaskTypeFilterFactory.MODIFICATION_USER_COLUMN_NAME, "modification_user");
-        columnNames.put(DbTaskTypeFilterFactory.COMPANY_ID_COLUMN_NAME, "comp_company_id");
-        columnNames.put(DbTaskTypeFilterFactory.DESCRIPTION_COLUMN_NAME, "description");
-        columnNames.put(DbTaskTypeFilterFactory.ACTIVE_COLUMN_NAME, "active");
-
-        factory = new DbTaskTypeFilterFactory(columnNames);
+        factory = new DbTaskTypeFilterFactory();
     }
 
     /**
@@ -64,7 +45,6 @@ public class DbTaskTypeFilterFactoryTests extends TestCase {
      */
     protected void tearDown() {
         factory = null;
-        columnNames = null;
     }
 
     /**
@@ -93,119 +73,6 @@ public class DbTaskTypeFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * Tests ctor DbTaskTypeFilterFactory#DbTaskTypeFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is null and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_NullColumnNames() {
-        try {
-            new DbTaskTypeFilterFactory(null);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTaskTypeFilterFactory#DbTaskTypeFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyKey() {
-        columnNames.put(" ", "modification_user");
-        try {
-            new DbTaskTypeFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTaskTypeFilterFactory#DbTaskTypeFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when key is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_KeyNotString() {
-        columnNames.put(new Long(8), "modification_user");
-        try {
-            new DbTaskTypeFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTaskTypeFilterFactory#DbTaskTypeFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when columnNames is missing some keys and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_MissSomeKey() {
-        columnNames.remove(DbTaskTypeFilterFactory.MODIFICATION_USER_COLUMN_NAME);
-        try {
-            new DbTaskTypeFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTaskTypeFilterFactory#DbTaskTypeFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is empty and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_EmptyValue() {
-        columnNames.put(DbTaskTypeFilterFactory.MODIFICATION_USER_COLUMN_NAME, " ");
-        try {
-            new DbTaskTypeFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
-     * Tests ctor DbTaskTypeFilterFactory#DbTaskTypeFilterFactory(Map) for failure.
-     * </p>
-     *
-     * <p>
-     * It tests the case that when value is not String type and expects IllegalArgumentException.
-     * </p>
-     */
-    public void testCtor_ValueNotString() {
-        columnNames.put(DbTaskTypeFilterFactory.MODIFICATION_USER_COLUMN_NAME, new Long(8));
-        try {
-            new DbTaskTypeFilterFactory(columnNames);
-            fail("IllegalArgumentException expected.");
-        } catch (IllegalArgumentException iae) {
-            //good
-        }
-    }
-
-    /**
-     * <p>
      * Tests DbTaskTypeFilterFactory#createDescriptionFilter(String,StringMatchType) for accuracy.
      * </p>
      *
@@ -215,7 +82,7 @@ public class DbTaskTypeFilterFactoryTests extends TestCase {
      */
     public void testCreateDescriptionFilter() {
         LikeFilter filter = (LikeFilter) factory.createDescriptionFilter("description", StringMatchType.ENDS_WITH);
-        assertEquals("Failed to create the description filter correctly.", "description", filter.getName());
+        assertEquals("Failed to create the description filter correctly.", "DESCRIPTION", filter.getName());
         assertEquals("Failed to create the description filter correctly.", "EW:description", filter.getValue());
     }
 
@@ -284,7 +151,7 @@ public class DbTaskTypeFilterFactoryTests extends TestCase {
      */
     public void testCreateCompanyIdFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createCompanyIdFilter(8);
-        assertEquals("Failed to create the company id filter correctly.", "comp_company_id", filter.getName());
+        assertEquals("Failed to create the company id filter correctly.", "COMPANY_ID", filter.getName());
         assertEquals("Failed to create the company id filter correctly.", new Long(8), filter.getValue());
     }
 
@@ -317,7 +184,7 @@ public class DbTaskTypeFilterFactoryTests extends TestCase {
      */
     public void testCreateActiveFilter() {
         EqualToFilter filter = (EqualToFilter) factory.createActiveFilter(true);
-        assertEquals("Failed to create the active filter correctly.", "active", filter.getName());
+        assertEquals("Failed to create the active filter correctly.", "ACTIVE", filter.getName());
         assertEquals("Failed to create the active filter correctly.", new Long(1), filter.getValue());
     }
 

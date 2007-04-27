@@ -75,7 +75,14 @@ public class TestHelper {
      * The constant represents the namespace for search builder component.
      * </p>
      */
-    public static final String SEARCH_NAMESPACE = "com.topcoder.search.builder.database.DatabaseSearchStrategy";
+    public static final String SEARCH_NAMESPACE = "com.topcoder.search.builder";
+
+    /**
+     * <p>
+     * The sample configuration file for the search builder component.
+     * </p>
+     */
+    public static final String SEARCH_CONFIG_FILE = "test_files" + File.separator + "search_builder_config.xml";
 
     /**
      * <p>
@@ -237,8 +244,7 @@ public class TestHelper {
      * @param actualTimeEntry the actual time entry
      */
     public static void assertTimeEntryEquals(TimeEntry expectedTimeEntry, TimeEntry actualTimeEntry) {
-        Assert.assertEquals("The hours are not equals.", expectedTimeEntry.getHours(),
-            actualTimeEntry.getHours(), 0.01);
+        Assert.assertEquals("The hours are not equals.", expectedTimeEntry.getHours(), actualTimeEntry.getHours(), 0.01);
         Assert.assertEquals("The task types are not equals.", expectedTimeEntry.getTaskType().getId(),
             actualTimeEntry.getTaskType().getId());
         Assert.assertEquals("The time statuses are not equals.", expectedTimeEntry.getStatus().getId(),

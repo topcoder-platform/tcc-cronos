@@ -94,6 +94,7 @@ public class TimeEntryManagerImplTests extends TestCase {
     protected void setUp() throws Exception {
         TestHelper.clearConfig();
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.SEARCH_CONFIG_FILE);
         TestHelper.loadXMLConfig(TestHelper.AUDIT_CONFIG_FILE);
         TestHelper.setUpDataBase();
         TestHelper.setUpEJBEnvironment(null, null, null);
@@ -102,11 +103,11 @@ public class TimeEntryManagerImplTests extends TestCase {
         auditManager = new AuditDelegate(TestHelper.AUDIT_NAMESPACE);
 
         taskTypeDao = new DbTaskTypeDAO(dbFactory, TestHelper.CONNECTION_NAME, "TaskTypeIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager);
+            TestHelper.SEARCH_NAMESPACE, "TaskTypeBundle", auditManager);
         timeStatusDao = new DbTimeStatusDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeStatusIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager);
+            TestHelper.SEARCH_NAMESPACE, "TimeStatusBundle", auditManager);
         dao = new DbTimeEntryDAO(dbFactory, TestHelper.CONNECTION_NAME, "TimeEntryIdGenerator",
-            TestHelper.SEARCH_NAMESPACE, auditManager, taskTypeDao, timeStatusDao);
+            TestHelper.SEARCH_NAMESPACE, "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         timeEntryRejectReasonDao = new DbTimeEntryRejectReasonDAO(dbFactory, TestHelper.CONNECTION_NAME, auditManager);
         rejectReasonManager = new RejectReasonManager("com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager");
 
@@ -271,8 +272,8 @@ public class TimeEntryManagerImplTests extends TestCase {
     public void testAddRejectReasonToEntry_DataAccessException() throws Exception {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntry(timeEntry, false);
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -340,8 +341,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntry(timeEntry, false);
         impl.addRejectReasonToEntry(timeEntry, 1, false);
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -385,8 +386,8 @@ public class TimeEntryManagerImplTests extends TestCase {
     public void testGetAllRejectReasonsForEntry_DataAccessException() throws Exception {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntry(timeEntry, false);
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -454,8 +455,8 @@ public class TimeEntryManagerImplTests extends TestCase {
     public void testRemoveAllRejectReasonsFromEntry_DataAccessException() throws Exception {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntry(timeEntry, false);
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -518,8 +519,8 @@ public class TimeEntryManagerImplTests extends TestCase {
     public void testCreateTimeEntry_DataAccessException() throws Exception {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -609,8 +610,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntry(timeEntry, true);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -676,8 +677,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntry(timeEntry, true);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -741,8 +742,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntry(timeEntry, true);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -968,8 +969,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry1 = TestHelper.createTestingTimeEntry(null);
         TimeEntry timeEntry2 = TestHelper.createTestingTimeEntry(null);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -1206,8 +1207,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry2 = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntries(new TimeEntry[] {timeEntry1, timeEntry2}, false);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -1340,8 +1341,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry1 = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntries(new TimeEntry[] {timeEntry1}, true);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -1432,8 +1433,8 @@ public class TimeEntryManagerImplTests extends TestCase {
         TimeEntry timeEntry1 = TestHelper.createTestingTimeEntry(null);
         impl.createTimeEntries(new TimeEntry[] {timeEntry1}, true);
 
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {
@@ -1533,8 +1534,8 @@ public class TimeEntryManagerImplTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllTimeEntries_DataAccessException() throws Exception {
-        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE, auditManager,
-            taskTypeDao, timeStatusDao);
+        dao = new DbTimeEntryDAO(dbFactory, "empty", "TimeEntryIdGenerator", TestHelper.SEARCH_NAMESPACE,
+            "TimeEntryBundle", auditManager, taskTypeDao, timeStatusDao);
         impl = new TimeEntryManagerImpl(dao, timeEntryRejectReasonDao, rejectReasonManager);
 
         try {

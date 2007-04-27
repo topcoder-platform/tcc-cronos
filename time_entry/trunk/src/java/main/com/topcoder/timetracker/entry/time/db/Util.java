@@ -450,7 +450,6 @@ public final class Util {
      */
     static String buildInClause(String columnName, long[] ids) {
         StringBuffer inClause = new StringBuffer();
-        inClause.append(" where ");
         inClause.append(columnName);
         inClause.append(" IN (");
         for (int i = 0; i < ids.length; i++) {

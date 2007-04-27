@@ -3,7 +3,6 @@
  */
 package com.topcoder.timetracker.entry.time.db;
 
-import java.util.Map;
 import com.topcoder.timetracker.entry.time.TaskTypeFilterFactory;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
@@ -48,37 +47,29 @@ public class DbTaskTypeFilterFactory extends DbBaseFilterFactory implements Task
      * This is the map key to use to specify the column name for the company id.
      * </p>
      */
-    public static final String COMPANY_ID_COLUMN_NAME = "COMPANY_ID_COLUMN_NAME";
+    public static final String COMPANY_ID_COLUMN_NAME = "COMPANY_ID";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the description.
      * </p>
      */
-    public static final String DESCRIPTION_COLUMN_NAME = "DESCRIPTION_COLUMN_NAME";
+    public static final String DESCRIPTION_COLUMN_NAME = "DESCRIPTION";
 
     /**
      * <p>
      * This is the map key to use to specify the column name for the active flag.
      * </p>
      */
-    public static final String ACTIVE_COLUMN_NAME = "ACTIVE_COLUMN_NAME";
+    public static final String ACTIVE_COLUMN_NAME = "ACTIVE";
 
     /**
      * <p>
-     * Creates a <code>DbBaseFilterFactory</code> with the specified column definitions.
+     * Creates a <code>DbBaseFilterFactory</code>.
      * </p>
-     *
-     * @param columnNames The column definitions to use.
-     *
-     * @throws IllegalArgumentException if columnNames contains null or empty String keys or values,
-     * or if it is missing a Map Entry for the static constants defined in this class.
      */
-    public DbTaskTypeFilterFactory(Map columnNames) {
-        super(columnNames);
-
-        Util.checkMapForKeys(columnNames, new String[] {COMPANY_ID_COLUMN_NAME, DESCRIPTION_COLUMN_NAME,
-            ACTIVE_COLUMN_NAME});
+    public DbTaskTypeFilterFactory() {
+        // empty
     }
 
     /**
@@ -94,7 +85,7 @@ public class DbTaskTypeFilterFactory extends DbBaseFilterFactory implements Task
      */
     public Filter createCompanyIdFilter(long companyId) {
         Util.checkIdValue(companyId, "companyId");
-        return new EqualToFilter((String) getColumnNames().get(COMPANY_ID_COLUMN_NAME), new Long(companyId));
+        return new EqualToFilter(COMPANY_ID_COLUMN_NAME, new Long(companyId));
     }
 
     /**
@@ -125,7 +116,7 @@ public class DbTaskTypeFilterFactory extends DbBaseFilterFactory implements Task
         Util.checkString(description, "description");
         Util.checkNull(matchType, "matchType");
 
-        return Util.createFilter(matchType, (String) getColumnNames().get(DESCRIPTION_COLUMN_NAME), description);
+        return Util.createFilter(matchType, DESCRIPTION_COLUMN_NAME, description);
     }
 
     /**
@@ -138,6 +129,6 @@ public class DbTaskTypeFilterFactory extends DbBaseFilterFactory implements Task
      * @return A filter that will be based off the specified criteria.
      */
     public Filter createActiveFilter(boolean isActive) {
-        return new EqualToFilter((String) getColumnNames().get(ACTIVE_COLUMN_NAME), new Long(isActive ? 1 : 0));
+        return new EqualToFilter(ACTIVE_COLUMN_NAME, new Long(isActive ? 1 : 0));
     }
 }

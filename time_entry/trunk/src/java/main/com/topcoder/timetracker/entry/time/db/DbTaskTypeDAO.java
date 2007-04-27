@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,21 +53,6 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @version 3.2
  */
 public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
-    /**
-     * <p>
-     * Represents the column names mapping used for <code>DbTaskTypeFilterFactory</code>.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and initialized in a static initialization block.
-     * </p>
-     *
-     * <p>
-     * It will not changed after initialization, including the reference and content.
-     * </p>
-     */
-    private static final Map COLUMNNAMES_MAP = new HashMap();
-
     /**
      * <p>
      * Represents the sql script to insert a record to <b>task_type</b> table.
@@ -118,20 +102,8 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
      */
     private static final String SELECT_TASK_TYPES = "select task_type.task_type_id, comp_task_type.company_id, "
         + "task_type.description, task_type.active, task_type.creation_date, task_type.creation_user, "
-        + "task_type.modification_date, task_type.modification_user from task_type left join comp_task_type "
-        + "on task_type.task_type_id = comp_task_type.task_type_id";
-
-    /**
-     * <p>
-     * Represents the context string for searching. It is used in the
-     * {@link DbTaskTypeDAO#searchTaskTypes(Filter)} to search task types.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and never changed afterwards.
-     * </p>
-     */
-    private static final String CONTEXT = SELECT_TASK_TYPES + " where";
+        + "task_type.modification_date, task_type.modification_user from task_type, comp_task_type "
+        + "where task_type.task_type_id = comp_task_type.task_type_id";
 
     /**
      * <p>
@@ -151,21 +123,6 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
 
     /**
      * <p>
-     * This is a static block and is used to initialize the <code>COLUMNNAMES_MAP</code> variable.
-     * </p>
-     */
-    static {
-        COLUMNNAMES_MAP.put(DbTaskTypeFilterFactory.CREATION_DATE_COLUMN_NAME, "task_type.creation_date");
-        COLUMNNAMES_MAP.put(DbTaskTypeFilterFactory.MODIFICATION_DATE_COLUMN_NAME, "task_type.modification_date");
-        COLUMNNAMES_MAP.put(DbTaskTypeFilterFactory.CREATION_USER_COLUMN_NAME, "task_type.creation_user");
-        COLUMNNAMES_MAP.put(DbTaskTypeFilterFactory.MODIFICATION_USER_COLUMN_NAME, "task_type.modification_user");
-        COLUMNNAMES_MAP.put(DbTaskTypeFilterFactory.COMPANY_ID_COLUMN_NAME, "comp_task_type.company_id");
-        COLUMNNAMES_MAP.put(DbTaskTypeFilterFactory.DESCRIPTION_COLUMN_NAME, "task_type.description");
-        COLUMNNAMES_MAP.put(DbTaskTypeFilterFactory.ACTIVE_COLUMN_NAME, "task_type.active");
-    }
-
-    /**
-     * <p>
      * Constructor that accepts the necessary parameters to construct a <code>DbTaskTypeDAO</code>.
      * </p>
      *
@@ -175,20 +132,21 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
      * @param searchStrategyNamespace The configuration namespace of the database search strategy that will be used.
      * @param auditor The auditManager used to perform the edits.
      *
-     * @throws IllegalArgumentException if connFactory or auditor is null, or idGen, searchStrategyNamespace is
-     * null or empty string, or connName is empty string when it is not null
+     * @throws IllegalArgumentException if connFactory or auditor is null, or idGen, searchBundleManagerNamespace,
+     * searchBundleName is null or empty string, or connName is empty string when it is not null
      * @throws ConfigurationException if unable to create the search strategy from the given namespace or create
      * id generator using the id generator name
      */
     public DbTaskTypeDAO(DBConnectionFactory connFactory, String connName, String idGen,
-        String searchStrategyNamespace, AuditManager auditor) throws ConfigurationException {
-        super(connFactory, connName, idGen, searchStrategyNamespace, auditor);
+        String searchBundleManagerNamespace, String searchBundleName, AuditManager auditor)
+        throws ConfigurationException {
+        super(connFactory, connName, idGen, searchBundleManagerNamespace, searchBundleName, auditor);
 
         Util.checkNull(idGen, "idGen");
-        Util.checkNull(searchStrategyNamespace, "searchStrategyNamespace");
+        Util.checkNull(searchBundleManagerNamespace, "searchBundleManagerNamespace");
         Util.checkNull(auditor, "auditor");
 
-        this.taskTypeFilterFactory = new DbTaskTypeFilterFactory(COLUMNNAMES_MAP);
+        this.taskTypeFilterFactory = new DbTaskTypeFilterFactory();
     }
 
     /**
@@ -621,7 +579,8 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
             Throwable[] causes = new Throwable[taskTypeIds.length];
 
             // select all the task types using the IN clause
-            pstmt = conn.prepareStatement(SELECT_TASK_TYPES + Util.buildInClause("task_type.task_type_id", taskTypeIds));
+            pstmt = conn.prepareStatement(SELECT_TASK_TYPES + " AND "
+                + Util.buildInClause("task_type.task_type_id", taskTypeIds));
 
             rs = pstmt.executeQuery();
 
@@ -717,8 +676,7 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
         Util.checkNull(filter, "filter");
 
         try {
-            CustomResultSet result = (CustomResultSet) getSearchStrategy().search(CONTEXT, filter,
-                Collections.EMPTY_LIST, Collections.EMPTY_MAP);
+            CustomResultSet result = (CustomResultSet) getSearchBundle().search(filter);
 
             int size = result.getRecordCount();
 
