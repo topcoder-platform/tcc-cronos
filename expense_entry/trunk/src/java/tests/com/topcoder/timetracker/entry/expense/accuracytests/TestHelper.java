@@ -536,6 +536,8 @@ public final class TestHelper {
         	rejectReasons.put(new Long(i + 1), reason);
             entries[i].setRejectReasons(rejectReasons);
             entries[i].setCompanyId(TestHelper.COMPANY_ID);
+            entries[i].setClientId(1);
+            entries[i].setProjectId(1);
         }
     }
     
@@ -553,6 +555,8 @@ public final class TestHelper {
         entry.setBillable(true);
         entry.setDate(TestHelper.createDate(2005, 7, 29));
         entry.setCompanyId(TestHelper.COMPANY_ID);
+        entry.setClientId(1);
+        entry.setProjectId(1);
 
         Map rejectReasons = new HashMap();
         for (int i = 1; i <= 3; i++) {
