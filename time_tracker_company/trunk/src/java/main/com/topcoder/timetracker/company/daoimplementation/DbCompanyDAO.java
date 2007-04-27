@@ -416,9 +416,13 @@ public class DbCompanyDAO implements CompanyDAO {
     private static SearchBundle createDefaultSearchBundle(String namespace) throws CompanyDAOException {
         TimeTrackerCompanyHelper.validateString(namespace, "namespace");
 
+        String searchBundleNamespace = "";
+        String searchBundleName = "";
+
         try {
-            String searchBundleNamespace = getStringPropertyValue(namespace, "searchBundleNamespace");
-            String searchBundleName = getStringPropertyValue(namespace, "searchBundleName");
+            searchBundleNamespace = getStringPropertyValue(namespace, "searchBundleNamespace");
+            searchBundleName = getStringPropertyValue(namespace, "searchBundleName");
+
             SearchBundle bundle = new SearchBundleManager(searchBundleNamespace).getSearchBundle(searchBundleName);
 
             if (bundle == null) {
