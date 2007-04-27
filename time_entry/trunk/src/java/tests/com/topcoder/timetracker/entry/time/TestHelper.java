@@ -310,6 +310,8 @@ public class TestHelper {
 
         timeEntry.setInvoiceId(1);
         timeEntry.setCompanyId(1);
+        timeEntry.setClientId(1);
+        timeEntry.setProjectId(1);
         timeEntry.setHours(13.2);
         timeEntry.setBillable(true);
 
