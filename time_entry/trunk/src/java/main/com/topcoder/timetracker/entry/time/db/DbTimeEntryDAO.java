@@ -582,6 +582,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
             header.setActionType(AuditType.DELETE);
             auditDetails.add(Util.createAuditDetail("time_entry_id", String.valueOf(oldTimeEntry.getId()), null));
             auditDetails.add(Util.createAuditDetail("company_id", String.valueOf(oldTimeEntry.getCompanyId()), null));
+            auditDetails.add(Util.createAuditDetail("client_id", String.valueOf(oldTimeEntry.getClientId()), null));
+            auditDetails.add(Util.createAuditDetail("project_id", String.valueOf(oldTimeEntry.getProjectId()), null));
             auditDetails.add(Util.createAuditDetail("invoice_id", String.valueOf(oldTimeEntry.getInvoiceId()), null));
             auditDetails.add(Util.createAuditDetail("time_status_id", String.valueOf(oldTimeEntry.getStatus().getId()),
                 null));
