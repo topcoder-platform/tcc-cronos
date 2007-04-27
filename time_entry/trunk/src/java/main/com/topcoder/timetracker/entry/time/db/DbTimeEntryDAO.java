@@ -546,6 +546,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         TimeEntry timeEntry = (newTimeEntry == null) ? oldTimeEntry : newTimeEntry;
         AuditHeader header = new AuditHeader();
         header.setCompanyId(timeEntry.getCompanyId());
+        header.setClientId(timeEntry.getClientId());
+        header.setProjectId(timeEntry.getProjectId());
         header.setApplicationArea(ApplicationArea.TT_TIME);
         header.setTableName("time_entry");
         header.setEntityId(timeEntry.getId());
