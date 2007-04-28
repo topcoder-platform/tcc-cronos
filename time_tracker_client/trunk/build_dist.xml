@@ -120,7 +120,7 @@
     <property name="time_tracker_audit.path" value="time_tracker_audit/${time_tracker_audit.version}"/>
     <property name="time_tracker_audit.jar" value="${tcs_libdir}/${time_tracker_audit.path}/${time_tracker_audit.jar.name}"/>
 
-    <property name="time_tracker_common.version" value="3.2"/>
+    <property name="time_tracker_common.version" value="3.1"/>
     <property name="time_tracker_common.jar.name" value="time_tracker_common.jar"/>
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
     <property name="time_tracker_common.jar" value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
@@ -129,6 +129,11 @@
     <property name="time_tracker_contact.jar.name" value="time_tracker_contact.jar"/>
     <property name="time_tracker_contact.path" value="time_tracker_contact/${time_tracker_contact.version}"/>
     <property name="time_tracker_contact.jar" value="${tcs_libdir}/${time_tracker_contact.path}/${time_tracker_contact.jar.name}"/>
+
+    <property name="time_tracker_project.version" value="3.2"/>
+    <property name="time_tracker_project.jar.name" value="time_tracker_project.jar"/>
+    <property name="time_tracker_project.path" value="time_tracker_project/${time_tracker_project.version}"/>
+    <property name="time_tracker_project.jar" value="${tcs_libdir}/${time_tracker_project.path}/${time_tracker_project.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
@@ -148,10 +153,12 @@
         <pathelement location="${JNDI_Utility.jar}" />
         <pathelement location="${object_factory.jar}" />
         <pathelement location="${search_builder.jar}" />
+        <pathelement location="${typesafe_enum.jar}" />
+
         <pathelement location="${time_tracker_audit.jar}" />
         <pathelement location="${time_tracker_common.jar}" />
         <pathelement location="${time_tracker_contact.jar}" />
-        <pathelement location="${typesafe_enum.jar}" />
+        <pathelement location="${time_tracker_project.jar}" />
 
         <pathelement location="${jbossall-client.jar}" />
 
