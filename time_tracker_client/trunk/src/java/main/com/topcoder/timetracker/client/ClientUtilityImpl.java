@@ -9,17 +9,20 @@ import java.util.List;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.common.CommonManagementException;
+import com.topcoder.timetracker.common.CommonManagerConfigurationException;
 import com.topcoder.timetracker.common.CommonManager;
 import com.topcoder.timetracker.common.SimpleCommonManager;
 import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.AddressFilterFactory;
 import com.topcoder.timetracker.contact.AddressManager;
 import com.topcoder.timetracker.contact.AddressType;
+import com.topcoder.timetracker.contact.AssociationException;
 import com.topcoder.timetracker.contact.AuditException;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactFilterFactory;
 import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.contact.ContactType;
+import com.topcoder.timetracker.contact.InvalidPropertyException;
 import com.topcoder.timetracker.contact.PersistenceException;
 import com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate;
 import com.topcoder.timetracker.contact.ejb.ContactManagerLocalDelegate;
@@ -198,6 +201,8 @@ public class ClientUtilityImpl implements ClientUtility {
             created = Helper.createObjectViaObjectFactory(of, ADDRESS_MANAGER_KEY);
 
             this.addressManager = (created == null) ? (new AddressManagerLocalDelegate()) : (AddressManager) created;
+        } catch (com.topcoder.timetracker.contact.ConfigurationException ce) {
+            throw new ConfigurationException("Error when creating address manager.", ce);
         } catch (ClassCastException cce) {
             throw new ConfigurationException("Error when creating address manager.", cce);
         }
@@ -208,6 +213,8 @@ public class ClientUtilityImpl implements ClientUtility {
 
             // no other common manager can be created, so get it from the common manager.
             this.commonManager = (created == null) ? (new SimpleCommonManager()) : (CommonManager) created;
+        } catch (CommonManagerConfigurationException cmce) {
+            throw new ConfigurationException("Error when creating common manager.", cmce);
         } catch (ClassCastException cce) {
             throw new ConfigurationException("Error when creating common manager.", cce);
         }
@@ -217,6 +224,8 @@ public class ClientUtilityImpl implements ClientUtility {
             created = Helper.createObjectViaObjectFactory(of, CONTACT_MANAGER_KEY);
 
             this.contactManager = (created == null) ? (new ContactManagerLocalDelegate()) : (ContactManager) created;
+        } catch (com.topcoder.timetracker.contact.ConfigurationException ce) {
+            throw new ConfigurationException("Error when creating contact manager.", ce);
         } catch (ClassCastException cce) {
             throw new ConfigurationException("Error when creating contact manager.", cce);
         }
@@ -662,6 +671,8 @@ public class ClientUtilityImpl implements ClientUtility {
             if (contacts.length != 0) {
                 client.setContact(contacts[0]);
             }
+        } catch (AssociationException ae) {
+            throw new PropertyOperationException("Error get the property.", ae);
         } catch (PersistenceException pe) {
             throw new PropertyOperationException("Error get the property.", pe);
         }
@@ -737,6 +748,8 @@ public class ClientUtilityImpl implements ClientUtility {
             if (addresses.length != 0) {
                 client.setAddress(addresses[0]);
             }
+        } catch (AssociationException ae) {
+            throw new PropertyOperationException("Error retrieve the address.", ae);
         } catch (PersistenceException pe) {
             throw new PropertyOperationException("Error retrieve the address.", pe);
         }
@@ -835,13 +848,15 @@ public class ClientUtilityImpl implements ClientUtility {
 
             // associate the client and contact.
             contactManager.associate(client.getContact(), client.getId(), doAudit);
-        } catch (com.topcoder.timetracker.contact.PersistenceException pe) {
+        } catch (AssociationException ae) {
+            throw new ClientPersistenceException("Error associating contact information.", ae);
+        } catch (PersistenceException pe) {
             throw new ClientPersistenceException("Error store the data.", pe);
-        } catch (com.topcoder.timetracker.contact.InvalidPropertyException ipe) {
+        } catch (InvalidPropertyException ipe) {
             throw new ClientPersistenceException("The property of the client is invalid.", ipe);
         } catch (com.topcoder.timetracker.contact.IDGenerationException ipe) {
             throw new ClientPersistenceException("Error generating the id.");
-        } catch (com.topcoder.timetracker.contact.AuditException ae) {
+        } catch (AuditException ae) {
             throw new ClientAuditException("Error auditing.", ae);
         }
     }
@@ -859,9 +874,13 @@ public class ClientUtilityImpl implements ClientUtility {
         throws ClientPersistenceException, ClientAuditException {
         try {
             contactManager.deassociate(client.getContact(), client.getId(), doAudit);
-        } catch (com.topcoder.timetracker.contact.PersistenceException pe) {
+        } catch (AssociationException ae) {
+            throw new ClientPersistenceException("Error deassociating contact information.", ae);
+        } catch (PersistenceException pe) {
             throw new ClientPersistenceException("Error store the data.", pe);
-        } catch (com.topcoder.timetracker.contact.AuditException ae) {
+        } catch (InvalidPropertyException ipe) {
+            throw new ClientPersistenceException("The property is invalid.", ipe);
+        } catch (AuditException ae) {
             throw new ClientAuditException("Error auditing.", ae);
         }
     }
@@ -885,13 +904,15 @@ public class ClientUtilityImpl implements ClientUtility {
 
             // associate the address
             addressManager.associate(client.getAddress(), client.getId(), doAudit);
-        } catch (com.topcoder.timetracker.contact.PersistenceException pe) {
+        } catch (AssociationException ae) {
+            throw new ClientPersistenceException("Error associating address information.", ae);
+        } catch (PersistenceException pe) {
             throw new ClientPersistenceException("Error store the data.", pe);
-        } catch (com.topcoder.timetracker.contact.InvalidPropertyException ipe) {
+        } catch (InvalidPropertyException ipe) {
             throw new ClientPersistenceException("The property of the client is invalid.", ipe);
         } catch (com.topcoder.timetracker.contact.IDGenerationException ipe) {
             throw new ClientPersistenceException("Error generating the id.");
-        } catch (com.topcoder.timetracker.contact.AuditException ae) {
+        } catch (AuditException ae) {
             throw new ClientAuditException("Error auditing.", ae);
         }
     }
@@ -909,8 +930,12 @@ public class ClientUtilityImpl implements ClientUtility {
         throws ClientPersistenceException, ClientAuditException {
         try {
             addressManager.deassociate(client.getAddress(), client.getId(), doAudit);
+        } catch (AssociationException ae) {
+            throw new ClientPersistenceException("Error deassociating address information.", ae);
         } catch (PersistenceException pe) {
             throw new ClientPersistenceException("Error persistence.", pe);
+        } catch (InvalidPropertyException ipe) {
+            throw new ClientPersistenceException("The property of the client is invalid.", ipe);
         } catch (AuditException ae) {
             throw new ClientAuditException("Error auditing.", ae);
         }
