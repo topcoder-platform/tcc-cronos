@@ -9,12 +9,12 @@
                 <Property name="producer">
                     <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
                 </Property>
-                <Property name="parameters">
+               <Property name="parameters">
 					<Property name="jdbc_driver">
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/demo:INFORMIXSERVER=tcs</Value>
+						<Value>jdbc:informix-sqli://192.168.1.175:1526/demo:INFORMIXSERVER=tcs</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
