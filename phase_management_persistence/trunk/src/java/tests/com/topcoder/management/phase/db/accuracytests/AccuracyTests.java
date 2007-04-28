@@ -22,8 +22,9 @@ public class AccuracyTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-        // suite.addTestSuite(AbstractDbPhasePersistenceTest.class);
+        suite.addTestSuite(AbstractDbPhasePersistenceTest.class);
         suite.addTestSuite(InformixPhasePersistenceTest.class);
+        suite.addTestSuite(UnmanagedTransactionInformixPhasePersistenceTest.class);
 
         return suite;
     }

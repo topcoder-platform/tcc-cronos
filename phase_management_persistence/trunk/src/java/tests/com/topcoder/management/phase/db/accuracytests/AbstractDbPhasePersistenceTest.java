@@ -89,7 +89,7 @@ public class AbstractDbPhasePersistenceTest extends TestCase {
             (Connection) TestHelper.invokeMethod(AbstractDbPhasePersistence.class, persistence,
                 "getConnection", new Class[] {}, new Object[] {});
 
-        assertEquals("getConnection() should be correct.", "phase_management", connection.getCatalog());
+        assertEquals("getConnection() should be correct.", "demo", connection.getCatalog());
     }
 
     /**
@@ -106,7 +106,7 @@ public class AbstractDbPhasePersistenceTest extends TestCase {
             (Connection) TestHelper.invokeMethod(AbstractDbPhasePersistence.class, persistence,
                 "getConnection", new Class[] {}, new Object[] {});
 
-        assertEquals("getConnection() should be correct.", "phase_management", connection.getCatalog());
+        assertEquals("getConnection() should be correct.", "demo", connection.getCatalog());
     }
 
     /**

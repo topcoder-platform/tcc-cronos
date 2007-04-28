@@ -1008,10 +1008,11 @@ public class InformixPhasePersistenceTest extends TestCase {
 
         rs.next();
         String str = rs.getString(1);
-        assertEquals("aaaa", str);
+        assertEquals("commitTransaction should be correct.", "aaaa", str);
 
         statement.execute("delete from id_sequences where name = 'aaaa'");
         connection.commit();
+        connection.close();
     }
 
     /**
@@ -1030,14 +1031,14 @@ public class InformixPhasePersistenceTest extends TestCase {
         statement.execute("INSERT INTO id_sequences"
             + "(name, next_block_start, block_size, exhausted) VALUES('pd12a_i26', 2, 70, 12)");
 
+        ResultSet rs = statement.executeQuery("select * from id_sequences where block_size=70");
+        assertTrue("The query should succeed.", rs.next());
+
         TestHelper.invokeMethod(persistence, "rollbackTransaction", new Class[] {Map.class},
             new Object[] {context});
-        ResultSet rs = statement.executeQuery("select * from id_sequences where block_size=70");
-        
-        TestHelper.invokeMethod(persistence, "commitTransaction", new Class[] {Map.class},
-            new Object[] {context});
-        
-        assertFalse("There should be no record.", rs.next());
-            
+
+        rs = statement.executeQuery("select * from id_sequences where block_size=70");
+        assertFalse("rollbackTransaction should be correct.", rs.next());
+        connection.close();
     }
 }
