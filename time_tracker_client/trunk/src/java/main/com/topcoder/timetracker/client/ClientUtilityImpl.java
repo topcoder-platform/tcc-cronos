@@ -285,6 +285,7 @@ public class ClientUtilityImpl implements ClientUtility {
             for (int i = 0; i < clients.length; i++) {
                 // add the association, such as add to the address manager, contact manager and add the project
                 addAssociation(clients[i], doAudit);
+                clients[i].setChanged(false);
             }
         } catch (BatchOperationException boe) {
             // if BatchOperationException is thrown, only a piece of the client is added.
@@ -344,6 +345,7 @@ public class ClientUtilityImpl implements ClientUtility {
         for (int i = 0; i < ids.length; i++) {
             // remove from the address manager, contact manager, project.
             removeAssociation(clients[i], doAudit);
+            clients[i].setChanged(false);
         }
 
         // remove from the database.
@@ -395,6 +397,7 @@ public class ClientUtilityImpl implements ClientUtility {
             setAddress(clients[i]);
             setPaymentTerm(clients[i]);
             setProjects(clients[i]);
+            clients[i].setChanged(false);
         }
 
         return clients;
@@ -468,6 +471,7 @@ public class ClientUtilityImpl implements ClientUtility {
             // add to the address manager, contact manager
             // add the projects.
             addAssociation(clients[i], doAudit);
+            clients[i].setChanged(false);
         }
     }
 
@@ -490,6 +494,7 @@ public class ClientUtilityImpl implements ClientUtility {
             setContact(clients[i]);
             setPaymentTerm(clients[i]);
             setProjects(clients[i]);
+            clients[i].setChanged(false);
         }
 
         return clients;
@@ -534,6 +539,7 @@ public class ClientUtilityImpl implements ClientUtility {
                 // only set project id and name.
                 setProjectsIdName(clients[i]);
             }
+            clients[i].setChanged(false);
         }
 
         return clients;
@@ -713,22 +719,6 @@ public class ClientUtilityImpl implements ClientUtility {
     private void setProjectsIdName(Client client) throws PropertyOperationException, ClientPersistenceException {
         // get all the information first.
         setProjects(client);
-
-        // get the project.
-        Project[] projects = client.getProjects();
-
-        // create the project with only id and name.
-        Project[] projectsWithIdname = new Project[projects.length];
-
-        // traverse the project array of the project and then set the corresponding id and name.
-        for (int i = 0; i < projects.length; i++) {
-            projectsWithIdname[i] = new Project();
-            projectsWithIdname[i].setId(projects[i].getId());
-            projectsWithIdname[i].setName(projects[i].getName());
-        }
-
-        // set the project.
-        client.setProjects(projectsWithIdname);
     }
 
     /**

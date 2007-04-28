@@ -35,7 +35,24 @@ public class ClientUtilityFactoryUnitTests extends TestCase {
     protected void tearDown() throws Exception {
         UnitTestHelper.clearConfig();
     }
-
+    /**
+     * <p>
+     * Failure test for method <code>getClientUtility</code>.
+     * Get with invalid config is illegal.
+     * ConfigurationException is expected.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testgetClientUtilityWithEmptyConfig() throws Exception {
+        try {
+            UnitTestHelper.clearConfig();
+            ClientUtilityFactory.getClientUtility();
+            fail("Get with invalid config is illegal, ConfigurationException should be thrown");
+        } catch (ConfigurationException e) {
+            // ok to be here
+        }
+    }
     /**
      * <p>
      * Accuracy test for method <code>getClientUtility</code>.
