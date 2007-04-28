@@ -462,6 +462,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
                 audit(null, invoice);
             }
 
+            invoice.setChanged(false);
+
         } catch (IDGenerationException e) {
             throw new InvoiceDataAccessException("Can't generate id for the object", e);
         } catch (SQLException e) {
@@ -718,6 +720,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
                 audit(getInvoice(invoice.getId()), invoice);
             }
 
+            invoice.setChanged(false);
+
         } catch (SQLException e) {
             throw new InvoiceDataAccessException("Error when updating the invoice to the database", e);
         } finally {
@@ -809,6 +813,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
 
             Criteria criteria = FieldMatchCriteria.getExpenseEntryInvoiceIdMatchCriteria((int) invoiceId);
             invoice.setExpenseEntries(expenseManager.searchEntries(criteria));
+
+            invoice.setChanged(false);
 
             return invoice;
         } catch (SQLException e) {
