@@ -126,6 +126,11 @@
     <property name="time_tracker_audit.path" value="time_tracker_audit/${time_tracker_audit.version}"/>
     <property name="time_tracker_audit.jar" value="${tcs_libdir}/${time_tracker_audit.path}/${time_tracker_audit.jar.name}"/>
 
+    <property name="time_tracker_base_entry.version" value="3.2"/>
+    <property name="time_tracker_base_entry.jar.name" value="time_tracker_base_entry.jar"/>
+    <property name="time_tracker_base_entry.path" value="time_tracker_base_entry/${time_tracker_base_entry.version}"/>
+    <property name="time_tracker_base_entry.jar" value="${tcs_libdir}/${time_tracker_base_entry.path}/${time_tracker_base_entry.jar.name}"/>
+
     <property name="time_tracker_common.version" value="3.1"/>
     <property name="time_tracker_common.jar.name" value="time_tracker_common.jar"/>
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
@@ -142,8 +147,8 @@
     <property name="time_tracker_expense_entry.jar" value="${tcs_libdir}/${time_tracker_expense_entry.path}/${time_tracker_expense_entry.jar.name}"/>
 
     <property name="time_tracker_fixed_billing_entry.version" value="3.2"/>
-    <property name="time_tracker_fixed_billing_entry.jar.name" value="fixed_billing_entry.jar"/>
-    <property name="time_tracker_fixed_billing_entry.path" value="fixed_billing_entry/${time_tracker_fixed_billing_entry.version}"/>
+    <property name="time_tracker_fixed_billing_entry.jar.name" value="time_tracker_fixed_billing.jar"/>
+    <property name="time_tracker_fixed_billing_entry.path" value="time_tracker_fixed_billing/${time_tracker_fixed_billing_entry.version}"/>
     <property name="time_tracker_fixed_billing_entry.jar" value="${tcs_libdir}/${time_tracker_fixed_billing_entry.path}/${time_tracker_fixed_billing_entry.jar.name}"/>
 
     <property name="time_tracker_time_entry.version" value="3.2"/>
@@ -174,6 +179,7 @@
         <pathelement location="${typesafe_enum.jar}" />
 
         <pathelement location="${time_tracker_audit.jar}" />
+        <pathelement location="${time_tracker_base_entry.jar}" />
         <pathelement location="${time_tracker_common.jar}" />
         <pathelement location="${time_tracker_contact.jar}" />
         <pathelement location="${time_tracker_expense_entry.jar}" />
@@ -305,7 +311,6 @@
 
     <target name="main" depends="deploy,test">
     </target>
-
 
     <taskdef resource="checkstyletask.properties"/>
 
