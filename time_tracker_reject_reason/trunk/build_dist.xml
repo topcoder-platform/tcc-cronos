@@ -145,20 +145,18 @@
     <property name="database_abstraction.version" value="1.1"/>
     <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
     <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
-    <property name="database_abstraction.jar"
-              value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
+    <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
 
+    <!-- Time Tracker custom components -->
     <property name="time_tracker_audit.version" value="3.2"/>
     <property name="time_tracker_audit.jar.name" value="time_tracker_audit.jar"/>
     <property name="time_tracker_audit.path" value="time_tracker_audit/${time_tracker_audit.version}"/>
-    <property name="time_tracker_audit.jar"
-              value="${tcs_libdir}/${time_tracker_audit.path}/${time_tracker_audit.jar.name}"/>
+    <property name="time_tracker_audit.jar" value="${tcs_libdir}/${time_tracker_audit.path}/${time_tracker_audit.jar.name}"/>
 
-    <property name="time_tracker_common.version" value="3.2"/>
+    <property name="time_tracker_common.version" value="3.1"/>
     <property name="time_tracker_common.jar.name" value="time_tracker_common.jar"/>
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
-    <property name="time_tracker_common.jar"
-              value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
+    <property name="time_tracker_common.jar" value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
