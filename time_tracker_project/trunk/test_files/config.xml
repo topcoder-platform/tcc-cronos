@@ -1,0 +1,626 @@
+<?xml version="1.0"?>
+<!-- File containing sample configuration details for use with
+ the Time Tracker Project 3.2 component -->
+<CMConfig>
+	<!-- configuration for project delegate -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectUtilityDelegate">
+		<Property name="context_name">
+			<Value>projectContext</Value>
+		</Property>
+		<Property name="jndi_home">
+			<Value>projectDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for project session bean -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectUtilitySessionBean">
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectUtility</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for project worker delegate -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectWorkerUtilityDelegate">
+		<Property name="context_name">
+			<Value>projectContext</Value>
+		</Property>
+		<Property name="jndi_home">
+			<Value>projectWorkerDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for project worker session bean -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectWorkerUtilitySessionBean">
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectWorkerUtility</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for project manager delegate -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectManagerUtilityDelegate">
+		<Property name="context_name">
+			<Value>projectContext</Value>
+		</Property>
+		<Property name="jndi_home">
+			<Value>projectManagerDelegateLocalHome</Value>
+		</Property>
+	</Config>
+
+	<!-- configuration for notification session bean -->
+	<Config name="com.topcoder.timetracker.project.ejb.ProjectManagerUtilitySessionBean">
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectManagerUtility</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.timetracker.common.SimpleCommonManager">
+		<!-- namespace of ObjectFactory -->
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<!-- key of PaymentTermDAO within ObjectFactory -->
+		<Property name="payment_term_dao_key">
+			<Value>PaymentTermDAOKey</Value>
+		</Property>
+		<!-- recent days, must be positive int value or -1 -->
+		<Property name="recent_days">
+			<Value>3</Value>
+		</Property>
+	</Config>
+
+	<Config name="DatabasePaymentTermDAO">
+		<!-- namespace of ObjectFactory -->
+		<Property name="of_namespace">
+			<Value>projectObjectFactory</Value>
+		</Property>
+		<!-- key of DBConnectionFactory within ObjectFactory -->
+		<Property name="db_connection_factory_key">
+			<Value>DBConnectionFactory</Value>
+		</Property>
+		<!-- connection name within DBConnectionFactory -->
+		<Property name="connection_name">
+			<Value>tt_project</Value>
+		</Property>
+		<!-- IDGenerator name used to generate id for PaymentTerm -->
+		<Property name="id_generator_name">
+			<Value>PaymentTermGenerator</Value>
+		</Property>
+	</Config>
+
+	<Config name="projectObjectFactory">
+		<!-- For the ConnectionFactory -->
+		<Property name="DBConnectionFactory">
+			<Property name="type">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<!-- Namespace parameter for the connection factory. -->
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="projectUtility">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.ProjectUtilityImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>projectDAO</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="name">
+						<Value>timeEntryDao</Value>
+					</Property>
+				</Property>
+				<Property name="param3">
+					<Property name="name">
+						<Value>expenseEntryDao</Value>
+					</Property>
+				</Property>
+				<Property name="param4">
+					<Property name="name">
+						<Value>fixedBillEntryDao</Value>
+					</Property>
+				</Property>
+				<Property name="param5">
+					<Property name="name">
+						<Value>timeManager</Value>
+					</Property>
+				</Property>
+				<Property name="param6">
+					<Property name="name">
+						<Value>fixedBillingManager</Value>
+					</Property>
+				</Property>
+				<Property name="param7">
+					<Property name="name">
+						<Value>expenseManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="projectWorkerUtility">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.ProjectWorkerUtilityImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>workerDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="projectManagerUtility">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.ProjectManagerUtilityImpl</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>managerDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="projectDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.db.DbProjectDAO</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.project.Project</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="name">
+						<Value>contactManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>addressManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
+					<Property name="name">
+						<Value>termManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param7">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder</Value>
+					</Property>
+				</Property>
+
+				<Property name="param8">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>ProjectSearchBundle</Value>
+					</Property>
+				</Property>
+
+				<!-- AuthorizationPersistence parameter for the DAO. -->
+				<Property name="param9">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="workerDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.db.DbProjectWorkerDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>ProjectWorkerSearchBundle</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="managerDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.db.DbProjectManagerDAO</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>ProjectManagerSearchBundle</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="timeEntryDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.db.DbProjectEntryDAO</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>project_id</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>time_entry_id</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>project_time</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="expenseEntryDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.db.DbProjectEntryDAO</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>project_id</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>expense_entry_id</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>project_expense</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="fixedBillEntryDao">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.db.DbProjectEntryDAO</Value>
+			</Property>
+
+			<Property name="params">
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory</Value>
+					</Property>
+				</Property>
+
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<Property name="param3">
+					<Property name="name">
+						<Value>auditManager</Value>
+					</Property>
+				</Property>
+
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>project_id</Value>
+					</Property>
+				</Property>
+
+				<Property name="param5">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>fix_bill_entry_id</Value>
+					</Property>
+				</Property>
+
+				<Property name="param6">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>project_fix_bill</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<Property name="timeManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.MockTimeEntryManager</Value>
+			</Property>
+		</Property>
+
+		<Property name="fixedBillingManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.MockFixedBillingEntryManager</Value>
+			</Property>
+		</Property>
+
+		<Property name="expenseManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.MockExpenseEntryManager</Value>
+			</Property>
+		</Property>
+
+		<Property name="auditManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.MockAuditManager</Value>
+			</Property>
+		</Property>
+
+		<Property name="contactManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.MockContactManager</Value>
+			</Property>
+		</Property>
+
+		<Property name="addressManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.project.MockAddressManager</Value>
+			</Property>
+		</Property>
+
+		<Property name="termManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.common.SimpleCommonManager</Value>
+			</Property>
+		</Property>
+
+		<Property name="PaymentTermDAOKey">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.common.persistence.DatabasePaymentTermDAO</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>DatabasePaymentTermDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>tt_project</Value>
+			</Property>
+			<Property name="tt_project">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.55:1526/tt_project:informixserver=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>root</Value>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="empty">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.55:1526/empty:informixserver=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>root</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>org.mockejb.jndi.MockContextFactory</Value>
+				</Property>
+			</Property>
+			<Property name="projectContext">
+				<Property name="factory">
+					<Value>org.mockejb.jndi.MockContextFactory</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

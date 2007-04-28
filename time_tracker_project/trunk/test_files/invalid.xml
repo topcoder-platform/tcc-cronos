@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+	<Config name="of_namespace_missing">
+		<Property name="impl_key">
+			<Value>projectWorkerUtility</Value>
+		</Property>
+	</Config>
+
+	<Config name="of_namespace_empty">
+		<Property name="of_namespace">
+			<Value> </Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectWorkerUtility</Value>
+		</Property>
+	</Config>
+	
+		<Config name="of_namespace_invalid">
+		<Property name="of_namespace">
+			<Value>invalid</Value>
+		</Property>
+		<Property name="impl_key">
+			<Value>projectWorkerUtility</Value>
+		</Property>
+	</Config>
+	
+</CMConfig>
