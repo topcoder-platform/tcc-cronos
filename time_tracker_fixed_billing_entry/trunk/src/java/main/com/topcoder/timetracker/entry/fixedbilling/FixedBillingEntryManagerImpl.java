@@ -6,6 +6,7 @@ package com.topcoder.timetracker.entry.fixedbilling;
 import com.topcoder.search.builder.filter.Filter;
 
 import com.topcoder.timetracker.rejectreason.RejectReason;
+import com.topcoder.timetracker.rejectreason.RejectReasonDAOException;
 import com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager;
 
 import java.sql.Timestamp;
@@ -338,9 +339,15 @@ public class FixedBillingEntryManagerImpl implements FixedBillingEntryManager {
         Helper.checkNull("entry", entry);
         Helper.checkLongValue("rejectReasonId", rejectReasonId);
 
-        RejectReason reason = rejectReasonManager.retrieveRejctReason(rejectReasonId);
+        RejectReason reason = null;
+        
+        try {
+            reason = rejectReasonManager.retrieveRejectReason(rejectReasonId);
+        } catch (RejectReasonDAOException rrde) {
+            throw new DataAccessException("Error occurred while retrieving reject reason.", rrde);
+        }
 
-        if ((reason == null) || (entry.getCompanyId() != reason.getCompanyId())) {
+        if (reason == null || entry.getCompanyId() != reason.getCompanyId()) {
             throw new InvalidCompanyException(entry.getId(), rejectReasonId);
         } else {
             entry.setModificationDate(new Timestamp(System.currentTimeMillis()));
