@@ -17,6 +17,7 @@ import java.util.Map;
 import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.AddressManager;
 import com.topcoder.timetracker.contact.AddressType;
+import com.topcoder.timetracker.contact.AssociationException;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactException;
 import com.topcoder.timetracker.contact.ContactManager;
@@ -1131,8 +1132,17 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         PersistenceException {
         long addressId = getAddressId(conn, project.getId());
         long contactId = getContactId(conn, project.getId());
-        project.setAddress(addressManager.retrieveAddress(addressId));
-        project.setContact(contactManager.retrieveContact(contactId));
+
+        try {
+            project.setAddress(addressManager.retrieveAddress(addressId));
+        } catch (AssociationException ae) {
+            throw new PersistenceException("Error occurred while associating project with address information.", ae);
+        }
+        try {
+            project.setContact(contactManager.retrieveContact(contactId));
+        } catch (AssociationException ae) {
+            throw new PersistenceException("Error occurred while associating project with contact information.", ae);
+        }
     }
 
     /**
