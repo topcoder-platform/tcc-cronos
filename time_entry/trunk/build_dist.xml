@@ -169,7 +169,7 @@
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="xerces.jar" value="${ext_libdir}/xerces.jar"/>
-    <property name="ifxjdbc.jar" value="${ext_libdir}/ifxjdbc.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/ifx-jdbc.jar"/>
 
     <property name="mock_ejb_libdir" value="${ext_libdir}/mockejb/0.6-beta2"/>
     <property name="cglib-full.jar" value="${mock_ejb_libdir}/cglib-full-2.0-RC2.jar"/>
