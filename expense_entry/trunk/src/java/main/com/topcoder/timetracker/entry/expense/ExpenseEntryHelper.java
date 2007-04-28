@@ -441,9 +441,7 @@ public final class ExpenseEntryHelper {
                 }
 
                 if (rejectReason.getCompanyId() != value.getCompanyId()) {
-                    System.out.println(rejectReason.getCompanyId());
-                    System.out.println(value.getCompanyId());
-                	throw new IllegalArgumentException(
+                    throw new IllegalArgumentException(
                         "The company ID of reject reason does not match the company id of the entry.");
                 }
             }
