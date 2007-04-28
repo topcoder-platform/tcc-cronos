@@ -211,7 +211,7 @@ public class NotificationManager {
      * @throws NotificationSendingException if any error occurred
      */
     public void sendNotification(long notificationId) throws NotificationSendingException {
-        this.sendNotification.send(notificationId);
+        this.sendNotification.send(notificationId, persistence);
     }
 
     /**

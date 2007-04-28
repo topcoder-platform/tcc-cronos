@@ -17,8 +17,10 @@ public interface NotificationSender {
      * Send the notification with given id.
      *
      * @param notificationId the notification id
+     * @param notificationManager the notification persistence used to get the notification
      *
      * @throws NotificationSendingException if any error occurred
      */
-    public void send(long notificationId) throws NotificationSendingException;
+    public void send(long notificationId, NotificationPersistence notificationManager)
+        throws NotificationSendingException;
 }

@@ -17,12 +17,15 @@ import com.topcoder.timetracker.contact.PersistenceException;
 import com.topcoder.timetracker.notification.Helper;
 import com.topcoder.timetracker.notification.Notification;
 import com.topcoder.timetracker.notification.NotificationConfigurationException;
+import com.topcoder.timetracker.notification.NotificationPersistence;
+import com.topcoder.timetracker.notification.NotificationPersistenceException;
 import com.topcoder.timetracker.notification.NotificationSender;
 import com.topcoder.timetracker.notification.NotificationSendingException;
 
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogException;
 import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
@@ -51,22 +54,6 @@ import java.util.List;
  * @version 3.2
  */
 public class EmailNotificationSender implements NotificationSender {
-    /** Represents the SQL command to select the notification of specified id. */
-    private static final String SQL_SELECT_NOTIFICATION = "select notification_id, company_id, from_address,"
-        + " subject, message, last_time_sent, next_time_send, status, scheduleId, creation_user,"
-        + " creation_date, modification_user, modification_date from notification where notification_id = ?";
-
-    /** Represents the SQL command to select the client ids related to specified notification. */
-    private static final String SQL_SELECT_CLIENTS = "select client_id from notify_clients where notification_id = ?";
-
-    /** Represents the SQL command to select the resource ids related to specified notification. */
-    private static final String SQL_SELECT_RESOURCES = "select user_account_id from notify_resources"
-        + " where notification_id = ?";
-
-    /** Represents the SQL command to select the project ids related to specified notification. */
-    private static final String SQL_SELECT_PROJECTS = "select project_id from notify_projects"
-        + " where notification_id = ?";
-
     /**
      * <p>
      * The DBConnectionFactory is used to create the named connection.
@@ -149,18 +136,29 @@ public class EmailNotificationSender implements NotificationSender {
         this.contactManager = cm;
         this.generator = generator;
 
-        this.log = LogFactory.getLog(logName);
+        try {
+            this.log = LogFactory.getLog(logName);
+        } catch (LogException le) {
+            throw new NotificationConfigurationException("Error get the log.", le);
+        }
     }
 
     /**
      * Email the notification.
      *
      * @param notificationId the notification id to get the notification to send
+     * @param notificationManager the notification persistence used to get the notification
      *
      * @throws NotificationSendingException if any error occurred
      */
-    public void send(long notificationId) throws NotificationSendingException {
-        Notification notification = getNotification(notificationId);
+    public void send(long notificationId, NotificationPersistence notificationManager)
+        throws NotificationSendingException {
+        Notification notification = null;
+        try {
+            notification = notificationManager.getNotification(notificationId);
+        } catch (NotificationPersistenceException npe) {
+            throw new NotificationSendingException("Error get the notification from database.", npe);
+        }
 
         // do nothing when there is no notification with the specified id or the
         // notification is inactive.
@@ -191,7 +189,11 @@ public class EmailNotificationSender implements NotificationSender {
                 // get the contact information.
                 contact = contactManager.retrieveContact(ids[i]);
             } catch (PersistenceException pe) {
-                this.log.log(Level.ERROR, createLog(notificaion.getId(), pe.getMessage()));
+                try {
+                    this.log.log(Level.ERROR, createLog(notificaion.getId(), pe.getMessage()));
+                } catch (LogException le) {
+                    throw new NotificationSendingException("Error logging.");
+                }
                 throw new NotificationSendingException("Error when retrieve contact information.", pe);
             }
 
@@ -203,7 +205,11 @@ public class EmailNotificationSender implements NotificationSender {
             try {
                 messageBody = generator.generateMessage(contactName, notificaion.getMessage());
             } catch (MessageBodyGeneratorException mbge) {
-                this.log.log(Level.ERROR, createLog(notificaion.getId(), mbge.getMessage()));
+                try {
+                    this.log.log(Level.ERROR, createLog(notificaion.getId(), mbge.getMessage()));
+                } catch (LogException le) {
+                    throw new NotificationSendingException("Error logging.");
+                }
                 throw new NotificationSendingException("Error generating message.", mbge);
             }
 
@@ -217,172 +223,27 @@ public class EmailNotificationSender implements NotificationSender {
 
                 EmailEngine.send(message);
             } catch (AddressException ae) {
-                this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
+                try {
+                    this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
+                } catch (LogException le) {
+                    throw new NotificationSendingException("Error logging.");
+                }
                 throw new NotificationSendingException("The email address is invalid.", ae);
             } catch (ConfigManagerException cme) {
-                this.log.log(Level.ERROR, createLog(notificaion.getId(), cme.getMessage()));
+                try {
+                    this.log.log(Level.ERROR, createLog(notificaion.getId(), cme.getMessage()));
+                } catch (LogException le) {
+                    throw new NotificationSendingException("Error logging.");
+                }
                 throw new NotificationSendingException("Can not load config.", cme);
             } catch (SendingException se) {
-                this.log.log(Level.ERROR, createLog(notificaion.getId(), se.getMessage()));
+                try {
+                    this.log.log(Level.ERROR, createLog(notificaion.getId(), se.getMessage()));
+                } catch (LogException le) {
+                    throw new NotificationSendingException("Error logging.");
+                }
                 throw new NotificationSendingException("There is problem sending.", se);
             }
-        }
-    }
-
-    /**
-     * Get the notification from the database.
-     *
-     * @param notificationId the notification id.
-     *
-     * @return return the notification, if nothing is found, return null
-     *
-     * @throws NotificationSendingException if any error occurred
-     */
-    private Notification getNotification(long notificationId)
-        throws NotificationSendingException {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet result = null;
-
-        try {
-            // create a DB connection
-            conn = dbFactory.createConnection(connectionName);
-
-            conn.setAutoCommit(true);
-
-            stmt = conn.prepareStatement(SQL_SELECT_NOTIFICATION);
-
-            stmt.setLong(1, notificationId);
-
-            result = stmt.executeQuery();
-
-            if (result.next()) {
-                Notification notification = new Notification();
-
-                notification.setId(result.getLong("notification_id"));
-                notification.setFromAddress(result.getString("from_address"));
-                notification.setSubject(result.getString("subject"));
-                notification.setMessage(result.getString("message"));
-                Date lastTimeSent = result.getDate("last_time_sent");
-                if (lastTimeSent != null) {
-                    notification.setLastTimeSent(result.getDate("last_time_sent"));
-                }
-                Date nextTimeSend = result.getDate("next_time_send");
-                if (nextTimeSend != null) {
-                    notification.setNextTimeToSend(result.getDate("next_time_send"));
-                }
-                notification.setActive((result.getInt("status") != 0) ? true : false);
-                notification.setScheduleId(result.getLong("scheduleId"));
-                notification.setCreationUser(result.getString("creation_user"));
-                notification.setCreationDate(result.getDate("creation_date"));
-                notification.setModificationUser(result.getString("modification_user"));
-                notification.setModificationDate(result.getDate("creation_date"));
-
-                notification.setToClients(getAssociation(conn, notification.getId(), SQL_SELECT_CLIENTS));
-                notification.setToProjects(getAssociation(conn, notification.getId(), SQL_SELECT_PROJECTS));
-                notification.setToResources(getAssociation(conn, notification.getId(), SQL_SELECT_RESOURCES));
-
-                return notification;
-            }
-
-            return null;
-        } catch (SQLException sqle) {
-            throw new NotificationSendingException("Error occurred when retrieving data from database.", sqle);
-        } catch (DBConnectionException dbce) {
-            throw new NotificationSendingException("Error occurred when get the connection.", dbce);
-        } finally {
-            try {
-                if ((conn != null) && !conn.isClosed()) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                // ignore it
-            }
-        }
-    }
-
-    /**
-     * Get association such as notify_clients, notify_projects, notify_resources from the database.
-     *
-     * @param conn the Connection used to get the data
-     * @param notificationId the association's notification id
-     * @param command the SQL command
-     *
-     * @return the array of the association
-     *
-     * @throws NotificationSendingException if any error occurred
-     */
-    private long[] getAssociation(Connection conn, long notificationId, String command)
-        throws NotificationSendingException {
-        ResultSet result = null;
-        PreparedStatement stmt = null;
-
-        try {
-            // prepare the statement
-            stmt = conn.prepareStatement(command);
-
-            stmt.setLong(1, notificationId);
-
-            // do the query
-            result = stmt.executeQuery();
-
-            return retrieveArray(result);
-        } catch (SQLException sqle) {
-            throw new NotificationSendingException("Error when retrieve information from database.", sqle);
-        } finally {
-            releaseStatement(stmt, result);
-        }
-    }
-
-    /**
-     * <p>
-     * A private helper method to retrieve all the long ids from a given ResultSet. SQLException will be thrown to
-     * upper method to deal with.
-     * </p>
-     *
-     * @param result the given result
-     *
-     * @return the retrieved array of long ids
-     *
-     * @throws SQLException if any error occurs with the sql executing.
-     */
-    private long[] retrieveArray(ResultSet result) throws SQLException {
-        // Retrieve all the buddies from this result set.
-        List list = new ArrayList();
-
-        while (result.next()) {
-            list.add(new Long(result.getLong(1)));
-        }
-
-        // Store it into an array
-        long[] arr = new long[list.size()];
-
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = ((Long) list.get(i)).longValue();
-        }
-
-        return arr;
-    }
-
-    /**
-     * <p>
-     * Release the statement and result set.
-     * </p>
-     *
-     * @param stmt the statement to release
-     * @param result the result to release
-     */
-    private void releaseStatement(Statement stmt, ResultSet result) {
-        try {
-            if (result != null) {
-                result.close();
-            }
-
-            if (stmt != null) {
-                stmt.close();
-            }
-        } catch (SQLException e) {
-            // ignore it
         }
     }
 

@@ -173,6 +173,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkPositive(id, "id");
 
         this.companyId = id;
+        this.setChanged(true);
     }
 
     /**
@@ -195,6 +196,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkString(subject, "subject");
 
         this.subject = subject;
+        this.setChanged(true);
     }
 
     /**
@@ -217,6 +219,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkString(msg, "msg");
 
         this.message = msg;
+        this.setChanged(true);
     }
 
     /**
@@ -239,6 +242,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkString(addr, "addr");
 
         this.fromAddress = addr;
+        this.setChanged(true);
     }
 
     /**
@@ -261,6 +265,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkNull(time, "time");
 
         this.lastTimeSent = time;
+        this.setChanged(true);
     }
 
     /**
@@ -283,6 +288,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkNull(time, "time");
 
         this.nextTimeToSend = time;
+        this.setChanged(true);
     }
 
     /**
@@ -305,6 +311,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkPositive(id, "id");
 
         this.scheduleId = id;
+        this.setChanged(true);
     }
 
     /**
@@ -323,6 +330,7 @@ public class Notification extends TimeTrackerBean {
      */
     public void setActive(boolean active) {
         this.active = active;
+        this.setChanged(true);
     }
 
     /**
@@ -346,6 +354,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkUniqueArray(ids, "ids");
 
         this.toProjects = (long[]) ids.clone();
+        this.setChanged(true);
     }
 
     /**
@@ -369,6 +378,7 @@ public class Notification extends TimeTrackerBean {
         Helper.checkUniqueArray(ids, "ids");
 
         this.toClients = (long[]) ids.clone();
+        this.setChanged(true);
     }
 
     /**
@@ -392,5 +402,6 @@ public class Notification extends TimeTrackerBean {
         Helper.checkUniqueArray(ids, "ids");
 
         this.toResources = (long[]) ids.clone();
+        this.setChanged(true);
     }
 }

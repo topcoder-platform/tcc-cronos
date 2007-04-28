@@ -242,7 +242,7 @@ public class EmailNotificationSenderUnitTests extends TestCase {
 
         Notification[] notifications = persistence.getAllNotifications();
 
-        sender.send(notifications[0].getId());
+        sender.send(notifications[0].getId(), persistence);
     }
 
     /**
