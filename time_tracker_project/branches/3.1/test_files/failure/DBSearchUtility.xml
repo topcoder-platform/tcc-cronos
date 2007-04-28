@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!-- Configuration of the DatabseSearchUtility used to search projects -->
+	<Config name="com.cronos.timetracker.project.failuretests.DatabaseSearchUtilityFailureTest">
+		<!--The SQL query template, required-->
+		<Property name="query_template">
+			<Value>
+				select distinct project.project_id from project,
+				project_worker, project_manager, client_project where
+				(project.project_id = project_worker.project_id)
+				and(project.project_id =
+				client_project.project_id)and(project.project_id =
+				project_manager.project_id)and
+			</Value>
+		</Property>
+		<!-- The aliases of the DB column names, required-->
+		<Property name="column_aliases">
+			<!-- Name of a particular Property is a name of the alias -->
+			<Property name="Company ID">
+				<!-- Value of a particular Property is a Value of the alias -->
+				<Value>project.company_id</Value>
+			</Property>
+			<Property name="Name">
+				<!-- Value of a particular Property is a Value of the alias -->
+				<Value>project.name</Value>
+			</Property>
+			<Property name="Description">
+				<Value>project.description</Value>
+			</Property>
+			<Property name="Project Manager">
+				<Value>project_manager.user_account_id</Value>
+			</Property>
+			<Property name="Project Worker">
+				<Value>project_worker.user_account_id</Value>
+			</Property>
+			<Property name="Project Client">
+				<Value>Clientproject.client_id</Value>
+			</Property>
+			<Property name="Creation User">
+				<Value>project.creation_user</Value>
+			</Property>
+			<Property name="Modification User">
+				<Value>project.modification_user</Value>
+			</Property>
+			<Property name="Start Date ">
+				<Value>project.start_date</Value>
+			</Property>
+			<Property name="End Date ">
+				<Value>project.end_date</Value>
+			</Property>
+			<Property name="Creation Date ">
+				<Value>project.creation_date</Value>
+			</Property>
+			<Property name="Modification Date ">
+				<Value>project.modification_date</Value>
+			</Property>
+		</Property>
+	</Config>
+	<!-- Configuration of the DatabseSearchUtility used to search clients-->
+	<Config
+		name="com.cronos.timetracker.project.failuretests.DatabaseSearchUtilityFailureTest.1">
+		<!-- Missing query template-->
+
+		<Property name="column_aliases">
+			<!-- Name of a particular Property is a name of the alias -->
+			<Property name="Company ID">
+				<!-- Value of a particular Property is a Value of the alias -->
+				<Value>client.company_id</Value>
+			</Property>
+			<Property name="Name">
+				<!-- Value of a particular Property is a Value of the alias -->
+				<Value>client.name</Value>
+			</Property>
+			<Property name="Creation User">
+				<Value>client.creation_user</Value>
+			</Property>
+			<Property name="Modification User">
+				<Value>client.modification_user</Value>
+			</Property>
+			<Property name="Creation Date">
+				<Value>client.creation_date</Value>
+			</Property>
+			<Property name="Modification Date">
+				<Value>client.modification_date</Value>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config
+		name="com.cronos.timetracker.project.failuretests.DatabaseSearchUtilityFailureTest.2">
+
+<Property name="query_template">
+			<Value>
+				select FROM
+			</Value>
+		</Property>
+		<Property name="column_aliases">
+			<Property name="Company ID">
+				<!-- Value of a particular Property is a Value of the alias -->
+				<Value>client.company_id</Value>
+			</Property>
+			<!-- Name of a particular Property is a name of the alias -->
+			<Property name="Name">
+				<!-- Value of a particular Property is a Value of the alias -->
+				<Value>client.name</Value>
+			</Property>
+			<Property name="any">
+				<Value>client.creation_user</Value>
+			</Property>
+			<Property name="Modification User">
+				<Value>client.modification_user</Value>
+			</Property>
+			<Property name="Creation Date">
+				<Value>client.creation_date</Value>
+			</Property>
+			<Property name="Modification Date">
+				<Value>client.modification_date</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.timetracker.project.accuraytests.DatabaseSearchUtility.clients">
+
+    <!-- The SQL query template, required -->
+    <Property name="query_template">
+      <Value>select distinct client.client_id from client where </Value>
+    </Property>
+
+    <!-- The aliases of the DB column names, required -->
+    <Property name="column_aliases">
+      <Property name="Company ID">
+        <Value>client.company_id</Value>
+      </Property>
+      <Property name="Name">
+        <Value>client.name</Value>
+      </Property>
+      <Property name="Creation User">
+        <Value>client.creation_user</Value>
+      </Property>
+      <Property name="Modification User">
+        <Value>client.modification_user</Value>
+      </Property>
+      <Property name="Creation Date">
+        <Value>client.creation_date</Value>
+      </Property>
+      <Property name="Modification Date">
+        <Value>client.modification_date</Value>
+      </Property>
+    </Property>
+
+  </Config>
+  
+    <Config name="com.topcoder.timetracker.project.accuraytests.DatabaseSearchUtility.projects">
+
+    <!-- The SQL query template, required -->
+    <Property name="query_template">
+      <Value>select distinct project.project_id from project where </Value>
+    </Property>
+
+    <!-- The aliases of the DB column names, required -->
+    <Property name="column_aliases">
+      <Property name="Company ID">
+        <Value>project.company_id</Value>
+      </Property>
+      <Property name="Name">
+        <Value>project.name</Value>
+      </Property>
+      <Property name="Creation User">
+        <Value>project.creation_user</Value>
+      </Property>
+      <Property name="Modification User">
+        <Value>project.modification_user</Value>
+      </Property>
+      <Property name="Creation Date">
+        <Value>project.creation_date</Value>
+      </Property>
+      <Property name="Modification Date">
+        <Value>project.modification_date</Value>
+      </Property>
+    </Property>
+
+  </Config>
+  
+</CMConfig>
