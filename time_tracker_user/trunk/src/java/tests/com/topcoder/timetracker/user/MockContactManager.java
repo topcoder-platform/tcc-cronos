@@ -130,7 +130,7 @@ public class MockContactManager implements ContactManager {
      * @return all the contacts for the ids
      * @param ids the contact id array
      */
-    public Contact[] retrieveContatcts(long[] ids) {
+    public Contact[] retrieveContacts(long[] ids) {
         Contact[] contacts = new Contact[ids.length];
         for (int i = 0; i < ids.length; i++) {
             contacts[i] = retrieveContact(ids[i]);

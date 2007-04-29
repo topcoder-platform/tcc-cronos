@@ -70,7 +70,7 @@ public class MyContactManager implements ContactManager {
      * Get a list of Contact instance with a list of id.
      * </p>
      */
-    public Contact[] retrieveContatcts(long[] ids) throws PersistenceException {
+    public Contact[] retrieveContacts(long[] ids) throws PersistenceException {
         Contact[] ret = new Contact[ids.length];
 
         for (int i = 0; i < ids.length; i++) {
