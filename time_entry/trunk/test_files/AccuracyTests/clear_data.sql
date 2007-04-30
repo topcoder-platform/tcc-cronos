@@ -5,3 +5,4 @@ DELETE FROM comp_task_type;
 DELETE FROM task_type;
 DELETE FROM time_status;
 DELETE FROM company;
+DELETE FROM invoice;
