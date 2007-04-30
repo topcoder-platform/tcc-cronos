@@ -54,7 +54,7 @@ public class UnitTests extends TestCase {
         // report package
         suite.addTestSuite(TestReportDAOFactory.class);
 
-        // fiter
+        // filter
         suite.addTestSuite(TestInformixFilter.class);
 
         // reports

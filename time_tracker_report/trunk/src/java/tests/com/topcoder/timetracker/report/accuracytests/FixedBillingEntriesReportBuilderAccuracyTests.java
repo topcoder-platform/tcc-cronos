@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.report.accuracytests;
 
@@ -59,10 +59,11 @@ public class FixedBillingEntriesReportBuilderAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetReport_1() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2});
-        String[] sortingColumns = {"fix_bill_entry_fix_bill_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {false};
-        FixedBillingEntryReport[] result = (FixedBillingEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2 });
+        String[] sortingColumns = {"fix_bill_entry_fix_bill_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {false };
+        FixedBillingEntryReport[] result =
+                (FixedBillingEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
 
         int expectSize = 2;
         // Verify the result
@@ -77,10 +78,11 @@ public class FixedBillingEntriesReportBuilderAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetReport_2() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2});
-        String[] sortingColumns = {"fix_bill_entry_fix_bill_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {true};
-        FixedBillingEntryReport[] result = (FixedBillingEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2 });
+        String[] sortingColumns = {"fix_bill_entry_fix_bill_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {true };
+        FixedBillingEntryReport[] result =
+                (FixedBillingEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
 
         int expectSize = 2;
         // Verify the result

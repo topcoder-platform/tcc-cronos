@@ -1,6 +1,5 @@
-/**
- *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.report.accuracytests;
 
@@ -9,7 +8,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * <p>This test case aggregates all Accuracy test cases.</p>
+ * <p>
+ * This test case aggregates all Accuracy test cases.
+ * </p>
  *
  * @author TopCoder
  * @version 1.0

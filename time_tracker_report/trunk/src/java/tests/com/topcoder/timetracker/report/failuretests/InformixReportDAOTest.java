@@ -35,8 +35,7 @@ public class InformixReportDAOTest extends TestCase {
     /**
      * Sets the unit test up.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
 
@@ -50,8 +49,7 @@ public class InformixReportDAOTest extends TestCase {
     /**
      * Tears the unit test down.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.clearNamespaces();
@@ -72,8 +70,7 @@ public class InformixReportDAOTest extends TestCase {
      * Test constructor for failure. Condition: there is no reportsSearchBuilders. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testInformixReportDAONoReportsSearchBuilders() throws Exception {
         TestHelper.loadConfiguration("failure/config_no_reportsSearchBuilders.xml");
@@ -90,8 +87,7 @@ public class InformixReportDAOTest extends TestCase {
      * Test constructor for failure. Condition: some reportsSearchBuilders are missing. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testInformixReportDAOMissSomeReportsSearchBuilders() throws Exception {
         TestHelper.loadConfiguration("failure/config_miss_some_reportsSearchBuilders.xml");
@@ -108,8 +104,7 @@ public class InformixReportDAOTest extends TestCase {
      * Test constructor for failure. Condition: some reportsSearchBuilders are missing. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testInformixReportDAOMissSomeReportsSearchBuilders2() throws Exception {
         TestHelper.loadConfiguration("failure/config_miss_some_reportsSearchBuilders2.xml");
@@ -126,8 +121,7 @@ public class InformixReportDAOTest extends TestCase {
      * Test constructor for failure. Condition: some reportsSearchBuilders are missing. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testInformixReportDAOMissSomeReportsSearchBuilders3() throws Exception {
         TestHelper.loadConfiguration("failure/config_miss_some_reportsSearchBuilders3.xml");
@@ -144,8 +138,7 @@ public class InformixReportDAOTest extends TestCase {
      * Test constructor for failure. Condition: some reportsSearchBuilders are wrong class. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testInformixReportDAOReportBuilderWrongClass() throws Exception {
         TestHelper.loadConfiguration("failure/config_reportBuilder_wrong_class.xml");
@@ -159,10 +152,10 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test constructor for failure. Condition: namespace is null. Expect: <code>IllegalArgumentException</code>.
+     * Test constructor for failure. Condition: namespace is null. Expect:
+     * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testInformixReportDAOWithNamespaceNull() throws Exception {
         try {
@@ -177,8 +170,7 @@ public class InformixReportDAOTest extends TestCase {
      * Test constructor for failure. Condition: namespace is empty string. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testInformixReportDAOWithNamespaceEmpty() throws Exception {
         try {
@@ -190,15 +182,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns contains null.
-     * Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns
+     * contains null. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetExpenseEntriesReportContainNull() throws Exception {
         try {
-            informixReportDAO.getExpenseEntriesReport(null, new String[] {null}, new boolean[] {false});
+            informixReportDAO.getExpenseEntriesReport(null, new String[] {null }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -206,15 +197,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns contains empty
-     * string. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns
+     * contains empty string. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetExpenseEntriesReportContainEmptyString() throws Exception {
         try {
-            informixReportDAO.getExpenseEntriesReport(null, new String[] {"  \n"}, new boolean[] {false});
+            informixReportDAO.getExpenseEntriesReport(null, new String[] {"  \n" }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -222,15 +212,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns and ascendingOrders
-     * have different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns and
+     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetExpenseEntriesReportNotSameLength() throws Exception {
         try {
-            informixReportDAO.getExpenseEntriesReport(null, new String[] {"test"}, new boolean[0]);
+            informixReportDAO.getExpenseEntriesReport(null, new String[] {"test" }, new boolean[0]);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -238,15 +227,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns and ascendingOrders
-     * have different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns and
+     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetExpenseEntriesReportNotSameLength2() throws Exception {
         try {
-            informixReportDAO.getExpenseEntriesReport(null, new String[] {"test"}, null);
+            informixReportDAO.getExpenseEntriesReport(null, new String[] {"test" }, null);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -254,15 +242,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns and ascendingOrders
-     * have different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getExpenseEntriesReport</code> for failure. Condition: the sortingColumns and
+     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetExpenseEntriesReportNotSameLength3() throws Exception {
         try {
-            informixReportDAO.getExpenseEntriesReport(null, null, new boolean[] {false});
+            informixReportDAO.getExpenseEntriesReport(null, null, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -270,15 +257,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns contains null.
-     * Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns
+     * contains null. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetFixedBillingEntriesReportContainNull() throws Exception {
         try {
-            informixReportDAO.getFixedBillingEntriesReport(null, new String[] {null}, new boolean[] {false});
+            informixReportDAO.getFixedBillingEntriesReport(null, new String[] {null }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -286,15 +272,17 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns contains empty
-     * string. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns
+     * contains empty string. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetFixedBillingEntriesReportContainEmptyString() throws Exception {
         try {
-            informixReportDAO.getFixedBillingEntriesReport(null, new String[] {"  \n"}, new boolean[] {false});
+            informixReportDAO.getFixedBillingEntriesReport(
+                    null,
+                    new String[] {"  \n" },
+                    new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -302,15 +290,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns and
-     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns
+     * and ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetFixedBillingEntriesReportNotSameLength() throws Exception {
         try {
-            informixReportDAO.getFixedBillingEntriesReport(null, new String[] {"test"}, new boolean[0]);
+            informixReportDAO.getFixedBillingEntriesReport(null, new String[] {"test" }, new boolean[0]);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -318,15 +305,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns and
-     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns
+     * and ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetFixedBillingEntriesReportNotSameLength2() throws Exception {
         try {
-            informixReportDAO.getFixedBillingEntriesReport(null, new String[] {"test"}, null);
+            informixReportDAO.getFixedBillingEntriesReport(null, new String[] {"test" }, null);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -334,15 +320,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns and
-     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getFixedBillingEntriesReport</code> for failure. Condition: the sortingColumns
+     * and ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetFixedBillingEntriesReportNotSameLength3() throws Exception {
         try {
-            informixReportDAO.getFixedBillingEntriesReport(null, null, new boolean[] {false});
+            informixReportDAO.getFixedBillingEntriesReport(null, null, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -350,15 +335,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns contains null. Expect:
-     * <code>IllegalArgumentException</code>.
+     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns contains
+     * null. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetTimeEntriesReportContainNull() throws Exception {
         try {
-            informixReportDAO.getTimeEntriesReport(null, new String[] {null}, new boolean[] {false});
+            informixReportDAO.getTimeEntriesReport(null, new String[] {null }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -366,15 +350,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns contains empty string.
-     * Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns contains
+     * empty string. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetTimeEntriesReportContainEmptyString() throws Exception {
         try {
-            informixReportDAO.getTimeEntriesReport(null, new String[] {"  \n"}, new boolean[] {false});
+            informixReportDAO.getTimeEntriesReport(null, new String[] {"  \n" }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -382,15 +365,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns and ascendingOrders have
-     * different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns and
+     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetTimeEntriesReportNotSameLength() throws Exception {
         try {
-            informixReportDAO.getTimeEntriesReport(null, new String[] {"test"}, new boolean[0]);
+            informixReportDAO.getTimeEntriesReport(null, new String[] {"test" }, new boolean[0]);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -398,15 +380,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns and ascendingOrders have
-     * different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns and
+     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetTimeEntriesReportNotSameLength2() throws Exception {
         try {
-            informixReportDAO.getTimeEntriesReport(null, new String[] {"test"}, null);
+            informixReportDAO.getTimeEntriesReport(null, new String[] {"test" }, null);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -414,15 +395,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns and ascendingOrders have
-     * different length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getTimeEntriesReport</code> for failure. Condition: the sortingColumns and
+     * ascendingOrders have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetTimeEntriesReportNotSameLength3() throws Exception {
         try {
-            informixReportDAO.getTimeEntriesReport(null, null, new boolean[] {false});
+            informixReportDAO.getTimeEntriesReport(null, null, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -433,12 +413,11 @@ public class InformixReportDAOTest extends TestCase {
      * Test <code>getReport</code> for failure. Condition: type is null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportTypeIsNull() throws Exception {
         try {
-            informixReportDAO.getReport(null, null, new String[] {"test"}, new boolean[] {false});
+            informixReportDAO.getReport(null, null, new String[] {"test" }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -449,12 +428,11 @@ public class InformixReportDAOTest extends TestCase {
      * Test <code>getReport</code> for failure. Condition: type is empty string. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportTypeIsEmptyString() throws Exception {
         try {
-            informixReportDAO.getReport(null, null, new String[] {"  "}, new boolean[] {false});
+            informixReportDAO.getReport(null, null, new String[] {"  " }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -462,16 +440,18 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains null. Expect:
-     * <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains null.
+     * Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportContainNull() throws Exception {
         try {
-            informixReportDAO.getReport(InformixReportDAO.TIME_ENTRIES, null, new String[] {null},
-                new boolean[] {false});
+            informixReportDAO.getReport(
+                    InformixReportDAO.TIME_ENTRIES,
+                    null,
+                    new String[] {null },
+                    new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -479,16 +459,18 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains empty string. Expect:
-     * <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains empty
+     * string. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportContainEmptyString() throws Exception {
         try {
-            informixReportDAO.getReport(InformixReportDAO.TIME_ENTRIES, null, new String[] {"  \n"},
-                new boolean[] {false});
+            informixReportDAO.getReport(
+                    InformixReportDAO.TIME_ENTRIES,
+                    null,
+                    new String[] {"  \n" },
+                    new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -496,16 +478,18 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders have different
-     * length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders
+     * have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportNotSameLength() throws Exception {
         try {
-            informixReportDAO.getReport(InformixReportDAO.TIME_ENTRIES, null, new String[] {"test"},
-                new boolean[0]);
+            informixReportDAO.getReport(
+                    InformixReportDAO.TIME_ENTRIES,
+                    null,
+                    new String[] {"test" },
+                    new boolean[0]);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -513,15 +497,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders have different
-     * length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders
+     * have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportNotSameLength2() throws Exception {
         try {
-            informixReportDAO.getReport(InformixReportDAO.TIME_ENTRIES, null, new String[] {"test"}, null);
+            informixReportDAO.getReport(InformixReportDAO.TIME_ENTRIES, null, new String[] {"test" }, null);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -529,15 +512,14 @@ public class InformixReportDAOTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders have different
-     * length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders
+     * have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportNotSameLength3() throws Exception {
         try {
-            informixReportDAO.getReport(InformixReportDAO.TIME_ENTRIES, null, null, new boolean[] {false});
+            informixReportDAO.getReport(InformixReportDAO.TIME_ENTRIES, null, null, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected

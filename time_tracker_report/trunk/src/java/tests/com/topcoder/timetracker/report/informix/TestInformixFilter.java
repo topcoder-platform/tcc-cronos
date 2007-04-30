@@ -9,7 +9,7 @@ import java.lang.reflect.Modifier;
 
 import com.topcoder.timetracker.report.BaseTestCase;
 
-import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.BetweenFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
@@ -40,15 +40,12 @@ public class TestInformixFilter extends BaseTestCase {
      * @throws Exception to JUnit
      */
     public void testInformixFilter_Ctor() throws Exception {
-        assertEquals(
-                "Class InformixFilter contains public Constructor.",
-                0,
-                InformixFilter.class.getConstructors().length);
+        assertEquals("Class InformixFilter contains public Constructor.", 0, InformixFilter.class
+                .getConstructors().length);
 
         Constructor[] ctor = InformixFilter.class.getDeclaredConstructors();
-        assertTrue(
-                "Class InformixFilter should contain only 1 private Constructor.",
-                (ctor.length == 1 && ctor[0].getModifiers() == Modifier.PRIVATE));
+        assertTrue("Class InformixFilter should contain only 1 private Constructor.", (ctor.length == 1 && ctor[0]
+                .getModifiers() == Modifier.PRIVATE));
 
         try {
             Class.forName("com.topcoder.timetracker.report.informix.InformixFilter").newInstance();
@@ -243,7 +240,7 @@ public class TestInformixFilter extends BaseTestCase {
         Date lower = new Date(new Date().getTime() - ONEDAY);
         Date upper = new Date();
         Filter filter = InformixFilter.getFilterEntryDate(lower, upper);
-        assertTrue("filter should be instance of AndFilter.", filter instanceof AndFilter);
+        assertTrue("filter should be instance of BetweenFilter.", filter instanceof BetweenFilter);
     }
 
     /**
@@ -257,18 +254,13 @@ public class TestInformixFilter extends BaseTestCase {
         Date lower = new Date(new Date().getTime() - ONEDAY);
         // Date upper = new Date();
         Filter filter = InformixFilter.getFilterEntryDate(lower, null);
-        assertTrue(
-                "filter should be instance of GreaterThanOrEqualToFilter.",
+        assertTrue("filter should be instance of GreaterThanOrEqualToFilter.",
                 filter instanceof GreaterThanOrEqualToFilter);
-        assertEquals(
-                "filter name should be 'entry date'",
-                "entry date",
+        assertEquals("filter name should be 'entry date'", "entry date",
                 ((GreaterThanOrEqualToFilter) filter).getName());
-
-        assertEquals(
-                "filter lower bound should be " + FORMATTER.format(lower),
-                FORMATTER.format(lower),
-                (String) ((GreaterThanOrEqualToFilter) filter).getLowerThreshold());
+        assertEquals("filter lower bound should be " + FORMATTER.format(lower),
+                new java.sql.Date(lower.getTime()),
+                (java.sql.Date) ((GreaterThanOrEqualToFilter) filter).getLowerThreshold());
     }
 
     /**
@@ -282,17 +274,13 @@ public class TestInformixFilter extends BaseTestCase {
         // Date lower = new Date(new Date().getTime() - ONEDAY);
         Date upper = new Date();
         Filter filter = InformixFilter.getFilterEntryDate(null, upper);
-        assertTrue(
-                "filter should be instance of LessThanOrEqualToFilter.",
+        assertTrue("filter should be instance of LessThanOrEqualToFilter.",
                 filter instanceof LessThanOrEqualToFilter);
-        assertEquals(
-                "filter name should be 'entry date'",
-                "entry date",
+        assertEquals("filter name should be 'entry date'", "entry date",
                 ((LessThanOrEqualToFilter) filter).getName());
-        assertEquals(
-                "filter lower bound should be " + FORMATTER.format(upper),
-                FORMATTER.format(upper),
-                (String) ((LessThanOrEqualToFilter) filter).getUpperThreshold());
+        assertEquals("filter lower bound should be " + FORMATTER.format(upper),
+                new java.sql.Date(upper.getTime()),
+                (java.sql.Date) ((LessThanOrEqualToFilter) filter).getUpperThreshold());
     }
 
     /**

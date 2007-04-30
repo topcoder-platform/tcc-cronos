@@ -4,8 +4,6 @@
 
 package com.topcoder.timetracker.report;
 
-import java.util.Date;
-
 import com.topcoder.timetracker.entry.expense.ExpenseEntry;
 import com.topcoder.timetracker.entry.expense.ExpenseStatus;
 import com.topcoder.timetracker.entry.expense.ExpenseType;
@@ -13,6 +11,7 @@ import com.topcoder.timetracker.report.informix.ExpenseEntryReport;
 import com.topcoder.timetracker.report.informix.InformixFilter;
 
 import com.topcoder.search.builder.filter.Filter;
+import java.util.Date;
 
 /**
  * <p>
@@ -189,37 +188,24 @@ public class Demo extends BaseTestCase {
         }
 
         assertEquals("entry.id should be " + id, id, entry.getId());
-        assertEquals(
-                "entry.companyId should be " + expectedCompanyId,
-                expectedCompanyId,
-                entry.getCompanyId());
-        assertEquals("entry.amount should be " + expectedAmount, expectedAmount, entry.getAmount()
-                .doubleValue(), 1e-5);
+        assertEquals("entry.companyId should be " + expectedCompanyId, expectedCompanyId, entry.getCompanyId());
+        assertEquals("entry.amount should be " + expectedAmount, expectedAmount, entry.getAmount().doubleValue(),
+                1e-5);
 
-        assertEquals(
-                "entry.description should be 'expenseentryDesc" + id + "'.",
-                "expenseentryDesc" + id,
-                entry.getDescription());
-        assertEquals(
-                "entry.creationUser should be 'creationUser1'.",
-                "creationUser1",
-                entry.getCreationUser());
-        assertEquals(
-                "entry.modificationUser should be 'modificationUser1'.",
-                "modificationUser1",
-                entry.getModificationUser());
+        assertEquals("entry.description should be 'expenseentryDesc" + id + "'.", "expenseentryDesc" + id, entry
+                .getDescription());
+        assertEquals("entry.creationUser should be 'creationUser1'.", "creationUser1", entry.getCreationUser());
+        assertEquals("entry.modificationUser should be 'modificationUser1'.", "modificationUser1", entry
+                .getModificationUser());
 
-        assertDateDiff10Seconds("entry.entry_date is not correct.", new Date(FORMATTER.parse(
-                "2006-12-31 00:00:00").getTime()
-                - id
-                * ONEDAY), entry.getDate());
+        assertDateDiff10Seconds("entry.entry_date is not correct.", new Date(FORMATTER
+                .parse("2006-12-31 00:00:00").getTime()
+                - id * ONEDAY), entry.getDate());
         Date setupDate = this.getDBSetupDate();
-        assertDateDiff10Seconds("entry.creationDate is not correct.", new Date(setupDate.getTime()
-                - id
-                * ONEDAY), entry.getCreationDate());
+        assertDateDiff10Seconds("entry.creationDate is not correct.", new Date(setupDate.getTime() - id * ONEDAY),
+                entry.getCreationDate());
         assertDateDiff10Seconds("entry.modificationDate is not correct.", new Date(setupDate.getTime()
-                - id
-                * ONEDAY), entry.getModificationDate());
+                - id * ONEDAY), entry.getModificationDate());
 
         ExpenseStatus status = entry.getStatus();
         assertNotNull("entry.ExpenseStatus should not be null", status);

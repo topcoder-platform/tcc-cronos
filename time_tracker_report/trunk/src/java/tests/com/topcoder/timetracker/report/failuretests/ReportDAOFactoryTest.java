@@ -32,8 +32,7 @@ public class ReportDAOFactoryTest extends TestCase {
     /**
      * Tears the unit test down.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.clearNamespaces();
@@ -45,8 +44,7 @@ public class ReportDAOFactoryTest extends TestCase {
      * Test constructor for failure. Condition: the objectFactoryNamespace is empty string. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testReportDAOFactoryEmptyObjectFactoryNamespace() throws Exception {
         TestHelper.loadConfiguration("failure/config_empty_objectFactoryNamespace.xml");
@@ -61,11 +59,10 @@ public class ReportDAOFactoryTest extends TestCase {
     }
 
     /**
-     * Test constructor for failure. Condition: the informixReportDaoNamespace is empty string. Expect:
-     * <code>ReportConfigException</code>.
+     * Test constructor for failure. Condition: the informixReportDaoNamespace is empty string.
+     * Expect: <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testReportDAOFactoryEmptyInformixReportDaoNamespace() throws Exception {
         TestHelper.loadConfiguration("failure/config_empty_informixReportDaoNamespace.xml");
@@ -83,8 +80,7 @@ public class ReportDAOFactoryTest extends TestCase {
      * Test constructor for failure. Condition: contains empty reportDao. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testReportDAOFactoryContainsEmptyReportDao() throws Exception {
         TestHelper.loadConfiguration("failure/config_contain_empty_reportDaos.xml");
@@ -102,8 +98,7 @@ public class ReportDAOFactoryTest extends TestCase {
      * Test constructor for failure. Condition: the reportDaos is not valid key. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testReportDAOFactoryReportDaosIsMissing() throws Exception {
         TestHelper.loadConfiguration("failure/config_reportDaos_is_missing.xml");
@@ -121,8 +116,7 @@ public class ReportDAOFactoryTest extends TestCase {
      * Test constructor for failure. Condition: the reportDaos is not valid key. Expect:
      * <code>ReportConfigException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testReportDAOFactoryReportDaosWrongClass() throws Exception {
         TestHelper.loadConfiguration("failure/config_reportDaos_wrong_class.xml");
@@ -137,10 +131,10 @@ public class ReportDAOFactoryTest extends TestCase {
     }
 
     /**
-     * Test constructor for failure. Condition: namespace is null. Expect: <code>IllegalArgumentException</code>.
+     * Test constructor for failure. Condition: namespace is null. Expect:
+     * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testReportDAOFactoryWithNamespaceNull() throws Exception {
         try {
@@ -155,8 +149,7 @@ public class ReportDAOFactoryTest extends TestCase {
      * Test constructor for failure. Condition: namespace is empty string. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testReportDAOFactoryWithNamespaceEmptyString() throws Exception {
         try {

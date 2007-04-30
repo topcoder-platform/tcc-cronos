@@ -33,8 +33,7 @@ public class TestInformixReportDAOStress extends TestCase {
     /**
      * Set up the environment.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void setUp() throws Exception {
         Connection connection = null;
@@ -130,11 +129,11 @@ public class TestInformixReportDAOStress extends TestCase {
     /**
      * Tear down the environment.
      * <p>
-     * Clear the records in all tables, and also clear the namespace contained in the config manager.
+     * Clear the records in all tables, and also clear the namespace contained in the config
+     * manager.
      * </p>
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void tearDown() throws Exception {
         DBUtil.clearTables();
@@ -144,44 +143,50 @@ public class TestInformixReportDAOStress extends TestCase {
     /**
      * Stress test case for method getExpenseEntriesReport.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testGetExpenseEntriesReport() throws Exception {
-        Filter filter = InformixFilter.getFilterCompanies(new long[] { 1 });
+        Filter filter = InformixFilter.getFilterCompanies(new long[] {1 });
 
         long start = System.currentTimeMillis();
         ExpenseEntryReport[] reports = dao.getExpenseEntriesReport(filter, new String[] {}, new boolean[] {});
 
         long end = System.currentTimeMillis();
 
-        System.out.println("search ExpenseEntryReport " + reports.length + " records cost " + (end - start) / 1000.0
+        System.out.println("search ExpenseEntryReport "
+                + reports.length
+                + " records cost "
+                + (end - start)
+                / 1000.0
                 + " seconds.");
     }
 
     /**
      * Stress test case for method getFixedBillingEntriesReport.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testGetFixedBillingEntriesReport() throws Exception {
-        Filter filter = InformixFilter.getFilterCompanies(new long[] { 1 });
+        Filter filter = InformixFilter.getFilterCompanies(new long[] {1 });
 
         long start = System.currentTimeMillis();
-        FixedBillingEntryReport[] reports = dao.getFixedBillingEntriesReport(filter, new String[0], new boolean[0]);
+        FixedBillingEntryReport[] reports =
+                dao.getFixedBillingEntriesReport(filter, new String[0], new boolean[0]);
 
         long end = System.currentTimeMillis();
 
-        System.out.println("search FixedBillingEntryReport " + reports.length + " records cost " + (end - start)
-                / 1000.0 + " seconds.");
+        System.out.println("search FixedBillingEntryReport "
+                + reports.length
+                + " records cost "
+                + (end - start)
+                / 1000.0
+                + " seconds.");
     }
 
     /**
      * Stress test case for method getTimeEntriesReport.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testGetTimeEntriesReport() throws Exception {
         // if the filter is null (not set), all records should be returned.
@@ -190,7 +195,11 @@ public class TestInformixReportDAOStress extends TestCase {
 
         long end = System.currentTimeMillis();
 
-        System.out.println("search TimeEntryReport " + reports.length + " records cost " + (end - start) / 1000.0
+        System.out.println("search TimeEntryReport "
+                + reports.length
+                + " records cost "
+                + (end - start)
+                / 1000.0
                 + " seconds.");
     }
 }

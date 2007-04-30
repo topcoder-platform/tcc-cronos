@@ -34,8 +34,7 @@ public class ExpenseEntriesReportBuilderTest extends TestCase {
     /**
      * Sets the unit test up.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
 
@@ -49,8 +48,7 @@ public class ExpenseEntriesReportBuilderTest extends TestCase {
     /**
      * Tears the unit test down.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
 
@@ -60,15 +58,14 @@ public class ExpenseEntriesReportBuilderTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains null. Expect:
-     * <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains null.
+     * Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportContainNull() throws Exception {
         try {
-            expenseEntriesReportBuilder.getReport(null, new String[] {null}, new boolean[] {false});
+            expenseEntriesReportBuilder.getReport(null, new String[] {null }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -76,15 +73,14 @@ public class ExpenseEntriesReportBuilderTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains empty string. Expect:
-     * <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns contains empty
+     * string. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportContainEmptyString() throws Exception {
         try {
-            expenseEntriesReportBuilder.getReport(null, new String[] {"  \n"}, new boolean[] {false});
+            expenseEntriesReportBuilder.getReport(null, new String[] {"  \n" }, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -92,15 +88,14 @@ public class ExpenseEntriesReportBuilderTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders have different
-     * length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders
+     * have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportNotSameLength() throws Exception {
         try {
-            expenseEntriesReportBuilder.getReport(null, new String[] {"test"}, new boolean[0]);
+            expenseEntriesReportBuilder.getReport(null, new String[] {"test" }, new boolean[0]);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -108,15 +103,14 @@ public class ExpenseEntriesReportBuilderTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders have different
-     * length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders
+     * have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportNotSameLength2() throws Exception {
         try {
-            expenseEntriesReportBuilder.getReport(null, new String[] {"test"}, null);
+            expenseEntriesReportBuilder.getReport(null, new String[] {"test" }, null);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -124,15 +118,14 @@ public class ExpenseEntriesReportBuilderTest extends TestCase {
     }
 
     /**
-     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders have different
-     * length. Expect: <code>IllegalArgumentException</code>.
+     * Test <code>getReport</code> for failure. Condition: the sortingColumns and ascendingOrders
+     * have different length. Expect: <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetReportNotSameLength3() throws Exception {
         try {
-            expenseEntriesReportBuilder.getReport(null, null, new boolean[] {false});
+            expenseEntriesReportBuilder.getReport(null, null, new boolean[] {false });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected

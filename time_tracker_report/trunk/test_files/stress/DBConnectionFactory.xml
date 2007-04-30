@@ -1,30 +1,30 @@
 <?xml version="1.0"?>
 <CMConfig>
 	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
-	<Property name="connections">
-		<!--The "default" property refers to a configured connection.-->
-		<Property name="default">
-			<Value>Informix</Value>
-		</Property>
-		<Property name="Informix">
-			<Property name="producer">
-				<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+		<Property name="connections">
+			<!-- the "default" property refers to a configured connection -->
+			<Property name="default">
+				<Value>sysuser</Value>
 			</Property>
-			<Property name="parameters">
-				<Property name="jdbc_driver">
-					<Value>com.informix.jdbc.IfxDriver</Value>
+			<Property name="sysuser">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
 				</Property>
-				<Property name="jdbc_url">
-					<Value>jdbc:informix-sqli://IBM-68C4DC40CEA:1527/dev:informixserver=tcs</Value>
-				</Property>
-				<Property name="user">
-					<Value>informix</Value>
-				</Property>
-				<Property name="password">
-					<Value>informix</Value>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://192.168.1.102:1526/time_tracker_db:informixserver=time_tracker</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>1234567</Value>
+					</Property>
 				</Property>
 			</Property>
 		</Property>
-	</Property>
-</Config>
+	</Config>
 </CMConfig>

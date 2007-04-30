@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.report.accuracytests;
 
@@ -59,10 +59,11 @@ public class TimeEntriesReportBuilderAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetReport_1() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3});
-        String[] sortingColumns = {"time_entry_time_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {false};
-        TimeEntryReport[] result = (TimeEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3 });
+        String[] sortingColumns = {"time_entry_time_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {false };
+        TimeEntryReport[] result =
+                (TimeEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
 
         int expectSize = 3;
         // Verify the result, it should be sort by project first
@@ -78,10 +79,11 @@ public class TimeEntriesReportBuilderAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetReport_2() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3});
-        String[] sortingColumns = {"time_entry_time_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {true};
-        TimeEntryReport[] result = (TimeEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3 });
+        String[] sortingColumns = {"time_entry_time_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {true };
+        TimeEntryReport[] result =
+                (TimeEntryReport[]) instance.getReport(filter, sortingColumns, ascendingOrders);
 
         int expectSize = 3;
         // Verify the result

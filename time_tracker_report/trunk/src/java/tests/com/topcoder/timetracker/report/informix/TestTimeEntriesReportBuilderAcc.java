@@ -245,7 +245,7 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
      *
      * <p>
      * <ul>
-     * <li> filter is to capture records with entry_date > "2006-12-27 12:00:00"</li>
+     * <li> filter is to capture records with entry_date > "2006-12-28"</li>
      * <li> sortingColumns = {"time_entry_time_entry_id"}</li>
      * <li> ascendingOrders = {true}</li>
      * </ul>
@@ -259,7 +259,7 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
         builder = this.getTimeEntriesReportBuilder();
 
         // Date lowerBound = new Date(this.getDBSetupDate().getTime() - ONEDAY * 7 / 2);
-        Date lowerBound = FORMATTER.parse("2006-12-27 12:00:00");
+        Date lowerBound = FORMATTER.parse("2006-12-28 00:00:00");
         Filter filter = InformixFilter.getFilterEntryDate(lowerBound, null);
         ReportEntryBean[] reports =
                 builder.getReport(filter, new String[] {"time_entry_time_entry_id" }, new boolean[] {true });
@@ -281,7 +281,7 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
      *
      * <p>
      * <ul>
-     * <li> filter is to capture records with entry_date >= "2006-12-27 12:00:00"</li>
+     * <li> filter is to capture records with entry_date >= "2006-12-28"</li>
      * <li> sortingColumns = {"time_entry_time_entry_id"}</li>
      * <li> ascendingOrders = {false}</li>
      * <li> expected record's time_entry_id sequence = 2,1,3 (sorted by client_name, project_name
@@ -296,7 +296,7 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
         throws Exception {
         builder = this.getTimeEntriesReportBuilder();
         // Date lowerBound = new Date(this.getDBSetupDate().getTime() - ONEDAY * 7 / 2);
-        Date lowerBound = FORMATTER.parse("2006-12-27 12:00:00");
+        Date lowerBound = FORMATTER.parse("2006-12-28 00:00:00");
         Filter filter = InformixFilter.getFilterEntryDate(lowerBound, null);
         ReportEntryBean[] reports =
                 builder.getReport(filter, new String[] {"time_entry_time_entry_id" }, new boolean[] {false });
@@ -322,7 +322,7 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
      *
      * <p>
      * <ul>
-     * <li> filter is to capture records with entry_date <= "2006-12-28 12:00:00"</li>
+     * <li> filter is to capture records with entry_date <= "2006-12-28"</li>
      * <li> sortingColumns = {"time_entry_time_entry_id"}</li>
      * <li> ascendingOrders = {false}</li>
      * <li> expected record's time_entry_id sequence = 4,3,5 (sorted by client_name, project_name
@@ -338,7 +338,7 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
         builder = this.getTimeEntriesReportBuilder();
         // long dbSetupDate = this.getDBSetupDate().getTime();
         // Date upperBound = new Date(dbSetupDate - ONEDAY * 5 / 2);
-        Date upperBound = FORMATTER.parse("2006-12-28 12:00:00");
+        Date upperBound = FORMATTER.parse("2006-12-28 00:00:00");
 
         Filter filter = InformixFilter.getFilterEntryDate(null, upperBound);
         ReportEntryBean[] reports =
@@ -365,8 +365,7 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
      *
      * <p>
      * <ul>
-     * <li> filter is to capture records with entry_date >= "2006-12-26 12:00:00" and <= "2006-12-29
-     * 12:00:00" </li>
+     * <li> filter is to capture records with entry_date >= "2006-12-27" and <= "2006-12-29" </li>
      * <li> sortingColumns = {"time_entry_time_entry_id"}</li>
      * <li> ascendingOrders = {false}</li>
      * <li> expected record's time_entry_id sequence = 2,4,3 (sorted by client_name, project_name
@@ -380,11 +379,8 @@ public class TestTimeEntriesReportBuilderAcc extends BaseTestCase {
     public void testTimeEntriesReportBuilder_getReport_Acc_9_EntryDateFilterSortIdDescendingOrder_UpperBound()
         throws Exception {
         builder = this.getTimeEntriesReportBuilder();
-        // long dbSetupDate = this.getDBSetupDate().getTime();
-        // Date lowerBound = new Date(dbSetupDate - (ONEDAY * 9) / 2);
-        // Date upperBound = new Date(dbSetupDate - (ONEDAY * 3) / 2);
-        Date lowerBound = FORMATTER.parse("2006-12-26 12:00:00");
-        Date upperBound = FORMATTER.parse("2006-12-29 12:00:00");
+        Date lowerBound = FORMATTER.parse("2006-12-27 00:00:00");
+        Date upperBound = FORMATTER.parse("2006-12-29 00:00:00");
 
         Filter filter = InformixFilter.getFilterEntryDate(lowerBound, upperBound);
         ReportEntryBean[] reports =

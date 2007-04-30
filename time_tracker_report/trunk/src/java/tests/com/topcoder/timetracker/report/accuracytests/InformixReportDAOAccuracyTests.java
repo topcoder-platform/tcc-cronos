@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2005 TopCoder Inc., All Rights Reserved.
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.report.accuracytests;
 
@@ -70,10 +70,14 @@ public class InformixReportDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetExpenseEntriesReport() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2});
-        String[] sortingColumns = {"expense_entry_expense_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {true};
-        ExpenseEntryReport[] result = (ExpenseEntryReport[]) instance.getExpenseEntriesReport(filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2 });
+        String[] sortingColumns = {"expense_entry_expense_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {true };
+        ExpenseEntryReport[] result =
+                (ExpenseEntryReport[]) instance.getExpenseEntriesReport(
+                        filter,
+                        sortingColumns,
+                        ascendingOrders);
 
         int expectSize = 2;
         // Verify the result
@@ -88,10 +92,14 @@ public class InformixReportDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetFixedBillingEntriesReport() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2});
-        String[] sortingColumns = {"fix_bill_entry_fix_bill_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {false};
-        FixedBillingEntryReport[] result = (FixedBillingEntryReport[]) instance.getFixedBillingEntriesReport(filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2 });
+        String[] sortingColumns = {"fix_bill_entry_fix_bill_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {false };
+        FixedBillingEntryReport[] result =
+                (FixedBillingEntryReport[]) instance.getFixedBillingEntriesReport(
+                        filter,
+                        sortingColumns,
+                        ascendingOrders);
 
         int expectSize = 2;
         // Verify the result
@@ -106,10 +114,11 @@ public class InformixReportDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetTimeEntriesReport() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3});
-        String[] sortingColumns = {"time_entry_time_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {true};
-        TimeEntryReport[] result = (TimeEntryReport[]) instance.getTimeEntriesReport(filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3 });
+        String[] sortingColumns = {"time_entry_time_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {true };
+        TimeEntryReport[] result =
+                (TimeEntryReport[]) instance.getTimeEntriesReport(filter, sortingColumns, ascendingOrders);
 
         int expectSize = 3;
         // Verify the result
@@ -125,10 +134,11 @@ public class InformixReportDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetReport() throws Exception {
-        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3});
-        String[] sortingColumns = {"time_entry_time_entry_id"};
-        boolean[] ascendingOrders = new boolean[] {true};
-        TimeEntryReport[] result = (TimeEntryReport[]) instance.getReport("timeEntries", filter, sortingColumns, ascendingOrders);
+        Filter filter = InformixFilter.getFilterProjects(new long[] {2, 3 });
+        String[] sortingColumns = {"time_entry_time_entry_id" };
+        boolean[] ascendingOrders = new boolean[] {true };
+        TimeEntryReport[] result =
+                (TimeEntryReport[]) instance.getReport("timeEntries", filter, sortingColumns, ascendingOrders);
 
         int expectSize = 3;
         // Verify the result

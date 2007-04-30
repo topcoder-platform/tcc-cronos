@@ -6,19 +6,17 @@ package com.topcoder.timetracker.report.informix;
 
 import com.topcoder.timetracker.report.Helper;
 
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
 import com.topcoder.search.builder.filter.InFilter;
+import com.topcoder.search.builder.filter.BetweenFilter;
+import com.topcoder.search.builder.filter.EqualToFilter;
+import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
 import com.topcoder.search.builder.filter.LessThanOrEqualToFilter;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 /**
  * <p>
@@ -123,26 +121,24 @@ public class InformixFilter {
      *         or <code>from</code> is some date after <code>to</code>.
      */
     public static Filter getFilterEntryDate(Date from, Date to) {
+        // both 'from' and 'to' are null
         if (from == null && to == null) {
             throw new IllegalArgumentException("'from' and 'to' cannot be both null.");
         }
 
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Filter lower =
-                (from == null) ? null : new GreaterThanOrEqualToFilter("entry date", formatter.format(from));
-        Filter upper = (to == null) ? null : new LessThanOrEqualToFilter("entry date", formatter.format(to));
-
+        // one of 'from' and 'to' is null
         if (from == null) {
-            return upper; // 'from' is null, so 'to' cannot be null.
+            return new LessThanOrEqualToFilter("entry date", new java.sql.Date(to.getTime()));
         }
         if (to == null) {
-            return lower; // 'to' is null, so 'from' cannot be null.
+            return new GreaterThanOrEqualToFilter("entry date", new java.sql.Date(from.getTime()));
         }
+
+        // both 'from' and 'to' are not null
         if (from.after(to)) {
             throw new IllegalArgumentException("'from' cannot be after 'to'.");
         }
-
-        return new AndFilter(lower, upper);
+        return new BetweenFilter("entry date", new java.sql.Date(to.getTime()), new java.sql.Date(from.getTime()));
     }
 
     /**

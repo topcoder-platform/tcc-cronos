@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.timetracker.report.accuracytests;
@@ -15,7 +15,6 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
 
-
 /**
  * The ConfigHelper is used to setup configuration.
  *
@@ -27,20 +26,17 @@ class ConfigHelper {
     private static final String CONFIG_FILE = "accuracytests/config.xml";
 
     /** Represents the db connection namespace. */
-    private static final String DB_CONNECTION_FACTORY_NAMESPACE = "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
+    private static final String DB_CONNECTION_FACTORY_NAMESPACE =
+            "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
 
     /** Represents the all namespaces. */
-    private static final String[] NAMESPACES = new String[] {
-            "com.topcoder.timetracker.report.ReportDaoFactory",
-            "com.topcoder.timetracker.report.InformixReportDAO",
-            "AllDao_ObjectFactoryNS",
-            "informixSearchBundleManager",
-            "com.topcoder.search.builder.strategy.factory",
-            "com.topcoder.search.builder.validator.factory",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy",
-            "com.topcoder.search.builder.database.factory",
-            DB_CONNECTION_FACTORY_NAMESPACE
-        };
+    private static final String[] NAMESPACES =
+            new String[] {"com.topcoder.timetracker.report.ReportDaoFactory",
+                "com.topcoder.timetracker.report.InformixReportDAO", "AllDao_ObjectFactoryNS",
+                "informixSearchBundleManager", "com.topcoder.search.builder.strategy.factory",
+                "com.topcoder.search.builder.validator.factory",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy",
+                "com.topcoder.search.builder.database.factory", DB_CONNECTION_FACTORY_NAMESPACE };
 
     /**
      * <p>
@@ -182,9 +178,10 @@ class ConfigHelper {
     static void clearData() throws Exception {
         Connection conn = getConnection();
         String[] tables = {"client", "client_project", "project", "user_account", "project_worker", // general
-                "project_fix_bill", "fix_bill_entry", "fix_bill_status", "fix_bill_type", // fixedbilling entry
-                "project_expense", "expense_entry", "expense_status", "expense_type", // expense entry
-                "project_time", "time_entry", "time_status", "task_type"};  // time entry
+            "project_fix_bill", "fix_bill_entry", "fix_bill_status", "fix_bill_type", // fixedbilling
+                                                                                        // entry
+            "project_expense", "expense_entry", "expense_status", "expense_type", // expense entry
+            "project_time", "time_entry", "time_status", "task_type" }; // time entry
 
         Statement statement = conn.createStatement();
 

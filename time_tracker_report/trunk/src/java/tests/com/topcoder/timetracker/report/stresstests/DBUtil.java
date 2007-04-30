@@ -18,7 +18,8 @@ import com.topcoder.util.config.ConfigManager;
  * A helper class for stress test.
  *
  * <p>
- * It contains methods to insert record to some specified tables, and clear all tables and resources.
+ * It contains methods to insert record to some specified tables, and clear all tables and
+ * resources.
  * </p>
  *
  * @author Chenhong
@@ -37,8 +38,7 @@ final class DBUtil {
     /**
      * Clear all the namespace in the config manager.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public static void clearNamespaces() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -50,8 +50,7 @@ final class DBUtil {
     /**
      * Get a Database connection.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public static Connection getConnection() throws Exception {
         DBConnectionFactory factory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
@@ -62,16 +61,14 @@ final class DBUtil {
     /**
      * Insert a record into table task_type
      *
-     * @param connection
-     *            the sql jdbc connection
-     * @param id
-     *            the id for task type.
-     * @throws Exception
-     *             to junit.
+     * @param connection the sql jdbc connection
+     * @param id the id for task type.
+     * @throws Exception to junit.
      */
     public static void insertRecordIntoTask_type(Connection connection, long id) throws Exception {
-        String query = "insert into task_type (task_type_id, description, active, creation_date, creation_user, "
-                + "modification_date, modification_user) values (?,?, ?,?,?,?, ?);";
+        String query =
+                "insert into task_type (task_type_id, description, active, creation_date, creation_user, "
+                        + "modification_date, modification_user) values (?,?, ?,?,?,?, ?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -92,16 +89,14 @@ final class DBUtil {
     /**
      * Insert a record into table time_status.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param id
-     *            the id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param id the id
+     * @throws Exception to junit.
      */
     public static void insertRecordIntotime_status(Connection connection, long id) throws Exception {
-        String query = "insert into time_status (time_status_id, description,  creation_date, creation_user, "
-                + "modification_date, modification_user) values (?,?, ?,?,?,?);";
+        String query =
+                "insert into time_status (time_status_id, description,  creation_date, creation_user, "
+                        + "modification_date, modification_user) values (?,?, ?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -121,20 +116,17 @@ final class DBUtil {
     /**
      * Insert a record into table project_worker.
      *
-     * @param connection
-     *            the db connection
-     * @param project_id
-     *            the project id
-     * @param userAccount_id
-     *            the user account id
-     * @throws Exception
-     *             to junit.
+     * @param connection the db connection
+     * @param project_id the project id
+     * @param userAccount_id the user account id
+     * @throws Exception to junit.
      */
     static void insertRecordInto_project_worker(Connection connection, long project_id, long userAccount_id)
-            throws Exception {
-        String query = "insert into project_worker (project_id, user_account_id, start_date, end_date, "
-                + "pay_rate, creation_date, creation_user, modification_date, modification_user) "
-                + "values(?,?,?,?,?,?,?,?,?)";
+        throws Exception {
+        String query =
+                "insert into project_worker (project_id, user_account_id, start_date, end_date, "
+                        + "pay_rate, creation_date, creation_user, modification_date, modification_user) "
+                        + "values(?,?,?,?,?,?,?,?,?)";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -158,19 +150,17 @@ final class DBUtil {
     /**
      * Insert record into table Project
      *
-     * @param connection
-     *            the database connection
-     * @param project_id
-     *            the project id
-     * @param company_id
-     *            the company id
-     * @throws Exception
-     *             to junit.
+     * @param connection the database connection
+     * @param project_id the project id
+     * @param company_id the company id
+     * @throws Exception to junit.
      */
-    static void inserRecordIntoProject(Connection connection, long project_id, long company_id) throws Exception {
-        String query = "insert into project (project_id, name, company_id, description, start_date, "
-                + "end_date, creation_date, creation_user, modification_date, modification_user) "
-                + "values (?,?,?,?, ?,?,?,?,?,? );";
+    static void inserRecordIntoProject(Connection connection, long project_id, long company_id)
+        throws Exception {
+        String query =
+                "insert into project (project_id, name, company_id, description, start_date, "
+                        + "end_date, creation_date, creation_user, modification_date, modification_user) "
+                        + "values (?,?,?,?, ?,?,?,?,?,? );";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -196,18 +186,16 @@ final class DBUtil {
     /**
      * Insert record into table client.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param client_id
-     *            the client id
-     * @param company_id
-     *            the company id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param client_id the client id
+     * @param company_id the company id
+     * @throws Exception to junit.
      */
-    static void insertRecordIntoClient(Connection connection, long client_id, long company_id) throws Exception {
-        String query = "insert into client (client_id, name, company_id, creation_date, creation_user, "
-                + "modification_date, modification_user)  values (?,?,?,?,?,?,?)";
+    static void insertRecordIntoClient(Connection connection, long client_id, long company_id)
+        throws Exception {
+        String query =
+                "insert into client (client_id, name, company_id, creation_date, creation_user, "
+                        + "modification_date, modification_user)  values (?,?,?,?,?,?,?)";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -229,19 +217,17 @@ final class DBUtil {
     /**
      * Insert a record to Client_Project table.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param client_id
-     *            the client id
-     * @param project_id
-     *            the project id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param client_id the client id
+     * @param project_id the project id
+     * @throws Exception to junit.
      */
     static void insertRerordInto_client_project(Connection connection, long client_id, long project_id)
-            throws Exception {
-        String query = "insert into client_project (client_id, project_id, creation_date, "
-                + "creation_user, modification_date, modification_user) " + "values (?,?,?,?,?,?);";
+        throws Exception {
+        String query =
+                "insert into client_project (client_id, project_id, creation_date, "
+                        + "creation_user, modification_date, modification_user) "
+                        + "values (?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -262,22 +248,18 @@ final class DBUtil {
     /**
      * Insert a record into User_Account table.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param account_id
-     *            the account id
-     * @param company_id
-     *            the company id
-     * @param status_id
-     *            the status id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param account_id the account id
+     * @param company_id the company id
+     * @param status_id the status id
+     * @throws Exception to junit.
      */
-    static void insertRecordInto_UserAccount(Connection connection, long account_id, long company_id, long status_id)
-            throws Exception {
-        String query = "insert into user_account (user_account_id, company_id, account_status_id, "
-                + "user_name, password, creation_date, creation_user, modification_date, modification_user) "
-                + "values (?,?,?,?,?,?,?,?,?);";
+    static void insertRecordInto_UserAccount(Connection connection, long account_id, long company_id,
+            long status_id) throws Exception {
+        String query =
+                "insert into user_account (user_account_id, company_id, account_status_id, "
+                        + "user_name, password, creation_date, creation_user, modification_date, modification_user) "
+                        + "values (?,?,?,?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -301,19 +283,16 @@ final class DBUtil {
     /**
      * Insert a record into table Project_fix_bill.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param fix_bill_entry_id
-     *            the fix_bill_entry id
-     * @param project_id
-     *            the project id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param fix_bill_entry_id the fix_bill_entry id
+     * @param project_id the project id
+     * @throws Exception to junit.
      */
-    static void insertRecordInto_project_fix_bill(Connection connection, long fix_bill_entry_id, long project_id)
-            throws Exception {
-        String query = "insert into project_fix_bill (fix_bill_entry_id, project_id, creation_date, creation_user, "
-                + "modification_date, modification_user) values (?,?,?,?,?,?);";
+    static void insertRecordInto_project_fix_bill(Connection connection, long fix_bill_entry_id,
+            long project_id) throws Exception {
+        String query =
+                "insert into project_fix_bill (fix_bill_entry_id, project_id, creation_date, creation_user, "
+                        + "modification_date, modification_user) values (?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -334,21 +313,19 @@ final class DBUtil {
     /**
      * Insert record into Fix_bill_entry table.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param fix_bill_entry_id
-     *            the id for fix_bill_entry
-     * @param company_id
-     *            the company id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param fix_bill_entry_id the id for fix_bill_entry
+     * @param company_id the company id
+     * @throws Exception to junit.
      */
     static void insertRecordInto_fix_bill_entry(Connection connection, long fix_bill_entry_id, long company_id)
-            throws Exception {
+        throws Exception {
 
-        String query = "insert into fix_bill_entry (fix_bill_entry_id, company_id, invoice_id, "
-                + "fix_bill_type_id, fix_bill_status_id, description, entry_date, amount, creation_date, "
-                + "creation_user, modification_date, modification_user) " + "values (?,?,?,?,?,?,?,?,?,?,?,?);";
+        String query =
+                "insert into fix_bill_entry (fix_bill_entry_id, company_id, invoice_id, "
+                        + "fix_bill_type_id, fix_bill_status_id, description, entry_date, amount, creation_date, "
+                        + "creation_user, modification_date, modification_user) "
+                        + "values (?,?,?,?,?,?,?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         long id = fix_bill_entry_id;
@@ -376,16 +353,14 @@ final class DBUtil {
     /**
      * Insert a record into table fix_bill_status.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param id
-     *            the id for fix_bill status
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param id the id for fix_bill status
+     * @throws Exception to junit.
      */
     static void insertRecordInto_fix_bill_status(Connection connection, long id) throws Exception {
-        String query = "insert into fix_bill_status (fix_bill_status_id, description, creation_date, creation_user,"
-                + " modification_date, modification_user) values (?,?,?,?,?,?);";
+        String query =
+                "insert into fix_bill_status (fix_bill_status_id, description, creation_date, creation_user,"
+                        + " modification_date, modification_user) values (?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -407,16 +382,14 @@ final class DBUtil {
     /**
      * Insert a record into table fix_bill_type.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param id
-     *            the id for fix_bill type
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param id the id for fix_bill type
+     * @throws Exception to junit.
      */
     static void insertRecord_fix_bill_type(Connection connection, long id) throws Exception {
-        String query = "insert into fix_bill_type (fix_bill_type_id, description, active, creation_date, "
-                + "creation_user, modification_date, modification_user) values (?,?,?,?,?,?,?);";
+        String query =
+                "insert into fix_bill_type (fix_bill_type_id, description, active, creation_date, "
+                        + "creation_user, modification_date, modification_user) values (?,?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -438,19 +411,16 @@ final class DBUtil {
     /**
      * Insert a record into table Project_Expense.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param expense_entry_id
-     *            the id for expense entry
-     * @param project_id
-     *            the project id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param expense_entry_id the id for expense entry
+     * @param project_id the project id
+     * @throws Exception to junit.
      */
     static void insertRecord_project_expense(Connection connection, long expense_entry_id, long project_id)
-            throws Exception {
-        String query = "insert into project_expense (expense_entry_id, project_id, "
-                + "creation_date, creation_user, modification_date, modification_user) values  (?,?,?,?,?,?);";
+        throws Exception {
+        String query =
+                "insert into project_expense (expense_entry_id, project_id, "
+                        + "creation_date, creation_user, modification_date, modification_user) values  (?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -471,22 +441,19 @@ final class DBUtil {
     /**
      * Insert record into table Expense_Entry
      *
-     * @param connection
-     *            the jdbc connection
-     * @param expense_entry_id
-     *            the id for expense entry
-     * @param company_id
-     *            the company id
-     * @throws Exception
-     *             to junit
+     * @param connection the jdbc connection
+     * @param expense_entry_id the id for expense entry
+     * @param company_id the company id
+     * @throws Exception to junit
      */
     static void insertRerordIntoexpense_entry(Connection connection, long expense_entry_id, long company_id)
-            throws Exception {
+        throws Exception {
 
-        String query = "insert into expense_entry (expense_entry_id, company_id, invoice_id, expense_type_id, "
-                + "expense_status_id, description, entry_date, amount, billable, mileage, "
-                + "creation_date, creation_user, modification_date, modification_user) values "
-                + " (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        String query =
+                "insert into expense_entry (expense_entry_id, company_id, invoice_id, expense_type_id, "
+                        + "expense_status_id, description, entry_date, amount, billable, mileage, "
+                        + "creation_date, creation_user, modification_date, modification_user) values "
+                        + " (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         PreparedStatement s = connection.prepareStatement(query);
 
@@ -517,16 +484,14 @@ final class DBUtil {
     /**
      * Insert a record into table expense_status
      *
-     * @param connection
-     *            the jdbc connection
-     * @param id
-     *            the id for expense_status
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param id the id for expense_status
+     * @throws Exception to junit.
      */
     static void insertRecordInto_expense_status(Connection connection, long id) throws Exception {
-        String query = "insert into expense_status (expense_status_id, description, "
-                + "creation_date, creation_user, modification_date, modification_user) values (?,?,?,?,?,?);";
+        String query =
+                "insert into expense_status (expense_status_id, description, "
+                        + "creation_date, creation_user, modification_date, modification_user) values (?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -547,16 +512,14 @@ final class DBUtil {
     /**
      * Insert a record into expense_type table.
      *
-     * @param connection
-     *            the jdbc connection
-     * @param id
-     *            the id for expense type
-     * @throws Exception
-     *             to junit
+     * @param connection the jdbc connection
+     * @param id the id for expense type
+     * @throws Exception to junit
      */
     static void insertRecordInto_expense_type(Connection connection, long id) throws Exception {
-        String query = "insert into expense_type (expense_type_id, description, active,"
-                + " creation_date, creation_user, modification_date, modification_user) values  (?,?,?,?,?,?,?);";
+        String query =
+                "insert into expense_type (expense_type_id, description, active,"
+                        + " creation_date, creation_user, modification_date, modification_user) values  (?,?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -578,19 +541,16 @@ final class DBUtil {
     /**
      * Insert record into table Project_Time
      *
-     * @param connection
-     *            the jdbc connection
-     * @param time_entry_id
-     *            the time entry id
-     * @param project_id
-     *            the project id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param time_entry_id the time entry id
+     * @param project_id the project id
+     * @throws Exception to junit.
      */
     static void insertRecordInto_project_time(Connection connection, long time_entry_id, long project_id)
-            throws Exception {
-        String query = "insert into project_time (time_entry_id, project_id, creation_date,"
-                + " creation_user, modification_date, modification_user)values  (?,?,?,?,?,?);";
+        throws Exception {
+        String query =
+                "insert into project_time (time_entry_id, project_id, creation_date,"
+                        + " creation_user, modification_date, modification_user)values  (?,?,?,?,?,?);";
         PreparedStatement s = connection.prepareStatement(query);
 
         try {
@@ -611,20 +571,18 @@ final class DBUtil {
     /**
      * Insert a record into table time_entry
      *
-     * @param connection
-     *            the jdbc connection
-     * @param time_entry_id
-     *            the id for time_entry
-     * @param company_id
-     *            the company id
-     * @throws Exception
-     *             to junit.
+     * @param connection the jdbc connection
+     * @param time_entry_id the id for time_entry
+     * @param company_id the company id
+     * @throws Exception to junit.
      */
     static void insertRecordInto_time_entry(Connection connection, long time_entry_id, long company_id)
-            throws Exception {
-        String query = "insert into time_entry (time_entry_id, company_id, invoice_id, task_type_id, time_status_id, "
-                + "description, entry_date, hours, billable, creation_date, creation_user,"
-                + " modification_date, modification_user) values " + " (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        throws Exception {
+        String query =
+                "insert into time_entry (time_entry_id, company_id, invoice_id, task_type_id, time_status_id, "
+                        + "description, entry_date, hours, billable, creation_date, creation_user,"
+                        + " modification_date, modification_user) values "
+                        + " (?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         PreparedStatement s = connection.prepareStatement(query);
 
@@ -654,8 +612,7 @@ final class DBUtil {
     /**
      * Clear the tables in the database.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     static void clearTables() throws Exception {
         Connection connection = getConnection();
@@ -696,8 +653,7 @@ final class DBUtil {
     /**
      * Close the sql statement
      *
-     * @param statement
-     *            the statement to be closed.
+     * @param statement the statement to be closed.
      */
     static void closeStatement(Statement statement) {
         if (statement != null) {
@@ -712,8 +668,7 @@ final class DBUtil {
     /**
      * Close the jdbc conenction
      *
-     * @param connection
-     *            the connection to dd.
+     * @param connection the connection to dd.
      */
     static void closeConnection(Connection connection) {
         if (connection != null) {

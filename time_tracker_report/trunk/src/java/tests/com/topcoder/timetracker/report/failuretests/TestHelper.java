@@ -25,16 +25,16 @@ public final class TestHelper {
 
     /**
      * <p>
-     * A helper method to be used to initialize the specified configuration namespace with the configuration
-     * properties provided by specified file. If specified namespace is already loaded to
-     * <code>ConfigurationManager</code> then it is re-loaded with new configuration properties.
+     * A helper method to be used to initialize the specified configuration namespace with the
+     * configuration properties provided by specified file. If specified namespace is already loaded
+     * to <code>ConfigurationManager</code> then it is re-loaded with new configuration
+     * properties.
      * </p>
      *
-     * @param filename
-     *            a <code>String</code> providing the name of the file to load configuration file from.
+     * @param filename a <code>String</code> providing the name of the file to load configuration
+     *        file from.
      *
-     * @throws Exception
-     *             exception while loading config.
+     * @throws Exception exception while loading config.
      */
     public static final void loadConfiguration(String filename) throws Exception {
         ConfigManager.getInstance().add(filename);

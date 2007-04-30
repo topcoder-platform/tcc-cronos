@@ -120,8 +120,8 @@ public class InformixFilterTest extends TestCase {
     }
 
     /**
-     * Test <code>getFilterCompanies</code> for failure. Condition: usernames is empty array. Expect:
-     * <code>IllegalArgumentException</code>.
+     * Test <code>getFilterCompanies</code> for failure. Condition: usernames is empty array.
+     * Expect: <code>IllegalArgumentException</code>.
      */
     public void testGetFilterUsernamesEmpty() {
         try {
@@ -133,12 +133,12 @@ public class InformixFilterTest extends TestCase {
     }
 
     /**
-     * Test <code>getFilterCompanies</code> for failure. Condition: usernames contains null. Expect:
-     * <code>IllegalArgumentException</code>.
+     * Test <code>getFilterCompanies</code> for failure. Condition: usernames contains null.
+     * Expect: <code>IllegalArgumentException</code>.
      */
     public void testGetFilterUsernamesContainNull() {
         try {
-            InformixFilter.getFilterUsernames(new String[] {null});
+            InformixFilter.getFilterUsernames(new String[] {null });
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
