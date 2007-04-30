@@ -9,7 +9,7 @@ import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
 import com.topcoder.search.builder.filter.LessThanOrEqualToFilter;
 import com.topcoder.search.builder.filter.LikeFilter;
-import com.topcoder.timetracker.invoice.servicedetail.ArgumentCheckUtil;
+import com.topcoder.timetracker.invoice.ArgumentCheckUtil;
 
 import java.util.Date;
 
@@ -170,20 +170,18 @@ public class InformixInvoiceFilterFactory {
      * @return the date filter
      */
     private static Filter createDateFilter(Date from, Date to, String name) {
-        if (ArgumentCheckUtil.isNull(from)) {
-            if (ArgumentCheckUtil.isNull(to)) {
-                throw new IllegalArgumentException("At least one 'from' or 'to' need to be available");
-            } else {
-                return new LessThanOrEqualToFilter(name, to);
-            }
+        if (from == null && to == null) {
+            throw new IllegalArgumentException("At least one 'from' or 'to' need to be available");
         }
 
-        if (ArgumentCheckUtil.isNull(to)) {
+        if (to == null) {
             return new GreaterThanOrEqualToFilter(name, from);
+        } else if (from == null) {
+            return new LessThanOrEqualToFilter(name, to);
+        } else {
+            return new AndFilter(new GreaterThanOrEqualToFilter(name, new java.sql.Date(from.getTime())),
+                new LessThanOrEqualToFilter(name, new java.sql.Date(to.getTime())));
         }
-
-        return new AndFilter(new GreaterThanOrEqualToFilter(name, new java.sql.Date(from.getTime())),
-            new LessThanOrEqualToFilter(name, new java.sql.Date(to.getTime())));
     }
 
     /**
