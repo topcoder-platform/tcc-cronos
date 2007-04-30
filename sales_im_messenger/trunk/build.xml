@@ -363,7 +363,6 @@
         <mkdir dir="${dist_coverage}"/>
         <mkdir dir="${docs_coverage}"/>
 
-        <!--
         <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
 
@@ -373,7 +372,6 @@
         <copy todir="${docs_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
         </copy>
-        -->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
@@ -386,7 +384,7 @@
                 <include name="${component}_Use_Case_Diagram*"/>
                 <include name="${component}_Sequence_Diagram*"/>
                 <include name="${component}_Requirements_Specification.*"/>
-                <include name="${component}_Component Specification.*"/>
+                <include name="${component}_Component_Specification.*"/>
                 <include name="${component}.zargo"/>
                 <include name="${component}.zuml"/>
             </fileset>
@@ -423,21 +421,17 @@
                 <include name="${component}_Use_Case_Diagram*"/>
                 <include name="${component}_Sequence_Diagram*"/>
                 <include name="${component}_Requirements_Specification.*"/>
-                <include name="${component}_Component Specification.*"/>
+                <include name="${component}_Component_Specification.*"/>
             </fileset>
 
-            <!--
             <fileset dir="${testlogdir}">
                 <include name="cobertura.ser"/>
             </fileset>
-            -->
         </copy>
 
-        <!--
         <copy todir="${dist_docpackage}/coverage">
             <fileset dir="${testlogdir}/coverage"/>
         </copy>
-        -->
 
         <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}"/>
     </target>
