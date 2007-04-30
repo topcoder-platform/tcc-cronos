@@ -51,7 +51,7 @@ import java.util.List;
  *  <p>Thread safety: This class is thread safe because it is immutable.</p>
  *
  * @author tuenm, bose_java
- * @version 1.0
+ * @version 1.0.3
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -266,18 +266,17 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                     submission.setSubmissionStatus(failedStatus);
                     getManagerHelper().getUploadManager().updateSubmission(submission, operator);
                 } else {
-                    //if not winner, update submission status
-                    if (placement != 1) {
-                        submission.setSubmissionStatus(noWinStatus);
+                	//cache winning submitter.
+                    if (placement == 1) {
+                        winningSubmitter = submitter;
+                    } else {
+                    	//cache runner up submitter.
+                    	if (placement == 2) {
+                    		runnerUpSubmitter = submitter;
+                    	}
+                    	submission.setSubmissionStatus(noWinStatus);
                         getManagerHelper().getUploadManager().updateSubmission(submission, operator);
                     }
-                }
-
-                //cache winning and runner up submitter.
-                if (placement == 1) {
-                    winningSubmitter = submitter;
-                } else if (placement == 2) {
-                    runnerUpSubmitter = submitter;
                 }
 
                 //persist the change
