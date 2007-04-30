@@ -24,6 +24,8 @@ import com.topcoder.timetracker.audit.ApplicationArea;
 import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.AuditHeader;
 import com.topcoder.timetracker.audit.AuditManager;
+import com.topcoder.timetracker.audit.AuditManagerException;
+import com.topcoder.timetracker.audit.AuditType;
 import com.topcoder.timetracker.entry.time.TimeEntryManager;
 import com.topcoder.timetracker.entry.time.UnrecognizedEntityException;
 import com.topcoder.timetracker.invoice.Invoice;
@@ -400,7 +402,12 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
 
                 auditManager.createAuditRecord(header);
             }
-
+        } catch (com.topcoder.timetracker.project.DataAccessException dae) {
+            throw new DataAccessException("An exception happens when retrieving project workers", dae);
+        } catch (com.topcoder.timetracker.user.DataAccessException dae) {
+            throw new DataAccessException("An exception happens when retrieving users", dae);
+        } catch (AuditManagerException ame) {
+            throw new DataAccessException("An exception happens when doing audit", ame);
         } catch (IDGenerationException e) {
             throw new DataAccessException("An exception happens when generating id", e);
         } catch (SQLException e) {
@@ -433,9 +440,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         header.setTableName("service_details");
         header.setCompanyId(newDetail.getId());
         if (oldDetail == null) {
-            header.setActionType("INSERT");
+            header.setActionType(AuditType.INSERT);
         } else {
-            header.setActionType("UPDATE");
+            header.setActionType(AuditType.UPDATE);
         }
         header.setApplicationArea(ApplicationArea.TT_INVOICE);
         header.setResourceId(newDetail.getId());
@@ -495,7 +502,7 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         modificationUserDetail.setOldValue(oldDetail == null ? null : oldDetail.getString("modification_user"));
         modificationUserDetail.setNewValue(newDetail.getModificationUser());
 
-        header.setDetail(new AuditDetail[] {idDetail, timeEntryIdDetail, invoiceIdDetail, rateDetail,
+        header.setDetails(new AuditDetail[] {idDetail, timeEntryIdDetail, invoiceIdDetail, rateDetail,
             amountDetail, creationDateDetail, creationUserDetail, modificationDateDetail, modificationUserDetail});
         return header;
     }
@@ -510,7 +517,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
      * @throws InvalidDataException
      *             if there is no such user
      */
-    private void calculateAmount(InvoiceServiceDetail detail, boolean searchRate) throws InvalidDataException {
+    private void calculateAmount(InvoiceServiceDetail detail, boolean searchRate)
+        throws InvalidDataException, com.topcoder.timetracker.project.DataAccessException,
+            com.topcoder.timetracker.user.DataAccessException {
         if (searchRate) {
             ProjectWorkerFilterFactory filterFactory = projectWorkerUtility.getProjectWorkerFilterFactory();
             Filter filter = filterFactory.createProjectIdFilter(detail.getInvoice().getProjectId());
@@ -525,7 +534,7 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 userIds[i] = workers[i].getUserId();
                 User user = userManager.getUser(userIds[i]);
                 if (user.getUsername().equals(creationUsername)) {
-                    detail.setRate(workers[i].getPayRate());
+                    detail.setRate((int) workers[i].getPayRate()); // TODO: SHOULD allow setting double values
                     found = true;
                     break;
                 }
@@ -691,13 +700,20 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
      * @throws EntityNotFoundException
      *             should be thrown if some detail not found in database.
      */
-    public void updateServiceDetail(InvoiceServiceDetail detail, boolean audit) throws DataAccessException {
+    public void updateServiceDetail(InvoiceServiceDetail detail, boolean audit)
+        throws DataAccessException {
         ArgumentCheckUtil.checkNotNull("detail", detail);
         Connection connection = null;
         try {
             connection = connectionFactory.createConnection();
 
             updateServiceDetail(connection, detail, audit);
+        } catch (AuditManagerException ame) {
+            throw new DataAccessException("An exception happens when doing audit", ame);
+        } catch (com.topcoder.timetracker.project.DataAccessException dae) {
+            throw new DataAccessException("An exception happens when updating service details", dae);
+        } catch (com.topcoder.timetracker.user.DataAccessException dae) {
+            throw new DataAccessException("An exception happens when updating service details", dae);
         } catch (DBConnectionException e) {
             throw new DataAccessException("An exception happens when creating connection", e);
         } finally {
@@ -729,7 +745,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
      *             should be thrown if some detail not found in database.
      */
     private void updateServiceDetail(Connection connection, InvoiceServiceDetail detail, boolean audit)
-        throws DataAccessException {
+        throws DataAccessException, AuditManagerException,
+            com.topcoder.timetracker.project.DataAccessException,
+            com.topcoder.timetracker.user.DataAccessException {
 
         Statement statement = null;
         ResultSet set = null;
@@ -1036,6 +1054,12 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
 
                 checkBatchError(details, is);
 
+            } catch (AuditManagerException ame) {
+                throw new DataAccessException("An exception happens when doing audit", ame);
+            } catch (com.topcoder.timetracker.project.DataAccessException dae) {
+                throw new DataAccessException("An exception happens when adding service details", dae);
+            } catch (com.topcoder.timetracker.user.DataAccessException dae) {
+                throw new DataAccessException("An exception happens when adding service details", dae);
             } catch (DBConnectionException e) {
                 throw new DataAccessException("An exception happens when creating connection", e);
             } catch (IDGenerationException e) {
@@ -1137,14 +1161,14 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                         header.setEntityId(ids[i]);
                         header.setTableName("service_details");
                         header.setCompanyId(ids[i]);
-                        header.setActionType("DELETE");
+                        header.setActionType(AuditType.DELETE);
                         header.setApplicationArea(ApplicationArea.TT_INVOICE);
                         header.setResourceId(ids[i]);
                         if (auditDetails[6] != null) {
                             header.setCreationUser(auditDetails[6].getOldValue());
                         }
 
-                        header.setDetail(auditDetails);
+                        header.setDetails(auditDetails);
                         auditManager.createAuditRecord(header);
                     }
                 }
@@ -1166,6 +1190,8 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                     }
                     throw new BatchExecutionException(thrown);
                 }
+            } catch (AuditManagerException ame) {
+                throw new DataAccessException("An exception happens when doing audit", ame);
             } catch (DBConnectionException e) {
                 throw new DataAccessException("An exception happens when creating connection", e);
             } catch (SQLException e) {
@@ -1215,14 +1241,16 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 header.setEntityId(id);
                 header.setTableName("service_details");
                 header.setCompanyId(id);
-                header.setActionType("DELETE");
+                header.setActionType(AuditType.DELETE);
                 header.setApplicationArea(ApplicationArea.TT_INVOICE);
                 header.setResourceId(id);
                 header.setCreationUser(auditDetails[6].getOldValue());
 
-                header.setDetail(auditDetails);
+                header.setDetails(auditDetails);
                 auditManager.createAuditRecord(header);
             }
+        } catch (AuditManagerException ame) {
+            throw new DataAccessException("An exception happens when doing audit", ame);
         } catch (SQLException e) {
             throw new DataAccessException("An exception happens when accessing database", e);
         } finally {
@@ -1264,6 +1292,12 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 for (int i = 0; i < details.length; i++) {
                     updateServiceDetail(connection, details[i], audit);
                 }
+            } catch (AuditManagerException ame) {
+                throw new DataAccessException("An exception happens when doing audit", ame);
+            } catch (com.topcoder.timetracker.project.DataAccessException dae) {
+                throw new DataAccessException("An exception happens when updating service details", dae);
+            } catch (com.topcoder.timetracker.user.DataAccessException dae) {
+                throw new DataAccessException("An exception happens when updating service details", dae);
             } catch (DBConnectionException e) {
                 throw new DataAccessException("An exception happens when creating connection", e);
             } finally {
@@ -1314,6 +1348,12 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 int[] is = updateStatement.executeBatch();
 
                 checkBatchError(details, is);
+            } catch (AuditManagerException ame) {
+                throw new DataAccessException("An exception happens when doing audit", ame);
+            } catch (com.topcoder.timetracker.project.DataAccessException dae) {
+                throw new DataAccessException("An exception happens when updating service details", dae);
+            } catch (com.topcoder.timetracker.user.DataAccessException dae) {
+                throw new DataAccessException("An exception happens when updating service details", dae);
             } catch (DBConnectionException e) {
                 throw new DataAccessException("An exception happens when creating connection", e);
             } catch (SQLException e) {
