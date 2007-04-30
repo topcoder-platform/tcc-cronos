@@ -3,7 +3,7 @@
  */
 package com.topcoder.timetracker.invoice.informix.filterfactory;
 
-import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.BetweenFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
@@ -178,10 +178,12 @@ public class InformixInvoiceFilterFactory {
             return new GreaterThanOrEqualToFilter(name, from);
         } else if (from == null) {
             return new LessThanOrEqualToFilter(name, to);
-        } else {
-            return new AndFilter(new GreaterThanOrEqualToFilter(name, new java.sql.Date(from.getTime())),
-                new LessThanOrEqualToFilter(name, new java.sql.Date(to.getTime())));
         }
+
+        if (from.after(to)) {
+            throw new IllegalArgumentException("'from' cannot be after 'to'.");
+        }
+        return new BetweenFilter(name, to, from);
     }
 
     /**
