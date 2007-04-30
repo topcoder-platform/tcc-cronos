@@ -247,7 +247,7 @@ public class MessengerImplStressTests extends TestCase {
 
     /**
      * <p>
-     * Stress test for <code>{@link MessengerImpl#postMessageToOther(Message, ChatSession)}</code> method.
+     * Stress test for <code>{@link MessengerImpl#postMessageToOthers(Message, ChatSession)}</code> method.
      * </p>
      * @throws Exception
      *             pass any unexpected exception to JUnit.

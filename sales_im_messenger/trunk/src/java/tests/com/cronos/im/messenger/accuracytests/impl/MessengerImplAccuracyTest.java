@@ -102,8 +102,6 @@ public class MessengerImplAccuracyTest extends TestCase {
      * Test method for 'MessengerImpl.setMessagePool(MessagePool)'.
      */
     public void testSetMessagePool() {
-        messenger.setMessagePool(messagePool);
-
         MessagePool pool = (MessagePool) AccuracyHelper.getPrivateField(MessengerImpl.class, messenger, "pool");
         assertSame("Test method for 'MessengerImpl.setMessagePool(MessagePool)' failed.", messagePool, pool);
     }

@@ -33,8 +33,7 @@ import java.util.Set;
  * pool are tracked.
  * </p>
  * <p>
- * Though some inner fields (like <c>contactManager</c>) are not immutable, all the methods of
- * this class can be invoked in multi-thread environment since all of them are synchronized.
+ * <b>Thread safety</b> : This class is thread safe because it is immutable.
  * </p>
  *
  * @author woodjhon, TCSDEVELOPER
@@ -44,10 +43,9 @@ public class MessengerImpl implements Messenger {
 
     /**
      * The <c>MessagePool</c> used to hold the user message in either session or user scope.
-     * This variable is set in the constructor, and modified by set method.
-     * It is always non-null.
+     * This variable is set in the constructor and never changed after.
      */
-    private MessagePool pool;
+    private final MessagePool pool;
 
     /**
      * The <c>ChatMessageTracker</c> used to track the chat message once it is post in the session.
@@ -84,8 +82,9 @@ public class MessengerImpl implements Messenger {
         Helper.validateNotNull(tracker, "tracker");
         Helper.validateNotNull(retriever, "retriever");
         Helper.validateNotNull(contactManager, "contactManager");
+        Helper.validateNotNull(pool, "pool");
 
-        setMessagePool(pool);
+        this.pool = pool;
         this.tracker = tracker;
         this.retriever = retriever;
         this.contactManager = contactManager;
@@ -103,16 +102,13 @@ public class MessengerImpl implements Messenger {
      * If the sender of the message is blocked from sending the message
      * to the user specified by <c>userId</c>, nothing happens.
      * </p>
-     * <p>
-     * <b>Thread safety</b>: This method should be synchronized to be thread-safe.
-     * </p>
      *
      * @param msg    The message to post.
      * @param userId The user id representing receiver.
      * @throws IllegalArgumentException If <c>msg</c> argument is null.
      * @throws MessengerException       Wraps any other error that may appear.
      */
-    public synchronized void postMessage(Message msg, long userId)
+    public void postMessage(Message msg, long userId)
         throws MessengerException {
         Helper.validateNotNull(msg, "msg");
         // Verify if the message has a type that can be handled by this method
@@ -157,9 +153,6 @@ public class MessengerImpl implements Messenger {
      * If the sender of the message is blocked from sending the message to
      * the user, nothing happens.
      * </p>
-     * <p>
-     * <b>Thread safety</b>: This method should be synchronized to be thread safe.
-     * </p>
      *
      * @param msg       The message to post.
      * @param userId    The user id  representing receiver.
@@ -167,7 +160,7 @@ public class MessengerImpl implements Messenger {
      * @throws IllegalArgumentException If argument is null.
      * @throws MessengerException       Wraps any other error that may appear.
      */
-    public synchronized void postMessage(Message msg, long userId, long sessionId)
+    public void postMessage(Message msg, long userId, long sessionId)
         throws MessengerException {
         Helper.validateNotNull(msg, "msg");
         // Verify if the message has a type that can be handled by this method
@@ -213,16 +206,13 @@ public class MessengerImpl implements Messenger {
      * </ul>
      * If the message has not one of this types nothing happens.
      * </p>
-     * <p>
-     * <b>Thread safety</b>: This method should be synchronized to be thread safe.
-     * </p>
      *
      * @param msg     The message to post.
      * @param session The chat session.
      * @throws IllegalArgumentException If any of the arguments is null.
      * @throws MessengerException       Wraps any other error that may appear.
      */
-    public synchronized void postMessageToOthers(Message msg, ChatSession session)
+    public void postMessageToOthers(Message msg, ChatSession session)
         throws MessengerException {
         Helper.validateNotNull(msg, "msg");
         Helper.validateNotNull(session, "session");
@@ -283,16 +273,13 @@ public class MessengerImpl implements Messenger {
      * </ul>
      * The chat message will be delivered to all users of the session, including the sender.
      * On the other hand, Presence message will be delivered to all users of the session, except the sender.
-     * <p>
-     * <b>Thread safety</b>: This method should be synchronized to be thread safe.
-     * </p>
      *
      * @param msg     the message to post
      * @param session the chat session
      * @throws IllegalArgumentException if argument is null
      * @throws MessengerException       Wraps any other exceptions that may appear.
      */
-    public synchronized void postMessageToAll(Message msg, ChatSession session)
+    public void postMessageToAll(Message msg, ChatSession session)
         throws MessengerException {
         Helper.validateNotNull(msg, "msg");
         Helper.validateNotNull(session, "session");
@@ -376,29 +363,10 @@ public class MessengerImpl implements Messenger {
      * <p>
      * Get the message pool.
      * </p>
-     * <p>
-     * <b>Thread safety</b>: This method should be synchronized to be thread safe.
-     * </p>
      *
      * @return The message pool. It will be non-null.
      */
-    public synchronized MessagePool getMessagePool() {
+    public MessagePool getMessagePool() {
         return pool;
-    }
-
-    /**
-     * <p>
-     * Set the message pool.
-     * </p>
-     * <p>
-     * <b>Thread safety</b>: This method should be synchronized to be thread safe.
-     * </p>
-     *
-     * @param pool The message pool.
-     * @throws IllegalArgumentException If argument is null.
-     */
-    public synchronized void setMessagePool(MessagePool pool) {
-        Helper.validateNotNull(pool, "pool");
-        this.pool = pool;
     }
 }

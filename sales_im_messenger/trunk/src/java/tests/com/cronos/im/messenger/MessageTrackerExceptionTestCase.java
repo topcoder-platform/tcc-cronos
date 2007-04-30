@@ -61,19 +61,6 @@ public class MessageTrackerExceptionTestCase extends TestCase {
     }
 
     /**
-     * Tests the <code>MessageTrackerException(String, Message, long, long)</code> constructor
-     * for failure when the <c>trackedMsg</c> passed to the method is null.
-     */
-    public void testMessageTrackerExceptionStringNullMessageLongLong() {
-        try {
-            new MessageTrackerException("Hello there", null, userId, sessionId);
-            fail("Should have thrown IllegalArgumentException because of null trackedMsg");
-        } catch (IllegalArgumentException e) {
-            // Success.
-        }
-    }
-
-    /**
      * Tests the <code>MessageTrackerException(String, Throwable, Message, long, long)</code> constructor
      * and the getter methods of this exception.Simply verifies that the correct
      * parameters are set in the constructor.
@@ -85,20 +72,5 @@ public class MessageTrackerExceptionTestCase extends TestCase {
         assertEquals("The message instances should be the same", message, e.getTrackedMessage());
         assertEquals("The user ids should be equal", userId, e.getUserId());
         assertEquals("The session ids should be equal", sessionId, e.getSessionId());
-    }
-
-    /**
-     * Tests the <code>MessageTrackerException(String, Throwable, Message, long, long)</code> constructor
-     * or failure when the <c>trackedMsg</c> passed to the method is null.
-     */
-    public void testMessageTrackerExceptionStringThrowableNullMessageLongLong() {
-        try {
-            new MessageTrackerException("I was caused by me!"
-                , cause, null, userId, sessionId);
-
-            fail("Should have thrown IllegalArgument because of null trackedMsg");
-        } catch (IllegalArgumentException e) {
-            // Success.
-        }
     }
 }

@@ -1261,25 +1261,10 @@ public class MessengerImplTestCase extends TestCase {
     }
 
     /**
-     * Tests the setter/getter for message pool field of <c>MessengerImpl</c> class for accuracy.
+     * Tests the getter for message pool field of <c>MessengerImpl</c> class for accuracy.
      */
-    public void testSetGetMessagePool() {
-        messenger.setMessagePool(messagePool);
+    public void testGetMessagePool() {
         MessagePool returnedMessagePool = messenger.getMessagePool();
         assertSame("The message pools should be the same", messagePool, returnedMessagePool);
-    }
-
-    /**
-     * Tests <c>setMessagePool(MessagePool)</c> method for failure when the argument of
-     * the method is null. <c>IllegalArgumentException</c> is expected to be thrown.
-     */
-    public void testSetMessagePoolNull() {
-        try {
-            messenger.setMessagePool(null);
-
-            fail("IllegalArgumentException should have been thrown because of null parameter");
-        } catch (IllegalArgumentException e) {
-            // Success.
-        }
     }
 }

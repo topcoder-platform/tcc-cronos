@@ -288,25 +288,6 @@ public class MessengerImplFailure extends TestCase {
 
     /**
      * <p>
-     * Tests the setMessagePool method of <code>MessengerImpl</code>.
-     * </p>
-     *
-     * <p>
-     * Sets the message pool as null.
-     * </p>
-     *
-     */
-    public void testSetMessagePool() {
-        try {
-            messengerImpl.setMessagePool(null);
-            fail("Should throw IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // expect
-        }
-    }
-
-    /**
-     * <p>
      * Tests the postMessage method of <code>MessengerImpl</code>.
      * </p>
      *

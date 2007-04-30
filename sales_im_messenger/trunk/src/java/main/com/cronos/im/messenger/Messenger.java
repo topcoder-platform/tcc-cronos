@@ -74,14 +74,6 @@ public interface Messenger {
      * @return The non-null message pool.
      */
     public MessagePool getMessagePool();
-
-    /**
-     * Set the message pool.
-     *
-     * @param pool The message pool.
-     * @throws IllegalArgumentException If argument is null.
-     */
-    public void setMessagePool(MessagePool pool);
 }
 
 
