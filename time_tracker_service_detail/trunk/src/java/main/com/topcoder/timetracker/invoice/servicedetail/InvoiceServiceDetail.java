@@ -90,6 +90,8 @@ public class InvoiceServiceDetail extends TimeTrackerBean {
         ArgumentCheckUtil.checkNotNull("invoice", invoice);
 
         this.invoice = invoice;
+
+        setChanged(true);
     }
 
     /**
@@ -117,6 +119,8 @@ public class InvoiceServiceDetail extends TimeTrackerBean {
         ArgumentCheckUtil.checkNotNull("timeEntry", timeEntry);
 
         this.timeEntry = timeEntry;
+
+        setChanged(true);
     }
 
     /**
@@ -147,6 +151,8 @@ public class InvoiceServiceDetail extends TimeTrackerBean {
         }
 
         this.rate = rate;
+
+        setChanged(true);
     }
 
     /**
@@ -175,6 +181,8 @@ public class InvoiceServiceDetail extends TimeTrackerBean {
         ArgumentCheckUtil.checkNotNull("amount", amount);
 
         this.amount = amount;
+
+        setChanged(true);
     }
 
 }
