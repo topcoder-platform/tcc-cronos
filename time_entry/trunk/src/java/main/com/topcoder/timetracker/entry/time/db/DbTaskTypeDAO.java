@@ -464,6 +464,10 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
             }
             Util.checkStepResult(causes);
 
+            // remove the associations in the database
+            deleteCompTaskTypes(conn, taskTypeIds, causes);
+            Util.checkStepResult(causes);
+
             List[] params = new List[taskTypeIds.length];
             for (int i = 0; i < taskTypeIds.length; i++) {
                 params[i] = new ArrayList();
@@ -476,10 +480,6 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
             } catch (BatchOperationException e) {
                 Util.updateCauses(causes, e);
             }
-            Util.checkStepResult(causes);
-
-            // remove the associations in the database
-            deleteCompTaskTypes(conn, taskTypeIds, causes);
 
             Util.finishBatchOperation(causes);
 
