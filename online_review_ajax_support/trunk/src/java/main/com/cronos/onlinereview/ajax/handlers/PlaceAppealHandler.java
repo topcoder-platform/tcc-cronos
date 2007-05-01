@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
 
@@ -18,6 +18,9 @@ import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -30,15 +33,19 @@ import com.topcoder.project.phases.PhaseType;
  * </p>
  *
  * <p>
- * <strong>Thread Safety : </strong>
+ * <strong>Thread Safety:</strong>
  * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @author George1
+ * @version 1.0.1
  */
 public class PlaceAppealHandler extends ReviewCommonHandler {
-
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+			.getLog(PlaceAppealHandler.class.getName());
+	
     /**
      * The magic string for status open.
      */
@@ -78,6 +85,11 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
      * Represents the status of invalid parameter error.
      */
     private static final String INVALID_PARAMETER_ERROR = "Invalid parameter error";
+
+    /**
+     * Represents the status of invalid parameter error.
+     */
+    private static final String POSSIBLE_TEXT_CUTOFF = "Possible text cutoff error";
 
     /**
      * Represents the status of phase error.
@@ -228,37 +240,59 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
             throw new IllegalArgumentException("The request should not be null.");
         }
 
-        // check the parameters
-        long reviewId = 0;
-        long itemId = 0;
-        String text = null;
-
-        // check the userId for validation
+        // Check the userId for validation
         if (userId == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(), LOGIN_ERROR,
                     "Doesn't login or expired.", "PlaceAppeal. " + "User id : " + userId);
         }
 
-        // ReviewID
+        // Variables to hold parsed parameters' values
+        long reviewId = 0;
+        long itemId = 0;
+        String text = null;
+        long textLength = 0;
+
+        // ReviewID parameter
         try {
             reviewId = request.getParameterAsLong("ReviewId");
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException nfe) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", "PlaceAppeal. " + "User id : " + userId, e);
+                    "The review id should be a long value.", "PlaceAppeal. User id : " + userId, nfe);
         }
-        // ItemId
+        // ItemId parameter
         try {
             itemId = request.getParameterAsLong("ItemId");
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException nfe) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", "PlaceAppeal. " + "User id : " + userId, e);
+                    "The review id should be a long value.", "PlaceAppeal. User id : " + userId, nfe);
         }
-        // text
-        // ISV : Appeal text is required and must be provided by "Text" parameter but not "text"
+        // Text parameter
         text = request.getParameter("Text");
-        if ((text == null) || (text.trim().length() == 0)) {
+        if (text == null || text.trim().length() == 0) {
             return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The appeal text must be provided.", "PlaceAppeal. " + "User id : " + userId);
+                    "The appeal text must be provided.", "PlaceAppeal. User id : " + userId);
+        }
+        // TextLength parameter
+        try {
+            textLength = request.getParameterAsLong("TextLength");
+        } catch (NumberFormatException nfe) {
+            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
+                    "Text length parameter must be specified and parsable to long.",
+                    "PlaceAppeal. User id : " + userId, nfe);
+        }
+
+        // Verify text's length is exactly the same as specified by TextLength parameter
+        if (text.length() != textLength) {
+//            AjaxResponse response = AjaxSupportHelper.createAndLogError(request.getType(), POSSIBLE_TEXT_CUTOFF,
+//                    "Received Appeal's text had incorrect length. Received text was "
+//                            + text.length() + " characters length, but should have been " + textLength + ".",
+//                    "PlaceAppeal. User id : " + userId);
+            
+            log.log(Level.WARN, request.getType()
+                    + " Additional info. The text of Appeal received:\n----- begin of appeal text -----\n"
+                    + text
+                    + "\n----- end of appeal -----");
+//            return response;
         }
 
         // check whether this user has the right to appeal
