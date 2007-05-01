@@ -3,6 +3,8 @@
  */
 package com.topcoder.timetracker.entry.time.delegate;
 
+import javax.ejb.CreateException;
+
 import com.topcoder.timetracker.entry.time.TimeEntryFilterFactory;
 import com.topcoder.timetracker.entry.time.TimeEntryManager;
 import com.topcoder.search.builder.filter.Filter;
@@ -63,7 +65,11 @@ public class TimeEntryManagerDelegate implements TimeEntryManager {
         TimeEntryManagerLocalHome home = (TimeEntryManagerLocalHome) Util.createEJBLocalHome(namespace,
             TimeEntryManagerLocalHome.class);
 
-        this.local = home.create();
+        try {
+            this.local = home.create();
+        } catch (CreateException ce) {
+            throw new ConfigurationException("Error occurred while creating local time entry manager.", ce);
+        }
     }
 
     /**

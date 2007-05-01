@@ -3,6 +3,8 @@
  */
 package com.topcoder.timetracker.entry.time.delegate;
 
+import javax.ejb.CreateException;
+
 import com.topcoder.timetracker.entry.time.TaskTypeFilterFactory;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.entry.time.BatchOperationException;
@@ -62,7 +64,11 @@ public class TaskTypeManagerDelegate implements TaskTypeManager {
         TaskTypeManagerLocalHome home = (TaskTypeManagerLocalHome) Util.createEJBLocalHome(namespace,
             TaskTypeManagerLocalHome.class);
 
-        this.local = home.create();
+        try {
+            this.local = home.create();
+        } catch (CreateException ce) {
+            throw new ConfigurationException("Error occurred while creating local task type manager.", ce);
+        }
     }
 
     /**

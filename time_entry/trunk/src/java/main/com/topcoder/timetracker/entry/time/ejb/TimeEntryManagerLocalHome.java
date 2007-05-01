@@ -3,6 +3,7 @@
  */
 package com.topcoder.timetracker.entry.time.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 
 /**
@@ -32,5 +33,5 @@ public interface TimeEntryManagerLocalHome extends EJBLocalHome {
      *
      * @return an instance of <code>TimeEntryManagerLocal</code>
      */
-    public TimeEntryManagerLocal create();
+    public TimeEntryManagerLocal create() throws CreateException;
 }

@@ -3,6 +3,8 @@
  */
 package com.topcoder.timetracker.entry.time.delegate;
 
+import javax.ejb.CreateException;
+
 import com.topcoder.timetracker.entry.time.TimeStatusManager;
 import com.topcoder.timetracker.entry.time.TimeStatus;
 import com.topcoder.search.builder.filter.Filter;
@@ -62,7 +64,11 @@ public class TimeStatusManagerDelegate implements TimeStatusManager {
         TimeStatusManagerLocalHome home = (TimeStatusManagerLocalHome) Util.createEJBLocalHome(namespace,
             TimeStatusManagerLocalHome.class);
 
-        this.local = home.create();
+        try {
+            this.local = home.create();
+        } catch (CreateException ce) {
+            throw new ConfigurationException("Error occurred while creating local time status manager.", ce);
+        }
     }
 
     /**
