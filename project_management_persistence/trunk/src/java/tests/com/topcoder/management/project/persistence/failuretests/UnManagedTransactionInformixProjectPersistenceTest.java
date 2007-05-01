@@ -4,34 +4,34 @@
 package com.topcoder.management.project.persistence.failuretests;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import junit.framework.Assert;
 
 import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.PersistenceException;
 
-import com.topcoder.management.project.persistence.InformixProjectPersistence;
+
+import com.topcoder.management.project.persistence.UnmanagedTransactionInformixProjectPersistence;
 
 /**
- * A failure test for {@link InformixProjectPersistence}.
+ * A failure test for {@link UnmanagedTransactionInformixProjectPersistence}.
  *
- * @author isv, kshatriyan
+ * @author kshatriyan
  * @version 1.1
- * @since 1.0
  *
  */
-
-public class InformixProjectPersistenceTest extends AbstractInformixProjectPersistenceTest {
+public class UnManagedTransactionInformixProjectPersistenceTest extends AbstractInformixProjectPersistenceTest {
 
     /**
      * Test instance used for failure test cases.
      */
-    private MyManagedPersistence projectPersistence;
+    private MyUnManagedPersistence projectPersistence;
 
     /**
      * An instance used for testing.
      */
-    private InformixProjectPersistence informixProjectPersistence;
+    private UnmanagedTransactionInformixProjectPersistence unProjectPersistence;
 
     /**
      * <p>
@@ -43,7 +43,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      */
     protected void setUp() throws Exception {
         super.setUp();
-        setProjectPersistence(new InformixProjectPersistence(
+        projectPersistence = new MyUnManagedPersistence("com.topcoder.management.project.persistence.failuretests");
+        setProjectPersistence(new UnmanagedTransactionInformixProjectPersistence(
                 "com.topcoder.management.project.persistence.failuretests"));
     }
 
@@ -61,8 +62,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#InformixProjectPersistence(String)} constructor for
-     * proper handling the invalid input arguments.
+     * Failure test. Tests the
+     * {@link UnmanagedTransactionInformixProjectPersistence#UnmanagedTransactionInformixProjectPersistence(String)}
+     * constructor for proper handling the invalid input arguments.
      * </p>
      *
      * <p>
@@ -72,7 +74,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      */
     public void testConstructor_String_namespace_null() {
         try {
-            new InformixProjectPersistence(null);
+            new UnmanagedTransactionInformixProjectPersistence(null);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
@@ -83,8 +85,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#InformixProjectPersistence(String)} constructor for
-     * proper handling the invalid input arguments.
+     * Failure test. Tests the
+     * {@link UnmanagedTransactionInformixProjectPersistence#UnmanagedTransactionInformixProjectPersistence(String)}
+     * constructor for proper handling the invalid input arguments.
      * </p>
      *
      * <p>
@@ -94,7 +97,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      */
     public void testConstructor_String_namespace_ZERO_LENGTH_STRING() {
         try {
-            new InformixProjectPersistence(TestDataFactory.ZERO_LENGTH_STRING);
+            new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.ZERO_LENGTH_STRING);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
@@ -105,8 +108,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#InformixProjectPersistence(String)} constructor for
-     * proper handling the invalid input arguments.
+     * Failure test. Tests the
+     * {@link UnmanagedTransactionInformixProjectPersistence#UnmanagedTransactionInformixProjectPersistence(String)}
+     * constructor for proper handling the invalid input arguments.
      * </p>
      *
      * <p>
@@ -116,7 +120,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      */
     public void testConstructor_String_namespace_WHITESPACE_ONLY_STRING() {
         try {
-            new InformixProjectPersistence(TestDataFactory.WHITESPACE_ONLY_STRING);
+            new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.WHITESPACE_ONLY_STRING);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
@@ -127,8 +131,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#InformixProjectPersistence(String)} constructor for
-     * proper behavior if the configuration is invalid.
+     * Failure test. Tests the
+     * {@link UnmanagedTransactionInformixProjectPersistence#UnmanagedTransactionInformixProjectPersistence(String)}
+     * constructor for proper behavior if the configuration is invalid.
      * </p>
      *
      * <p>
@@ -140,7 +145,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.removeProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionFactoryNS");
         try {
-            new InformixProjectPersistence(TestDataFactory.NAMESPACE);
+            new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
         } catch (ConfigurationException e) {
             // expected behavior
@@ -154,8 +159,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#InformixProjectPersistence(String)} constructor for
-     * proper behavior if the configuration is invalid.
+     * Failure test. Tests the
+     * {@link UnmanagedTransactionInformixProjectPersistence#UnmanagedTransactionInformixProjectPersistence(String)}
+     * constructor for proper behavior if the configuration is invalid.
      * </p>
      *
      * <p>
@@ -167,7 +173,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionFactoryNS", "UnknownNamespace");
         try {
-            new InformixProjectPersistence(TestDataFactory.NAMESPACE);
+            new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
         } catch (ConfigurationException e) {
             // expected behavior
@@ -181,8 +187,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#InformixProjectPersistence(String)} constructor for
-     * proper behavior if the configuration is invalid.
+     * Failure test. Tests the
+     * {@link UnmanagedTransactionInformixProjectPersistence#UnmanagedTransactionInformixProjectPersistence(String)}
+     * constructor for proper behavior if the configuration is invalid.
      * </p>
      *
      * <p>
@@ -194,7 +201,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ProjectIdSequenceName", "UnknownSequence");
         try {
-            new InformixProjectPersistence(TestDataFactory.NAMESPACE);
+            new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
             // expected behavior
@@ -208,8 +215,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#InformixProjectPersistence(String)} constructor for
-     * proper behavior if the configuration is invalid.
+     * Failure test. Tests the
+     * {@link UnmanagedTransactionInformixProjectPersistence#UnmanagedTransactionInformixProjectPersistence(String)}
+     * constructor for proper behavior if the configuration is invalid.
      * </p>
      *
      * <p>
@@ -221,7 +229,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ProjectAuditIdSequenceName", "UnknownSequence");
         try {
-            new InformixProjectPersistence(TestDataFactory.NAMESPACE);
+            new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
             // expected behavior
@@ -235,8 +243,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the <code>InformixProjectPersistence#openconnection()</code> method for proper handling
-     * the invalid input arguments.
+     * Failure test. Tests the <code>UnmanagedTransactionInformixProjectPersistence#openConnection()</code> method
+     * for proper handling the invalid input arguments.
      * </p>
      *
      * <p>
@@ -244,9 +252,9 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      * to be thrown while opening the connection.
      * </p>
      */
-    public void testOpenConnection() {
+    public void testOpenConnection1() {
         try {
-            projectPersistence = new MyManagedPersistence("Invalid_ConnectionName");
+            projectPersistence = new MyUnManagedPersistence("Invalid_ConnectionName");
             projectPersistence.openConnection();
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
@@ -258,8 +266,33 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the <code>InformixProjectPersistence#closeConnection()</code> method for proper handling
-     * the invalid input arguments.
+     * Failure test. Tests the <code>UnmanagedTransactionInformixProjectPersistence#openConnection()</code> method
+     * for proper handling the invalid input arguments.
+     * </p>
+     *
+     * <p>
+     * Tries to rollback on an unmanaged connection
+     * </p>
+     *
+     */
+    public void testOpenConnection2() {
+
+        try {
+            Connection connection = projectPersistence.openConnection();
+            connection.rollback();
+            Assert.fail("SQLException should have been thrown");
+        } catch (SQLException exception) {
+            // expected behavior
+        } catch (Exception e) {
+            Assert.fail("SQLException was expected but the original exception is : " + e);
+        }
+
+    }
+
+    /**
+     * <p>
+     * Failure test. Tests the <code>UnmanagedTransactionInformixProjectPersistence#closeConnection()</code> method
+     * for proper handling the invalid input arguments.
      * </p>
      *
      * <p>
@@ -268,7 +301,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      */
     public void testCloseConnection() {
         try {
-            projectPersistence = new MyManagedPersistence("com.topcoder.management.project.persistence.failuretests");
+            projectPersistence = new MyUnManagedPersistence(
+                    "com.topcoder.management.project.persistence.failuretests");
             projectPersistence.closeConnection(null);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
@@ -280,8 +314,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the <code>InformixProjectPersistence#closeConnectionOnError()</code> method for proper
-     * handling the invalid input arguments.
+     * Failure test. Tests the <code>UnmanagedTransactionInformixProjectPersistence#closeConnectionOnError()</code>
+     * method for proper handling the invalid input arguments.
      * </p>
      *
      * <p>
@@ -290,7 +324,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      */
     public void testCloseConnectionOnError() {
         try {
-            projectPersistence = new MyManagedPersistence("com.topcoder.management.project.persistence.failuretests");
+            projectPersistence = new MyUnManagedPersistence(
+                    "com.topcoder.management.project.persistence.failuretests");
             projectPersistence.closeConnectionOnError(null);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
@@ -302,7 +337,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#getAllProjectCategories()} method for proper behavior
+     * Failure test. Tests the {@link UnmanagedTransactionInformixProjectPersistence#getAllProjectCategories()} method for proper behavior
      * if the SQL error occurs while communicating to DB.
      * </p>
      *
@@ -315,8 +350,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionName", "invalid");
         try {
-            informixProjectPersistence = new InformixProjectPersistence(TestDataFactory.NAMESPACE);
-            informixProjectPersistence.getAllProjectCategories();
+            unProjectPersistence = new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
+            unProjectPersistence.getAllProjectCategories();
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
             // expected behavior
@@ -330,7 +365,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#getAllProjectPropertyTypes()} method for proper
+     * Failure test. Tests the {@link UnmanagedTransactionInformixProjectPersistence#getAllProjectPropertyTypes()} method for proper
      * behavior if the SQL error occurs while communicating to DB.
      * </p>
      *
@@ -343,8 +378,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionName", "invalid");
         try {
-            informixProjectPersistence = new InformixProjectPersistence(TestDataFactory.NAMESPACE);
-            informixProjectPersistence.getAllProjectPropertyTypes();
+            unProjectPersistence = new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
+            unProjectPersistence.getAllProjectPropertyTypes();
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
             // expected behavior
@@ -358,7 +393,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#getAllProjectStatuses()} method for proper behavior
+     * Failure test. Tests the {@link UnmanagedTransactionInformixProjectPersistence#getAllProjectStatuses()} method for proper behavior
      * if the SQL error occurs while communicating to DB.
      * </p>
      *
@@ -371,8 +406,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionName", "invalid");
         try {
-            informixProjectPersistence = new InformixProjectPersistence(TestDataFactory.NAMESPACE);
-            informixProjectPersistence.getAllProjectStatuses();
+            unProjectPersistence = new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
+            unProjectPersistence.getAllProjectStatuses();
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
             // expected behavior
@@ -386,7 +421,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#getAllProjectTypes()} method for proper behavior if
+     * Failure test. Tests the {@link UnmanagedTransactionInformixProjectPersistence#getAllProjectTypes()} method for proper behavior if
      * the SQL error occurs while communicating to DB.
      * </p>
      *
@@ -399,8 +434,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionName", "invalid");
         try {
-            informixProjectPersistence = new InformixProjectPersistence(TestDataFactory.NAMESPACE);
-            informixProjectPersistence.getAllProjectTypes();
+            unProjectPersistence = new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
+            unProjectPersistence.getAllProjectTypes();
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
             // expected behavior
@@ -414,7 +449,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#updateProject(Project, String, String)} method for
+     * Failure test. Tests the {@link UnmanagedTransactionInformixProjectPersistence#updateProject(Project, String, String)} method for
      * proper behavior if the SQL error occurs while communicating to DB.
      * </p>
      *
@@ -427,8 +462,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionName", "invalid");
         try {
-            informixProjectPersistence = new InformixProjectPersistence(TestDataFactory.NAMESPACE);
-            informixProjectPersistence.updateProject(TestDataFactory.getProject(), TestDataFactory.OPERATOR,
+            unProjectPersistence = new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
+            unProjectPersistence.updateProject(TestDataFactory.getProject(), TestDataFactory.OPERATOR,
                     TestDataFactory.REASON);
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
@@ -443,7 +478,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
     /**
      * <p>
-     * Failure test. Tests the {@link InformixProjectPersistence#createProject(Project, String)} method for proper
+     * Failure test. Tests the {@link UnmanagedTransactionInformixProjectPersistence#createProject(Project, String)} method for proper
      * behavior if the SQL error occurs while communicating to DB.
      * </p>
      *
@@ -456,8 +491,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
         String[] values = ConfigHelper.setProperty("com.topcoder.management.project.persistence.failuretests",
                 "ConnectionName", "invalid");
         try {
-            informixProjectPersistence = new InformixProjectPersistence(TestDataFactory.NAMESPACE);
-            informixProjectPersistence.createProject(TestDataFactory.getProject(), TestDataFactory.OPERATOR);
+            unProjectPersistence = new UnmanagedTransactionInformixProjectPersistence(TestDataFactory.NAMESPACE);
+            unProjectPersistence.createProject(TestDataFactory.getProject(), TestDataFactory.OPERATOR);
             Assert.fail("PersistenceException should have been thrown");
         } catch (PersistenceException e) {
             // expected behavior
@@ -470,16 +505,16 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
     }
 
     /**
-     * Helper class used for testing the protected methods of {@link InformixProjectPersistence}.
+     * Helper class used for testing the protected methods of {@link UnmanagedTransactionInformixProjectPersistence}.
      *
      * @author kshatriyan
      * @version 1.1
      */
-    private class MyManagedPersistence extends InformixProjectPersistence {
+    private class MyUnManagedPersistence extends UnmanagedTransactionInformixProjectPersistence {
 
         /**
          * <p>
-         * Creates a new MyManagedPersistence.
+         * Creates a new MyUnManagedPersistence.
          * </p>
          *
          *
@@ -494,13 +529,13 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
          * @throws PersistenceException
          *             if cannot initialize the connection to the database.
          */
-        public MyManagedPersistence(String namespace) throws ConfigurationException, PersistenceException {
+        public MyUnManagedPersistence(String namespace) throws ConfigurationException, PersistenceException {
             super(namespace);
         }
 
         /**
          * <p>
-         * Invokes <code>closeConnection()</code> of {@link InformixProjectPersistence}.
+         * Invokes <code>closeConnection()</code> of {@link UnmanagedTransactionInformixProjectPersistence}.
          * </p>
          *
          *
@@ -518,7 +553,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
         /**
          * <p>
-         * Invokes <code>closeConnectionOnError()</code> of {@link InformixProjectPersistence}.
+         * Invokes <code>closeConnectionOnError()</code> of {@link UnmanagedTransactionInformixProjectPersistence}.
          * </p>
          *
          * @param connection
@@ -535,7 +570,7 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
 
         /**
          * <p>
-         * Invokes <code>openConnection()</code> of {@link InformixProjectPersistence}.
+         * Invokes <code>openConnection()</code> of {@link UnmanagedTransactionInformixProjectPersistence}.
          * </p>
          *
          * @return an open Connection.
