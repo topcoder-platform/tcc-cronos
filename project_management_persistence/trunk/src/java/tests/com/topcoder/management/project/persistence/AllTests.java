@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -13,13 +13,19 @@ import com.topcoder.management.project.persistence.stresstests.StressTests;
 
 /**
  * <p>
- * This test case aggregates all test cases.
+ * This test case aggregates all test cases of this component.
  * </p>
- * @author TopCoder
- * @version 1.0
+ * 
+ * @author kshatriyan
+ * @version 1.1
  */
 public class AllTests extends TestCase {
 
+    /**
+     * Aggregates all the test cases.
+     * 
+     * @return the suite containing all the test cases.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 

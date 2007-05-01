@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -25,8 +25,9 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * Accuracy and failure tests for <code>InformixProjectPersistence</code>.
- * @author urtks
- * @version 1.0
+ * @author urtks, fuyun
+ * @version 1.1
+ * @since 1.0
  */
 public class InformixProjectPersistenceTest extends TestCase {
     /**
@@ -1608,8 +1609,6 @@ public class InformixProjectPersistenceTest extends TestCase {
 
         assertEquals("check # of records", 1, rows.length);
         Object[] row = rows[0];
-        assertEquals("check project_audit_id", 1, ((Long) row[0]).longValue());
-        assertEquals("check project_id", 1, ((Long) row[1]).longValue());
         assertEquals("check update_reason", "some reason", (String) row[2]);
         assertEquals("check create_user", "user2", (String) row[3]);
     }
@@ -1903,4 +1902,85 @@ public class InformixProjectPersistenceTest extends TestCase {
             // correct
         }
     }
+
+    /**
+     * <p>
+     * Accuracy test for method <code>createProject()</code>.
+     * </p>
+     * <p>
+     * Verifies that the transaction will be rolled back if fails to insert the
+     * project properties.
+     * </p>
+     * @throws Exception if there is any problem.
+     * @since 1.1
+     */
+    public void testCreateProjectRollback() throws Exception {
+        Project project = getSampleProject1();
+        // the proerty is not in the table, which will cause the roll back.
+        project.setProperty("test", "test");
+
+        ProjectPersistence persistence = new InformixProjectPersistence(
+            "InformixProjectPersistence.CustomNamespace");
+        try {
+            persistence.createProject(project, "user");
+            fail("PersistenceException is expected.");
+        } catch (PersistenceException pe) {
+            // success
+        }
+
+        Connection conn = null;
+        try {
+            conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
+                .createConnection();
+            Object[][] rows = Helper.doQuery(conn, "SELECT * FROM project", new Object[] {},
+                new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
+                    Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE});
+            assertEquals("No result should be selected.", 0, rows.length);
+        } finally {
+            Helper.closeConnection(conn);
+        }
+    }
+    
+    /**
+     * <p>
+     * Accuracy test for method <code>updateProject()</code>.
+     * </p>
+     * <p>
+     * Verifies that the transaction will be rolled back if fails to update the
+     * project.
+     * </p>
+     * @throws Exception if there is any problem.
+     * @since 1.1
+     */
+    public void testUpdateProjectRollback() throws Exception {
+        ProjectPersistence persistence = new InformixProjectPersistence(
+            "InformixProjectPersistence.CustomNamespace");
+
+        Project project = getSampleProject1();
+
+        persistence.createProject(project, "user");
+
+        // the proerty is not in the table, which will cause the roll back.
+        project.setProperty("test", "test");
+
+        try {
+            persistence.updateProject(project, "reason", "user");
+            fail("PersistenceException is expected.");
+        } catch (PersistenceException pe) {
+            // success
+        }
+
+        Connection conn = null;
+        try {
+            conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
+                .createConnection();
+            Object[][] rows = Helper.doQuery(conn, "SELECT * FROM project_info", new Object[] {},
+                new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+                    Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE});
+            assertEquals("Two results should be selected.", 2, rows.length);
+        } finally {
+            Helper.closeConnection(conn);
+        }
+    }
+
 }
