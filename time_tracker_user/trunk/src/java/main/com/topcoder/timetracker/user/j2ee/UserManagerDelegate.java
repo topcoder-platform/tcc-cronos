@@ -3,6 +3,7 @@
  */
 package com.topcoder.timetracker.user.j2ee;
 
+import javax.ejb.CreateException;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
@@ -90,11 +91,13 @@ public class UserManagerDelegate implements UserManager {
             UserManagerLocalHome home = (UserManagerLocalHome) PortableRemoteObject.narrow(ref,
                 UserManagerLocalHome.class);
             local = home.create();
-        } catch (ConfigManagerException e) {
-            throw new ConfigurationException("Failed to access config manager.", e);
         } catch (NamingException e) {
             throw new ConfigurationException(
                 "NamingException occurs when looking up the JNDI for the UserManagerLocalHome.", e);
+        } catch (CreateException e) {
+            throw new ConfigurationException("Failed to create the ejb.", e);
+        } catch (ConfigManagerException e) {
+            throw new ConfigurationException("Failed to access config manager.", e);
         }
     }
 
