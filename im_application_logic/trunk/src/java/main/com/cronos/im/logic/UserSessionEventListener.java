@@ -280,7 +280,7 @@ public class UserSessionEventListener implements ChatSessionEventListener {
                 }
 
                 // send presence message of other users in this session to the newly added user.
-                long[] users = session.getUsers();
+                long[] users = session.getActiveUsers();
                 for (int i = 0; i < users.length; i++) {
                     if (users[i] != user) {
                         presenceMsg = new PresenceMessage();
@@ -330,7 +330,7 @@ public class UserSessionEventListener implements ChatSessionEventListener {
         IMHelper.checkNull(session, "session");
 
         try {
-            long[] users = session.getUsers();
+            long[] users = session.getActiveUsers();
 
             if (chatSessionStatusTracker.getStatus(session.getId()).getId() == IMHelper.SESSION_STATUS_OPEN) {
                 messenger.getMessagePool().unregister(user, session.getId());

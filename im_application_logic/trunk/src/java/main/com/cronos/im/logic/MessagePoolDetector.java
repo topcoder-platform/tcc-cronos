@@ -22,8 +22,8 @@ import java.text.DateFormat;
 
 /**
  * This class provide command line interface to detect inactivity of the message pools. It searches for the
- * message pools that have not been accessed in a configurable time period. Below is the logic when the
- * message pool is inactive:
+ * message pools that have not been pulled in a configurable time period. Below is the logic when the message
+ * pool is inactive:
  * <p>
  * 1. If session message pool is inactive, Remove user from session
  * </p>
@@ -150,7 +150,7 @@ public class MessagePoolDetector {
             if (inactiveTimeInterval < 0) {
                 throw new IMConfigurationException("Inactive time interval can not be negative.");
             }
-            // 8) Load "whether_log" property
+            // Load "whether_log" property
             String whetherLog = IMHelper.getOptionalConfigString(ns, "whether_log");
             if (whetherLog != null && !"Yes".equalsIgnoreCase(whetherLog)
                     && !"No".equalsIgnoreCase(whetherLog)) {
@@ -243,76 +243,51 @@ public class MessagePoolDetector {
         IMHelper.checkNull(messagePool, "messagePool");
 
         // Search the inactive session message pool
-        // not pushed for long time
-        SearchResult[] result1 = messagePool.searchLastSessionPoolActivity(true, System.currentTimeMillis()
-                - timeInterval, true);
         // not pulled for long time
-        SearchResult[] result2 = messagePool.searchLastSessionPoolActivity(false, System.currentTimeMillis()
+        SearchResult[] result = messagePool.searchLastSessionPoolActivity(false, System.currentTimeMillis()
                 - timeInterval, true);
-        // only results that are both in the result1 and result2 is considered to the inactive session pools
-        for (int i = 0; i < result1.length; i++) {
-            for (int j = 0; j < result2.length; j++) {
-                if (result1[i].isUserPool() == result2[j].isUserPool()
-                        && result1[i].getSession() == result2[j].getSession()
-                        && result1[i].getUser() == result2[j].getUser()) {
-                    // one match is found
-                    // result1[i] is inactive session message pool
-                    // remove user from session
-                    ChatSession chatSession = sessionManager.getSession(result1[i].getSession());
-                    sessionManager.removeUserFromSession(chatSession, result1[i].getUser());
-                    if (logger != null) {
-                        logger.log(Level.INFO, "Remove User From Session", new String[] { "User - "
-                                + result1[i].getUser() });
-                    }
-                    break;
-                }
+        // for each inactive session pool
+        for (int i = 0; i < result.length; i++) {
+            // result[i] is inactive session message pool
+            // remove user from session
+            ChatSession chatSession = sessionManager.getSession(result[i].getSession());
+            sessionManager.removeUserFromSession(chatSession, result[i].getUser());
+            if (logger != null) {
+                logger.log(Level.INFO, "Remove User From Session", new String[] { "User - "
+                        + result[i].getUser() });
             }
         }
 
-        // Search the inactive user message pool
-        // not pushed for long time
-        result1 = messagePool.searchLastUserPoolActivity(true, System.currentTimeMillis() - timeInterval,
-                true);
+        // Search the inactive user message pools
         // not pulled for long time
-        result2 = messagePool.searchLastUserPoolActivity(false, System.currentTimeMillis() - timeInterval,
+        result = messagePool.searchLastUserPoolActivity(false, System.currentTimeMillis() - timeInterval,
                 true);
-        // only results that are both in the result1 and result2 is considered to the inactive user message
-        // pools
-        for (int i = 0; i < result1.length; i++) {
-            for (int j = 0; j < result2.length; j++) {
-                if (result1[i].isUserPool() == result2[j].isUserPool()
-                        && result1[i].getSession() == result2[j].getSession()
-                        && result1[i].getUser() == result2[j].getUser()) {
-                    // one match is found
-                    // result1[i] is inactive user message pool
-                    // Remove the user as requester and responder from the service engine
-                    ServiceElement user = new ServiceElement();
-                    user.setProperty(IMServiceHandler.USER_ID_KEY, new Long(result1[i].getUser()));
-                    serviceEngine.removeRequester(user);
-                    if (logger != null) {
-                        logger.log(Level.INFO, "Remove Requester", new String[] { "User - "
-                                + result1[i].getUser() });
-                    }
-                    serviceEngine.removeResponder(user);
-                    if (logger != null) {
-                        logger.log(Level.INFO, "Remove Responder", new String[] { "User - "
-                                + result1[i].getUser() });
-                    }
-                    // Remove user from all sessions
-                    sessionManager.removeUserFromSessions(result1[i].getUser());
-                    if (logger != null) {
-                        logger.log(Level.INFO, "Remove User From Sessions", new String[] { "User - "
-                                + result1[i].getUser() });
-                    }
-                    // Change user status to OFFLINE
-                    Status offlineStatus = new Status(IMHelper.USER_STATUS_OFFLINE); // 103 - OFFLINE
-                    userStatusTracker.setStatus(result1[i].getUser(), offlineStatus);
-                    if (logger != null) {
-                        logger.log(Level.INFO, "Update User Status to be OFFLINE", new String[] { "User - "
-                                + result1[i].getUser() });
-                    }
-                    break;
-                }
+        // for each inactive user message pool
+        for (int i = 0; i < result.length; i++) {
+            // result[i] is inactive user message pool
+            // Remove the user as requester and responder from the service engine
+            ServiceElement user = new ServiceElement();
+            user.setProperty(IMServiceHandler.USER_ID_KEY, new Long(result[i].getUser()));
+            serviceEngine.removeRequester(user);
+            if (logger != null) {
+                logger.log(Level.INFO, "Remove Requester", new String[] { "User - " + result[i].getUser() });
+            }
+            serviceEngine.removeResponder(user);
+            if (logger != null) {
+                logger.log(Level.INFO, "Remove Responder", new String[] { "User - " + result[i].getUser() });
+            }
+            // Remove user from all sessions
+            sessionManager.removeUserFromSessions(result[i].getUser());
+            if (logger != null) {
+                logger.log(Level.INFO, "Remove User From Sessions", new String[] { "User - "
+                        + result[i].getUser() });
+            }
+            // Change user status to OFFLINE
+            Status offlineStatus = new Status(IMHelper.USER_STATUS_OFFLINE); // 103 - OFFLINE
+            userStatusTracker.setStatus(result[i].getUser(), offlineStatus);
+            if (logger != null) {
+                logger.log(Level.INFO, "Update User Status to be OFFLINE", new String[] { "User - "
+                        + result[i].getUser() });
             }
         }
     }

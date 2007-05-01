@@ -71,10 +71,10 @@ public class MockChatSessionManager implements ChatSessionManager {
         s.addRequestedUser(2);
         s.addRequestedUser(3);
         s.addRequestedUser(123);
-        s.addUser(1);
-        s.addUser(2);
-        s.addUser(3);
-        s.addUser(123);
+        s.addActiveUser(1);
+        s.addActiveUser(2);
+        s.addActiveUser(3);
+        s.addActiveUser(123);
         return s;
     }
 

@@ -417,9 +417,9 @@ public class UserSessionEventListenerUnitTests extends TestCase {
     public void test_userAdded_1() {
         // no exception
         ChatSession session = new SalesSession(123, 456);
-        session.addUser(1);
-        session.addUser(2);
-        session.addUser(3);
+        session.addActiveUser(1);
+        session.addActiveUser(2);
+        session.addActiveUser(3);
         session.setId(1);
         listener.userAdded(session, 123);
 
@@ -448,9 +448,9 @@ public class UserSessionEventListenerUnitTests extends TestCase {
     public void test_userRemoved_1() {
         // no exception
         ChatSession session = new SalesSession(123, 456);
-        session.addUser(1);
-        session.addUser(2);
-        session.addUser(3);
+        session.addActiveUser(1);
+        session.addActiveUser(2);
+        session.addActiveUser(3);
         session.setId(1);
         listener.userRemoved(session, 123);
 

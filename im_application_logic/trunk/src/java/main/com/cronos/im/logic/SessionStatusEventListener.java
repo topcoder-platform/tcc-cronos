@@ -135,7 +135,7 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
         try {
             ChatSession chatSession = chatSessionManager.getSession(id);
             if (newStatus.getId() == IMHelper.SESSION_STATUS_OPEN) {
-                long[] users = chatSession.getUsers();
+                long[] users = chatSession.getActiveUsers();
                 if (chatSession.getMode() == ChatSession.ONE_ONE_SESSION
                         || chatSession.getMode() == ChatSession.SALES_SESSION) {
                     EnterChatMessage enterChatMessage = new EnterChatMessage();
