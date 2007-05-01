@@ -2,7 +2,7 @@
 
 <project name="IM Application Logic" default="dist" basedir=".">
 
-    <property file="e:\\topcoder/topcoder_global.properties"/>
+    <property file="d:/topcoder/topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="IM_Application_Logic" />
@@ -69,7 +69,7 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
     
 		<!-- codertura task definitation -->
-		<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
+		<property name="cobertura.dir" value="e:\tool\cobertura-1.8" />
 		<path id="cobertura.classpath">
     	<fileset dir="${cobertura.dir}">
       	  <include name="cobertura.jar" />
@@ -78,7 +78,7 @@
 		</path>
 		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 		<property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
-		<property name="instrumented.dir" value="${builddir}/instrumented" />
+		<property name="instrumented.dir" value="${builddir}/instrumented/com/cronos/im/logic" />
 
     <!-- TCS Dependencies -->
     <!--
@@ -94,7 +94,7 @@
     -->
 
     <!-- Java Locations -->
-    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
+    <property name="java_1_4_bootclasspath" value="D:/Program Files/Java/j2re1.4.2_11/lib/rt.jar"/>
 
     <path id="buildlibs">
         <!--
@@ -103,6 +103,22 @@
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
         -->
+
+        <pathelement location="${configdir}" />
+        <pathelement location="${testfiles}" />
+
+        <pathelement location="lib/base_exception.jar" />
+        <pathelement location="lib/configuration_manager.jar" />
+        <pathelement location="lib/log4j-1.2.9.jar" />
+        <pathelement location="lib/logging_wrapper.jar" />
+        <pathelement location="lib/object_factory.jar" />
+        <pathelement location="lib/chat_status_tracker.jar" />
+        <pathelement location="lib/command_line_utility.jar" />
+        <pathelement location="lib/typesafe_enum.jar" />
+        <pathelement location="lib/generic_event_manager.jar" />
+        <pathelement location="lib/job_scheduling.jar" />
+        <pathelement location="lib/executable_wrapper.jar" />
+        <pathelement location="lib/document_generator.jar" />
     </path>
 
     <path id="test.build.classpath">
@@ -118,7 +134,7 @@
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}">
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="**" debug="true" verbose="${verbose}">
             <classpath refid="buildlibs" />
         </javac>
     </target>
@@ -132,8 +148,8 @@
                includes="${packagedir}/**"
 	       debug="true"
                verbose="${verbose}"
-               target="1.3"
-               bootclasspath="${java_1_3_bootclasspath}"
+               target="1.4"
+               bootclasspath="${java_1_4_bootclasspath}"
                extdirs=""
                >
             <classpath refid="buildlibs" />
@@ -145,8 +161,8 @@
                includes="${packagedir}/**"
 	       debug="true"
                verbose="${verbose}"
-               target="1.3"
-               bootclasspath="${java_1_3_bootclasspath}"
+               target="1.4"
+               bootclasspath="${java_1_4_bootclasspath}"
                extdirs=""
                >
             <classpath refid="buildlibs" />
@@ -170,7 +186,7 @@
 				<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
 						<!-- all included -->
 						<fileset dir="${build_classdir}">
-        			<include name="**/*.class" />
+        			<include name="com/cronos/im/logic/**/*.class" />
     				</fileset>
 				</cobertura-instrument>
 
@@ -204,6 +220,37 @@
 				</cobertura-report>
 
 		</target>
+
+
+
+
+
+
+
+   <taskdef resource="checkstyletask.properties"/>
+
+    <target name="checkstyle">
+        <mkdir dir="${testlogdir}"/>
+        <checkstyle config="e:\topcoder\tc_checks.xml" classpath="${build_classdir}">
+            <fileset dir="src/java/main" includes="${packagedir}/**/*.java" />
+            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
+        </checkstyle>
+    </target>
+
+    <target name="checkstyle_tests">
+        <mkdir dir="${testlogdir}"/>
+        <checkstyle config="e:\topcoder\tc_test_checks.xml" classpath="${test.build.classpath}">
+            <fileset dir="${javatests}/${packagedir}/" includes="**/*.java" 
+                     excludes="UnitTests.java, AllTests.java, stresstests/*, failuretests/*, accuracytests/*" />
+            <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
+        </checkstyle>
+    </target>
+
+
+
+
+
+
 
     <target name="reports" depends="test">
         <mkdir dir="${reports}"/>
