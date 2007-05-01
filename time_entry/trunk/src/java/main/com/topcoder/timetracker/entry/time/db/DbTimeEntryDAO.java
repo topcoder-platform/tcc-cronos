@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,21 +77,6 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
      * </p>
      */
     private static final Exception CREATED_EXCEPTION = new Exception("Created.");
-
-    /**
-     * <p>
-     * Represents the column names mapping used for <code>DbProjectFilterFactory</code>.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and initialized in a static initialization block.
-     * </p>
-     *
-     * <p>
-     * It will not changed after initialization, including the reference and content.
-     * </p>
-     */
-    private static final Map COLUMNNAMES_MAP = new HashMap();
 
     /**
      * <p>
