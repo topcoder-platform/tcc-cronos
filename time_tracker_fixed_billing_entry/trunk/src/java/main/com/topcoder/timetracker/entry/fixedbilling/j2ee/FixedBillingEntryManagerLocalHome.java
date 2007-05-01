@@ -3,6 +3,7 @@
  */
 package com.topcoder.timetracker.entry.fixedbilling.j2ee;
 
+import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 
 
@@ -27,5 +28,5 @@ public interface FixedBillingEntryManagerLocalHome extends EJBLocalHome {
      *
      * @return an instance of FixedBillingEntryManagerLocal.
      */
-    FixedBillingEntryManagerLocal create();
+    FixedBillingEntryManagerLocal create() throws CreateException;
 }

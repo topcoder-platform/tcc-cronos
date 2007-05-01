@@ -17,6 +17,8 @@ import com.topcoder.timetracker.entry.fixedbilling.Helper;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 
+import javax.ejb.CreateException;
+
 import javax.naming.Context;
 import javax.naming.NamingException;
 
@@ -102,6 +104,8 @@ public class FixedBillingStatusManagerDelegate implements FixedBillingStatusMana
             this.fixedBillingStatusManager = homeObject.create();
         } catch (NamingException ne) {
             throw new ConfigurationException("Unable to create the instance.", ne);
+        } catch (CreateException ce) {
+            throw new ConfigurationException("Error occured while creating local fixed billing status manager.", ce);
         } catch (ConfigManagerException cme) {
             throw new ConfigurationException("Unable to create the instance.", cme);
         } catch (ClassCastException cce) {
