@@ -129,8 +129,7 @@ public class InformixFilter {
         // one of 'from' and 'to' is null
         if (from == null) {
             return new LessThanOrEqualToFilter("entry date", new java.sql.Date(to.getTime()));
-        }
-        if (to == null) {
+        } else if (to == null) {
             return new GreaterThanOrEqualToFilter("entry date", new java.sql.Date(from.getTime()));
         }
 
