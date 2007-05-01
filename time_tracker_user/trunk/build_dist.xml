@@ -165,7 +165,7 @@
     <property name="time_tracker_audit.path" value="time_tracker_audit/${time_tracker_audit.version}"/>
     <property name="time_tracker_audit.jar" value="${tcs_libdir}/${time_tracker_audit.path}/${time_tracker_audit.jar.name}"/>
 
-    <property name="time_tracker_common.version" value="3.2"/>
+    <property name="time_tracker_common.version" value="3.1"/>
     <property name="time_tracker_common.jar.name" value="time_tracker_common.jar"/>
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
     <property name="time_tracker_common.jar" value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
@@ -181,9 +181,9 @@
     <property name="commons-logging.jar" value="${mock_ejb_dir}/commons-logging.jar" />
     <property name="j2ee.jar" value="${mock_ejb_dir}/j2ee.jar" />
     <property name="jakarta-oro.jar" value="${mock_ejb_dir}/jakarta-oro-2.0.8.jar" />
-    <property name="mockejb.jar" value="${mock_ejb_dir}/mockejb.jar" />
+    <property name="mockejb.jar" value="${ext_libdir}/mockejb.jar" />
     <property name="ifx-jdbc.jar" value="${ext_libdir}/ifx-jdbc.jar" />
-    <property name="jmock.jar" value="${ext_libdir}/mock/jmock/jmock-1.1.0.jar" />
+    <property name="jmock.jar" value="${ext_libdir}/jmock-1.1.0.jar" />
     <!--
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
     -->
@@ -219,6 +219,7 @@
         <pathelement location="${mockejb.jar}" />
         <pathelement location="${ifx-jdbc.jar}" />
         <pathelement location="${jmock.jar}" />
+        <pathelement location="${ext_libdir}/j2ee.jar" />
 
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
