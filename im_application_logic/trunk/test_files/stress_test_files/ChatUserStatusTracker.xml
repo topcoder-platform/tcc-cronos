@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	
+<Config name="com.topcoder.chat.status.user">
+	<Property name="primary_key">
+		<Value>user_id</Value>
+	</Property>
+	
+	<Property name="entity_name">
+		<Value>User</Value>
+	</Property>
+	
+	<Property name="entity_id">
+		<Value>1</Value>
+	</Property>
+	
+	<Property name="statuses">		
+	    <Property name="offline_status">					
+			<Property name="status_id">
+				<Value>103</Value>
+			</Property>	
+		</Property>
+		
+		<Property name="busy_status">					
+			<Property name="status_id">
+				<Value>102</Value>
+			</Property>				
+		</Property>
+		
+		<Property name="online_status">					
+			<Property name="status_id">
+				<Value>101</Value>
+			</Property>	
+		</Property>	
+	</Property>
+
+
+</Config>
+
+</CMConfig>

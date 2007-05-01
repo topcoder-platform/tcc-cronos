@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.logic.UserSessionEventListener">
+
+<!-- Time value for the responder to accept the request. Required -->
+		<Property name="acknowledge_time">
+			<Value>1000</Value>
+		</Property>
+
+	</Config>
+
+
+	<Config name="com.cronos.im.logic.UserSessionEventListener.Invalid1">
+	</Config>
+
+	<Config name="com.cronos.im.logic.UserSessionEventListener.Invalid2">
+		<Property name="acknowledge_time">
+			<Value>xyz</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.logic.UserSessionEventListener.Invalid3">
+		<Property name="acknowledge_time">
+			<Value>-1000</Value>
+		</Property>
+	</Config>
+
+</CMConfig>

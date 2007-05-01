@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.cronos.im.logic.objectfactory">
+
+	<Property name="message_pool_key">
+		<Property name="type">
+			<Value>com.cronos.im.logic.MockMessagePool</Value>
+		</Property>
+	</Property>
+	<Property name="chat_session_manager_key">
+		<Property name="type">
+			<Value>com.cronos.im.logic.MockChatSessionManager</Value>
+		</Property>
+	</Property>
+
+	<Property name="entity_status_tracker">
+		<Property name="type">
+			<Value>com.cronos.im.logic.MockEntityStatusTracker</Value>
+		</Property>
+	</Property>
+  </Config>
+</CMConfig>

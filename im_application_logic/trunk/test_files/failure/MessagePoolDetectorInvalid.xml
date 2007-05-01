@@ -1,0 +1,238 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+	<!--factory_namespace miss-->
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid1">
+		<Property name="factory_namespace">
+			<Value>    </Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+<!-- chat_session_manager_key miss-->
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid2">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid3">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid4">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>unknown</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid5">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>-1000</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid6">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid7">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value></Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.cronos.im.logic.MessagePoolDetector.Invalid8">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>abc</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+
+</CMConfig>

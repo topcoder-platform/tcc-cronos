@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.logic.MessagePoolDetector">
+
+<!-- 
+Namespace used to create ObjectFactory instance.
+Required and not-empty, Any valid ObjectFactory namespace.
+ -->
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+<!-- 
+Namespace used to instantiate ChatUserStatusTracker instance.
+Optional and Not-empty.
+Any valid namespace.
+ -->
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+
+<!-- 
+Namespace used to instantiate ServiceEngine instance.
+Optional and Not-empty.
+Any valid namespace.
+ -->
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+<!-- 
+Key used to create ChatSessionManager instance.
+Required and not-empty, Any valid key.
+ -->
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+
+
+<!-- 
+Key used to create MessagePool instance.
+Required and not-empty, Any valid key.
+ -->
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+
+
+<!-- 
+Whether logging in this class is performed.
+Optional and default to be "Yes"
+Yes/No
+ -->
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+<!-- 
+Log name to load the Log instance.
+Optional. Any valid log name.
+ -->
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+
+
+<!-- 
+Time value for the Inactive Detector to identify whether the message pool is inactive. The message pool that has not been pulled for longer than "inactive_time_interval" is considered to be inactive.
+Required and must be Not-negative integer value.
+ -->
+		<Property name="inactive_time_interval">
+			<Value>1000</Value>
+		</Property>
+<!-- 
+Interval time used by Job Scheduling to execute the MessagePoolDetector. This configuration is configured in this component but used by other component.
+Required and must be Not-negative integer value.
+ -->
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+
+	</Config>
+
+</CMConfig>

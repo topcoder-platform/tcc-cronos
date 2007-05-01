@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.logic.IMServiceHandler">
+
+<!-- Time value for the service handler to wait before the responder accepts the request. 
+Required -->
+		<Property name="responder_wait_time">
+			<Value>1000</Value>
+		</Property>
+<!-- Time interval for the service handler to sleep while waiting the responder to accept the request.
+Required -->
+		<Property name="check_response_interval">
+			<Value>1000</Value>
+		</Property>
+
+	</Config>
+
+</CMConfig>

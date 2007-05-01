@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<CMConfig>
+   <!-- config for ChatStatusTracker -->
+   <Config name="com.topcoder.chat.status">
+	    <!-- config namespace of the object factory -->
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory</Value>
+		</Property>
+		
+		<!-- key for creating EntityStatusTracker with ObjectFactory -->
+		<Property name="entity_status_tracker">
+			<Value>entity_status_tracker</Value>
+		</Property>
+		
+		<!-- default user name for changing status -->
+		<Property name="default_user">
+			<Value>user</Value>
+		</Property>
+
+   </Config>
+	
+</CMConfig>

@@ -1,0 +1,163 @@
+<?xml version="1.0" ?>
+<CMConfig>
+  <Config name="com.cronos.im.logic.MessagePoolDetector">
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory.accuracy</Value>
+		</Property>
+		<Property name="chat_user_status_tracker_namespace">
+			<Value>com.topcoder.chat.status</Value>
+		</Property>
+		<Property name="service_engine_namespace">
+			<Value>com.topcoder.service.ServiceEngine</Value>
+		</Property>
+		<Property name="chat_session_manager_key">
+			<Value>chat_session_manager_key</Value>
+		</Property>
+		<Property name="message_pool_key">
+			<Value>message_pool_key</Value>
+		</Property>
+		<Property name="whether_log">
+			<Value>Yes</Value>
+		</Property>
+		<Property name="log_name">
+			<Value>IM Logic Application</Value>
+		</Property>
+		<Property name="inactive_time_interval">
+			<Value>1000</Value>
+		</Property>
+		<Property name="schedule_time_interval">
+			<Value>1000</Value>
+		</Property>
+  </Config>
+  <!-- Logger configuration -->
+  <Config name="com.topcoder.util.log">
+	<!-- The Log implementation class -->
+	<Property name="logClass">
+		<Value>com.topcoder.util.log.basic.BasicLog</Value>
+	</Property>
+
+	<!-- Specifies where the output should be written to, System.out or System.err -->
+	<Property name="basic.log.target">
+		<Value>System.out</Value>
+	</Property>
+  </Config>
+
+  <!-- DEFAULT NAMESPACE for IMServiceHandler -->
+  <Config name="com.cronos.im.logic.IMServiceHandler">
+	<!-- Time value for the service handler to wait before the responder accepts the request.
+Required (1 second)-->
+	<Property name="responder_wait_time">
+		<Value>1000</Value>
+	</Property>
+<!-- Time interval for the service handler to sleep while waiting the responder to accept the request.
+Required (1 second)-->
+	<Property name="check_response_interval">
+		<Value>1000</Value>
+	</Property>
+  </Config>
+
+  <Config name="com.cronos.im.logic.UserSessionEventListener">
+	<!-- Time value for the responder to accept the request. Required -->
+		<Property name="acknowledge_time">
+			<Value>1000</Value>
+		</Property>
+	</Config>
+
+  <!-- Configuration for ChatSessionStatusTracker -->
+  <Config name ="com.topcoder.chat.status.session">
+	<Property name="primary_key">
+		<Value>session_id</Value>
+	</Property>
+	<Property name="entity_name">
+		<Value>Session</Value>
+	</Property>
+	<Property name="entity_id">
+		<Value>2</Value>
+	</Property>
+	<Property name="statuses">
+		<Property name="pending_status">
+			<Property name="status_id">
+				<Value>202</Value>
+			</Property>
+		</Property>
+		<Property name="new_status">
+			<Property name="status_id">
+				<Value>201</Value>
+			</Property>
+		</Property>
+		<Property name="close_status">
+			<Property name="status_id">
+				<Value>204</Value>
+			</Property>
+		</Property>
+		<Property name="open_status">
+			<Property name="status_id">
+				<Value>203</Value>
+			</Property>
+		</Property>
+	</Property>
+  </Config>
+  <!-- Configuration for ChatStatusTracker -->
+  <Config name="com.topcoder.chat.status">
+	    <!-- config namespace of the object factory -->
+		<Property name="factory_namespace">
+			<Value>com.cronos.im.logic.objectfactory.accuracy</Value>
+		</Property>
+		<!-- key for creating EntityStatusTracker with ObjectFactory -->
+		<Property name="entity_status_tracker">
+			<Value>entity_status_tracker</Value>
+		</Property>
+		<!-- default user name for changing status -->
+		<Property name="default_user">
+			<Value>accuracy_tester</Value>
+		</Property>
+   </Config>
+
+   <!-- Configuration for ChatUserStatusTracker -->
+   <Config name="com.topcoder.chat.status.user">
+	<Property name="primary_key">
+		<Value>user_id</Value>
+	</Property>
+	<Property name="entity_name">
+		<Value>User</Value>
+	</Property>
+	<Property name="entity_id">
+		<Value>1</Value>
+	</Property>
+	<Property name="statuses">
+	    <Property name="offline_status">
+			<Property name="status_id">
+				<Value>103</Value>
+			</Property>
+		</Property>
+		<Property name="busy_status">
+			<Property name="status_id">
+				<Value>102</Value>
+			</Property>
+		</Property>
+		<Property name="online_status">
+			<Property name="status_id">
+				<Value>101</Value>
+			</Property>
+		</Property>
+	</Property>
+  </Config>
+
+  <Config name="com.cronos.im.logic.objectfactory.accuracy">
+	<Property name="message_pool_key">
+		<Property name="type">
+			<Value>com.cronos.im.logic.accuracytests.MockMessagePool</Value>
+		</Property>
+	</Property>
+	<Property name="chat_session_manager_key">
+		<Property name="type">
+			<Value>com.cronos.im.logic.accuracytests.MockChatSessionManager</Value>
+		</Property>
+	</Property>
+	<Property name="entity_status_tracker">
+		<Property name="type">
+			<Value>com.cronos.im.logic.accuracytests.MockEntityStatusTracker</Value>
+		</Property>
+	</Property>
+  </Config>
+</CMConfig>

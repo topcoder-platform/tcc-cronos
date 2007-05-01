@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.cronos.im.logic.UserSessionEventListener">
+
+<!-- Time value for the responder to accept the request. Required -->
+		<Property name="acknowledge_time">
+			<Value>1000</Value>
+		</Property>
+
+	</Config>
+</CMConfig>

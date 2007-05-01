@@ -1,0 +1,112 @@
+(1)
+ IMServiceHandler onToBeServiced() throws ServiceHandleException
+But your implementation catchs all exceptions and throws no exception at all.
+ Please refer to the impl doc of the designer. 
+
+
+----> the work of this method is done in another background thread,
+      exceptions in another thread CANNOT be caught by the current thread,
+      but anyway, those exceptions in the background thread are NOT IGNORED,
+      they are logged.
+
+
+(2)
+ IMServiceHandler.java
+                    if (userId != responderUserId) {
+The condition used here needs to be REVISITED.
+For skiping the responder which is already used you have to use if (!responder.equals(responders[i])) since the ServiceElement class is overriding the equals method.
+
+Same for                
+if (responderUserId != ((Long) ((ServiceElement) this.responderMap.get(key))
+                        .getProperty(USER_ID_KEY)).longValue()) {
+
+
+----> I have revisited this code, I still think we should test the id rather
+       than using the equals method of the ServiceElement,
+       because ServiceElement is NOT a wrapper of responder, it can be other thing,
+       so when we need to exclude the responder, we should test the id.
+
+
+(3)
+logger.log(Level.ERROR, e.getMessage());
+e.getMessage() can be null also which will cause IAE from IMLogger.
+So it should only be a part of the message. 
+
+----> I don't see message of any exception is null.
+
+
+(4)
+messagePool.unregister can throw UnregistrationException - You are not handling that.
+
+----> they are now put into a try-catch blcok, and the exception is logged
+
+(5)
+Code is not clear enough. Executable statement count for a method exceeds 30 in
+several places, which make the code hard to read.
+Methods should be extracted from these methods. 
+
+
+----> max-30-lines requirement is just recommended;
+      it is NOT error in the checkstyle, it is just warning;
+      and for quite some of my previous components, quite some more than 30 lines methods
+      are used.
+
+
+(6)
+The log messages should be more descriptive. You have to give all dyamic
+ data ike sessionId, requesterUserId. 
+
+
+----> I just follow the impl notes for the logging,
+      and now I added logging the requesterUserId, responderUserId, sessionId in the
+      IMServiceHandler class, these are added:
+
+
+                logger.log(Level.INFO, "IMServiceHandler.onToBeServiced", new long[] { requesterUserId,
+                        responderUserId }, new long[] { sessionId });
+
+
+                logger.log(Level.INFO, "IMServiceHandler.onServiced", new long[] { requesterUserId,
+                        responderUserId }, new long[] { sessionId });
+
+
+
+(7) about coding styles:
+
+Some magic numbers in the dev and test code:
+// set the sender of the message to be system.
+            msg.setSender(new Long(-1));
+In unit tests, many magic numbers. 
+
+
+----> "-1", "0", "1" are not considered to be magic numbers according to TC coding standard,
+      and using magic numbers in tests are also ok,
+      the checkstyle doesn't complain about these.
+
+      what the checkstyle complain is that (1) catching Exception (2) more than 30 lines methods;
+      for (1), this is a special case for this component, the designer requests us to ignore ALL exceptions,
+      so I use "try { ... }catch (Exception e) {...}";
+      for (2), this is just warning, and is not a "must" requirement, and those so called long methods seem
+      still easy to read and understand.
+
+
+(8)
+SessionStatusEventListener class documentation.
+
+" For all the requested users, post the Ask For Chat Message directly to the user."
+ - I can't find any implementation for this in the code. 
+
+
+----> the impl notes from the designer doesn't contain such logic,
+      and I don't want to remove it from the class doc,
+      because I want to leave it to the application assembler to decide whether some code should be added for this.
+      I just follow the method doc to make the code.
+
+(9) about CS:
+NO modification in demo and algorithm 
+
+
+----> for algorithm section, logging algorithm is updated,
+      "logger.log(...)" from designer is changed to " if (logger != null) logger.log(...) "
+      for demo section, it is updated as the demo tests.
+

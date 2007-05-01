@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CMConfig>
+	<Config name ="com.topcoder.chat.status.session">
+	
+	<Property name="primary_key">
+		<Value>session_id</Value>
+	</Property>
+	
+	<Property name="entity_name">
+		<Value>Session</Value>
+	</Property>
+	
+	<Property name="entity_id">
+		<Value>2</Value>
+	</Property>
+	
+	<Property name="statuses">		
+		<Property name="pending_status">					
+			<Property name="status_id">
+				<Value>202</Value>
+			</Property>				
+		</Property>
+		
+		<Property name="new_status">					
+			<Property name="status_id">
+				<Value>201</Value>
+			</Property>	
+		</Property>
+		
+		<Property name="close_status">					
+			<Property name="status_id">
+				<Value>204</Value>
+			</Property>	
+		</Property>
+		
+		<Property name="open_status">					
+			<Property name="status_id">
+				<Value>203</Value>
+			</Property>	
+		</Property>
+	</Property>
+	
+	</Config>
+	
+</CMConfig>
