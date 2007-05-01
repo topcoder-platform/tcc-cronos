@@ -14,6 +14,23 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
     </Config>
+    
+    <Config name="Invalid_ConnectionName">
+        <Property name="ConnectionName">
+            <Value>invalid_conn</Value>
+        </Property>
+        <Property name="ProjectIdSequenceName">
+            <Value>project_id_seq</Value>
+        </Property>
+        <Property name="ProjectAuditIdSequenceName">
+            <Value>project_audit_id_seq</Value>
+        </Property>
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+    </Config>
+    
+    
     <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
         <Property name="connections">
             <Property name="default">
@@ -35,13 +52,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://172.30.114.230:1526/or:INFORMIXSERVER=or</Value>
+                        <Value>jdbc:informix-sqli://localhost:1526/tco:informixserver=tcs</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>google</Value>
+                        <Value>topcoder</Value>
                     </Property>
                 </Property>
             </Property>
