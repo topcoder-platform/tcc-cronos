@@ -2,7 +2,7 @@
 
 <project name="Project Management Persistence" default="dist" basedir=".">
 
-    <property file="../topcoder/topcoder_global.properties"/>
+    <property file="../topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Project_Management_Persistence" />
