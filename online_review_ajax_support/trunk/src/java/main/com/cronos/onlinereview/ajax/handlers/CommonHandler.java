@@ -1,7 +1,10 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
+
+import java.util.Arrays;
+
 import com.cronos.onlinereview.ajax.AjaxRequestHandler;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
 import com.cronos.onlinereview.ajax.ConfigurationException;
@@ -9,27 +12,29 @@ import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
-import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
 /**
  * <p>
- * Defines a common Ajax request handler capable of getting a user¡¯s role using its ID,
+ * Defines a common Ajax request handler capable of getting a user's role using its ID,
  * and the Resource Management component;
  * this class implements the AjaxRequestHandler interface,
  * and keeps an instance of RessourceManager class in order to get resource related data.
  * <br>
- * This class main purpose is to simplify Ajax request handlers¡¯ implementation.
+ * This class's main purpose is to simplify Ajax request handlers' implementation.
  * </p>
  *
  * <p>
- * <strong>Thread Safety : </strong>
+ * <strong>Thread Safety:</strong>
  * This class is immutable an thread safe.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @author George1
+ * @version 1.0.1
  */
 public abstract class CommonHandler implements AjaxRequestHandler {
 
@@ -166,9 +171,8 @@ public abstract class CommonHandler implements AjaxRequestHandler {
         Filter extensionPropertyValueFilter
             = ResourceFilterBuilder.createExtensionPropertyValueFilter(Long.toString(userId));
 
-        Filter bundle1 = SearchBundle.buildAndFilter(noProjectFilter, resourceRoleIdFilter);
-        Filter bundle2 = SearchBundle.buildAndFilter(extensionPropertyNameFilter, extensionPropertyValueFilter);
-        Filter bundle = SearchBundle.buildAndFilter(bundle1, bundle2);
+        Filter bundle = new AndFilter(Arrays.asList(new Filter[] { noProjectFilter, resourceRoleIdFilter,
+                extensionPropertyNameFilter, extensionPropertyValueFilter }));
 
         // find the resources using the bundle
         try {

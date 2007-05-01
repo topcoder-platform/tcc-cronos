@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax;
+
 /**
  * <p>
  * Defines the contract an Ajax request handler must implement in order to process Ajax requests.
  * This interface defines only one method which is "service".<br>
- * An Ajax request handler¡¯s "service" method will take an AjaxRequest,
+ * An Ajax request handler's "service" method will take an AjaxRequest,
  * and a user ID as parameter in order to process the request from
  * that user and produce the corresponding AjaxResponse object.<br><br>
  *
@@ -21,14 +22,16 @@ package com.cronos.onlinereview.ajax;
  * </p>
  *
  * <p>
- * <strong>Thread Safety : </strong>
+ * <strong>Thread Safety:</strong>
  * Any Ajax request handler implementation must be thread-safe.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @version 1.0.1
  */
 public interface AjaxRequestHandler {
+
     /**
      * <p>
      * Service an Ajax request and produce an Ajax response.

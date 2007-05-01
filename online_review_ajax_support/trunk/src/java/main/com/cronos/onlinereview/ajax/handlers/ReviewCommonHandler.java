@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
+
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
 import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.topcoder.management.phase.PhaseManager;
@@ -15,12 +16,13 @@ import com.topcoder.management.review.ReviewManager;
  * related to review scorecard operations.
  * </p>
  * <p>
- * <strong>Thread Safety : </strong>
+ * <strong>Thread Safety:</strong>
  * This class is immutable an thread safe.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @version 1.0.1
  */
 public abstract class ReviewCommonHandler extends CommonHandler {
 

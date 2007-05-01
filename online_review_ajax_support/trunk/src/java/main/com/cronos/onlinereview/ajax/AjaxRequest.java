@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -31,9 +32,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * Represents an Ajax request sent by a client to the server;
  * this request consists of:
  * <ol>
- * <li>Type ¨C the type of the Ajax request,
+ * <li>Type &ndash; the type of the Ajax request,
  *     which is used by the AjaxSupportServlet class to find the correct handler in order to service the request.</li>
- * <li>Parameters ¨C zero or more request parameters; each parameter consists of:
+ * <li>Parameters &ndash; zero or more request parameters; each parameter consists of:
  * <ul>
  * <li>A unique name which is a not null, and not empty String object.</li>
  * <li>A value which is a String object, or an empty String.</li>
@@ -46,12 +47,13 @@ import org.xml.sax.helpers.DefaultHandler;
  * </p>
  *
  * <p>
- * <strong>Thread Safety : </strong>
+ * <strong>Thread Safety:</strong>
  * This class is immutable and thread safe.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @version 1.0.1
  */
 public final class AjaxRequest {
 
@@ -432,5 +434,4 @@ public final class AjaxRequest {
         // return the file
         return new File(url.getFile());
     }
-
 }

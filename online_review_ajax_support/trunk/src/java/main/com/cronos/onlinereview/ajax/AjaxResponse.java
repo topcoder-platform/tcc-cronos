@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax;
 
@@ -8,22 +8,23 @@ package com.cronos.onlinereview.ajax;
  * Represents an Ajax response produced by an Ajax request handler in order to be sent back to the requesting client.
  * This response consists of:
  * <ul>
- * <li>Type ¨C the type of the Ajax response which is the same as the Ajax request type.</li>
- * <li>Status ¨C the status of the operation which could be "success" for successful operation
+ * <li>Type &ndash; the type of the Ajax response which is the same as the Ajax request type.</li>
+ * <li>Status &ndash; the status of the operation which could be "success" for successful operation
  *              or any other status like error statuses.</li>
- * <li>Data ¨C which could represent a result data, or an error message; this field is optional.</li>
+ * <li>Data &ndash; which could represent a result data, or an error message; this field is optional.</li>
  * </ul>
  *
  * Transforming an Ajax response to an XML document is implemented by this class.
  * </p>
  *
  * <p>
- * <strong>Thread Safety : </strong>
+ * <strong>Thread Safety:</strong>
  * This class is immutable and thread safe.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @version 1.0.1
  */
 public final class AjaxResponse {
 

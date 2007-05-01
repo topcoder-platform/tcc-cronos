@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
+
 import com.cronos.onlinereview.ajax.AjaxRequest;
 import com.cronos.onlinereview.ajax.AjaxResponse;
 import com.cronos.onlinereview.ajax.AjaxSupportHelper;
@@ -22,12 +23,13 @@ import com.topcoder.management.scorecard.data.ScorecardStatus;
  * Any successful or failed operation is logged using the Logging Wrapper component.
  * </p>
  * <p>
- * <strong>Thread Safety : </strong>
- * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
+ * <strong>Thread Safety:</strong>
+ * This class is immutable an thread safe. Any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @version 1.0.1
  */
 public class SetScorecardStatusHandler extends CommonHandler {
 

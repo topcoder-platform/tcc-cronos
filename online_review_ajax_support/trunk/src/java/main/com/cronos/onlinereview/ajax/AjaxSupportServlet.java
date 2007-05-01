@@ -1,9 +1,11 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax;
+
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Level;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -38,15 +41,19 @@ import java.util.Map;
  * </p>
  *
  * <p>
- * <strong>Thread Safety : </strong>
+ * <strong>Thread Safety:</strong>
  * This class is immutable and thread safe. all accesses to its internal state are read only once.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @author George1
+ * @version 1.0.1
  */
 public final class AjaxSupportServlet extends HttpServlet {
-
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+			.getLog(AjaxSupportServlet.class.getName());
+	
     /**
      * Represents the property name of handlers.
      */
@@ -196,13 +203,27 @@ public final class AjaxSupportServlet extends HttpServlet {
 
             // serve the request and get the response
             AjaxResponse resp = handler.service(ajaxRequest, userId);
-
+            
             if (resp == null) {
                 AjaxSupportHelper.responseAndLogError(ajaxRequest.getType(),
                         "Server error", "Server can't satisfy this request", response);
                 return;
             }
-
+            if (!"success".equalsIgnoreCase(resp.getStatus())) {
+            	StringBuffer buf = new StringBuffer();
+            	for (Iterator i = ajaxRequest.getAllParameterNames().iterator(); i.hasNext();) {
+            		String param = (String) i.next();
+            		buf.append(',')
+            			.append(param)
+            			.append(" = ")
+            			.append(ajaxRequest.getParameter(param));
+            	}
+            	log.log(Level.WARN, "problem handling request, status: " + resp.getStatus() +
+            			"\ntype: " + resp.getType() +
+            			"\nparams: " + (buf.length() == 0 ? "" : buf.substring(1)) + 
+            			"\nuserId: " + userId +
+            			"\nencoding: " + request.getCharacterEncoding());
+            }
             // response at last, this is the normal condition
             AjaxSupportHelper.doResponse(response, resp);
 

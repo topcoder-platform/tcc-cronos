@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
+
 import com.topcoder.util.errorhandling.BaseException;
 
 /**
@@ -11,8 +12,10 @@ import com.topcoder.util.errorhandling.BaseException;
  * This exception is thrown by  many methods in the CommonHandler class.
  * </p>
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @author George1
+ * @version 1.0.1
  */
 public class ResourceException extends BaseException {
 

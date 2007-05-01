@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax;
 
@@ -27,17 +27,18 @@ import java.util.Date;
  * A helper class for this component.
  * </p>
  *
- * It will do the following things :
+ * It will do the following things:
  * <ul>
  * <li> Create object factory. </li>
  * <li> Write an ajax response. </li>
  * </ul>
  *
- * <strong>Thread safe : </strong>
+ * <strong>Thread safety:</strong>
  * This class has no state, so it is thread safe.
  *
- * @author topgear, assistant
- * @version 1.0
+ * @author topgear
+ * @author assistant
+ * @version 1.0.1
  */
 public final class AjaxSupportHelper {
 
