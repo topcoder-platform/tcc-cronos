@@ -14,6 +14,7 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.UnknownNamespaceException;
 
+import javax.ejb.CreateException;
 import javax.naming.NamingException;
 
 
@@ -81,13 +82,17 @@ public class RejectEmailManager {
             }
 
             local = ((RejectEmailDAOLocalHome) object).create();
-        } catch (UnknownNamespaceException e) {
-            throw new RejectEmailDAOConfigurationException("The namespace '" + namespace + "' is unknown.", e);
-        } catch (ConfigManagerException e) {
-            throw new RejectEmailDAOConfigurationException("The JNDI Utility component is not configured properly.", e);
-        } catch (NamingException e) {
-            throw new RejectEmailDAOConfigurationException("Error occurred while looking up object from JNDI context.",
-                e);
+        } catch (UnknownNamespaceException une) {
+            throw new RejectEmailDAOConfigurationException("The namespace '" + namespace + "' is unknown.", une);
+        } catch (ConfigManagerException cme) {
+            throw new RejectEmailDAOConfigurationException(
+                "The JNDI Utility component is not configured properly.", cme);
+        } catch (NamingException ne) {
+            throw new RejectEmailDAOConfigurationException(
+                "Error occurred while looking up object from JNDI context.", ne);
+        } catch (CreateException ce) {
+            throw new RejectEmailDAOConfigurationException(
+                "Error occurred while creating local reject email manager.", ce);
         }
     }
 

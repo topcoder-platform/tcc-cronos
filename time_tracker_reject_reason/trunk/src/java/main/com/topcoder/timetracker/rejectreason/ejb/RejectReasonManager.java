@@ -14,6 +14,7 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.UnknownNamespaceException;
 
+import javax.ejb.CreateException;
 import javax.naming.NamingException;
 
 
@@ -78,14 +79,17 @@ public class RejectReasonManager {
             }
 
             local = ((RejectReasonDAOLocalHome) object).create();
-        } catch (UnknownNamespaceException e) {
-            throw new RejectReasonDAOConfigurationException("The namespace '" + namespace + "' is unknown.", e);
-        } catch (ConfigManagerException e) {
+        } catch (UnknownNamespaceException une) {
+            throw new RejectReasonDAOConfigurationException("The namespace '" + namespace + "' is unknown.", une);
+        } catch (ConfigManagerException cme) {
             throw new RejectReasonDAOConfigurationException(
-                "The JNDI Utility component is not configured properly.", e);
-        } catch (NamingException e) {
+                "The JNDI Utility component is not configured properly.", cme);
+        } catch (NamingException ne) {
             throw new RejectReasonDAOConfigurationException(
-                "Error occurred while looking up object from JNDI context.", e);
+                "Error occurred while looking up object from JNDI context.", ne);
+        } catch (CreateException ce) {
+            throw new RejectReasonDAOConfigurationException(
+                "Error occurred while creating local reject reason manager.", ce);
         }
     }
 

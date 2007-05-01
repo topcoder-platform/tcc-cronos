@@ -3,6 +3,7 @@
  */
 package com.topcoder.timetracker.rejectreason.ejb;
 
+import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 
 
@@ -31,5 +32,5 @@ public interface RejectEmailDAOLocalHome extends EJBLocalHome {
      *
      * @return an instance of RejectEmailDAOLocal.
      */
-    public RejectEmailDAOLocal create();
+    public RejectEmailDAOLocal create() throws CreateException;
 }
