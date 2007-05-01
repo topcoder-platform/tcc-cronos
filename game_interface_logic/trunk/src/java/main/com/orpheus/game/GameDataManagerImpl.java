@@ -1276,6 +1276,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws IllegalStateException if the manager has been stopped.
      */
     public void advanceHostingSlot(long gameId) throws GameDataException {
+        System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : called for game [" + gameId + "]");
         advanceHostingSlot(gameId, true);
     }
 
@@ -1317,6 +1318,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         }
         if (game.getEndDate() != null) {
             // Game has already ended; return without doing anything. in the future, this should be logged
+            System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : the game [" + gameId
+                               + "] is already completed" );
             return;
         }
 
@@ -1332,6 +1335,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
             // if no slots exist, just go on to the next block
             if (slots == null) {
+                System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : the game [" + gameId
+                                   + "] has no slots for block [" + blocks[i].getId() + "]" );
                 continue;
             }
 
@@ -1345,6 +1350,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
                 // if this is the current slot ...
                 if ((slots[j].getHostingStart() != null) && (slots[j].getHostingEnd() == null)) {
+                    System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : the game [" + gameId
+                                       + "] has slot [" + slots[j].getId() + "] as current hosting slot" );
                     List slotsToUpdate = new ArrayList();
                     List slotsToDelete = new ArrayList();
                     int nextSlotBlockIndex = i;
@@ -1394,21 +1401,35 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                     }
 
                     slots = (HostingSlot[]) slotsToUpdate.toArray(new HostingSlot[slotsToUpdate.size()]);
+                    for (int k = 0; k < slots.length; k++) {
+                        HostingSlot slot = slots[k];
+                        System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : is going to update slot ["
+                                           + slot.getId() + "]. Hosting start = [" + slot.getHostingStart() + "], "
+                                           + "hosting end = [" + slot.getHostingEnd() + "]" );
+
+                    }
 
                     // record slot changes to the DB
                     try {
                         if (gameDataPersistenceLocal != null) {
                             gameDataPersistenceLocal.updateSlots(slots);
+                            System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : the slots have been "
+                                               + "updated for game [" + gameId + "]" );
                             for (Iterator slotIterator = slotsToDelete.iterator(); slotIterator.hasNext(); ) {
                                 HostingSlot slot = (HostingSlot) slotIterator.next();
+                                System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : deleting slot ["
+                                                   + slot.getId() + "] as the domain is no longer valid" );
 
                                 gameDataPersistenceLocal.deleteSlot(slot.getId().longValue());
                             }
                         } else {
                             gameDataPersistenceRemote.updateSlots(slots);
+                            System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : the slots have been "
+                                               + "updated for game [" + gameId + "]" );
                             for (Iterator slotIterator = slotsToDelete.iterator(); slotIterator.hasNext(); ) {
                                 HostingSlot slot = (HostingSlot) slotIterator.next();
-
+                                System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : deleting slot ["
+                                                   + slot.getId() + "] as the domain is no longer valid" );
                                 gameDataPersistenceRemote.deleteSlot(slot.getId().longValue());
                             }
                         }
