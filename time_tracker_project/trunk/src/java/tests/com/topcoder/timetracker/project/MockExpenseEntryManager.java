@@ -58,7 +58,7 @@ public class MockExpenseEntryManager implements ExpenseEntryManager {
      *
      * @return false always
      */
-    public boolean deleteEntry(int id, boolean audit) {
+    public boolean deleteEntry(long id, boolean audit) {
         return false;
     }
 
@@ -70,7 +70,7 @@ public class MockExpenseEntryManager implements ExpenseEntryManager {
      * @return an ExpenseEntry instance or null if not found
      * @param id the id identifying the entry
      */
-    public ExpenseEntry retrieveEntry(int id) {
+    public ExpenseEntry retrieveEntry(long id) {
         if (id == 1 || id == 2) {
             ExpenseEntry entry = new ExpenseEntry();
             entry.setId(id);
@@ -176,7 +176,7 @@ public class MockExpenseEntryManager implements ExpenseEntryManager {
      * @param ids the ids of the entries to delete
      * @param audit audit flag which specifies if the user want to audit the action
      */
-    public void deleteEntries(int[] ids, boolean audit) {
+    public void deleteEntries(long[] ids, boolean audit) {
     }
 
     /**
@@ -189,8 +189,8 @@ public class MockExpenseEntryManager implements ExpenseEntryManager {
      * @param isAtomic whether the operation should be atomic or not
      * @return an empty array
      */
-    public int[] deleteEntries(int[] ids, boolean audit, boolean isAtomic) {
-        return new int[0];
+    public long[] deleteEntries(long[] ids, boolean audit, boolean isAtomic) {
+        return new long[0];
     }
 
     /**
@@ -201,7 +201,7 @@ public class MockExpenseEntryManager implements ExpenseEntryManager {
      * @param ids the ids of the entries to retrieve.
      * @return an empty array
      */
-    public ExpenseEntry[] retrieveEntries(int[] ids) {
+    public ExpenseEntry[] retrieveEntries(long[] ids) {
         return new ExpenseEntry[0];
     }
 
@@ -214,7 +214,9 @@ public class MockExpenseEntryManager implements ExpenseEntryManager {
      * @param isAtomic whether the operation should be atomic or not
      * @return an empty array
      */
-    public ExpenseEntry[] retrieveEntries(int[] ids, boolean isAtomic) {
+    public ExpenseEntry[] retrieveEntries(long[] ids, boolean isAtomic) {
         return new ExpenseEntry[0];
     }
+
+
 }
