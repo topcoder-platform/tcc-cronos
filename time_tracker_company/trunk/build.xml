@@ -158,6 +158,11 @@
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
     <property name="time_tracker_common.jar" value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
 
+    <property name="time_tracker_contact.version" value="3.2"/>
+    <property name="time_tracker_contact.jar.name" value="time_tracker_contact.jar"/>
+    <property name="time_tracker_contact.path" value="time_tracker_contact/${time_tracker_contact.version}"/>
+    <property name="time_tracker_contact.jar" value="${tcs_libdir}/${time_tracker_contact.path}/${time_tracker_contact.jar.name}"/>
+
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.11/log4j.jar"/>
@@ -202,6 +207,7 @@
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${JNDI_Utility.jar}" />
         <pathelement location="${time_tracker_common.jar}" />
+        <pathelement location="${time_tracker_contact.jar}" />
 		<!-- <pathelement location="${time_tracker_audit.jar}" /> -->
 
 		<!-- mock -->
@@ -226,6 +232,7 @@
 		<pathelement location="${mockrunner.jar}" />
 		<pathelement location="${mockrunner-ejb.jar}" />
 		<pathelement location="${jmock.jar}" />
+        <pathelement location="${ext_libdir}/j2ee.jar" />
     </path>
 
     <path id="test.build.classpath">
