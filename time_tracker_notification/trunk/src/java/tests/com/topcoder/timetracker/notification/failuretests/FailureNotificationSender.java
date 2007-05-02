@@ -3,6 +3,7 @@
  */
 package com.topcoder.timetracker.notification.failuretests;
 
+import com.topcoder.timetracker.notification.NotificationPersistence;
 import com.topcoder.timetracker.notification.NotificationSender;
 import com.topcoder.timetracker.notification.NotificationSendingException;
 
@@ -20,7 +21,7 @@ public class FailureNotificationSender implements NotificationSender {
      * mock method.
      * </p>
      */
-    public void send(long arg0) throws NotificationSendingException {
+    public void send(long notificationId, NotificationPersistence notificationManager)
+        throws NotificationSendingException {
     }
-
 }

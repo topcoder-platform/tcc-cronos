@@ -77,6 +77,6 @@ public class EmailNotificationSenderAccuracyTests extends TestCase {
         Notification notification = AccuracyTestHelper.createNotification(300);
         NotificationPersistenceFactory.getNotificationPersistence().createNotification(notification, true);
 
-        instance.send(notification.getId());
+        instance.send(notification.getId(), NotificationPersistenceFactory.getNotificationPersistence());
     }
 }

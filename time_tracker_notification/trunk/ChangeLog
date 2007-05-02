@@ -2,3 +2,6 @@ The test code has hard-coded like:
 SetEmailAddress("zk@db.org")
 I just use a ConfigManager to set it, So we can change the config file to run the test,
 Not change the code.
+
+2007-5-2
+Update the test source code since the code update.

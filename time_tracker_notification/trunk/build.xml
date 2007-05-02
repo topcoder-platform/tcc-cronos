@@ -158,7 +158,7 @@
     <property name="document_generator.path" value="document_generator/${document_generator.version}"/>
     <property name="document_generator.jar" value="${tcs_libdir}/${document_generator.path}/${document_generator.jar.name}"/>
 
-    <property name="job_scheduling.version" value="3.0"/>
+    <property name="job_scheduling.version" value="2.0"/>
     <property name="job_scheduling.jar.name" value="job_scheduling.jar"/>
     <property name="job_scheduling.path" value="job_scheduling/${job_scheduling.version}"/>
     <property name="job_scheduling.jar" value="${tcs_libdir}/${job_scheduling.path}/${job_scheduling.jar.name}"/>
