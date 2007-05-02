@@ -14,13 +14,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://grt-med1010:1526/timetracker:informixserver=informix</Value>
+						<Value>jdbc:informix-sqli://10.37.129.3:1526/fixed_billing:informixserver=ol_topcoder</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>123456</Value>
+						<Value>sa</Value>
 					</Property>
 				</Property>
 			</Property>

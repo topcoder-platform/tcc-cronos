@@ -4,6 +4,7 @@
 package com.topcoder.timetracker.entry.fixedbilling.failuretests;
 
 import com.topcoder.timetracker.rejectreason.ejb.RejectReasonManager;
+import com.topcoder.timetracker.rejectreason.ejb.RejectReasonDAOConfigurationException;
 
 /**
  * A mock RejectReasonManager for testing.
@@ -17,8 +18,9 @@ public class MockRejectReasonManager extends RejectReasonManager {
      * Creates the MockRejectReasonManager.
      *
      * @param namespace
+     * @throws RejectReasonDAOConfigurationException
      */
-    public MockRejectReasonManager(String namespace) {
+    public MockRejectReasonManager(String namespace) throws RejectReasonDAOConfigurationException {
         super(namespace);
     }
 

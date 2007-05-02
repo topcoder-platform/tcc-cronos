@@ -21,13 +21,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://JAG:1527/fixed_billing:informixserver=topcoder_test</Value>
+						<Value>jdbc:informix-sqli://10.37.129.3:1526/fixed_billing:informixserver=ol_topcoder</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>topcoder</Value>
+						<Value>sa</Value>
 					</Property>
 				</Property>
 			</Property>

@@ -1018,11 +1018,6 @@ ALTER TABLE fix_bill_entry
        REFERENCES fix_bill_status
        constraint fk_fix_bill_entry_fix_bill_status;
 
-ALTER TABLE fix_bill_entry
-       ADD CONSTRAINT FOREIGN KEY (fix_bill_type_id)
-       REFERENCES fix_bill_type
-       constraint fk_fix_bill_entry_fix_bill_type;
-
 ALTER TABLE expense_entry
        ADD CONSTRAINT FOREIGN KEY (invoice_id)
        REFERENCES invoice
