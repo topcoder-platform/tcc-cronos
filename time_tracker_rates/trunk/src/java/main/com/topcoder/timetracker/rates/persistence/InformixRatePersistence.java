@@ -128,7 +128,7 @@ public class InformixRatePersistence implements RatePersistence {
      */
     private final String connectionName;
 
-    /**
+/**
      * Constructs a new Informix Rate Persistence implementation, taking values from configuration. This reads in the
      * (optional) log and connection names, setting them to null if nothing is configured. In addition, the connection
      * factory and audit manager are initialized for later use. If there are any troubles setting up the members, a
@@ -149,7 +149,7 @@ public class InformixRatePersistence implements RatePersistence {
         String logName = ConfigHelper.getStringProperty(namespace, "logName", false);
         String useLog = ConfigHelper.getStringProperty(namespace, "useLog", false);
 
-        if (useLog != null && "true".equals(useLog)) {
+        if ((useLog != null) && "true".equals(useLog)) {
             this.log = LogFactory.getLog(logName);
         } else {
             this.log = null;
@@ -242,12 +242,11 @@ public class InformixRatePersistence implements RatePersistence {
 
                 //audit if successfully persist
                 auditAction(null, rates[i], audit);
-                rates[i].setChanged(false);
             }
         } catch (SQLException e) {
-            String msg = "failed to persist rate[" + i + "] id: " + rates[i].getId() + " compId: " +
-                rates[i].getCompany();
-            logErr(msg + " msg: " + e.getMessage());
+            String msg = "failed to persist rate[" + i + "] id:" + rates[i].getId() + " compId:" +
+                rates[i].getCompany() + " msg:" + e.getMessage();
+            logErr(msg + " " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -303,10 +302,10 @@ public class InformixRatePersistence implements RatePersistence {
                 }
             }
         } catch (SQLException e) {
-            String msg = "failed to delete rate[" + i + "] id: " + rates[i].getId() + " compId: " +
-                rates[i].getCompany().getId();
+            String msg = "failed to delete rate[" + i + "] id:" + rates[i].getId() + " compId:" +
+                rates[i].getCompany().getId() + " msg:" + e.getMessage();
 
-            logErr(msg + " msg: " + e.getMessage());
+            logErr(msg + " " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -335,8 +334,8 @@ public class InformixRatePersistence implements RatePersistence {
 
             return getRate(conn, rateId, companyId);
         } catch (SQLException e) {
-            String msg = "failed to retrieve rate id: " + rateId + " companyId: " + companyId;
-            logErr(msg + " msg: " + e.getMessage());
+            String msg = "failed to retrieve rate id:" + rateId + " companyId:" + companyId;
+            logErr(msg + " msg:" + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -378,8 +377,8 @@ public class InformixRatePersistence implements RatePersistence {
                 return null;
             }
         } catch (SQLException e) {
-            String msg = "failed to retrieve rate, companyId: " + companyId + " desc: " + description;
-            logErr(msg + " msg: " + e.getMessage());
+            String msg = "failed to retrieve rate, companyId:" + companyId + " desc:" + description;
+            logErr(msg);
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -415,8 +414,8 @@ public class InformixRatePersistence implements RatePersistence {
 
             return (Rate[]) list.toArray(new Rate[list.size()]);
         } catch (SQLException e) {
-            String msg = "failed to retrieve rate, companyId: " + companyId;
-            logErr(msg + " msg: " + e.getMessage());
+            String msg = "failed to retrieve rate, companyId:" + companyId;
+            logErr(msg + " msg:" + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -474,17 +473,16 @@ public class InformixRatePersistence implements RatePersistence {
                 if (result == 1) {
                     //audit if successfully persist
                     auditAction(oldRates[i], rates[i], audit);
-                    rates[i].setChanged(false);
                 } else {
-                    logErr("failed to update rate[" + i + "] id: " + rates[i].getId() + " compId: " + comp.getId() +
-                        " msg: record does not exist");
+                    logErr("failed to update rate[" + i + "] id:" + rates[i].getId() + " compId:" + comp.getId() +
+                        " msg:record not exists");
                 }
             }
         } catch (SQLException e) {
-            String msg = "failed to update rate[" + i + "] id: " + rates[i].getId() + " compId: " +
-                rates[i].getCompany().getId();
+            String msg = "failed to update rate[" + i + "] id:" + rates[i].getId() + " compId:" +
+                rates[i].getCompany().getId() + " msg:" + e.getMessage();
 
-            logErr(msg + " msg: " + e.getMessage());
+            logErr(msg + " " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
             closeConnection(conn);
@@ -559,6 +557,13 @@ public class InformixRatePersistence implements RatePersistence {
             header.setEntityId((int) entity.getId());
             header.setTableName(AUDIT_TABLE_NAME);
             header.setCompanyId((int) entity.getCompany().getId());
+            header.setCreationDate(new Timestamp(System.currentTimeMillis()));
+
+            if (type == AuditType.INSERT) {
+                header.setCreationUser(entity.getCreationUser());
+            } else {
+                header.setCreationUser(entity.getModificationUser());
+            }
 
             try {
                 auditManager.createAuditRecord(header);
@@ -583,7 +588,7 @@ public class InformixRatePersistence implements RatePersistence {
                                             : connectionFactory.createConnection(connectionName);
         } catch (DBConnectionException e) {
             String msg = "failed to get connection";
-            logErr(msg + " msg: " + e.getMessage());
+            logErr(msg + " msg:" + e.getMessage());
             throw new RatePersistenceException(msg, e);
         }
     }
@@ -669,7 +674,6 @@ public class InformixRatePersistence implements RatePersistence {
      */
     private Rate parseRate(ResultSet res) throws SQLException {
         Rate rate = new Rate();
-
         rate.setId(res.getLong(1));
         rate.setRate(res.getDouble(2));
         rate.setCreationDate(res.getTimestamp(3));
@@ -677,7 +681,6 @@ public class InformixRatePersistence implements RatePersistence {
         rate.setModificationDate(res.getTimestamp(5));
         rate.setModificationUser(res.getString(6));
         rate.setDescription(res.getString(7));
-        rate.setChanged(false);
 
         return rate;
     }
