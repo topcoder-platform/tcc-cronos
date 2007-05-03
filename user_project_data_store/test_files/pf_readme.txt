@@ -35,3 +35,6 @@ For running all the unit tests:
 6. Change the connections config in the "Accuracy\Config.xml", "FailureTests\ConfigFile.xml", 
 "FailureTests\InvalidConfigFile.xml", "stresstest\db_connection_factory.xml" as the step 5.
 
+7. Sample build.xml is given in \docs directory.
+
+
