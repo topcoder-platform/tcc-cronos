@@ -93,7 +93,7 @@ public class MockContactManager implements ContactManager {
      * @throws PersistenceException if it is thrown by the localEJB
      * @throws IllegalArgumentException if ids is null or any id small or equal 0
      */
-    public Contact[] retrieveContatcts(long[] ids) throws PersistenceException {
+    public Contact[] retrieveContacts(long[] ids) throws PersistenceException {
         return null;
     }
 

@@ -66,7 +66,7 @@ public class MockContactManager implements ContactManager {
      * @param ids not used
      * @return an empty array
      */
-    public Contact[] retrieveContatcts(long[] ids) {
+    public Contact[] retrieveContacts(long[] ids) {
         return new Contact[0];
     }
 
