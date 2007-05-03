@@ -102,7 +102,7 @@ public class MockExpenseManager implements ExpenseEntryManager {
      * @throws PersistenceException
      *             not thrown
      */
-    public void deleteEntries(int[] entryIds, boolean auditFlag) throws PersistenceException {
+    public void deleteEntries(long[] entryIds, boolean auditFlag) throws PersistenceException {
         // nothing to do
     }
 
@@ -121,7 +121,7 @@ public class MockExpenseManager implements ExpenseEntryManager {
      * @throws PersistenceException
      *             not thrown
      */
-    public int[] deleteEntries(int[] entryIds, boolean auditFlag, boolean isAtomic) throws PersistenceException {
+    public long[] deleteEntries(long[] entryIds, boolean auditFlag, boolean isAtomic) throws PersistenceException {
 
         return null;
     }
@@ -183,7 +183,7 @@ public class MockExpenseManager implements ExpenseEntryManager {
      * @throws PersistenceException
      *             not thrown
      */
-    public ExpenseEntry[] retrieveEntries(int[] entryIds, boolean isAtomic) throws PersistenceException {
+    public ExpenseEntry[] retrieveEntries(long[] entryIds, boolean isAtomic) throws PersistenceException {
         return null;
     }
 

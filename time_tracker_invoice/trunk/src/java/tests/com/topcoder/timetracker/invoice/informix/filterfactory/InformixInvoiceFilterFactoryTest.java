@@ -5,11 +5,7 @@ package com.topcoder.timetracker.invoice.informix.filterfactory;
 
 import java.util.Calendar;
 
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.EqualToFilter;
-import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
-import com.topcoder.search.builder.filter.LessThanOrEqualToFilter;
-import com.topcoder.search.builder.filter.LikeFilter;
+import com.topcoder.search.builder.filter.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -93,10 +89,11 @@ public class InformixInvoiceFilterFactoryTest extends TestCase {
     public void testCreateInvoiceDateFilterAccuracy1() {
         Calendar fromCal = Calendar.getInstance();
         Calendar toCal = Calendar.getInstance();
-        AndFilter filter =
-            (AndFilter) InformixInvoiceFilterFactory.createInvoiceDateFilter(fromCal.getTime(), toCal.getTime());
+        BetweenFilter filter = (BetweenFilter)InformixInvoiceFilterFactory
+                .createInvoiceDateFilter(fromCal.getTime(), toCal.getTime());
 
-        assertEquals("The filter is not created correctly", 2, filter.getFilters().size());
+        assertEquals("The filter is not created correctly", filter.getLowerThreshold(), fromCal.getTime());
+        assertEquals("The filter is not created correctly", filter.getUpperThreshold(), toCal.getTime());        
     }
 
     /**
@@ -144,10 +141,11 @@ public class InformixInvoiceFilterFactoryTest extends TestCase {
     public void testCreateDueDateFilterAccuracy1() {
         Calendar fromCal = Calendar.getInstance();
         Calendar toCal = Calendar.getInstance();
-        AndFilter filter =
-            (AndFilter) InformixInvoiceFilterFactory.createDueDateFilter(fromCal.getTime(), toCal.getTime());
+        BetweenFilter filter = (BetweenFilter)InformixInvoiceFilterFactory
+                .createInvoiceDateFilter(fromCal.getTime(), toCal.getTime());
 
-        assertEquals("The filter is not created correctly", 2, filter.getFilters().size());
+        assertEquals("The filter is not created correctly", filter.getLowerThreshold(), fromCal.getTime());
+        assertEquals("The filter is not created correctly", filter.getUpperThreshold(), toCal.getTime());
     }
 
     /**
@@ -181,11 +179,11 @@ public class InformixInvoiceFilterFactoryTest extends TestCase {
     public void testCreateModificationDateFilterAccuracy1() {
         Calendar fromCal = Calendar.getInstance();
         Calendar toCal = Calendar.getInstance();
-        AndFilter filter =
-            (AndFilter) InformixInvoiceFilterFactory.createModificationDateFilter(fromCal.getTime(), toCal
-                .getTime());
+        BetweenFilter filter = (BetweenFilter)InformixInvoiceFilterFactory
+                .createInvoiceDateFilter(fromCal.getTime(), toCal.getTime());
 
-        assertEquals("The filter is not created correctly", 2, filter.getFilters().size());
+        assertEquals("The filter is not created correctly", filter.getLowerThreshold(), fromCal.getTime());
+        assertEquals("The filter is not created correctly", filter.getUpperThreshold(), toCal.getTime());
     }
 
     /**
@@ -221,10 +219,11 @@ public class InformixInvoiceFilterFactoryTest extends TestCase {
     public void testCreateCreationDateFilterAccuracy1() {
         Calendar fromCal = Calendar.getInstance();
         Calendar toCal = Calendar.getInstance();
-        AndFilter filter =
-            (AndFilter) InformixInvoiceFilterFactory.createCreationDateFilter(fromCal.getTime(), toCal.getTime());
+        BetweenFilter filter = (BetweenFilter)InformixInvoiceFilterFactory
+                .createInvoiceDateFilter(fromCal.getTime(), toCal.getTime());
 
-        assertEquals("The filter is not created correctly", 2, filter.getFilters().size());
+        assertEquals("The filter is not created correctly", filter.getLowerThreshold(), fromCal.getTime());
+        assertEquals("The filter is not created correctly", filter.getUpperThreshold(), toCal.getTime());
     }
 
     /**

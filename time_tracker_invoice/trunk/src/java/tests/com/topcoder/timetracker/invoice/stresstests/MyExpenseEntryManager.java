@@ -101,13 +101,13 @@ public class MyExpenseEntryManager implements ExpenseEntryManager {
     /**
      * @see com.topcoder.timetracker.entry.expense.ExpenseEntryManager#deleteEntries(int[], boolean)
      */
-    public void deleteEntries(int[] arg0, boolean arg1) throws PersistenceException {
+    public void deleteEntries(long[] arg0, boolean arg1) throws PersistenceException {
     }
 
     /**
      * @see com.topcoder.timetracker.entry.expense.ExpenseEntryManager#deleteEntries(int[], boolean, boolean)
      */
-    public int[] deleteEntries(int[] arg0, boolean arg1, boolean arg2) throws PersistenceException {
+    public long[] deleteEntries(long[] arg0, boolean arg1, boolean arg2) throws PersistenceException {
         return null;
     }
 
@@ -121,7 +121,7 @@ public class MyExpenseEntryManager implements ExpenseEntryManager {
     /**
      * @see com.topcoder.timetracker.entry.expense.ExpenseEntryManager#retrieveEntries(int[], boolean)
      */
-    public ExpenseEntry[] retrieveEntries(int[] arg0, boolean arg1) throws PersistenceException {
+    public ExpenseEntry[] retrieveEntries(long[] arg0, boolean arg1) throws PersistenceException {
         return new ExpenseEntry[0];
     }
 
