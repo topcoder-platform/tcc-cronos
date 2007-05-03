@@ -24,6 +24,7 @@ import com.topcoder.timetracker.invoice.servicedetail.EntityNotFoundException;
 import com.topcoder.timetracker.invoice.servicedetail.InvalidDataException;
 import com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail;
 import com.topcoder.timetracker.invoice.servicedetail.TestHelper;
+import com.topcoder.util.config.ConfigManager;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -48,6 +49,35 @@ public class ServiceDetailDAOImplTest extends DBTestCase {
     /** JDBC connection used in the unit test. */
     private Connection jdbcConnection;
 
+        /** Represents the configuration file that contains the properties needed by this demo
+     * for setting DBUNIT system properties regarding the test database.
+     */
+    private static final String DBUNIT_CONFIG_DB_FILE="dbunit_config.properties";
+
+    /**
+     * Represents the database driver class name. It is initialized in the
+     * constructor.
+     */
+    private final String driverClass;
+
+    /**
+     * Represents the connection URL for the database.It is initialized in the
+     * constructor.
+     */
+    private final String connectionURL;
+
+    /**
+     * Represents the user for the database.It is initialized in the
+     * constructor.
+     */
+    private final String username;
+
+    /**
+     * Represents the user's password for the database.It is initialized in the
+     * constructor.
+     */
+    private final String password;
+
     /**
      * Constructor of the unit test.
      *
@@ -58,15 +88,25 @@ public class ServiceDetailDAOImplTest extends DBTestCase {
      */
     public ServiceDetailDAOImplTest(String name) throws Exception {
         super(name);
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "com.informix.jdbc.IfxDriver");
+        // Read the config properties for DbUnit
+        ConfigManager cm= ConfigManager.getInstance();
+        final String dbunitNamespace = "demo.namespace";
+        cm.add(dbunitNamespace, DBUNIT_CONFIG_DB_FILE, ConfigManager.CONFIG_PROPERTIES_FORMAT );
+        driverClass= cm.getString(dbunitNamespace, "driverClass");
+        connectionURL = cm.getString(dbunitNamespace, "connectionURL");
+        username = cm.getString(dbunitNamespace, "username");
+        password = cm.getString(dbunitNamespace, "password");
+
+        cm.removeNamespace(dbunitNamespace);
+
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, driverClass);
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
-            "jdbc:informix-sqli://192.168.1.101:1526/service_details:INFORMIXSERVER=topcoder");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "informix");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "123456");
+            connectionURL);
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, username);
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, password);
 
         // database connection
-        Class.forName("com.informix.jdbc.IfxDriver");
-
+        Class.forName(driverClass);
     }
 
     /**
@@ -99,9 +139,7 @@ public class ServiceDetailDAOImplTest extends DBTestCase {
         serviceDetailDAOImplNotExist = new ServiceDetailDAOImpl("notExistNS");
 
         jdbcConnection =
-            DriverManager.getConnection(
-                "jdbc:informix-sqli://192.168.1.101:1526/service_details:INFORMIXSERVER=topcoder", "informix",
-                "123456");
+            DriverManager.getConnection(connectionURL, username, password);
     }
 
     /**

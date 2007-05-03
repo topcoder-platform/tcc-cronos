@@ -24,6 +24,7 @@ import com.topcoder.timetracker.invoice.Invoice;
 import com.topcoder.timetracker.invoice.servicedetail.ejb.LocalServiceDetail;
 import com.topcoder.timetracker.invoice.servicedetail.ejb.LocalServiceDetailHome;
 import com.topcoder.timetracker.invoice.servicedetail.ejb.ServiceDetailBean;
+import com.topcoder.util.config.ConfigManager;
 
 /**
  * Demo for TimeTracker Service Detail 3.2.
@@ -36,6 +37,11 @@ public class Demo extends DBTestCase {
     /** Context used in this unit test. */
     private Context context;
 
+    /** Represents the configuration file that contains the properties needed by this demo
+     * for setting DBUNIT system properties regarding the test database.
+     */
+    private static final String DBUNIT_CONFIG_DB_FILE="dbunit_config.properties";
+
     /**
      * Constructor of the unit test.
      *
@@ -46,14 +52,26 @@ public class Demo extends DBTestCase {
      */
     public Demo(String name) throws Exception {
         super(name);
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "com.informix.jdbc.IfxDriver");
+
+        // Read the config properties for DbUnit
+        ConfigManager cm= ConfigManager.getInstance();
+        final String dbunitNamespace = "demo.namespace";
+        cm.add(dbunitNamespace, DBUNIT_CONFIG_DB_FILE, ConfigManager.CONFIG_PROPERTIES_FORMAT );
+        String driverClass= cm.getString(dbunitNamespace, "driverClass");
+        String connectionURL = cm.getString(dbunitNamespace, "connectionURL");
+        String username = cm.getString(dbunitNamespace, "username");
+        String password = cm.getString(dbunitNamespace, "password");
+
+        cm.removeNamespace(dbunitNamespace);
+
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, driverClass);
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
-            "jdbc:informix-sqli://192.168.1.101:1526/tt_project:informixserver=topcoder");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "informix");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "123456");
+            connectionURL);
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, username);
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, password);
 
         // database connection
-        Class.forName("com.informix.jdbc.IfxDriver");
+        Class.forName(driverClass);
 
     }
 

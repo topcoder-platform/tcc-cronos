@@ -49,10 +49,12 @@ public class MockProjectWorkerUtility implements ProjectWorkerUtility {
      *
      * @param projectWorkerId
      *            ignored
+     * @param l
+     *            ignored
      * @param audit
      *            ignored
      */
-    public void removeProjectWorker(long projectWorkerId, boolean audit) {
+    public void removeProjectWorker(long projectWorkerId, long l, boolean audit) {
     }
 
     /**
@@ -108,10 +110,12 @@ public class MockProjectWorkerUtility implements ProjectWorkerUtility {
      *
      * @param projectWorkerIds
      *            ignored
+     * @param longs
+     *            ignored
      * @param audit
      *            ignored
      */
-    public void removeProjectWorkers(long[] projectWorkerIds, boolean audit) {
+    public void removeProjectWorkers(long[] projectWorkerIds, long[] longs,boolean audit) {
     }
 
     /**

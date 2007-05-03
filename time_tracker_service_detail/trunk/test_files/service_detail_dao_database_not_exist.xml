@@ -50,13 +50,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.1.101:9088/time_tracker:INFORMIXSERVER=ol_ids_1110_2</Value>
+                        <Value>jdbc:informix-sqli://10.37.129.3:9088/time_tracker:INFORMIXSERVER=ol_ids_1110_2</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>informix2</Value>
+                        <Value>sa</Value>
                     </Property>
                 </Property>
             </Property>

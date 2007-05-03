@@ -66,13 +66,15 @@ public class MockProjectWorkerUtility implements ProjectWorkerUtility {
      *
      * @param projectWorkerId
      *            not used
+     * @param l
+     *            not used
      * @param audit
      *            not used
      *
      * @throws DataAccessException
      *             not happens
      */
-    public void removeProjectWorker(long projectWorkerId, boolean audit) throws DataAccessException {
+    public void removeProjectWorker(long projectWorkerId, long l, boolean audit) throws DataAccessException {
         // nothing to do
 
     }
@@ -82,10 +84,12 @@ public class MockProjectWorkerUtility implements ProjectWorkerUtility {
      *
      * @param projectWorkerIds
      *            not used
+     * @param longs
+     *            not used
      * @param audit
      *            not used
      */
-    public void removeProjectWorkers(long[] projectWorkerIds, boolean audit) {
+    public void removeProjectWorkers(long[] projectWorkerIds, long[] longs, boolean audit) {
         // nothing to do
 
     }

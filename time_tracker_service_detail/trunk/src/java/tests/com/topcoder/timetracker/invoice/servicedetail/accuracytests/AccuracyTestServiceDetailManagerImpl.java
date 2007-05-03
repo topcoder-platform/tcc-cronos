@@ -89,6 +89,7 @@ public class AccuracyTestServiceDetailManagerImpl extends DBTestCase {
      */
     protected void tearDown() throws Exception {
         TestHelper.releaseConfiguration();
+        this.jdbcConnection.close();
     }
 
     /**

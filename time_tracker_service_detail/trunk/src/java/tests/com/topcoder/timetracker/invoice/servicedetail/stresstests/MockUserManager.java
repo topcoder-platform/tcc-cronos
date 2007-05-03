@@ -132,10 +132,8 @@ public class MockUserManager implements UserManager {
      *            ignored
      * @param role
      *            ignored
-     * @param audit
-     *            ignored
      */
-    public void addRoleToUser(User user, SecurityRole role, boolean audit) {
+    public void addRoleToUser(User user, SecurityRole role) {
     }
 
     /**
@@ -145,10 +143,8 @@ public class MockUserManager implements UserManager {
      *            ignored
      * @param role
      *            ignored
-     * @param audit
-     *            ignored
      */
-    public void removeRoleFromUser(User user, SecurityRole role, boolean audit) {
+    public void removeRoleFromUser(User user, SecurityRole role) {
     }
 
     /**

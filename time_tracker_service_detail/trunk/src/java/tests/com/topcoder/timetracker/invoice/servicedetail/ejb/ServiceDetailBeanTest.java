@@ -31,6 +31,7 @@ import com.topcoder.timetracker.invoice.servicedetail.EntityNotFoundException;
 import com.topcoder.timetracker.invoice.servicedetail.InvalidDataException;
 import com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail;
 import com.topcoder.timetracker.invoice.servicedetail.TestHelper;
+import com.topcoder.util.config.ConfigManager;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -43,38 +44,82 @@ import junit.framework.TestSuite;
  */
 public class ServiceDetailBeanTest extends DBTestCase {
 
-    /** Unit under test. */
+    /**
+     * Unit under test.
+     */
     private ServiceDetailBean serviceDetailBean;
 
-    /** JDBC connection used in the unit test. */
+    /**
+     * JDBC connection used in the unit test.
+     */
     private Connection jdbcConnection;
 
-    /** Context used in this unit test. */
+    /**
+     * Context used in this unit test.
+     */
     private Context context;
 
     /**
+     * Represents the configuration file that contains the properties needed by this demo
+     * for setting DBUNIT system properties regarding the test database.
+     */
+    private static final String DBUNIT_CONFIG_DB_FILE = "dbunit_config.properties";
+
+        /**
+     * Represents the database driver class name. It is initialized in the
+     * constructor.
+     */
+    private final String driverClass;
+
+    /**
+     * Represents the connection URL for the database.It is initialized in the
+     * constructor.
+     */
+    private final String connectionURL;
+
+    /**
+     * Represents the user for the database.It is initialized in the
+     * constructor.
+     */
+    private final String username;
+
+    /**
+     * Represents the user's password for the database.It is initialized in the
+     * constructor.
+     */
+    private final String password;
+    
+    /**
      * Constructor of the unit test.
      *
-     * @param name
-     *            test name
-     * @throws Exception
-     *             to JUnit
+     * @param name test name
+     * @throws Exception to JUnit
      */
     public ServiceDetailBeanTest(String name) throws Exception {
         super(name);
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "com.informix.jdbc.IfxDriver");
+        // Read the config properties for DbUnit
+        ConfigManager cm= ConfigManager.getInstance();
+        final String dbunitNamespace = "demo.namespace";
+        cm.add(dbunitNamespace, DBUNIT_CONFIG_DB_FILE, ConfigManager.CONFIG_PROPERTIES_FORMAT );
+        driverClass= cm.getString(dbunitNamespace, "driverClass");
+        connectionURL = cm.getString(dbunitNamespace, "connectionURL");
+        username = cm.getString(dbunitNamespace, "username");
+        password = cm.getString(dbunitNamespace, "password");
+
+        cm.removeNamespace(dbunitNamespace);
+
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, driverClass);
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
-            "jdbc:informix-sqli://192.168.1.101:1526/service_details:INFORMIXSERVER=topcoder");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "informix");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "123456");
+            connectionURL);
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, username);
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, password);
 
         // database connection
-        Class driverClass = Class.forName("com.informix.jdbc.IfxDriver");
-
+        Class.forName(driverClass);
     }
 
     /**
-     * <p>
+     * <p/>
      * Return the suite for this unit test.
      * </p>
      *
@@ -87,8 +132,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
     /**
      * Sets the unit test up.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -108,8 +152,8 @@ public class ServiceDetailBeanTest extends DBTestCase {
 
         // creates deployment descriptor of our sample bean. MockEjb does not support XML descriptors.
         SessionBeanDescriptor localServiceDetailDescriptor =
-            new SessionBeanDescriptor("sessionBean", LocalServiceDetailHome.class, LocalServiceDetail.class,
-                ServiceDetailBean.class);
+                new SessionBeanDescriptor("sessionBean", LocalServiceDetailHome.class, LocalServiceDetail.class,
+                        ServiceDetailBean.class);
         // Deploy operation simply creates Home and binds it to JNDI
         mockContainer.deploy(localServiceDetailDescriptor);
 
@@ -126,18 +170,14 @@ public class ServiceDetailBeanTest extends DBTestCase {
         context.unbind("java:comp/env/factory_namespace");
         context.unbind("java:comp/env/dao_name");
 
-        jdbcConnection =
-            DriverManager.getConnection(
-                "jdbc:informix-sqli://192.168.1.101:1526/service_details:INFORMIXSERVER=topcoder", "informix",
-                "123456");
+        jdbcConnection =DriverManager.getConnection(connectionURL, username, password);
 
     }
 
     /**
      * Tears the unit test down.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
         jdbcConnection.close();
@@ -159,8 +199,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
     /**
      * Test <code>ejbCreate</code> for accuracy. Condition: normal. Expect: all fields are set as expected.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testEjbCreateAccuracy() throws Exception {
         context.rebind("java:comp/env/factory_namespace", "objectFactoryNamespace");
@@ -180,8 +219,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
     /**
      * Test ejbCreate for failure. Condition: there is no factory namespace. Expect: <code>EJBException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testEjbCreateNoFactoryNamespace() throws Exception {
         context.rebind("java:comp/env/dao_name", "dao_key");
@@ -198,8 +236,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
     /**
      * Test ejbCreate for failure. Condition: there is no dao name. Expect: <code>EJBException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testEjbCreateNoDaoName() throws Exception {
         context.rebind("java:comp/env/factory_namespace", "objectFactoryNamespace");
@@ -216,8 +253,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
     /**
      * Test ejbCreate for failure. Condition: the namespace is unknown. Expect: <code>EJBException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testEjbCreateNoNamespace() throws Exception {
         context.rebind("java:comp/env/factory_namespace", "notAvailableNamespace");
@@ -236,8 +272,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test ejbCreate for failure. Condition: the dao key is not in the object factory configuration. Expect:
      * <code>EJBException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testEjbCreateNoDao() throws Exception {
         context.rebind("java:comp/env/factory_namespace", "objectFactoryNamespace");
@@ -256,8 +291,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test ejbCreate for failure. Condition: the dao key is refer to wrong object. Expect:
      * <code>EJBException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testEjbCreateClassCastException() throws Exception {
         TestHelper.loadConfiguration("service_detail_bean_classcast_ex.xml");
@@ -285,8 +319,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for accuracy. Condition: normal. Expect: the detail is inserted to the
      * database.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailAccuracy1() throws Exception {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
@@ -306,7 +339,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
 
         Statement statement = jdbcConnection.createStatement();
         ResultSet set =
-            statement.executeQuery("select * from service_details where invoice_id = 60 and time_entry_id = 60");
+                statement.executeQuery("select * from service_details where invoice_id = 60 and time_entry_id = 60");
 
         if (set.next()) {
             assertEquals("The rate is not inserted correctly", 100, set.getDouble("rate"), 10e-5);
@@ -320,8 +353,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for accuracy. Condition: normal. Expect: the detail is inserted to the
      * database.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailAccuracy2() throws Exception {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
@@ -341,7 +373,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
 
         Statement statement = jdbcConnection.createStatement();
         ResultSet set =
-            statement.executeQuery("select * from service_details where invoice_id = 60 and time_entry_id = 60");
+                statement.executeQuery("select * from service_details where invoice_id = 60 and time_entry_id = 60");
 
         if (set.next()) {
             assertEquals("The rate is not inserted correctly", 100, set.getDouble("rate"), 10e-5);
@@ -355,8 +387,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for failure. Condition: detail is null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailNull() throws Exception {
         try {
@@ -371,8 +402,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for failure. Condition: no invoice. Expect:
      * <code>InvalidDataException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailNoInvoice() throws Exception {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
@@ -399,8 +429,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for failure. Condition: no time entry. Expect:
      * <code>InvalidDataException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailNoTimeEntry() throws Exception {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
@@ -427,8 +456,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for failure. Condition: no modification user. Expect:
      * <code>InvalidDataException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailNoModificationUser() throws Exception {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
@@ -455,8 +483,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for failure. Condition: no creation user. Expect:
      * <code>InvalidDataException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailNoCreationUser() throws Exception {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
@@ -483,8 +510,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetail</code> for failure. Condition: time entry creation user is not in the
      * database. Expect: <code>InvalidDataException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailNoCreationUserInDB() throws Exception {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
@@ -512,8 +538,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>deleteServiceDetail</code> for accuracy. Condition: normal. Expect: the deleted record is not
      * in the database anymore.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testDeleteServiceDetailAccuracy1() throws Exception {
         serviceDetailBean.deleteServiceDetail(78, false);
@@ -530,8 +555,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>deleteServiceDetail</code> for accuracy. Condition: normal. Expect: the deleted record is not
      * in the database anymore.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testDeleteServiceDetailAccuracy2() throws Exception {
         serviceDetailBean.deleteServiceDetail(78, true);
@@ -548,8 +572,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>deleteServiceDetail</code> for failure. Condition: the record is not in the table. Expect:
      * <code>EntityNotFoundException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testDeleteServiceDetailNotFound() throws Exception {
         try {
@@ -564,8 +587,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>deleteAllServiceDetails</code> for accuracy. Condition: normal. Expect: there is no record in
      * the database.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testDeleteAllServiceDetailsAccuracy1() throws Exception {
         serviceDetailBean.deleteAllServiceDetails(true);
@@ -582,8 +604,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>deleteAllServiceDetails</code> for accuracy. Condition: normal. Expect: there is no record in
      * the database.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testDeleteAllServiceDetailsAccuracy2() throws Exception {
         serviceDetailBean.deleteAllServiceDetails(false);
@@ -600,8 +621,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>updateServiceDetail</code> for accuracy. Condition: normal. Expect: the record is updated
      * correctly.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testUpdateServiceDetailAccuracy1() throws Exception {
 
@@ -640,8 +660,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>updateServiceDetail</code> for accuracy. Condition: normal. Expect: the record is updated
      * correctly.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testUpdateServiceDetailAccuracy2() throws Exception {
 
@@ -680,8 +699,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>updateServiceDetail</code> for failure. Condition: detail is null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testUpdateServiceDetailNull() throws Exception {
         try {
@@ -696,8 +714,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>updateServiceDetail</code> for failure. Condition: the updated record is not in the database.
      * Expect: <code>InvalidDataException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testUpdateServiceDetailNoRecord() throws Exception {
 
@@ -729,8 +746,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>retrieveServiceDetail</code> for accuracy. Condition: normal. Expect: returned value is as
      * expected.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testRetrieveServiceDetailAccuracy() throws Exception {
         InvoiceServiceDetail detail = serviceDetailBean.retrieveServiceDetail(56);
@@ -744,8 +760,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>retrieveServiceDetails</code> for accuracy. Condition: normal. Expect: returned value is as
      * expected.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testRetrieveServiceDetailsInvoiceId() throws Exception {
         InvoiceServiceDetail[] details = serviceDetailBean.retrieveServiceDetails(29);
@@ -759,8 +774,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>retrieveAllServiceDetails</code> for accuracy. Condition: normal. Expect: returned value is as
      * expected.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testRetrieveAllServiceDetails() throws Exception {
         InvoiceServiceDetail[] details = serviceDetailBean.retrieveAllServiceDetails();
@@ -772,8 +786,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetails</code> for accuracy. Condition: normal. Expect: the records are inserted to
      * the database.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailsAccuracy() throws Exception {
         InvoiceServiceDetail detail1 = new InvoiceServiceDetail();
@@ -802,11 +815,11 @@ public class ServiceDetailBeanTest extends DBTestCase {
         detail2.setModificationUser("testuser2");
         detail2.setCreationUser("testuser2");
 
-        serviceDetailBean.addServiceDetails(new InvoiceServiceDetail[] {detail1, detail2}, true);
+        serviceDetailBean.addServiceDetails(new InvoiceServiceDetail[]{detail1, detail2}, true);
 
         Statement statement = jdbcConnection.createStatement();
         ResultSet set =
-            statement.executeQuery("select * from service_details where invoice_id = 60 and time_entry_id = 60");
+                statement.executeQuery("select * from service_details where invoice_id = 60 and time_entry_id = 60");
 
         if (set.next()) {
             assertEquals("The rate is not inserted correctly", 100, set.getDouble("rate"), 10e-5);
@@ -829,8 +842,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetails</code> for failure. Condition: details is null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailsNull() throws Exception {
         try {
@@ -845,12 +857,11 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>addServiceDetails</code> for failure. Condition: details contains null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testAddServiceDetailsContainsNull() throws Exception {
         try {
-            serviceDetailBean.addServiceDetails(new InvoiceServiceDetail[] {null}, false);
+            serviceDetailBean.addServiceDetails(new InvoiceServiceDetail[]{null}, false);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -861,11 +872,10 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>deleteServiceDetails</code> for accuracy. Condition: normal. Expect: record is deleted
      * correctly.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testDeleteServiceDetailsAccuracy() throws Exception {
-        serviceDetailBean.deleteServiceDetails(new long[] {78, 86, 60}, false);
+        serviceDetailBean.deleteServiceDetails(new long[]{78, 86, 60}, false);
 
         Statement statement = jdbcConnection.createStatement();
         ResultSet set = statement.executeQuery("select * from service_details where service_detail_id = 788");
@@ -891,8 +901,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>deleteServiceDetails</code> for failure. Condition: details is null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testDeleteServiceDetailsNull() throws Exception {
         try {
@@ -906,8 +915,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
     /**
      * Test <code>updateServiceDetails</code> for accuracy. Condition: normal. Expect: the records are updated.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testUpdateServiceDetailsAccuracy() throws Exception {
         InvoiceServiceDetail detail1 = new InvoiceServiceDetail();
@@ -942,7 +950,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
         detail2.setModificationUser("testuser");
         detail2.setCreationUser("testuser");
 
-        serviceDetailBean.updateServiceDetails(new InvoiceServiceDetail[] {detail1, detail2}, true);
+        serviceDetailBean.updateServiceDetails(new InvoiceServiceDetail[]{detail1, detail2}, true);
 
         Statement statement = jdbcConnection.createStatement();
         ResultSet set = statement.executeQuery("select * from service_details where service_detail_id=100");
@@ -972,8 +980,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>updateServiceDetails</code> for failure. Condition: details is null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testUpdateServiceDetailsNull() throws Exception {
         try {
@@ -988,12 +995,11 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>updateServiceDetails</code> for failure. Condition: details contains null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testUpdateServiceDetailsContainsNull() throws Exception {
         try {
-            serviceDetailBean.updateServiceDetails(new InvoiceServiceDetail[] {null}, false);
+            serviceDetailBean.updateServiceDetails(new InvoiceServiceDetail[]{null}, false);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected
@@ -1004,11 +1010,10 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>retrieveServiceDetails</code> for accuracy. Condition: normal. Expect: returned value is as
      * expected.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testRetrieveServiceDetailsAccuracy() throws Exception {
-        InvoiceServiceDetail[] details = serviceDetailBean.retrieveServiceDetails(new long[] {10, 20, 30});
+        InvoiceServiceDetail[] details = serviceDetailBean.retrieveServiceDetails(new long[]{10, 20, 30});
 
         assertEquals("The result size is wrong", 3, details.length);
     }
@@ -1017,8 +1022,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * Test <code>retrieveServiceDetails</code> for failure. Condition: details is null. Expect:
      * <code>IllegalArgumentException</code>.
      *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testRetrieveServiceDetailsNull() throws Exception {
         try {
@@ -1033,9 +1037,7 @@ public class ServiceDetailBeanTest extends DBTestCase {
      * The DataSet loader used by DBUnit.
      *
      * @return the data set
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected IDataSet getDataSet() throws Exception {
         return new FlatXmlDataSet(new FileInputStream("test_files/partial.xml"));

@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.project.ProjectWorkerFilterFactory;
+import com.topcoder.timetracker.project.StringMatchType;
 
 /**
  * Mock for <code>ProjectWorkerFilterFactory</code>.
@@ -40,7 +41,7 @@ public class MockProjectWorkerFilterFactory implements ProjectWorkerFilterFactor
      *
      * @return null
      */
-    public Filter createPayRateFilter(int rangeStart, int rangeEnd) {
+    public Filter createPayRateFilter(double rangeStart, double rangeEnd) {
         return null;
     }
 
@@ -87,12 +88,12 @@ public class MockProjectWorkerFilterFactory implements ProjectWorkerFilterFactor
     /**
      * Mock method.
      *
-     * @param username
+     * @param userId
      *            not used
      *
      * @return null
      */
-    public Filter createCreationUserFilter(String username) {
+    public Filter createUserIdFilter(long userId) {
         return null;
     }
 
@@ -110,16 +111,31 @@ public class MockProjectWorkerFilterFactory implements ProjectWorkerFilterFactor
         return null;
     }
 
-    /**
+     /**
      * Mock method.
      *
-     * @param username
+     * @param matchType
+     *            not used
+     * @param s
      *            not used
      *
      * @return null
      */
-    public Filter createModificationUserFilter(String username) {
+    public Filter createCreationUserFilter(StringMatchType matchType, String s) {
         return null;
+    }
+
+    /**
+     * Mock method.
+     *
+     * @param matchType
+     *          not used
+     * @param s
+     *          not used
+     * @return null
+     */
+    public Filter createModificationUserFilter(StringMatchType matchType, String s){
+       return null;
     }
 
 }
