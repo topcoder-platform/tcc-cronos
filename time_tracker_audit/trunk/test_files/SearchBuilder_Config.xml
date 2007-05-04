@@ -15,8 +15,8 @@
 					</Property>
 				</Property>
 				<Property name="context">
-					<Value>select a.audit_id, a.entity_id, a.creation_date, a.table_name, a.company_id, a.creation_user, a.action_type, a.client_id, a.project_id, a.account_user_id, c.name as client_name, p.name as project_name, a.app_area_id
-from audit a inner join client c on a.client_id = c.client_id inner join project p on a.project_id = p.project_id WHERE</Value>
+					<Value>select a.audit_id, a.entity_id, a.creation_date, a.table_name, a.company_id, a.creation_user, a.action_type, a.client_id, a.project_id, a.account_user_id, (select distinct c.name from client c where c.client_id = a.client_id) as client_name, (select distinct p.name from project p where p.project_id = a.project_id) as project_name, a.app_area_id
+from audit a WHERE</Value>
 				</Property>
 				<Property name="searchableFields">
 					<Property name="resource id">

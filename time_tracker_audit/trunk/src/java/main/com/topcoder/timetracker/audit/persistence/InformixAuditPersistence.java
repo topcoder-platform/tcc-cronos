@@ -36,6 +36,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +68,11 @@ public class InformixAuditPersistence implements AuditPersistence {
     /** Possible SQL statement used to obtain all audit headers from DB. */
     private static final String SQL_SELECT_HEADERS = "select a.audit_id, a.entity_id, a.creation_date, "
         + "a.table_name, a.company_id, a.creation_user, a.action_type, a.client_id, a.project_id, "
-        + "a.account_user_id, c.name as client_name, p.name as project_name, a.app_area_id "
-        + "from audit a inner join client c on a.client_id = c.client_id "
-        + "inner join project p on a.project_id = p.project_id";
+        + "a.account_user_id, "
+        + "(select distinct c.name from client c where c.client_id = a.client_id) as client_name, "
+        + "(select distinct p.name from project p where p.project_id = a.project_id) as project_name, "
+        + "a.app_area_id "
+        + "from audit a";
 
     /** Possible SQL statement used to obtain all audit details from DB given their audit header id. */
     private static final String SQL_SELECT_DETAILS = "SELECT audit_detail_id, old_value, new_value, column_name "
@@ -391,10 +394,26 @@ public class InformixAuditPersistence implements AuditPersistence {
             int index = 0;
             statement.setLong(++index, auditId);
             statement.setLong(++index, auditHeader.getApplicationArea().getId());
-            statement.setLong(++index, auditHeader.getClientId());
-            statement.setLong(++index, auditHeader.getCompanyId());
-            statement.setLong(++index, auditHeader.getProjectId());
-            statement.setLong(++index, auditHeader.getResourceId());
+            if (auditHeader.getClientId() != -1) {
+                statement.setLong(++index, auditHeader.getClientId());
+            } else {
+                statement.setNull(++index, Types.INTEGER);
+            }
+            if (auditHeader.getCompanyId() != -1) {
+                statement.setLong(++index, auditHeader.getCompanyId());
+            } else {
+                statement.setNull(++index, Types.INTEGER);
+            }
+            if (auditHeader.getProjectId() != -1) {
+                statement.setLong(++index, auditHeader.getProjectId());
+            } else {
+                statement.setNull(++index, Types.INTEGER);
+            }
+            if (auditHeader.getResourceId() != -1) {
+                statement.setLong(++index, auditHeader.getResourceId());
+            } else {
+                statement.setNull(++index, Types.INTEGER);
+            }
             statement.setLong(++index, auditHeader.getEntityId());
             statement.setString(++index, auditHeader.getTableName());
             statement.setInt(++index, auditHeader.getActionType());
@@ -695,14 +714,26 @@ public class InformixAuditPersistence implements AuditPersistence {
             header.setEntityId(row.getLong("entity_id"));
             header.setCreationDate(row.getTimestamp("creation_date"));
             header.setTableName(row.getString("table_name"));
-            header.setCompanyId(row.getLong("company_id"));
             header.setCreationUser(row.getString("creation_user"));
             header.setActionType(row.getInt("action_type"));
-            header.setClientId(row.getLong("client_id"));
-            header.setProjectId(row.getLong("project_id"));
-            header.setResourceId(row.getLong("account_user_id"));
-            header.setClientName(row.getString("client_name"));
-            header.setProjectName(row.getString("project_name"));
+            if (row.getObject("company_id") != null) {
+                header.setCompanyId(row.getLong("company_id"));
+            }
+            if (row.getObject("client_id") != null) {
+                header.setClientId(row.getLong("client_id"));
+            }
+            if (row.getObject("project_id") != null) {
+                header.setProjectId(row.getLong("project_id"));
+            }
+            if (row.getObject("account_user_id") != null) {
+                header.setResourceId(row.getLong("account_user_id"));
+            }
+            if (row.getObject("client_name") != null) {
+                header.setClientName(row.getString("client_name"));
+            }
+            if (row.getObject("project_name") != null) {
+                header.setProjectName(row.getString("project_name"));
+            }
 
             Object obj = ApplicationArea.getEnumByOrdinal(row.getInt("app_area_id") - 1, ApplicationArea.class);
 
@@ -743,14 +774,26 @@ public class InformixAuditPersistence implements AuditPersistence {
             header.setEntityId(row.getLong("entity_id"));
             header.setCreationDate(row.getTimestamp("creation_date"));
             header.setTableName(row.getString("table_name"));
-            header.setCompanyId(row.getLong("company_id"));
             header.setCreationUser(row.getString("creation_user"));
             header.setActionType(row.getInt("action_type"));
-            header.setClientId(row.getLong("client_id"));
-            header.setProjectId(row.getLong("project_id"));
-            header.setResourceId(row.getLong("account_user_id"));
-            header.setClientName(row.getString("client_name"));
-            header.setProjectName(row.getString("project_name"));
+            if (row.getObject("company_id") != null) {
+                header.setCompanyId(row.getLong("company_id"));
+            }
+            if (row.getObject("client_id") != null) {
+                header.setClientId(row.getLong("client_id"));
+            }
+            if (row.getObject("project_id") != null) {
+                header.setProjectId(row.getLong("project_id"));
+            }
+            if (row.getObject("account_user_id") != null) {
+                header.setResourceId(row.getLong("account_user_id"));
+            }
+            if (row.getObject("client_name") != null) {
+                header.setClientName(row.getString("client_name"));
+            }
+            if (row.getObject("project_name") != null) {
+                header.setProjectName(row.getString("project_name"));
+            }
 
             Object obj = ApplicationArea.getEnumByOrdinal(row.getInt("app_area_id") - 1, ApplicationArea.class);
 

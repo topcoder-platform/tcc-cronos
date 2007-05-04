@@ -448,6 +448,59 @@ public class InformixAuditPersistenceUnitTest extends TestCase {
 
     /**
      * <p>
+     * Accuracy test for the method of <code>createAuditRecord(AuditHeader)</code>. The persisted value should be the
+     * same as the retrieved value.
+     * </p>
+     *
+     * @throws Exception any exception to JUnit.
+     */
+    public void testCreateAuditRecord_Accuracy5() throws Exception {
+        AuditHeader auditHeader = UnitTestHelper.buildAuditHeader(5);
+        auditHeader.setClientId(-1);
+        auditHeader.setClientName(null);
+        auditHeader.setCompanyId(-1);
+        auditHeader.setProjectId(-1);
+        auditHeader.setProjectName(null);
+        auditHeader.setResourceId(-1);
+
+        // add it
+        persistence.createAuditRecord(auditHeader);
+
+        // get it and check it
+        AuditHeader[] ret = persistence.searchAudit(new EqualToFilter("application area id",
+                    new Long(auditHeader.getApplicationArea().getId())));
+        assertEquals("The audit header should be added properly.", 1, ret.length);
+        UnitTestHelper.assertEquals(auditHeader, ret[0]);
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method of <code>createAuditRecord(AuditHeader)</code>. The persisted value should be the
+     * same as the retrieved value.
+     * </p>
+     *
+     * @throws Exception any exception to JUnit.
+     */
+    public void testCreateAuditRecord_Accuracy6() throws Exception {
+        AuditHeader auditHeader = UnitTestHelper.buildAuditHeader(5);
+        auditHeader.setClientId(-1);
+        auditHeader.setClientName(null);
+        auditHeader.setCompanyId(-1);
+        auditHeader.setProjectId(-1);
+        auditHeader.setProjectName(null);
+        auditHeader.setResourceId(-1);
+
+        // add it
+        persistence.createAuditRecord(auditHeader);
+
+        // get it and check it
+        AuditHeader[] ret = persistence.searchAudit(null);
+        assertEquals("The audit header should be added properly.", 1, ret.length);
+        UnitTestHelper.assertEquals(auditHeader, ret[0]);
+    }
+
+    /**
+     * <p>
      * Accuracy test for the method of <code>searchAudit(Filter)</code> when the input Filter is null. All the records
      * in the table should be retrieved.
      * </p>
