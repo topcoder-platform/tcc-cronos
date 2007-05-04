@@ -74,7 +74,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -358,6 +357,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * Creates a new GameDataManagerImpl instance based on default namespace configuration.
      * </p>
      *
+     * @param puzzleTypeSource a <code>PuzzleTypeSource</code> providing the access to existing puzzle implementations. 
      * @throws GameDataManagerConfigurationException if there are any issues with configuration
      * @throws GameDataException if any other error occurs
      */
@@ -371,6 +371,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * Creates a new GameDataManagerImpl instance based on the input namespace configuration.
      * </p>
      *
+     * @param puzzleTypeSource a <code>PuzzleTypeSource</code> providing the access to existing puzzle implementations.
      * @param namespace configuration namespace
      * @throws IllegalArgumentException if the namespace is null or empty String
      * @throws GameDataManagerConfigurationException if there are any issues with configuration
@@ -562,6 +563,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * Creates a new GameDataManagerImpl instance based on input parameters.
      * </p>
      *
+     * @param puzzleTypeSource a <code>PuzzleTypeSource</code> providing the access to existing puzzle implementations.
+     * @param puzzleConfigMap a <code>Map</code> providing the configuration for existing puzzle types. 
      * @param gameDataJndiNames an array of jndi names to use when looking up the ejb
      * @param gameDataJndiDesignations jndi designations such as Local or Remote
      * @param newGameDiscoveryPollInterval interval used to configure the poll frequency (ms)
@@ -583,7 +586,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             String[] gameDataJndiDesignations, String[] adminDataJndiNames, String[] adminDataJndiDesignations,
             long newGameDiscoveryPollInterval, long gameStartedPollInterval, long targetCheckPollInterval,
             int capacity, float errorRate, String messengerPluginNS, String category, String randomStringImageFile,
-            String emailNotificationMessengerPluginName, String emailNotificationFromAddress, String emailSubject, String [] recipients)
+            String emailNotificationMessengerPluginName, String emailNotificationFromAddress, String emailSubject,
+            String [] recipients)
         throws GameDataException, GameDataManagerConfigurationException {
         Helper.checkObjectNotNull(puzzleTypeSource, "puzzleTypeSource");
         Helper.checkObjectNotNull(puzzleConfigMap, "puzzleConfigMap");
@@ -795,9 +799,11 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @param property the property name in the namespace
      * @param ctx the context to lookup the ejb
      * @param classType the remote Ejb class type
+     * @return a <code>EJBHomes</code> providing available <code>Home</code> interfaces for EJBs.  
      * @throws GameDataManagerConfigurationException any fails in configuration or fails to read ejb
      */
-    private EJBHomes readEJBConfig(String namespace,String property,InitialContext ctx, Class classType) throws GameDataManagerConfigurationException {
+    private EJBHomes readEJBConfig(String namespace,String property,InitialContext ctx, Class classType)
+        throws GameDataManagerConfigurationException {
         String[] jndiNameValues = Helper.getMandatoryPropertyArray(namespace, property);
 
         String[] jndiNames = new String[jndiNameValues.length];
@@ -847,6 +853,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @param jndiDesignations the designations denote remote or local
      * @param ctx the context to lookup the ejb
      * @param classType the remote Ejb class type
+     * @return a <code>EJBHomes</code> providing available <code>Home</code> interfaces for EJBs.
      */
     private EJBHomes locateEJB(String[] jndiNames, String[] jndiDesignations,InitialContext ctx, Class classType) {
         EJBHomes result = new EJBHomes();
@@ -882,7 +889,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *            the name of brain teaser property
      * @param type
      *            the type of the brain teaser
-     * @throws ConfigurationException
+     * @throws GameDataManagerConfigurationException
      *             if any sub-property miss or is valid
      */
     private void initializeBrainTeaserType(String namespace, String name,
@@ -903,7 +910,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *            the name of puzzle property
      * @param type
      *            the type of the puzzle
-     * @throws ConfigurationException
+     * @throws GameDataManagerConfigurationException
      *             if any sub-property miss or is valid
      */
     private void initializePuzzleType(String namespace, String name,
@@ -991,10 +998,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * as appropriate, and that the response content is declared to be HTML
      *
      * @param urlString a <code>String</code> representation of the absolute URL to test
+     * @param http a <code>HttpUtility</code> to be used for retrieving content at specified URL. 
      *
      * @return <code>true</code> if the URL is valid, <code>false</code> if not
-     *
-     * @throws MalformedURLException if the argument cannot be parsed as an absolute URL
      */
     private boolean testSingleURL(String urlString, HttpUtility http) {
         try {
@@ -1170,8 +1176,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
     /**
      * Get download data from gamedata.
      *
-     * @param gameData
-     *            GameData EJB instance.
      * @param slot
      *            the slot to get download data id
      * @return download data
@@ -1451,6 +1455,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * Specifically, each of the game's existing blocks will be used as the basis for a new block.
      *
      * @param gameId the game to re create the hosting block and hosting slots.
+     * @throws GameDataException if an unexpecyed error occurs.
      */
     private void autoCreateHostingBlocks(long gameId) throws GameDataException{
         Game game;
@@ -1524,7 +1529,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws GameDataException fail to auto create hosting slots
      */
     private void autoCreateHostingSlots(HostingSlot [] oldSlots, long newBlockId, Bid [] newBids)
-           throws PersistenceException, RemoteException, GameDataException {
+           throws RemoteException, GameDataException {
 
         // shuffle randomly the newBids array
         List newBidsList = Arrays.asList(newBids);
@@ -1626,6 +1631,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      *
      * @return the index into the <code>slots</code> array of the slot that
      *         should be next, or <code>-1</code> if there is no suitable candidate
+     * @throws GameDataException if an unexpected error occurs.
      */
     private int findNextSlot(HostingSlot[] slots, int testIndex) throws GameDataException {
         for (; testIndex < slots.length; testIndex++) {
@@ -1669,6 +1675,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * Creates a <code>BloomFilter</code> containing all the active domains,
      * and broadcasts a message containing it to all players via their plug-ins'
      * messaging channel.
+     * 
+     * @throws GameDataException if an unexpected error occurs.
      */
     void sendBloomFilterUpdate() throws GameDataException {
         Domain [] domains;
@@ -1725,7 +1733,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
      * @throws IOException if an I/O error occurs during internal I/O to perform the encoding
      * @throws java.lang.InstantiationException Exception from CompressionUtility, if fails to instantiate the Compression Utility
      */
-    private String toBase64(String s) throws UnsupportedEncodingException, ClassNotFoundException,
+    private String toBase64(String s) throws ClassNotFoundException,
             IllegalAccessException, InstantiationException, IOException, java.lang.InstantiationException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         CompressionUtility utility = new CompressionUtility("com.topcoder.util.compression.Base64Codec", stream);
@@ -1829,7 +1837,6 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
     /**
      * <p>Update the slot in db, that is to set the start date of slot.</p>
-     * @see com.orpheus.game.BaseGameDataManager#startGameInDB(com.orpheus.game.persistence.HostingSlot)
      */
     protected void persistSlot(HostingSlot slot) {
         Helper.checkObjectNotNull(slot, "hostingSlot to update");
@@ -2343,8 +2350,10 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          *
          * @param games the list of all games that need their targets to be checked and, possibly,
          *            updated.
+         * @throws RemoteException if an error occurs while communicating to remote EJB.
+         * @throws PersistenceException if an error occurs while accessing persistent data store.
          */
-        private void updateGames(Game[] games) {
+        private void updateGames(Game[] games) throws RemoteException, PersistenceException {
             HttpUtility http = new HttpUtility(HttpUtility.GET);
             Map pageCache = new HashMap();
 
@@ -2442,9 +2451,18 @@ public class GameDataManagerImpl extends BaseGameDataManager {
 
                         // Persist the slot if any target has been updated
                         if (anyUpdated) {
-                            // Create a new HostingSlotImpl instance
-                            HostingSlotImpl newSlot = Helper.doCopy(slots[slotIndex]);
+                            // Re-Read slot details from DB and Create a new HostingSlotImpl instance
+                            final HostingSlotImpl newSlot;
+                            final HostingSlot rereadSlot;
+                            if (gameDataPersistenceRemote != null) {
+                                rereadSlot = gameDataPersistenceRemote.getSlot(slots[slotIndex].getId().longValue());
+                            } else {
+                                rereadSlot = gameDataPersistenceLocal.getSlot(slots[slotIndex].getId().longValue());
+                            }
+                            System.err.println("TargetCheckNotifier re-read slot [" + slots[slotIndex].getId()
+                                               + "] details from DB prior to updating targets");
                             // Set the new domain targets
+                            newSlot = Helper.doCopy(rereadSlot);
                             newSlot.setDomainTargets(targets);
                             // Update slot
                             persistSlot(newSlot);
@@ -2513,7 +2531,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
          * This method is used to send email notification to the intended recipients when the domain target is updated.
          * </p>
          * @param gameName the game name will be part of the message content
-         * @param updatedTarget the updated target to be part of message content
+         * @param newTarget the updated target to be part of message content
          * @param oldTarget the old target to be part of message content
          * @param domain the domain which the updated target belongs to
          */
