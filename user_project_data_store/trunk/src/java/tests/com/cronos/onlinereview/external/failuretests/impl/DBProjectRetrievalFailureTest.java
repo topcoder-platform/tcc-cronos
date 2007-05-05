@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import com.cronos.onlinereview.external.ConfigException;
 import com.cronos.onlinereview.external.RetrievalException;
+import com.cronos.onlinereview.external.failuretests.FailureHelper;
 import com.cronos.onlinereview.external.impl.DBProjectRetrieval;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -47,6 +48,7 @@ public class DBProjectRetrievalFailureTest extends TestCase {
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
+        FailureHelper.clearConfig();
         ConfigManager cm = ConfigManager.getInstance();
         cm.add(CONFIG_FILE);
         cm.add(INVALID_CONFIG_FILE);
@@ -60,10 +62,7 @@ public class DBProjectRetrievalFailureTest extends TestCase {
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
-        ConfigManager cm = ConfigManager.getInstance();
-        for (Iterator itr = cm.getAllNamespaces(); itr.hasNext();) {
-            cm.removeNamespace((String) itr.next());
-        }
+        FailureHelper.clearConfig();
         connFactory = null;
         retrieval = null;
     }

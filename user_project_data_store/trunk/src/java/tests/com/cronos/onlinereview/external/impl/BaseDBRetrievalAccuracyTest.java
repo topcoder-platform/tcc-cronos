@@ -13,6 +13,7 @@ import com.cronos.onlinereview.external.accuracytests.AccuracyTests;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.util.config.ConfigManager;
 
 import junit.framework.TestCase;
 
@@ -97,6 +98,8 @@ public abstract class BaseDBRetrievalAccuracyTest extends TestCase {
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
+        AccuracyHelper.clearConfig();
+        
         AccuracyHelper.addConfig(CONFIG_FILE);
 
         // Inserts into the comp_catalog table.

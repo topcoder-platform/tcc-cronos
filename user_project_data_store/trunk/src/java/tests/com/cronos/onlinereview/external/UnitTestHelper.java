@@ -29,7 +29,7 @@ public final class UnitTestHelper {
     private UnitTestHelper() {
     }
 
-    /**
+     /**
      * <p>Clears the config.</p>
      *
      * @throws Exception unexpected exception.

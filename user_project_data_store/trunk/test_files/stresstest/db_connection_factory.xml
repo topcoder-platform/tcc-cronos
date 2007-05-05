@@ -1,31 +1,31 @@
 <CMConfig>
-  <Config name="com.cronos.onlinereview.external.stresstests">
-  	<Property name="forumType">
+    <Config name="com.cronos.onlinereview.external.stresstests">
+        <Property name="forumType">
             <Value>2</Value>
         </Property>
-    <Property name="connections">
-      <Property name="default">
-        <Value>UserProjectDataStore</Value>
-      </Property>
-      <Property name="UserProjectDataStore">
-            <Property name="producer">
-            <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        <Property name="connections">
+            <Property name="default">
+                <Value>UserProjectDataStore</Value>
+            </Property>
+            <Property name="UserProjectDataStore">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://10.37.129.3:1526/user_project:informixserver=ol_topcoder</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>sa</Value>
+                    </Property>
+                </Property>
+            </Property>
         </Property>
-        <Property name="parameters">
-            <Property name="jdbc_driver">
-                <Value>com.informix.jdbc.IfxDriver</Value>
-            </Property>
-            <Property name="jdbc_url">
-                <Value>jdbc:informix-sqli://IBM-1BDF767AD02:10512/upds:INFORMIXSERVER=yux</Value>
-            </Property>
-            <Property name="user">
-                <Value>informix</Value>
-            </Property>
-            <Property name="password">
-                <Value>123</Value>
-            </Property>
-        </Property>
-      </Property>
-    </Property>
-  </Config>
+    </Config>
 </CMConfig>

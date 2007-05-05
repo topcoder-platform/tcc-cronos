@@ -131,6 +131,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
+        AccuracyHelper.clearConfig();
         super.setUp();
         AccuracyHelper.addConfig(CONFIG_FILE);
 

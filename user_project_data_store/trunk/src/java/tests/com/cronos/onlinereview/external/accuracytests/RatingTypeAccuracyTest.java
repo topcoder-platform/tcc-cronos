@@ -83,6 +83,7 @@ public class RatingTypeAccuracyTest extends TestCase {
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
+        AccuracyHelper.clearConfig();
         AccuracyHelper.addConfig(CONFIG_FILE);
 
         ratingType = RatingType.getRatingType(DESIGN_TYPE);

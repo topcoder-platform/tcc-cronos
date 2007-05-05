@@ -83,6 +83,7 @@ public class DBUserRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest {
         AccuracyHelper.cleanupTable(defaultConnection, "email");
 
         userRetrieval = null;
+        defaultConnection.close();
     }
 
     /**

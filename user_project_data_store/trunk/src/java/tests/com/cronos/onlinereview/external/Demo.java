@@ -52,6 +52,7 @@ public class Demo extends TestCase {
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
+        UnitTestHelper.clearConfig();
         UnitTestHelper.addConfig(CONFIG_FILE);
 
         defaultDBUserRetrieval = new MockDBUserRetrieval(NAMESPACE);
@@ -90,6 +91,7 @@ public class Demo extends TestCase {
 
         defaultDBUserRetrieval = null;
 
+        defaultConnection.close();
         UnitTestHelper.clearConfig();
     }
 

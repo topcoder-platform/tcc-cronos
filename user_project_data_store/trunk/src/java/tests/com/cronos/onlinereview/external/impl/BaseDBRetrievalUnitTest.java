@@ -63,6 +63,7 @@ public class BaseDBRetrievalUnitTest extends TestCase {
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
+        UnitTestHelper.clearConfig();
         UnitTestHelper.addConfig(CONFIG_FILE);
 
         defaultDBRetrieval = new MockBaseDBRetrieval(NAMESPACE);

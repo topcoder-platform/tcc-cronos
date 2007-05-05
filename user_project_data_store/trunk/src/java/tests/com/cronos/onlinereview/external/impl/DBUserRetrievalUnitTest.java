@@ -93,6 +93,7 @@ public class DBUserRetrievalUnitTest extends TestCase {
         UnitTestHelper.cleanupTable(defaultConnection, "email");
 
         defaultDBUserRetrieval = null;
+        defaultConnection.close();
         UnitTestHelper.clearConfig();
     }
 

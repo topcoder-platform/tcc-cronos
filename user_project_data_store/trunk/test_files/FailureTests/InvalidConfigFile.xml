@@ -25,7 +25,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://IBM-1BDF767AD02:10512/upds:INFORMIXSERVER=yux;user=informix;password=123</Value>
+                        <Value>jdbc:informix-sqli://10.37.129.3:1526/user_project:informixserver=ol_topcoder</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>sa</Value>
                     </Property>
                 </Property>
             </Property>
@@ -59,7 +65,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://IBM-1BDF767AD02:10512/upds:INFORMIXSERVER=yux;user=informix;password=123</Value>
+                        <Value>jdbc:informix-sqli://10.37.129.3:1526/user_project:informixserver=ol_topcoder</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>sa</Value>
                     </Property>
                 </Property>
             </Property>
@@ -85,7 +97,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://IBM-1BDF767AD02:10512/upds:INFORMIXSERVER=yux;user=informix;password=123</Value>
+                        <Value>jdbc:informix-sqli://10.37.129.3:1526/user_project:informixserver=ol_topcoder</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>sa</Value>
                     </Property>
                 </Property>
             </Property>
@@ -119,7 +137,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://IBM-1BDF767AD02:10512/upds:INFORMIXSERVER=yux;user=informix;password=123</Value>
+                        <Value>jdbc:informix-sqli://10.37.129.3:1526/user_project:informixserver=ol_topcoder</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>sa</Value>
                     </Property>
                 </Property>
             </Property>
@@ -153,7 +177,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://IBM-1BDF767AD02:10512/upds:INFORMIXSERVER=yux;user=informix;password=123</Value>
+                        <Value>jdbc:informix-sqli://10.37.129.3:1526/user_project:informixserver=ol_topcoder</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>sa</Value>
                     </Property>
                 </Property>
             </Property>
