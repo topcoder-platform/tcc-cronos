@@ -3,18 +3,16 @@
  */
 package com.orpheus.administration.handlers;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.administration.Helper;
 import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.administration.persistence.PendingWinner;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Provides an abstract base handler implementation that approves or rejects a
@@ -193,8 +191,10 @@ abstract class PendingWinnerApprovalRejectionHandler implements Handler {
         PendingWinner pendingWinner = null;
         for (int i = 0; i < pendingWinners.length; i++) {
             if (pendingWinners[i].getGameId() == gameId.longValue()) {
-                pendingWinner = pendingWinners[i];
-                break;
+                if (pendingWinners[i].getPlayerId() == userId.longValue()) {
+                    pendingWinner = pendingWinners[i];
+                    break;
+                }
             }
         }
         if (pendingWinner == null) {
@@ -203,11 +203,11 @@ abstract class PendingWinnerApprovalRejectionHandler implements Handler {
                     failRequestAttrName, "No pending winner");
             return failedResult;
         }
-        if (pendingWinner.getPlayerId() != userId.longValue()) {
-            Helper.processFailureWinnerNotFirst(request, failRequestAttrName,
-                    "winner not first");
-            return failedResult;
-        }
+//        if (pendingWinner.getPlayerId() != userId.longValue()) {
+//            Helper.processFailureWinnerNotFirst(request, failRequestAttrName,
+//                    "winner not first");
+//            return failedResult;
+//        }
 
         // now match is fine
         try {
