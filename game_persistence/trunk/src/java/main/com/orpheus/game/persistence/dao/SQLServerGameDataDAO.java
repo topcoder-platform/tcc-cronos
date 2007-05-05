@@ -190,11 +190,11 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         "WHERE (t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
 
     /** Constant represents the sql clause to get games that have no winner. */
-    private static final String SQL_SELECT_NOT_END_GAME = "SELECT t1.id FROM game t1 " +
+    private static final String SQL_SELECT_NOT_END_GAME = "SELECT DISTINCT t1.id FROM game t1 " +
         "LEFT JOIN plyr_won_game t2 ON (t2.game_id = t1.id) " + "WHERE (t2.player_id IS NULL)";
 
     /** Constant represents the sql clause to get games that have a winner. */
-    private static final String SQL_SELECT_END_GAME = "SELECT game_id AS id FROM plyr_won_game";
+    private static final String SQL_SELECT_END_GAME = "SELECT DISTINCT game_id AS id FROM plyr_won_game";
 
     /** Constant represents the sql clause to get all the game id. */
     private static final String SQL_SELECT_GAME = "SELECT id FROM game";
