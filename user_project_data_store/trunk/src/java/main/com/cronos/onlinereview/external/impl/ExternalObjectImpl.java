@@ -17,7 +17,7 @@ import com.cronos.onlinereview.external.UserProjectDataStoreHelper;
  *
  * @author dplass, oodinary
  * @author FireIce
- * @version 2.0
+ * @version 1.1
  * @since 1.0
  */
 public abstract class ExternalObjectImpl implements ExternalObject {

@@ -15,7 +15,7 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author lyt, restarter
- * @version 2.0
+ * @version 1.1
  */
 public abstract class ExternalObjectImplAccuracyTest extends TestCase {
     /**

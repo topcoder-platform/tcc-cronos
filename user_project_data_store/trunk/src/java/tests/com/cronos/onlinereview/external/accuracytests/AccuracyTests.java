@@ -18,7 +18,7 @@ import com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest;
  * </p>
  *
  * @author restarter
- * @version 2.0
+ * @version 1.1
  */
 public class AccuracyTests extends TestCase {
     /**

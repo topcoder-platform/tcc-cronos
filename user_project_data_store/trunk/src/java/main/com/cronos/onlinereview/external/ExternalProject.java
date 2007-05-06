@@ -21,7 +21,7 @@ package com.cronos.onlinereview.external;
  *
  * @author dplass, oodinary
  * @author sql_lall, FireIce
- * @version 2.0
+ * @version 1.1
  * @since 1.0
  */
 public interface ExternalProject extends ExternalObject {

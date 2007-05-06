@@ -18,7 +18,7 @@ import com.topcoder.util.config.ConfigManager;
  * </p>
  *
  * @author fairytale, victorsam
- * @version 2.0
+ * @version 1.1
  */
 final class Helper {
     /** The first component_id. */

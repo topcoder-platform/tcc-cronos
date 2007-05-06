@@ -18,7 +18,7 @@ import com.cronos.onlinereview.external.impl.ExternalUserImpl;
  * </p>
  *
  * @author lyt, restarter
- * @version 2.0
+ * @version 1.1
  */
 public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest {
     /**

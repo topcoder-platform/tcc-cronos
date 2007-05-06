@@ -23,7 +23,7 @@ import java.util.Arrays;
  * </p>
  *
  * @author lyt, restarter
- * @version 2.0
+ * @version 1.1
  */
 public class DBUserRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest {
     /**
@@ -80,6 +80,7 @@ public class DBUserRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest {
         AccuracyHelper.cleanupTable(defaultConnection, "user");
         AccuracyHelper.cleanupTable(defaultConnection, "email");
 
+        defaultConnection.close();
         userRetrieval = null;
     }
 

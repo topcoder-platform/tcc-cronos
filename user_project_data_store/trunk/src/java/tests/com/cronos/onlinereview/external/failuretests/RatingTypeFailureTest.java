@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author idx, liulike
- * @version 2.0
+ * @version 1.1
  */
 public class RatingTypeFailureTest extends TestCase {
 

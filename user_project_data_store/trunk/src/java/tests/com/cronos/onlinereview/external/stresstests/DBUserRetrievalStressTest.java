@@ -18,7 +18,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 /**
  * Stress test case of <code>DBUserRetrieval</code> class.
  * @author fairytale, victorsam
- * @version 2.0
+ * @version 1.1
  */
 public class DBUserRetrievalStressTest extends TestCase {
     /** The number of times each method will be run. */

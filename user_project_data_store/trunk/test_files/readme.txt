@@ -12,6 +12,8 @@ For running all the unit tests:
    you have just created.
    
 5. Change the connections config in the "SampleConfig.xml" and "FailureConfig.xml" under "\test_files",
+   "Config.xml" under "\test_files\Accuracy", "InvalidConfigFile.xml" and "ConfigFile.xml" under "\test_files\FailureTests",
+   "db_connection_factory.xml" under "\test_files\stresstest", 
    
    Like: 
     <Property name="jdbc_url">

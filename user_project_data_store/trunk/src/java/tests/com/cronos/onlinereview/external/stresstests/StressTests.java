@@ -11,7 +11,7 @@ import junit.framework.TestSuite;
  * <p>This test case aggregates all Stress test cases.</p>
  *
  * @author TCSDEVELOPER
- * @version 2.0
+ * @version 1.1
  */
 public class StressTests extends TestCase {
 

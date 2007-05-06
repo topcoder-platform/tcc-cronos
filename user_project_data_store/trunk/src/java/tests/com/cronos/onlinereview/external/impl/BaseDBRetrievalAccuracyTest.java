@@ -22,7 +22,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
  * </p>
  *
  * @author lyt, restarter
- * @version 2.0
+ * @version 1.1
  */
 public abstract class BaseDBRetrievalAccuracyTest extends TestCase {
     /**

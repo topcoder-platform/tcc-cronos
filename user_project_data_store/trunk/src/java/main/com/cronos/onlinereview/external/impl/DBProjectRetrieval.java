@@ -43,7 +43,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  *
  * @author dplass, oodinary
  * @author sql_lall, FireIce
- * @version 2.0
+ * @version 1.1
  * @since 1.0
  */
 public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrieval {

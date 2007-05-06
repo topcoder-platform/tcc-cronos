@@ -11,7 +11,7 @@ import java.util.Iterator;
  * Help class for testintg.
  *
  * @author TCSDEVELOPER
- * @version 2.0
+ * @version 1.1
  */
 public class FailureHelper {
     /**

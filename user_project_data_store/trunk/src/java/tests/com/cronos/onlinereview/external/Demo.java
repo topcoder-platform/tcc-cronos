@@ -18,7 +18,7 @@ import com.cronos.onlinereview.external.impl.MockDBUserRetrieval;
  *
  * @author oodinary
  * @author FireIce
- * @version 2.0
+ * @version 1.1
  * @since 1.0
  */
 public class Demo extends TestCase {
@@ -106,6 +106,7 @@ public class Demo extends TestCase {
         defaultDBUserRetrieval = null;
 
         UnitTestHelper.clearConfig();
+        defaultConnection.close();
         super.tearDown();
     }
 

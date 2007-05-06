@@ -23,7 +23,7 @@ import junit.framework.TestSuite;
  * Stress test case of <code>BaseDBRetrieval</code> class.
  *
  * @author fairytale, victorsam
- * @version 2.0
+ * @version 1.1
  */
 public class BaseDBRetrievalStressTest extends TestCase {
     /** The number of times each method will be run. */

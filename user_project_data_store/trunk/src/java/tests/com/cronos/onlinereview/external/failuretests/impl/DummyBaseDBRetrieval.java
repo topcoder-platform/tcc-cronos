@@ -22,7 +22,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
  * </p>
  *
  * @author idx, liulike
- * @version 2.0
+ * @version 1.1
  */
 public class DummyBaseDBRetrieval extends BaseDBRetrieval {
 
