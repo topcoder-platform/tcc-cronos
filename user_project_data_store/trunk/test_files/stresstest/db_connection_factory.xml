@@ -1,31 +1,31 @@
 <CMConfig>
-    <Config name="com.cronos.onlinereview.external.stresstests">
-        <Property name="forumType">
+  <Config name="com.cronos.onlinereview.external.stresstests">
+  	<Property name="forumType">
             <Value>2</Value>
         </Property>
-        <Property name="connections">
-            <Property name="default">
-                <Value>UserProjectDataStore</Value>
+    <Property name="connections">
+      <Property name="default">
+        <Value>UserProjectDataStore</Value>
+      </Property>
+      <Property name="UserProjectDataStore">
+            <Property name="producer">
+            <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+        </Property>
+        <Property name="parameters">
+            <Property name="jdbc_driver">
+                <Value>com.informix.jdbc.IfxDriver</Value>
             </Property>
-            <Property name="UserProjectDataStore">
-                <Property name="producer">
-                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
-                </Property>
-                <Property name="parameters">
-                    <Property name="jdbc_driver">
-                        <Value>com.informix.jdbc.IfxDriver</Value>
-                    </Property>
-                    <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://10.37.129.3:1526/user_project:informixserver=ol_topcoder</Value>
-                    </Property>
-                    <Property name="user">
-                        <Value>informix</Value>
-                    </Property>
-                    <Property name="password">
-                        <Value>sa</Value>
-                    </Property>
-                </Property>
+            <Property name="jdbc_url">
+                <Value>jdbc:informix-sqli://liulike:1526/tcs_test:INFORMIXSERVER=tcs</Value>
+            </Property>
+            <Property name="user">
+                <Value>informix</Value>
+            </Property>
+            <Property name="password">
+                <Value>123456</Value>
             </Property>
         </Property>
-    </Config>
+      </Property>
+    </Property>
+  </Config>
 </CMConfig>

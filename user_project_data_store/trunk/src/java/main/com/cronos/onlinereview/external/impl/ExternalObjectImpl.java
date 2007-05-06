@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.impl;
 
@@ -9,35 +7,49 @@ import com.cronos.onlinereview.external.ExternalObject;
 import com.cronos.onlinereview.external.UserProjectDataStoreHelper;
 
 /**
- * <p>Basic implementation of the ExternalObject interface; merely maintains the id field as a final
- * long.</p>
- * <p>This class is thread-safe, but subclasses are not guaranteed to be.</p>
+ * <p>
+ * Basic implementation of the <code>{@link ExternalObject}</code> interface; merely maintains the id field as a final
+ * long.
+ * </p>
+ * <p>
+ * <b>Thread Safety</b>: This class is thread-safe, but subclasses are not guaranteed to be.
+ * </p>
  *
- * @author dplass, TCSDEVELOPER
- * @version 1.0
+ * @author dplass, oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public abstract class ExternalObjectImpl implements ExternalObject {
 
     /**
-     * <p>The unique (among objects of this type) identifier of this object as set in the constructor
-     * and accessed by getId.  Will never be negative.</p>
+     * <p>
+     * The unique (among objects of this type) identifier of this object as set in the constructor and accessed by
+     * getId. Will never be negative.
+     * </p>
      */
     private final long id;
 
     /**
-     * <p>Constructs this object with the given identifier. Copy the parameter into the 'id' field.</p>
+     * <p>
+     * Constructs this object with the given identifier.
+     * </p>
      *
-     * @param id the unique (among objects of this type) identifier of this object.
-     *
-     * @throws IllegalArgumentException if id is negative.
+     * @param id
+     *            the unique (among objects of this type) identifier of this object.
+     * @throws IllegalArgumentException
+     *             if id is negative.
      */
     protected ExternalObjectImpl(long id) {
         UserProjectDataStoreHelper.validateNegative(id, "id");
+
         this.id = id;
     }
 
     /**
-     * <p>Returns the unique identifier of this object as set in the constructor. Returns the 'id' field.</p>
+     * <p>
+     * Returns the unique identifier of this object as set in the constructor.
+     * </p>
      *
      * @return the unique identifier of this object. Will never be negative.
      */

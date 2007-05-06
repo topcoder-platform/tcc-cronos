@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests.impl;
 
@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 import com.cronos.onlinereview.external.ConfigException;
 import com.cronos.onlinereview.external.RetrievalException;
-import com.cronos.onlinereview.external.failuretests.FailureHelper;
 import com.cronos.onlinereview.external.impl.DBProjectRetrieval;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -21,15 +20,17 @@ import junit.framework.TestCase;
  * This test case aggregates all test cases for <code>DBProjectRetrieval</code>.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class DBProjectRetrievalFailureTest extends TestCase {
     /** Configuration file path. */
-    private static final String CONFIG_FILE = "FailureTests" + File.separator + "ConfigFile.xml";
+    private static final String CONFIG_FILE = "test_files" + File.separator + "FailureTests" + File.separator
+            + "ConfigFile.xml";
 
     /** Invalid configuration file path. */
-    private static final String INVALID_CONFIG_FILE = "FailureTests" + File.separator + "InvalidConfigFile.xml";
+    private static final String INVALID_CONFIG_FILE = "test_files" + File.separator + "FailureTests" + File.separator
+            + "InvalidConfigFile.xml";
 
     /** Namespace used for tests. */
     private static final String NAMESPACE = "com.cronos.onlinereview.external";
@@ -45,13 +46,21 @@ public class DBProjectRetrievalFailureTest extends TestCase {
 
     /**
      * Set up.
+     *
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
-        FailureHelper.clearConfig();
+        tearDown();
         ConfigManager cm = ConfigManager.getInstance();
-        cm.add(CONFIG_FILE);
-        cm.add(INVALID_CONFIG_FILE);
+
+        File file;
+
+        file = new File(CONFIG_FILE);
+        cm.add(file.getCanonicalPath());
+
+        File invalidFile;
+        invalidFile = new File(INVALID_CONFIG_FILE);
+        cm.add(invalidFile.getCanonicalPath());
 
         connFactory = new DBConnectionFactoryImpl(NAMESPACE);
         retrieval = new DBProjectRetrieval(connFactory, CONN_NAME, 1);
@@ -59,18 +68,24 @@ public class DBProjectRetrievalFailureTest extends TestCase {
 
     /**
      * Tear down.
+     *
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
-        FailureHelper.clearConfig();
+        ConfigManager cm = ConfigManager.getInstance();
+        for (Iterator itr = cm.getAllNamespaces(); itr.hasNext();) {
+            cm.removeNamespace((String) itr.next());
+        }
         connFactory = null;
         retrieval = null;
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with null argument.
-     * <code>connFactory</code> is null in this test.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * null argument. <code>connFactory</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_NullArg_1() throws Exception {
@@ -83,9 +98,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with null argument.
-     * <code>connName</code> is null in this test.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * null argument. <code>connName</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_NullArg_2() throws Exception {
@@ -98,9 +115,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code>
-     * with negative <code>forumType</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * negative <code>forumType</code>. <code>IllegalArgumentException</code>
+     * is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_NegativeForumType() throws Exception {
@@ -113,8 +132,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with empty-string argument.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * empty-string argument. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_1() throws Exception {
@@ -127,8 +149,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with empty-string argument.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * empty-string argument. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_2() throws Exception {
@@ -141,8 +166,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with empty-string argument.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * empty-string argument. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_3() throws Exception {
@@ -155,8 +183,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with empty-string argument.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * empty-string argument. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_EmptyStringArg_4() throws Exception {
@@ -169,9 +200,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code>
-     * with unknown <code>connName</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor
+     * <code>DBProjectRetrieval(DBConnectionFactory, String, int)</code> with
+     * unknown <code>connName</code>. <code>ConfigException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalDBConnectionFactoryStringInt_UnknownConnName() throws Exception {
@@ -184,8 +217,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with null <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with null
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalString_NullArg() throws Exception {
@@ -198,8 +233,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with empty-string <code>namespace</code>.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with
+     * empty-string <code>namespace</code>.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalString_EmptyStringArg_1() throws Exception {
@@ -212,8 +249,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with empty-string <code>namespace</code>.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with
+     * empty-string <code>namespace</code>.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalString_EmptyStringArg_2() throws Exception {
@@ -226,8 +265,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with empty-string <code>namespace</code>.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with
+     * empty-string <code>namespace</code>.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalString_EmptyStringArg_3() throws Exception {
@@ -240,8 +281,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with empty-string <code>namespace</code>.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with
+     * empty-string <code>namespace</code>.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalString_EmptyStringArg_4() throws Exception {
@@ -254,8 +297,9 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with unknown <code>namespace</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with unknown
+     * <code>namespace</code>. <code>ConfigException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalString_UnknownNamespace_1() throws Exception {
@@ -268,8 +312,9 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with unknown <code>namespace</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with unknown
+     * <code>namespace</code>. <code>ConfigException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBProjectRetrievalString_UnknownNamespace_2() throws Exception {
@@ -283,8 +328,8 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid configuration.
-     * <code>connName</code> is not defined.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid
+     * configuration. <code>connName</code> is not defined.
      * <code>ConfigException</code> is expected.
      */
     public void testDBProjectRetrievalString_InvalidConfig_1() {
@@ -297,8 +342,8 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid configuration.
-     * <code>connName</code> is empty.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid
+     * configuration. <code>connName</code> is empty.
      * <code>ConfigException</code> is expected.
      */
     public void testDBProjectRetrievalString_InvalidConfig_2() {
@@ -311,8 +356,8 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid configuration.
-     * <code>forumType</code> cannot be parsed.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid
+     * configuration. <code>forumType</code> cannot be parsed.
      * <code>ConfigException</code> is expected.
      */
     public void testDBProjectRetrievalString_InvalidConfig_3() {
@@ -325,8 +370,8 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid configuration.
-     * <code>forumType</code> is negative.
+     * Test constructor <code>DBProjectRetrieval(String)</code> with invalid
+     * configuration. <code>forumType</code> is negative.
      * <code>ConfigException</code> is expected.
      */
     public void testDBProjectRetrievalString_InvalidConfig_4() {
@@ -339,8 +384,9 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(long)</code> with negative <code>id</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProject(long)</code> with negative
+     * <code>id</code>. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectLong_NegativeId() throws Exception {
@@ -353,8 +399,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(long)</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveProject(long)</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectLong_WithRetrievalError() throws Exception {
@@ -368,9 +416,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(String, String)</code> with null argument.
-     * <code>name</code> is null in this test.
+     * Test method <code>retrieveProject(String, String)</code> with null
+     * argument. <code>name</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectStringString_NullArg_1() throws Exception {
@@ -383,9 +432,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(String, String)</code> with null argument.
-     * <code>version</code> is null in this test.
+     * Test method <code>retrieveProject(String, String)</code> with null
+     * argument. <code>version</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectStringString_NullArg_2() throws Exception {
@@ -398,9 +448,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(String, String)</code> with empty-string argument.
-     * <code>name</code> is empty-string in this test.
+     * Test method <code>retrieveProject(String, String)</code> with
+     * empty-string argument. <code>name</code> is empty-string in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectStringString_EmptyStringArg_1() throws Exception {
@@ -413,9 +464,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(String, String)</code> with empty-string argument.
-     * <code>name</code> is empty-string in this test.
+     * Test method <code>retrieveProject(String, String)</code> with
+     * empty-string argument. <code>name</code> is empty-string in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectStringString_EmptyStringArg_2() throws Exception {
@@ -428,9 +480,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(String, String)</code> with empty-string argument.
-     * <code>version</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProject(String, String)</code> with
+     * empty-string argument. <code>version</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectStringString_EmptyStringArg_3() throws Exception {
@@ -443,9 +496,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(String, String)</code> with empty-string argument.
-     * <code>version</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProject(String, String)</code> with
+     * empty-string argument. <code>version</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectStringString_EmptyStringArg_4() throws Exception {
@@ -458,8 +512,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProject(String, String)</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveProject(String, String)</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectStringString_WithRetrievalError() throws Exception {
@@ -473,8 +529,9 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(long[])</code> with null <code>ids</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProjects(long[])</code> with null
+     * <code>ids</code>. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsLongArray_NullIds() throws Exception {
@@ -487,8 +544,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(long[])</code> with <code>ids</code> containing negative element.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProjects(long[])</code> with <code>ids</code>
+     * containing negative element. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsLongArray_IdsWithNegativeElement() throws Exception {
@@ -501,8 +560,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(long[])</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveProjects(long[])</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsLongArray_WithRetrievalError() throws Exception {
@@ -516,9 +577,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with null argument.
-     * <code>names</code> is null in this test.
+     * Test method <code>retrieveProjects(String[], String[])</code> with null
+     * argument. <code>names</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_NullArg_1() throws Exception {
@@ -531,9 +593,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with null argument.
-     * <code>versions</code> is null in this test.
+     * Test method <code>retrieveProjects(String[], String[])</code> with null
+     * argument. <code>versions</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_NullArg_2() throws Exception {
@@ -546,9 +609,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with input array containing null element.
-     * <code>names</code> contains null element in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * input array containing null element. <code>names</code> contains null
+     * element in this test. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_ArrayWithNullElement_1() throws Exception {
@@ -561,9 +626,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with input array containing null element.
-     * <code>versions</code> contains null element in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * input array containing null element. <code>versions</code> contains
+     * null element in this test. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_ArrayWithNullElement_2() throws Exception {
@@ -576,9 +643,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with input array containing empty-string element.
-     * <code>names</code> contains empty-string element in this test.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * input array containing empty-string element. <code>names</code>
+     * contains empty-string element in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_1() throws Exception {
@@ -591,9 +660,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with input array containing empty-string element.
-     * <code>names</code> contains empty-string element in this test.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * input array containing empty-string element. <code>names</code>
+     * contains empty-string element in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_2() throws Exception {
@@ -606,9 +677,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with input array containing empty-string element.
-     * <code>versions</code> contains empty-string element in this test.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * input array containing empty-string element. <code>versions</code>
+     * contains empty-string element in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_3() throws Exception {
@@ -621,9 +694,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with input array containing empty-string element.
-     * <code>versions</code> contains empty-string element in this test.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * input array containing empty-string element. <code>versions</code>
+     * contains empty-string element in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_ArrayWithEmptyStringElement_4() throws Exception {
@@ -636,8 +711,10 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with input arrays of different size.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * input arrays of different size. <code>IllegalArgumentException</code>
+     * is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_ArrayWithDifferentSize() throws Exception {
@@ -650,8 +727,11 @@ public class DBProjectRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveProjects(String[], String[])</code> with <code>RetrievalException</code>
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveProjects(String[], String[])</code> with
+     * <code>RetrievalException</code>
+     * <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveProjectsStringArrayStringArray_WithRetrievalError() throws Exception {

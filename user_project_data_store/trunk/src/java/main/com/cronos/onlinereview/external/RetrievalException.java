@@ -1,37 +1,48 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external;
 
 /**
- * <p>This exception represents a problem with retrieving data from persistent storage in the User
- * Project Data Store component.</p>
- * <p>It is thrown by the UserRetrieval and ProjectRetrieval interfaces (and their implementations and
- * base classes.) It can be used with a message, and with or without an underlying cause.</p>
+ * <p>
+ * This exception represents a problem with retrieving data from persistent storage in the
+ * <b>User Project Data Store</b> component.
+ * </p>
+ * <p>
+ * It is thrown by the <code>{@link UserRetrieval}</code> and <code>{@link ProjectRetrieval}</code> interfaces (and
+ * their implementations and base classes.) It can be used with a message, and with or without an underlying cause.
+ * </p>
  *
- * @author dplass, TCSDEVELOPER
- * @version 1.0
+ * @author dplass, oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public class RetrievalException extends UserProjectDataStoreException {
 
     /**
-     * <p>Create this exception with the given message.</p>
+     * <p>
+     * Creates this exception with the given message.
+     * </p>
      *
-     * @param msg The message of this exception. May be null or empty after trim.
+     * @param message
+     *            The message of this exception. May be null or empty after trim.
      */
-    public RetrievalException(String msg) {
-        super(msg);
+    public RetrievalException(String message) {
+        super(message);
     }
 
     /**
-     * <p>Create this exception with the given message and underlying cause.</p>
+     * <p>
+     * Creates this exception with the given message and underlying cause.
+     * </p>
      *
-     * @param msg The message of this exception. May be null or empty after trim.
-     * @param cause the underlying cause of the exception.
+     * @param message
+     *            The message of this exception. May be null or empty after trim.
+     * @param cause
+     *            the underlying cause of the exception.
      */
-    public RetrievalException(String msg, Throwable cause) {
-        super(msg, cause);
+    public RetrievalException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

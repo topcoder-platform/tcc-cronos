@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests.impl;
 
@@ -23,8 +21,8 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
  * The mock class of the BaseDBRetrieval class.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class DummyBaseDBRetrieval extends BaseDBRetrieval {
 
@@ -47,13 +45,12 @@ public class DummyBaseDBRetrieval extends BaseDBRetrieval {
      *
      * @param connFactory the connection factory to use with this object.
      * @param connName the connection name to use when creating connections.
-     *
-     * @throws IllegalArgumentException if either parameter is null or connName is empty String.
-     * @throws ConfigException if the connection name doesn't correspond to a connection the
-     * factory knows about.
+     * @throws IllegalArgumentException if either parameter is null or connName
+     *             is empty String.
+     * @throws ConfigException if the connection name doesn't correspond to a
+     *             connection the factory knows about.
      */
-    public DummyBaseDBRetrieval(DBConnectionFactory connFactory, String connName)
-        throws ConfigException {
+    public DummyBaseDBRetrieval(DBConnectionFactory connFactory, String connName) throws ConfigException {
 
         super(connFactory, connName);
     }
@@ -63,16 +60,16 @@ public class DummyBaseDBRetrieval extends BaseDBRetrieval {
      * Mock constructor.
      * </p>
      *
-     * @param namespace the ConfigManager namespace to retrieve the DBConnectionFactory and optional
-     * connection name.
-     *
-     * @throws IllegalArgumentException if the parameter is null or empty after trim.
-     * @throws ConfigException if the namespace could not be found, or if the connection factory could not
-     * be instantiated with the given namespace, or if the connection name is unknown to the connection
-     * factory.
+     * @param namespace the ConfigManager namespace to retrieve the
+     *            DBConnectionFactory and optional connection name.
+     * @throws IllegalArgumentException if the parameter is null or empty after
+     *             trim.
+     * @throws ConfigException if the namespace could not be found, or if the
+     *             connection factory could not be instantiated with the given
+     *             namespace, or if the connection name is unknown to the
+     *             connection factory.
      */
-    public DummyBaseDBRetrieval(String namespace)
-        throws ConfigException {
+    public DummyBaseDBRetrieval(String namespace) throws ConfigException {
 
         super(namespace);
     }
@@ -84,12 +81,10 @@ public class DummyBaseDBRetrieval extends BaseDBRetrieval {
      *
      * @return map from Long(id) to ExternalObject.
      * @param ps the prepared statement to execute as a query.
-     *
-     * @throws RetrievalException if any exception occurred during processing; it will wrap the underlying
-     * exception.
+     * @throws RetrievalException if any exception occurred during processing;
+     *             it will wrap the underlying exception.
      */
-    public Map retrieveObjects(PreparedStatement ps)
-        throws RetrievalException {
+    public Map retrieveObjects(PreparedStatement ps) throws RetrievalException {
 
         return super.retrieveObjects(ps);
     }
@@ -99,15 +94,14 @@ public class DummyBaseDBRetrieval extends BaseDBRetrieval {
      * Mock method of <code>createObject(ResultSet)</code>.
      * </p>
      *
-     * @return an ExternalObject populated with the columns of the given result set.
-     * @param rs a result set row which contains the columns needed to instantiate the desired
-     * ExternalObject implementation.
-     *
-     * @throws RetrievalException if rs didn't contain required columns, or if any of them could
-     * not be retrieved.
+     * @return an ExternalObject populated with the columns of the given result
+     *         set.
+     * @param rs a result set row which contains the columns needed to
+     *            instantiate the desired ExternalObject implementation.
+     * @throws RetrievalException if rs didn't contain required columns, or if
+     *             any of them could not be retrieved.
      */
-    protected ExternalObject createObject(ResultSet rs)
-        throws RetrievalException {
+    protected ExternalObject createObject(ResultSet rs) throws RetrievalException {
 
         long id = DEFAULT_ID;
         try {
@@ -125,11 +119,9 @@ public class DummyBaseDBRetrieval extends BaseDBRetrieval {
      * </p>
      *
      * @return a new connection from the connection factory.
-     *
      * @throws RetrievalException if a connection could not be created.
      */
-    public Connection getConnection()
-        throws RetrievalException {
+    public Connection getConnection() throws RetrievalException {
 
         return super.getConnection();
     }
@@ -141,12 +133,10 @@ public class DummyBaseDBRetrieval extends BaseDBRetrieval {
      *
      * @param ps the prepared statement to close. May be null.
      * @param connection the connection to close. May be null.
-     *
-     * @throws RetrievalException if an exception occurred while closing any of the parameters. it
-     * will wrap the actual exception.
+     * @throws RetrievalException if an exception occurred while closing any of
+     *             the parameters. it will wrap the actual exception.
      */
-    public void close(PreparedStatement ps, Connection connection)
-        throws RetrievalException {
+    public void close(PreparedStatement ps, Connection connection) throws RetrievalException {
 
         super.close(ps, connection);
     }

@@ -1,22 +1,23 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.accuracytests.impl;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.cronos.onlinereview.external.accuracytests.AccuracyHelper;
 import com.cronos.onlinereview.external.impl.ExternalObjectImpl;
 import com.cronos.onlinereview.external.impl.ExternalProjectImpl;
-
 
 /**
  * <p>
  * Tests the ExternalProjectImpl class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt,restarter
+ * @version 2.0
  */
 public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyTest {
     /**
@@ -66,8 +67,8 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * The default description string of the projectImpl.
      * </p>
      */
-    private static final String defaultDescriptionString = "This componnet named User Project Data Store " +
-        "and version 1.0";
+    private static final String defaultDescriptionString =
+        "This componnet named User Project Data Store " + "and version 1.0";
 
     /**
      * <p>
@@ -82,6 +83,20 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * </p>
      */
     private ExternalProjectImpl externalProject = null;
+
+    /**
+     * <p>
+     * A string representing the short description.
+     * </p>
+     */
+    private String shortDescription = "a string for a short description";
+
+    /**
+     * <p>
+     * A string representing the functional description.
+     * </p>
+     */
+    private String functionalDescription = "a string for a short description";
 
     /**
      * <p>
@@ -100,7 +115,7 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * <p>
      * Tests the accuracy of the Constructor(long, long, String).
      * </p>
-     * 
+     *
      * <p>
      * The ExternalProjectImpl instance should be created successfully.
      * </p>
@@ -108,12 +123,12 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testConstructor_Accuracy() {
         assertTrue("projectImpl should be instance of ExternalProjectImpl.",
             externalProject instanceof ExternalProjectImpl);
-        assertEquals("Tests the accuracy of Constructor failed.", new Long(ID),
-            AccuracyHelper.getPrivateField(ExternalObjectImpl.class, externalObject, "id"));
-        assertEquals("Tests the accuracy of Constructor failed.", new Long(VERSION_ID),
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalObject, "versionId"));
-        assertEquals("Tests the accuracy of Constructor failed.", VERSION_STRING,
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalObject, "version"));
+        assertEquals("Tests the accuracy of Constructor failed.", new Long(ID), AccuracyHelper
+            .getPrivateField(ExternalObjectImpl.class, externalObject, "id"));
+        assertEquals("Tests the accuracy of Constructor failed.", new Long(VERSION_ID), AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalObject, "versionId"));
+        assertEquals("Tests the accuracy of Constructor failed.", VERSION_STRING, AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalObject, "version"));
     }
 
     /**
@@ -140,14 +155,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * </p>
      */
     public void testGetVersion_Accuracy() {
-        assertEquals("The version string should be got correctly.", VERSION_STRING, externalProject.getVersion());
+        assertEquals("The version string should be got correctly.", VERSION_STRING, externalProject
+            .getVersion());
     }
 
     /**
      * <p>
      * Tests the accuracy of the setter setCatalogId(long).
      * </p>
-     * 
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -155,15 +171,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testSetCatalogId_Accuracy() {
         externalProject.setCatalogId(CATALOG_ID);
 
-        assertEquals("The catalog id should be set correctly.", new Long(CATALOG_ID),
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalProject, "catalogId"));
+        assertEquals("The catalog id should be set correctly.", new Long(CATALOG_ID), AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalProject, "catalogId"));
     }
 
     /**
      * <p>
      * Tests the accuracy of the setter setComments(String).
      * </p>
-     * 
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -171,15 +187,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testSetComments_Accuracy() {
         externalProject.setComments(COMMENT_STRING);
 
-        assertEquals("The comments should be set correctly.", COMMENT_STRING,
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalProject, "comments"));
+        assertEquals("The comments should be set correctly.", COMMENT_STRING, AccuracyHelper.getPrivateField(
+            ExternalProjectImpl.class, externalProject, "comments"));
     }
 
     /**
      * <p>
      * Tests the accuracy of the setter setComponentId(long).
      * </p>
-     * 
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -187,15 +203,47 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testSetComponentId_Accuracy() {
         externalProject.setComponentId(COMPONENT_ID);
 
-        assertEquals("The componentId should be set correctly.", new Long(COMPONENT_ID),
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalProject, "componentId"));
+        assertEquals("The componentId should be set correctly.", new Long(COMPONENT_ID), AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalProject, "componentId"));
     }
 
     /**
      * <p>
      * Tests the accuracy of the setter setDescription(String).
      * </p>
-     * 
+     *
+     * <p>
+     * Using reflection.
+     * </p>
+     */
+    public void testSetShortDescription_Accuracy() {
+        externalProject.setShortDescription(shortDescription);
+
+        assertEquals("The short description should be set correctly.", shortDescription, AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalProject, "shortDescription"));
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of the setter setDescription(String).
+     * </p>
+     *
+     * <p>
+     * Using reflection.
+     * </p>
+     */
+    public void testSetFunctionalDescription_Accuracy() {
+        externalProject.setFunctionalDescription(functionalDescription);
+
+        assertEquals("The short description should be set correctly.", functionalDescription, AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalProject, "functionalDescription"));
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of the setter setDescription(String).
+     * </p>
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -203,15 +251,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testSetDescription_Accuracy() {
         externalProject.setDescription(defaultDescriptionString);
 
-        assertEquals("The description should be set correctly.", defaultDescriptionString,
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalProject, "description"));
+        assertEquals("The description should be set correctly.", defaultDescriptionString, AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalProject, "description"));
     }
 
     /**
      * <p>
      * Tests the accuracy of the setter setForumId(long).
      * </p>
-     * 
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -219,15 +267,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testSetForumId_Accuracy() {
         externalProject.setForumId(FORUM_ID);
 
-        assertEquals("The forumId should be set correctly.", new Long(FORUM_ID),
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalProject, "forumId"));
+        assertEquals("The forumId should be set correctly.", new Long(FORUM_ID), AccuracyHelper
+            .getPrivateField(ExternalProjectImpl.class, externalProject, "forumId"));
     }
 
     /**
      * <p>
      * Tests the accuracy of the setter setName(String).
      * </p>
-     * 
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -235,15 +283,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testSetName_Accuracy() {
         externalProject.setName(defaultNameString);
 
-        assertEquals("The name should be set correctly.", defaultNameString,
-            AccuracyHelper.getPrivateField(ExternalProjectImpl.class, externalProject, "name"));
+        assertEquals("The name should be set correctly.", defaultNameString, AccuracyHelper.getPrivateField(
+            ExternalProjectImpl.class, externalProject, "name"));
     }
 
     /**
      * <p>
      * Tests the accuracy of the getter getCatalogId().
      * </p>
-     * 
+     *
      * <p>
      * Using validated setter to test.
      * </p>
@@ -258,7 +306,7 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * <p>
      * Tests the accuracy of the getter getCatalogId().
      * </p>
-     * 
+     *
      * <p>
      * If is no component, -1 would be returned.
      * </p>
@@ -271,7 +319,7 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * <p>
      * Tests the accuracy of the getter getComments().
      * </p>
-     * 
+     *
      * <p>
      * Using validated setter to test.
      * </p>
@@ -286,7 +334,7 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * <p>
      * Tests the accuracy of the getter getComments().
      * </p>
-     * 
+     *
      * <p>
      * If is no comments, null would be returned.
      * </p>
@@ -299,7 +347,7 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * <p>
      * Tests the accuracy of the getter getComponentId().
      * </p>
-     * 
+     *
      * <p>
      * Using validated setter to test.
      * </p>
@@ -307,14 +355,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testGetComponentId() {
         externalProject.setComponentId(COMPONENT_ID);
 
-        assertEquals("The componentId should be got correctly.", COMPONENT_ID, externalProject.getComponentId());
+        assertEquals("The componentId should be got correctly.", COMPONENT_ID, externalProject
+            .getComponentId());
     }
 
     /**
      * <p>
      * Tests the accuracy of the getter getComponentId().
      * </p>
-     * 
+     *
      * <p>
      * If is no component id, -1 would be returned.
      * </p>
@@ -327,7 +376,7 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * <p>
      * Tests the accuracy of the getter getDescription().
      * </p>
-     * 
+     *
      * <p>
      * Using validated setter to test.
      * </p>
@@ -335,15 +384,15 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
     public void testGetDescription() {
         externalProject.setDescription(defaultDescriptionString);
 
-        assertEquals("The description should be got correctly.", defaultDescriptionString,
-            externalProject.getDescription());
+        assertEquals("The description should be got correctly.", defaultDescriptionString, externalProject
+            .getDescription());
     }
 
     /**
      * <p>
      * Tests the accuracy of the getter getDescription().
      * </p>
-     * 
+     *
      * <p>
      * If is no description, null would be returned.
      * </p>
@@ -354,9 +403,68 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
 
     /**
      * <p>
+     * Tests the accuracy of the getter getDescription().
+     * </p>
+     *
+     * <p>
+     * Using validated setter to test.
+     * </p>
+     */
+    public void testGetFunctionalDescription() {
+        externalProject.setFunctionalDescription(functionalDescription);
+
+        assertEquals("The functional description should be got correctly.", functionalDescription,
+            externalProject.getFunctionalDescription());
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of the getter getDescription().
+     * </p>
+     *
+     * <p>
+     * If is no description, null would be returned.
+     * </p>
+     */
+    public void testGetFunctionalDescription_NoDescriptionSet() {
+        assertEquals("The functional description got should be null.", "", externalProject
+            .getFunctionalDescription());
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of the getter getShortDescription().
+     * </p>
+     *
+     * <p>
+     * Using validated setter to test.
+     * </p>
+     */
+    public void testGetShortDescription() {
+        externalProject.setShortDescription(shortDescription);
+
+        assertEquals("The short description should be got correctly.", shortDescription, externalProject
+            .getShortDescription());
+    }
+
+    /**
+     * <p>
+     * Tests the accuracy of the getter getDescription().
+     * </p>
+     *
+     * <p>
+     * If is no description, null would be returned.
+     * </p>
+     */
+    public void testGetShortDescription_NoDescriptionSet() {
+        assertEquals("The short description got should be null.", "", externalProject.getShortDescription());
+    }
+
+    /**
+     * <p>
      * Tests the accuracy of the getter getForumId().
      * </p>
-     * 
+     *
      * <p>
      * Using validated setter to test.
      * </p>
@@ -371,7 +479,7 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
      * <p>
      * Tests the accuracy of the getter getName().
      * </p>
-     * 
+     *
      * <p>
      * Using validated setter to test.
      * </p>
@@ -380,5 +488,55 @@ public class ExternalProjectImplAccuracyTest extends ExternalObjectImplAccuracyT
         externalProject.setName(defaultNameString);
 
         assertEquals("The name should be got correctly.", defaultNameString, externalProject.getName());
+    }
+
+    /**
+     * <p>
+     * Test the accuracy of the getTechnologies().
+     * </p>
+     *
+     * <p>
+     * If no technologies is added, empty array is returned.
+     * </p>
+     */
+    public void testGetTechnologies1() {
+        assertEquals("error getTechnologies", 0, externalProject.getTechnologies().length);
+    }
+
+    /**
+     * <p>
+     * Test the accuracy of the getTechnologies().
+     * </p>
+     */
+    public void testGetTechnologies2() {
+        Set sets = new HashSet();
+        for(int i = 0; i < 100; i++) {
+            externalProject.addTechnology("t"+i);
+            sets.add("t"+i);
+        }
+        String[] technologies = externalProject.getTechnologies();
+        assertEquals("The Technologies is not correctly got", 100, technologies.length);
+
+        for(int i = 0; i < 100; i++) {
+            sets.removeAll(Arrays.asList(technologies));
+        }
+
+        assertEquals("The Technologies is not correctly got", 0, sets.size());
+    }
+
+    /**
+     * <p>
+     * Test the accuracy of the getTechnologies().
+     * </p>
+     *
+     * <p>
+     * Duplicate entries will be added.
+     * </p>
+     */
+    public void testGetTechnologies3() {
+        externalProject.addTechnology("technology");
+        externalProject.addTechnology("technology");
+        assertEquals("error getFunctionalDescription", 1, externalProject.getTechnologies().length);
+        assertEquals("error getFunctionalDescription", "technology", externalProject.getTechnologies()[0]);
     }
 }

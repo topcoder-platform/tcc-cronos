@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests.impl;
 
@@ -12,8 +12,8 @@ import junit.framework.TestCase;
  * This test case aggregates all test cases for <code>ExternalProjectImpl</code>.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class ExternalProjectImplFailureTest extends TestCase {
 
@@ -22,6 +22,7 @@ public class ExternalProjectImplFailureTest extends TestCase {
 
     /**
      * Set up.
+     *
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
@@ -30,6 +31,7 @@ public class ExternalProjectImplFailureTest extends TestCase {
 
     /**
      * Tear down.
+     *
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
@@ -37,8 +39,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test <code>ExternalProjectImpl(long, long, String)</code> with null argument.
-     * <code>version</code> is null in this test.
+     * Test <code>ExternalProjectImpl(long, long, String)</code> with null
+     * argument. <code>version</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalProjectImpl_NullArg() {
@@ -51,8 +53,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test <code>ExternalProjectImpl(long, long, String)</code> with negative argument.
-     * <code>id</code> is negative in this test.
+     * Test <code>ExternalProjectImpl(long, long, String)</code> with negative
+     * argument. <code>id</code> is negative in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalProjectImpl_NegativeArg_1() {
@@ -65,8 +67,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test <code>ExternalProjectImpl(long, long, String)</code> with negative argument.
-     * <code>versionId</code> is negative in this test.
+     * Test <code>ExternalProjectImpl(long, long, String)</code> with negative
+     * argument. <code>versionId</code> is negative in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalProjectImpl_NegativeArg_2() {
@@ -79,8 +81,9 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setCatalogId(long)</code> with negative <code>catalogId</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setCatalogId(long)</code> with negative
+     * <code>catalogId</code>. <code>IllegalArgumentException</code> is
+     * expected.
      */
     public void testSetCatalogId_NegativeId() {
         try {
@@ -92,8 +95,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setCatalogId(long)</code> with <code>catalogId</code> already set.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setCatalogId(long)</code> with <code>catalogId</code>
+     * already set. <code>IllegalArgumentException</code> is expected.
      */
     public void testSetCatalogId_IdAlreadySet() {
         impl.setCatalogId(1);
@@ -106,8 +109,9 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setComments(String)</code> with null <code>comments</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setComments(String)</code> with null
+     * <code>comments</code>. <code>IllegalArgumentException</code> is
+     * expected.
      */
     public void testSetComments_NullComments() {
         try {
@@ -119,8 +123,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setComments(String)</code> with <code>comments</code> already set.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setComments(String)</code> with <code>comments</code>
+     * already set. <code>IllegalArgumentException</code> is expected.
      */
     public void testSetComments_CommentsAlreadySet() {
         impl.setComments("Fine.");
@@ -133,8 +137,9 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setComponentId(long)</code> with negative <code>componentId</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setComponentId(long)</code> with negative
+     * <code>componentId</code>. <code>IllegalArgumentException</code> is
+     * expected.
      */
     public void testSetComponentId_NegativeId() {
         try {
@@ -146,7 +151,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setComponentId(long)</code> with <code>componentId</code> already set.
+     * Test method <code>setComponentId(long)</code> with
+     * <code>componentId</code> already set.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testSetComponentId_IdAlreadySet() {
@@ -160,8 +166,9 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setDescription(String)</code> with null <code>description</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setDescription(String)</code> with null
+     * <code>description</code>. <code>IllegalArgumentException</code> is
+     * expected.
      */
     public void testSetDescription_NullDescription() {
         try {
@@ -173,7 +180,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setDescription(String)</code> with <code>description</code> already set.
+     * Test method <code>setDescription(String)</code> with
+     * <code>description</code> already set.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testSetDescription_DescriptionAlreadySet() {
@@ -187,8 +195,9 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setForumId(long)</code> with negative <code>forumId</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setForumId(long)</code> with negative
+     * <code>forumId</code>. <code>IllegalArgumentException</code> is
+     * expected.
      */
     public void testSetForumId_NegativeId() {
         try {
@@ -200,8 +209,8 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setForumId(long)</code> with <code>forumId</code> already set.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setForumId(long)</code> with <code>forumId</code>
+     * already set. <code>IllegalArgumentException</code> is expected.
      */
     public void testSetForumId_IdAlreadySet() {
         impl.setForumId(1);
@@ -227,13 +236,81 @@ public class ExternalProjectImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>setName(String)</code> with <code>name</code> already set.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>setName(String)</code> with <code>name</code>
+     * already set. <code>IllegalArgumentException</code> is expected.
      */
     public void testSetName_NameAlreadySet() {
         impl.setName("foo");
         try {
             impl.setName("bar");
+            fail("IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException iae) {
+            // Success
+        }
+    }
+
+    /**
+     * Test method <code>setFunctionalDescription(String)</code> with null.
+     * <code>IllegalArgumentException</code> is expected.
+     */
+    public void testSetFunctionalDescription_Null() {
+        try {
+            impl.setFunctionalDescription(null);
+            fail("IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException iae) {
+            // Success
+        }
+    }
+
+    /**
+     * Test method <code>setFunctionalDescription(String)</code> when
+     * description already set. <code>IllegalArgumentException</code> is
+     * expected.
+     */
+    public void testSetFunctionalDescription_AlreadySet() {
+        impl.setFunctionalDescription("foo");
+        try {
+            impl.setFunctionalDescription("bar");
+            fail("IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException iae) {
+            // Success
+        }
+    }
+
+    /**
+     * Test method <code>setShortDescription(String)</code> with null.
+     * <code>IllegalArgumentException</code> is expected.
+     */
+    public void testSetShortDescription_Null() {
+        try {
+            impl.setShortDescription(null);
+            fail("IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException iae) {
+            // Success
+        }
+    }
+
+    /**
+     * Test method <code>setShortDescription(String)</code> when description
+     * already set. <code>IllegalArgumentException</code> is expected.
+     */
+    public void testSetShortDescription_AlreadySet() {
+        impl.setShortDescription("foo");
+        try {
+            impl.setShortDescription("bar");
+            fail("IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException iae) {
+            // Success
+        }
+    }
+
+    /**
+     * Test method <code>addTechnology(String)</code> with null.
+     * <code>IllegalArgumentException</code> is expected.
+     */
+    public void testAddTechnology_Null() {
+        try {
+            impl.addTechnology(null);
             fail("IllegalArgumentException is expected.");
         } catch (IllegalArgumentException iae) {
             // Success

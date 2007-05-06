@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests;
 
@@ -12,8 +12,8 @@ import junit.framework.TestCase;
  * This test case aggregates all test cases for <code>RatingType</code>.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class RatingTypeFailureTest extends TestCase {
 
@@ -32,8 +32,8 @@ public class RatingTypeFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>getRatingType(String)</code> with empty-string argument.
-     * <code>typeName</code> is empty-string in this test.
+     * Test method <code>getRatingType(String)</code> with empty-string
+     * argument. <code>typeName</code> is empty-string in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testGetRatingTypeString_EmptyStringArg_1() {
@@ -46,8 +46,8 @@ public class RatingTypeFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>getRatingType(String)</code> with empty-string argument.
-     * <code>typeName</code> is empty-string in this test.
+     * Test method <code>getRatingType(String)</code> with empty-string
+     * argument. <code>typeName</code> is empty-string in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testGetRatingTypeString_EmptyStringArg_2() {
@@ -60,8 +60,8 @@ public class RatingTypeFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>getRatingType(String)</code> with empty-string argument.
-     * <code>typeName</code> is empty-string in this test.
+     * Test method <code>getRatingType(String)</code> with empty-string
+     * argument. <code>typeName</code> is empty-string in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testGetRatingTypeString_EmptyStringArg_3() {
@@ -74,8 +74,8 @@ public class RatingTypeFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>getRatingType(String)</code> with empty-string argument.
-     * <code>typeName</code> is empty-string in this test.
+     * Test method <code>getRatingType(String)</code> with empty-string
+     * argument. <code>typeName</code> is empty-string in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testGetRatingTypeString_EmptyStringArg_4() {
@@ -88,8 +88,8 @@ public class RatingTypeFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>getRatingType(int)</code> with negative <code>id</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>getRatingType(int)</code> with negative
+     * <code>id</code>. <code>IllegalArgumentException</code> is expected.
      */
     public void testGetRatingTypeInt_NegativeId() {
         try {

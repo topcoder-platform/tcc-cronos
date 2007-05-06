@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests.impl;
 
@@ -10,8 +10,8 @@ import com.cronos.onlinereview.external.impl.ExternalObjectImpl;
  * Mock class of the <code>ExternalObjectImpl</code> class.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class DummyExternalObjectImpl extends ExternalObjectImpl {
 
@@ -21,7 +21,6 @@ public class DummyExternalObjectImpl extends ExternalObjectImpl {
      * </p>
      *
      * @param id identifier of this object.
-     *
      * @throws IllegalArgumentException if id is negative.
      */
     public DummyExternalObjectImpl(long id) {

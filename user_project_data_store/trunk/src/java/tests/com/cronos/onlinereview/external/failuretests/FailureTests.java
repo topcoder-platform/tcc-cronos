@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests;
 
@@ -15,15 +15,18 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * <p>This test case aggregates all Failure test cases.</p>
+ * <p>
+ * This test case aggregates all Failure test cases.
+ * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class FailureTests extends TestCase {
 
     /**
      * Return the test suite of failure tests.
+     *
      * @return the test suite of failure tests.
      */
     public static Test suite() {

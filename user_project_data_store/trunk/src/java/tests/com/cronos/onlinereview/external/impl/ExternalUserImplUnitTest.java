@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.impl;
 
@@ -15,111 +13,154 @@ import com.cronos.onlinereview.external.UnitTestHelper;
 import junit.framework.TestCase;
 
 /**
- * <p>Tests the ExternalUserImpl class.</p>
+ * <p>
+ * Tests the ExternalUserImpl class.
+ * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public class ExternalUserImplUnitTest extends TestCase {
 
     /**
-     * <p>Represents the configuration file.</p>
+     * <p>
+     * Represents the configuration file.
+     * </p>
      */
     private static final String CONFIG_FILE = "SampleConfig.xml";
 
     /**
-     * <p>The Default RatingType used in the test.</p>
+     * <p>
+     * The default id of the userImpl.
+     * </p>
+     */
+    private static final long DEFAULT_ID = 123;
+
+    /**
+     * <p>
+     * The default handle string of the userImpl.
+     * </p>
+     */
+    private static final String DEFAULT_HANDLE_STRING = "TCSDEVELOPER";
+
+    /**
+     * <p>
+     * The default first name string of the userImpl.
+     * </p>
+     */
+    private static final String DEFAULT_FIRST_NAME_STRING = "TCS";
+
+    /**
+     * <p>
+     * The default last name string of the userImpl.
+     * </p>
+     */
+    private static final String DEFAULT_LAST_NAME_STRING = "DEVELOPER";
+
+    /**
+     * <p>
+     * The default email name string of the userImpl.
+     * </p>
+     */
+    private static final String DEFAULT_EMAIL_STRING = "TCSDEVELOPER@gmail.com";
+
+    /**
+     * <p>
+     * The default alternativeEmail name string of the userImpl.
+     * </p>
+     */
+    private static final String DEFAULT_ALTER_EMAIL_STRING = "Alter_TCSDEVELOPER@gmail.com";
+
+    /**
+     * <p>
+     * The Default rating used in the test.
+     * </p>
+     */
+    private static final int DEFAULT_RATING = 1569;
+
+    /**
+     * <p>
+     * The Default number ratings used in the test.
+     * </p>
+     */
+    private static final int DEFAULT_NUMBER_RATINGS = 10;
+
+    /**
+     * <p>
+     * The Default volatility used in the test.
+     * </p>
+     */
+    private static final int DEFAULT_VOLATILITY = 494;
+
+    /**
+     * <p>
+     * The Default RatingType used in the test.
+     * </p>
      */
     private RatingType defaultRatingType = null;
 
     /**
-     * <p>An RatingInfo instance for testing.</p>
+     * <p>
+     * An RatingInfo instance for testing.
+     * </p>
      */
     private RatingInfo ratingInfo = null;
 
     /**
-     * <p>The Default rating used in the test.</p>
-     */
-    private final int defaultRating = 1569;
-
-    /**
-     * <p>The Default number ratings used in the test.</p>
-     */
-    private final int defaultNumberRatings = 10;
-
-    /**
-     * <p>The Default volatility used in the test.</p>
-     */
-    private final int defaultVolatility = 494;
-
-    /**
-     * <p>The default id of the userImpl.</p>
-     */
-    private static final long defaultID = 123;
-
-    /**
-     * <p>The default handle string of the userImpl.</p>
-     */
-    private static final String defaultHandleString = "TCSDEVELOPER";
-
-    /**
-     * <p>The default first name string of the userImpl.</p>
-     */
-    private static final String defaultFirstNameString = "TCS";
-
-    /**
-     * <p>The default last name string of the userImpl.</p>
-     */
-    private static final String defaultLastNameString = "DEVELOPER";
-
-    /**
-     * <p>The default email name string of the userImpl.</p>
-     */
-    private static final String defaultEmailString = "TCSDEVELOPER@gmail.com";
-
-    /**
-     * <p>The default alternativeEmail name string of the userImpl.</p>
-     */
-    private static final String defaultAlterEmailString = "Alter_TCSDEVELOPER@gmail.com";
-
-    /**
-     * <p>An ExternalUserImpl instance for testing.</p>
+     * <p>
+     * An ExternalUserImpl instance for testing.
+     * </p>
      */
     private ExternalUserImpl userImpl = null;
 
     /**
-     * <p>Initialization.</p>
+     * <p>
+     * Initialization.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void setUp() throws Exception {
+        super.setUp();
         UnitTestHelper.addConfig(CONFIG_FILE);
 
         defaultRatingType = RatingType.DEVELOPMENT;
 
-        ratingInfo = new RatingInfo(defaultRatingType, defaultRating, defaultNumberRatings,
-                defaultVolatility);
+        ratingInfo = new RatingInfo(defaultRatingType, DEFAULT_RATING, DEFAULT_NUMBER_RATINGS, DEFAULT_VOLATILITY);
 
-        userImpl = new ExternalUserImpl(defaultID, defaultHandleString, defaultFirstNameString,
-                defaultLastNameString, defaultEmailString);
+        userImpl = new ExternalUserImpl(DEFAULT_ID, DEFAULT_HANDLE_STRING, DEFAULT_FIRST_NAME_STRING,
+                DEFAULT_LAST_NAME_STRING, DEFAULT_EMAIL_STRING);
     }
 
     /**
-     * <p>Set userImpl to null.</p>
+     * <p>
+     * Set userImpl to null.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void tearDown() throws Exception {
         userImpl = null;
         UnitTestHelper.clearConfig();
+
+        super.tearDown();
     }
 
     /**
-     * <p>Adds RatingInfo to UserImpl.</p>
+     * <p>
+     * Adds RatingInfo to UserImpl.
+     * </p>
      *
-     * @param ratingType the RatingType used to creates the RatingInfo instance.
-     * @param needReliability if the RatingInfo instance need reliability.
-     * @param reliability the reliability used to creates the RatingInfo instance.
+     * @param ratingType
+     *            the RatingType used to creates the RatingInfo instance.
+     * @param needReliability
+     *            if the RatingInfo instance need reliability.
+     * @param reliability
+     *            the reliability used to creates the RatingInfo instance.
      */
     private void addRatingInfoToUserImpl(RatingType ratingType, boolean needReliability, double reliability) {
 
@@ -127,9 +168,9 @@ public class ExternalUserImplUnitTest extends TestCase {
 
         // Creates the ratingInfo.
         if (needReliability) {
-            info = new RatingInfo(ratingType, defaultRating, defaultNumberRatings, defaultVolatility, reliability);
+            info = new RatingInfo(ratingType, DEFAULT_RATING, DEFAULT_NUMBER_RATINGS, DEFAULT_VOLATILITY, reliability);
         } else {
-            info = new RatingInfo(ratingType, defaultRating, defaultNumberRatings, defaultVolatility);
+            info = new RatingInfo(ratingType, DEFAULT_RATING, DEFAULT_NUMBER_RATINGS, DEFAULT_VOLATILITY);
         }
 
         // Adds the ratingInfo to the userImpl.
@@ -137,70 +178,82 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the ctor(long, String, String, String, String).</p>
-     * <p>The ExternalUserImpl instance should be created successfully.</p>
+     * <p>
+     * Tests the accuracy of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * The ExternalUserImpl instance should be created successfully.
+     * </p>
      */
     public void testCtor_LongStringStringStringString() {
 
         assertNotNull("ExternalUserImpl should be accurately created.", userImpl);
-        assertTrue("userImpl should be instance of ExternalUserImpl.",
-                userImpl instanceof ExternalUserImpl);
+        assertTrue("userImpl should be instance of ExternalUserImpl.", userImpl instanceof ExternalUserImpl);
     }
 
     /**
-     * <p>Tests the accuracy of the getter getId().</p>
+     * <p>
+     * Tests the accuracy of the getter getId().
+     * </p>
      */
     public void testGetter_GetId() {
 
-        assertEquals("The id should be got correctly.",
-                defaultID, userImpl.getId());
+        assertEquals("The id should be got correctly.", DEFAULT_ID, userImpl.getId());
     }
 
     /**
-     * <p>Tests the accuracy of the getter getHandle()().</p>
+     * <p>
+     * Tests the accuracy of the getter getHandle()().
+     * </p>
      */
     public void testGetter_GetHandle() {
 
-        assertEquals("The handle should be got correctly.",
-                defaultHandleString, userImpl.getHandle());
+        assertEquals("The handle should be got correctly.", DEFAULT_HANDLE_STRING, userImpl.getHandle());
     }
 
     /**
-     * <p>Tests the accuracy of the getter getFirstName()().</p>
+     * <p>
+     * Tests the accuracy of the getter getFirstName()().
+     * </p>
      */
     public void testGetter_GetFirstName() {
 
-        assertEquals("The firstName should be got correctly.",
-                defaultFirstNameString, userImpl.getFirstName());
+        assertEquals("The firstName should be got correctly.", DEFAULT_FIRST_NAME_STRING, userImpl.getFirstName());
     }
 
     /**
-     * <p>Tests the accuracy of the getter getLastName()().</p>
+     * <p>
+     * Tests the accuracy of the getter getLastName()().
+     * </p>
      */
     public void testGetter_GetLastName() {
 
-        assertEquals("The lastName should be got correctly.",
-                defaultLastNameString, userImpl.getLastName());
+        assertEquals("The lastName should be got correctly.", DEFAULT_LAST_NAME_STRING, userImpl.getLastName());
     }
 
     /**
-     * <p>Tests the accuracy of the getter getEmail()().</p>
+     * <p>
+     * Tests the accuracy of the getter getEmail()().
+     * </p>
      */
     public void testGetter_GetEmail() {
 
-        assertEquals("The email should be got correctly.",
-                defaultEmailString, userImpl.getEmail());
+        assertEquals("The email should be got correctly.", DEFAULT_EMAIL_STRING, userImpl.getEmail());
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given id is negative, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given id is negative, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_NegativeId() {
 
         try {
-            new ExternalUserImpl(-1, defaultHandleString, defaultFirstNameString,
-                    defaultLastNameString, defaultEmailString);
+            new ExternalUserImpl(-1, DEFAULT_HANDLE_STRING, DEFAULT_FIRST_NAME_STRING, DEFAULT_LAST_NAME_STRING,
+                    DEFAULT_EMAIL_STRING);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -208,14 +261,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given handle is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given handle is null, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_NullHandle() {
 
         try {
-            new ExternalUserImpl(defaultID, null, defaultFirstNameString,
-                    defaultLastNameString, defaultEmailString);
+            new ExternalUserImpl(DEFAULT_ID, null, DEFAULT_FIRST_NAME_STRING, DEFAULT_LAST_NAME_STRING,
+                    DEFAULT_EMAIL_STRING);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -223,14 +280,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given handle is empty after trimed, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given handle is empty after trimmed, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_EmptyHandle() {
 
         try {
-            new ExternalUserImpl(defaultID, "  ", defaultFirstNameString,
-                    defaultLastNameString, defaultEmailString);
+            new ExternalUserImpl(DEFAULT_ID, "  ", DEFAULT_FIRST_NAME_STRING, DEFAULT_LAST_NAME_STRING,
+                    DEFAULT_EMAIL_STRING);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -238,14 +299,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given firstName is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given firstName is null, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_NullFirstName() {
 
         try {
-            new ExternalUserImpl(defaultID, defaultHandleString, null,
-                    defaultLastNameString, defaultEmailString);
+            new ExternalUserImpl(DEFAULT_ID, DEFAULT_HANDLE_STRING, null, DEFAULT_LAST_NAME_STRING,
+                    DEFAULT_EMAIL_STRING);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -253,14 +318,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given firstName is empty after trimed, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given firstName is empty after trimmed, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_EmptyFirstName() {
 
         try {
-            new ExternalUserImpl(defaultID, defaultHandleString, "    ",
-                    defaultLastNameString, defaultEmailString);
+            new ExternalUserImpl(DEFAULT_ID, DEFAULT_HANDLE_STRING, "    ", DEFAULT_LAST_NAME_STRING,
+                    DEFAULT_EMAIL_STRING);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -268,14 +337,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given lastName is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given lastName is null, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_NullLastName() {
 
         try {
-            new ExternalUserImpl(defaultID, defaultHandleString, defaultFirstNameString,
-                    null, defaultEmailString);
+            new ExternalUserImpl(DEFAULT_ID, DEFAULT_HANDLE_STRING, DEFAULT_FIRST_NAME_STRING, null,
+                    DEFAULT_EMAIL_STRING);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -283,14 +356,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given lastName is empty after trimed, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given lastName is empty after trimmed, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_EmptyLastName() {
 
         try {
-            new ExternalUserImpl(defaultID, defaultHandleString, defaultFirstNameString,
-                    " ", defaultEmailString);
+            new ExternalUserImpl(DEFAULT_ID, DEFAULT_HANDLE_STRING, DEFAULT_FIRST_NAME_STRING, " ",
+                    DEFAULT_EMAIL_STRING);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -298,14 +375,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given email is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given email is null, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_NullEmail() {
 
         try {
-            new ExternalUserImpl(defaultID, defaultHandleString, defaultFirstNameString,
-                    defaultLastNameString, null);
+            new ExternalUserImpl(DEFAULT_ID, DEFAULT_HANDLE_STRING, DEFAULT_FIRST_NAME_STRING,
+                    DEFAULT_LAST_NAME_STRING, null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -313,14 +394,18 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(long, String, String, String, String).</p>
-     * <p>If the given email is empty after trimed, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(long, String, String, String, String).
+     * </p>
+     * <p>
+     * If the given email is empty after trimmed, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testCtor_LongStringStringStringString_EmptyEmail() {
 
         try {
-            new ExternalUserImpl(defaultID, defaultHandleString, defaultFirstNameString,
-                    defaultLastNameString, "          ");
+            new ExternalUserImpl(DEFAULT_ID, DEFAULT_HANDLE_STRING, DEFAULT_FIRST_NAME_STRING,
+                    DEFAULT_LAST_NAME_STRING, "          ");
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -328,8 +413,12 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the method addRatingInfo(RatingInfo).</p>
-     * <p>Using reflection.</p>
+     * <p>
+     * Tests the accuracy of the method addRatingInfo(RatingInfo).
+     * </p>
+     * <p>
+     * Using reflection.
+     * </p>
      */
     public void testAddRatingInfo_RatingInfo() {
 
@@ -339,15 +428,18 @@ public class ExternalUserImplUnitTest extends TestCase {
         Object ratings = UnitTestHelper.getPrivateField(ExternalUserImpl.class, userImpl, "ratings");
 
         assertTrue("The ratings got should be instance of Map.", ratings instanceof Map);
-        assertEquals("The size of the ratings Map should be 1.",
-                1, ((Map) ratings).size());
-        assertEquals("The value in the ratings Map should be same as the ratingInfo.",
-                ratingInfo, ((Map) ratings).get(ratingInfo.getRatingType()));
+        assertEquals("The size of the ratings Map should be 1.", 1, ((Map) ratings).size());
+        assertEquals("The value in the ratings Map should be same as the ratingInfo.", ratingInfo, ((Map) ratings)
+                .get(ratingInfo.getRatingType()));
     }
 
     /**
-     * <p>Tests the failure of the method addRatingInfo(RatingInfo).</p>
-     * <p>If the given parameter is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the method addRatingInfo(RatingInfo).
+     * </p>
+     * <p>
+     * If the given parameter is null, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testAddRatingInfo_RatingInfo_NullRatingInfo() {
 
@@ -360,7 +452,9 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the method getRatingInfo(RatingType).</p>
+     * <p>
+     * Tests the accuracy of the method getRatingInfo(RatingType).
+     * </p>
      */
     public void testGetRatingInfo_RatingType() {
 
@@ -370,13 +464,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         RatingType type = ratingInfo.getRatingType();
         RatingInfo ratingInfoGot = userImpl.getRatingInfo(type);
 
-        assertEquals("The ratingInfoGot should be same as the ratingInfo.",
-                ratingInfo, ratingInfoGot);
+        assertEquals("The ratingInfoGot should be same as the ratingInfo.", ratingInfo, ratingInfoGot);
     }
 
     /**
-     * <p>Tests the accuracy of the method getRatingInfo(RatingType).</p>
-     * <p>If there is no information for the given type, null would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getRatingInfo(RatingType).
+     * </p>
+     * <p>
+     * If there is no information for the given type, null would be returned.
+     * </p>
      */
     public void testGetRatingInfo_RatingType_NonFind() {
 
@@ -384,13 +481,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         RatingType type = ratingInfo.getRatingType();
         RatingInfo ratingInfoGot = userImpl.getRatingInfo(type);
 
-        assertNull("If there is no information for the given type, null would be returned.",
-                ratingInfoGot);
+        assertNull("If there is no information for the given type, null would be returned.", ratingInfoGot);
     }
 
     /**
-     * <p>Tests the failure of the method getRatingInfo(RatingType).</p>
-     * <p>If the given parameter is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the method getRatingInfo(RatingType).
+     * </p>
+     * <p>
+     * If the given parameter is null, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testGetRatingInfo_RatingType_NullRatingType() {
 
@@ -403,28 +503,34 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the method addAlternativeEmail(String).</p>
-     * <p>Using reflection.</p>
+     * <p>
+     * Tests the accuracy of the method addAlternativeEmail(String).
+     * </p>
+     * <p>
+     * Using reflection.
+     * </p>
      */
     public void testAddAlternativeEmail_String() {
 
-        userImpl.addAlternativeEmail(defaultAlterEmailString);
+        userImpl.addAlternativeEmail(DEFAULT_ALTER_EMAIL_STRING);
 
         // Gets alternativeEmails Set by reflection.
-        Object alternativeEmails = UnitTestHelper.getPrivateField(ExternalUserImpl.class,
-                userImpl, "alternativeEmails");
+        Object alternativeEmails = UnitTestHelper
+                .getPrivateField(ExternalUserImpl.class, userImpl, "alternativeEmails");
 
-        assertTrue("The alternativeEmail got should be instance of Set.",
-                alternativeEmails instanceof Set);
-        assertEquals("The size of the alternativeEmail Set should be 1.",
-                1, ((Set) alternativeEmails).size());
+        assertTrue("The alternativeEmail got should be instance of Set.", alternativeEmails instanceof Set);
+        assertEquals("The size of the alternativeEmail Set should be 1.", 1, ((Set) alternativeEmails).size());
         assertEquals("The first value in the alternativeEmail Set should be same as the defaultAlterEmailString.",
-                defaultAlterEmailString, (((Set) alternativeEmails).toArray())[0]);
+                DEFAULT_ALTER_EMAIL_STRING, (((Set) alternativeEmails).toArray())[0]);
     }
 
     /**
-     * <p>Tests the failure of the method addAlternativeEmail(String).</p>
-     * <p>If the given parameter is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the method addAlternativeEmail(String).
+     * </p>
+     * <p>
+     * If the given parameter is null, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testAddAlternativeEmail_String_NullAlternativeEmail() {
 
@@ -437,8 +543,12 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the method addAlternativeEmail(String).</p>
-     * <p>If the given parameter is empty after trimed, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the method addAlternativeEmail(String).
+     * </p>
+     * <p>
+     * If the given parameter is empty after trimmed, IllegalArgumentException should be thrown.
+     * </p>
      */
     public void testAddAlternativeEmail_String_EmptyAlternativeEmail() {
 
@@ -451,24 +561,29 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the method getAlternativeEmails().</p>
+     * <p>
+     * Tests the accuracy of the method getAlternativeEmails().
+     * </p>
      */
     public void testGetAlternativeEmails() {
 
-        userImpl.addAlternativeEmail(defaultAlterEmailString);
+        userImpl.addAlternativeEmail(DEFAULT_ALTER_EMAIL_STRING);
 
         // Gets the alternativeEmails using getAlternativeEmails.
         String[] alternativeEmailsGot = userImpl.getAlternativeEmails();
 
-        assertEquals("The size of the alternativeEmailsGot array should be 1.",
-                1, alternativeEmailsGot.length);
+        assertEquals("The size of the alternativeEmailsGot array should be 1.", 1, alternativeEmailsGot.length);
         assertEquals("The first element of alternativeEmailsGot should be same as the defaultAlterEmailString.",
-                defaultAlterEmailString, alternativeEmailsGot[0]);
+                DEFAULT_ALTER_EMAIL_STRING, alternativeEmailsGot[0]);
     }
 
     /**
-     * <p>Tests the accuracy of the method getAlternativeEmails().</p>
-     * <p>If there is no alternative email addresses, empty array would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getAlternativeEmails().
+     * </p>
+     * <p>
+     * If there is no alternative email addresses, empty array would be returned.
+     * </p>
      */
     public void testGetAlternativeEmails_NoAlternativeEmail() {
 
@@ -480,7 +595,9 @@ public class ExternalUserImplUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignRating().</p>
+     * <p>
+     * Tests the accuracy of the method getDesignRating().
+     * </p>
      */
     public void testGetDesignRating() {
 
@@ -490,13 +607,17 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the rating string.
         String ratingString = userImpl.getDesignRating();
 
-        assertEquals("The ratingString should be same as the string value of the defaultRating.",
-                Integer.toString(defaultRating), ratingString);
+        assertEquals("The ratingString should be same as the string value of the defaultRating.", Integer
+                .toString(DEFAULT_RATING), ratingString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignRating().</p>
-     * <p>If there is no design rating, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDesignRating().
+     * </p>
+     * <p>
+     * If there is no design rating, N/A would be returned.
+     * </p>
      */
     public void testGetDesignRating_NA() {
 
@@ -506,12 +627,13 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the rating string.
         String ratingString = userImpl.getDesignRating();
 
-        assertEquals("The ratingString should be N/A, as there is no design rating.",
-                "N/A", ratingString);
+        assertEquals("The ratingString should be N/A, as there is no design rating.", "N/A", ratingString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevRating().</p>
+     * <p>
+     * Tests the accuracy of the method getDevRating().
+     * </p>
      */
     public void testGetDevRating() {
 
@@ -521,25 +643,30 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the rating string.
         String ratingString = userImpl.getDevRating();
 
-        assertEquals("The ratingString should be same as the string value of the defaultRating.",
-                Integer.toString(defaultRating), ratingString);
+        assertEquals("The ratingString should be same as the string value of the defaultRating.", Integer
+                .toString(DEFAULT_RATING), ratingString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevRating().</p>
-     * <p>If there is no development rating, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDevRating().
+     * </p>
+     * <p>
+     * If there is no development rating, N/A would be returned.
+     * </p>
      */
     public void testGetDevRating_NA() {
 
         // Gets the rating string.
         String ratingString = userImpl.getDevRating();
 
-        assertEquals("The ratingString should be N/A, as there is no development rating.",
-                "N/A", ratingString);
+        assertEquals("The ratingString should be N/A, as there is no development rating.", "N/A", ratingString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignVolatility().</p>
+     * <p>
+     * Tests the accuracy of the method getDesignVolatility().
+     * </p>
      */
     public void testGetDesignVolatility() {
 
@@ -549,13 +676,17 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the volatility string.
         String volatilityString = userImpl.getDesignVolatility();
 
-        assertEquals("The volatilityString should be same as the string value of the defaultVolatility.",
-                Integer.toString(defaultVolatility), volatilityString);
+        assertEquals("The volatilityString should be same as the string value of the defaultVolatility.", Integer
+                .toString(DEFAULT_VOLATILITY), volatilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignVolatility().</p>
-     * <p>If there is no design rating, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDesignVolatility().
+     * </p>
+     * <p>
+     * If there is no design rating, N/A would be returned.
+     * </p>
      */
     public void testGetDesignVolatility_NA() {
 
@@ -565,12 +696,13 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the volatility string.
         String volatilityString = userImpl.getDesignVolatility();
 
-        assertEquals("The volatilityString should be N/A, as there is no design rating.",
-                "N/A", volatilityString);
+        assertEquals("The volatilityString should be N/A, as there is no design rating.", "N/A", volatilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevVolatility().</p>
+     * <p>
+     * Tests the accuracy of the method getDevVolatility().
+     * </p>
      */
     public void testGetDevVolatility() {
 
@@ -580,25 +712,30 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the volatility string.
         String volatilityString = userImpl.getDevVolatility();
 
-        assertEquals("The volatilityString should be same as the string value of the defaultVolatility.",
-                Integer.toString(defaultVolatility), volatilityString);
+        assertEquals("The volatilityString should be same as the string value of the defaultVolatility.", Integer
+                .toString(DEFAULT_VOLATILITY), volatilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevVolatility().</p>
-     * <p>If there is no development rating, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDevVolatility().
+     * </p>
+     * <p>
+     * If there is no development rating, N/A would be returned.
+     * </p>
      */
     public void testGetDevVolatility_NA() {
 
         // Gets the volatility string.
         String volatilityString = userImpl.getDevVolatility();
 
-        assertEquals("The volatilityString should be N/A, as there is no development rating.",
-                "N/A", volatilityString);
+        assertEquals("The volatilityString should be N/A, as there is no development rating.", "N/A", volatilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignNumRatings().</p>
+     * <p>
+     * Tests the accuracy of the method getDesignNumRatings().
+     * </p>
      */
     public void testGetDesignNumRatings() {
 
@@ -608,13 +745,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the numRatings.
         int numRatings = userImpl.getDesignNumRatings();
 
-        assertEquals("The numRatings should be same as the defaultNumberRatings.",
-                defaultNumberRatings, numRatings);
+        assertEquals("The numRatings should be same as the defaultNumberRatings.", DEFAULT_NUMBER_RATINGS, numRatings);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignNumRatings().</p>
-     * <p>If there is no design rating, zero would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDesignNumRatings().
+     * </p>
+     * <p>
+     * If there is no design rating, zero would be returned.
+     * </p>
      */
     public void testGetDesignNumRatings_Zero() {
 
@@ -624,12 +764,13 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the numRatings.
         int numRatings = userImpl.getDesignNumRatings();
 
-        assertEquals("The numRatings should be zero, as there is no design rating.",
-                0, numRatings);
+        assertEquals("The numRatings should be zero, as there is no design rating.", 0, numRatings);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevNumRatings().</p>
+     * <p>
+     * Tests the accuracy of the method getDevNumRatings().
+     * </p>
      */
     public void testGetDevNumRatings() {
 
@@ -639,25 +780,29 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the numRatings.
         int numRatings = userImpl.getDevNumRatings();
 
-        assertEquals("The numRatings should be same as the defaultNumberRatings.",
-                defaultNumberRatings, numRatings);
+        assertEquals("The numRatings should be same as the defaultNumberRatings.", DEFAULT_NUMBER_RATINGS, numRatings);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevNumRatings().</p>
-     * <p>If there is no development rating, zero would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDevNumRatings().
+     * </p>
+     * <p>
+     * If there is no development rating, zero would be returned.
+     * </p>
      */
     public void testGetDevNumRatings_Zero() {
 
         // Gets the numRatings.
         int numRatings = userImpl.getDevNumRatings();
 
-        assertEquals("The numRatings should be zero, as there is no development rating.",
-                0, numRatings);
+        assertEquals("The numRatings should be zero, as there is no development rating.", 0, numRatings);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignReliability().</p>
+     * <p>
+     * Tests the accuracy of the method getDesignReliability().
+     * </p>
      */
     public void testGetDesignReliability() {
 
@@ -667,26 +812,32 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDesignReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "5.40 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "5.40 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignReliability().</p>
-     * <p>If no design rating info for this type, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDesignReliability().
+     * </p>
+     * <p>
+     * If no design rating info for this type, N/A would be returned.
+     * </p>
      */
     public void testGetDesignReliability_NoDesignRating() {
 
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDesignReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "N/A", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "N/A", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDesignReliability().</p>
-     * <p>If the rating info doesn't have a reliability set, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDesignReliability().
+     * </p>
+     * <p>
+     * If the rating info doesn't have a reliability set, N/A would be returned.
+     * </p>
      */
     public void testGetDesignReliability_NoReliability() {
 
@@ -696,26 +847,32 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDesignReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "N/A", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "N/A", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>If no development rating info for this type, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * If no development rating info for this type, N/A would be returned.
+     * </p>
      */
     public void testGetDevReliability_NoDevRating() {
 
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "N/A", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "N/A", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>If the rating info doesn't have a reliability set, N/A would be returned.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * If the rating info doesn't have a reliability set, N/A would be returned.
+     * </p>
      */
     public void testGetDevReliability_NoReliability() {
 
@@ -725,13 +882,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "N/A", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "N/A", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy1() {
 
@@ -741,13 +901,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "5.40 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "5.40 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy2() {
 
@@ -757,13 +920,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "0.10 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "0.10 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy3() {
 
@@ -773,13 +939,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "1.00 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "1.00 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy4() {
 
@@ -789,13 +958,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "0.00 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "0.00 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy5() {
 
@@ -805,13 +977,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "100.00 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "100.00 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy6() {
 
@@ -821,13 +996,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "82.13 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "82.13 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy7() {
 
@@ -837,13 +1015,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "50.00 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "50.00 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy8() {
 
@@ -853,13 +1034,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "49.99 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "49.99 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy9() {
 
@@ -869,13 +1053,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "50.00 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "50.00 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy10() {
 
@@ -885,13 +1072,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "80.01 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "80.01 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy11() {
 
@@ -901,13 +1091,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "98.00 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "98.00 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy12() {
 
@@ -917,13 +1110,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "0.05 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "0.05 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy13() {
 
@@ -933,13 +1129,16 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "0.04 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "0.04 %", reliabilityString);
     }
 
     /**
-     * <p>Tests the accuracy of the method getDevReliability().</p>
-     * <p>Gives several cases of the decimal round and format.</p>
+     * <p>
+     * Tests the accuracy of the method getDevReliability().
+     * </p>
+     * <p>
+     * Gives several cases of the decimal round and format.
+     * </p>
      */
     public void testGetDevReliability_Accuracy14() {
 
@@ -949,7 +1148,6 @@ public class ExternalUserImplUnitTest extends TestCase {
         // Gets the reliabilityString.
         String reliabilityString = userImpl.getDevReliability();
 
-        assertEquals("The reliabilityString should be the same.",
-                "0.04 %", reliabilityString);
+        assertEquals("The reliabilityString should be the same.", "0.04 %", reliabilityString);
     }
 }

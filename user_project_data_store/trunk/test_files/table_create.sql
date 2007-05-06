@@ -209,6 +209,48 @@ alter table 'informix'.comp_forum_xref add constraint foreign key
 	constraint fk_comp_forum2;
 
 
+create table 'informix'.technology_types (
+    technology_type_id DECIMAL(12,0) not null,
+    technology_name VARCHAR(100) not null,
+    description VARCHAR(254) not null,
+    status_id DECIMAL(12,0) not null
+)
+extent size 16 next size 16
+lock mode row;
 
+
+alter table 'informix'.technology_types add constraint primary key 
+	(technology_type_id)
+	constraint pk_technology_type;
+	
+create table 'informix'.comp_technology (
+    comp_tech_id DECIMAL(12,0) not null,
+    comp_vers_id DECIMAL(12,0),
+    technology_type_id DECIMAL(12,0)
+)
+extent size 250 next size 124
+lock mode row;
+
+create unique cluster index 'informix'.comp_tech_i1 on 'informix'.comp_technology
+	(
+	comp_vers_id, 
+	technology_type_id
+	);
+
+alter table 'informix'.comp_technology add constraint primary key 
+	(comp_tech_id)
+	constraint pk_comp_technology;
+
+alter table 'informix'.comp_technology add constraint foreign key 
+	(comp_vers_id)
+	references 'informix'.comp_versions
+	(comp_vers_id) 
+	constraint fk_comp_tech1;
+
+alter table 'informix'.comp_technology add constraint foreign key 
+	(technology_type_id)
+	references 'informix'.technology_types
+	(technology_type_id) 
+	constraint fk_comp_tech2;
 
 

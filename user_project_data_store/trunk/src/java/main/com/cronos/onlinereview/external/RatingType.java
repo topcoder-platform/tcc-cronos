@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external;
 
@@ -15,82 +13,112 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
 /**
- * <p>This typesafe enum represents the various ratings types (phases) that the User Project Data Store
- * component supports, namely, design and development. The Config Manager is used to retrieve the id
- * number of each phase. The required namespace is defined in this class, along with a method to
- * retrieve the appropriate id number for the rating type.</p>
- * <p>The required configuration is in the given namespace. The keys are the two strings, DESIGN_NAME
- * and DEVELOPMENT_NAME, and the values are the id numbers of the respective phases (112, and 113
- * respectively).</p>
+ * <p>
+ * This typesafe enum represents the various ratings types (phases) that the <b>User Project Data Store</b> component
+ * supports, namely, <em>design</em> and <em>development</em>. The Config Manager is used to retrieve the id number
+ * of each phase. The required namespace is defined in this class, along with a method to retrieve the appropriate id
+ * number for the rating type.
+ * </p>
+ * <p>
+ * The required configuration is in the given namespace. The keys are the two strings, DESIGN_NAME and DEVELOPMENT_NAME,
+ * and the values are the id numbers of the respective phases (112, and 113 respectively).
+ * </p>
+ * <p>
+ * As an example, the namespace would look like this:
  *
- * <p>As an example, the namespace would look like this:
  * <pre>
  * &lt;Property name=&quot;Design&quot;&gt;&lt;Value&gt;112&lt;/Value&gt;&lt;/Property&gt;
  * &lt;Property name=&quot;Development&quot;&gt;&lt;Value&gt;113&lt;/Value&gt;&lt;/Property&gt;
  * </pre>
+ *
+ * </p>
+ * <p>
+ * <b>Thread Safety</b>: This class is immutable and thread-safe.
  * </p>
  *
- * <p>This class is immutable and thread-safe.</p>
- *
- * @author dplass, TCSDEVELOPER
- * @version 1.0
+ * @author dplass, oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public class RatingType extends Enum implements Serializable {
 
     /**
-     * <p>The namespace which must store the name-to-id mapping.</p>
-     * <p>If the namespace is empty or not found, it will default design to 112 and development to 113.</p>
+     * <p>
+     * The namespace which must store the name-to-id mapping.
+     * </p>
+     * <p>
+     * If the namespace is empty or not found, it will default design to 112 and development to 113.
+     * </p>
      */
     public static final String NAMESPACE = "com.cronos.onlinereview.external.RatingType";
 
     /**
-     * <p>The name of the design rating type, and the property name that stores the design phase number.</p>
+     * <p>
+     * The name of the design rating type, and the property name that stores the design phase number.
+     * </p>
      */
     public static final String DESIGN_NAME = "Design";
 
     /**
-     * <p>The name of the development rating type, and the property name that stores the development
-     * phase number.</p>
+     * <p>
+     * The name of the development rating type, and the property name that stores the development phase number.
+     * </p>
      */
     public static final String DEVELOPMENT_NAME = "Development";
 
     /**
-     * <p>The rating type that represents the design phase.</p>
+     * <p>
+     * The rating type that represents the design phase.
+     * </p>
      */
     public static final RatingType DESIGN = getRatingType(DESIGN_NAME);
 
     /**
-     * <p>The rating type that represents the development phase.</p>
+     * <p>
+     * The rating type that represents the development phase.
+     * </p>
      */
     public static final RatingType DEVELOPMENT = getRatingType(DEVELOPMENT_NAME);
 
     /**
-     * <p>The default integer code of the development phase.</p>
+     * <p>
+     * The default integer code of the development phase.
+     * </p>
      */
     private static final int DEFAULT_DEV_CODE = 113;
 
     /**
-     * <p>The default integer code of the design phase.</p>
+     * <p>
+     * The default integer code of the design phase.
+     * </p>
      */
     private static final int DEFAULT_DESIGN_CODE = 112;
 
     /**
-     * <p>The name of the rating type as set in the constructor and accessed by getName. Will never be
-     * null or empty after trim.</p>
+     * <p>
+     * The name of the rating type as set in the constructor and accessed by getName. Will never be null or empty after
+     * trim.
+     * </p>
      */
     private final String name;
 
     /**
-     * <p>The id of this rating type/phase as set in the constructor and accessed by getId. Will never
-     * be negative.</p>
+     * <p>
+     * The id of this rating type/phase as set in the constructor and accessed by getId. Will never be negative.
+     * </p>
      */
     private final int id;
 
     /**
-     * <p>Constructs this object with the given parameters.</p>
+     * <p>
+     * Constructs this object with the given parameters.
+     * </p>
      *
-     * @param id the id number of this rating type/phase (e.g., 112 for design, 113 for development).
-     * @param name the name of this phase (e.g., Design, Development).
+     * @param id
+     *            the id number of this rating type/phase (e.g., 112 for design, 113 for development).
+     * @param name
+     *            the name of this phase (e.g., Design, Development).
      */
     private RatingType(int id, String name) {
         this.name = name;
@@ -98,13 +126,16 @@ public class RatingType extends Enum implements Serializable {
     }
 
     /**
-     * <p>Builds or retrieves the named rating type from either the typesafe enum registry, or builds a
-     * new one with the id named in the configuration file.</p>
+     * <p>
+     * Builds or retrieves the named rating type from either the typesafe enum registry, or builds a new one with the id
+     * named in the configuration file.
+     * </p>
      *
+     * @param typeName
+     *            the name of the rating type (e.g., "Design", "Development").
      * @return a RatingType which corresponds to the given typeName.
-     * @param typeName the name of the rating type (e.g., "Design", "Development").
-     *
-     * @throws IllegalArgumentException if typeName is null or empty after trim.
+     * @throws IllegalArgumentException
+     *             if typeName is <code>null</code> or empty after trim.
      */
     public static RatingType getRatingType(String typeName) {
         UserProjectDataStoreHelper.validateStringEmptyNull(typeName, "typeName");
@@ -130,12 +161,15 @@ public class RatingType extends Enum implements Serializable {
     }
 
     /**
-     * <p>Returns a RatingType which corresponds to the given id.</p>
+     * <p>
+     * Returns a <code>{@link RatingType}</code> which corresponds to the given id.
+     * </p>
      *
-     * @return a RatingType which corresponds to the given id, or null if not found.
-     * @param id the id (phase #) of the rating type to retrieve.
-     *
-     * @throws IllegalArgumentException if id is not positive.
+     * @param id
+     *            the id (phase #) of the rating type to retrieve.
+     * @return a RatingType which corresponds to the given id, or <code>null</code> if not found.
+     * @throws IllegalArgumentException
+     *             if id is not positive.
      */
     public static RatingType getRatingType(int id) {
         UserProjectDataStoreHelper.validateNotPositive(id, "id");
@@ -160,7 +194,9 @@ public class RatingType extends Enum implements Serializable {
     }
 
     /**
-     * <p>Returns a hash code for this rating type, based on the hashcode of the name.</p>
+     * <p>
+     * Returns a hash code for this rating type, based on the hashcode of the name.
+     * </p>
      *
      * @return the hashCode of the name variable.
      */
@@ -169,42 +205,49 @@ public class RatingType extends Enum implements Serializable {
     }
 
     /**
-     * <p>Returns true if 'that' is also a RatingType, is not null, and has the same hashcode as this
-     * object.</p>
+     * <p>
+     * Returns true if 'that' is also a RatingType, is not null, and has the same hashcode as
+     * this object.
+     * </p>
      *
-     * @return true if 'that' is also a RatingType, is not null, and has the same hashcode as this object,
-     * else false.
-     * @param that the object to compare with.
+     * @return <code>true</code> if 'that' is also a RatingType, is not null, and has the same
+     *         hashcode as this object, else <code>false</code>.
+     * @param that
+     *            the object to compare with.
      */
     public boolean equals(Object that) {
-        if ((that != null) && (that instanceof RatingType)
-                && (((RatingType) that).hashCode() == this.hashCode())) {
-            return true;
-        }
-        return false;
+        return that instanceof RatingType && that.hashCode() == this.hashCode();
     }
 
     /**
-     * <p>Returns the name of this rating type as set in the constructor.</p>
-     * <p>This method is required by the Enum superclass.</p>
+     * <p>
+     * Returns the name of this rating type as set in the constructor.
+     * </p>
+     * <p>
+     * This method is required by the <code>{@link Enum}</code> superclass.
+     * </p>
      *
-     * @return the name of this rating type. Will never be null or empty after trim.
+     * @return the name of this rating type. Will never be <code>null</code> or empty after trim.
      */
     public String toString() {
         return getName();
     }
 
     /**
-     * <p>Returns the name of this rating type as set in the constructor from the 'name' field.</p>
+     * <p>
+     * Returns the name of this rating type as set in the constructor.
+     * </p>
      *
-     * @return the name of this rating type. Will never be null or empty after trim.
+     * @return the name of this rating type. Will never be <code>null</code> or empty after trim.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * <p>Returns the id of this rating type as set in the constructor from the 'id' field.</p>
+     * <p>
+     * Returns the id of this rating type as set in the constructor.
+     * </p>
      *
      * @return the id of this rating type. Will never be negative or zero.
      */
@@ -213,11 +256,12 @@ public class RatingType extends Enum implements Serializable {
     }
 
     /**
-     * <p>This private method retrieves the configuration from the default namespace and creates enumerated
-     * types for each of the name/value pairs.</p>
+     * <p>
+     * This private method retrieves the configuration from the default namespace and creates enumerated types for each
+     * of the name/value pairs.
+     * </p>
      */
     private static void configure() {
-
         ConfigManager configManager = ConfigManager.getInstance();
 
         try {

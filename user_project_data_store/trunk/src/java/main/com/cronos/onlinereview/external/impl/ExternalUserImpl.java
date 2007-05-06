@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.impl;
 
@@ -17,72 +15,110 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>Basic implementation of the ExternalUser interface.</p>
- * <p>The unique id (user id) is maintained by the super class.</p>
- * <p>This class is not thread-safe.</p>
+ * <p>
+ * Basic implementation of the <code>{@link ExternalUser}</code> interface.
+ * </p>
+ * <p>
+ * The unique id (user id) is maintained by the super class.
+ * </p>
+ * <p>
+ * <b>Thread Safety</b>: This class is not thread-safe.
+ * </p>
  *
- * @author dplass, TCSDEVELOPER
- * @version 1.0
+ * @author dplass, oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser {
 
     /**
-     * <p>The FACTOR is used in rounding the double.</p>
+     * <p>
+     * The FACTOR is used in rounding the double.
+     * </p>
      */
     private static final double FACTOR = 10000.0;
 
     /**
-     * <p>The handle of this user as set in the constructor and accessed by getHandle.</p>
-     * <p>Will never be null or empty after trim.</p>
+     * <p>
+     * The handle of this user as set in the constructor and accessed by getHandle.
+     * </p>
+     * <p>
+     * Will never be null or empty after trim.
+     * </p>
      */
     private final String handle;
 
     /**
-     * <p>The first name of this user as set in the constructor and accessed by getFirstName.</p>
-     * <p>Will never be null or empty after trim.</p>
+     * <p>
+     * The first name of this user as set in the constructor and accessed by getFirstName.
+     * </p>
+     * <p>
+     * Will never be null or empty after trim.
+     * </p>
      */
     private final String firstName;
 
     /**
-     * <p>The last name of this user as set in the constructor and accessed by getLastName.</p>
-     * <p>Will never be null or empty after trim.</p>
+     * <p>
+     * The last name of this user as set in the constructor and accessed by getLastName.
+     * </p>
+     * <p>
+     * Will never be null or empty after trim.
+     * </p>
      */
     private final String lastName;
 
     /**
-     * <p>The primary email of this user as set in the constructor and accessed by getEmail.</p>
-     * <p>Will never be null or empty after trim.</p>
+     * <p>
+     * The primary email of this user as set in the constructor and accessed by getEmail.
+     * </p>
+     * <p>
+     * Will never be null or empty after trim.
+     * </p>
      */
     private final String email;
 
     /**
-     * <p>The set of unique alternative email addresses for this user.</p>
-     * <p>Entries will never be null or empty after trim. Modified by addAlternativeEmail and retrieved
-     * by getAlternativeEmails.</p>
+     * <p>
+     * The set of unique alternative email addresses for this user.
+     * </p>
+     * <p>
+     * Entries will never be null or empty after trim. Modified by addAlternativeEmail and retrieved by
+     * getAlternativeEmails.
+     * </p>
      */
     private final Set alternativeEmails = new HashSet();
 
     /**
-     * <p>The RatingInfo objects for this user, as modified by addRatingInfo and accessed by
-     * many of the 'getters' which ultimately call getRatingInfo or one of the private methods.</p>
-     * <p>The keys are RatingType objects, and values are RatingInfo objects. None of the keys or values
-     * will ever be null. Since RatingType objects implement hashCode, there will never be duplicate
-     * key values in this map.</p>
+     * <p>
+     * The RatingInfo objects for this user, as modified by addRatingInfo and accessed by many of the 'getters' which
+     * ultimately call getRatingInfo or one of the private methods.
+     * </p>
+     * <p>
+     * The keys are RatingType objects, and values are RatingInfo objects. None of the keys or values will ever be null.
+     * Since RatingType objects implement hashCode, there will never be duplicate key values in this map.
+     * </p>
      */
     private final Map ratings = new HashMap();
 
     /**
-     * <p>Constructs this object using the given parameters. Copies each one into the appropriate final
-     * field.</p>
+     * <p>
+     * Constructs this object using the given parameters.
+     * </p>
      *
-     * @param id the unique identifier of this user.
-     * @param handle the handle of this user.
-     * @param firstName the first name of this user.
-     * @param lastName the last name of this user.
-     * @param email the primary email address of this user.
-     *
-     * @throws IllegalArgumentException if id is negative or if any other argument is null or empty
-     * after trim.
+     * @param id
+     *            the unique identifier of this user.
+     * @param handle
+     *            the handle of this user.
+     * @param firstName
+     *            the first name of this user.
+     * @param lastName
+     *            the last name of this user.
+     * @param email
+     *            the primary email address of this user.
+     * @throws IllegalArgumentException
+     *             if id is negative or if any other argument is <code>null</code> or empty after trim.
      */
     public ExternalUserImpl(long id, String handle, String firstName, String lastName, String email) {
         super(id);
@@ -99,13 +135,17 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Adds the requested rating information to the map of ratings for this user.</p>
-     * <p>If there was already a rating info with the same rating type in the map, the old value is
-     * replaced silently.</p>
+     * <p>
+     * Adds the requested rating information to the map of ratings for this user.
+     * </p>
+     * <p>
+     * If there was already a rating info with the same rating type in the map, the old value is replaced silently.
+     * </p>
      *
-     * @param info the rating info to add to this user's rating information.
-     *
-     * @throws IllegalArgumentException if info is null.
+     * @param info
+     *            the rating info to add to this user's rating information.
+     * @throws IllegalArgumentException
+     *             if info is <code>null</code>.
      */
     public void addRatingInfo(RatingInfo info) {
         UserProjectDataStoreHelper.validateNull(info, "info");
@@ -114,13 +154,17 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Adds the requested alternative email address to the set of alternative email addresses for
-     * this user.</p>
-     * <p>Since a hashSet is used, there will never be duplicates in this set.</p>
+     * <p>
+     * Adds the requested alternative email address to the set of alternative email addresses for this user.
+     * </p>
+     * <p>
+     * Since a hashSet is used, there will never be duplicates in this set.
+     * </p>
      *
-     * @param alternativeEmail the alternative email to add to this user's set of emails.
-     *
-     * @throws IllegalArgumentException if alternativeEmail is null or empty after trim.
+     * @param alternativeEmail
+     *            the alternative email to add to this user's set of emails.
+     * @throws IllegalArgumentException
+     *             if alternativeEmail is <code>null</code> or empty after trim.
      */
     public void addAlternativeEmail(String alternativeEmail) {
         UserProjectDataStoreHelper.validateStringEmptyNull(alternativeEmail, "alternativeEmail");
@@ -129,7 +173,9 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the handle of this user, from the 'handle' field as set in the constructor.</p>
+     * <p>
+     * Returns the handle of this user.
+     * </p>
      *
      * @return the handle of this user. Will never be null or empty after trim.
      */
@@ -138,7 +184,9 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the first name of this user, from the 'firstName' field as set in the constructor.</p>
+     * <p>
+     * Returns the first name of this user.
+     * </p>
      *
      * @return the first name of this user. Will never be null or empty after trim.
      */
@@ -147,7 +195,9 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the last name of this user, from the 'lastName' field as set in the constructor.</p>
+     * <p>
+     * Returns the last name of this user.
+     * </p>
      *
      * @return the last name of this user. Will never be null or empty after trim.
      */
@@ -156,8 +206,9 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the primary email address of this user, from the 'email' field as set in the
-     * constructor.</p>
+     * <p>
+     * Returns the primary email address of this user.
+     * </p>
      *
      * @return the primary email address of this user. Will never be null or empty after trim.
      */
@@ -166,23 +217,25 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the alternative email addresses of this user, as added by the addAlternativeEmails
-     * method.</p>
+     * <p>
+     * Returns the alternative email addresses of this user, as added by the addAlternativeEmails method.
+     * </p>
      *
-     * @return the alternative email addresses of this user. Will never be null and will never have
-     * null or empty elements, but the length of the returned array may be zero to indicate
-     * no alternative email addresses.
+     * @return the alternative email addresses of this user. Will never be null and will never have null or empty
+     *         elements, but the length of the returned array may be zero to indicate no alternative email addresses.
      */
     public String[] getAlternativeEmails() {
         return (String[]) this.alternativeEmails.toArray(new String[0]);
     }
 
     /**
-     * <p>Returns the design rating of this user, as either the String representation of a non-negative
-     * integer, or N/A if none.</p>
+     * <p>
+     * Returns the design rating of this user, as either the String representation of a non-negative integer, or N/A if
+     * none.
+     * </p>
      *
-     * @return the design rating of this user, or N/A if there is no design rating. Will never be null
-     * or empty after trim.
+     * @return the design rating of this user, or N/A if there is no design rating. Will never be null or empty after
+     *         trim.
      */
     public String getDesignRating() {
         // Delegates to getRating(RatingType).
@@ -190,11 +243,14 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the requested rating of this user using the 'ratings' map as modified by addRatingInfo.</p>
+     * <p>
+     * Returns the requested rating of this user using the 'ratings' map as modified by addRatingInfo.
+     * </p>
      *
-     * @return a String representation of the requested rating of this user, or N/A if there is no
-     * rating of the requested type. Will never be null or empty after trim.
-     * @param ratingType the type of rating information to return, e.g., design or development.
+     * @param ratingType
+     *            the type of rating information to return, e.g., design or development.
+     * @return a String representation of the requested rating of this user, or N/A if there is no rating of the
+     *         requested type. Will never be null or empty after trim.
      */
     private String getRating(RatingType ratingType) {
         // Gets RatingInfo from the map.
@@ -209,11 +265,13 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the design reliability of this user, as either the String representation of a
-     * non-negative percentage, or N/A if none.</p>
+     * <p>
+     * Returns the design reliability of this user, as either the String representation of a non-negative percentage, or
+     * N/A if none.
+     * </p>
      *
-     * @return the design reliability of this user, in "##.## %" format, or N/A if there is no design
-     * rating. Will never be null or empty after trim.
+     * @return the design reliability of this user, in "##.## %" format, or N/A if there is no design rating. Will never
+     *         be null or empty after trim.
      */
     public String getDesignReliability() {
         // Delegates to getReliability(RatingType).
@@ -221,13 +279,15 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the requested reliability of this user using the 'ratings' map as modified by
-     * addRatingInfo.</p>
+     * <p>
+     * Returns the requested reliability of this user using the 'ratings' map as modified by addRatingInfo.
+     * </p>
      *
-     * @return a String representation of the requested reliability of this user, in "##.## %" format,
-     * or N/A if there is no rating of the requested type or the reliability was not set. Will never
-     * be null or empty after trim.
-     * @param ratingType the type of rating information to return, e.g., design or development.
+     * @param ratingType
+     *            the type of rating information to return, e.g., design or development.
+     * @return a String representation of the requested reliability of this user, in "##.## %" format, or N/A if there
+     *         is no rating of the requested type or the reliability was not set. Will never be null or empty after
+     *         trim.
      */
     private String getReliability(RatingType ratingType) {
         // Gets RatingInfo from the map.
@@ -245,19 +305,21 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
             reliability = Math.round(reliability * FACTOR) / FACTOR;
 
             // Uses DecimalFormat to format the double.
-            DecimalFormat formator = new DecimalFormat("#0.00 %");
-            String reliabilityPercentage = formator.format(reliability);
+            DecimalFormat formatter = new DecimalFormat("#0.00 %");
+            String reliabilityPercentage = formatter.format(reliability);
 
             return reliabilityPercentage;
         }
     }
 
     /**
-     * <p>Returns the design volatility of this user, as either the String representation of a non-negative
-     * integer, or N/A if none.</p>
+     * <p>
+     * Returns the design volatility of this user, as either the String representation of a non-negative integer, or N/A
+     * if none.
+     * </p>
      *
-     * @return the design volatility of this user, or N/A if there is no design rating. Will never
-     * be null or empty after trim.
+     * @return the design volatility of this user, or N/A if there is no design rating. Will never be null or empty
+     *         after trim.
      */
     public String getDesignVolatility() {
         // Delegates to getVolatility(RatingType).
@@ -265,12 +327,14 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the requested volatility of this user using the 'ratings' map as modified by
-     * addRatingInfo.</p>
+     * <p>
+     * Returns the requested volatility of this user using the 'ratings' map as modified by addRatingInfo.
+     * </p>
      *
-     * @return a String representation of the requested volatility of this user, or N/A if there
-     * is no rating of the requested type. Will never be null or empty after trim.
-     * @param ratingType the type of rating information to return, e.g., design or development
+     * @param ratingType
+     *            the type of rating information to return, e.g., design or development
+     * @return a String representation of the requested volatility of this user, or N/A if there is no rating of the
+     *         requested type. Will never be null or empty after trim.
      */
     private String getVolatility(RatingType ratingType) {
         // Gets RatingInfo from the map.
@@ -284,7 +348,9 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the number of design ratings of this user.</p>
+     * <p>
+     * Returns the number of design ratings of this user.
+     * </p>
      *
      * @return the number of design ratings, or 0 if none. Will never be negative.
      */
@@ -294,12 +360,13 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the requested number of ratings of this user using the 'ratings' map as modified by
-     * addRatingInfo.</p>
+     * <p>
+     * Returns the requested number of ratings of this user using the 'ratings' map as modified by addRatingInfo.
+     * </p>
      *
-     * @return the number of ratings of the requested type that this user has, or zero if none. Will
-     * never be negative.
-     * @param ratingType the type of rating information to return, e.g., design or development.
+     * @param ratingType
+     *            the type of rating information to return, e.g., design or development.
+     * @return the number of ratings of the requested type that this user has, or zero if none. Will never be negative.
      */
     private int getNumRatings(RatingType ratingType) {
         // Gets RatingInfo from the map.
@@ -313,11 +380,13 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the development rating of this user, as either the String representation of a
-     * non-negative integer, or N/A if none.</p>
+     * <p>
+     * Returns the development rating of this user, as either the String representation of a non-negative integer, or
+     * N/A if none.
+     * </p>
      *
-     * @return the development rating of this user, or N/A if there is no development rating.
-     * Will never be null or empty after trim.
+     * @return the development rating of this user, or N/A if there is no development rating. Will never be null or
+     *         empty after trim.
      */
     public String getDevRating() {
         // Delegates to getRating(RatingType).
@@ -325,11 +394,13 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the development reliability of this user, as either the String representation of a
-     * non-negative percentage, or N/A if none.</p>
+     * <p>
+     * Returns the development reliability of this user, as either the String representation of a non-negative
+     * percentage, or N/A if none.
+     * </p>
      *
-     * @return the development reliability of this user, in "##.## %" format, or N/A if there is no
-     * development rating. Will never be null or empty after trim.
+     * @return the development reliability of this user, in "##.## %" format, or N/A if there is no development rating.
+     *         Will never be null or empty after trim.
      */
     public String getDevReliability() {
         // Delegates to getReliability(RatingType).
@@ -337,11 +408,13 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the development volatility of this user, as either the String representation of a
-     * non-negative integer, or N/A if none.</p>
+     * <p>
+     * Returns the development volatility of this user, as either the String representation of a non-negative integer,
+     * or N/A if none.
+     * </p>
      *
-     * @return the development volatility of this user, or N/A if there is no development rating.
-     * Will never be null or empty after trim.
+     * @return the development volatility of this user, or N/A if there is no development rating. Will never be null or
+     *         empty after trim.
      */
     public String getDevVolatility() {
         // Delegates to getVolatility(RatingType).
@@ -349,7 +422,9 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Returns the number of development ratings of this user.</p>
+     * <p>
+     * Returns the number of development ratings of this user.
+     * </p>
      *
      * @return the number of development ratings, or 0 if none. Will never be negative.
      */
@@ -359,14 +434,17 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
     }
 
     /**
-     * <p>Given the rating type (design or development currently are the only two options), returns the
-     * rating information for this user.</p>
+     * <p>
+     * Given the rating type (design or development currently are the only two options), returns the rating information
+     * for this user.
+     * </p>
      *
-     * @return the rating information of this user based on the given rating type, or null if there
-     * is no information for the given type.
-     * @param ratingType the type of rating to return.
-     *
-     * @throws IllegalArgumentException if ratingType is null.
+     * @param ratingType
+     *            the type of rating to return.
+     * @return the rating information of this user based on the given rating type, or null if there is no information
+     *         for the given type.
+     * @throws IllegalArgumentException
+     *             if ratingType is <code>null</code>.
      */
     public RatingInfo getRatingInfo(RatingType ratingType) {
         UserProjectDataStoreHelper.validateNull(ratingType, "ratingType");
@@ -375,4 +453,3 @@ public class ExternalUserImpl extends ExternalObjectImpl implements ExternalUser
         return (RatingInfo) this.ratings.get(ratingType);
     }
 }
-

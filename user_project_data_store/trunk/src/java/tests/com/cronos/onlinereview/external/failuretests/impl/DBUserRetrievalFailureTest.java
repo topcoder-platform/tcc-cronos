@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests.impl;
 
@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 import com.cronos.onlinereview.external.ConfigException;
 import com.cronos.onlinereview.external.RetrievalException;
-import com.cronos.onlinereview.external.failuretests.FailureHelper;
 import com.cronos.onlinereview.external.impl.DBUserRetrieval;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -21,8 +20,8 @@ import junit.framework.TestCase;
  * This test case aggregates all test cases for <code>DBUserRetrieval</code>.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class DBUserRetrievalFailureTest extends TestCase {
 
@@ -46,10 +45,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
 
     /**
      * Set up.
+     *
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
-        FailureHelper.clearConfig();
+    	  tearDown();
         ConfigManager cm = ConfigManager.getInstance();
         cm.add(CONFIG_FILE);
         cm.add(INVALID_CONFIG_FILE);
@@ -60,18 +60,24 @@ public class DBUserRetrievalFailureTest extends TestCase {
 
     /**
      * Tear down.
+     *
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
-        FailureHelper.clearConfig();
+        ConfigManager cm = ConfigManager.getInstance();
+        for (Iterator itr = cm.getAllNamespaces(); itr.hasNext();) {
+            cm.removeNamespace((String) itr.next());
+        }
         connFactory = null;
         retrieval = null;
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(DBConnectionFactory, String)</code> with null argument.
-     * <code>connFactory</code> is null in this test.
+     * Test constructor
+     * <code>DBUserRetrieval(DBConnectionFactory, String)</code> with null
+     * argument. <code>connFactory</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalDBConnectionFactoryString_NullArg_1() throws Exception {
@@ -84,9 +90,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(DBConnectionFactory, String)</code> with null argument.
-     * <code>connName</code> is null in this test.
+     * Test constructor
+     * <code>DBUserRetrieval(DBConnectionFactory, String)</code> with null
+     * argument. <code>connName</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalDBConnectionFactoryString_NullArg_2() throws Exception {
@@ -99,9 +107,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBUserRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_1() throws Exception {
@@ -114,9 +124,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBUserRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_2() throws Exception {
@@ -129,9 +141,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBUserRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_3() throws Exception {
@@ -144,9 +158,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>DBUserRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalDBConnectionFactoryString_EmptyStringArg_4() throws Exception {
@@ -159,8 +175,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(DBConnectionFactory, String)</code> with unknown <code>connName</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor
+     * <code>DBUserRetrieval(DBConnectionFactory, String)</code> with unknown
+     * <code>connName</code>. <code>ConfigException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalDBConnectionFactoryString_UnknownConnName() throws Exception {
@@ -173,8 +191,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with null <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>DBUserRetrieval(String)</code> with null
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_NullArg_1() throws Exception {
@@ -187,8 +207,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_EmptyStringArg_1() throws Exception {
@@ -201,8 +223,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_EmptyStringArg_2() throws Exception {
@@ -215,8 +239,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_EmptyStringArg_3() throws Exception {
@@ -229,8 +255,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>DBUserRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_EmptyStringArg_4() throws Exception {
@@ -243,8 +271,9 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with unknown <code>namespace</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor <code>DBUserRetrieval(String)</code> with unknown
+     * <code>namespace</code>. <code>ConfigException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_UnknownNamespace_1() throws Exception {
@@ -257,8 +286,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with unknown <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>DBUserRetrieval(String)</code> with unknown
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_UnknownNamespace_2() throws Exception {
@@ -272,9 +303,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with invalid configuration.
-     * The <code>connName</code> is missing.
+     * Test constructor <code>DBUserRetrieval(String)</code> with invalid
+     * configuration. The <code>connName</code> is missing.
      * <code>ConfigException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_InvalidConfig_1() throws Exception {
@@ -287,9 +319,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>DBUserRetrieval(String)</code> with invalid configuration.
-     * The <code>connName</code> is empty.
+     * Test constructor <code>DBUserRetrieval(String)</code> with invalid
+     * configuration. The <code>connName</code> is empty.
      * <code>ConfigException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testDBUserRetrievalString_InvalidConfig_2() throws Exception {
@@ -302,8 +335,9 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUser(long)</code> with negative <code>id</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUser(long)</code> with negative
+     * <code>id</code>. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUserLong_NegativeId() throws Exception {
@@ -316,8 +350,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUser(String)</code> with null <code>handle</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUser(String)</code> with null
+     * <code>handle</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUserString_NullArg() throws Exception {
@@ -330,8 +366,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUser(String)</code> with empty-string <code>handle</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUser(String)</code> with empty-string
+     * <code>handle</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUserString_EmptyStringArg_1() throws Exception {
@@ -344,8 +382,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUser(String)</code> with empty-string <code>handle</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUser(String)</code> with empty-string
+     * <code>handle</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUserString_EmptyStringArg_2() throws Exception {
@@ -358,8 +398,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUser(String)</code> with empty-string <code>handle</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUser(String)</code> with empty-string
+     * <code>handle</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUserString_EmptyStringArg_3() throws Exception {
@@ -372,8 +414,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUser(String)</code> with empty-string <code>handle</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUser(String)</code> with empty-string
+     * <code>handle</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUserString_EmptyStringArg_4() throws Exception {
@@ -386,8 +430,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUser(String)</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveUser(String)</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUserString_WithRetrievalError() throws Exception {
@@ -401,8 +447,9 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(long[])</code> with null <code>ids</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUsers(long[])</code> with null
+     * <code>ids</code>. <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersLongArray_NullIds() throws Exception {
@@ -415,8 +462,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(long[])</code> with <code>ids</code> containing negative element.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUsers(long[])</code> with <code>ids</code>
+     * containing negative element. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersLongArray_IdsWithNegativeElement() throws Exception {
@@ -429,8 +478,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(long[])</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveUsers(long[])</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersLongArray_WithRetrievalError() throws Exception {
@@ -444,8 +495,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(String[])</code> with null <code>handles</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUsers(String[])</code> with null
+     * <code>handles</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersStringArray_NullArg() throws Exception {
@@ -458,8 +511,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(String[])</code> with <code>handles</code> containing null element.
+     * Test method <code>retrieveUsers(String[])</code> with
+     * <code>handles</code> containing null element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersStringArray_ArrayWithNullElement() throws Exception {
@@ -472,8 +527,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(String[])</code> with <code>handles</code> containing empty-string element.
+     * Test method <code>retrieveUsers(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersStringArray_ArrayWithEmptyStringElement_1() throws Exception {
@@ -486,8 +543,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(String[])</code> with <code>handles</code> containing empty-string element.
+     * Test method <code>retrieveUsers(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersStringArray_ArrayWithEmptyStringElement_2() throws Exception {
@@ -500,8 +559,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(String[])</code> with <code>handles</code> containing empty-string element.
+     * Test method <code>retrieveUsers(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersStringArray_ArrayWithEmptyStringElement_3() throws Exception {
@@ -514,8 +575,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(String[])</code> with <code>handles</code> containing empty-string element.
+     * Test method <code>retrieveUsers(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersStringArray_ArrayWithEmptyStringElement_4() throws Exception {
@@ -528,8 +591,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsers(String[])</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveUsers(String[])</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersStringArray_WithRetrievalError() throws Exception {
@@ -543,8 +608,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with null <code>handles</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with null
+     * <code>handles</code>. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersIgnoreCase_NullArg() throws Exception {
@@ -557,8 +624,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with <code>handles</code> containing null element.
+     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with
+     * <code>handles</code> containing null element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersIgnoreCase_ArrayWithNullElement() throws Exception {
@@ -571,9 +640,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with <code>handles</code>
-     * containing empty-string element.
+     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_1() throws Exception {
@@ -586,9 +656,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with <code>handles</code>
-     * containing empty-string element.
+     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_2() throws Exception {
@@ -601,9 +672,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with <code>handles</code>
-     * containing empty-string element.
+     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_3() throws Exception {
@@ -616,9 +688,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with <code>handles</code>
-     * containing empty-string element.
+     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with
+     * <code>handles</code> containing empty-string element.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersIgnoreCase_ArrayWithEmptyStringElement_4() throws Exception {
@@ -631,8 +704,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveUsersIgnoreCase(String[])</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersIgnoreCase_WithRetrievalError() throws Exception {
@@ -646,9 +721,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersByName(String, String)</code> with null argument.
-     * <code>firstName</code> is null in this test.
+     * Test method <code>retrieveUsersByName(String, String)</code> with null
+     * argument. <code>firstName</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersByName_NullArg_1() throws Exception {
@@ -661,9 +737,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersByName(String, String)</code> with null argument.
-     * <code>lastName</code> is null in this test.
+     * Test method <code>retrieveUsersByName(String, String)</code> with null
+     * argument. <code>lastName</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersByName_NullArg_2() throws Exception {
@@ -676,9 +753,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersByName(String, String)</code> with empty-string argument.
-     * <code>firstName</code> and <code>lastName</code> are both empty-string.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUsersByName(String, String)</code> with
+     * empty-string argument. <code>firstName</code> and <code>lastName</code>
+     * are both empty-string. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersByName_EmptyStringArg_1() throws Exception {
@@ -691,9 +770,11 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersByName(String, String)</code> with empty-string argument.
-     * <code>firstName</code> and <code>lastName</code> are both empty-string.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>retrieveUsersByName(String, String)</code> with
+     * empty-string argument. <code>firstName</code> and <code>lastName</code>
+     * are both empty-string. <code>IllegalArgumentException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersByName_EmptyStringArg_2() throws Exception {
@@ -706,8 +787,10 @@ public class DBUserRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>retrieveUsersByName(String, String)</code> with <code>RetrievalException</code>.
-     * <code>RetrievalException</code> is expected.
+     * Test method <code>retrieveUsersByName(String, String)</code> with
+     * <code>RetrievalException</code>. <code>RetrievalException</code> is
+     * expected.
+     *
      * @throws Exception to JUnit
      */
     public void testRetrieveUsersByName_WithRetrievalError() throws Exception {

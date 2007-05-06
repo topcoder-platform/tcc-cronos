@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.impl;
 
@@ -20,50 +18,70 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import junit.framework.TestCase;
 
 /**
- * <p>Tests the DBUserRetrieval class.</p>
+ * <p>
+ * Tests the DBUserRetrieval class.
+ * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public class DBUserRetrievalUnitTest extends TestCase {
 
     /**
-     * <p>Represents the configuration file.</p>
+     * <p>
+     * Represents the configuration file.
+     * </p>
      */
     private static final String CONFIG_FILE = "SampleConfig.xml";
 
     /**
-     * <p>The name of the namespace that the calling program can populate which contains
-     * DBConnectionFactory and other configuration values.</p>
+     * <p>
+     * The name of the namespace that the calling program can populate which contains DBConnectionFactory and other
+     * configuration values.
+     * </p>
      */
     private static final String NAMESPACE = "com.cronos.onlinereview.external";
 
     /**
-     * <p>The default ConnName which is defined in the configure file.</p>
+     * <p>
+     * The default ConnName which is defined in the configure file.
+     * </p>
      */
-    private static final String defaultConnName = "UserProjectDataStoreConnection";
+    private static final String DEFAULT_CONN_NAME = "UserProjectDataStoreConnection";
 
     /**
-     * <p>The default DB connection factory.</p>
+     * <p>
+     * The default DB connection factory.
+     * </p>
      */
     private DBConnectionFactory defaultConnFactory = null;
 
     /**
-     * <p>An DBUserRetrieval instance for testing.</p>
+     * <p>
+     * An DBUserRetrieval instance for testing.
+     * </p>
      */
     private MockDBUserRetrieval defaultDBUserRetrieval = null;
 
     /**
-     * <p>The default connection used for db operations.</p>
+     * <p>
+     * The default connection used for db operations.
+     * </p>
      */
     private Connection defaultConnection = null;
 
     /**
-     * <p>Initialization.</p>
+     * <p>
+     * Initialization.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void setUp() throws Exception {
+        super.setUp();
         UnitTestHelper.addConfig(CONFIG_FILE);
 
         defaultDBUserRetrieval = new MockDBUserRetrieval(NAMESPACE);
@@ -80,9 +98,12 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Set defaultDBUserRetrieval to null.</p>
+     * <p>
+     * Set defaultDBUserRetrieval to null.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void tearDown() throws Exception {
 
@@ -93,13 +114,18 @@ public class DBUserRetrievalUnitTest extends TestCase {
         UnitTestHelper.cleanupTable(defaultConnection, "email");
 
         defaultDBUserRetrieval = null;
-        defaultConnection.close();
         UnitTestHelper.clearConfig();
+
+        super.tearDown();
     }
 
     /**
-     * <p>Tests the accuracy of the ctor(String).</p>
-     * <p>The defaultDBProjectRetrieval instance should be created successfully.</p>
+     * <p>
+     * Tests the accuracy of the ctor(String).
+     * </p>
+     * <p>
+     * The defaultDBProjectRetrieval instance should be created successfully.
+     * </p>
      */
     public void testCtor_String() {
 
@@ -108,24 +134,27 @@ public class DBUserRetrievalUnitTest extends TestCase {
                 defaultDBUserRetrieval instanceof DBUserRetrieval);
 
         // Uses the reflection to test the field setting.
-        Object connFactory = UnitTestHelper.getPrivateField(BaseDBRetrieval.class,
-                defaultDBUserRetrieval, "connFactory");
-        Object connName = UnitTestHelper.getPrivateField(BaseDBRetrieval.class,
-                defaultDBUserRetrieval, "connName");
+        Object connFactory = UnitTestHelper.getPrivateField(BaseDBRetrieval.class, defaultDBUserRetrieval,
+                "connFactory");
+        Object connName = UnitTestHelper.getPrivateField(BaseDBRetrieval.class, defaultDBUserRetrieval, "connName");
 
         // Asserts the set.
         assertNotNull("connFactory should be set correctly.", connFactory);
-        assertEquals("connName should be set correctly.", defaultConnName, connName);
+        assertEquals("connName should be set correctly.", DEFAULT_CONN_NAME, connName);
     }
 
     /**
-     * <p>Tests the failure of the ctor(String).</p>
-     * <p>If the parameter is null. Then IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(String).
+     * </p>
+     * <p>
+     * If the parameter is null. Then IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws ConfigException this exception would never be thrown in this test case.
+     * @throws ConfigException
+     *             this exception would never be thrown in this test case.
      */
-    public void testCtor_String_NullNamespace()
-        throws ConfigException {
+    public void testCtor_String_NullNamespace() throws ConfigException {
 
         try {
             new MockDBUserRetrieval(null);
@@ -136,13 +165,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(String).</p>
-     * <p>If the parameter is empty after trimed. Then IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(String).
+     * </p>
+     * <p>
+     * If the parameter is empty after trimmed. Then IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws ConfigException this exception would never be thrown in this test case.
+     * @throws ConfigException
+     *             this exception would never be thrown in this test case.
      */
-    public void testCtor_String_EmptyNamespace()
-        throws ConfigException {
+    public void testCtor_String_EmptyNamespace() throws ConfigException {
 
         try {
             new MockDBUserRetrieval("  ");
@@ -153,9 +186,13 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(String).</p>
-     * <p>The connName which is got from the configure file, is not contained in the connFactoryImpl. Then
-     * ConfigException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(String).
+     * </p>
+     * <p>
+     * The connName which is got from the configure file, is not contained in the connFactoryImpl. Then ConfigException
+     * should be thrown.
+     * </p>
      */
     public void testCtor_String_ConnNameNotInclude() {
 
@@ -174,9 +211,12 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(String).</p>
-     * <p>The connName which is got from the configure file, is defined empty. Then ConfigException should be
-     * thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(String).
+     * </p>
+     * <p>
+     * The connName which is got from the configure file, is defined empty. Then ConfigException should be thrown.
+     * </p>
      */
     public void testCtor_String_ConnNameEmpty() {
 
@@ -195,13 +235,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(String).</p>
-     * <p>If gives an unknow namespace. Then ConfigException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(String).
+     * </p>
+     * <p>
+     * If gives an unknown namespace. Then ConfigException should be thrown.
+     * </p>
      */
-    public void testCtor_String_UnknowNamespace() {
+    public void testCtor_String_UnknownNamespace() {
 
         try {
-            new MockDBUserRetrieval("Unknow");
+            new MockDBUserRetrieval("Unknown");
             fail("ConfigException should be thrown.");
         } catch (ConfigException e) {
             // Success.
@@ -209,42 +253,49 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the ctor(DBConnectionFactory, String).</p>
-     * <p>The instance should be created successfully.</p>
+     * <p>
+     * Tests the accuracy of the ctor(DBConnectionFactory, String).
+     * </p>
+     * <p>
+     * The instance should be created successfully.
+     * </p>
      *
-     * @throws ConfigException this exception would never be thrown in this test case.
+     * @throws ConfigException
+     *             this exception would never be thrown in this test case.
      */
-    public void testCtor_DBConnectionFactoryString()
-        throws ConfigException {
+    public void testCtor_DBConnectionFactoryString() throws ConfigException {
 
-        defaultDBUserRetrieval = new MockDBUserRetrieval(defaultConnFactory, defaultConnName);
+        defaultDBUserRetrieval = new MockDBUserRetrieval(defaultConnFactory, DEFAULT_CONN_NAME);
 
         assertNotNull("DBUserRetrieval should be accurately created.", defaultDBUserRetrieval);
         assertTrue("defaultDBUserRetrieval should be instance of DBUserRetrieval.",
                 defaultDBUserRetrieval instanceof DBUserRetrieval);
 
         // Uses the reflection to test the field setting.
-        Object connFactory = UnitTestHelper.getPrivateField(BaseDBRetrieval.class,
-                defaultDBUserRetrieval, "connFactory");
-        Object connName = UnitTestHelper.getPrivateField(BaseDBRetrieval.class,
-                defaultDBUserRetrieval, "connName");
+        Object connFactory = UnitTestHelper.getPrivateField(BaseDBRetrieval.class, defaultDBUserRetrieval,
+                "connFactory");
+        Object connName = UnitTestHelper.getPrivateField(BaseDBRetrieval.class, defaultDBUserRetrieval, "connName");
 
         // Asserts the set.
         assertEquals("connFactory should be set correctly.", defaultConnFactory, connFactory);
-        assertEquals("connName should be set correctly.", defaultConnName, connName);
+        assertEquals("connName should be set correctly.", DEFAULT_CONN_NAME, connName);
     }
 
     /**
-     * <p>Tests the failure of the ctor(DBConnectionFactory, String).</p>
-     * <p>If DBConnectionFactory given is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(DBConnectionFactory, String).
+     * </p>
+     * <p>
+     * If DBConnectionFactory given is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws ConfigException this exception would never be thrown in this test case.
+     * @throws ConfigException
+     *             this exception would never be thrown in this test case.
      */
-    public void testCtor_DBConnectionFactoryString_NullDBConnectionFactory()
-        throws ConfigException {
+    public void testCtor_DBConnectionFactoryString_NullDBConnectionFactory() throws ConfigException {
 
         try {
-            new MockDBUserRetrieval(null, defaultConnName);
+            new MockDBUserRetrieval(null, DEFAULT_CONN_NAME);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -252,13 +303,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(DBConnectionFactory, String).</p>
-     * <p>If connName given is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(DBConnectionFactory, String).
+     * </p>
+     * <p>
+     * If connName given is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws ConfigException this exception would never be thrown in this test case.
+     * @throws ConfigException
+     *             this exception would never be thrown in this test case.
      */
-    public void testCtor_DBConnectionFactoryString_NullConnName()
-        throws ConfigException {
+    public void testCtor_DBConnectionFactoryString_NullConnName() throws ConfigException {
 
         try {
             new MockDBUserRetrieval(defaultConnFactory, null);
@@ -269,9 +324,12 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the ctor(DBConnectionFactory, String).</p>
-     * <p>If connName doesn't correspond to a connection the factory knows about, ConfigException
-     * should be thrown.</p>
+     * <p>
+     * Tests the failure of the ctor(DBConnectionFactory, String).
+     * </p>
+     * <p>
+     * If connName doesn't correspond to a connection the factory knows about, ConfigException should be thrown.
+     * </p>
      */
     public void testCtor_DBConnectionFactoryString_UnknownConnName() {
 
@@ -283,42 +341,52 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsers(long[]).</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsers(long[]).
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_LongArray_1()
-        throws RetrievalException {
+    public void testRetrieveUsers_LongArray_1() throws RetrievalException {
 
-        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new long[] { 1001, 1002, 1005 });
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new long[] {1001, 1002, 1005});
 
         // Asserts.
         assertEquals("Two records would be got.", 2, users.length);
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsers(long[]).</p>
-     * <p>If given an empty array as the parameter, empty array would be returned.</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsers(long[]).
+     * </p>
+     * <p>
+     * If given an empty array as the parameter, empty array would be returned.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_LongArray_2()
-        throws RetrievalException {
+    public void testRetrieveUsers_LongArray_2() throws RetrievalException {
 
-        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new long[] { });
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new long[] {});
 
         // Asserts.
         assertEquals("Empty array would be returned.", 0, users.length);
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsers(long[]).</p>
-     * <p>If ids is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsers(long[]).
+     * </p>
+     * <p>
+     * If ids is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_LongArray_NullIds()
-        throws RetrievalException {
+    public void testRetrieveUsers_LongArray_NullIds() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUsers((long[]) null);
@@ -329,16 +397,20 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsers(long[]).</p>
-     * <p>If any entry is not positive in ids, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsers(long[]).
+     * </p>
+     * <p>
+     * If any entry is not positive in ids, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_LongArray_NotPositiveEntry()
-        throws RetrievalException {
+    public void testRetrieveUsers_LongArray_NotPositiveEntry() throws RetrievalException {
 
         try {
-            defaultDBUserRetrieval.retrieveUsers(new long[] { 1, 0, 4 });
+            defaultDBUserRetrieval.retrieveUsers(new long[] {1, 0, 4});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -346,9 +418,13 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsers(long[]).</p>
-     * <p>If there is no default Connection and connName, connection could not be created, RetrievalException
-     * would be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsers(long[]).
+     * </p>
+     * <p>
+     * If there is no default Connection and connName, connection could not be created, RetrievalException would be
+     * thrown.
+     * </p>
      */
     public void testRetrieveUsers_LongArray_NoDefaultConnectionAndConnName() {
 
@@ -359,14 +435,14 @@ public class DBUserRetrievalUnitTest extends TestCase {
         }
 
         try {
-            defaultDBUserRetrieval = new MockDBUserRetrieval
-                ("com.cronos.onlinereview.external.NoDefaultConnAndConnName");
+            defaultDBUserRetrieval = new MockDBUserRetrieval(
+                    "com.cronos.onlinereview.external.NoDefaultConnAndConnName");
         } catch (ConfigException e) {
             // Will never happen.
         }
 
         try {
-            defaultDBUserRetrieval.retrieveUsers(new long[] { 1001, 1002 });
+            defaultDBUserRetrieval.retrieveUsers(new long[] {1001, 1002});
             fail("RetrievalException should be thrown.");
         } catch (RetrievalException e1) {
             // Success.
@@ -374,12 +450,14 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUser(long).</p>
+     * <p>
+     * Tests the accuracy of the retrieveUser(long).
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUser_Long()
-        throws RetrievalException {
+    public void testRetrieveUser_Long() throws RetrievalException {
 
         ExternalUser user = defaultDBUserRetrieval.retrieveUser(1002);
 
@@ -401,13 +479,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUser(long).</p>
-     * <p>If id is not positive, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUser(long).
+     * </p>
+     * <p>
+     * If id is not positive, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUser_Long_NotPositive()
-        throws RetrievalException {
+    public void testRetrieveUser_Long_NotPositive() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUser(-1);
@@ -418,44 +500,52 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsers(String[]).</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsers(String[]).
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_StringArray_1()
-        throws RetrievalException {
+    public void testRetrieveUsers_StringArray_1() throws RetrievalException {
 
-        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(
-                new String[] { "Handle A", "Handle C", "Handle Z" });
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new String[] {"Handle A", "Handle C", "Handle Z"});
 
         // Asserts.
         assertEquals("Two records would be got.", 2, users.length);
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsers(String[]).</p>
-     * <p>If given an empty array as the parameter, empty array would be returned.</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsers(String[]).
+     * </p>
+     * <p>
+     * If given an empty array as the parameter, empty array would be returned.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_StringArray_2()
-        throws RetrievalException {
+    public void testRetrieveUsers_StringArray_2() throws RetrievalException {
 
-        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(
-                new String[] { });
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsers(new String[] {});
 
         // Asserts.
         assertEquals("Empty array would be returned.", 0, users.length);
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsers(String[]).</p>
-     * <p>If the array is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsers(String[]).
+     * </p>
+     * <p>
+     * If the array is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_StringArray_NullArray()
-        throws RetrievalException {
+    public void testRetrieveUsers_StringArray_NullArray() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUsers((String[]) null);
@@ -466,16 +556,20 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsers(String[]).</p>
-     * <p>If any entry in the array is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsers(String[]).
+     * </p>
+     * <p>
+     * If any entry in the array is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_StringArray_NullEntry()
-        throws RetrievalException {
+    public void testRetrieveUsers_StringArray_NullEntry() throws RetrievalException {
 
         try {
-            defaultDBUserRetrieval.retrieveUsers(new String[] { null, "Handle C" });
+            defaultDBUserRetrieval.retrieveUsers(new String[] {null, "Handle C"});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -483,16 +577,20 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsers(String[]).</p>
-     * <p>If any entry in the array is empty, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsers(String[]).
+     * </p>
+     * <p>
+     * If any entry in the array is empty, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_StringArrayStringArray_EmptyEntry()
-        throws RetrievalException {
+    public void testRetrieveUsers_StringArrayStringArray_EmptyEntry() throws RetrievalException {
 
         try {
-            defaultDBUserRetrieval.retrieveUsers(new String[] { "  ", "Handle C" });
+            defaultDBUserRetrieval.retrieveUsers(new String[] {"  ", "Handle C"});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -500,12 +598,14 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUser(String).</p>
+     * <p>
+     * Tests the accuracy of the retrieveUser(String).
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUser_String()
-        throws RetrievalException {
+    public void testRetrieveUser_String() throws RetrievalException {
 
         ExternalUser user = defaultDBUserRetrieval.retrieveUser("Handle B");
 
@@ -527,13 +627,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUser(String).</p>
-     * <p>If the string parameter is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUser(String).
+     * </p>
+     * <p>
+     * If the string parameter is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUser_String_NullHandle()
-        throws RetrievalException {
+    public void testRetrieveUser_String_NullHandle() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUser(null);
@@ -544,13 +648,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUser(String).</p>
-     * <p>If the string parameter is empty, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUser(String).
+     * </p>
+     * <p>
+     * If the string parameter is empty, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsers_String_EmptyHandle()
-        throws RetrievalException {
+    public void testRetrieveUsers_String_EmptyHandle() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUser("  ");
@@ -561,22 +669,23 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsersIgnoreCase(String[]).</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsersIgnoreCase(String[]).
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersIgnoreCase_StringArray_1()
-        throws RetrievalException {
+    public void testRetrieveUsersIgnoreCase_StringArray_1() throws RetrievalException {
 
-        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] { "hAndLe a" });
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] {"hAndLe a"});
 
         assertEquals("There is only one user.", 1, users.length);
         ExternalUser user = users[0];
 
         // Asserts.
         assertEquals("There is only one alternative email.", 1, user.getAlternativeEmails().length);
-        assertEquals("The email address should be the same.", "User1@163.com",
-                user.getAlternativeEmails()[0]);
+        assertEquals("The email address should be the same.", "User1@163.com", user.getAlternativeEmails()[0]);
         assertEquals("The design number ratings should be the same.", 10, user.getDesignNumRatings());
         assertEquals("The design rating should be the same.", "1563", user.getDesignRating());
         assertEquals("The design reliability should be the same.", "1.00 %", user.getDesignReliability());
@@ -593,28 +702,36 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsersIgnoreCase(String[]).</p>
-     * <p>If given an empty array as the parameter, empty array would be returned.</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsersIgnoreCase(String[]).
+     * </p>
+     * <p>
+     * If given an empty array as the parameter, empty array would be returned.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersIgnoreCase_StringArray_2()
-        throws RetrievalException {
+    public void testRetrieveUsersIgnoreCase_StringArray_2() throws RetrievalException {
 
-        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] { });
+        ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] {});
 
         // Asserts.
         assertEquals("Empty array would be returned.", 0, users.length);
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsersIgnoreCase(String[]).</p>
-     * <p>If the array is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsersIgnoreCase(String[]).
+     * </p>
+     * <p>
+     * If the array is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersIgnoreCaseStringArray_NullArray()
-        throws RetrievalException {
+    public void testRetrieveUsersIgnoreCaseStringArray_NullArray() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUsersIgnoreCase((String[]) null);
@@ -625,16 +742,20 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsersIgnoreCase(String[]).</p>
-     * <p>If any entry in the array is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsersIgnoreCase(String[]).
+     * </p>
+     * <p>
+     * If any entry in the array is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersIgnoreCaseStringArray_NullEntry()
-        throws RetrievalException {
+    public void testRetrieveUsersIgnoreCaseStringArray_NullEntry() throws RetrievalException {
 
         try {
-            defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] { null, "haNdlE C" });
+            defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] {null, "haNdlE C"});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -642,16 +763,20 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsersIgnoreCase(String[]).</p>
-     * <p>If any entry in the array is empty, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsersIgnoreCase(String[]).
+     * </p>
+     * <p>
+     * If any entry in the array is empty, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersIgnoreCaseStringArrayStringArray_EmptyEntry()
-        throws RetrievalException {
+    public void testRetrieveUsersIgnoreCaseStringArrayStringArray_EmptyEntry() throws RetrievalException {
 
         try {
-            defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] { "  ", "HAnDle c" });
+            defaultDBUserRetrieval.retrieveUsersIgnoreCase(new String[] {"  ", "HAnDle c"});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // Success.
@@ -659,13 +784,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsersByName(String, String).</p>
-     * <p>There do have some records can be found.</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsersByName(String, String).
+     * </p>
+     * <p>
+     * There do have some records can be found.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersByName_StringString1()
-        throws RetrievalException {
+    public void testRetrieveUsersByName_StringString1() throws RetrievalException {
 
         ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersByName("First B", "Last B");
 
@@ -690,13 +819,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsersByName(String, String).</p>
-     * <p>Blur search.</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsersByName(String, String).
+     * </p>
+     * <p>
+     * Blur search.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersByName_StringString2()
-        throws RetrievalException {
+    public void testRetrieveUsersByName_StringString2() throws RetrievalException {
 
         ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersByName("    ", "Last B");
 
@@ -704,13 +837,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the retrieveUsersByName(String, String).</p>
-     * <p>No record can be found.</p>
+     * <p>
+     * Tests the accuracy of the retrieveUsersByName(String, String).
+     * </p>
+     * <p>
+     * No record can be found.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersByName_StringString3()
-        throws RetrievalException {
+    public void testRetrieveUsersByName_StringString3() throws RetrievalException {
 
         ExternalUser[] users = defaultDBUserRetrieval.retrieveUsersByName("    ", "AAAA");
 
@@ -718,13 +855,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsersByName(String, String).</p>
-     * <p>If the first name given is null, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsersByName(String, String).
+     * </p>
+     * <p>
+     * If the first name given is null, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersByName_StringString_NullFirstName()
-        throws RetrievalException {
+    public void testRetrieveUsersByName_StringString_NullFirstName() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUsersByName(null, "C");
@@ -735,13 +876,17 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the failure of the retrieveUsersByName(String, String).</p>
-     * <p>If the two names given are both empty, IllegalArgumentException should be thrown.</p>
+     * <p>
+     * Tests the failure of the retrieveUsersByName(String, String).
+     * </p>
+     * <p>
+     * If the two names given are both empty, IllegalArgumentException should be thrown.
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveUsersByName_StringString_AllNameEmpty()
-        throws RetrievalException {
+    public void testRetrieveUsersByName_StringString_AllNameEmpty() throws RetrievalException {
 
         try {
             defaultDBUserRetrieval.retrieveUsersByName(" ", "   ");
@@ -752,18 +897,20 @@ public class DBUserRetrievalUnitTest extends TestCase {
     }
 
     /**
-     * <p>Tests the accuracy of the createObject(ResultSet).</p>
+     * <p>
+     * Tests the accuracy of the createObject(ResultSet).
+     * </p>
      *
-     * @throws RetrievalException this exception would never be thrown in this test case.
-     * @throws SQLException this exception would never be thrown in this test case.
+     * @throws RetrievalException
+     *             this exception would never be thrown in this test case.
+     * @throws SQLException
+     *             this exception would never be thrown in this test case.
      */
-    public void testCreateObject_ResultSet()
-        throws RetrievalException, SQLException {
+    public void testCreateObject_ResultSet() throws RetrievalException, SQLException {
 
         // Prepares the ps and rs.
         PreparedStatement ps = defaultConnection.prepareStatement("Select "
-                + " u.user_id id, u.first_name, u.last_name, u.handle, e.address "
-                + " from user u, email e "
+                + " u.user_id id, u.first_name, u.last_name, u.handle, e.address " + " from user u, email e "
                 + " where u.user_id = 1002 and e.primary_ind = 1 and u.user_id = e.user_id");
         ResultSet rs = ps.executeQuery();
 

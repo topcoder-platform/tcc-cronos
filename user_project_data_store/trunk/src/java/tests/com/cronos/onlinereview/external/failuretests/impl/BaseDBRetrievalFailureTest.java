@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests.impl;
 
@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.Iterator;
 
 import com.cronos.onlinereview.external.ConfigException;
-import com.cronos.onlinereview.external.failuretests.FailureHelper;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
@@ -15,38 +14,28 @@ import com.topcoder.util.config.ConfigManager;
 import junit.framework.TestCase;
 
 /**
- * <p/>
+ * <p>
  * This test case aggregates all test cases for <code>BaseDBRetrieval</code>.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class BaseDBRetrievalFailureTest extends TestCase {
 
-    /**
-     * Configuration file path.
-     */
+    /** Configuration file path. */
     private static final String CONFIG_FILE = "FailureTests" + File.separator + "ConfigFile.xml";
 
-    /**
-     * Invalid configuration file path.
-     */
+    /** Invalid configuration file path. */
     private static final String INVALID_CONFIG_FILE = "FailureTests" + File.separator + "InvalidConfigFile.xml";
 
-    /**
-     * Namespace used for tests.
-     */
+    /** Namespace used for tests. */
     private static final String NAMESPACE = "com.cronos.onlinereview.external";
 
-    /**
-     * Connection name used in tests.
-     */
+    /** Connection name used in tests. */
     private static final String CONN_NAME = "UserProjectDataStoreConnection";
 
-    /**
-     * A <code>DBConnectionFactory</code> instance used for tests.
-     */
+    /** A <code>DBConnectionFactory</code> instance used for tests. */
     private DBConnectionFactory connFactory = null;
 
     /**
@@ -55,9 +44,8 @@ public class BaseDBRetrievalFailureTest extends TestCase {
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
-        FailureHelper.clearConfig();
+        tearDown();
         ConfigManager cm = ConfigManager.getInstance();
-
         cm.add(CONFIG_FILE);
         cm.add(INVALID_CONFIG_FILE);
 
@@ -70,13 +58,17 @@ public class BaseDBRetrievalFailureTest extends TestCase {
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
-        FailureHelper.clearConfig();
+        ConfigManager cm = ConfigManager.getInstance();
+        for (Iterator itr = cm.getAllNamespaces(); itr.hasNext();) {
+            cm.removeNamespace((String) itr.next());
+        }
         connFactory = null;
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with null argument.
-     * <code>connFactory</code> is null in this test.
+     * Test constructor
+     * <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with null
+     * argument. <code>connFactory</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      *
      * @throws Exception to JUnit
@@ -91,8 +83,9 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with null argument.
-     * <code>connName</code> is null in this test.
+     * Test constructor
+     * <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with null
+     * argument. <code>connName</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      *
      * @throws Exception to JUnit
@@ -107,9 +100,10 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
      *
      * @throws Exception to JUnit
      */
@@ -123,9 +117,10 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
      *
      * @throws Exception to JUnit
      */
@@ -139,9 +134,10 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
      *
      * @throws Exception to JUnit
      */
@@ -155,9 +151,10 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with empty-string argument.
-     * <code>connName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with
+     * empty-string argument. <code>connName</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
      *
      * @throws Exception to JUnit
      */
@@ -171,8 +168,9 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with unknown <code>connName</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor
+     * <code>BaseDBRetrieval(DBConnectionFactory, String)</code> with unknown
+     * <code>connName</code>. <code>ConfigException</code> is expected.
      *
      * @throws Exception to JUnit
      */
@@ -186,8 +184,9 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with null <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with null
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
      *
      * @throws Exception to JUnit
      */
@@ -201,8 +200,9 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
      *
      * @throws Exception to JUnit
      */
@@ -216,8 +216,9 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
      *
      * @throws Exception to JUnit
      */
@@ -231,8 +232,9 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
      *
      * @throws Exception to JUnit
      */
@@ -246,8 +248,9 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string <code>namespace</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with empty-string
+     * <code>namespace</code>. <code>IllegalArgumentException</code> is
+     * expected.
      *
      * @throws Exception to JUnit
      */
@@ -261,8 +264,8 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with unknown <code>namespace</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with unknown
+     * <code>namespace</code>. <code>ConfigException</code> is expected.
      *
      * @throws Exception to JUnit
      */
@@ -276,8 +279,8 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with unknown <code>namespace</code>.
-     * <code>ConfigException</code> is expected.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with unknown
+     * <code>namespace</code>. <code>ConfigException</code> is expected.
      *
      * @throws Exception to JUnit
      */
@@ -292,8 +295,8 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with invalid configuration.
-     * The <code>connName</code> is missing.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with invalid
+     * configuration. The <code>connName</code> is missing.
      *
      * @throws Exception to JUnit
      */
@@ -307,8 +310,8 @@ public class BaseDBRetrievalFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>BaseDBRetrieval(String)</code> with invalid configuration.
-     * The <code>connName</code> is empty.
+     * Test constructor <code>BaseDBRetrieval(String)</code> with invalid
+     * configuration. The <code>connName</code> is empty.
      *
      * @throws Exception to JUnit
      */

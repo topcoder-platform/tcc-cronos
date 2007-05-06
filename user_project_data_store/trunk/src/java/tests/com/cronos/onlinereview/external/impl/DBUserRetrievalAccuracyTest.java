@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.impl;
 
@@ -24,8 +22,8 @@ import java.util.Arrays;
  * Tests the DBUserRetrieval class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt, restarter
+ * @version 2.0
  */
 public class DBUserRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest {
     /**
@@ -83,7 +81,6 @@ public class DBUserRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest {
         AccuracyHelper.cleanupTable(defaultConnection, "email");
 
         userRetrieval = null;
-        defaultConnection.close();
     }
 
     /**

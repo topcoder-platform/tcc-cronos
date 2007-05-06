@@ -1,27 +1,19 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.impl;
-
-import com.cronos.onlinereview.external.ConfigException;
-import com.cronos.onlinereview.external.RetrievalException;
-import com.cronos.onlinereview.external.UnitTestHelper;
-import com.cronos.onlinereview.external.accuracytests.AccuracyHelper;
-import com.cronos.onlinereview.external.accuracytests.AccuracyTests;
-
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-import com.topcoder.util.config.ConfigManager;
-
-import junit.framework.TestCase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import java.util.Map;
+import junit.framework.TestCase;
+
+import com.cronos.onlinereview.external.ConfigException;
+import com.cronos.onlinereview.external.RetrievalException;
+import com.cronos.onlinereview.external.UnitTestHelper;
+import com.cronos.onlinereview.external.accuracytests.AccuracyHelper;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
 
 
 /**
@@ -29,8 +21,8 @@ import java.util.Map;
  * Tests the BaseDBRetrieval class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt, restarter
+ * @version 2.0
  */
 public abstract class BaseDBRetrievalAccuracyTest extends TestCase {
     /**
@@ -98,8 +90,6 @@ public abstract class BaseDBRetrievalAccuracyTest extends TestCase {
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
-        AccuracyHelper.clearConfig();
-        
         AccuracyHelper.addConfig(CONFIG_FILE);
 
         // Inserts into the comp_catalog table.

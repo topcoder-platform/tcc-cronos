@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.stresstests;
 
@@ -19,8 +17,8 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 
 /**
  * Stress test case of <code>DBUserRetrieval</code> class.
- * @author fairytale
- * @version 1.0
+ * @author fairytale, victorsam
+ * @version 2.0
  */
 public class DBUserRetrievalStressTest extends TestCase {
     /** The number of times each method will be run. */

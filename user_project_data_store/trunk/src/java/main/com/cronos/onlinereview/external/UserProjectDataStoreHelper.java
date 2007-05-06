@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external;
 
@@ -10,32 +8,46 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * <p>The helper class of this component.</p>
- * <p>This class provides some useful methods.</p>
+ * <p>
+ * The helper class of this component.
+ * </p>
+ * <p>
+ * This class provides some useful methods.
+ * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public final class UserProjectDataStoreHelper {
 
     /**
-     * <p>The default string which indicates the nothing in the component.</p>
+     * <p>
+     * The default string which indicates the nothing in the component.
+     * </p>
      */
     public static final String DEFAULT_NA_STRING = "N/A";
 
     /**
-     * <p>Private constructor to prevent this class being instantiated.</p>
+     * <p>
+     * Private constructor to prevent this class being instantiated.
+     * </p>
      */
     private UserProjectDataStoreHelper() {
     }
 
     /**
-     * <p>Checks whether the given Object is null.</p>
+     * <p>
+     * Checks whether the given Object is null.
+     * </p>
      *
-     * @param arg the argument to check.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the given Object is null.
+     * @param arg
+     *            the argument to check.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the given Object is <code>null</code>.
      */
     public static void validateNull(Object arg, String name) {
         if (arg == null) {
@@ -44,12 +56,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the given String is empty or null.</p>
+     * <p>
+     * Checks whether the given String is empty or null.
+     * </p>
      *
-     * @param arg the String argument to check.
-     * @param name the name of the String argument.
-     *
-     * @throws IllegalArgumentException if the given String is null or empty.
+     * @param arg
+     *            the String argument to check.
+     * @param name
+     *            the name of the String argument.
+     * @throws IllegalArgumentException
+     *             if the given String is <code>null</code> or empty after trim.
      */
     public static void validateStringEmptyNull(String arg, String name) {
         validateNull(arg, name);
@@ -60,12 +76,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the given integer is negative.</p>
+     * <p>
+     * Checks whether the given integer is negative.
+     * </p>
      *
-     * @param arg the integer argument to check.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the integer is negative.
+     * @param arg
+     *            the integer argument to check.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the integer is negative.
      */
     public static void validateNegative(int arg, String name) {
         if (arg < 0) {
@@ -74,12 +94,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the given long integer is negative.</p>
+     * <p>
+     * Checks whether the given long integer is negative.
+     * </p>
      *
-     * @param arg the long integer argument to check.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the long integer is negative.
+     * @param arg
+     *            the long integer argument to check.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the long integer is negative.
      */
     public static void validateNegative(long arg, String name) {
         if (arg < 0) {
@@ -88,12 +112,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the given double is negative.</p>
+     * <p>
+     * Checks whether the given double is negative.
+     * </p>
      *
-     * @param arg the double argument to check.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the double is negative.
+     * @param arg
+     *            the double argument to check.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the double is negative.
      */
     public static void validateNegative(double arg, String name) {
         if (arg < 0) {
@@ -102,12 +130,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the given integer is non-positive.</p>
+     * <p>
+     * Checks whether the given integer is non-positive.
+     * </p>
      *
-     * @param arg the integer argument to check.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the integer is non-positive.
+     * @param arg
+     *            the integer argument to check.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the integer is non-positive.
      */
     public static void validateNotPositive(int arg, String name) {
         if (arg <= 0) {
@@ -116,12 +148,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the given long integer is non-positive.</p>
+     * <p>
+     * Checks whether the given long integer is non-positive.
+     * </p>
      *
-     * @param arg the long integer argument to check.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the long integer is non-positive.
+     * @param arg
+     *            the long integer argument to check.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the long integer is non-positive.
      */
     public static void validateNotPositive(long arg, String name) {
         if (arg <= 0) {
@@ -130,12 +166,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the long integer field has already been set.</p>
+     * <p>
+     * Checks whether the long integer field has already been set.
+     * </p>
      *
-     * @param arg the long integer value of the field.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the long integer is not -1, means it has been set already.
+     * @param arg
+     *            the long integer value of the field.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the long integer is not -1, means it has been set already.
      */
     public static void validateFieldAlreadySet(long arg, String name) {
         if (arg != -1) {
@@ -144,12 +184,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the String field has already been set.</p>
+     * <p>
+     * Checks whether the String field has already been set.
+     * </p>
      *
-     * @param arg the String value of the field.
-     * @param name the name of the argument.
-     *
-     * @throws IllegalArgumentException if the String is not null, means it has been set already.
+     * @param arg
+     *            the String value of the field.
+     * @param name
+     *            the name of the argument.
+     * @throws IllegalArgumentException
+     *             if the String is not <code>null</code>, means it has been set already.
      */
     public static void validateFieldAlreadySet(String arg, String name) {
         if (arg != null) {
@@ -158,12 +202,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the array of long values is valid.</p>
+     * <p>
+     * Checks whether the array of long values is valid.
+     * </p>
      *
-     * @param array the array of long values need to check.
-     * @param name the name of the array argument.
-     *
-     * @throws IllegalArgumentException if the array is null, or any long entry is not positive.
+     * @param array
+     *            the array of long values need to check.
+     * @param name
+     *            the name of the array argument.
+     * @throws IllegalArgumentException
+     *             if the array is <code>null</code>, or any long entry is not positive.
      */
     public static void validateArray(long[] array, String name) {
         validateNull(array, name);
@@ -174,13 +222,16 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Checks whether the array of String values is valid.</p>
+     * <p>
+     * Checks whether the array of String values is valid.
+     * </p>
      *
-     * @param array the array of String values need to check.
-     * @param name the name of the array argument.
-     *
-     * @throws IllegalArgumentException if the array is null, or any String entry is null or empty after
-     * trim.
+     * @param array
+     *            the array of String values need to check.
+     * @param name
+     *            the name of the array argument.
+     * @throws IllegalArgumentException
+     *             if the array is <code>null</code>, or any String entry is <code>null</code> or empty after trim.
      */
     public static void validateArray(String[] array, String name) {
         validateNull(array, name);
@@ -191,15 +242,20 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>Returns the first objects of the given array parameter, the parameter can be ExternalUser[]
-     * or ExternalProject[].</p>
-     * <p>This method is used by DBUserRetrieval and DBProjectRetrieval class.</p>
+     * <p>
+     * Returns the first objects of the given array parameter, the parameter can be <code>ExternalUser[]</code> or
+     * <code>ExternalProject[]</code>.
+     * </p>
+     * <p>
+     * This method is used by <code>DBUserRetrieval</code> and <code>DBProjectRetrieval</code>
+     * classes.
+     * </p>
      *
-     * @param objects the parameter can be ExternalUser[] or ExternalProject[].
-     * @return the first element of the parameter, if the array is empty returns null.
+     * @param objects
+     *            the parameter can be <code>ExternalUser[]</code> or <code>ExternalProject[]</code>.
+     * @return the first element of the parameter, if the array is empty return <code>null</code>.
      */
     public static ExternalObject retFirstObject(ExternalObject[] objects) {
-
         if (objects.length == 0) {
             return null;
         } else {
@@ -208,30 +264,37 @@ public final class UserProjectDataStoreHelper {
     }
 
     /**
-     * <p>This method helps creates a prepareStatement of the given query string.</p>
+     * <p>
+     * This method helps creates a prepareStatement of the given query string.
+     * </p>
      *
      * @return the PreparedStatement created.
-     * @param conn the connection for creating the PreparedStatement.
-     * @param query the query string for creating the PreparedStatement.
-     * @param queryName the name of the query.
-     *
-     * @throws RetrievalException database access error occurs while preparing the statement.
+     * @param conn
+     *            the connection for creating the PreparedStatement.
+     * @param query
+     *            the query string for creating the PreparedStatement.
+     * @param queryName
+     *            the name of the query.
+     * @throws RetrievalException
+     *             database access error occurs while preparing the statement.
      */
     public static PreparedStatement createStatement(Connection conn, String query, String queryName)
-        throws RetrievalException {
-
+            throws RetrievalException {
         try {
             return conn.prepareStatement(query);
         } catch (SQLException e) {
-            throw new RetrievalException("Database access error occurs while preparing the "
-                    + queryName + " statement.", e);
+            throw new RetrievalException("Database access error occurs while preparing the " + queryName
+                    + " statement.", e);
         }
     }
 
     /**
-     * <p>This method helps generate question marks of the given marks number.</p>
+     * <p>
+     * This method helps generate question marks of the given marks number.
+     * </p>
      *
-     * @param length how many question marks are needed.
+     * @param length
+     *            how many question marks are needed.
      * @return the string of the question marks.
      */
     public static String generateQuestionMarks(int length) {

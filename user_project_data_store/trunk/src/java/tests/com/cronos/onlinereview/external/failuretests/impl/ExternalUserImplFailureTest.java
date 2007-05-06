@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests.impl;
 
@@ -12,8 +12,8 @@ import junit.framework.TestCase;
  * This test case aggregates all test cases for <code>ExternalUserImpl</code>.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class ExternalUserImplFailureTest extends TestCase {
     /** An <code>ExternalUserImpl</code> instance used for tests. */
@@ -21,6 +21,7 @@ public class ExternalUserImplFailureTest extends TestCase {
 
     /**
      * Set up.
+     *
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
@@ -29,6 +30,7 @@ public class ExternalUserImplFailureTest extends TestCase {
 
     /**
      * Tear down.
+     *
      * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
@@ -36,9 +38,10 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with negative <code>id</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with negative <code>id</code>. <code>IllegalArgumentException</code>
+     * is expected.
      */
     public void testExternalUserImpl_NegativeId() {
         try {
@@ -50,9 +53,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with null argument.
-     * <code>handle</code> is null in this test.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with null argument. <code>handle</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_NullArg_1() {
@@ -65,9 +68,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with null argument.
-     * <code>firstName</code> is null in this test.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with null argument. <code>firstName</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_NullArg_2() {
@@ -80,9 +83,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with null argument.
-     * <code>lastName</code> is null in this test.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with null argument. <code>lastName</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_NullArg_3() {
@@ -95,9 +98,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with null argument.
-     * <code>email</code> is null in this test.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with null argument. <code>email</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_NullArg_4() {
@@ -110,10 +113,10 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with empty-string argument.
-     * <code>handle</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with empty-string argument. <code>handle</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_EmptyStringArg_1() {
         try {
@@ -125,10 +128,10 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with empty-string argument.
-     * <code>firstName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with empty-string argument. <code>firstName</code> is empty-string in
+     * this test. <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_EmptyStringArg_2() {
         try {
@@ -140,10 +143,10 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with empty-string argument.
-     * <code>lastName</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with empty-string argument. <code>lastName</code> is empty-string in
+     * this test. <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_EmptyStringArg_3() {
         try {
@@ -155,10 +158,10 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>ExternalUserImpl(long, String, String, String, String)</code>
-     * with empty-string argument.
-     * <code>email</code> is empty-string in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor
+     * <code>ExternalUserImpl(long, String, String, String, String)</code>
+     * with empty-string argument. <code>email</code> is empty-string in this
+     * test. <code>IllegalArgumentException</code> is expected.
      */
     public void testExternalUserImpl_EmptyStringArg_4() {
         try {
@@ -170,8 +173,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>addRatingInfo(RatingInfo)</code> with null <code>info</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>addRatingInfo(RatingInfo)</code> with null
+     * <code>info</code>. <code>IllegalArgumentException</code> is
+     * expected.
      */
     public void testAddRatingInfo_NullArg() {
         try {
@@ -183,8 +187,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>addAlternativeEmail(String)</code> with null <code>alternativeEmail</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>addAlternativeEmail(String)</code> with null
+     * <code>alternativeEmail</code>. <code>IllegalArgumentException</code>
+     * is expected.
      */
     public void testAddAlternativeEmail_NullArg() {
         try {
@@ -196,8 +201,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>addAlternativeEmail(String)</code> with empty-string <code>alternativeEmail</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>addAlternativeEmail(String)</code> with empty-string
+     * <code>alternativeEmail</code>. <code>IllegalArgumentException</code>
+     * is expected.
      */
     public void testAddAlternativeEmail_EmptyStringArg_1() {
         try {
@@ -209,8 +215,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>addAlternativeEmail(String)</code> with empty-string <code>alternativeEmail</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>addAlternativeEmail(String)</code> with empty-string
+     * <code>alternativeEmail</code>. <code>IllegalArgumentException</code>
+     * is expected.
      */
     public void testAddAlternativeEmail_EmptyStringArg_2() {
         try {
@@ -222,8 +229,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>addAlternativeEmail(String)</code> with empty-string <code>alternativeEmail</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>addAlternativeEmail(String)</code> with empty-string
+     * <code>alternativeEmail</code>. <code>IllegalArgumentException</code>
+     * is expected.
      */
     public void testAddAlternativeEmail_EmptyStringArg_3() {
         try {
@@ -235,8 +243,9 @@ public class ExternalUserImplFailureTest extends TestCase {
     }
 
     /**
-     * Test method <code>addAlternativeEmail(String)</code> with empty-string <code>alternativeEmail</code>.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test method <code>addAlternativeEmail(String)</code> with empty-string
+     * <code>alternativeEmail</code>. <code>IllegalArgumentException</code>
+     * is expected.
      */
     public void testAddAlternativeEmail_EmptyStringArg_4() {
         try {

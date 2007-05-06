@@ -1,15 +1,17 @@
 For running all the unit tests:
 
 1. Install informix 10.00, and create a server for the component.
-   
-2. Use client of informix, connect to the server, and then create a database.
 
-3. Use the "table_create.sql" under "\test_files" to create and alter tables into the database
+2. Install jdbc driver for informix, and add ifxjdbc.jar, ifxjdbcx.jar, ifxlang.jar, ifxlsupp.jar,
+   ifxsqlj.jar, ifxtools.jar which are under the lib directory of the installed driver into the
+   System ClassPath.
+   
+3. Use client of informix, connect to the server, and then create a database.
+
+4. Use the "table_create.sql" under "\test_files" to create and alter tables into the database
    you have just created.
    
-4. Change the connections config in the "SampleConfig.xml" and "FailureConfig.xml" under "\test_files",
-   "Config.xml" under "\test_files\Accuracy" , "InvalidConfigFile" and "ConfigFile.xml" under "\test_files\Failure",
-   "db_connection_factory" under "\test_files\stresstest".
+5. Change the connections config in the "SampleConfig.xml" and "FailureConfig.xml" under "\test_files",
    
    Like: 
     <Property name="jdbc_url">

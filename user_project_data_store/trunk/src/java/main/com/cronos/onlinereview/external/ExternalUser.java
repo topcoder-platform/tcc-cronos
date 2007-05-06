@@ -1,136 +1,168 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external;
 
 /**
- * <p>This interface represents a user in the User Project Data Store component.</p>
- * <p>It stores the user name, handle, email address(es) and design and development rating information.
- * The unique id (user id) is described by the super interface.</p>
- * <p>Implementations of this interface are not required to be thread-safe.</p>
+ * <p>
+ * This interface represents a user in the <b>User Project Data Store</b> component.
+ * </p>
+ * <p>
+ * It stores the user name, handle, email address(es) and design and development rating information. The unique id (user
+ * id) is described by the super interface.
+ * </p>
+ * <p>
+ * <b>Thread Safety</b>: Implementations of this interface are not required to be thread-safe.
+ * </p>
  *
- * @author dplass, TCSDEVELOPER
- * @version 1.0
+ * @author dplass, oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public interface ExternalUser extends ExternalObject {
 
     /**
-     * <p>Returns the handle of this user.</p>
+     * <p>
+     * Returns the handle of this user.
+     * </p>
      *
-     * @return the handle of this user. Will never be null or empty after trim.or empty after trim.
+     * @return the handle of this user. Will never be null or empty after trim.
      */
-    public String getHandle();
+    String getHandle();
 
     /**
-     * <p>Returns the first name of this user.</p>
+     * <p>
+     * Returns the first name of this user.
+     * </p>
      *
      * @return the first name of this user. Will never be null or empty after trim.
      */
-    public String getFirstName();
+    String getFirstName();
 
     /**
-     * <p>Returns the last name of this user.</p>
+     * <p>
+     * Returns the last name of this user.
+     * </p>
      *
      * @return the last name of this user. Will never be null or empty after trim.
      */
-    public String getLastName();
+    String getLastName();
 
     /**
-     * <p>Returns the primary email address of this user.</p>
+     * <p>
+     * Returns the primary email address of this user.
+     * </p>
      *
      * @return the primary email address of this user. Will never be null or empty after trim.
      */
-    public String getEmail();
+    String getEmail();
 
     /**
-     * <p>Returns the alternative email addresses of this user.</p>
+     * <p>
+     * Returns the alternative email addresses of this user.
+     * </p>
      *
-     * @return the alternative email addresses of this user. Must never be null and must never have
-     * null or empty elements, but the length of the returned array may be zero to indicate no
-     * alternative email addresses.
+     * @return the alternative email addresses of this user. Must never be null and must never have null or empty
+     *         elements, but the length of the returned array may be zero to indicate no alternative email addresses.
      */
-    public String[] getAlternativeEmails();
+    String[] getAlternativeEmails();
 
     /**
-     * <p>Returns the design rating of this user, as either the String representation of a non-negative
-     * integer, or "N/A" if none.</p>
+     * <p>
+     * Returns the design rating of this user, as either the String representation of a non-negative integer, or "N/A"
+     * if none.
+     * </p>
      *
-     * @return the design rating of this user, or "N/A" if there is no design rating. Must never be null
-     * or empty after trim.
+     * @return the design rating of this user, or "N/A" if there is no design rating. Must never be null or empty after
+     *         trim.
      */
-    public String getDesignRating();
+    String getDesignRating();
 
     /**
-     * <p>Returns the design reliability of this user, as either the String representation of a
-     * non-negative percentage, or "N/A" if none.</p>
+     * <p>
+     * Returns the design reliability of this user, as either the String representation of a non-negative percentage, or
+     * "N/A" if none.
+     * </p>
      *
-     * @return the design reliability of this user, in "##.## %" format, or "N/A" if there is no design
-     * rating. Must never be null or empty after trim.
+     * @return the design reliability of this user, in "##.## %" format, or "N/A" if there is no design rating. Must
+     *         never be null or empty after trim.
      */
-    public String getDesignReliability();
+    String getDesignReliability();
 
     /**
-     * <p>Returns the design volatility of this user.</p>
+     * <p>
+     * Returns the design volatility of this user.
+     * </p>
      *
-     * @return the design volatility of this user, in "####" format, or "N/A" if there is no design rating.
-     * Must never be null or empty after trim.
+     * @return the design volatility of this user, in "####" format, or "N/A" if there is no design rating. Must never
+     *         be null or empty after trim.
      */
-    public String getDesignVolatility();
+    String getDesignVolatility();
 
     /**
-     * <p>Returns the number of design ratings of this user.</p>
+     * <p>
+     * Returns the number of design ratings of this user.
+     * </p>
      *
      * @return the number of design ratings, or 0 if none. Must never be negative.
      */
-    public int getDesignNumRatings();
+    int getDesignNumRatings();
 
     /**
-     * <p>Returns the development rating of this user, as either the String representation of a
-     * non-negative integer, or "N/A" if none.</p>
+     * <p>
+     * Returns the development rating of this user, as either the String representation of a non-negative integer, or
+     * "N/A" if none.
+     * </p>
      *
-     * @return the development rating of this user, or "N/A" if there is no development rating.
-     * Must never be null or empty after trim.
+     * @return the development rating of this user, or "N/A" if there is no development rating. Must never be null or
+     *         empty after trim.
      */
-    public String getDevRating();
+    String getDevRating();
 
     /**
-     * <p>Returns the development reliability of this user, as either the String representation of a
-     * non-negative percentage, or "N/A" if none.</p>
+     * <p>
+     * Returns the development reliability of this user, as either the String representation of a non-negative
+     * percentage, or "N/A" if none.
+     * </p>
      *
-     * @return the development reliability of this user, in "##.## %" format, or "N/A" if there is no
-     * development rating. Must never be null or empty after trim.
+     * @return the development reliability of this user, in "##.## %" format, or "N/A" if there is no development
+     *         rating. Must never be null or empty after trim.
      */
-    public String getDevReliability();
+    String getDevReliability();
 
     /**
-     * <p>Returns the development volatility of this user, as either the String representation of a
-     * non-negative integer, or "N/A" if none.</p>
+     * <p>
+     * Returns the development volatility of this user, as either the String representation of a non-negative integer,
+     * or "N/A" if none.
+     * </p>
      *
-     * @return the development volatility of this user, in "####" format, or "N/A" if there is no
-     * development rating. Must never be null or empty after trim.
+     * @return the development volatility of this user, in "####" format, or "N/A" if there is no development rating.
+     *         Must never be null or empty after trim.
      */
-    public String getDevVolatility();
+    String getDevVolatility();
 
     /**
-     * <p>Returns the number of development ratings of this user.</p>
+     * <p>
+     * Returns the number of development ratings of this user.
+     * </p>
      *
      * @return the number of development ratings, or 0 if none. Must never be negative.
      */
-    public int getDevNumRatings();
+    int getDevNumRatings();
 
     /**
-     * <p>Given the rating type (design or development currently are the only two options), returns the
-     * rating information for this user.</p>
+     * <p>
+     * Given the rating type (design or development currently are the only two options), returns the rating information
+     * for this user.
+     * </p>
      *
-     * @return the rating information of this user based on the given rating type, or null if there
-     * is no information for the given type.
-     * @param ratingType the type of rating to return.
-     *
-     * @throws IllegalArgumentException if ratingType is null.
+     * @param ratingType
+     *            the type of rating to return.
+     * @return the rating information of this user based on the given rating type, or null if there is no information
+     *         for the given type.
+     * @throws IllegalArgumentException
+     *             if ratingType is <code>null</code>.
      */
-    public RatingInfo getRatingInfo(RatingType ratingType);
+    RatingInfo getRatingInfo(RatingType ratingType);
 }
-
-

@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.accuracytests;
 
@@ -18,8 +16,8 @@ import java.io.Serializable;
  * Tests the RatingInfo class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt, restarter
+ * @version 2.0
  */
 public class RatingInfoAccuracyTest extends TestCase {
     /**
@@ -85,7 +83,7 @@ public class RatingInfoAccuracyTest extends TestCase {
 
         ratingInfo = new RatingInfo(defaultRatingType, defaultRating, defaultNumberRatings, defaultVolatility);
     }
-    
+
     /**
      * <p>tearDown.</p>
      *
@@ -100,7 +98,7 @@ public class RatingInfoAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the ctor(RatingType, int, int, int).
      * </p>
-     * 
+     *
      * <p>
      * The RatingInfo instance should be created successfully.
      * </p>
@@ -123,7 +121,7 @@ public class RatingInfoAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the ctor(RatingType, int, int, int).
      * </p>
-     * 
+     *
      * <p>
      * The RatingInfo instance should be created successfully.
      * </p>

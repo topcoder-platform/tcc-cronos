@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+ * Copyright (c) 2007, TopCoder, Inc. All rights reserved
  */
 package com.cronos.onlinereview.external;
 
@@ -25,14 +25,8 @@ public class AllTests extends TestCase {
 
         // unit tests
         suite.addTest(UnitTests.suite());
-
-        // failure tests
-        suite.addTest(FailureTests.suite());
-
-        // accuracy tests
         suite.addTest(AccuracyTests.suite());
-
-        // stress tests
+        suite.addTest(FailureTests.suite());
         suite.addTest(StressTests.suite());
 
         return suite;

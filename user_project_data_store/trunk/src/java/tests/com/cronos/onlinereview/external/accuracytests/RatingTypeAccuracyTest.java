@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.accuracytests;
 
@@ -15,8 +13,8 @@ import junit.framework.TestCase;
  * Tests the RatingType class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt, restarter
+ * @version 2.0
  */
 public class RatingTypeAccuracyTest extends TestCase {
     /**
@@ -83,7 +81,6 @@ public class RatingTypeAccuracyTest extends TestCase {
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
-        AccuracyHelper.clearConfig();
         AccuracyHelper.addConfig(CONFIG_FILE);
 
         ratingType = RatingType.getRatingType(DESIGN_TYPE);
@@ -98,7 +95,7 @@ public class RatingTypeAccuracyTest extends TestCase {
 
     	AccuracyHelper.clearConfig();
     }
-    
+
     /**
      * <p>
      * Tests the accuracy of the getRatingType(String).
@@ -151,7 +148,7 @@ public class RatingTypeAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the getRatingType(int).
      * </p>
-     * 
+     *
      * <p>
      * The RatingType instance should be created successfully.
      * </p>
@@ -178,7 +175,7 @@ public class RatingTypeAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the getRatingType(int).
      * </p>
-     * 
+     *
      * <p>
      * The RatingType instance should be created successfully.
      * </p>
@@ -197,11 +194,11 @@ public class RatingTypeAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the getRatingType(int).
      * </p>
-     * 
+     *
      * <p>
      * The RatingType instance should be created successfully.
      * </p>
-     * 
+     *
      * <p>
      * If the ratingType is not found, null should be returned.
      * </p>
@@ -252,7 +249,7 @@ public class RatingTypeAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the method equals().
      * </p>
-     * 
+     *
      * <p>
      * The given parameter object is just equal to the defaultRatingType, they are both the RatingType and they have
      * the same hashCode.
@@ -266,7 +263,7 @@ public class RatingTypeAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the method equals().
      * </p>
-     * 
+     *
      * <p>
      * The given parameter object is not equal to the defaultRatingType, they are both the RatingType but they don't
      * have the same hashCode.
@@ -281,7 +278,7 @@ public class RatingTypeAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the method equals().
      * </p>
-     * 
+     *
      * <p>
      * The given parameter object is not equal to the defaultRatingType, the given object is null.
      * </p>
@@ -294,7 +291,7 @@ public class RatingTypeAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the method equals().
      * </p>
-     * 
+     *
      * <p>
      * The given parameter object is not equal to the defaultRatingType, the given object is not null but it is not the
      * RatingType instance.

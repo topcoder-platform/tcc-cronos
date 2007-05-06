@@ -1,28 +1,24 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.accuracytests.impl;
-
-import com.cronos.onlinereview.external.RatingInfo;
-import com.cronos.onlinereview.external.RatingType;
-import com.cronos.onlinereview.external.UnitTestHelper;
-import com.cronos.onlinereview.external.accuracytests.AccuracyHelper;
-import com.cronos.onlinereview.external.impl.ExternalObjectImpl;
-import com.cronos.onlinereview.external.impl.ExternalUserImpl;
 
 import java.util.Map;
 import java.util.Set;
 
+import com.cronos.onlinereview.external.RatingInfo;
+import com.cronos.onlinereview.external.RatingType;
+import com.cronos.onlinereview.external.accuracytests.AccuracyHelper;
+import com.cronos.onlinereview.external.impl.ExternalObjectImpl;
+import com.cronos.onlinereview.external.impl.ExternalUserImpl;
 
 /**
  * <p>
  * Tests the ExternalUserImpl class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt, restarter
+ * @version 2.0
  */
 public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest {
     /**
@@ -97,13 +93,6 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
 
     /**
      * <p>
-     * The Default RatingType used in the test.
-     * </p>
-     */
-    private RatingType ratingType = null;
-
-    /**
-     * <p>
      * A development RatingInfo instance for testing.
      * </p>
      */
@@ -131,78 +120,58 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
-        AccuracyHelper.clearConfig();
         super.setUp();
         AccuracyHelper.addConfig(CONFIG_FILE);
 
-        devRatingInfo = new RatingInfo(RatingType.DEVELOPMENT, RATING, NUMBER_RATINGS, VOLATILITY, RELIABILITY);
+        devRatingInfo =
+            new RatingInfo(RatingType.DEVELOPMENT, RATING, NUMBER_RATINGS, VOLATILITY, RELIABILITY);
         desRatingInfo = new RatingInfo(RatingType.DESIGN, RATING, NUMBER_RATINGS, VOLATILITY, RELIABILITY);
 
         externalUser = new ExternalUserImpl(ID, HANDLE, FIRST_NAME, LAST_NAME, EMIAL);
         externalObject = externalUser;
     }
-    
+
     /**
-     * <p>tearDown.</p>
+     * <p>
+     * tearDown.
+     * </p>
      *
      * @throws Exception to JUnit.
      */
     protected void tearDown() throws Exception {
 
-    	AccuracyHelper.clearConfig();
-    }
-
-    /**
-     * <p>
-     * Adds RatingInfo to UserImpl.
-     * </p>
-     *
-     * @param ratingType the RatingType used to creates the RatingInfo instance.
-     * @param needReliability if the RatingInfo instance need reliability.
-     * @param reliability the reliability used to creates the RatingInfo instance.
-     */
-    private void addRatingInfoToUserImpl(RatingType ratingType, boolean needReliability, double reliability) {
-        RatingInfo info;
-
-        // Creates the ratingInfo.
-        if (needReliability) {
-            info = new RatingInfo(ratingType, RATING, NUMBER_RATINGS, VOLATILITY, reliability);
-        } else {
-            info = new RatingInfo(ratingType, RATING, NUMBER_RATINGS, VOLATILITY);
-        }
-
-        // Adds the ratingInfo to the userImpl.
-        externalUser.addRatingInfo(info);
+        AccuracyHelper.clearConfig();
     }
 
     /**
      * <p>
      * Tests the accuracy of the Constructor(long, String, String, String, String).
      * </p>
-     * 
+     *
      * <p>
      * The ExternalUserImpl instance should be created successfully.
      * </p>
      */
     public void testConstructor_Accuracy() {
-        assertTrue("userImpl should be instance of ExternalUserImpl.", externalUser instanceof ExternalUserImpl);
-        assertEquals("Tests the accuracy of Constructor failed.", new Long(ID),
-            AccuracyHelper.getPrivateField(ExternalObjectImpl.class, externalObject, "id"));
-        assertEquals("Tests the accuracy of Constructor failed.", HANDLE,
-            AccuracyHelper.getPrivateField(ExternalUserImpl.class, externalObject, "handle"));
-        assertEquals("Tests the accuracy of Constructor failed.", FIRST_NAME,
-            AccuracyHelper.getPrivateField(ExternalUserImpl.class, externalObject, "firstName"));
-        assertEquals("Tests the accuracy of Constructor failed.", LAST_NAME,
-            AccuracyHelper.getPrivateField(ExternalUserImpl.class, externalObject, "lastName"));
-        assertEquals("Tests the accuracy of Constructor failed.", EMIAL,
-            AccuracyHelper.getPrivateField(ExternalUserImpl.class, externalObject, "email"));
+        assertTrue("userImpl should be instance of ExternalUserImpl.",
+            externalUser instanceof ExternalUserImpl);
+        assertEquals("Tests the accuracy of Constructor failed.", new Long(ID), AccuracyHelper
+            .getPrivateField(ExternalObjectImpl.class, externalObject, "id"));
+        assertEquals("Tests the accuracy of Constructor failed.", HANDLE, AccuracyHelper.getPrivateField(
+            ExternalUserImpl.class, externalObject, "handle"));
+        assertEquals("Tests the accuracy of Constructor failed.", FIRST_NAME, AccuracyHelper.getPrivateField(
+            ExternalUserImpl.class, externalObject, "firstName"));
+        assertEquals("Tests the accuracy of Constructor failed.", LAST_NAME, AccuracyHelper.getPrivateField(
+            ExternalUserImpl.class, externalObject, "lastName"));
+        assertEquals("Tests the accuracy of Constructor failed.", EMIAL, AccuracyHelper.getPrivateField(
+            ExternalUserImpl.class, externalObject, "email"));
     }
 
     /**
      * <p>
      * Tests the accuracy of the method addRatingInfo(RatingInfo).
      * </p>
-     * 
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -215,16 +184,16 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
         externalUser.addRatingInfo(devRatingInfo);
 
         assertEquals("The size of the ratings Map should be 1.", 1, ratings.size());
-        assertEquals("The value in the ratings Map should be same as the ratingInfo.", devRatingInfo,
-            ratings.get(devRatingInfo.getRatingType()));
+        assertEquals("The value in the ratings Map should be same as the ratingInfo.", devRatingInfo, ratings
+            .get(devRatingInfo.getRatingType()));
 
-        // Replace 
+        // Replace
         RatingInfo newRatingInfo = new RatingInfo(RatingType.DEVELOPMENT, 2222, 129, 99);
         externalUser.addRatingInfo(newRatingInfo);
 
         assertEquals("The size of the ratings Map should be 1.", 1, ratings.size());
-        assertEquals("The value in the ratings Map should be same as the ratingInfo.", newRatingInfo,
-            ratings.get(devRatingInfo.getRatingType()));
+        assertEquals("The value in the ratings Map should be same as the ratingInfo.", newRatingInfo, ratings
+            .get(devRatingInfo.getRatingType()));
     }
 
     /**
@@ -234,23 +203,23 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      */
     public void testGetRatingInfo_Accuracy1() {
         externalUser.addRatingInfo(devRatingInfo);
-        assertEquals("The ratingInfoGot should be same as the ratingInfo.", devRatingInfo,
-            externalUser.getRatingInfo(RatingType.DEVELOPMENT));
+        assertEquals("The ratingInfoGot should be same as the ratingInfo.", devRatingInfo, externalUser
+            .getRatingInfo(RatingType.DEVELOPMENT));
     }
 
     /**
      * <p>
      * Tests the accuracy of the method getRatingInfo(RatingType).
      * </p>
-     * 
+     *
      * <p>
      * If there is no information for the given type, null would be returned.
      * </p>
      */
     public void testGetRatingInfo_Accuracy2() {
         externalUser.addRatingInfo(devRatingInfo);
-        assertNull("If there is no information for the given type, null would be returned.",
-            externalUser.getRatingInfo(RatingType.DESIGN));
+        assertNull("If there is no information for the given type, null would be returned.", externalUser
+            .getRatingInfo(RatingType.DESIGN));
     }
 
     /**
@@ -302,7 +271,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method addAlternativeEmail(String).
      * </p>
-     * 
+     *
      * <p>
      * Using reflection.
      * </p>
@@ -311,11 +280,12 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
         externalUser.addAlternativeEmail(DEFAULT_ALTER_EMAIL);
 
         // Gets alternativeEmails Set by reflection.
-        Set alternativeEmails = (Set) AccuracyHelper.getPrivateField(ExternalUserImpl.class, externalUser,
-                "alternativeEmails");
+        Set alternativeEmails =
+            (Set) AccuracyHelper.getPrivateField(ExternalUserImpl.class, externalUser, "alternativeEmails");
 
         assertEquals("The size of the alternativeEmail Set should be 1.", 1, alternativeEmails.size());
-        assertEquals("The first value in the alternativeEmail Set should be same as the defaultAlterEmailString.",
+        assertEquals(
+            "The first value in the alternativeEmail Set should be same as the defaultAlterEmailString.",
             DEFAULT_ALTER_EMAIL, (alternativeEmails.toArray())[0]);
     }
 
@@ -330,8 +300,10 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
         // Gets the alternativeEmails using getAlternativeEmails.
         String[] alternativeEmailsGot = externalUser.getAlternativeEmails();
 
-        assertEquals("The size of the alternativeEmailsGot array should be 1.", 1, alternativeEmailsGot.length);
-        assertEquals("The first element of alternativeEmailsGot should be same as the defaultAlterEmailString.",
+        assertEquals("The size of the alternativeEmailsGot array should be 1.", 1,
+            alternativeEmailsGot.length);
+        assertEquals(
+            "The first element of alternativeEmailsGot should be same as the defaultAlterEmailString.",
             DEFAULT_ALTER_EMAIL, alternativeEmailsGot[0]);
     }
 
@@ -339,7 +311,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getAlternativeEmails().
      * </p>
-     * 
+     *
      * <p>
      * If there is no alternative email addresses, empty array would be returned.
      * </p>
@@ -348,8 +320,9 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
         // Gets the alternativeEmails using getAlternativeEmails.
         String[] alternativeEmailsGot = externalUser.getAlternativeEmails();
 
-        assertEquals("The size of the alternativeEmailsGot array should be 0, as there is no alternative email " +
-            "addresses.", 0, alternativeEmailsGot.length);
+        assertEquals(
+            "The size of the alternativeEmailsGot array should be 0, as there is no alternative email "
+                + "addresses.", 0, alternativeEmailsGot.length);
     }
 
     /**
@@ -359,22 +332,22 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      */
     public void testGetDesignRating() {
         externalUser.addRatingInfo(desRatingInfo);
-        assertEquals("The ratingString should be same as the string value of the defaultRating.",
-            Integer.toString(RATING), externalUser.getDesignRating());
+        assertEquals("The ratingString should be same as the string value of the defaultRating.", Integer
+            .toString(RATING), externalUser.getDesignRating());
     }
 
     /**
      * <p>
      * Tests the accuracy of the method getDesignRating().
      * </p>
-     * 
+     *
      * <p>
      * If there is no design rating, N/A would be returned.
      * </p>
      */
     public void testGetDesignRating_NA() {
-        assertEquals("The ratingString should be N/A, as there is no design rating.", "N/A",
-            externalUser.getDesignRating());
+        assertEquals("The ratingString should be N/A, as there is no design rating.", "N/A", externalUser
+            .getDesignRating());
     }
 
     /**
@@ -384,15 +357,15 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      */
     public void testGetDevRating_Accuracy() {
         externalUser.addRatingInfo(devRatingInfo);
-        assertEquals("The ratingString should be same as the string value of the defaultRating.",
-            Integer.toString(RATING), externalUser.getDevRating());
+        assertEquals("The ratingString should be same as the string value of the defaultRating.", Integer
+            .toString(RATING), externalUser.getDevRating());
     }
 
     /**
      * <p>
      * Tests the accuracy of the method getDevRating().
      * </p>
-     * 
+     *
      * <p>
      * If there is no development rating, N/A would be returned.
      * </p>
@@ -418,14 +391,14 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDesignVolatility().
      * </p>
-     * 
+     *
      * <p>
      * If there is no design rating, N/A would be returned.
      * </p>
      */
     public void testGetDesignVolatility_NA() {
-        assertEquals("The volatilityString should be N/A, as there is no design rating.", "N/A",
-            externalUser.getDesignVolatility());
+        assertEquals("The volatilityString should be N/A, as there is no design rating.", "N/A", externalUser
+            .getDesignVolatility());
     }
 
     /**
@@ -443,7 +416,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevVolatility().
      * </p>
-     * 
+     *
      * <p>
      * If there is no development rating, N/A would be returned.
      * </p>
@@ -468,14 +441,14 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDesignNumRatings().
      * </p>
-     * 
+     *
      * <p>
      * If there is no design rating, zero would be returned.
      * </p>
      */
     public void testGetDesignNumRatings_Zero() {
-        assertEquals("The numRatings should be zero, as there is no design rating.", 0,
-            externalUser.getDesignNumRatings());
+        assertEquals("The numRatings should be zero, as there is no design rating.", 0, externalUser
+            .getDesignNumRatings());
     }
 
     /**
@@ -493,14 +466,14 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevNumRatings().
      * </p>
-     * 
+     *
      * <p>
      * If there is no development rating, zero would be returned.
      * </p>
      */
     public void testGetDevNumRatings_Zero() {
-        assertEquals("The numRatings should be zero, as there is no development rating.", 0,
-            externalUser.getDevNumRatings());
+        assertEquals("The numRatings should be zero, as there is no development rating.", 0, externalUser
+            .getDevNumRatings());
     }
 
     /**
@@ -510,14 +483,15 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      */
     public void testGetDesignReliability_Accuracy() {
         externalUser.addRatingInfo(desRatingInfo);
-        assertEquals("The reliabilityString should be the same.", "23.46 %", externalUser.getDesignReliability());
+        assertEquals("The reliabilityString should be the same.", "23.46 %", externalUser
+            .getDesignReliability());
     }
 
     /**
      * <p>
      * Tests the accuracy of the method getDesignReliability().
      * </p>
-     * 
+     *
      * <p>
      * If no design rating info for this type, N/A would be returned.
      * </p>
@@ -530,7 +504,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDesignReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -555,7 +529,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If no development rating info for this type, N/A would be returned.
      * </p>
@@ -568,7 +542,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -583,7 +557,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -599,7 +573,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -608,14 +582,15 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
         devRatingInfo = new RatingInfo(RatingType.DEVELOPMENT, RATING, NUMBER_RATINGS, VOLATILITY, 1);
         externalUser.addRatingInfo(devRatingInfo);
 
-        assertEquals("The reliabilityString should be the same.", "100.00 %", externalUser.getDevReliability());
+        assertEquals("The reliabilityString should be the same.", "100.00 %", externalUser
+            .getDevReliability());
     }
 
     /**
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -631,7 +606,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -647,7 +622,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -663,7 +638,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -679,7 +654,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -695,7 +670,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -711,7 +686,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -720,14 +695,15 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
         devRatingInfo = new RatingInfo(RatingType.DEVELOPMENT, RATING, NUMBER_RATINGS, VOLATILITY, 0.99999);
         externalUser.addRatingInfo(devRatingInfo);
 
-        assertEquals("The reliabilityString should be the same.", "100.00 %", externalUser.getDevReliability());
+        assertEquals("The reliabilityString should be the same.", "100.00 %", externalUser
+            .getDevReliability());
     }
 
     /**
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -743,7 +719,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -759,7 +735,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -775,7 +751,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -791,7 +767,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -807,7 +783,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>
@@ -823,7 +799,7 @@ public class ExternalUserImplAccuracyTest extends ExternalObjectImplAccuracyTest
      * <p>
      * Tests the accuracy of the method getDevReliability().
      * </p>
-     * 
+     *
      * <p>
      * If the rating info doesn't have a reliability set, N/A would be returned.
      * </p>

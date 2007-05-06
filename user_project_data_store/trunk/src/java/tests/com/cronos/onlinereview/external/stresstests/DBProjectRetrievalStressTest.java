@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.stresstests;
 
@@ -21,20 +19,25 @@ import junit.framework.TestSuite;
 
 /**
  * Stress test case of <code>DBProjectRetrieval</code> class.
- * @author fairytale
- * @version 1.0
+ * @author fairytale, victorsam
+ * @version 2.0
  */
 public class DBProjectRetrievalStressTest extends TestCase {
     /** The number of times each method will be run. */
     public static final int RUN_TIMES = 100;
+
     /** The data item count will be insert into db before test processes. */
     public static final int DATA_COUNT = 500;
+
     /** The DBConnectionFactory used among the tests. */
     private DBConnectionFactory factory;
+
     /** The connection to db. */
     private Connection conn;
+
     /** The DBProjectRetrieval instance used in the test. */
     private DBProjectRetrieval projectRetrieval;
+
     /**
      * Test suite of DBProjectRetrievalStressTest.
      *
@@ -80,6 +83,7 @@ public class DBProjectRetrievalStressTest extends TestCase {
         Helper.clearTable(conn, "comp_catalog");
         conn.close();
     }
+
     /**
      * <p>Stress test for DBProjectRetrieval#DBProjectRetrieval(String).</p>
      * @throws Exception to junit.
@@ -87,12 +91,12 @@ public class DBProjectRetrievalStressTest extends TestCase {
     public void testCtor() throws Exception {
         long start = System.currentTimeMillis();
         for (int i = 0; i < RUN_TIMES; i++) {
-            assertNotNull("Failed to create DBProjectRetrieval.",
-                    new DBProjectRetrieval("com.cronos.onlinereview.external.stresstests"));
+            assertNotNull("Failed to create DBProjectRetrieval.", new DBProjectRetrieval(
+                "com.cronos.onlinereview.external.stresstests"));
         }
         long end = System.currentTimeMillis();
-        System.out.println("Testing DBProjectRetrieval(String) for " + RUN_TIMES + " times costs "
-                + (end - start) + "ms");
+        System.out.println("Testing DBProjectRetrieval(String) for " + RUN_TIMES + " times costs " + (end - start)
+            + "ms");
     }
 
     /**
@@ -117,6 +121,7 @@ public class DBProjectRetrievalStressTest extends TestCase {
         }
 
     }
+
     /**
      * <p>Stress test for DBProjectRetrieval#retrieveProjects(long[]).</p>
      * @throws Exception to junit.
@@ -124,13 +129,13 @@ public class DBProjectRetrievalStressTest extends TestCase {
     public void testRetrieveProjectsByIDs() throws Exception {
 
         Random rand = new Random();
-        long []ids = new long[RUN_TIMES];
+        long[] ids = new long[RUN_TIMES];
         Set set = new HashSet();
         for (int i = 0; i < RUN_TIMES; i++) {
             ids[i] = Helper.COMP_VERS_ID_START + (Math.abs(rand.nextInt()) % DATA_COUNT);
             set.add(new Long(ids[i]));
         }
-        ExternalProject []projects = projectRetrieval.retrieveProjects(ids);
+        ExternalProject[] projects = projectRetrieval.retrieveProjects(ids);
         assertNotNull("Should return non-null projects.", projects);
         assertEquals("Should have the same size.", projects.length, set.size());
         for (int i = 0; i < projects.length; i++) {
@@ -142,12 +147,13 @@ public class DBProjectRetrievalStressTest extends TestCase {
             }
         }
     }
+
     /**
      * <p>Stress test for DBProjectRetrieval#retrieveProject(String, String).</p>
      * @throws Exception to junit.
      */
     public void testRetrieveProjectByNameAndVerision() throws Exception {
-    	long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         for (int i = 0; i < RUN_TIMES / 5; i++) {
             ExternalProject[] projects = projectRetrieval.retrieveProject(Helper.TEST_COMPONENTS[0], "1.0");
             assertNotNull("Should return non-null projects.", projects);
@@ -155,15 +161,16 @@ public class DBProjectRetrievalStressTest extends TestCase {
         }
         long end = System.currentTimeMillis();
         System.out.println("Testing retrieveProject(String, String) for " + (RUN_TIMES / 5) + " times costs "
-                + (end - start) + "ms");
+            + (end - start) + "ms");
     }
+
     /**
      * <p>Stress test for DBProjectRetrieval#retrieveProject(String[], String[]).</p>
      * @throws Exception to junit.
      */
     public void testRetrieveProjectsByNameAndVerision() throws Exception {
-        String[]names = new String[DATA_COUNT / 10];
-        String[]versions = new String[DATA_COUNT / 10];
+        String[] names = new String[DATA_COUNT / 10];
+        String[] versions = new String[DATA_COUNT / 10];
         names[0] = Helper.TEST_COMPONENTS[0];
         versions[0] = "1.0";
         for (int i = 1; i < DATA_COUNT / 10; i++) {

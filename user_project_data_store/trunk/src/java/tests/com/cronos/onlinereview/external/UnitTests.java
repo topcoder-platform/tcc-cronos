@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external;
 
@@ -17,15 +15,27 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * <p>This test case aggregates all Unit test cases.</p>
+ * <p>
+ * This test case aggregates all Unit test cases.
+ * </p>
  *
- * @author TopCoder
- * @version 1.0
+ * @author oodinary
+ * @author FireIce
+ * @version 2.0
+ * @since 1.0
  */
 public class UnitTests extends TestCase {
 
+    /**
+     * Aggregates all tests.
+     *
+     * @return test suite aggregating all tests.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
+
+        // Helper class
+        suite.addTestSuite(UserProjectDataStoreHelperUnitTest.class);
 
         // Exception Class tests.
         suite.addTestSuite(ConfigExceptionUnitTest.class);

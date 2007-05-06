@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.accuracytests.impl;
 
@@ -16,8 +14,8 @@ import junit.framework.TestCase;
  * Tests the ExternalObjectImpl class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt, restarter
+ * @version 2.0
  */
 public abstract class ExternalObjectImplAccuracyTest extends TestCase {
     /**
@@ -38,7 +36,7 @@ public abstract class ExternalObjectImplAccuracyTest extends TestCase {
      * <p>
      * Tests the accuracy of the Constructor(long).
      * </p>
-     * 
+     *
      * <p>
      * The ExternalObjectImpl instance should be created successfully.
      * </p>

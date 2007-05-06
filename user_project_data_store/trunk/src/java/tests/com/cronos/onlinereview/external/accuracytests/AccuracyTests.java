@@ -1,32 +1,32 @@
-/**
- * Copyright (c) 2005, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.accuracytests;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import com.cronos.onlinereview.external.accuracytests.impl.ExternalProjectImplAccuracyTest;
 import com.cronos.onlinereview.external.accuracytests.impl.ExternalUserImplAccuracyTest;
 import com.cronos.onlinereview.external.impl.DBProjectRetrievalAccuracyTest;
 import com.cronos.onlinereview.external.impl.DBUserRetrievalAccuracyTest;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-
 /**
  * <p>
- * This test case aggregates all Failure test cases.
+ * This test case aggregates all Accuracy test cases.
  * </p>
  *
- * @author TopCoder
- * @version 1.0
+ * @author restarter
+ * @version 2.0
  */
 public class AccuracyTests extends TestCase {
     /**
-     * DOCUMENT ME!
+     * <p>
+     * aggregates all Accuracy test cases
+     * </p>
      *
-     * @return DOCUMENT ME!
+     * @return the accuracy test suite
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
@@ -36,7 +36,7 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(ExternalProjectImplAccuracyTest.class);
         suite.addTestSuite(ExternalUserImplAccuracyTest.class);
         suite.addTestSuite(DBUserRetrievalAccuracyTest.class);
-        
+
         return suite;
     }
 }

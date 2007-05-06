@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests;
 
@@ -11,7 +11,7 @@ import java.util.Iterator;
  * Help class for testintg.
  *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 2.0
  */
 public class FailureHelper {
     /**

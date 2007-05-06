@@ -1,29 +1,27 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.impl;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import com.cronos.onlinereview.external.ConfigException;
 import com.cronos.onlinereview.external.ExternalProject;
 import com.cronos.onlinereview.external.RetrievalException;
 import com.cronos.onlinereview.external.accuracytests.AccuracyHelper;
-
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 
 /**
  * <p>
  * Tests the DBProjectRetrieval class.
  * </p>
  *
- * @author lyt
- * @version 1.0
+ * @author lyt, restarter
+ * @version 2.0
  */
 public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest {
     /**
@@ -35,8 +33,8 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
 
     /**
      * <p>
-     * The name of the namespace that the calling program can populate which contains DBConnectionFactory and other
-     * configuration values.
+     * The name of the namespace that the calling program can populate which contains DBConnectionFactory and
+     * other configuration values.
      * </p>
      */
     private static final String NAMESPACE = "com.cronos.onlinereview.external";
@@ -77,6 +75,8 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
         AccuracyHelper.insertIntoComponentCataLog(defaultConnection);
         AccuracyHelper.insertIntoComponentVersions(defaultConnection);
         AccuracyHelper.insertIntoCompForumXref(defaultConnection);
+        AccuracyHelper.insertIntoTechnologyTypes(defaultConnection);
+        AccuracyHelper.insertIntoCompTechnology(defaultConnection);
     }
 
     /**
@@ -88,9 +88,11 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      */
     protected void tearDown() throws Exception {
         // Cleans up.
+        AccuracyHelper.cleanupTable(defaultConnection, "comp_technology");
         AccuracyHelper.cleanupTable(defaultConnection, "comp_forum_xref");
         AccuracyHelper.cleanupTable(defaultConnection, "comp_versions");
         AccuracyHelper.cleanupTable(defaultConnection, "comp_catalog");
+        AccuracyHelper.cleanupTable(defaultConnection, "technology_types");
 
         // Sets connection and defaultDBProjectRetrieval to initial values.
         defaultConnection.close();
@@ -115,9 +117,11 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
             projectRetrieval instanceof DBProjectRetrieval);
 
         // Uses the reflection to test the field setting.
-        Object connFactory = AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connFactory");
+        Object connFactory =
+            AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connFactory");
         Object connName = AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connName");
-        Object forumType = AccuracyHelper.getPrivateField(DBProjectRetrieval.class, projectRetrieval, "forumType");
+        Object forumType =
+            AccuracyHelper.getPrivateField(DBProjectRetrieval.class, projectRetrieval, "forumType");
 
         // Asserts the set.
         assertNotNull("connFactory should be set correctly.", connFactory);
@@ -142,9 +146,11 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
             projectRetrieval instanceof DBProjectRetrieval);
 
         // Uses the reflection to test the field setting.
-        Object connFactory = AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connFactory");
+        Object connFactory =
+            AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connFactory");
         Object connName = AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connName");
-        Object forumType = AccuracyHelper.getPrivateField(DBProjectRetrieval.class, projectRetrieval, "forumType");
+        Object forumType =
+            AccuracyHelper.getPrivateField(DBProjectRetrieval.class, projectRetrieval, "forumType");
 
         // Asserts the set.
         assertNotNull("connFactory should be set correctly.", connFactory);
@@ -168,9 +174,11 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
             projectRetrieval instanceof DBProjectRetrieval);
 
         // Uses the reflection to test the field setting.
-        Object connFactory = AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connFactory");
+        Object connFactory =
+            AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connFactory");
         Object connName = AccuracyHelper.getPrivateField(BaseDBRetrieval.class, projectRetrieval, "connName");
-        Object forumType = AccuracyHelper.getPrivateField(DBProjectRetrieval.class, projectRetrieval, "forumType");
+        Object forumType =
+            AccuracyHelper.getPrivateField(DBProjectRetrieval.class, projectRetrieval, "forumType");
 
         // Asserts the set.
         assertEquals("connFactory should be set correctly.", defaultConnFactory, connFactory);
@@ -191,7 +199,16 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
         assertEquals("The catalog id should be the same.", 2, project.getCatalogId());
         assertEquals("The comment should be the same.", "Average", project.getComments());
         assertEquals("The component id should be the same.", 1002, project.getComponentId());
-        assertEquals("The description should be the same.", "Second Project B", project.getDescription().trim());
+        assertEquals("The description should be the same.", "Second Project B", project.getDescription()
+            .trim());
+
+        assertEquals("The short description should be the same.", "Second Project", project.getShortDescription());
+        assertEquals("The functional description should be the same.", "Sleeping", project.getFunctionalDescription());
+        List techs = Arrays.asList(project.getTechnologies());
+        assertEquals("The technologies should be empty", 2, techs.size());
+        assertTrue("The technologies is not correctly retrieved", techs.contains("jdbc"));
+        assertTrue("The technologies is not correctly retrieved", techs.contains("ejb"));
+
         assertEquals("The id should be the same.", 2, project.getId());
         assertEquals("The name should be the same.", "Project B", project.getName().trim());
         assertEquals("The version string should be the same.", "Version 2", project.getVersion().trim());
@@ -204,8 +221,8 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      * </p>
      *
      * <p>
-     * Due to the outer join, some value will got null here, but the null value would be set into integer, so it turns
-     * to zero.
+     * Due to the outer join, some value will got null here, but the null value would be set into integer, so
+     * it turns to zero.
      * </p>
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
@@ -217,7 +234,17 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
         assertEquals("The catalog id should be the same.", 4, project.getCatalogId());
         assertEquals("The comment should be the same.", "Bad", project.getComments());
         assertEquals("The component id should be the same.", 1004, project.getComponentId());
-        assertEquals("The description should be the same.", "Fourth Project D", project.getDescription().trim());
+        assertEquals("The description should be the same.", "Fourth Project D", project.getDescription()
+            .trim());
+
+
+        assertEquals("The short description should be the same.", "Fourth Project", project.getShortDescription());
+        assertEquals("The functional description should be the same.", "Working", project.getFunctionalDescription());
+        List techs = Arrays.asList(project.getTechnologies());
+        assertEquals("The technologies should be empty", 2, techs.size());
+        assertTrue("The technologies is not correctly retrieved", techs.contains("java"));
+        assertTrue("The technologies is not correctly retrieved", techs.contains("jms"));
+
         assertEquals("The id should be the same.", 4, project.getId());
         assertEquals("The name should be the same.", "Project D", project.getName().trim());
         assertEquals("The version string should be the same.", "Version 3", project.getVersion().trim());
@@ -247,7 +274,7 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
     public void testRetrieveProjects_LongArray() throws RetrievalException {
-        ExternalProject[] projects = projectRetrieval.retrieveProjects(new long[] { 1, 2, 4 });
+        ExternalProject[] projects = projectRetrieval.retrieveProjects(new long[] {1, 2, 4});
 
         // Asserts.
         assertEquals("Three records would be got.", 3, projects.length);
@@ -261,7 +288,8 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
     public void testRetrieveProjects_Duplicate() throws RetrievalException {
-        ExternalProject[] projects = projectRetrieval.retrieveProjects(new long[] { 1, 2, 2, 4 });
+        // fail("not implemented");
+        ExternalProject[] projects = projectRetrieval.retrieveProjects(new long[] {1, 2, 2, 4});
 
         // Asserts.
         assertEquals("Three records would be got.", 3, projects.length);
@@ -275,7 +303,7 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
     public void testRetrieveProjects_NotFound() throws RetrievalException {
-        ExternalProject[] projects = projectRetrieval.retrieveProjects(new long[] { 889, 900, 901 });
+        ExternalProject[] projects = projectRetrieval.retrieveProjects(new long[] {889, 900, 901});
 
         // Asserts.
         assertEquals("Three records would be got.", 0, projects.length);
@@ -288,14 +316,15 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveProjectsStrings_Accuracy1()
-        throws RetrievalException {
-        ExternalProject[] projects = projectRetrieval.retrieveProjects(new String[] { "Project A", "Project C" },
-                new String[] { "Version 1", "Version 2" });
+    public void testRetrieveProjectsStrings_Accuracy1() throws RetrievalException {
+        ExternalProject[] projects =
+            projectRetrieval.retrieveProjects(new String[] {"Project A", "Project C"}, new String[] {
+                "Version 1", "Version 2"});
 
         // Asserts.
         assertEquals("One records would be got.", 1, projects.length);
     }
+
     /**
      * <p>
      * Tests the accuracy of the retrieveProjects(String[], String[]).
@@ -303,14 +332,15 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveProjectsStrings_Accuracy4()
-        throws RetrievalException {
-        ExternalProject[] projects = projectRetrieval.retrieveProjects(new String[] { "Project A", "Project A" },
-                new String[] { "Version 1", "Version 1" });
+    public void testRetrieveProjectsStrings_Accuracy4() throws RetrievalException {
+        ExternalProject[] projects =
+            projectRetrieval.retrieveProjects(new String[] {"Project A", "Project A"}, new String[] {
+                "Version 1", "Version 1"});
 
         // Asserts.
         assertEquals("One records would be got.", 1, projects.length);
     }
+
     /**
      * <p>
      * Tests the accuracy of the retrieveProjects(String[], String[]).
@@ -318,14 +348,15 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveProjectsStrings_Accuracy5()
-        throws RetrievalException {
-        ExternalProject[] projects = projectRetrieval.retrieveProjects(new String[] { "Project A", "Project A", "Project C"},
-                new String[] { "Version 1", "Version 1", "Version 4" });
+    public void testRetrieveProjectsStrings_Accuracy5() throws RetrievalException {
+        ExternalProject[] projects =
+            projectRetrieval.retrieveProjects(new String[] {"Project A", "Project A", "Project C"},
+                new String[] {"Version 1", "Version 1", "Version 4"});
 
         // Asserts.
         assertEquals("One records would be got.", 1, projects.length);
     }
+
     /**
      * <p>
      * Tests the accuracy of the retrieveProjects(String, String).
@@ -333,22 +364,30 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveProjectsStrings_Accuracy2()
-        throws RetrievalException {
-        ExternalProject[] projects = projectRetrieval.retrieveProject("Project A", "Version 1");
+    public void testRetrieveProjectsStrings_Accuracy2() throws RetrievalException {
+        ExternalProject[] projects = projectRetrieval.retrieveProject("Project B", "Version 2");
 
         // Asserts.
         assertEquals("One records would be got.", 1, projects.length);
 
         ExternalProject project = projects[0];
-        assertEquals("The catalog id should be the same.", 1, project.getCatalogId());
-        assertEquals("The comment should be the same.", "Good", project.getComments());
-        assertEquals("The component id should be the same.", 1001, project.getComponentId());
-        assertEquals("The description should be the same.", "First Project A", project.getDescription().trim());
-        assertEquals("The id should be the same.", 1, project.getId());
-        assertEquals("The name should be the same.", "Project A", project.getName().trim());
-        assertEquals("The version string should be the same.", "Version 1", project.getVersion().trim());
-        assertEquals("The version id should be the same.", 1, project.getVersionId());
+        assertEquals("The catalog id should be the same.", 2, project.getCatalogId());
+        assertEquals("The comment should be the same.", "Average", project.getComments());
+        assertEquals("The component id should be the same.", 1002, project.getComponentId());
+        assertEquals("The description should be the same.", "Second Project B", project.getDescription()
+            .trim());
+
+        assertEquals("The short description should be the same.", "Second Project", project.getShortDescription());
+        assertEquals("The functional description should be the same.", "Sleeping", project.getFunctionalDescription());
+        List techs = Arrays.asList(project.getTechnologies());
+        assertEquals("The technologies should be empty", 2, techs.size());
+        assertTrue("The technologies is not correctly retrieved", techs.contains("jdbc"));
+        assertTrue("The technologies is not correctly retrieved", techs.contains("ejb"));
+
+        assertEquals("The id should be the same.", 2, project.getId());
+        assertEquals("The name should be the same.", "Project B", project.getName().trim());
+        assertEquals("The version string should be the same.", "Version 2", project.getVersion().trim());
+        assertEquals("The version id should be the same.", 2, project.getVersionId());
     }
 
     /**
@@ -358,8 +397,7 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      *
      * @throws RetrievalException this exception would never be thrown in this test case.
      */
-    public void testRetrieveProjectsStrings_Accuracy3()
-        throws RetrievalException {
+    public void testRetrieveProjectsStrings_Accuracy3() throws RetrievalException {
         ExternalProject[] projects = projectRetrieval.retrieveProject("Project A", "Version 2");
 
         // Asserts.
@@ -376,12 +414,15 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
      */
     public void testCreateObject_ResultSet() throws RetrievalException, SQLException {
         // Prepares the ps and rs.
-        PreparedStatement ps = defaultConnection.prepareStatement("SELECT cv.comp_vers_id, " + "cv.component_id, " +
-                "version, " + "version_text, " + "comments, " + "component_name, " + "description, " +
-                "cc.root_category_id category_id, " + "forum_id " +
-                "FROM comp_versions cv, comp_catalog cc, OUTER comp_forum_xref f " +
-                "WHERE cv.component_id = cc.component_id " + "and cv.comp_vers_id = f.comp_vers_id " +
-                "and f.forum_type = 5 and cv.comp_vers_id = 2");
+        PreparedStatement ps =
+            defaultConnection.prepareStatement("SELECT cv.comp_vers_id, cv.component_id, "
+                + "version, version_text, comments, component_name, description, "
+                + "cc.root_category_id category_id, forum_id, cc.short_desc short_desc, "
+                + "cc.function_desc function_desc "
+                + "FROM comp_versions cv, comp_catalog cc, OUTER comp_forum_xref f "
+                + "WHERE cv.component_id = cc.component_id and cv.comp_vers_id = f.comp_vers_id "
+                + "and f.forum_type = 5 and cv.comp_vers_id = 2");
+
         ResultSet rs = ps.executeQuery();
 
         // Creates object.
@@ -395,7 +436,12 @@ public class DBProjectRetrievalAccuracyTest extends BaseDBRetrievalAccuracyTest 
         assertEquals("The catalog id should be the same.", 2, project.getCatalogId());
         assertEquals("The comment should be the same.", "Average", project.getComments());
         assertEquals("The component id should be the same.", 1002, project.getComponentId());
-        assertEquals("The description should be the same.", "Second Project B", project.getDescription().trim());
+        assertEquals("The description should be the same.", "Second Project B", project.getDescription()
+            .trim());
+        assertEquals("The short description should be the same.", "Second Project", project.getShortDescription());
+        assertEquals("The functional description should be the same.", "Sleeping", project.getFunctionalDescription());
+        assertEquals("The technologies should be empty", 0, project.getTechnologies().length);
+
         assertEquals("The forum id should be the same.", 100002, project.getForumId());
         assertEquals("The id should be the same.", 2, project.getId());
         assertEquals("The name should be the same.", "Project B", project.getName().trim());

@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
- *
- * User Project Data Store 1.0
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.stresstests;
 import java.io.File;
@@ -19,8 +17,8 @@ import com.topcoder.util.config.ConfigManager;
  * Helper class for accuracy test.
  * </p>
  *
- * @author fairytale
- * @version 1.0
+ * @author fairytale, victorsam
+ * @version 2.0
  */
 final class Helper {
     /** The first component_id. */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.external.failuretests;
 
@@ -13,14 +13,14 @@ import junit.framework.TestCase;
  * This test case aggregates all test cases for <code>RatingInfo</code>.
  * </p>
  *
- * @author idx
- * @version 1.0
+ * @author idx, liulike
+ * @version 2.0
  */
 public class RatingInfoFailureTest extends TestCase {
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code> with null argument.
-     * <code>ratingType</code> is null in this test.
+     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code>
+     * with null argument. <code>ratingType</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntInt_NullArg() {
@@ -33,8 +33,8 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code> with negative argument.
-     * <code>rating</code> is negative in this test.
+     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code>
+     * with negative argument. <code>rating</code> is negative in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntInt_NegativeArg_1() {
@@ -47,9 +47,9 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code> with negative argument.
-     * <code>numRatings</code> is negative in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code>
+     * with negative argument. <code>numRatings</code> is negative in this
+     * test. <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntInt_NegativeArg_2() {
         try {
@@ -61,9 +61,9 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code> with negative argument.
-     * <code>volatility</code> is negative in this test.
-     * <code>IllegalArgumentException</code> is expected.
+     * Test constructor <code>RatingInfo(RatingType, int, int, int)</code>
+     * with negative argument. <code>volatility</code> is negative in this
+     * test. <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntInt_NegativeArg_3() {
         try {
@@ -75,8 +75,9 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int, double)</code> with null argument.
-     * <code>ratingType</code> is null in this test.
+     * Test constructor
+     * <code>RatingInfo(RatingType, int, int, int, double)</code> with null
+     * argument. <code>ratingType</code> is null in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntIntDouble_NullArg() {
@@ -89,8 +90,9 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int, double)</code> with negative argument.
-     * <code>rating</code> is negative in this test.
+     * Test constructor
+     * <code>RatingInfo(RatingType, int, int, int, double)</code> with
+     * negative argument. <code>rating</code> is negative in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_1() {
@@ -103,8 +105,9 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int, double)</code> with negative argument.
-     * <code>numRatings</code> is negative in this test.
+     * Test constructor
+     * <code>RatingInfo(RatingType, int, int, int, double)</code> with
+     * negative argument. <code>numRatings</code> is negative in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_2() {
@@ -117,8 +120,9 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int, double)</code> with negative argument.
-     * <code>volatility</code> is negative in this test.
+     * Test constructor
+     * <code>RatingInfo(RatingType, int, int, int, double)</code> with
+     * negative argument. <code>volatility</code> is negative in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_3() {
@@ -131,8 +135,9 @@ public class RatingInfoFailureTest extends TestCase {
     }
 
     /**
-     * Test constructor <code>RatingInfo(RatingType, int, int, int, double)</code> with negative argument.
-     * <code>reliability</code> is negative in this test.
+     * Test constructor
+     * <code>RatingInfo(RatingType, int, int, int, double)</code> with
+     * negative argument. <code>reliability</code> is negative in this test.
      * <code>IllegalArgumentException</code> is expected.
      */
     public void testRatingInfoRatingTypeIntIntIntDouble_NegativeArg_4() {
