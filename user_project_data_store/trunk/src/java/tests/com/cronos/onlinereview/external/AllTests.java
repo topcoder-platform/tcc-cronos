@@ -16,7 +16,7 @@ import junit.framework.TestSuite;
  * <p>This test case aggregates all test cases.</p>
  *
  * @author TopCoder
- * @version 1.0
+ * @version 2.0
  */
 public class AllTests extends TestCase {
 
