@@ -1522,7 +1522,10 @@ public class DbUserDAO implements UserDAO {
 
         try {
             connection = (connName == null) ? connFactory.createConnection() : connFactory.createConnection(connName);
-            connection.setAutoCommit(!useTransactions);
+
+            if (useTransactions) {
+                connection.setAutoCommit(false);
+            }
 
             return connection;
         } catch (DBConnectionException e) {
