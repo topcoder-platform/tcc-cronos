@@ -1,0 +1,19 @@
+1.Modify the "build.xml" to update the value of "junit", maybe you also need to configure the path for dependencies.
+2.Modify
+test_files\config.xml
+test_files\stress_config.xml
+test_files\accuracy\ClientLogin_accuracy_config.xml
+test_files\accuracy\config.xml
+test_files\failure_tests\config.xml
+test_files\failure_tests\Wrong_Config1.xml
+test_files\failure_tests\Wrong_Config2.xml
+test_files\failure_tests\Wrong_Config3.xml
+test_files\failure_tests\Wrong_Db_config.xml
+
+according your database setting. Here I suggest you do different test with different database.
+like
+UnitTests use a database,
+AccuracyTests use a independent one, and the same with failuretests and stress tests.
+Because the data is a bit much, and there is conflict if you put all in one database.
+
+3. start database service, then you can test.

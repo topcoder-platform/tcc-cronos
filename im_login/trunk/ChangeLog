@@ -1,0 +1,7 @@
+1.Add SimpleProfileKeyManager class in the test code. Because all test file all use SimpleProfileKeyManager as
+the parameter passed in the ObjectFactory.
+
+2.Move the LoginActionStressTest from login/stresstests to login.
+
+3.Modify ClientLoginActionStressTest.java, will clean the config manager first when start setting it.
+
