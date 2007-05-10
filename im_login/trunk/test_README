@@ -16,4 +16,13 @@ UnitTests use a database,
 AccuracyTests use a independent one, and the same with failuretests and stress tests.
 Because the data is a bit much, and there is conflict if you put all in one database.
 
-3. start database service, then you can test.
+3. start database service.
+4. execute
+test_files\authorization.sql
+test_files\chatprofile.sql
+test_files\id generator.sql
+test_files\imlogin.sql
+test_files\accuracy\imlogin_accuracy.sql
+test_files\failure.sql
+
+5.then you can test.
