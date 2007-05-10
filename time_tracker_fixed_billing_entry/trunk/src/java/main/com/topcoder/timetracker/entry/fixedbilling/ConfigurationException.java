@@ -13,7 +13,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 1.0
  */
 public class ConfigurationException extends BaseException {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = -5599161060340568652L;
+
+	/**
      * <p>
      * Constructor accepting a message.
      * </p>

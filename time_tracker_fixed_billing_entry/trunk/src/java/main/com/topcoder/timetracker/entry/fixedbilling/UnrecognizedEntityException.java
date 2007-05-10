@@ -18,7 +18,13 @@ package com.topcoder.timetracker.entry.fixedbilling;
  * @version 1.0
  */
 public class UnrecognizedEntityException extends DataAccessException {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = -3431825066608538185L;
+
+	/**
      * <p>
      * This is the id of the entity that could not be located in the persistent store.
      * </p>

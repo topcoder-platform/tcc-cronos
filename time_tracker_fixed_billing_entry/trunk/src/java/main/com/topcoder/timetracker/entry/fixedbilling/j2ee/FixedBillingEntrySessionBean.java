@@ -16,7 +16,6 @@ import com.topcoder.timetracker.entry.fixedbilling.UnrecognizedEntityException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-
 /**
  * <p>
  * This is a Stateless SessionBean that is used to provided business services to manage FixedBillingEntries within the
@@ -37,7 +36,13 @@ import javax.ejb.SessionContext;
  * @version 1.0
  */
 public class FixedBillingEntrySessionBean implements FixedBillingEntryManager, SessionBean {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = 4877496353370153857L;
+
+	/**
      * <p>
      * This is the instance of SessionContext that was provided by the EJB container.  It is stored and made available
      * to subclasses. It is also used when performing a rollback.

@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.fixedbilling;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception is thrown when a problem occurs while this component is interacting with the persistent store.  It is
@@ -21,7 +20,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 1.0
  */
 public class DataAccessException extends BaseException {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = 1582882539949468049L;
+
+	/**
      * <p>
      * Constructor accepting a message.
      * </p>

@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.fixedbilling;
 
 import com.topcoder.timetracker.entry.base.BaseEntry;
 
-
 /**
  * <p>
  * This is the main data class of the component, and includes getters and setters to access the various properties of a
@@ -27,7 +26,13 @@ import com.topcoder.timetracker.entry.base.BaseEntry;
  * @version 1.0
  */
 public class FixedBillingEntry extends BaseEntry {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = -9189558790907155274L;
+
+	/**
      * <p>
      * This is the amount of money that was spent.
      * </p>

@@ -12,7 +12,13 @@ package com.topcoder.timetracker.entry.fixedbilling;
  * @version 1.0
  */
 public class InvalidCompanyException extends DataAccessException {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = 1862467743351602029L;
+
+	/**
      * <p>
      * This is the company id of the FixedBillingEntry being associated with an entity.
      * </p>
