@@ -7,8 +7,12 @@ import java.io.File;
 import java.util.Iterator;
 
 import javax.naming.NamingException;
+import java.rmi.RemoteException;
+import javax.ejb.CreateException;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import com.topcoder.chat.user.profile.ChatUserProfileManager;
 import com.topcoder.security.authorization.AuthorizationManager;
@@ -96,7 +100,7 @@ public class LoginActionStressTest extends TestCase {
         /**
          * Get LoginRemote.
          */
-        public LoginRemote getLoginRemote() throws NamingException {
+        public LoginRemote getLoginRemote() throws NamingException, RemoteException, CreateException {
             return super.getLoginRemote();
         }
         /**
@@ -226,5 +230,16 @@ public class LoginActionStressTest extends TestCase {
             assertEquals("Should be equal", "org.jnp.interfaces.NamingContextFactory", mla
                 .getAuthInitialContextFactory());
         }
+    }
+    
+    /**
+     * <p>
+     * Aggregates all tests in this class.
+     * </p>
+     *
+     * @return test suite aggregating all tests of <code>LoginActionStressTest</code>.
+     */
+    public static Test suite() {
+        return new TestSuite(LoginActionStressTest.class);
     }
 }

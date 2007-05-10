@@ -29,7 +29,7 @@ public class AllTests extends TestCase {
         suite.addTest(UnitTests.suite());
 
         // accuracy tests
-         suite.addTest(AccuracyTests.suite());
+        suite.addTest(AccuracyTests.suite());
 
         // failure tests
         suite.addTest(FailureTests.suite());

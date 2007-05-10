@@ -25,6 +25,7 @@ public class UnitTests extends TestCase {
         suite.addTest(ClientLoginActionTest.suite());
         suite.addTest(LoginActionTest.suite());
         suite.addTest(IMLoginHelperTest.suite());
+        suite.addTest(LoginActionStressTest.suite());
         return suite;
     }
 
