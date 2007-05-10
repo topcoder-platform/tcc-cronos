@@ -13,7 +13,13 @@ package com.topcoder.timetracker.entry.base;
  * @version 3.2
  */
 public class EntryNotFoundException extends PersistenceException {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = 2864142671333591981L;
+
+	/**
      * <p><strong>Purpose:</strong></p>
      *  <p>This id identifies the entity that caused this exception. In our case it would be the id of an
      * entity that we were expecting to exists (like in an update or fetch) BUT found out that it doesn't actually

@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.base;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>This is a specific exception for situations when id generation might fail. It could happen that all ids have
  * been exhausted (or any other failure cases that may occur in IDGenerator) which would then propagate to the caller.
@@ -16,7 +15,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class IdGenerationException extends BaseException {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = 2364460426156401134L;
+
+	/**
      * <p>Creates a new exception with passed error message.</p>
      *
      * @param msg error message

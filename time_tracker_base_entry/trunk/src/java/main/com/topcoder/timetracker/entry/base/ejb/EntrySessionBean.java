@@ -25,7 +25,6 @@ import javax.ejb.CreateException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-
 /**
  * <p>This is a Stateless SessionBean that is used to provided business services to manage BaseEntry and
  * CutoffTimeBean objects within the Time Tracker Application. It implements the EntryManager interface and delegates
@@ -54,7 +53,13 @@ import javax.ejb.SessionContext;
  * @version 3.2
  */
 public class EntrySessionBean implements EntryManager, SessionBean {
-    /** Property name of dao key in Config Manager. The dao key is used to create the CutoffTimeDao via
+
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = 3322064103650450148L;
+
+	/** Property name of dao key in Config Manager. The dao key is used to create the CutoffTimeDao via
      *  ObjectFactory. */
     private static final String PROP_DAO_KEY = "dao_key";
 

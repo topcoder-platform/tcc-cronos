@@ -13,7 +13,13 @@ package com.topcoder.timetracker.entry.base;
  * @version 3.2
  */
 public class DuplicateEntryException extends PersistenceException {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = 8417351579002234012L;
+
+	/**
      *  <p>This id identifies the entity that caused this exception. In our case it would be the id of an
      * entity that we were creating BUT found out that it already exists (which makes the creation semantically
      * incorrect as we cannot create what already exists) It is initialized through a constructor and accessed by

@@ -7,7 +7,6 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
 
 import java.util.Date;
 
-
 /**
  * <p>This is a basic java bean, which encapsulates all the data for a cut_off_time table entity. The purpose of
  * this bean is to model the information that a company will use to decide what a cutoff time is for some entry
@@ -20,7 +19,13 @@ import java.util.Date;
  * @version 3.2
  */
 public class CutoffTimeBean extends TimeTrackerBean {
+
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+	private static final long serialVersionUID = -7708443999443388610L;
+
+	/**
      * <p>Cut off time which is the actual cut off time where a company will not accept any more submissions.
      * Cannot be null after being set.</p>
      *  <p>Initialized through a setter and obtained through a getter.</p>
