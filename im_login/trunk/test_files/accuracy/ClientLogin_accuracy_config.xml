@@ -129,13 +129,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://10.122.87.114:1526/accuracy:informixserver=ol_myshecxxxxd</Value>
+						<Value>jdbc:informix-sqli://59.66.77.226:1527/accuracy_test:informixserver=test</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>T0pc0der</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -148,13 +148,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://10.122.87.114:1526/accuracy:informixserver=ol_myshecxxxxd</Value>
+						<Value>jdbc:informix-sqli://59.66.77.226:1527/accuracy_test:informixserver=test</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>T0pc0der</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -175,13 +175,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://10.122.87.114:1526/accuracy:informixserver=ol_myshecxxxxd</Value>
+						<Value>jdbc:informix-sqli://59.66.77.226:1527/accuracy_test:informixserver=test</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>T0pc0der</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -194,13 +194,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://10.122.87.114:1526/accuracy:informixserver=ol_myshecxxxxd</Value>
+						<Value>jdbc:informix-sqli://59.66.77.226:1527/accuracy_test:informixserver=test</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>T0pc0der</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 			</Property>

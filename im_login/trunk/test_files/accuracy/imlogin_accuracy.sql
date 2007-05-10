@@ -69,6 +69,33 @@ CREATE TABLE profile (
   		profile_id integer NOT NULL,
   		username varchar(64) NOT NULL,
   		PRIMARY KEY  (profile_id));
+
+CREATE TABLE property (
+       property_id         DEC(18) NOT NULL,
+       name                VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE profile_property (
+       profile_id          DEC(18) NOT NULL,
+       property_id         DEC(18) NOT NULL,
+       value               VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE user_profile (
+       user_profile_id         DEC(18) NOT NULL,
+       user_profile_name       VARCHAR(64) NOT NULL UNIQUE
+);
+
+CREATE TABLE user_property (
+       user_property_id         DEC(18) NOT NULL,
+       user_property_name                VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE user_profile_property (
+       profile_property_profile_id          DEC(18) NOT NULL,
+       profile_property_property_id         DEC(18) NOT NULL,
+       user_value               VARCHAR(64) NOT NULL
+);
   		
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES ('profile',0,10,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES ('profileKeyGenerator',0,10,0);

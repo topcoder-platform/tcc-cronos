@@ -101,13 +101,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://hecbla55696d:1526/test:informixserver=ol_hecbla55696d</Value>
+						<Value>jdbc:informix-sqli://59.66.77.226:1527/test:informixserver=test</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>simple</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -128,13 +128,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://hecbla55696d:1526/test:informixserver=ol_hecbla55696d</Value>
+						<Value>jdbc:informix-sqli://59.66.77.226:1527/test:informixserver=test</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>simple</Value>
+						<Value>123456</Value>
 					</Property>
 				</Property>
 			</Property>
