@@ -5,7 +5,6 @@ package com.topcoder.timetracker.audit;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception will be thrown by classes within this component whenever there are problems in initialization from
@@ -20,7 +19,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class AuditConfigurationException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 7086980531486924512L;
+
+	/**
      * <p>
      * Creates a new instance of <code>AuditConfigurationException</code> class with a detail error message.
      * </p>

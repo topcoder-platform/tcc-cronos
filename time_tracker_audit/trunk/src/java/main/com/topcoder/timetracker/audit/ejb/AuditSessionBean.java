@@ -19,7 +19,6 @@ import javax.ejb.CreateException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-
 /**
  * <p>
  * This is a Stateless <code>SessionBean</code> that is used to provided business services to manage auditing within
@@ -42,7 +41,13 @@ import javax.ejb.SessionContext;
  * @version 3.2
  */
 public class AuditSessionBean implements SessionBean, AuditManager {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -596653189656212419L;
+
+	/**
      * <p>
      * Represents the namespace used to retrieve the dao instance.
      * </p>

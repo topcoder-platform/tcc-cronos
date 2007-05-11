@@ -7,7 +7,6 @@ import com.topcoder.timetracker.audit.AuditConfigurationException;
 import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.TimeTrackerAuditHelper;
 
-
 /**
  * <p>
  * This package-level container is provided to allow easy storage of default values for Audit Detail records.
@@ -30,7 +29,13 @@ import com.topcoder.timetracker.audit.TimeTrackerAuditHelper;
  * @version 3.2
  */
 class DefaultValuesContainer extends AuditDetail {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -6307222015595299238L;
+
+	/**
      * <p>
      * Initializes default values based on configuration parameters.
      * </p>

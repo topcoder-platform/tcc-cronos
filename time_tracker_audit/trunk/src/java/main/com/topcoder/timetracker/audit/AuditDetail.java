@@ -5,7 +5,6 @@ package com.topcoder.timetracker.audit;
 
 import java.io.Serializable;
 
-
 /**
  * <p>
  * This class is a simple bean class for the storage of information about a single column change. It stores its unique
@@ -27,7 +26,13 @@ import java.io.Serializable;
  * @version 3.2
  */
 public class AuditDetail implements Serializable {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -6697453434269927686L;
+
+	/**
      * <p>
      * Represents the identification number for this detail.
      * </p>

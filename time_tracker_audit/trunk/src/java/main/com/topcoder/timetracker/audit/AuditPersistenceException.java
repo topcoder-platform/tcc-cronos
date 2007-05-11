@@ -5,7 +5,6 @@ package com.topcoder.timetracker.audit;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception will be thrown by any persistence plugin implementing the <code>AuditPersistence</code>, whenever
@@ -20,7 +19,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class AuditPersistenceException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 3093072502568039738L;
+
+	/**
      * <p>
      * Creates a new instance of <code>AuditPersistenceException</code> class with a detail error message.
      * </p>

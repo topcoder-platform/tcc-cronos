@@ -5,7 +5,6 @@ package com.topcoder.timetracker.audit;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception will be thrown by the manager whenever there are any problems in any of its methods throw during
@@ -20,7 +19,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class AuditManagerException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 5302389454501542109L;
+
+	/**
      * <p>
      * Creates a new instance of <code>AuditManagerException</code> class with a detail error message.
      * </p>

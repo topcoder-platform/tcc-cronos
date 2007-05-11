@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 import java.sql.Timestamp;
 
-
 /**
  * <p>
  * This class is a simple bean class for the storage of information about changes to details in the Time Tracker
@@ -31,7 +30,13 @@ import java.sql.Timestamp;
  * @version 3.2
  */
 public class AuditHeader implements Serializable {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 4259460446248503425L;
+
+	/**
      * <p>
      * Represents the identification number for this audit header.
      * </p>

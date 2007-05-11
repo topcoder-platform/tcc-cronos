@@ -5,7 +5,6 @@ package com.topcoder.timetracker.audit;
 
 import com.topcoder.util.collection.typesafeenum.Enum;
 
-
 /**
  * <p>
  * This class extends the Type Safe Enumeration component's Enum class, which contains the information about all the
@@ -26,7 +25,13 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * @version 3.2
  */
 public class ApplicationArea extends Enum {
-    /** Enumeration value for the "Expense" application area. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -7898200254891183918L;
+
+	/** Enumeration value for the "Expense" application area. */
     public static final ApplicationArea TT_EXPENSE = new ApplicationArea("Expense");
 
     /** Enumeration value for the "Fixed Billing" application area. */
