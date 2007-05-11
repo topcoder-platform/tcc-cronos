@@ -7,7 +7,6 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
 import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.Contact;
 
-
 /**
  * <p>
  * This bean represents a Company within the context of the Time Tracker component. It holds the different attributes
@@ -24,7 +23,13 @@ import com.topcoder.timetracker.contact.Contact;
  * @version 3.2
  */
 public class Company extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -2108845653895990269L;
+
+	/**
      * <p>
      * The name of the company.
      * </p>

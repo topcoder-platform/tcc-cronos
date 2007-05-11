@@ -18,7 +18,13 @@ package com.topcoder.timetracker.company;
  * @version 3.2
  */
 public class CompanyNotFoundException extends CompanyDAOException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 5372741298428699968L;
+
+	/**
      * <p>
      * Constructor accepting a message and problem company.
      * </p>

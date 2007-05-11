@@ -5,7 +5,6 @@ package com.topcoder.timetracker.company;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception is thrown when a problem occurs when performing operations with the Company DAO in non-atomic Batch
@@ -21,7 +20,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class BatchCompanyDAOException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 7645666925216325714L;
+
+	/**
      * <p>
      * The set of companies where a problem occurred during processing. The number of elements in this array and the
      * causes array should be equal, and the element in each array corresponds to the element in the other array with

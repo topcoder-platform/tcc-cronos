@@ -5,7 +5,6 @@ package com.topcoder.timetracker.company;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception is thrown when a problem occurs when performing operations with the Company DAO. All layers throw
@@ -20,7 +19,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class CompanyDAOException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -1189726909306000968L;
+
+	/**
      * <p>
      * The company that the DAO was working with when a problem occurred.
      * </p>

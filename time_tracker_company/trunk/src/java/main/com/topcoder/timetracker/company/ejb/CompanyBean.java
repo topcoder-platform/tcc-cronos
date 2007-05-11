@@ -21,7 +21,6 @@ import javax.ejb.SessionContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-
 /**
  * <p>
  * This is a Stateless <code>SessionBean</code> that is used to provided business services to handle the actual company
@@ -53,7 +52,13 @@ import javax.naming.InitialContext;
  * @version 3.2
  */
 public class CompanyBean implements SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 487706419679800199L;
+
+	/**
      * <p>
      * Represents the property name to retrieve the SpecificationNamespace value from the environmental entry.
      * </p>

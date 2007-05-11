@@ -5,7 +5,6 @@ package com.topcoder.timetracker.company.ejb;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception signals an error during the instantiation of the LocalCompanyManagerDelegate. This error could be due
@@ -20,7 +19,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class InstantiationException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 2313593436185368299L;
+
+	/**
      * <p>
      * Creates a new exception instance with this error message.
      * </p>
