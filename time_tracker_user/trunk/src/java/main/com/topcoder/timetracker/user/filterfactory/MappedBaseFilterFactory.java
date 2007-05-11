@@ -36,7 +36,13 @@ import com.topcoder.search.builder.filter.LessThanOrEqualToFilter;
  * @version 3.2
  */
 public class MappedBaseFilterFactory implements BaseFilterFactory {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 7877721498502224801L;
+
+	/**
      * <p>
      * This is the map key to use to specify the column name for the
      * Creation Date.

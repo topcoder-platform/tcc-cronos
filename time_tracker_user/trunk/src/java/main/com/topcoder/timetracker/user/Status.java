@@ -24,7 +24,13 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * @version 3.2
  */
 public class Status extends Enum {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 8748057160854572375L;
+
+	/**
      * <p>
      * This is an Enumeration value representing a status of <tt>ACTIVE</tt>.
      * </p>

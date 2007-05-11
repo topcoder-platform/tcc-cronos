@@ -43,7 +43,13 @@ import com.topcoder.timetracker.user.Status;
  * @version 3.2
  */
 public class MappedUserFilterFactory extends MappedBaseFilterFactory implements UserFilterFactory {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -2174607764064209426L;
+
+	/**
      * <p>
      * This is the map key to use to specify the column name for the username.
      * </p>

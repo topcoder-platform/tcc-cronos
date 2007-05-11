@@ -41,7 +41,13 @@ import com.topcoder.timetracker.user.UserManagerFactory;
  * @version 3.2
  */
 public class UserManagerSessionBean implements SessionBean, UserManager {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 871493435671064630L;
+
+	/**
      * <p>
      * This is the instance of <code>SessionContext</code> that was provided by the
      * EJB container.
