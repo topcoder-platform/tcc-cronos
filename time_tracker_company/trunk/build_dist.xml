@@ -74,18 +74,18 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
 
     <!-- codertura task definitation -->
-	<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
 
-	<path id="cobertura.classpath">
-	<fileset dir="${cobertura.dir}">
-  	  <include name="cobertura.jar" />
-    	<include name="lib/**/*.jar" />
-	</fileset>
-	</path>
+    <path id="cobertura.classpath">
+        <fileset dir="${cobertura.dir}">
+            <include name="cobertura.jar" />
+            <include name="lib/**/*.jar" />
+        </fileset>
+    </path>
 
-	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-	<property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
-	<property name="instrumented.dir" value="${builddir}/instrumented" />
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+    <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
+    <property name="instrumented.dir" value="${builddir}/instrumented" />
 
     <!-- TCS Dependencies -->
     <property name="configuration_manager.version" value="2.1.5"/>
@@ -148,6 +148,7 @@
     <property name="JNDI_Utility.path" value="JNDI_Utility/${JNDI_Utility.version}"/>
     <property name="JNDI_Utility.jar" value="${tcs_libdir}/${JNDI_Utility.path}/${JNDI_Utility.jar.name}"/>
 
+    <!-- Time Tracker custom components -->
     <property name="time_tracker_audit.version" value="3.2"/>
     <property name="time_tracker_audit.jar.name" value="time_tracker_audit.jar"/>
     <property name="time_tracker_audit.path" value="time_tracker_audit/${time_tracker_audit.version}"/>
@@ -157,6 +158,11 @@
     <property name="time_tracker_common.jar.name" value="time_tracker_common.jar"/>
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
     <property name="time_tracker_common.jar" value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
+
+    <property name="time_tracker_contact.version" value="3.2"/>
+    <property name="time_tracker_contact.jar.name" value="time_tracker_contact.jar"/>
+    <property name="time_tracker_contact.path" value="time_tracker_contact/${time_tracker_contact.version}"/>
+    <property name="time_tracker_contact.jar" value="${tcs_libdir}/${time_tracker_contact.path}/${time_tracker_contact.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -173,12 +179,12 @@
     <property name="junitejb.jar" value="${ext_libdir}/junitejb/junitejb.jar"/>
 
     <property name="cglib.jar" value="${ext_libdir}/cglib-full-2.0-RC2.jar"/>
-	<property name="commons-logging.jar" value="${ext_libdir}/commons-logging.jar"/>
-	<property name="jakarta-oro.jar" value="${ext_libdir}/jakarta-oro-2.0.8.jar"/>
-	<property name="mockejb.jar" value="${ext_libdir}/mockejb.jar"/>
-	<property name="mockrunner.jar" value="${ext_libdir}/mockrunner.jar"/>
-	<property name="mockrunner-ejb.jar" value="${ext_libdir}/mockrunner-ejb.jar"/>
-	<property name="jmock.jar" value="${ext_libdir}/jmock-core-1.2.0.jar"/>
+    <property name="commons-logging.jar" value="${ext_libdir}/commons-logging.jar"/>
+    <property name="jakarta-oro.jar" value="${ext_libdir}/jakarta-oro-2.0.8.jar"/>
+    <property name="mockejb.jar" value="${ext_libdir}/mockejb.jar"/>
+    <property name="mockrunner.jar" value="${ext_libdir}/mockrunner.jar"/>
+    <property name="mockrunner-ejb.jar" value="${ext_libdir}/mockrunner-ejb.jar"/>
+    <property name="jmock.jar" value="${ext_libdir}/jmock-core-1.2.0.jar"/>
 
     <!-- Java Locations -->
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
@@ -191,7 +197,7 @@
         <!-- tcs libs -->
         <pathelement location="${configuration_manager.jar}" />
         <pathelement location="${object_factory.jar}" />
-		<pathelement location="${base_exception.jar}" />
+        <pathelement location="${base_exception.jar}" />
         <pathelement location="${db_connection_factory.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${logging_wrapper.jar}" />
@@ -201,8 +207,9 @@
         <pathelement location="${class_associations.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${JNDI_Utility.jar}" />
+        <pathelement location="${time_tracker_audit.jar}" />
         <pathelement location="${time_tracker_common.jar}" />
-		<!-- <pathelement location="${time_tracker_audit.jar}" /> -->
+        <pathelement location="${time_tracker_contact.jar}" />
 
 		<!-- mock -->
 		<pathelement location="${testfiles}/dependency.jar" />
@@ -218,14 +225,14 @@
         <!-- other libs -->
         <pathelement location="${log4j.jar}" />
         <pathelement location="${junitejb.jar}" />
-		<pathelement location="${jbossall-client.jar}" />
+        <pathelement location="${jbossall-client.jar}" />
         <pathelement location="${mockejb.jar}" />
-		<pathelement location="${commons-logging.jar}" />
-		<pathelement location="${cglib.jar}" />
-		<pathelement location="${jakarta-oro.jar}" />
-		<pathelement location="${mockrunner.jar}" />
-		<pathelement location="${mockrunner-ejb.jar}" />
-		<pathelement location="${jmock.jar}" />
+        <pathelement location="${commons-logging.jar}" />
+        <pathelement location="${cglib.jar}" />
+        <pathelement location="${jakarta-oro.jar}" />
+        <pathelement location="${mockrunner.jar}" />
+        <pathelement location="${mockrunner-ejb.jar}" />
+        <pathelement location="${jmock.jar}" />
     </path>
 
     <path id="test.build.classpath">
@@ -299,12 +306,12 @@
 
         <junit fork="true" haltonerror="false">
 
-				<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
+            <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
 
-						<classpath location="${instrumented.dir}" />
-						<classpath location="${build_testclassdir}" />
-						<classpath refid="test.build.classpath" />
-						<classpath refid="cobertura.classpath" />
+            <classpath location="${instrumented.dir}" />
+            <classpath location="${build_testclassdir}" />
+            <classpath refid="test.build.classpath" />
+            <classpath refid="cobertura.classpath" />
 
             <test name="${package}.AllTests" todir="${testlogdir}">
                 <formatter type="plain" usefile="true"/>
@@ -316,14 +323,14 @@
     </target>
 
     <target name="coveragereport" depends="test">
-				<cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
-    			<fileset dir="${javamain}">
-        		<include name="**/*.java" />
-    			</fileset>
-    			<fileset dir="${javatests}">
-        		<include name="**/*.java" />
-    			</fileset>
-				</cobertura-report>
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
+            <fileset dir="${javamain}">
+                <include name="**/*.java" />
+            </fileset>
+            <fileset dir="${javatests}">
+                <include name="**/*.java" />
+            </fileset>
+        </cobertura-report>
 
     </target>
 
@@ -331,10 +338,10 @@
         <mkdir dir="${reports}"/>
 
         <junitreport todir="${reports}">
-          <fileset dir="${testlogdir}">
-            <include name="*.xml"/>
-          </fileset>
-          <report format="frames" todir="${reports}"/>
+            <fileset dir="${testlogdir}">
+                <include name="*.xml"/>
+            </fileset>
+            <report format="frames" todir="${reports}"/>
         </junitreport>
 
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
@@ -364,7 +371,7 @@
             stylesheetfile="${javadocsdir}/stylesheet.css"
             verbose="${verbose}">
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
