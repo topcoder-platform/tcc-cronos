@@ -21,7 +21,6 @@ import com.topcoder.service.ServiceEvent;
  * <p>
  * Failure test cases for IMServiceHandler class.
  * </p>
- *
  * @author singlewood
  * @version 1.0
  */
@@ -69,8 +68,8 @@ public class IMServiceHandlerFailureTests extends TestCase {
 
     /**
      * Initialize the environment.
-     *
-     * @throws Exception throws to JUnit
+     * @throws Exception
+     *             throws to JUnit
      */
     protected void setUp() throws Exception {
         FailureTestHelper.loadConfig();
@@ -81,8 +80,8 @@ public class IMServiceHandlerFailureTests extends TestCase {
         chatSessionManager = new ChatSessionManagerFMock();
         messenger = new MessengerFMock();
         serviceEngine = new ServiceEngine();
-        handler = new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                serviceEngine, 1000, 1000, logger);
+        handler = new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+            chatUserStatusTracker, 1000, 1000, logger);
 
         ServiceElement requester = new ServiceElement();
         requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(1));
@@ -95,24 +94,24 @@ public class IMServiceHandlerFailureTests extends TestCase {
 
     /**
      * Clear the test environment.
-     *
-     * @throws Exception throws to JUnit
+     * @throws Exception
+     *             throws to JUnit
      */
     protected void tearDown() throws Exception {
         FailureTestHelper.clearConfig();
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, long
-     * responderWaitTime, long checkResponseInterval, IMLogger logger).
-     * IllegalArgumentException should be thrown if any argument except logger is null.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, long responderWaitTime, long
+     * checkResponseInterval, IMLogger logger). IllegalArgumentException should be thrown if any
+     * argument except logger is null.
      */
     public void testConstructor1Failure1() {
         try {
-            new IMServiceHandler(null, messenger, chatSessionStatusTracker, chatUserStatusTracker, serviceEngine, 1000,
-                    1000, logger);
+            new IMServiceHandler(null, messenger, chatSessionStatusTracker, chatUserStatusTracker,
+                1000, 1000, logger);
             fail("IllegalArgumentException should be thrown if any argument except logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -120,16 +119,16 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, long
-     * responderWaitTime, long checkResponseInterval, IMLogger logger).
-     * IllegalArgumentException should be thrown if any argument except logger is null.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, long responderWaitTime, long
+     * checkResponseInterval, IMLogger logger). IllegalArgumentException should be thrown if any
+     * argument except logger is null.
      */
     public void testConstructor1Failure2() {
         try {
-            new IMServiceHandler(chatSessionManager, null, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, 1000, 1000, logger);
+            new IMServiceHandler(chatSessionManager, null, chatSessionStatusTracker,
+                chatUserStatusTracker, 1000, 1000, logger);
             fail("IllegalArgumentException should be thrown if any argument except logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -137,16 +136,16 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, long
-     * responderWaitTime, long checkResponseInterval, IMLogger logger).
-     * IllegalArgumentException should be thrown if any argument except logger is null.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, long responderWaitTime, long
+     * checkResponseInterval, IMLogger logger). IllegalArgumentException should be thrown if any
+     * argument except logger is null.
      */
     public void testConstructor1Failure3() {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, null, chatUserStatusTracker, serviceEngine, 1000, 1000,
-                    logger);
+            new IMServiceHandler(chatSessionManager, messenger, null, chatUserStatusTracker, 1000,
+                1000, logger);
             fail("IllegalArgumentException should be thrown if any argument except logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -154,33 +153,16 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, long
-     * responderWaitTime, long checkResponseInterval, IMLogger logger).
-     * IllegalArgumentException should be thrown if any argument except logger is null.
-     */
-    public void testConstructor1Failure4() {
-        try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker, null,
-                    1000, 1000, logger);
-            fail("IllegalArgumentException should be thrown if any argument except logger is null.");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, long
-     * responderWaitTime, long checkResponseInterval, IMLogger logger).
-     * IllegalArgumentException should be thrown if the time is negative.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, long responderWaitTime, long
+     * checkResponseInterval, IMLogger logger). IllegalArgumentException should be thrown if the
+     * time is negative.
      */
     public void testConstructor1Failure5() {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, -1000, 1000, logger);
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, -1000, 1000, logger);
             fail("IllegalArgumentException should be thrown if the time is negative.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -188,16 +170,16 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, long
-     * responderWaitTime, long checkResponseInterval, IMLogger logger).
-     * IllegalArgumentException should be thrown if the time is negative.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, long responderWaitTime, long
+     * checkResponseInterval, IMLogger logger). IllegalArgumentException should be thrown if the
+     * time is negative.
      */
     public void testConstructor1Failure6() {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, 1000, -1000, logger);
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, 1000, -1000, logger);
             fail("IllegalArgumentException should be thrown if the time is negative.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -205,18 +187,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger). IllegalArgumentException should be thrown if any argument exception logger
-     * is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger). IllegalArgumentException
+     * should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor2Failure1() throws Exception {
         try {
-            new IMServiceHandler(null, messenger, chatSessionStatusTracker, chatUserStatusTracker, serviceEngine,
-                    logger);
+            new IMServiceHandler(null, messenger, chatSessionStatusTracker, chatUserStatusTracker,
+                logger);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -224,18 +205,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger). IllegalArgumentException should be thrown if any argument exception logger
-     * is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger). IllegalArgumentException
+     * should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor2Failure2() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, null, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger);
+            new IMServiceHandler(chatSessionManager, null, chatSessionStatusTracker,
+                chatUserStatusTracker, logger);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -243,17 +223,16 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger). IllegalArgumentException should be thrown if any argument exception logger
-     * is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger). IllegalArgumentException
+     * should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor2Failure3() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, null, chatUserStatusTracker, serviceEngine, logger);
+            new IMServiceHandler(chatSessionManager, messenger, null, chatUserStatusTracker, logger);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -261,17 +240,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger). IllegalArgumentException should be thrown if any argument exception logger
-     * is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger). IllegalArgumentException
+     * should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor2Failure4() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, null, serviceEngine, logger);
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, null,
+                logger);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -279,37 +258,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger). IllegalArgumentException should be thrown if any argument exception logger
-     * is null.
-     *
-     * @throws to JUnit
-     */
-    public void testConstructor2Failure5() throws Exception {
-        try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker, null,
-                    logger);
-            fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IllegalArgumentException should be thrown if any
-     * argument exception logger is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IllegalArgumentException should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor3Failure1() throws Exception {
         try {
-            new IMServiceHandler(null, messenger, chatSessionStatusTracker, chatUserStatusTracker, serviceEngine,
-                    logger, IMServiceHandler.DEFAULT_NAMESPACE);
+            new IMServiceHandler(null, messenger, chatSessionStatusTracker, chatUserStatusTracker,
+                logger, IMServiceHandler.DEFAULT_NAMESPACE);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -317,18 +276,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IllegalArgumentException should be thrown if any
-     * argument exception logger is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IllegalArgumentException should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor3Failure2() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, null, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger, IMServiceHandler.DEFAULT_NAMESPACE);
+            new IMServiceHandler(chatSessionManager, null, chatSessionStatusTracker,
+                chatUserStatusTracker, logger, IMServiceHandler.DEFAULT_NAMESPACE);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -336,18 +294,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IllegalArgumentException should be thrown if any
-     * argument exception logger is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IllegalArgumentException should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor3Failure3() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, null, chatUserStatusTracker, serviceEngine, logger,
-                    IMServiceHandler.DEFAULT_NAMESPACE);
+            new IMServiceHandler(chatSessionManager, messenger, null, chatUserStatusTracker,
+                logger, IMServiceHandler.DEFAULT_NAMESPACE);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -355,18 +312,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IllegalArgumentException should be thrown if any
-     * argument exception logger is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IllegalArgumentException should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor3Failure4() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, null, serviceEngine, logger,
-                    IMServiceHandler.DEFAULT_NAMESPACE);
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, null,
+                logger, IMServiceHandler.DEFAULT_NAMESPACE);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -374,37 +330,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IllegalArgumentException should be thrown if any
-     * argument exception logger is null.
-     *
-     * @throws to JUnit
-     */
-    public void testConstructor3Failure5() throws Exception {
-        try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker, null,
-                    logger, IMServiceHandler.DEFAULT_NAMESPACE);
-            fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IllegalArgumentException should be thrown if any
-     * argument exception logger is null.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IllegalArgumentException should be thrown if any argument exception logger is null.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor3Failure6() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger, null);
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, logger, null);
             fail("IllegalArgumentException should be thrown if any argument exception logger is null.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -412,18 +348,17 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IllegalArgumentException should be thrown if namespace
-     * is empty.
-     *
-     * @throws to JUnit
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IllegalArgumentException should be thrown if namespace is empty.
+     * @throws to
+     *             JUnit
      */
     public void testConstructor3Failure7() throws Exception {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger, "  ");
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, logger, "  ");
             fail("IllegalArgumentException should be thrown if namespace is empty.");
         } catch (IllegalArgumentException e) {
             // expected
@@ -431,16 +366,15 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IMConfigurationException should be thrown if
-     * configuration is invalid.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IMConfigurationException should be thrown if configuration is invalid.
      */
     public void testConstructorInvalid1() {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid1");
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid1");
             fail("IMConfigurationException should be thrown if configuration is invalid.");
         } catch (IMConfigurationException e) {
             // expected
@@ -448,16 +382,15 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IMConfigurationException should be thrown if
-     * configuration is invalid.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IMConfigurationException should be thrown if configuration is invalid.
      */
     public void testConstructorInvalid2() {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid2");
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid2");
             fail("IMConfigurationException should be thrown if configuration is invalid.");
         } catch (IMConfigurationException e) {
             // expected
@@ -465,16 +398,15 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IMConfigurationException should be thrown if
-     * configuration is invalid.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IMConfigurationException should be thrown if configuration is invalid.
      */
     public void testConstructorInvalid3() {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid3");
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid3");
             fail("IMConfigurationException should be thrown if configuration is invalid.");
         } catch (IMConfigurationException e) {
             // expected
@@ -482,16 +414,15 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the constructor IMServiceHandler(ChatSessionManager
-     * sessionManager, Messenger messenger,ChatSessionStatusTracker sessionStatusTracker,
-     * ChatUserStatusTracker userStatusTracker,ServiceEngine serviceEngine, IMLogger
-     * logger, String namespace). IMConfigurationException should be thrown if
-     * configuration is invalid.
+     * Failure test for the constructor IMServiceHandler(ChatSessionManager sessionManager,
+     * Messenger messenger,ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker
+     * userStatusTracker,ServiceEngine serviceEngine, IMLogger logger, String namespace).
+     * IMConfigurationException should be thrown if configuration is invalid.
      */
     public void testConstructorInvalid4() {
         try {
-            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                    serviceEngine, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid4");
+            new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+                chatUserStatusTracker, logger, IMServiceHandler.DEFAULT_NAMESPACE + ".Invalid4");
             fail("IMConfigurationException should be thrown if configuration is invalid.");
         } catch (IMConfigurationException e) {
             // expected
@@ -499,10 +430,10 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the onServiced method. IllegalArgumentException should be thrown
-     * for null argument.
-     *
-     * @throws Exception throws to JUnit
+     * Failure test for the onServiced method. IllegalArgumentException should be thrown for null
+     * argument.
+     * @throws Exception
+     *             throws to JUnit
      */
     public void testOnServicedFailure() throws Exception {
         try {
@@ -514,10 +445,10 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the getResponder method. IllegalArgumentException should be thrown
-     * for null argument.
-     *
-     * @throws Exception throws to JUnit
+     * Failure test for the getResponder method. IllegalArgumentException should be thrown for null
+     * argument.
+     * @throws Exception
+     *             throws to JUnit
      */
     public void testGetResponderFailure1() throws Exception {
         try {
@@ -529,10 +460,10 @@ public class IMServiceHandlerFailureTests extends TestCase {
     }
 
     /**
-     * Failure test for the getResponder method. IllegalArgumentException should be thrown
-     * for null argument.
-     *
-     * @throws Exception throws to JUnit
+     * Failure test for the getResponder method. IllegalArgumentException should be thrown for null
+     * argument.
+     * @throws Exception
+     *             throws to JUnit
      */
     public void testGetResponderFailure2() throws Exception {
         try {

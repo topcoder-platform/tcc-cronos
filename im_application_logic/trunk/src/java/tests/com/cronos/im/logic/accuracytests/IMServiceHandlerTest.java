@@ -22,7 +22,6 @@ import com.topcoder.service.ServiceEvent;
 
 /**
  * Accuracy test for <code>{@link com.cronos.im.logic.IMServiceHandler}</code> class.
- *
  * @author mittu
  * @version 1.0
  */
@@ -69,7 +68,6 @@ public class IMServiceHandlerTest extends TestCase {
 
     /**
      * Sets up test environment.
-     *
      * @throws Exception
      *             to junit.
      */
@@ -84,12 +82,11 @@ public class IMServiceHandlerTest extends TestCase {
 
         logger = new IMLogger(DateFormat.getDateInstance());
         handler = new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
-            chatUserStatusTracker, serviceEngine, logger);
+            chatUserStatusTracker, logger);
     }
 
     /**
      * Tears down test environment.
-     *
      * @throws Exception
      *             to junit
      */
@@ -110,14 +107,12 @@ public class IMServiceHandlerTest extends TestCase {
      * Accuracy test for
      * <code>{@link IMServiceHandler#IMServiceHandler(ChatSessionManager,Messenger,ChatSessionStatusTracker,
      * ChatUserStatusTracker,ServiceEngine,long,long,IMLogger)}</code>.
-     *
      * @throws Exception
      *             if any error occurs.
      */
     public void testConstructor_2() throws Exception {
         handler = new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
-            chatUserStatusTracker, serviceEngine, AccuracyTestHelper.ONE_SEC, AccuracyTestHelper.ONE_SEC,
-            logger);
+            chatUserStatusTracker, AccuracyTestHelper.ONE_SEC, AccuracyTestHelper.ONE_SEC, logger);
         assertNotNull("Failed to create IMServiceHandler", handler);
     }
 
@@ -125,13 +120,12 @@ public class IMServiceHandlerTest extends TestCase {
      * Accuracy test for
      * <code>{@link IMServiceHandler#IMServiceHandler(ChatSessionManager,Messenger,ChatSessionStatusTracker,
      * ChatUserStatusTracker,ServiceEngine,IMLogger,String)}</code>.
-     *
      * @throws Exception
      *             if any error occurs.
      */
     public void testConstructor_3() throws Exception {
         handler = new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
-            chatUserStatusTracker, serviceEngine, logger, IMServiceHandler.DEFAULT_NAMESPACE);
+            chatUserStatusTracker, logger, IMServiceHandler.DEFAULT_NAMESPACE);
         assertNotNull("Failed to create IMServiceHandler", handler);
     }
 
@@ -152,23 +146,20 @@ public class IMServiceHandlerTest extends TestCase {
     }
 
     /**
-     * Accuracy test for <code>{@link IMServiceHandler#getServiceEngine()}</code>.
-     */
-    public void testMethodGetServiceEngine() {
-        assertNotNull("Failed to get service engine", handler.getServiceEngine());
-    }
-
-    /**
      * Accuracy test for <code>{@link IMServiceHandler#getResponder(ServiceElement,Category)}</code>
      * <code>{@link IMServiceHandler#clearAllResponders()}</code>
-     * and <code>{@link IMServiceHandler#setResponder(ServiceElement,Category,ServiceElement)}</code>.
+     * and
+     * <code>{@link IMServiceHandler#setResponder(ServiceElement,Category,ServiceElement)}</code>.
      */
     public void testMethodGetResponder_ServiceElement_Category() {
         ServiceElement requester = new ServiceElement();
-        requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(AccuracyTestHelper.REQ_USER_ID));
-        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(AccuracyTestHelper.SESSION_ID));
+        requester.setProperty(IMServiceHandler.USER_ID_KEY,
+            new Long(AccuracyTestHelper.REQ_USER_ID));
+        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(
+            AccuracyTestHelper.SESSION_ID));
         ServiceElement responder = new ServiceElement();
-        responder.setProperty(IMServiceHandler.USER_ID_KEY, new Long(AccuracyTestHelper.RES_USER_ID));
+        responder.setProperty(IMServiceHandler.USER_ID_KEY,
+            new Long(AccuracyTestHelper.RES_USER_ID));
         Category category = new Category(AccuracyTestHelper.CATEGORY_ID, "category");
 
         handler.setResponder(requester, category, responder);
@@ -199,28 +190,32 @@ public class IMServiceHandlerTest extends TestCase {
      * Accuracy test for <code>{@link IMServiceHandler#getChatSessionStatusTracker()}</code>.
      */
     public void testMethodGetChatSessionStatusTracker() {
-        assertNotNull("Failed to get the chat session status tracker", handler.getChatSessionStatusTracker());
+        assertNotNull("Failed to get the chat session status tracker", handler
+            .getChatSessionStatusTracker());
     }
 
     /**
      * Accuracy test for <code>{@link IMServiceHandler#getChatUserStatusTracker()}</code>.
      */
     public void testMethodGetChatUserStatusTracker() {
-        assertNotNull("Failed to get the chat user status tracker", handler.getChatUserStatusTracker());
+        assertNotNull("Failed to get the chat user status tracker", handler
+            .getChatUserStatusTracker());
     }
 
     /**
      * Accuracy test for <code>{@link IMServiceHandler#onServiced(ServiceEvent)}</code>.
-     *
      * @throws Exception
      *             if any error occurs
      */
     public void testMethodOnServiced_ServiceEvent_1() throws Exception {
         ServiceElement requester = new ServiceElement();
-        requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(AccuracyTestHelper.REQ_USER_ID));
-        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(AccuracyTestHelper.SESSION_ID));
+        requester.setProperty(IMServiceHandler.USER_ID_KEY,
+            new Long(AccuracyTestHelper.REQ_USER_ID));
+        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(
+            AccuracyTestHelper.SESSION_ID));
         ServiceElement responder = new ServiceElement();
-        responder.setProperty(IMServiceHandler.USER_ID_KEY, new Long(AccuracyTestHelper.RES_USER_ID));
+        responder.setProperty(IMServiceHandler.USER_ID_KEY,
+            new Long(AccuracyTestHelper.RES_USER_ID));
         Category category = new Category(AccuracyTestHelper.CATEGORY_ID, "category");
         serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, null);
         handler.setResponder(requester, category, responder);
@@ -234,14 +229,15 @@ public class IMServiceHandlerTest extends TestCase {
 
     /**
      * Accuracy test for <code>{@link IMServiceHandler#onServiced(ServiceEvent)}</code>.
-     *
      * @throws Exception
      *             if any error occurs
      */
     public void testMethodOnServiced_ServiceEvent_2() throws Exception {
         ServiceElement requester = new ServiceElement();
-        requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(AccuracyTestHelper.REQ_USER_ID));
-        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(AccuracyTestHelper.REQ_USER_ID));
+        requester.setProperty(IMServiceHandler.USER_ID_KEY,
+            new Long(AccuracyTestHelper.REQ_USER_ID));
+        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(
+            AccuracyTestHelper.REQ_USER_ID));
         Category category = new Category(AccuracyTestHelper.CATEGORY_ID, "category");
         serviceEvent = new ServiceEvent(serviceEngine, requester, null, category, null);
         handler.onServiced(serviceEvent);
@@ -254,16 +250,18 @@ public class IMServiceHandlerTest extends TestCase {
 
     /**
      * Accuracy test for <code>{@link IMServiceHandler#onToBeServiced(ServiceEvent)}</code>.
-     *
      * @throws Exception
      *             if any error occurs
      */
     public void testMethodOnToBeServiced_ServiceEvent() throws Exception {
         ServiceElement requester = new ServiceElement();
-        requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(AccuracyTestHelper.REQ_USER_ID));
-        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(AccuracyTestHelper.SESSION_ID));
+        requester.setProperty(IMServiceHandler.USER_ID_KEY,
+            new Long(AccuracyTestHelper.REQ_USER_ID));
+        requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(
+            AccuracyTestHelper.SESSION_ID));
         ServiceElement responder = new ServiceElement();
-        responder.setProperty(IMServiceHandler.USER_ID_KEY, new Long(AccuracyTestHelper.RES_USER_ID));
+        responder.setProperty(IMServiceHandler.USER_ID_KEY,
+            new Long(AccuracyTestHelper.RES_USER_ID));
         Category category = new Category(AccuracyTestHelper.CATEGORY_ID, "category");
         serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, null);
         handler.setResponder(requester, category, responder);
@@ -273,7 +271,6 @@ public class IMServiceHandlerTest extends TestCase {
 
     /**
      * Returns all tests.
-     *
      * @return all tests
      */
     public static Test suite() {

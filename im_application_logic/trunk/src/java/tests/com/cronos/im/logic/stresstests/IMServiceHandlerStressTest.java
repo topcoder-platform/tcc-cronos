@@ -15,7 +15,6 @@ import com.topcoder.service.ServiceEvent;
 
 /**
  * Stress Tests for IMServiceHandler.
- * 
  * @author kaqi072821
  * @version 1.0
  */
@@ -73,8 +72,8 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
 
     /**
      * Initializes the environment.
-     * 
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     protected void setUp() throws Exception {
         TestHelper.loadConfig();
@@ -85,8 +84,8 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
         chatSessionManager = new MockChatSessionManager();
         messenger = new MockMessenger();
         serviceEngine = new ServiceEngine();
-        handler = new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker, chatUserStatusTracker,
-                serviceEngine, RESPONDER_WAIT_TIME, CHECK_RESPONSE_INTERVAL, logger);
+        handler = new IMServiceHandler(chatSessionManager, messenger, chatSessionStatusTracker,
+            chatUserStatusTracker, RESPONDER_WAIT_TIME, CHECK_RESPONSE_INTERVAL, logger);
 
         ServiceElement requester = new ServiceElement();
         requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(TestHelper.USER_ID_ONE));
@@ -99,8 +98,8 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
 
     /**
      * Clears the test environment.
-     * 
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfig();
@@ -108,8 +107,8 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
 
     /**
      * Stress test for onToBeServiced(ServiceEvent serviceEvent).
-     * 
-     * @throws Exception to junit
+     * @throws Exception
+     *             to junit
      */
     public void testonToBeServiced() throws Exception {
         ServiceElement requester = new ServiceElement();
@@ -130,8 +129,8 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
 
     /**
      * Stress test for onServiced(ServiceEvent serviceEvent) when there is a responder.
-     * 
-     * @throws Exception to junit
+     * @throws Exception
+     *             to junit
      */
     public void testonServiced_WithResponder() throws Exception {
         ServiceElement requester = new ServiceElement();
@@ -145,15 +144,16 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
         beginTest();
         for (int i = 0; i < RUN_TIMES; i++) {
             handler.onServiced(serviceEvent);
-            chatSessionStatusTracker.setStatus(TestHelper.SESSION_ID_ONE, new Status(TestHelper.SESSION_STATUS_CLOSE));
+            chatSessionStatusTracker.setStatus(TestHelper.SESSION_ID_ONE, new Status(
+                TestHelper.SESSION_STATUS_CLOSE));
         }
         endTest("testonServiced_WithResponder()", TestHelper.MAX_TIME);
     }
 
     /**
      * Stress test for onServiced(ServiceEvent serviceEvent) when there are no responders.
-     * 
-     * @throws Exception to junit
+     * @throws Exception
+     *             to junit
      */
     public void testonServiced_NoResponder() throws Exception {
         ServiceElement requester = new ServiceElement();

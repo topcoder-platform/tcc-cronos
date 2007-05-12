@@ -22,7 +22,6 @@ import junit.framework.TestCase;
  * <p>
  * Demo for this component.
  * </p>
- *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -30,7 +29,6 @@ public class Demo extends TestCase {
 
     /**
      * Initialize the environment.
-     *
      * @throws Exception
      *             to JUnit
      */
@@ -40,7 +38,6 @@ public class Demo extends TestCase {
 
     /**
      * Clear the test environment.
-     *
      * @throws Exception
      *             to JUnit
      */
@@ -50,7 +47,6 @@ public class Demo extends TestCase {
 
     /**
      * Demo for usage of UserStatusEventListener and SessionStatusEventListener.
-     *
      * @throws Exception
      *             to JUnit
      */
@@ -65,12 +61,13 @@ public class Demo extends TestCase {
         IMLogger logger = new IMLogger(new SimpleDateFormat());
 
         // Initialize the user status event listener.
-        ChatStatusEventListener userStatusEventListener = new UserStatusEventListener(userStatusTracker,
-                msgPool, logger);
+        ChatStatusEventListener userStatusEventListener = new UserStatusEventListener(
+            userStatusTracker, msgPool, logger);
 
         userStatusTracker.addChatStatusEventListener(userStatusEventListener);
 
-        // When the user status is change, the userStatusEventListener.statusChanged will be invoked.
+        // When the user status is change, the userStatusEventListener.statusChanged will be
+        // invoked.
 
         // Demo the usage of SessionStatusEventListener
         ChatSessionStatusTracker sessionStatusTracker = new ChatSessionStatusTracker();
@@ -80,7 +77,7 @@ public class Demo extends TestCase {
 
         // Initialize the session status event listener.
         ChatStatusEventListener sessionStatusEventListener = new SessionStatusEventListener(
-                sessionStatusTracker, sessionManager, messenger, logger);
+            sessionStatusTracker, sessionManager, messenger, logger);
 
         sessionStatusTracker.addChatStatusEventListener(sessionStatusEventListener);
 
@@ -90,31 +87,27 @@ public class Demo extends TestCase {
 
     /**
      * Demo for usage of UserSessionEventListener.
-     *
      * @throws Exception
      *             to JUnit
      */
     public void test_demo_user_session_event_listener() throws Exception {
         ChatSessionManager sessionManager = new MockChatSessionManager();
 
-        UserSessionEventListener sessionEventListener = new UserSessionEventListener(sessionManager,
-                new MockMessenger(), new ChatSessionStatusTracker(), null);
+        UserSessionEventListener sessionEventListener = new UserSessionEventListener(
+            sessionManager, new MockMessenger(), new ChatSessionStatusTracker(), null);
 
         sessionManager.addChatSessionEventListener(sessionEventListener);
     }
 
     /**
      * Demo for usage of IMServiceHandler.
-     *
      * @throws Exception
      *             to JUnit
      */
     public void test_demo_service_handler() throws Exception {
-        ServiceEngine serviceEngine = new ServiceEngine();
 
         IMServiceHandler serviceHandler = new IMServiceHandler(new MockChatSessionManager(),
-                new MockMessenger(), new ChatSessionStatusTracker(), new ChatUserStatusTracker(),
-                serviceEngine, null);
+            new MockMessenger(), new ChatSessionStatusTracker(), new ChatUserStatusTracker(), null);
         // manipulate service handler
         serviceHandler.getChatSessionManager();
         serviceHandler.clearAllResponders();
@@ -124,7 +117,6 @@ public class Demo extends TestCase {
 
     /**
      * Demo for usage of MessagePoolDetector.
-     *
      * @throws Exception
      *             to JUnit
      */
@@ -139,8 +131,8 @@ public class Demo extends TestCase {
         // run from 0 to 11), and will run once a day, at 1 am, everyday until
         // the 10th of March 2004 (inclusive).
         Job job = new Job("Message Pool Detector", new GregorianCalendar(2003, 04, 10, 01, 00, 00),
-                new GregorianCalendar(2004, 04, 10, 01, 00, 00), 1, Calendar.DATE,
-                Scheduler.JOB_TYPE_EXTERNAL, "java com.cronos.im.logic.MessagePoolDetector");
+            new GregorianCalendar(2004, 04, 10, 01, 00, 00), 1, Calendar.DATE,
+            Scheduler.JOB_TYPE_EXTERNAL, "java com.cronos.im.logic.MessagePoolDetector");
         myScheduler.addJob(job);
 
         // Start the scheduler.
