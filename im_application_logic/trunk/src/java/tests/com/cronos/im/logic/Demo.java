@@ -10,8 +10,11 @@ import com.topcoder.chat.status.ChatSessionStatusTracker;
 import com.topcoder.chat.status.ChatUserStatusTracker;
 import com.topcoder.chat.status.ChatStatusEventListener;
 import com.topcoder.service.ServiceEngine;
-import com.topcoder.util.scheduler.Scheduler;
-import com.topcoder.util.scheduler.Job;
+import com.topcoder.util.scheduler.scheduling.persistence.ConfigManagerScheduler;
+import com.topcoder.util.scheduler.scheduling.Job;
+import com.topcoder.util.scheduler.scheduling.Day;
+import com.topcoder.util.scheduler.scheduling.JobType;
+import com.topcoder.util.scheduler.scheduling.Scheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -123,20 +126,23 @@ public class Demo extends TestCase {
     public void test_demo_message_pool_detector() throws Exception {
         // Instantiate the Scheduler, passing it the name of the config file
         // containing job data.
-        Scheduler myScheduler = new Scheduler("com.topcoder.util.scheduler");
+        Scheduler myScheduler = new ConfigManagerScheduler("com.topcoder.util.scheduler");
 
         // For first time runs, add new jobs.
         // This job will start at 1 am on the 10th of March (GregorianCalendar
         // months
         // run from 0 to 11), and will run once a day, at 1 am, everyday until
         // the 10th of March 2004 (inclusive).
-        Job job = new Job("Message Pool Detector", new GregorianCalendar(2003, 04, 10, 01, 00, 00),
-            new GregorianCalendar(2004, 04, 10, 01, 00, 00), 1, Calendar.DATE,
-            Scheduler.JOB_TYPE_EXTERNAL, "java com.cronos.im.logic.MessagePoolDetector");
+        Job job = new Job("Message Pool Detector",
+            JobType.JOB_TYPE_EXTERNAL, "java com.cronos.im.logic.MessagePoolDetector");
+        job.setStartDate(new GregorianCalendar(2003, 04, 10, 01, 00, 00));
+        job.setStopDate(new GregorianCalendar(2004, 04, 10, 01, 00, 00));
+        job.setIntervalUnit(new Day());
+
         myScheduler.addJob(job);
 
         // Start the scheduler.
-        myScheduler.start();
+        job.start();
     }
 
 }
