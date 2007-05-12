@@ -23,25 +23,23 @@ import java.util.Collections;
 
 /**
  * <p>
- * This class handles main service logic for the IM application. This class implements the ServiceHandler
- * interface and will be plugged into the ServiceEngine.
+ * This class handles main service logic for the IM application. This class implements the
+ * ServiceHandler interface and will be plugged into the ServiceEngine.
  * </p>
  * <p>
  * There are two phases of service logic in this class:
  * </p>
  * <p>
- * 1. To-be-serviced logic happens when both requester and responder is available for specific category.
+ * 1. To-be-serviced logic happens when both requester and responder is available for specific
+ * category.
  * </p>
  * <p>
  * 2. Serviced logic deals with the actual service logic.
  * </p>
- * 
  * <p>
- * Thread-safety: This class is thread-safe. Although the responderMap variable may be changed, but it is
- * synchronized and thus thread-safe.
+ * Thread-safety: This class is thread-safe. Although the responderMap variable may be changed, but
+ * it is synchronized and thus thread-safe.
  * </p>
- * 
- * 
  * @author justforplay, TCSDEVELOPER
  * @version 1.0
  */
@@ -49,8 +47,8 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * <p>
-     * Represents the default namespace to load the configuration when no namespace is provided in the
-     * constructor.
+     * Represents the default namespace to load the configuration when no namespace is provided in
+     * the constructor.
      * </p>
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.im.logic.IMServiceHandler";
@@ -85,25 +83,16 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * <p>
-     * Represents the time interval in milliseconds for the onToBeServiced() to sleep when no responder is
-     * found. It is non-negative.
+     * Represents the time interval in milliseconds for the onToBeServiced() to sleep when no
+     * responder is found. It is non-negative.
      * </p>
      */
     private final long checkResponseInterval;
 
     /**
      * <p>
-     * Represents the service engine used in this handler. This is used to get the responders in the same
-     * category with the requested responder. It also refers to which ServiceEngine this handler is plugged
-     * into. It is not null.
-     * </p>
-     */
-    private final ServiceEngine serviceEngine;
-
-    /**
-     * <p>
-     * Represents the chat session manager used in this handler. This is used to request user to the chat
-     * session and add user to the chat session. It is not null.
+     * Represents the chat session manager used in this handler. This is used to request user to the
+     * chat session and add user to the chat session. It is not null.
      * </p>
      */
     private final ChatSessionManager chatSessionManager;
@@ -117,32 +106,32 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * <p>
-     * Represents the chat session status tracker used in this handler. This is to change the session status
-     * to be OPEN when the responder is found. It is not null.
+     * Represents the chat session status tracker used in this handler. This is to change the
+     * session status to be OPEN when the responder is found. It is not null.
      * </p>
      */
     private final ChatSessionStatusTracker chatSessionStatusTracker;
 
     /**
      * <p>
-     * Represents the chat user status tracker used in this handler. This is used to change user status to be
-     * OFFLINE when no responser is found for the service. It is not null.
+     * Represents the chat user status tracker used in this handler. This is used to change user
+     * status to be OFFLINE when no responser is found for the service. It is not null.
      * </p>
      */
     private final ChatUserStatusTracker chatUserStatusTracker;
 
     /**
      * <p>
-     * Represents the responder map. The key is requester and category(ServiceElement is used to store these
-     * two values) and the value is responder(ServiceElement).
+     * Represents the responder map. The key is requester and category(ServiceElement is used to
+     * store these two values) and the value is responder(ServiceElement).
      * </p>
      */
     private final Map responderMap = Collections.synchronizedMap(new HashMap());
 
     /**
      * <p>
-     * Represents the logger instance of this event listener. This variable is used to log the operation in
-     * the statusChanged method.
+     * Represents the logger instance of this event listener. This variable is used to log the
+     * operation in the statusChanged method.
      * </p>
      * <p>
      * If it is null, then no logging is done.
@@ -155,8 +144,6 @@ public class IMServiceHandler implements ServiceHandler {
      * Constructor to create service handler with given parameters. "responder_wait_time" and
      * "check_response_interval" are loaded from default namespace.
      * </p>
-     * 
-     * 
      * @param sessionManager
      *            chat session manager. Can't be null
      * @param messenger
@@ -165,8 +152,6 @@ public class IMServiceHandler implements ServiceHandler {
      *            chat session status tracker used to update the session status. Can't be null.
      * @param userStatusTracker
      *            chat user status tracker used to update the user status. Can't be null.
-     * @param serviceEngine
-     *            service engine where this handler is plugged in. Can't be null.
      * @param logger
      *            logger used to log the messages. Can be null.
      * @exception IllegalArgumentException
@@ -176,10 +161,10 @@ public class IMServiceHandler implements ServiceHandler {
      *             if the configuration is incorrect.
      */
     public IMServiceHandler(ChatSessionManager sessionManager, Messenger messenger,
-            ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker userStatusTracker,
-            ServiceEngine serviceEngine, IMLogger logger) throws IMConfigurationException {
-        this(sessionManager, messenger, sessionStatusTracker, userStatusTracker, serviceEngine, logger,
-                DEFAULT_NAMESPACE);
+        ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker userStatusTracker,
+        IMLogger logger) throws IMConfigurationException {
+        this(sessionManager, messenger, sessionStatusTracker, userStatusTracker, logger,
+            DEFAULT_NAMESPACE);
     }
 
     /**
@@ -187,8 +172,6 @@ public class IMServiceHandler implements ServiceHandler {
      * Construcotr to create service handler with given parameters. "responder_wait_time" and
      * "check_response_interval" are loaded from the given namespace.
      * </p>
-     * 
-     * 
      * @param sessionManager
      *            chat session manager. Can't be null
      * @param messenger
@@ -197,8 +180,6 @@ public class IMServiceHandler implements ServiceHandler {
      *            chat session status tracker used to update the session status. Can't be null.
      * @param userStatusTracker
      *            chat user status tracker used to update the user status. Can't be null.
-     * @param serviceEngine
-     *            service engine where this handler is plugged in. Can't be null.
      * @param logger
      *            logger used to log the messages. Can be null.
      * @param namespace
@@ -210,16 +191,15 @@ public class IMServiceHandler implements ServiceHandler {
      *             if the configuration is incorrect.
      */
     public IMServiceHandler(ChatSessionManager sessionManager, Messenger messenger,
-            ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker userStatusTracker,
-            ServiceEngine serviceEngine, IMLogger logger, String namespace) throws IMConfigurationException {
-        this(sessionManager, messenger, sessionStatusTracker, userStatusTracker, serviceEngine,
-                getConfigLong(namespace, "responder_wait_time"), getConfigLong(namespace,
-                        "check_response_interval"), logger);
+        ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker userStatusTracker,
+        IMLogger logger, String namespace) throws IMConfigurationException {
+        this(sessionManager, messenger, sessionStatusTracker, userStatusTracker, getConfigLong(
+            namespace, "responder_wait_time"), getConfigLong(namespace, "check_response_interval"),
+            logger);
     }
 
     /**
      * Get configuration long value.
-     * 
      * @param namespace
      *            namespace to get configuration from
      * @param prop
@@ -228,7 +208,8 @@ public class IMServiceHandler implements ServiceHandler {
      * @throws IMConfigurationException
      *             if any error occurred
      */
-    private static long getConfigLong(String namespace, String prop) throws IMConfigurationException {
+    private static long getConfigLong(String namespace, String prop)
+        throws IMConfigurationException {
         IMHelper.checkString(namespace, "namespace");
         long res;
         try {
@@ -246,8 +227,6 @@ public class IMServiceHandler implements ServiceHandler {
      * <p>
      * Construcotr to create service handler with given parameters.
      * </p>
-     * 
-     * 
      * @param sessionManager
      *            chat session manager. Can't be null
      * @param messenger
@@ -256,12 +235,12 @@ public class IMServiceHandler implements ServiceHandler {
      *            chat session status tracker used to update the session status. Can't be null.
      * @param userStatusTracker
      *            chat user status tracker used to update the user status. Can't be null.
-     * @param serviceEngine
-     *            service engine where this handler is plugged in. Can't be null.
      * @param responderWaitTime
-     *            responder waiting time when requesting the responder to service. Should not be negative.
+     *            responder waiting time when requesting the responder to service. Should not be
+     *            negative.
      * @param checkResponseInterval
-     *            time interval used to sleep the thread when checking the response. Can't be negative value.
+     *            time interval used to sleep the thread when checking the response. Can't be
+     *            negative value.
      * @param logger
      *            logger used to log the messages. Can be null.
      * @exception IllegalArgumentException
@@ -269,13 +248,12 @@ public class IMServiceHandler implements ServiceHandler {
      *                checkResponseInterval is negative.
      */
     public IMServiceHandler(ChatSessionManager sessionManager, Messenger messenger,
-            ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker userStatusTracker,
-            ServiceEngine serviceEngine, long responderWaitTime, long checkResponseInterval, IMLogger logger) {
+        ChatSessionStatusTracker sessionStatusTracker, ChatUserStatusTracker userStatusTracker,
+        long responderWaitTime, long checkResponseInterval, IMLogger logger) {
         IMHelper.checkNull(sessionManager, "sessionManager");
         IMHelper.checkNull(messenger, "messenger");
         IMHelper.checkNull(sessionStatusTracker, "sessionStatusTracker");
         IMHelper.checkNull(userStatusTracker, "userStatusTracker");
-        IMHelper.checkNull(serviceEngine, "serviceEngine");
         if (checkResponseInterval < 0) {
             throw new IllegalArgumentException("Check response interval can not be negative.");
         }
@@ -287,29 +265,26 @@ public class IMServiceHandler implements ServiceHandler {
         this.chatUserStatusTracker = userStatusTracker;
         this.logger = logger;
         this.messenger = messenger;
-        this.serviceEngine = serviceEngine;
         this.checkResponseInterval = checkResponseInterval;
         this.responderWaitTime = responderWaitTime;
     }
 
     /**
      * <p>
-     * Invoked in the "To-Be-Serviced" phase. The logic is as following (such logic is run with a background
-     * thread):
+     * Invoked in the "To-Be-Serviced" phase. The logic is as following (such logic is run with a
+     * background thread):
      * </p>
      * <p>
      * 1. Request the responder to the session.
      * </p>
      * <p>
-     * 2. If the responder does not accept the request in a configurable period of time, request the remaining
-     * responders of the same category to the session.
+     * 2. If the responder does not accept the request in a configurable period of time, request the
+     * remaining responders of the same category to the session.
      * </p>
      * <p>
-     * 3. If still no responder accepts the request in that period of time, move it to the servicing state
-     * with no responder.
+     * 3. If still no responder accepts the request in that period of time, move it to the servicing
+     * state with no responder.
      * </p>
-     * 
-     * 
      * @param serviceEvent
      *            service event object used. Can't be null.
      * @throws IllegalArgumentException
@@ -328,12 +303,9 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * This is a thread used in the onToBeServiced method to do preparation for services.
-     * 
      * <p>
      * Thread-safety: This class is thread-safe because it is immutable.
      * </p>
-     * 
-     * 
      * @author justforplay, TCSDEVELOPER
      * @version 1.0
      */
@@ -345,7 +317,6 @@ public class IMServiceHandler implements ServiceHandler {
 
         /**
          * Constructor to create a thread to do preparation for services.
-         * 
          * @param serviceEvent
          *            the service event used in the body of this thread
          */
@@ -361,24 +332,25 @@ public class IMServiceHandler implements ServiceHandler {
          * 1. Request the responder to the session.
          * </p>
          * <p>
-         * 2. If the responder does not accept the request in a configurable period of time, request the
-         * remaining responders of the same category to the session.
+         * 2. If the responder does not accept the request in a configurable period of time, request
+         * the remaining responders of the same category to the session.
          * </p>
          * <p>
-         * 3. If still no responder accepts the request in that period of time, move it to the servicing state
-         * with no responder.
+         * 3. If still no responder accepts the request in that period of time, move it to the
+         * servicing state with no responder.
          * </p>
          */
         public void run() {
             try {
                 // get sessionId, requesterUserId, responderUserId.
-                long sessionId = ((Long) serviceEvent.getRequester().getProperty(SESSION_ID_KEY)).longValue();
+                long sessionId = ((Long) serviceEvent.getRequester().getProperty(SESSION_ID_KEY))
+                    .longValue();
                 long requesterUserId = ((Long) serviceEvent.getRequester().getProperty(USER_ID_KEY))
-                        .longValue();
+                    .longValue();
                 long responderUserId = ((Long) serviceEvent.getResponder().getProperty(USER_ID_KEY))
-                        .longValue();
-                logger.log(Level.INFO, "IMServiceHandler.onToBeServiced", new long[] { requesterUserId,
-                        responderUserId }, new long[] { sessionId });
+                    .longValue();
+                logger.log(Level.INFO, "IMServiceHandler.onToBeServiced", new long[] {
+                    requesterUserId, responderUserId}, new long[] {sessionId});
                 ServiceElement key = new ServiceElement();
                 key.setProperty(USER_ID_KEY, new Long(requesterUserId));
                 key.setProperty(CATEGORY_KEY, serviceEvent.getCategory());
@@ -388,7 +360,8 @@ public class IMServiceHandler implements ServiceHandler {
                 // get chat session
                 ChatSession chatSession = chatSessionManager.getSession(sessionId);
                 long[] requestedUsers = chatSession.getRequestedUsers();
-                // Ignore any exception in this step, which may come from the unavilable of responder.
+                // Ignore any exception in this step, which may come from the unavilable of
+                // responder.
                 try {
                     // request user to session
                     chatSessionManager.requestUserToSession(chatSession, responderUserId);
@@ -399,7 +372,8 @@ public class IMServiceHandler implements ServiceHandler {
                             Thread.sleep(checkResponseInterval);
                         }
                         first = false;
-                        // check whether responderUserId is in the chatSession.getRequesterUsers lists.
+                        // check whether responderUserId is in the chatSession.getRequesterUsers
+                        // lists.
                         if (IMHelper.contains(requestedUsers, responderUserId)) {
                             // responder is found, then return
                             return;
@@ -409,14 +383,15 @@ public class IMServiceHandler implements ServiceHandler {
                     // log the exception, but do not block the rest steps
                     if (logger != null) {
                         logger.log(Level.ERROR, "Responder " + responderUserId
-                                + " fail to handle the request. " + e.getMessage());
+                            + " fail to handle the request. " + e.getMessage());
                     }
                 }
 
                 // Request all the responders in the same category together.
                 // get current time
                 beginTime = System.currentTimeMillis();
-                ServiceElement[] responders = serviceEngine.getResponders(serviceEvent.getCategory());
+                ServiceElement[] responders = serviceEvent.getServiceEngine().getResponders(
+                    serviceEvent.getCategory());
                 for (int i = 0; i < responders.length; i++) {
                     // The responder that has been tried before should be excluded in this loop.
                     // I.e. the responder from the ServiceEvent.getResponder() should be excluded.
@@ -441,13 +416,13 @@ public class IMServiceHandler implements ServiceHandler {
                     }
                 } while (System.currentTimeMillis() - beginTime < responderWaitTime);
                 // If there is no responder.
-                serviceEngine.startService(serviceEvent.getRequester(), null, serviceEvent.getCategory());
+                serviceEvent.getServiceEngine().startService(serviceEvent.getRequester(), null,
+                    serviceEvent.getCategory());
             } catch (Exception e) {
                 // log the exception
                 if (logger != null) {
-                    logger
-                            .log(Level.ERROR, "Fail to perform the onToBeServiced operation. "
-                                    + e.getMessage());
+                    logger.log(Level.ERROR, "Fail to perform the onToBeServiced operation. "
+                        + e.getMessage());
                 }
             }
         }
@@ -455,28 +430,28 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * <p>
-     * This method is invoked when both requester and responder becomes availabe for the category. The logic
-     * is as following:
+     * This method is invoked when both requester and responder becomes availabe for the category.
+     * The logic is as following:
      * </p>
      * <p>
      * Invoked when the service is started.
      * </p>
      * <p>
-     * 1. If there is a responder, add the responder to session, and update the session status to OPEN. Post
-     * Session Unavailable Message to other responders requested before. Depending on the implementation, this
-     * should also notify the handler that some responder accepts the request.
+     * 1. If there is a responder, add the responder to session, and update the session status to
+     * OPEN. Post Session Unavailable Message to other responders requested before. Depending on the
+     * implementation, this should also notify the handler that some responder accepts the request.
      * </p>
      * <p>
-     * 2. If there is no responder, post Session Unavailable Message to the requester to notify him service is
-     * not available. Remove the requester from session. Change the user status to OFFLINE.
+     * 2. If there is no responder, post Session Unavailable Message to the requester to notify him
+     * service is not available. Remove the requester from session. Change the user status to
+     * OFFLINE.
      * </p>
-     * 
-     * 
      * @param serviceEvent
      *            service event object used in this phase. Can't be null. And the responder in this
      *            ServiceEvent should be the one that is in the responderMap.
      * @throws IllegalArgumentException
-     *             if the argument is null or the responder is not the one that is in the responderMap
+     *             if the argument is null or the responder is not the one that is in the
+     *             responderMap
      * @throws ServiceHandleException
      *             if any exception occurs.
      */
@@ -485,70 +460,74 @@ public class IMServiceHandler implements ServiceHandler {
 
         try {
             // get sessionId, requesterUserId
-            long sessionId = ((Long) serviceEvent.getRequester().getProperty(SESSION_ID_KEY)).longValue();
-            long requesterUserId = ((Long) serviceEvent.getRequester().getProperty(USER_ID_KEY)).longValue();
+            long sessionId = ((Long) serviceEvent.getRequester().getProperty(SESSION_ID_KEY))
+                .longValue();
+            long requesterUserId = ((Long) serviceEvent.getRequester().getProperty(USER_ID_KEY))
+                .longValue();
 
             // get chat session
             ChatSession chatSession = chatSessionManager.getSession(sessionId);
 
             if (serviceEvent.getResponder() == null) {
-                logger.log(Level.INFO, "IMServiceHandler.onServiced", new long[] { requesterUserId },
-                        new long[] { sessionId });
+                logger.log(Level.INFO, "IMServiceHandler.onServiced", new long[] {requesterUserId},
+                    new long[] {sessionId});
 
                 SessionUnavailableMessage unavailableMsg = new SessionUnavailableMessage();
                 unavailableMsg.setSender(new Long(-1));
                 unavailableMsg.setChatSessionId(sessionId);
                 messenger.postMessage(unavailableMsg, requesterUserId);
                 if (logger != null) {
-                    logger.log(Level.INFO, "Post SessionUnavailableMessage to User", new String[] { "User - "
-                            + requesterUserId });
+                    logger.log(Level.INFO, "Post SessionUnavailableMessage to User",
+                        new String[] {"User - " + requesterUserId});
                 }
 
                 chatSessionManager.removeUserFromSession(chatSession, requesterUserId);
                 if (logger != null) {
-                    logger.log(Level.INFO, "Remove User From Session", new String[] { "User - "
-                            + requesterUserId });
+                    logger.log(Level.INFO, "Remove User From Session", new String[] {"User - "
+                        + requesterUserId});
                 }
 
                 // 103 - OFFLINE.
                 Status offlineStatus = new Status(IMHelper.USER_STATUS_OFFLINE);
                 chatUserStatusTracker.setStatus(requesterUserId, offlineStatus);
                 if (logger != null) {
-                    logger.log(Level.INFO, "Change User Status to OFFLINE", new String[] { "User - "
-                            + requesterUserId });
+                    logger.log(Level.INFO, "Change User Status to OFFLINE", new String[] {"User - "
+                        + requesterUserId});
                 }
             } else {
                 // get responderUserId
                 long responderUserId = ((Long) serviceEvent.getResponder().getProperty(USER_ID_KEY))
-                        .longValue();
-                logger.log(Level.INFO, "IMServiceHandler.onServiced", new long[] { requesterUserId,
-                        responderUserId }, new long[] { sessionId });
+                    .longValue();
+                logger.log(Level.INFO, "IMServiceHandler.onServiced", new long[] {requesterUserId,
+                    responderUserId}, new long[] {sessionId});
 
                 ServiceElement key = new ServiceElement();
                 key.setProperty(USER_ID_KEY, new Long(requesterUserId));
                 key.setProperty(CATEGORY_KEY, serviceEvent.getCategory());
-                // if the responder is not the same with that in responderMap, throw IllegalArgumentException.
+                // if the responder is not the same with that in responderMap, throw
+                // IllegalArgumentException.
                 if (responderUserId != ((Long) ((ServiceElement) this.responderMap.get(key))
-                        .getProperty(USER_ID_KEY)).longValue()) {
+                    .getProperty(USER_ID_KEY)).longValue()) {
                     throw new IllegalArgumentException(
-                            "The responder user id is not the same as that passed to the onToBeServiced method.");
+                        "The responder user id is not the same as that passed to the onToBeServiced method.");
                 }
 
                 chatSessionManager.addUserToSession(chatSession, responderUserId);
                 if (logger != null) {
-                    logger.log(Level.INFO, "Add User to Session", new String[] { "Session - " + sessionId,
-                            "User - " + responderUserId });
+                    logger.log(Level.INFO, "Add User to Session", new String[] {
+                        "Session - " + sessionId, "User - " + responderUserId});
                 }
 
-                // we need to reload the chat session, for it is changed after we add user to session.
+                // we need to reload the chat session, for it is changed after we add user to
+                // session.
                 chatSession = chatSessionManager.getSession(sessionId);
 
                 // 203 - OPEN
                 Status openStatus = new Status(IMHelper.SESSION_STATUS_OPEN);
                 chatSessionStatusTracker.setStatus(sessionId, openStatus);
                 if (logger != null) {
-                    logger.log(Level.INFO, "Change Session Status to OPEN", new String[] { "Session - "
-                            + sessionId });
+                    logger.log(Level.INFO, "Change Session Status to OPEN",
+                        new String[] {"Session - " + sessionId});
                 }
 
                 long[] requestedUsers = chatSession.getRequestedUsers();
@@ -559,7 +538,7 @@ public class IMServiceHandler implements ServiceHandler {
                     messenger.postMessage(unavailableMsg2, requestedUsers[i]);
                     if (logger != null) {
                         logger.log(Level.INFO, "Post SessionUnavailableMessage to User",
-                                new String[] { "User - " + requestedUsers[i] });
+                            new String[] {"User - " + requestedUsers[i]});
                     }
                 }
             }
@@ -585,14 +564,12 @@ public class IMServiceHandler implements ServiceHandler {
      * <p>
      * Null value is returned if no responder is found.
      * </p>
-     * 
-     * 
      * @param requester
      *            requester of the service. Can't be null.
      * @param category
      *            category of the service. Can't be null.
-     * @return responder of the service for the requester and category. Null is returned if no responder is
-     *         found.
+     * @return responder of the service for the requester and category. Null is returned if no
+     *         responder is found.
      * @exception IllegalArgumentException
      *                if the requester or category is null.
      */
@@ -608,7 +585,6 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * Sets the corresponding responder for the requester and category.
-     * 
      * @param requester
      *            requester of the service. Can't be null.
      * @param category
@@ -631,28 +607,11 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * <p>
-     * Gets service engine instance where this handler is plugged in.
-     * </p>
-     * <p>
-     * The return value will never be null.
-     * </p>
-     * 
-     * 
-     * @return service engine used in this servcie handler.
-     */
-    public ServiceEngine getServiceEngine() {
-        return this.serviceEngine;
-    }
-
-    /**
-     * <p>
      * Gets chat session manager instance used in this service handler.
      * </p>
      * <p>
      * The return value will never be null.
      * </p>
-     * 
-     * 
      * @return chat session manager instance used in this service handler.
      */
     public ChatSessionManager getChatSessionManager() {
@@ -666,8 +625,6 @@ public class IMServiceHandler implements ServiceHandler {
      * <p>
      * The return value will never be null.
      * </p>
-     * 
-     * 
      * @return messenger used in this service handler.
      */
     public Messenger getMessenger() {
@@ -681,8 +638,6 @@ public class IMServiceHandler implements ServiceHandler {
      * <p>
      * The return value will never be null.
      * </p>
-     * 
-     * 
      * @return chat session status tracker used in this service handler.
      */
     public ChatSessionStatusTracker getChatSessionStatusTracker() {
@@ -696,8 +651,6 @@ public class IMServiceHandler implements ServiceHandler {
      * <p>
      * The return value will never be null.
      * </p>
-     * 
-     * 
      * @return chat user status tracker used in this service handler.
      */
     public ChatUserStatusTracker getChatUserStatusTracker() {
@@ -706,14 +659,12 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * <p>
-     * Gets responder wait time in milliseconds. This is the waiting time for a responder to accept the
-     * requester.
+     * Gets responder wait time in milliseconds. This is the waiting time for a responder to accept
+     * the requester.
      * </p>
      * <p>
      * The return value will be not-negative long value.
      * </p>
-     * 
-     * 
      * @return responder wait time.
      */
     public long getResponderWaitTime() {
@@ -722,15 +673,14 @@ public class IMServiceHandler implements ServiceHandler {
 
     /**
      * <p>
-     * Gets time interval in milliseconds for the thread to sleep when checking whether a responder is found.
+     * Gets time interval in milliseconds for the thread to sleep when checking whether a responder
+     * is found.
      * </p>
      * <p>
      * The return value will be not-negative long value.
      * </p>
-     * 
-     * 
-     * @return time interval in milliseconds for the thread to sleep when checking whether a responder is
-     *         found
+     * @return time interval in milliseconds for the thread to sleep when checking whether a
+     *         responder is found
      */
     public long getCheckResponseInterval() {
         return this.checkResponseInterval;
