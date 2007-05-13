@@ -89,17 +89,17 @@
     <property name="base_exception.jar.name" value="base_exception.jar"/>
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
-    
+
     <property name="configuration_manager.version" value="2.1.5"/>
     <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
-    
+
     <property name="db_connection_factory.version" value="1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
-    
+
     <property name="guid_generator.version" value="1.0"/>
     <property name="guid_generator.jar.name" value="guid_generator.jar"/>
     <property name="guid_generator.path" value="guid_generator/${guid_generator.version}"/>
@@ -180,7 +180,7 @@
         <pathelement location="${time_tracker_common.jar}" />
         <pathelement location="${time_tracker_invoice.jar}" />
         <pathelement location="${time_tracker_reject_reason.jar}" />
-        
+
         <pathelement location="${junit.jar}" />
         <pathelement location="${ifxjdbc.jar}" />
         <pathelement location="${j2ee.jar}" />
@@ -251,17 +251,17 @@
     </target>
 
     <target name="test" depends="compile_tests">
-        <mkdir dir="${testlogdir}"/>		
+        <mkdir dir="${testlogdir}"/>
     	<mkdir dir="${instrumented.dir}"/>
     	<delete file="${cobertura.datafile}" />
-    	<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+        <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
             <!-- all included -->
             <fileset dir="${build_classdir}">
                 <include name="**/*.class" />
             </fileset>
-    	</cobertura-instrument>
+        </cobertura-instrument>
         <junit fork="true" haltonerror="false">
-	
+
         <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
 
         <classpath location="${instrumented.dir}" />
@@ -273,7 +273,7 @@
             <formatter type="plain" usefile="true"/>
             <formatter type="xml" usefile="true"/>
         </test>
-            
+
         </junit>
     </target>
 
@@ -323,9 +323,10 @@
             footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
             bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://www.topcodersoftware.com'&gt;www.topcodersoftware.com&lt;/a&gt;&lt;/font&gt;"
             stylesheetfile="${javadocsdir}/stylesheet.css"
-            verbose="${verbose}">
+            verbose="${verbose}"
+            >
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
