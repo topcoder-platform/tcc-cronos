@@ -259,8 +259,8 @@
         <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
             <!-- all included -->
             <fileset dir="${build_classdir}">
-            <include name="**/*.class" />
-        </fileset>
+                <include name="**/*.class" />
+            </fileset>
         </cobertura-instrument>
 
         <junit fork="true" haltonerror="false">
@@ -293,10 +293,10 @@
         <mkdir dir="${reports}"/>
 
         <junitreport todir="${reports}">
-          <fileset dir="${testlogdir}">
-            <include name="*.xml"/>
-          </fileset>
-          <report format="frames" todir="${reports}"/>
+            <fileset dir="${testlogdir}">
+                <include name="*.xml"/>
+            </fileset>
+            <report format="frames" todir="${reports}"/>
         </junitreport>
 
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
