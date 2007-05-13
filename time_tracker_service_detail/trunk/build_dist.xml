@@ -71,14 +71,15 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
-
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+
     <path id="cobertura.classpath">
         <fileset dir="${cobertura.dir}">
             <include name="cobertura.jar"/>
             <include name="lib/**/*.jar"/>
         </fileset>
     </path>
+
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
     <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser"/>
     <property name="instrumented.dir" value="${builddir}/instrumented"/>
@@ -97,20 +98,17 @@
     <property name="configuration_manager.version" value="2.1.5"/>
     <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
-    <property name="configuration_manager.jar"
-              value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
 
     <property name="database_abstraction.version" value="1.0"/>
     <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
     <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
-    <property name="database_abstraction.jar"
-              value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
+    <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
 
     <property name="db_connection_factory.version" value="1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
-    <property name="db_connection_factory.jar"
-              value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
+    <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
 
     <property name="id_generator.version" value="3.0"/>
     <property name="id_generator.jar.name" value="id_generator.jar"/>
@@ -141,57 +139,47 @@
     <property name="time_tracker_audit.version" value="3.2"/>
     <property name="time_tracker_audit.jar.name" value="time_tracker_audit.jar"/>
     <property name="time_tracker_audit.path" value="time_tracker_audit/${time_tracker_audit.version}"/>
-    <property name="time_tracker_audit.jar"
-              value="${tcs_libdir}/${time_tracker_audit.path}/${time_tracker_audit.jar.name}"/>
+    <property name="time_tracker_audit.jar" value="${tcs_libdir}/${time_tracker_audit.path}/${time_tracker_audit.jar.name}"/>
 
     <property name="time_tracker_base_entry.version" value="3.2"/>
     <property name="time_tracker_base_entry.jar.name" value="time_tracker_base_entry.jar"/>
     <property name="time_tracker_base_entry.path" value="time_tracker_base_entry/${time_tracker_base_entry.version}"/>
-    <property name="time_tracker_base_entry.jar"
-              value="${tcs_libdir}/${time_tracker_base_entry.path}/${time_tracker_base_entry.jar.name}"/>
+    <property name="time_tracker_base_entry.jar" value="${tcs_libdir}/${time_tracker_base_entry.path}/${time_tracker_base_entry.jar.name}"/>
 
     <property name="time_tracker_common.version" value="3.1"/>
     <property name="time_tracker_common.jar.name" value="time_tracker_common.jar"/>
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
-    <property name="time_tracker_common.jar"
-              value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
+    <property name="time_tracker_common.jar" value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
 
     <property name="time_tracker_expense_entry.version" value="3.2"/>
     <property name="time_tracker_expense_entry.jar.name" value="expense_entry.jar"/>
     <property name="time_tracker_expense_entry.path" value="expense_entry/${time_tracker_expense_entry.version}"/>
-    <property name="time_tracker_expense_entry.jar"
-              value="${tcs_libdir}/${time_tracker_expense_entry.path}/${time_tracker_expense_entry.jar.name}"/>
+    <property name="time_tracker_expense_entry.jar" value="${tcs_libdir}/${time_tracker_expense_entry.path}/${time_tracker_expense_entry.jar.name}"/>
 
     <property name="time_tracker_fixed_billing_entry.version" value="3.2"/>
     <property name="time_tracker_fixed_billing_entry.jar.name" value="time_tracker_fixed_billing.jar"/>
-    <property name="time_tracker_fixed_billing_entry.path"
-              value="time_tracker_fixed_billing/${time_tracker_fixed_billing_entry.version}"/>
-    <property name="time_tracker_fixed_billing_entry.jar"
-              value="${tcs_libdir}/${time_tracker_fixed_billing_entry.path}/${time_tracker_fixed_billing_entry.jar.name}"/>
+    <property name="time_tracker_fixed_billing_entry.path" value="time_tracker_fixed_billing/${time_tracker_fixed_billing_entry.version}"/>
+    <property name="time_tracker_fixed_billing_entry.jar" value="${tcs_libdir}/${time_tracker_fixed_billing_entry.path}/${time_tracker_fixed_billing_entry.jar.name}"/>
 
     <property name="time_tracker_project.version" value="3.2"/>
     <property name="time_tracker_project.jar.name" value="time_tracker_project.jar"/>
     <property name="time_tracker_project.path" value="time_tracker_project/${time_tracker_project.version}"/>
-    <property name="time_tracker_project.jar"
-              value="${tcs_libdir}/${time_tracker_project.path}/${time_tracker_project.jar.name}"/>
+    <property name="time_tracker_project.jar" value="${tcs_libdir}/${time_tracker_project.path}/${time_tracker_project.jar.name}"/>
 
     <property name="time_tracker_time_entry.version" value="3.2"/>
     <property name="time_tracker_time_entry.jar.name" value="time_entry.jar"/>
     <property name="time_tracker_time_entry.path" value="time_entry/${time_tracker_time_entry.version}"/>
-    <property name="time_tracker_time_entry.jar"
-              value="${tcs_libdir}/${time_tracker_time_entry.path}/${time_tracker_time_entry.jar.name}"/>
+    <property name="time_tracker_time_entry.jar" value="${tcs_libdir}/${time_tracker_time_entry.path}/${time_tracker_time_entry.jar.name}"/>
 
     <property name="time_tracker_user.version" value="3.2"/>
     <property name="time_tracker_user.jar.name" value="time_tracker_user.jar"/>
     <property name="time_tracker_user.path" value="time_tracker_user/${time_tracker_user.version}"/>
-    <property name="time_tracker_user.jar"
-              value="${tcs_libdir}/${time_tracker_user.path}/${time_tracker_user.jar.name}"/>
+    <property name="time_tracker_user.jar" value="${tcs_libdir}/${time_tracker_user.path}/${time_tracker_user.jar.name}"/>
 
     <property name="time_tracker_invoice.version" value="1.0"/>
     <property name="time_tracker_invoice.jar.name" value="time_tracker_invoice.jar"/>
     <property name="time_tracker_invoice.path" value="time_tracker_invoice/${time_tracker_invoice.version}"/>
-    <property name="time_tracker_invoice.jar"
-              value="${tcs_libdir}/${time_tracker_invoice.path}/${time_tracker_invoice.jar.name}"/>
+    <property name="time_tracker_invoice.jar" value="${tcs_libdir}/${time_tracker_invoice.path}/${time_tracker_invoice.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
@@ -258,8 +246,7 @@
 
     <target name="checkstyle" depends="compile">
         <mkdir dir="${testlogdir}"/>
-        <checkstyle config="${ext_libdir}/tcs_checkstyle_config/tc_checks.xml"
-                    classpath="${ext_libdir}/tcs_checkstyle_config">
+        <checkstyle config="${ext_libdir}/tcs_checkstyle_config/tc_checks.xml" classpath="${ext_libdir}/tcs_checkstyle_config">
             <fileset dir="src/java/main" includes="**/*.java"/>
             <formatter type="plain" toFile="${testlogdir}/checkstyle.txt"/>
             <property key="basedir" value="${ext_libdir}/tcs_checkstyle_config"/>
@@ -268,8 +255,12 @@
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
-               verbose="${verbose}">
+        <javac srcdir="${javamain}"
+               destdir="${build_classdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="buildlibs"/>
         </javac>
     </target>
@@ -286,7 +277,7 @@
                target="1.3"
                bootclasspath="${java_1_3_bootclasspath}"
                extdirs=""
-                >
+               >
             <classpath refid="buildlibs"/>
         </javac>
 
@@ -299,7 +290,7 @@
                target="1.3"
                bootclasspath="${java_1_3_bootclasspath}"
                extdirs=""
-                >
+               >
             <classpath refid="buildlibs"/>
         </javac>
         <delete dir="${build_targetclassdir}"/>
@@ -307,8 +298,12 @@
 
     <target name="compile_tests" depends="compile">
         <mkdir dir="${build_testclassdir}"/>
-        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true"
-               verbose="${verbose}">
+        <javac srcdir="${javatests}"
+               destdir="${build_testclassdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="test.build.classpath"/>
         </javac>
     </target>
@@ -339,8 +334,7 @@
     </target>
 
     <target name="coveragereport" depends="test">
-        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
-                          datafile="${cobertura.datafile}">
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
             <fileset dir="${javamain}">
                 <include name="**/*.java"/>
             </fileset>
@@ -399,4 +393,5 @@
 
     <target name="main" depends="deploy,test">
     </target>
+
 </project>
