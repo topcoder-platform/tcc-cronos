@@ -5,7 +5,6 @@ package com.topcoder.timetracker.client;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception will be the base exception for all exceptions thrown by the ClientUtility. This exception can be used
@@ -21,7 +20,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class ClientUtilityException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 1964026565626764803L;
+
+	/**
      * <p>
      * Constructs the exception with given message.
      * </p>

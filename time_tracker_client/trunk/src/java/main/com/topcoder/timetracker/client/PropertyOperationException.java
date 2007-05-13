@@ -17,7 +17,13 @@ package com.topcoder.timetracker.client;
  * @version 3.2
  */
 public class PropertyOperationException extends ClientUtilityException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -6284196142621394198L;
+
+	/**
      * <p>
      * Constructs the exception with given message.
      * </p>

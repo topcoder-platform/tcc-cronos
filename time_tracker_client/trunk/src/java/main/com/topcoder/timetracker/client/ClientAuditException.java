@@ -16,7 +16,13 @@ package com.topcoder.timetracker.client;
  * @version 3.2
  */
 public class ClientAuditException extends ClientUtilityException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -7434632463915221694L;
+
+	/**
      * <p>
      * Constructs the exception with given message.
      * </p>

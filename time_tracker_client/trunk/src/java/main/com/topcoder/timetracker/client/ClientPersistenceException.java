@@ -17,7 +17,13 @@ package com.topcoder.timetracker.client;
  * @version 3.2
  */
 public class ClientPersistenceException extends ClientUtilityException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 71339456560210958L;
+
+	/**
      * <p>
      * Constructs the exception with given message.
      * </p>

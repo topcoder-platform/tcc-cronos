@@ -18,7 +18,6 @@ import com.topcoder.timetracker.client.InvalidClientPropertyException;
 import com.topcoder.timetracker.client.PropertyOperationException;
 import com.topcoder.timetracker.project.Project;
 
-
 /**
  * <p>
  * This is a Stateless SessionBean that is used to provided business services to manage Time Tracker Clients within the
@@ -39,7 +38,13 @@ import com.topcoder.timetracker.project.Project;
  * @version 3.2
  */
 public class ClientUtilitySessionBean implements ClientUtility, SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -3923948000487887987L;
+
+	/**
      * <p>
      * This is the instance of SessionContext that was provided by the EJB container.  It is stored and made available
      * to subclasses.  It is also used to rollback a transaction in the case of an exception.

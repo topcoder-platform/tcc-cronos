@@ -11,7 +11,6 @@ import com.topcoder.timetracker.client.db.ClientColumnName;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
-
 /**
  * <p>
  * This class represents the client ID only depth. It extends Depth. Search with this depth, the result will contain
@@ -26,7 +25,13 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @version 3.2
  */
 public class ClientIDOnlyDepth extends Depth {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -4385507092346357615L;
+
+	/**
      * <p>
      * Represents the field will be presented in the search result. It's static and immutable, set to
      * {ColumnName.ID.tostring(),ColumnName.NAME.tostring()}initially. It will be reference in the constructor.

@@ -13,7 +13,6 @@ import com.topcoder.timetracker.project.Project;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
-
 /**
  * <p>
  * This class represents the client project depth. It extends Depth. Search with this depth, the result will contain
@@ -28,7 +27,13 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @version 3.2
  */
 public class ClientProjectDepth extends Depth {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 8808544308167934429L;
+
+	/**
      * <p>
      * Represents the field will be presented in the search result. It's static and immutable, set to initially. It
      * will be reference in the constructor.

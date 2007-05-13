@@ -16,7 +16,13 @@ package com.topcoder.timetracker.client;
  * @version 3.2
  */
 public class InvalidClientPropertyException extends ClientUtilityException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -6299928841803688604L;
+
+	/**
      * <p>
      * Constructs the exception with given message.
      * </p>

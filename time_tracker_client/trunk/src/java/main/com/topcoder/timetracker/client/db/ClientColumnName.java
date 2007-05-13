@@ -5,7 +5,6 @@ package com.topcoder.timetracker.client.db;
 
 import com.topcoder.util.collection.typesafeenum.Enum;
 
-
 /**
  * <p>
  * This class is enumeration of the column name's alias in client table. It make all the column names can be
@@ -20,7 +19,13 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * @version 3.2
  */
 public class ClientColumnName extends Enum {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 2576728866471256451L;
+
+	/**
      * <p>
      * Represents the name column name in client_project table. It will never be null. It will be referenced in
      * ClientInformixDAO class.

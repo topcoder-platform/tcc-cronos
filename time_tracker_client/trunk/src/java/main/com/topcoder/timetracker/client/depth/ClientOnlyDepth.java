@@ -12,7 +12,6 @@ import com.topcoder.timetracker.common.PaymentTerm;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
-
 /**
  * <p>
  * This class represents the client only depth. It extends Depth. Search with this depth, the result will contain only
@@ -27,7 +26,13 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @version 3.2
  */
 public class ClientOnlyDepth extends Depth {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 6732977006276150592L;
+
+	/**
      * <p>
      * Represents the field will be presented in the search result. It's static and immutable. It will be initially set
      * to included all the column name except ALL, PROJECT_ID. It will be reference in the constructor.

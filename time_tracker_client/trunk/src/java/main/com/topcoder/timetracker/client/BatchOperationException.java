@@ -17,7 +17,13 @@ package com.topcoder.timetracker.client;
  * @version 3.2
  */
 public class BatchOperationException extends ClientPersistenceException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 1680210686466710549L;
+
+	/**
      * <p>
      * Represents whether the operations in batch are successful. It is set in the constructor, possible null, possible
      * empty. It will be referenced by the getResult method.

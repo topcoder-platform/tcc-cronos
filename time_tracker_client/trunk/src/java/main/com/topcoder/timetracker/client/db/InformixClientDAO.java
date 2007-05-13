@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +48,6 @@ import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 
-
 /**
  * <p>
  * This class is the Informix database implementation of the ClientDAO. It provides general retrieve/update/remove/add
@@ -64,7 +62,8 @@ import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
  * @version 3.2
  */
 public class InformixClientDAO implements ClientDAO {
-    /**
+
+	/**
      * <p>
      * Represents the connection factory key.
      * </p>
@@ -107,15 +106,6 @@ public class InformixClientDAO implements ClientDAO {
     private static final String SQL_INSERT_CLIENT = "insert into client (client_id, name, company_id,"
         + " creation_date, creation_user, modification_date, modification_user, payment_term_id, status,"
         + " salesTax, start_date, end_date) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    /**
-     * <p>
-     * Represents the SQL command to select data from client table.
-     * </p>
-     */
-    private static final String SQL_SELECT_CLIENT = "select client_id, name, company_id, creation_date,"
-        + " creation_user, modification_date, modification_user, payment_term_id, status, salesTax,"
-        + "start_date, end_date from client where client_id = ?";
 
     /**
      * <p>
