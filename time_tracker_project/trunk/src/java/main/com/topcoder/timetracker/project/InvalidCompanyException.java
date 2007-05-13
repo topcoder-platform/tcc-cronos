@@ -28,7 +28,13 @@ package com.topcoder.timetracker.project;
  * @version 3.2
  */
 public class InvalidCompanyException extends DataAccessException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 7041791341235924139L;
+
+	/**
      * <p>
      * The company id of the entity being associated with the project.
      * </p>

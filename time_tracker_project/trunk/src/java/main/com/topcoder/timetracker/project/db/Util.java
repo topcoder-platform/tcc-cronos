@@ -3,7 +3,6 @@
  */
 package com.topcoder.timetracker.project.db;
 
-import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -53,7 +52,8 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * @version 3.2
  */
 public final class Util {
-    /**
+
+	/**
      * <p>
      * This private constructor prevents to create a new instance.
      * </p>

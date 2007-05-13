@@ -40,7 +40,13 @@ import javax.ejb.SessionBean;
  * @version 3.2
  */
 public class ProjectWorkerUtilitySessionBean implements ProjectWorkerUtility, SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -8316667274618940218L;
+
+	/**
      * <p>
      * This is the instance of <code>ProjectWorkerUtility</code> that this session bean delegates
      * all the work to.

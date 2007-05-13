@@ -17,7 +17,13 @@ package com.topcoder.timetracker.project;
  * @version 3.2
  */
 public class DuplicateEntityException extends DataAccessException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -4380955509198903343L;
+
+	/**
      * <p>
      * This is the id of the entry that has been found to have a duplicate.
      * </p>

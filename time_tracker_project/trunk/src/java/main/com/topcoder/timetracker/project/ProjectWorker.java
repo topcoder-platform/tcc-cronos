@@ -35,7 +35,13 @@ import java.util.Date;
  * @version 3.2
  */
 public class ProjectWorker extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 1250442665954945589L;
+
+	/**
      * <p>
      * This is the date when the user started work (or is scheduled to start work).
      * </p>

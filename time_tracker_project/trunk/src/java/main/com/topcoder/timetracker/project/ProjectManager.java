@@ -33,7 +33,13 @@ import com.topcoder.timetracker.project.db.Util;
  * @version 3.2
  */
 public class ProjectManager extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -6692721786505280962L;
+
+	/**
      * <p>
      * This is an identifier that is used to represent the the project that this user is managing.
      * </p>

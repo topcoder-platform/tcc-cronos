@@ -25,7 +25,13 @@ package com.topcoder.timetracker.project;
  * @version 3.2
  */
 public class UnrecognizedEntityException extends DataAccessException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 1560532740880886644L;
+
+	/**
      * <p>
      * This is the id of the entity that could not be located in the persistent store.
      * </p>

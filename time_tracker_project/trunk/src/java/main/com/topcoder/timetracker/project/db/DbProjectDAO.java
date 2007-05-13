@@ -70,31 +70,14 @@ import com.topcoder.timetracker.audit.AuditType;
  * @version 3.2
  */
 public class DbProjectDAO extends BaseDAO implements ProjectDAO {
-    /**
+
+	/**
      * <p>
      * This is the application space that will be used and provided to the Time Tracker Auditor
      * if an audit is requested.
      * </p>
      */
     public static final String AUDIT_APPLICATION_AREA = "TT_PROJECT";
-
-    /**
-     * <p>
-     * Represents the context string for searching. It is used in the
-     * {@link DbProjectDAO#searchProjects(Filter)} to search projects.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and never changed afterwards.
-     * </p>
-     */
-    private static final String CONTEXT = "SELECT project.project_id FROM project LEFT JOIN project_manager "
-        + "ON project_manager.project_id = project.project_id LEFT JOIN project_worker ON "
-        + "project_worker.project_id = project.project_id LEFT JOIN project_expense ON "
-        + "project_expense.project_id = project.project_id LEFT JOIN project_time ON "
-        + "project_time.project_id = project.project_id LEFT JOIN project_fix_bill ON "
-        + "project_fix_bill.project_id = project.project_id LEFT JOIN client_project ON "
-        + "client_project.project_id = project.project_id WHERE";
 
     /**
      * <p>

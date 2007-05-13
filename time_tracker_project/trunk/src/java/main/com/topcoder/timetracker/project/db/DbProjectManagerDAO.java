@@ -50,26 +50,14 @@ import com.topcoder.timetracker.audit.AuditType;
  * @version 3.2
  */
 public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
-    /**
+
+	/**
      * <p>
      * This is the application space that will be used and provided to the Time Tracker Auditor
      * if an audit is requested.
      * </p>
      */
     public static final String AUDIT_APPLICATION_AREA = "TT_PROJECT_MANAGER";
-
-    /**
-     * <p>
-     * Represents the context string for searching. It is used in the
-     * {@link DbProjectManagerDAO#searchProjectManagers(Filter)} to search project managers.
-     * </p>
-     *
-     * <p>
-     * It is created when declared and never changed afterwards.
-     * </p>
-     */
-    private static final String CONTEXT = "SELECT project_id, user_account_id, creation_date, "
-        + "creation_user, modification_date, modification_user FROM project_manager WHERE";
 
     /**
      * <p>

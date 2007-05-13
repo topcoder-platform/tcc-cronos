@@ -39,7 +39,13 @@ import javax.ejb.SessionBean;
  * @version 3.2
  */
 public class ProjectManagerUtilitySessionBean implements ProjectManagerUtility, SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 8696125191355754836L;
+
+	/**
      * <p>
      * This is the instance of <code>ProjectManagerUtility</code> that this session bean delegates
      * all the work to.

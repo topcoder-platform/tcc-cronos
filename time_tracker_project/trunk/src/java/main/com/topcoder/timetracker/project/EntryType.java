@@ -23,7 +23,13 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * @version 3.2
  */
 public class EntryType extends Enum {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -7546426085974747017L;
+
+	/**
      * <p>
      * This is an Enumeration value representing a <tt>Time</tt> Entry.
      * </p>

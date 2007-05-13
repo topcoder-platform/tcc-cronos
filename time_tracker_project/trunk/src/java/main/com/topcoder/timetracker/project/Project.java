@@ -35,7 +35,13 @@ import com.topcoder.timetracker.project.db.Util;
  * @version 3.2
  */
 public class Project extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 3094214342878839547L;
+
+	/**
      * <p>
      * This is the description of a project, which is a human-readable String that briefly
      * describes the project.
