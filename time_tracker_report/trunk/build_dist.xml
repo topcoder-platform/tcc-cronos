@@ -295,17 +295,17 @@
     </target>
 
     <target name="test" depends="compile_tests">
-        <mkdir dir="${testlogdir}"/>		
+        <mkdir dir="${testlogdir}"/>
     	<mkdir dir="${instrumented.dir}"/>
     	<delete file="${cobertura.datafile}" />
-    	<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+        <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
             <!-- all included -->
             <fileset dir="${build_classdir}">
                 <include name="**/*.class" />
             </fileset>
-    	</cobertura-instrument>
+        </cobertura-instrument>
         <junit fork="true" haltonerror="false">
-	
+
             <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
 
             <classpath location="${instrumented.dir}" />
@@ -317,7 +317,7 @@
                 <formatter type="plain" usefile="true"/>
                 <formatter type="xml" usefile="true"/>
             </test>
-            
+
         </junit>
     </target>
 
@@ -358,7 +358,18 @@
 
     <target name="javadoc" depends="compile">
         <mkdir dir="${dist_javadocs}" />
-        <javadoc packagenames="${package}.*" sourcepath="${javamain}" classpath="${build_classdir}" classpathref="buildlibs" destdir="${dist_javadocs}" windowtitle="Topcoder Software" header="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://software.topcoder.com'&gt;software.topcoder.com&lt;/a&gt;&lt;/font&gt;" stylesheetfile="${javadocsdir}/stylesheet.css" verbose="${verbose}">
+        <javadoc packagenames="${package}.*"
+                 sourcepath="${javamain}"
+                 classpath="${build_classdir}"
+                 classpathref="buildlibs"
+                 destdir="${dist_javadocs}"
+                 windowtitle="Topcoder Software"
+                 header="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+                 footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+                 bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://software.topcoder.com'&gt;software.topcoder.com&lt;/a&gt;&lt;/font&gt;"
+                 stylesheetfile="${javadocsdir}/stylesheet.css"
+                 verbose="${verbose}"
+                 >
             <tag name="copyright" description="Copyright:" scope="types" />
         </javadoc>
     </target>
