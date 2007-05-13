@@ -73,16 +73,18 @@
     <property name="dist_docpackage" value="${builddir}/doc_package" />
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
 
-	<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
-	<path id="cobertura.classpath">
-    		<fileset dir="${cobertura.dir}">
-      	  		<include name="cobertura.jar" />
-        		<include name="lib/**/*.jar" />
-    		</fileset>
-	</path>
-	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-	<property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
-	<property name="instrumented.dir" value="${builddir}/instrumented" />
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
+
+    <path id="cobertura.classpath">
+        <fileset dir="${cobertura.dir}">
+            <include name="cobertura.jar" />
+            <include name="lib/**/*.jar" />
+        </fileset>
+    </path>
+
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+    <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
+    <property name="instrumented.dir" value="${builddir}/instrumented" />
 
     <!-- TCS Dependencies -->
     <property name="base_exception.version" value="1.0"/>
@@ -90,20 +92,25 @@
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
 
+    <property name="class_associations.version" value="1.0"/>
+    <property name="class_associations.jar.name" value="class_associations.jar"/>
+    <property name="class_associations.path" value="class_associations/${class_associations.version}"/>
+    <property name="class_associations.jar" value="${tcs_libdir}/${class_associations.path}/${class_associations.jar.name}"/>
+
     <property name="configuration_manager.version" value="2.1.5"/>
     <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
 
-    <property name="object_factory.version" value="2.0.1"/>
-    <property name="object_factory.jar.name" value="object_factory.jar"/>
-    <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
-    <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
+    <property name="data_validation.version" value="1.0"/>
+    <property name="data_validation.jar.name" value="data_validation.jar"/>
+    <property name="data_validation.path" value="data_validation/${data_validation.version}"/>
+    <property name="data_validation.jar" value="${tcs_libdir}/${data_validation.path}/${data_validation.jar.name}"/>
 
-    <property name="typesafe_enum.version" value="1.0"/>
-    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
-    <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
-    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
+    <property name="database_abstraction.version" value="1.1"/>
+    <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
+    <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
+    <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
 
     <property name="db_connection_factory.version" value="1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
@@ -115,35 +122,30 @@
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
 
+    <property name="JNDI_Utility.version" value="1.0"/>
+    <property name="JNDI_Utility.jar.name" value="JNDI_Utility.jar"/>
+    <property name="JNDI_Utility.path" value="JNDI_Utility/${JNDI_Utility.version}"/>
+    <property name="JNDI_Utility.jar" value="${tcs_libdir}/${JNDI_Utility.path}/${JNDI_Utility.jar.name}"/>
+
     <property name="logging_wrapper.version" value="1.2"/>
     <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"/>
     <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}"/>
 
-    <property name="database_abstraction.version" value="1.1"/>
-    <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
-    <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
-    <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
+    <property name="object_factory.version" value="2.0.1"/>
+    <property name="object_factory.jar.name" value="object_factory.jar"/>
+    <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
 
     <property name="search_builder.version" value="1.3.1"/>
     <property name="search_builder.jar.name" value="search_builder.jar"/>
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
 
-    <property name="JNDI_Utility.version" value="1.0"/>
-    <property name="JNDI_Utility.jar.name" value="JNDI_Utility.jar"/>
-    <property name="JNDI_Utility.path" value="JNDI_Utility/${JNDI_Utility.version}"/>
-    <property name="JNDI_Utility.jar" value="${tcs_libdir}/${JNDI_Utility.path}/${JNDI_Utility.jar.name}"/>
-
-    <property name="data_validation.version" value="1.0"/>
-    <property name="data_validation.jar.name" value="data_validation.jar"/>
-    <property name="data_validation.path" value="data_validation/${data_validation.version}"/>
-    <property name="data_validation.jar" value="${tcs_libdir}/${data_validation.path}/${data_validation.jar.name}"/>
-
-    <property name="class_associations.version" value="1.0"/>
-    <property name="class_associations.jar.name" value="class_associations.jar"/>
-    <property name="class_associations.path" value="class_associations/${class_associations.version}"/>
-    <property name="class_associations.jar" value="${tcs_libdir}/${class_associations.path}/${class_associations.jar.name}"/>
+    <property name="typesafe_enum.version" value="1.0"/>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
+    <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -190,11 +192,11 @@
         <!-- other libs -->
         <pathelement location="${log4j.jar}" />
         <pathelement location="${junitejb.jar}" />
-		<pathelement location="${jbossall-client.jar}" />
+        <pathelement location="${jbossall-client.jar}" />
         <pathelement location="${testfiles}/lib/mockejb.jar" />
-		<pathelement location="${testfiles}/lib/commons-logging.jar" />
-		<pathelement location="${testfiles}/lib/cglib-full-2.0-RC2.jar" />
-		<pathelement location="${testfiles}/lib/jakarta-oro-2.0.8.jar" />
+        <pathelement location="${testfiles}/lib/commons-logging.jar" />
+        <pathelement location="${testfiles}/lib/cglib-full-2.0-RC2.jar" />
+        <pathelement location="${testfiles}/lib/jakarta-oro-2.0.8.jar" />
     </path>
 
     <path id="test.build.classpath">
@@ -255,25 +257,25 @@
 
     <target name="test" depends="compile_tests">
         <mkdir dir="${testlogdir}"/>
-				<mkdir dir="${instrumented.dir}"/>
+        <mkdir dir="${instrumented.dir}"/>
 
-				<delete file="${cobertura.datafile}" />
+        <delete file="${cobertura.datafile}" />
 
-				<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
-						<!-- all included -->
-						<fileset dir="${build_classdir}">
-        			<include name="**/*.class" />
-    				</fileset>
-				</cobertura-instrument>
+        <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+            <!-- all included -->
+            <fileset dir="${build_classdir}">
+                <include name="**/*.class" />
+            </fileset>
+        </cobertura-instrument>
 
         <junit fork="true" haltonerror="false">
 
-				<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
+            <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
 
-						<classpath location="${instrumented.dir}" />
-						<classpath location="${build_testclassdir}" />
-						<classpath refid="test.build.classpath" />
-						<classpath refid="cobertura.classpath" />
+            <classpath location="${instrumented.dir}" />
+            <classpath location="${build_testclassdir}" />
+            <classpath refid="test.build.classpath" />
+            <classpath refid="cobertura.classpath" />
 
             <test name="${package}.AllTests" todir="${testlogdir}">
                 <formatter type="plain" usefile="true"/>
@@ -285,14 +287,14 @@
     </target>
 
     <target name="coveragereport" depends="test">
-				<cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
-    			<fileset dir="${javamain}">
-        		<include name="**/*.java" />
-    			</fileset>
-    			<fileset dir="${javatests}">
-        		<include name="**/*.java" />
-    			</fileset>
-				</cobertura-report>
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
+            <fileset dir="${javamain}">
+                <include name="**/*.java" />
+            </fileset>
+            <fileset dir="${javatests}">
+                <include name="**/*.java" />
+            </fileset>
+        </cobertura-report>
 
     </target>
 
@@ -300,10 +302,10 @@
         <mkdir dir="${reports}"/>
 
         <junitreport todir="${reports}">
-          <fileset dir="${testlogdir}">
-            <include name="*.xml"/>
-          </fileset>
-          <report format="frames" todir="${reports}"/>
+            <fileset dir="${testlogdir}">
+                <include name="*.xml"/>
+            </fileset>
+            <report format="frames" todir="${reports}"/>
         </junitreport>
 
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
@@ -331,9 +333,10 @@
             footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
             bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://software.topcoder.com'&gt;software.topcoder.com&lt;/a&gt;&lt;/font&gt;"
             stylesheetfile="${javadocsdir}/stylesheet.css"
-            verbose="${verbose}">
+            verbose="${verbose}"
+            >
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
@@ -374,19 +377,19 @@
         <copy file="${class_associations.jar}" todir="${testfiles}/ear"/>
 
         <copy todir="${testfiles}/ear/audit" >
-          <fileset dir="${build_testclassdir}">
-              <include name="**"/>
-          </fileset>
+            <fileset dir="${build_testclassdir}">
+                <include name="**"/>
+            </fileset>
         </copy>
         <copy todir="${testfiles}/ear/audit" >
-          <fileset dir="${build_classdir}">
-              <include name="**"/>
-          </fileset>
+            <fileset dir="${build_classdir}">
+                <include name="**"/>
+            </fileset>
         </copy>
         <copy todir="${testfiles}/ear/audit/sql" >
-          <fileset dir="${testfiles}/sql">
-              <include name="**"/>
-          </fileset>
+            <fileset dir="${testfiles}/sql">
+                <include name="**"/>
+            </fileset>
         </copy>
         <jar jarfile="${testfiles}/ear/audit.jar" basedir="${testfiles}/ear/audit" />
 
