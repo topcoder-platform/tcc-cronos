@@ -23,7 +23,13 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * @version 3.2
  */
 public class StringMatchType extends Enum {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -8491686700778802778L;
+
+	/**
      * <p>
      * This specifies that the criterion should be based on whether it begins with the specified String.
      * </p>

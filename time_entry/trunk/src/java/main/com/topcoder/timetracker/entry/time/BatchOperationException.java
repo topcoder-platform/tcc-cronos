@@ -23,7 +23,13 @@ package com.topcoder.timetracker.entry.time;
  * @version 3.2
  */
 public class BatchOperationException extends DataAccessException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 3368081700843921022L;
+
+	/**
      * <p>
      * This is the array of causes for the failure of some of the elements within the batch.
      * </p>

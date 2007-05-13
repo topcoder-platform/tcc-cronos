@@ -43,7 +43,13 @@ import com.topcoder.timetracker.entry.time.UnrecognizedEntityException;
  * @version 3.2
  */
 public class TimeEntryManagerSessionBean implements TimeEntryManager, SessionBean {
+
     /**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 5392094400675078069L;
+
+	/**
      * <p>
      * This is the instance of <code>SessionContext</code> that was provided by the
      * EJB container.

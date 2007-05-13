@@ -32,7 +32,13 @@ import com.topcoder.timetracker.entry.time.db.Util;
  * @version 3.2
  */
 public class TimeEntry extends BaseEntry {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -5585756901780113582L;
+
+	/**
      * <p>
      * This is the amount of hours that have been spent working on a task.
      * </p>

@@ -28,7 +28,13 @@ import com.topcoder.timetracker.entry.time.StringMatchType;
  * @version 3.2
  */
 public class DbBaseFilterFactory implements BaseFilterFactory {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -3569029766560992615L;
+
+	/**
      * <p>
      * This is the map key to use to specify the column name for the Creation Date.
      * </p>

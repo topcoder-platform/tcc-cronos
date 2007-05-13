@@ -42,7 +42,13 @@ import com.topcoder.timetracker.entry.time.StringMatchType;
  * @version 3.2
  */
 public class DbTaskTypeFilterFactory extends DbBaseFilterFactory implements TaskTypeFilterFactory {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 5435289290778609931L;
+
+	/**
      * <p>
      * This is the map key to use to specify the column name for the company id.
      * </p>

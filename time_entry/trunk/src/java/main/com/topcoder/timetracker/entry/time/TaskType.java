@@ -20,7 +20,13 @@ import com.topcoder.timetracker.entry.time.db.Util;
  * @version 3.2
  */
 public class TaskType extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -1983282473653698422L;
+
+	/**
      * <p>
      * This is a short String that describes the task type.
      * </p>
