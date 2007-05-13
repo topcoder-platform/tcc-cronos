@@ -21,7 +21,6 @@ import javax.ejb.CreateException;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-
 /**
  * <p>
  * This is a Stateless <code>SessionBean</code> handles the actual manager requests for expense entry operations, as
@@ -50,7 +49,13 @@ import javax.naming.NamingException;
  * @version 3.2
  */
 public class ExpenseEntryBean extends BasicExpenseEntryBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -4218882682990558608L;
+
+	/**
      * <p>
      * Represents the namespace used to retrieve the jndi_context property value.
      * </p>

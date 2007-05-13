@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.expense.criteria;
 
 import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
 
-
 /**
  * <p>
  * This class represents a basic type of criteria for a like type of match on a field (like as in the SQL like clause).
@@ -23,13 +22,25 @@ import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
  * @version 3.2
  */
 public class FieldLikeCriteria implements Criteria {
-    /** Represents the constant for the description field in the expense entry table. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 377012624336202616L;
+
+	/**
+     * Represents the constant for the description field in the expense entry table.
+     */
     public static final String DESCRIPTION_FIELD = "expense_entry.description";
 
-    /** Represents the constant for the description field in the expense status table. */
+    /**
+     * Represents the constant for the description field in the expense status table.
+     */
     public static final String EXPENSE_STATUS_DESCRIPTION_FIELD = "expense_status.description";
 
-    /** Represents the constant for the description field in the expense type table. */
+    /**
+     * Represents the constant for the description field in the expense type table.
+     */
     public static final String EXPENSE_TYPE_DESCRIPTION_FIELD = "expense_type.description";
 
     /**

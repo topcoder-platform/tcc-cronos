@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 import java.util.Date;
 
-
 /**
  * <p>
  * This class represents a basic type of criteria for selecting records with a field within a given interval. The field
@@ -28,25 +27,45 @@ import java.util.Date;
  * @version 3.2
  */
 public class FieldBetweenCriteria implements Criteria {
-    /** Represents the constant for the expense amount field in the expense entry table. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 5344534418718392709L;
+
+	/**
+     * Represents the constant for the expense amount field in the expense entry table.
+     */
     public static final String AMOUNT_FIELD = "expense_entry.amount";
 
-    /** Represents the constant for the creation date field in the expense entry table. */
+    /**
+     * Represents the constant for the creation date field in the expense entry table.
+     */
     public static final String CREATION_DATE_FIELD = "expense_entry.creation_date";
 
-    /** Represents the constant for the modification date field in the expense entry table. */
+    /**
+     * Represents the constant for the modification date field in the expense entry table.
+     */
     public static final String MODIFICATION_DATE_FIELD = "expense_entry.modification_date";
 
-    /** Represents the constant for the creation date field in the expense status table. */
+    /**
+     * Represents the constant for the creation date field in the expense status table.
+     */
     public static final String EXPENSE_STATUS_CREATION_DATE_FIELD = "expense_status.creation_date";
 
-    /** Represents the constant for the modification date field in the expense status table. */
+    /**
+     * Represents the constant for the modification date field in the expense status table.
+     */
     public static final String EXPENSE_STATUS_MODIFICATION_DATE_FIELD = "expense_status.modification_date";
 
-    /** Represents the constant for the creation date field in the expense type table. */
+    /**
+     * Represents the constant for the creation date field in the expense type table.
+     */
     public static final String EXPENSE_TYPE_CREATION_DATE_FIELD = "expense_type.creation_date";
 
-    /** Represents the constant for the modification date field in the expense type table. */
+    /**
+     * Represents the constant for the modification date field in the expense type table.
+     */
     public static final String EXPENSE_TYPE_MODIFICATION_DATE_FIELD = "expense_type.modification_date";
 
     /**

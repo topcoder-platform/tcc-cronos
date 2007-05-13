@@ -14,7 +14,6 @@ import com.topcoder.timetracker.entry.expense.criteria.Criteria;
 import com.topcoder.timetracker.entry.expense.persistence.ExpenseEntryStatusDAO;
 import com.topcoder.timetracker.entry.expense.persistence.PersistenceException;
 
-
 /**
  * <p>
  * This is a Stateless <code>SessionBean</code> that is used to provided business services to handle the actual manager
@@ -44,7 +43,13 @@ import com.topcoder.timetracker.entry.expense.persistence.PersistenceException;
  * @version 3.2
  */
 public class ExpenseStatusBean implements SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 6677685265630165917L;
+
+	/**
      * <p>
      * Represents the namespace used to retrieve the jndi_context property value.
      * </p>

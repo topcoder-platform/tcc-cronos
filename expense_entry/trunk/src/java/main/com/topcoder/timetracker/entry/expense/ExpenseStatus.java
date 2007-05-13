@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.expense;
 
 import com.topcoder.timetracker.common.TimeTrackerBean;
 
-
 /**
  * <p>
  * Defines the information contained by an expense entry status.
@@ -29,7 +28,15 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
  * @version 3.2
  */
 public class ExpenseStatus extends TimeTrackerBean {
-    /** Represetns the description of this expense entry status. Default is null. Can be null. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -342226592543048124L;
+
+	/**
+	 * Represetns the description of this expense entry status. Default is null. Can be null.
+	 */
     private String description;
 
     /**

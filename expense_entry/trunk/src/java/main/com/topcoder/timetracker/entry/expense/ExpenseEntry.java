@@ -8,7 +8,6 @@ import com.topcoder.timetracker.invoice.Invoice;
 
 import java.math.BigDecimal;
 
-
 /**
  * <p>
  * Defines the information contained by an expense entry. In addition to common information, an expense entry also
@@ -36,7 +35,15 @@ import java.math.BigDecimal;
  * @version 3.2
  */
 public class ExpenseEntry extends BaseEntry {
-    /** Represents the amount of money of this expense. Default is null. It cannot be negative once set. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -7321093032974434117L;
+
+	/**
+	 * Represents the amount of money of this expense. Default is null. It cannot be negative once set.
+	 */
     private BigDecimal amount = null;
 
     /**

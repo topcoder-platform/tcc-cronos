@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.expense;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * Defines a custom exception which is thrown by the manager and DAO implementations if anything goes wrong in the
@@ -20,7 +19,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class ConfigurationException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -2258432630383045904L;
+
+	/**
      * <p>
      * Creates a new instance of <code>ConfigurationException</code> class with a detail error message.
      * </p>

@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.expense.criteria;
 
 import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
 
-
 /**
  * <p>
  * This class represents a special type of criteria that simply negates the expression of another criteria. It contains
@@ -22,7 +21,15 @@ import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
  * @version 3.2
  */
 public class NotCriteria implements Criteria {
-    /** Represents the contained criteria which will be negated(cannot be null). */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -5261300327950472954L;
+
+	/**
+     * Represents the contained criteria which will be negated(cannot be null).
+     */
     private final Criteria criteria;
 
     /**

@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.expense;
 
 import com.topcoder.timetracker.common.TimeTrackerBean;
 
-
 /**
  * <p>
  * Defines the information contained by an expense entry type.
@@ -29,13 +28,25 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
  * @version 3.2
  */
 public class ExpenseType extends TimeTrackerBean {
-    /** Represents the active status of this expense type. Default is false. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 5273202174900863941L;
+
+	/**
+	 * Represents the active status of this expense type. Default is false.
+	 */
     private boolean active = false;
 
-    /** Represetns the company id this expense entry type associated to. Default is -1. Can not be -1 once set. */
+    /**
+     * Represetns the company id this expense entry type associated to. Default is -1. Can not be -1 once set.
+     */
     private long companyId = -1;
 
-    /** Represetns the description of this expense entry type. Default is null. Can be null. */
+    /**
+     * Represetns the description of this expense entry type. Default is null. Can be null.
+     */
     private String description;
 
     /**

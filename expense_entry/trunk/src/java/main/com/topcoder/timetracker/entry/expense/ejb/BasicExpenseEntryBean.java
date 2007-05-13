@@ -14,7 +14,6 @@ import javax.ejb.CreateException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-
 /**
  * <p>
  * This is a Stateless <code>SessionBean</code> handles the actual manager requests for basic expense entry operations,
@@ -44,7 +43,13 @@ import javax.ejb.SessionContext;
  * @version 3.2
  */
 public class BasicExpenseEntryBean implements SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -5460751388340330374L;
+
+	/**
      * <p>
      * Represents the namespace used to retrieve the jndi_context property value.
      * </p>

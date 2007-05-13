@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.expense.criteria;
 
 import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
 
-
 /**
  * <p>
  * This class represents a basic type of criteria for exact matching of a field with a given value. Both the field and
@@ -23,43 +22,75 @@ import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
  * @version 3.2
  */
 public class FieldMatchCriteria implements Criteria {
-    /** Represents the constant for the expense type id field in the expense entry table. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -6604829376915585915L;
+
+	/**
+     * Represents the constant for the expense type id field in the expense entry table.
+     */
     public static final String EXPENSE_TYPE_FIELD = "expense_entry.expense_type_id";
 
-    /** Represents the constant for the expense status id field in the expense entry table. */
+    /**
+     * Represents the constant for the expense status id field in the expense entry table.
+     */
     public static final String EXPENSE_STATUS_FIELD = "expense_entry.expense_status_id";
 
-    /** Represents the constant for the creation user field in the expense entry table. */
+    /**
+     * Represents the constant for the creation user field in the expense entry table.
+     */
     public static final String CREATION_USER_FIELD = "expense_entry.creation_user";
 
-    /** Represents the constant for the modification user field in the expense entry table. */
+    /**
+     * Represents the constant for the modification user field in the expense entry table.
+     */
     public static final String MODIFICATION_USER_FIELD = "expense_entry.modification_user";
 
-    /** Represents the constant for the billable field in the expense entry table. */
+    /**
+     * Represents the constant for the billable field in the expense entry table.
+     */
     public static final String BILLABLE_FIELD = "expense_entry.billable";
 
-    /** Represents the constant for the active field in the expense type table. */
+    /**
+     * Represents the constant for the active field in the expense type table.
+     */
     public static final String EXPENSE_TYPE_ACTIVE_FIELD = "expense_type.active";
 
-    /** Represents the constant for the company_id field in the expense entry table. */
+    /**
+     * Represents the constant for the company_id field in the expense entry table.
+     */
     public static final String EXPENSE_ENTRY_COMPANY_ID_FIELD = "expense_entry.company_id";
 
-    /** Represesnts the constant for the company_id field in the expense type table. */
+    /**
+     * Represesnts the constant for the company_id field in the expense type table.
+     */
     public static final String EXPENSE_TYPE_COMPANY_ID_FIELD = "comp_exp_type.company_id";
 
-    /** Represents the constant for the creation_user field in the expense status table. */
+    /**
+     * Represents the constant for the creation_user field in the expense status table.
+     */
     public static final String EXPENSE_STATUS_CREATION_USER_FIELD = "expense_status.creation_user";
 
-    /** Represents the constant for the modification_user field in the expense status table. */
+    /**
+     * Represents the constant for the modification_user field in the expense status table.
+     */
     public static final String EXPENSE_STATUS_MODIFICATION_USER_FIELD = "expense_status.modification_user";
 
-    /** Represents the constant for the creation_user field in the expense type table. */
+    /**
+     * Represents the constant for the creation_user field in the expense type table.
+     */
     public static final String EXPENSE_TYPE_CREATION_USER_FIELD = "expense_type.creation_user";
 
-    /** Represents the constant for the modification_user field in the expense type table. */
+    /**
+     * Represents the constant for the modification_user field in the expense type table.
+     */
     public static final String EXPENSE_TYPE_MODIFICATION_USER_FIELD = "expense_type.modification_user";
 
-    /** Represents the constant for the invoice id&nbsp; in the expense_entry table. */
+    /**
+     * Represents the constant for the invoice id&nbsp; in the expense_entry table.
+     */
     public static final String EXPENSE_ENTRY_INVOICE_ID_FIELD = "expense_entry.invoice_id";
 
     /**

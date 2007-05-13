@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * <p>
  * This class represents a special type of rule that is an aggregation over two or more rules. The aggregation type can
@@ -27,22 +26,40 @@ import java.util.List;
  * @version 3.2
  */
 public class CompositeCriteria implements Criteria {
-    /** Represents the constant for the AND boolean operator keyword. */
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -716274716914347896L;
+
+	/**
+     * Represents the constant for the AND boolean operator keyword.
+     */
     public static final String AND_COMPOSITION = "AND";
 
-    /** Represents the constant for the OR boolean operator keyword. */
+    /**
+     * Represents the constant for the OR boolean operator keyword.
+     */
     public static final String OR_COMPOSITION = "OR";
 
-    /** Represents the keyword to be used for obtaining the aggregated where clause. Cannot be null or empty. */
+    /**
+     * Represents the keyword to be used for obtaining the aggregated where clause. Cannot be null or empty.
+     */
     private final String compositionKeyword;
 
-    /** The contained criteria instances. Cannot be null or have null elements, the size should be at least 2. */
+    /**
+     * The contained criteria instances. Cannot be null or have null elements, the size should be at least 2.
+     */
     private final Criteria[] criteria;
 
-    /** Represents the where clause of this criteria. */
+    /**
+     * Represents the where clause of this criteria.
+     */
     private String whereClause = null;
 
-    /** Represents the parameters of this criteria. */
+    /**
+     * Represents the parameters of this criteria.
+     */
     private Object[] parameters = null;
 
     /**

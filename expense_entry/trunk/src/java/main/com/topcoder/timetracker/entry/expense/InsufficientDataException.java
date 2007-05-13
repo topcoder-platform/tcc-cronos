@@ -5,7 +5,6 @@ package com.topcoder.timetracker.entry.expense;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * Defines a custom exception which is thrown when some required fields (NOT NULL) are not set when creating or
@@ -21,7 +20,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class InsufficientDataException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 3028089326968110841L;
+
+	/**
      * <p>
      * Creates a new instance of <code>InsufficientDataException</code> class with a detail error message.
      * </p>
