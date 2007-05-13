@@ -17,6 +17,7 @@ import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.AuditHeader;
 import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.audit.AuditManagerException;
+import com.topcoder.timetracker.audit.AuditType;
 import com.topcoder.timetracker.notification.Helper;
 import com.topcoder.timetracker.notification.Notification;
 import com.topcoder.timetracker.notification.NotificationConfigurationException;
@@ -43,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * <p>
  * InformixNotificationPersistence provides the functionality of managing the Notification entity in the Informix
@@ -58,7 +58,8 @@ import java.util.Map;
  * @version 3.2
  */
 public class InformixNotificationPersistence implements NotificationPersistence {
-    /**
+
+	/**
      * <p>
      * Represents the SQL command to select the notification of specified id.
      * </p>
@@ -1094,7 +1095,7 @@ public class InformixNotificationPersistence implements NotificationPersistence 
                     details[5] = buildAuditDetail(columnName, null, (new Long(ids[i])).toString());
 
                     AuditHeader header = buildAuditHeader(notificationId, tableName, notification.getCompanyId(),
-                            "CREATE", user);
+                            AuditType.INSERT, user);
 
                     auditManager.createAuditRecord(header);
                 }
@@ -1149,7 +1150,7 @@ public class InformixNotificationPersistence implements NotificationPersistence 
                     details[5] = buildAuditDetail(columnName, (new Long(result.getLong(columnName))).toString(), null);
 
                     AuditHeader header = buildAuditHeader(notification.getId(), tableName, notification.getCompanyId(),
-                            "DELETE", notification.getModificationUser());
+                            AuditType.DELETE, notification.getModificationUser());
 
                     auditManager.createAuditRecord(header);
                 }
@@ -1295,7 +1296,7 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      *
      * @return return the audit header
      */
-    private AuditHeader buildAuditHeader(long entityId, String tableName, long companyId, String actionType,
+    private AuditHeader buildAuditHeader(long entityId, String tableName, long companyId, int actionType,
         String creationUser) {
         AuditHeader header = new AuditHeader();
 
@@ -1396,21 +1397,21 @@ public class InformixNotificationPersistence implements NotificationPersistence 
 
         long entityId = -1;
         long companyId = -1;
-        String actionType = null;
+        int actionType = 0;
         String creationUser = null;
 
         if (oldNotification != null && newNotification != null) {
-            actionType = "UPDATE";
+            actionType = AuditType.UPDATE;
             creationUser = newNotification.getModificationUser();
             entityId = newNotification.getId();
             companyId = newNotification.getCompanyId();
         } else if(oldNotification == null) {
-            actionType = "CREATE";
+            actionType = AuditType.INSERT;
             creationUser = newNotification.getCreationUser();
             entityId = newNotification.getId();
             companyId = newNotification.getCompanyId();
         } else if(newNotification == null){
-            actionType = "DELETE";
+            actionType = AuditType.DELETE;
             creationUser = oldNotification.getModificationUser();
             entityId = oldNotification.getId();
             companyId = oldNotification.getCompanyId();
@@ -1418,7 +1419,7 @@ public class InformixNotificationPersistence implements NotificationPersistence 
 
         AuditHeader header = buildAuditHeader(entityId, "notification", companyId, actionType, creationUser);
 
-        header.setDetail(details);
+        header.setDetails(details);
         try {
             auditManager.createAuditRecord(header);
         } catch (AuditManagerException ame) {

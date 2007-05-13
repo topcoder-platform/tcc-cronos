@@ -10,7 +10,6 @@ import com.topcoder.timetracker.notification.NotificationManager;
 import com.topcoder.util.file.fieldconfig.NodeList;
 import com.topcoder.util.scheduler.scheduling.ScheduledEnable;
 
-
 /**
  * <p>
  * NotificationEvent will be executed by the Job. It will parse the notification id from the job name and then invoke
@@ -20,7 +19,7 @@ import com.topcoder.util.scheduler.scheduling.ScheduledEnable;
  * The jobname should be of the format "TT_NOTIFICATION_ID".
  * </p>
  * <p>
- * <b>Thread Safety:</b> This class is not thread safe since it¡¯s mutable.
+ * <b>Thread Safety:</b> This class is not thread safe since it's mutable.
  * </p>
  *
  * @author ShindouHikaru, kzhu
@@ -154,7 +153,7 @@ public class NotificationEvent implements ScheduledEnable {
     }
 
     /**
-     * Get the running status .
+     * Get the running status.
      *
      * @return the running status
      */

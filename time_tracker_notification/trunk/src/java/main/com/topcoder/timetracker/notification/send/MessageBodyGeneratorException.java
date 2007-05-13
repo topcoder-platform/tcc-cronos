@@ -5,7 +5,6 @@ package com.topcoder.timetracker.notification.send;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception will be thrown by MessageBodyGenerator and its implementation if any error occurred during generating
@@ -16,7 +15,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class MessageBodyGeneratorException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -9160553141208560595L;
+
+	/**
      * Create the exception with error message.
      *
      * @param msg the error message

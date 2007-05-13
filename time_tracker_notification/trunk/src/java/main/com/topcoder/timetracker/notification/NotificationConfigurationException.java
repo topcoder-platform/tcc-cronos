@@ -5,7 +5,6 @@ package com.topcoder.timetracker.notification;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * This exception will be thrown if failed to create the object from configuration file.
  *
@@ -13,7 +12,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class NotificationConfigurationException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -5992222389614097806L;
+
+	/**
      * Create the exception with error message.
      *
      * @param msg the error message

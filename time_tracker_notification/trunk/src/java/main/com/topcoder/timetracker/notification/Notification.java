@@ -7,7 +7,6 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
 
 import java.util.Date;
 
-
 /**
  * <p>
  * The notification bean holds the necessary information to send the email.
@@ -21,7 +20,13 @@ import java.util.Date;
  * @version 3.2
  */
 public class Notification extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 5595866255405659827L;
+
+	/**
      * <p>
      * Represents the company id.
      * </p>

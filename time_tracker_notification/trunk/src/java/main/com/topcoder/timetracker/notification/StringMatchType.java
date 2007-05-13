@@ -5,7 +5,6 @@ package com.topcoder.timetracker.notification;
 
 import com.topcoder.util.collection.typesafeenum.Enum;
 
-
 /**
  * <p>
  * This is an enum that is used by the FilterFactories for those methods when a String criterion is specified. This
@@ -20,7 +19,13 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * @version 3.2
  */
 public class StringMatchType extends Enum {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 964874786410105161L;
+
+	/**
      * <p>
      * This specifies that the criterion should be based on whether it begins with the specified String.
      * </p>

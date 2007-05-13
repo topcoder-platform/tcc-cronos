@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
-
 /**
  * <p>
  * This is factory that may be used to build filters for searching Time Tracker Notification entities.
@@ -35,7 +34,13 @@ import java.util.Map;
  * @version 3.2
  */
 public class NotificationFilterFactory implements Serializable {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -1273007500236823519L;
+
+	/**
      * <p>
      * This is the map key to use to specify the filter name for the Project Id.
      * </p>

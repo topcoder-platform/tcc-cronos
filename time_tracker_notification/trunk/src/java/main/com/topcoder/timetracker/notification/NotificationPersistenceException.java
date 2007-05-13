@@ -5,7 +5,6 @@ package com.topcoder.timetracker.notification;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception will be thrown by NotificationPersistence and its implementation if any error occurred during
@@ -16,7 +15,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class NotificationPersistenceException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 7025155006313090495L;
+
+	/**
      * Create the exception with error message.
      *
      * @param msg the error message

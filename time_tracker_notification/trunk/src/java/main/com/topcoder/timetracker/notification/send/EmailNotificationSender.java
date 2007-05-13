@@ -3,7 +3,6 @@
  */
 package com.topcoder.timetracker.notification.send;
 
-import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 
 import com.topcoder.message.email.AddressException;
@@ -11,6 +10,7 @@ import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.SendingException;
 import com.topcoder.message.email.TCSEmailMessage;
 
+import com.topcoder.timetracker.contact.AssociationException;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.contact.PersistenceException;
@@ -28,15 +28,7 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogException;
 import com.topcoder.util.log.LogFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -54,27 +46,6 @@ import java.util.List;
  * @version 3.2
  */
 public class EmailNotificationSender implements NotificationSender {
-    /**
-     * <p>
-     * The DBConnectionFactory is used to create the named connection.
-     * </p>
-     *
-     * <p>
-     * It's set in the constructor, non-null and immutable after set
-     * </p>
-     */
-    private final DBConnectionFactory dbFactory;
-
-    /**
-     * <p>
-     * The connection name used to create the named connection.
-     * </p>
-     *
-     * <p>
-     * It's set in the constructor, non-null and non-empty and immutable after set.
-     * </p>
-     */
-    private final String connectionName;
 
     /**
      * <p>
@@ -131,8 +102,6 @@ public class EmailNotificationSender implements NotificationSender {
         Helper.checkNull(generator, "generator");
         Helper.checkString(logName, "logName");
 
-        this.dbFactory = dbFactory;
-        this.connectionName = connName;
         this.contactManager = cm;
         this.generator = generator;
 
@@ -194,7 +163,14 @@ public class EmailNotificationSender implements NotificationSender {
                 } catch (LogException le) {
                     throw new NotificationSendingException("Error logging.");
                 }
-                throw new NotificationSendingException("Error when retrieve contact information.", pe);
+                throw new NotificationSendingException("Error when retrieving contact information.", pe);
+            } catch (AssociationException ae) {
+                try {
+                    this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
+                } catch (LogException le) {
+                    throw new NotificationSendingException("Error logging.");
+                }
+                throw new NotificationSendingException("Error when retrieving contact information.", ae);
             }
 
             // generate the message body

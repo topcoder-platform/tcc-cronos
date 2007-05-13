@@ -13,7 +13,6 @@ import com.topcoder.timetracker.notification.NotificationPersistenceException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-
 /**
  * <p>
  * This is a Stateless SessionBean that is used to provided business services to manage Notifications within the Time
@@ -34,7 +33,13 @@ import javax.ejb.SessionContext;
  * @version 3.2
  */
 public class NotificationPersistenceSessionBean implements NotificationPersistence, SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -4553510465048551485L;
+
+	/**
      * <p>
      * This is the instance of SessionContext that was provided by the EJB container.  It is stored and made available
      * to subclasses. It is also used when performing a rollback.
