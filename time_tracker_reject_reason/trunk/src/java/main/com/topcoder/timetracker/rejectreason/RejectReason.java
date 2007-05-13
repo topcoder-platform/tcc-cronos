@@ -5,7 +5,6 @@ package com.topcoder.timetracker.rejectreason;
 
 import com.topcoder.timetracker.common.TimeTrackerBean;
 
-
 /**
  * <p>
  * This bean represents a possible reason why a time or expense entry may be rejected by the Project Manager. Each
@@ -26,7 +25,13 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
  * @version 3.2
  */
 public class RejectReason extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -511387401131858811L;
+
+	/**
      * <p>
      * The id of the company with which this RejectReason is associated with. It will be a positive after set.
      * </p>

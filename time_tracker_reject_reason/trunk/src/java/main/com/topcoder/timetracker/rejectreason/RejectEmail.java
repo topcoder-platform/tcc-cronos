@@ -5,7 +5,6 @@ package com.topcoder.timetracker.rejectreason;
 
 import com.topcoder.timetracker.common.TimeTrackerBean;
 
-
 /**
  * <p>
  * This bean represents an email template that is sent to the contractor when a time or expense entry has been rejected
@@ -25,7 +24,13 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
  * @version 3.2
  */
 public class RejectEmail extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -3236076887414125898L;
+
+	/**
      * <p>
      * The id of the company with which this RejectEmail is associated with. It will be a positive after set.
      * </p>

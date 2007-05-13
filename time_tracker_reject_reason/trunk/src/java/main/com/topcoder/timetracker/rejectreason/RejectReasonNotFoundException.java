@@ -13,7 +13,13 @@ package com.topcoder.timetracker.rejectreason;
  * @version 3.2
  */
 public class RejectReasonNotFoundException extends RejectReasonDAOException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 940137343361341525L;
+
+	/**
      * <p>
      * Creates a new instance of <code>RejectReasonNotFoundException</code> class with a detail error message.
      * </p>

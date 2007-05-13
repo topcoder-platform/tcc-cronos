@@ -5,7 +5,6 @@ package com.topcoder.timetracker.rejectreason;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception is thrown when a problem occurs while working with the RejectEmail DAOs.
@@ -15,7 +14,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class RejectEmailDAOException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -7364260081909768645L;
+
+	/**
      * <p>
      * The Reject Email that the DAO was working with when a problem occurred.
      * </p>

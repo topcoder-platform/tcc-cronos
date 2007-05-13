@@ -5,7 +5,6 @@ package com.topcoder.timetracker.rejectreason.ejb;
 
 import com.topcoder.timetracker.rejectreason.RejectReasonDAOException;
 
-
 /**
  * This exception is thrown from RejectReasonSessionBean when any of needed environment variables to create an instance
  * of RejecReasonDAO can't be found or with an illegal value.
@@ -14,7 +13,13 @@ import com.topcoder.timetracker.rejectreason.RejectReasonDAOException;
  * @version 3.2
  */
 public class RejectReasonDAOConfigurationException extends RejectReasonDAOException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -5181356418698992416L;
+
+	/**
      * <p>
      * Creates a new instance of <code>RejectReasonDAOConfigurationException</code> class with a detail error message.
      * </p>

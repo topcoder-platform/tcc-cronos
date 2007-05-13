@@ -14,7 +14,6 @@ import com.topcoder.util.errorhandling.BaseException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 
-
 /**
  * <p>
  * This is a Stateless SessionBean that is used to provided business services to manage RejectReasons within the Time
@@ -37,7 +36,13 @@ import javax.ejb.SessionContext;
  * @version 3.2
  */
 public class RejectReasonSessionBean implements RejectReasonDAO, SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -1543898544928131371L;
+
+	/**
      * <p>
      * This is the instance of RejectReasonDAO that this session bean delegates all the work to. It is a private class
      * variable that should not be access directly even within, instead use getDAO method get it. That's because we

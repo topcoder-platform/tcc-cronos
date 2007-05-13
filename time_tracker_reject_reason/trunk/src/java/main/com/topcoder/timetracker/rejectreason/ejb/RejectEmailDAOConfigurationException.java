@@ -5,7 +5,6 @@ package com.topcoder.timetracker.rejectreason.ejb;
 
 import com.topcoder.timetracker.rejectreason.RejectEmailDAOException;
 
-
 /**
  * <p>
  * This exception is thrown from RejectEmailSessionBean when any of needed environment variables to create an instance
@@ -16,7 +15,13 @@ import com.topcoder.timetracker.rejectreason.RejectEmailDAOException;
  * @version 3.2
  */
 public class RejectEmailDAOConfigurationException extends RejectEmailDAOException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -4174237952387884055L;
+
+	/**
      * <p>
      * Creates a new instance of <code>RejectEmailDAOConfigurationException</code> class with a detail error message.
      * </p>

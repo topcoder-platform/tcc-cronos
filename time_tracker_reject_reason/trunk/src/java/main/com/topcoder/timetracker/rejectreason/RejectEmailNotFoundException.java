@@ -13,7 +13,13 @@ package com.topcoder.timetracker.rejectreason;
  * @version 3.2
  */
 public class RejectEmailNotFoundException extends RejectEmailDAOException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 7108133794704060923L;
+
+	/**
      * <p>
      * Creates a new instance of <code>RejectEmailNotFoundException</code> class with a detail error message.
      * </p>

@@ -5,7 +5,6 @@ package com.topcoder.timetracker.rejectreason;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>
  * This exception is thrown when a problem occurs while working with the RejectReason DAOs.
@@ -15,7 +14,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class RejectReasonDAOException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 4523220526378572136L;
+
+	/**
      * <p>
      * The Reject Reason that the DAO was working with when a problem occurred.
      * </p>
