@@ -6,7 +6,6 @@ package com.topcoder.timetracker.rates;
 import com.topcoder.timetracker.common.TimeTrackerBean;
 import com.topcoder.timetracker.company.Company;
 
-
 /**
  * Bean class that stores information about a Rate within a Time Tracker application. This extends the
  * TimeTrackerBean base, so contains the common ID as well as creation and modification information. In addition to
@@ -21,7 +20,13 @@ import com.topcoder.timetracker.company.Company;
  * @version 3.2
  */
 public class Rate extends TimeTrackerBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 7474935044046843623L;
+
+	/**
      * The company instance that the rate is for - This is a Company instance (can be null), accessed with its
      * getter method. It is initially null, and can be changed to any Company instance or null by calling its setter
      * method.

@@ -19,7 +19,6 @@ import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 
-
 /**
  * <p>This is an implementation EJB of the LocalRate interface. This is nothing more than a delegating wrapper
  * around the RatePersistence instance but with an interception of exceptions from the dao with subsequent transaction
@@ -34,7 +33,13 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * @version 3.2
  */
 public class RateEjb implements SessionBean {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = 2125904035291617864L;
+
+	/**
      * Represents the property name to retrieve the object factory namespace from sessionContext. If it's
      * absent, the default namespace "com.topcoder.util.objectfactory.ObjectFactory" will be used.
      */

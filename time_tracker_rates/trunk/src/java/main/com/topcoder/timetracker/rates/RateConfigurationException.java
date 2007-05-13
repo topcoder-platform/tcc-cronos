@@ -5,7 +5,6 @@ package com.topcoder.timetracker.rates;
 
 import com.topcoder.util.errorhandling.BaseException;
 
-
 /**
  * <p>Exception used by the Rates component whenever there is a problem while initializing all the objects based on
  * configuration parameters. For example, if required parameters are missing or invalid, then this exception is
@@ -16,7 +15,13 @@ import com.topcoder.util.errorhandling.BaseException;
  * @version 3.2
  */
 public class RateConfigurationException extends BaseException {
-    /**
+
+	/**
+	 * Automatically generated unique ID for use with serialization.
+	 */
+	private static final long serialVersionUID = -5647556890095049256L;
+
+	/**
      * String-only constructor for the exception, taking a message detailing why the exception occurred.
      * @param message Descriptive reason the error occurred.
      */
