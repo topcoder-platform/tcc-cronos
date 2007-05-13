@@ -94,7 +94,7 @@
     <property name="class_associations.jar.name" value="class_associations.jar"/>
     <property name="class_associations.path" value="class_associations/${class_associations.version}"/>
     <property name="class_associations.jar" value="${tcs_libdir}/${class_associations.path}/${class_associations.jar.name}"/>
-    
+
     <property name="configuration_manager.version" value="2.1.5"/>
     <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
@@ -109,12 +109,12 @@
     <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
     <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
     <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
-    
+
     <property name="db_connection_factory.version" value="1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
-    
+
     <property name="id_generator.version" value="3.0"/>
     <property name="id_generator.jar.name" value="id_generator.jar"/>
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
@@ -139,12 +139,12 @@
     <property name="search_builder.jar.name" value="search_builder.jar"/>
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
-    
+
     <property name="typesafe_enum.version" value="1.0"/>
     <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
-    
+
     <!-- Time Tracker custom components -->
     <property name="time_tracker_audit.version" value="3.2"/>
     <property name="time_tracker_audit.jar.name" value="time_tracker_audit.jar"/>
@@ -209,7 +209,7 @@
         <pathelement location="${j2ee.jar}" />
         <pathelement location="${jakarta-oro.jar}" />
         <pathelement location="${mockejb.jar}" />
-        
+
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
      </path>
@@ -271,15 +271,15 @@
     </target>
 
     <target name="test" depends="compile_tests">
-        <mkdir dir="${testlogdir}"/>		
+        <mkdir dir="${testlogdir}"/>
     	<mkdir dir="${instrumented.dir}"/>
     	<delete file="${cobertura.datafile}" />
-    	<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+        <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
             <!-- all included -->
             <fileset dir="${build_classdir}">
                 <include name="**/*.class" />
             </fileset>
-    	</cobertura-instrument>
+        </cobertura-instrument>
         <junit fork="true" haltonerror="false">
 
         <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
@@ -293,7 +293,7 @@
             <formatter type="plain" usefile="true"/>
             <formatter type="xml" usefile="true"/>
         </test>
-            
+
         </junit>
     </target>
 
@@ -316,7 +316,7 @@
             <fileset dir="${testlogdir}">
                 <include name="*.xml"/>
             </fileset>
-          <report format="frames" todir="${reports}"/>
+            <report format="frames" todir="${reports}"/>
         </junitreport>
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
     </target>
@@ -345,7 +345,7 @@
             stylesheetfile="${javadocsdir}/stylesheet.css"
             verbose="${verbose}">
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
