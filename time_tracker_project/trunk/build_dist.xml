@@ -71,14 +71,15 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
-
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+
     <path id="cobertura.classpath">
         <fileset dir="${cobertura.dir}">
             <include name="cobertura.jar"/>
             <include name="lib/**/*.jar"/>
         </fileset>
     </path>
+
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
     <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser"/>
     <property name="instrumented.dir" value="${builddir}/instrumented"/>
@@ -177,7 +178,7 @@
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
-    <property name="j2ee.jar" value="${ext_libdir}/j2ee/1.4/j2ee.jar"/>
+    <property name="j2ee.jar" value="${ext_libdir}/j2ee/1.4/jboss-j2ee.jar"/>
     <property name="cglib.jar" value="${ext_libdir}/cglib-nodep-2.1_3.jar"/>
     <property name="jakarta-oro.jar" value="${ext_libdir}/jakarta-oro-2.0.8.jar"/>
     <property name="commons-logging.jar" value="${ext_libdir}/commons-logging-1.0.4.jar"/>
@@ -249,8 +250,12 @@
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
-               verbose="${verbose}">
+        <javac srcdir="${javamain}"
+               destdir="${build_classdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="buildlibs"/>
         </javac>
     </target>
@@ -267,7 +272,7 @@
                target="1.3"
                bootclasspath="${java_1_3_bootclasspath}"
                extdirs=""
-                >
+               >
             <classpath refid="buildlibs"/>
         </javac>
 
@@ -280,7 +285,7 @@
                target="1.3"
                bootclasspath="${java_1_3_bootclasspath}"
                extdirs=""
-                >
+               >
             <classpath refid="buildlibs"/>
         </javac>
         <delete dir="${build_targetclassdir}"/>
@@ -288,8 +293,12 @@
 
     <target name="compile_tests" depends="compile">
         <mkdir dir="${build_testclassdir}"/>
-        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true"
-               verbose="${verbose}">
+        <javac srcdir="${javatests}"
+               destdir="${build_testclassdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="test.build.classpath"/>
         </javac>
     </target>
@@ -320,8 +329,7 @@
     </target>
 
     <target name="coveragereport" depends="test">
-        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
-                          datafile="${cobertura.datafile}">
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
             <fileset dir="${javamain}">
                 <include name="**/*.java"/>
             </fileset>
@@ -366,7 +374,8 @@
                  footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
                  bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://www.topcodersoftware.com'&gt;www.topcodersoftware.com&lt;/a&gt;&lt;/font&gt;"
                  stylesheetfile="${javadocsdir}/stylesheet.css"
-                 verbose="${verbose}">
+                 verbose="${verbose}"
+                 >
             <tag name="copyright" description="Copyright:" scope="types"/>
         </javadoc>
     </target>
