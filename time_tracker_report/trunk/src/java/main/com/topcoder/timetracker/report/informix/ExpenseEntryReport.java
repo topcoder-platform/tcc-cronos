@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
-
 package com.topcoder.timetracker.report.informix;
 
 import com.topcoder.timetracker.entry.expense.ExpenseEntry;
@@ -25,6 +24,11 @@ import com.topcoder.timetracker.entry.expense.ExpenseType;
 public class ExpenseEntryReport extends ReportEntryBean {
 
     /**
+	 * Automatically generated unique ID for use qith serialization.
+	 */
+	private static final long serialVersionUID = 3731679201863501420L;
+
+	/**
      * <p>
      * Represents the expense entry. It's changeable, can be null and it's null at the beginning.
      * </p>

@@ -18,6 +18,11 @@ package com.topcoder.timetracker.report;
 public class ReportConfigException extends ReportException {
 
     /**
+	 * Automatically generated unique ID for use qith serialization.
+	 */
+	private static final long serialVersionUID = -8038786281909479121L;
+
+	/**
      * <p>
      * Constructs a new <code>ReportConfigException</code>, with the given error message.
      * </p>

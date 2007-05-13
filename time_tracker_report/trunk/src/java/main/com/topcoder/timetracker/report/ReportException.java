@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
-
 package com.topcoder.timetracker.report;
 
 import com.topcoder.util.errorhandling.BaseException;
@@ -25,6 +24,11 @@ import com.topcoder.util.errorhandling.BaseException;
 public class ReportException extends BaseException {
 
     /**
+	 * Automatically generated unique ID for use qith serialization.
+	 */
+	private static final long serialVersionUID = -5498598824361127627L;
+
+	/**
      * <p>
      * Constructs a new <code>ReportException</code>, with the given error message.
      * </p>
