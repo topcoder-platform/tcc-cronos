@@ -71,18 +71,18 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
 
     <!-- codertura task definitation -->
-		<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
 
-		<path id="cobertura.classpath">
-    	<fileset dir="${cobertura.dir}">
-      	  <include name="cobertura.jar" />
-        	<include name="lib/**/*.jar" />
-    	</fileset>
-		</path>
+    <path id="cobertura.classpath">
+        <fileset dir="${cobertura.dir}">
+            <include name="cobertura.jar" />
+            <include name="lib/**/*.jar" />
+        </fileset>
+    </path>
 
-		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-		<property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
-		<property name="instrumented.dir" value="${builddir}/instrumented" />
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+    <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
+    <property name="instrumented.dir" value="${builddir}/instrumented" />
 
     <!-- TCS Dependencies -->
     <property name="configmanager.version" value="2.1.5"/>
@@ -109,7 +109,6 @@
     <property name="id_generator.jar.name" value="id_generator.jar"/>
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
-
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -188,25 +187,25 @@
 
     <target name="test" depends="compile_tests">
         <mkdir dir="${testlogdir}"/>
-				<mkdir dir="${instrumented.dir}"/>
+        <mkdir dir="${instrumented.dir}"/>
 
-				<delete file="${cobertura.datafile}" />
+        <delete file="${cobertura.datafile}" />
 
-				<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
-						<!-- all included -->
-						<fileset dir="${build_classdir}">
-        			<include name="**/*.class" />
-    				</fileset>
-				</cobertura-instrument>
+        <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+            <!-- all included -->
+            <fileset dir="${build_classdir}">
+                <include name="**/*.class" />
+            </fileset>
+        </cobertura-instrument>
 
         <junit fork="true" haltonerror="false">
 
-				<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
+            <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
 
-						<classpath location="${instrumented.dir}" />
-						<classpath location="${build_testclassdir}" />
-						<classpath refid="test.build.classpath" />
-						<classpath refid="cobertura.classpath" />
+            <classpath location="${instrumented.dir}" />
+            <classpath location="${build_testclassdir}" />
+            <classpath refid="test.build.classpath" />
+            <classpath refid="cobertura.classpath" />
 
             <test name="${package}.AllTests" todir="${testlogdir}">
                 <formatter type="plain" usefile="true"/>
@@ -218,14 +217,14 @@
     </target>
 
     <target name="coveragereport" depends="test">
-				<cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
-    			<fileset dir="${javamain}">
-        		<include name="**/*.java" />
-    			</fileset>
-    			<fileset dir="${javatests}">
-        		<include name="**/*.java" />
-    			</fileset>
-				</cobertura-report>
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
+            <fileset dir="${javamain}">
+                <include name="**/*.java" />
+            </fileset>
+            <fileset dir="${javatests}">
+                <include name="**/*.java" />
+            </fileset>
+        </cobertura-report>
 
     </target>
 
@@ -233,10 +232,10 @@
         <mkdir dir="${reports}"/>
 
         <junitreport todir="${reports}">
-          <fileset dir="${testlogdir}">
-            <include name="*.xml"/>
-          </fileset>
-          <report format="frames" todir="${reports}"/>
+            <fileset dir="${testlogdir}">
+                <include name="*.xml"/>
+            </fileset>
+            <report format="frames" todir="${reports}"/>
         </junitreport>
 
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
@@ -264,9 +263,10 @@
             footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
             bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://software.topcoder.com'&gt;software.topcoder.com&lt;/a&gt;&lt;/font&gt;"
             stylesheetfile="${javadocsdir}/stylesheet.css"
-            verbose="${verbose}">
+            verbose="${verbose}"
+            >
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
