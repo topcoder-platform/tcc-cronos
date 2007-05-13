@@ -2,7 +2,6 @@
 
 <project name="Time Tracker User" default="dist" basedir=".">
 
-<!--    <import file="D:/TopCoder/config/commons.xml" /> -->
     <property file="../topcoder_global.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
@@ -159,7 +158,7 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 
-    <!-- Custom TopCoder Components -->
+    <!-- Time Tracker custom components -->
     <property name="time_tracker_audit.version" value="3.2"/>
     <property name="time_tracker_audit.jar.name" value="time_tracker_audit.jar"/>
     <property name="time_tracker_audit.path" value="time_tracker_audit/${time_tracker_audit.version}"/>
@@ -283,25 +282,25 @@
 
     <target name="test" depends="compile_tests">
         <mkdir dir="${testlogdir}"/>
-				<mkdir dir="${instrumented.dir}"/>
+        <mkdir dir="${instrumented.dir}"/>
 
-				<delete file="${cobertura.datafile}" />
+        <delete file="${cobertura.datafile}" />
 
-				<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
-						<!-- all included -->
-						<fileset dir="${build_classdir}">
-        			<include name="**/*.class" />
-    				</fileset>
-				</cobertura-instrument>
+        <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+            <!-- all included -->
+            <fileset dir="${build_classdir}">
+                <include name="**/*.class" />
+            </fileset>
+        </cobertura-instrument>
 
         <junit fork="true" haltonerror="false">
 
-				<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
+            <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
 
-						<classpath location="${instrumented.dir}" />
-						<classpath location="${build_testclassdir}" />
-						<classpath refid="test.build.classpath" />
-						<classpath refid="cobertura.classpath" />
+            <classpath location="${instrumented.dir}" />
+            <classpath location="${build_testclassdir}" />
+            <classpath refid="test.build.classpath" />
+            <classpath refid="cobertura.classpath" />
 
             <test name="${package}.AllTests" todir="${testlogdir}">
                 <formatter type="plain" usefile="true"/>
@@ -310,15 +309,14 @@
 
         </junit>
 
-      <replace dir="${testlogdir}">
-			      <replacevalue>TCSDEVELOPER</replacevalue>
-			      <replacetoken>biotrail</replacetoken>
-		  </replace>
+        <replace dir="${testlogdir}">
+            <replacevalue>TCSDEVELOPER</replacevalue>
+            <replacetoken>biotrail</replacetoken>
+        </replace>
     </target>
 
-	<!--
-    <taskdef resource="checkstyletask.properties"
-			    classpath="E:\TCTool\checkstyle-4.2\checkstyle-all-4.2.jar" />
+<!--
+    <taskdef resource="checkstyletask.properties" classpath="E:\TCTool\checkstyle-4.2\checkstyle-all-4.2.jar" />
 
     <target name="checkstyle" depends="compile">
         <mkdir dir="${testlogdir}"/>
@@ -336,27 +334,28 @@
             <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
         </checkstyle>
     </target>
-    -->
+ -->
+
     <target name="coveragereport" depends="test">
 
-				<cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
-    			<fileset dir="${javamain}">
-        		<include name="**/*.java" />
-    			</fileset>
-    			<fileset dir="${javatests}">
-        		<include name="**/*.java" />
-    			</fileset>
-				</cobertura-report>
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
+            <fileset dir="${javamain}">
+                <include name="**/*.java" />
+            </fileset>
+            <fileset dir="${javatests}">
+                <include name="**/*.java" />
+            </fileset>
+        </cobertura-report>
 
-		</target>
+    </target>
 
     <target name="reports" depends="test">
         <mkdir dir="${reports}"/>
 
         <junitreport todir="${reports}">
-          <fileset dir="${testlogdir}">
-            <include name="*.xml"/>
-          </fileset>
+            <fileset dir="${testlogdir}">
+                <include name="*.xml"/>
+            </fileset>
           <report format="frames" todir="${reports}"/>
         </junitreport>
 
@@ -387,7 +386,7 @@
             stylesheetfile="${javadocsdir}/stylesheet.css"
             verbose="${verbose}">
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
@@ -404,7 +403,7 @@
     <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
     <!-- ************************************************************************** -->
 
-    <target name="dist_tcs" depends="clean,dist,javadoc">
+    <target name="dist_tcs" depends="clean,dist">
         <!-- define tcs distribution format -->
 <!-- uncomment if configuration files exist.
         <mkdir dir="${dist_conf}"/>
@@ -437,12 +436,11 @@
 
         <antcall target="package_docs" />
 
-<!-- uncomment if test files exist.
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
--->
+
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
