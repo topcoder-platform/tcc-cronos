@@ -1,81 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN" "http://java.sun.com/j2ee/dtds/ejb-jar_1_1.dtd">
-<ejb-jar>
+<ejb-jar id="ejb-jar_ID" version="2.1"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd">
 
-  <display-name>RejectReasonEJBModule</display-name>
-  <enterprise-beans>
-    <session>
-      <ejb-name>RejectReasonBean</ejb-name>
-      <local-home>com.topcoder.timetracker.rejectreason.ejb.RejectReasonLocalHome</local-home>
-      <local>com.topcoder.timetracker.rejectreason.ejb.RejectReasonLocal</local>
-      <ejb-class>com.topcoder.timetracker.rejectreason.ejb.RejectReasonSessionBean</ejb-class>
-      <session-type>Stateless</session-type>
-      <transaction-type>Container</transaction-type>
-    </session>
-  </enterprise-beans>
-  
-  <enterprise-beans>
-    <session>
-      <ejb-name>RejectEmailBean</ejb-name>
-      <local-home>com.topcoder.timetracker.rejectreason.ejb.RejectEmailHomeLocal</local-home>
-      <local>com.topcoder.timetracker.rejectreason.ejb.RejectEmailLocal</local>
-      <ejb-class>com.topcoder.timetracker.rejectreason.ejb.RejectEmailSessionBean</ejb-class>
-      <session-type>Stateless</session-type>
-      <transaction-type>Container</transaction-type>
-    </session>
-  </enterprise-beans>
-  
-  <assembly-descriptor>
-    <container-transaction>
-      <method>
-        <ejb-name>RejectReasonBean</ejb-name>
-        <method-name>*</method-name>
-      </method>
-      <trans-attribute>Required</trans-attribute>
-    </container-transaction>
-	
-	<container-transaction>
-      <method>
-        <ejb-name>RejectEmailBean</ejb-name>
-        <method-name>*</method-name>
-      </method>
-      <trans-attribute>Required</trans-attribute>
-    </container-transaction>	
-  </assembly-descriptor>
-  
-    <env-entry>
-     <description>Object Factory Namespace</description>
-     <env-entry-name>of_namespace</env-entry-name>
-     <env-entry-value>com.topcoder.timetracker.rejectreason</env-entry-value>
-     <env-entry-type>java.lang.String</env-entry-type>
-   </env-entry>
-   
-    <env-entry>
-     <description>Database Connection Name</description>
-     <env-entry-name>connection_name</env-entry-name>
-     <env-entry-value>time_tracker_application_TXDatasource</env-entry-value>
-     <env-entry-type>java.lang.String</env-entry-type>
-   </env-entry>
-   
-    <env-entry>
-     <description>Database Connection Class</description>
-     <env-entry-name>db_connection_factory_key</env-entry-name>
-     <env-entry-value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</env-entry-value>
-     <env-entry-type>java.lang.String</env-entry-type>
-   </env-entry>
-  
-    <env-entry>
-     <description>Audit Manager Class</description>
-     <env-entry-name>audit_manager_key</env-entry-name>
-     <env-entry-value>com.topcoder.timetracker.audit.AuditManager</env-entry-value>
-     <env-entry-type>java.lang.String</env-entry-type>
-   </env-entry>
-  
-    <env-entry>
-     <description>ID Generator Name</description>
-     <env-entry-name>id_generator_name</env-entry-name>
-     <env-entry-value>com.topcoder.timetracker.rejectreason</env-entry-value>
-     <env-entry-type>java.lang.String</env-entry-type>
-   </env-entry>
-  
+	<display-name>Time Tracker Reject Reason 3.2</display-name>
+
+	<enterprise-beans>
+		<session>
+			<ejb-name>RejectReasonEJB</ejb-name>
+			<local-home>com.topcoder.timetracker.rejectreason.ejb.RejectReasonDAOLocalHome</local-home>
+			<local>com.topcoder.timetracker.rejectreason.ejb.RejectReasonDAOLocal</local>
+			<ejb-class>com.topcoder.timetracker.rejectreason.ejb.RejectReasonSessionBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+
+			<env-entry>
+				<description>Object Factory Namespace</description>
+				<env-entry-name>of_namespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.timetracker.rejectreason</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>Database Connection Name</description>
+				<env-entry-name>connection_name</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>time_tracker_application_TXDatasource</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>Database Connection Class</description>
+				<env-entry-name>db_connection_factory_key</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>Audit Manager Class</description>
+				<env-entry-name>audit_manager_key</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.timetracker.audit.AuditManager</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>ID Generator Name</description>
+				<env-entry-name>id_generator_name</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.timetracker.rejectreason</env-entry-value>
+			</env-entry>
+		</session>
+
+		<session>
+			<ejb-name>RejectEmailEJB</ejb-name>
+			<local-home>com.topcoder.timetracker.rejectreason.ejb.RejectEmailDAOLocalHome</local-home>
+			<local>com.topcoder.timetracker.rejectreason.ejb.RejectEmailDAOLocal</local>
+			<ejb-class>com.topcoder.timetracker.rejectreason.ejb.RejectEmailSessionBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+
+			<env-entry>
+				<description>Object Factory Namespace</description>
+				<env-entry-name>of_namespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.timetracker.rejectreason</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>Database Connection Name</description>
+				<env-entry-name>connection_name</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>time_tracker_application_TXDatasource</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>Database Connection Class</description>
+				<env-entry-name>db_connection_factory_key</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>Audit Manager Class</description>
+				<env-entry-name>audit_manager_key</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.timetracker.audit.AuditManager</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>ID Generator Name</description>
+				<env-entry-name>id_generator_name</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>com.topcoder.timetracker.rejectreason</env-entry-value>
+			</env-entry>
+		</session>
+	</enterprise-beans>
+
+	<assembly-descriptor>
+		<container-transaction>
+			<method>
+				<ejb-name>RejectReasonEJB</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+
+		<container-transaction>
+			<method>
+				<ejb-name>RejectEmailEJB</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+	</assembly-descriptor>
+
 </ejb-jar>
