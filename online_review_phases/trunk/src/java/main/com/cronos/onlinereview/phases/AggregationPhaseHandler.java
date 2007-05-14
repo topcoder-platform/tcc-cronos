@@ -143,8 +143,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 if (winner == null) {
                 	log.log(Level.WARN, "can't open aggregation because there is no winner for project: " + phase.getProject().getId());
                 }
-                if (aggregator.length == 1) {
-                	log.log(Level.WARN, "can't open aggregation because there is no winner for project: " + phase.getProject().getId());
+                if (aggregator.length != 1) {
+                	log.log(Level.WARN, "can't open aggregation because there is no Aggregator for project: " + phase.getProject().getId());
                 }
                 //return true if there is a winner and an aggregator
                 return (winner != null) && (aggregator.length == 1);
