@@ -30,6 +30,7 @@ import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
@@ -920,7 +921,8 @@ final class PhasesHelper {
     /**
      * Returns the winning submitter for the given project id.
      *
-     * @param manager ResourceManager instance.
+     * @param resourceManager ResourceManager instance.
+     * @param projectManager {@link ProjectManager} instance
      * @param conn connection to connect to db with.
      * @param projectId project id.
      *
@@ -929,34 +931,20 @@ final class PhasesHelper {
      * @throws SQLException if an error occurs when connecting to db.
      * @throws PhaseHandlingException if an error occurs when searching for resource.
      */
-    static Resource getWinningSubmitter(ResourceManager manager, Connection conn, long projectId)
-        throws PhaseHandlingException {
+    static Resource getWinningSubmitter(ResourceManager resourceManager, ProjectManager projectManager, Connection conn, long projectId)
+        	throws PhaseHandlingException {
         try {
-            long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, "Submitter");
-            Filter submitterFilter = ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId);
-            Filter projectFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter fullFilter = SearchBundle.buildAndFilter(submitterFilter, projectFilter);
-
-            Resource[] submitters = manager.searchResources(fullFilter);
-
-            for (int i = 0; i < submitters.length; i++) {
-                String placement = (String) submitters[i].getProperty("Placement");
-
-                if ("1".equals(placement)) {
-                    return submitters[i];
-                }
-            }
-
+        	com.topcoder.management.project.Project project = projectManager.getProject(projectId);
+        	String winnerId = (String) project.getProperty("Winner External Reference ID");
+        	if (winnerId != null) {
+        		return resourceManager.getResource(Long.parseLong(winnerId));
+        	}
             return null;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up id", e);
-        } catch (SearchBuilderConfigurationException e) {
-            throw new PhaseHandlingException("Problem with search builder configuration", e);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving resource", e);
-        } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException("Problem with search builder", e);
-        }
+        } catch (com.topcoder.management.project.PersistenceException e) {
+        	throw new PhaseHandlingException("Problem retrieving project id: " + projectId, e);
+		}
     }
 
     /**

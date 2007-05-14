@@ -233,7 +233,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, true);
 
                     //find winning submitter.
-                    Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                    Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(), 
                             conn, phase.getProject().getId());
                     if (winningSubmitter == null) {
                         throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
@@ -313,7 +313,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             //get final fix upload based on "Final Fix" type, "Active" status and winning submitter resource id filters.
             Filter uploadTypeFilter = UploadFilterBuilder.createUploadTypeIdFilter(uploadTypeId);
             Filter uploadStatusFilter = UploadFilterBuilder.createUploadStatusIdFilter(uploadStatusId);
-            Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), conn,
+            Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(), conn,
                     phase.getProject().getId());
             Filter resourceIdFilter = UploadFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
             Filter fullFilter = SearchBundle.buildAndFilter(SearchBundle.buildAndFilter(uploadTypeFilter,
