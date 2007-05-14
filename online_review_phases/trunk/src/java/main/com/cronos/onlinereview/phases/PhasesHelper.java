@@ -53,6 +53,7 @@ import com.topcoder.project.phases.Project;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
@@ -937,13 +938,34 @@ final class PhasesHelper {
         	com.topcoder.management.project.Project project = projectManager.getProject(projectId);
         	String winnerId = (String) project.getProperty("Winner External Reference ID");
         	if (winnerId != null) {
-        		return resourceManager.getResource(Long.parseLong(winnerId));
+        		long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, "Submitter");
+                ResourceFilterBuilder.createExtensionPropertyNameFilter("External Reference ID");
+                
+                AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
+                		ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId), 
+                		ResourceFilterBuilder.createProjectIdFilter(projectId),
+                		ResourceFilterBuilder.createExtensionPropertyNameFilter("External Reference ID"),
+                		ResourceFilterBuilder.createExtensionPropertyValueFilter(winnerId)
+                	}));
+                		
+
+                Resource[] submitters = resourceManager.searchResources(fullFilter);
+                if (submitters.length > 0) {
+                	return submitters[0];
+                }
+        		return null;
         	}
             return null;
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving resource", e);
         } catch (com.topcoder.management.project.PersistenceException e) {
         	throw new PhaseHandlingException("Problem retrieving project id: " + projectId, e);
+		} catch (SQLException e) {
+			throw new PhaseHandlingException("Problem when looking up id", e);
+		} catch (SearchBuilderConfigurationException e) {
+			throw new PhaseHandlingException("Problem with search builder configuration", e);
+		} catch (SearchBuilderException e) {
+			throw new PhaseHandlingException("Problem with search builder", e);
 		}
     }
 
