@@ -450,11 +450,10 @@ public class Helper {
      * @return An instance of <code>AddressDAO</code> if given boolean value is true; Otherwise return an instance
      *         of <code>ContactDAO</code> if given boolean value is false.
      *
-     * @throws CreateException - If error occurs while looking up environment entry or creating DAO through
+     * @throws CreateException If error occurs while looking up environment entry or creating DAO through
      *         <code>ObjectFactory</code>.
      */
     public static Object getDAO(boolean address) throws CreateException {
-
         try {
             String specNamespace = null;
             Context initCtx = new InitialContext();
@@ -470,17 +469,20 @@ public class Helper {
                 return (ContactDAO) dao;
             }
         } catch (NamingException ne) {
-            throw new CreateException(
-                "Error occurs while looking up environment entry: " + ne.getMessage());
+            CreateException exception = new CreateException("Error occurs while looking up environment entry.");
+            throw (CreateException) exception.initCause(ne);
         } catch (ConfigurationException ce) {
-            throw new CreateException(
-                "Error occurs while creating ObjectFactory: " + ce.getMessage());
+            CreateException exception = new CreateException("Error occurs while creating ObjectFactory.");
+            throw (CreateException) exception.initCause(ce);
         } catch (IllegalArgumentException iae) {
-            throw new CreateException("Error occurs while creating DAO: " + iae.getMessage());
+            CreateException exception = new CreateException("Error occurs while creating DAO.");
+            throw (CreateException) exception.initCause(iae);
         } catch (InvalidClassSpecificationException icse) {
-            throw new CreateException("Error occurs while creating DAO: " + icse.getMessage());
+            CreateException exception = new CreateException("Error occurs while creating DAO.");
+            throw (CreateException) exception.initCause(icse);
         } catch (ClassCastException cce) {
-            throw new CreateException("Error occurs while casting object to DAO: " + cce.getMessage());
+            CreateException exception = new CreateException("Error occurs while casting object to DAO.");
+            throw (CreateException) exception.initCause(cce);
         }
     }
 }
