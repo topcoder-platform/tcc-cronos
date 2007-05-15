@@ -3,9 +3,14 @@
  */
 package com.cronos.onlinereview.ajax;
 
+import com.cronos.onlinereview.logging.LoggingContext;
+import com.cronos.onlinereview.logging.LoggingContextBuilder;
+import com.cronos.onlinereview.logging.LoggingUtil;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
@@ -51,9 +56,8 @@ import java.util.Map;
  * @version 1.0.1
  */
 public final class AjaxSupportServlet extends HttpServlet {
-	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
-			.getLog(AjaxSupportServlet.class.getName());
-	
+    private static final Log log = LogManager.getLog(AjaxSupportServlet.class.getName());
+
     /**
      * Represents the property name of handlers.
      */
@@ -116,21 +120,34 @@ public final class AjaxSupportServlet extends HttpServlet {
         // create a new instance of ConfigManager class
         ConfigManager cm = ConfigManager.getInstance();
 
+        LoggingContext loggingContext = LoggingContextBuilder.buildOnlineAJAXReviewLoggingContext();
+
         try {
             // get the userId from the config manager
             this.userIdAttributeName = cm.getString(NAMESPACE, USER_ID_PROPERTY_NAME);
 
             if (userIdAttributeName == null || userIdAttributeName.trim().length() == 0) {
+                LoggingUtil.logMessage(log, Level.FATAL, loggingContext, LoggingUtil.configurationMissingLogMessage(
+                    NAMESPACE, USER_ID_PROPERTY_NAME));
                 throw new ServletException("The UserIdAttributeName is required.");
             }
+
+            LoggingUtil.logMessage(log, Level.INFO, loggingContext, LoggingUtil.configurationLogMessage(NAMESPACE,
+                USER_ID_PROPERTY_NAME, userIdAttributeName));
 
             ObjectFactory factory = AjaxSupportHelper.createObjectFactory();
 
             // get the list of all the Ajax request handlers names from the config manager
             String[] handlerNames = cm.getStringArray(NAMESPACE, HANDLERS_PROPERTY);
+
+            LoggingUtil.logMessage(log, Level.INFO, loggingContext, LoggingUtil.configurationLogMessage(NAMESPACE,
+                HANDLERS_PROPERTY, handlerNames));
+
             if (handlerNames != null) {
                 for (int i = 0; i < handlerNames.length; i++) {
                     if (handlerNames[i] == null || handlerNames[i].trim().length() == 0) {
+                        LoggingUtil.logMessage(log, Level.FATAL, loggingContext,
+                            LoggingUtil.configurationMissingLogMessage(NAMESPACE, HANDLERS_PROPERTY));
                         throw new ServletException("The handler name should not be null/empty.");
                     }
                     AjaxRequestHandler handler = (AjaxRequestHandler) factory.createObject(handlerNames[i]);
@@ -138,10 +155,13 @@ public final class AjaxSupportServlet extends HttpServlet {
                 }
             }
         } catch (UnknownNamespaceException e) {
+            LoggingUtil.logException(log, Level.ERROR, loggingContext, e);
             throw new ServletException("The namespace can't be found.", e);
         } catch (InvalidClassSpecificationException e) {
+            LoggingUtil.logException(log, Level.ERROR, loggingContext, e);
             throw new ServletException("Can't create handler : " + e.getMessage() + ", " + e.getCause().getMessage(), e);
         } catch (ConfigurationException e) {
+            LoggingUtil.logException(log, Level.ERROR, loggingContext, e);
             throw new ServletException("Can't create factory.", e);
         }
     }
@@ -166,8 +186,8 @@ public final class AjaxSupportServlet extends HttpServlet {
      * @throws ServletException if the request for the POST could not be handled
      * @throws IOException if an input or output error is detected when the servlet handles the request
      */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+        IOException {
         // get the HttpSession from the request
         HttpSession session = request.getSession(false);
 
@@ -196,33 +216,28 @@ public final class AjaxSupportServlet extends HttpServlet {
 
             // if the handler is null, response it with status "request error"
             if (handler == null) {
-                AjaxSupportHelper.responseAndLogError(ajaxRequest.getType(), "Request error",
-                        "There is no corresponding handler : " + ajaxRequest.getType(), response);
+                AjaxSupportHelper.responseAndLogError(log, ajaxRequest.getType(), "Request error",
+                    "There is no corresponding handler : " + ajaxRequest.getType(), response);
                 return;
             }
 
             // serve the request and get the response
             AjaxResponse resp = handler.service(ajaxRequest, userId);
-            
+
             if (resp == null) {
-                AjaxSupportHelper.responseAndLogError(ajaxRequest.getType(),
-                        "Server error", "Server can't satisfy this request", response);
+                AjaxSupportHelper.responseAndLogError(log, ajaxRequest.getType(), "Server error",
+                    "Server can't satisfy this request", response);
                 return;
             }
             if (!"success".equalsIgnoreCase(resp.getStatus())) {
-            	StringBuffer buf = new StringBuffer();
-            	for (Iterator i = ajaxRequest.getAllParameterNames().iterator(); i.hasNext();) {
-            		String param = (String) i.next();
-            		buf.append(',')
-            			.append(param)
-            			.append(" = ")
-            			.append(ajaxRequest.getParameter(param));
-            	}
-            	log.log(Level.WARN, "problem handling request, status: " + resp.getStatus() +
-            			"\ntype: " + resp.getType() +
-            			"\nparams: " + (buf.length() == 0 ? "" : buf.substring(1)) + 
-            			"\nuserId: " + userId +
-            			"\nencoding: " + request.getCharacterEncoding());
+                StringBuffer buf = new StringBuffer();
+                for (Iterator i = ajaxRequest.getAllParameterNames().iterator(); i.hasNext();) {
+                    String param = (String) i.next();
+                    buf.append(',').append(param).append(" = ").append(ajaxRequest.getParameter(param));
+                }
+                log.log(Level.WARN, "problem handling request, status: " + resp.getStatus() + "\ntype: "
+                    + resp.getType() + "\nparams: " + (buf.length() == 0 ? "" : buf.substring(1)) + "\nuserId: "
+                    + userId + "\nencoding: " + request.getCharacterEncoding());
             }
             // response at last, this is the normal condition
             AjaxSupportHelper.doResponse(response, resp);
@@ -230,7 +245,7 @@ public final class AjaxSupportServlet extends HttpServlet {
         } catch (RequestParsingException e) {
             // if there is a parsing error then create an AjaxResponse containing the error message,
             // use the status "invalid request error"
-            AjaxSupportHelper.responseAndLogError("Unknown", "invalid request error", e.getMessage(), response, e);
+            AjaxSupportHelper.responseAndLogError(log, "Unknown", "invalid request error", e.getMessage(), response, e);
             return;
         }
     }

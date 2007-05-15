@@ -27,6 +27,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
+
 /**
  * <p>
  * Represents an Ajax request sent by a client to the server;
@@ -56,6 +59,12 @@ import org.xml.sax.helpers.DefaultHandler;
  * @version 1.0.1
  */
 public final class AjaxRequest {
+    /**
+     * <p>
+     * The logger instance for logging.
+     * </p>
+     */
+    private static final Log log = LogManager.getLog(AjaxRequest.class.getName());
 
     /**
      * Represents the xsd file.
@@ -70,14 +79,12 @@ public final class AjaxRequest {
     /**
      * Represents the schema language used for jaxp.
      */
-    private static final String JAXP_SCHEMA_LANGUAGE =
-        "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+    private static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 
     /**
      * Represents the schema source used for jaxp.
      */
-    private static final String JAXP_SCHEMA_SOURCE =
-        "http://java.sun.com/xml/jaxp/properties/schemaSource";
+    private static final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
     /**
      * Represents the xml schema.
@@ -256,8 +263,7 @@ public final class AjaxRequest {
          * @param attributes the attributes of this element
          * @throws SAXException if any error
          */
-        public void startElement(String uri, String localName,
-                String qName, Attributes attributes) throws SAXException {
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
             if (qName.equals("request")) {
                 if (attributes != null) {
@@ -279,8 +285,7 @@ public final class AjaxRequest {
          * @param length the length of the content
          * @throws SAXException if any error
          */
-        public void characters(char[] ch, int start, int length)
-            throws SAXException {
+        public void characters(char[] ch, int start, int length) throws SAXException {
             sb.append(ch, start, length);
         }
 
@@ -292,8 +297,7 @@ public final class AjaxRequest {
          * @param qName the qName of the element
          * @throws SAXException if any error
          */
-        public void endElement(String uri, String localName,
-                String qName) throws SAXException {
+        public void endElement(String uri, String localName, String qName) throws SAXException {
             if (qName.equals("request")) {
                 request = new AjaxRequest(requestType, requestParameters);
             } else if (qName.equals("parameter")) {
@@ -430,6 +434,10 @@ public final class AjaxRequest {
     private static File getFile(String filePath) {
         // get the URL of the resource
         URL url = AjaxRequest.class.getClassLoader().getResource(filePath);
+
+        if (url == null) {
+            return null;
+        }
 
         // return the file
         return new File(url.getFile());

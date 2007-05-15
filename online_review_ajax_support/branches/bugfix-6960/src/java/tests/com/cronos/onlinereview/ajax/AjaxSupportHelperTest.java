@@ -3,7 +3,11 @@
  */
 package com.cronos.onlinereview.ajax;
 
+import com.cronos.onlinereview.ajax.handlers.SetScorecardStatusHandler;
 import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
+
 import org.apache.cactus.JspTestCase;
 import org.apache.cactus.WebResponse;
 import org.w3c.dom.Document;
@@ -25,6 +29,12 @@ import java.util.Iterator;
  * @version 1.0
  */
 public class AjaxSupportHelperTest extends JspTestCase {
+    /**
+     * <p>
+     * The <code>Log</code> instance.
+     * </p>
+     */
+    private static final Log log = LogManager.getLog(AjaxSupportHelperTest.class.getName());
 
     /**
      * Set up the environment.
@@ -55,47 +65,47 @@ public class AjaxSupportHelperTest extends JspTestCase {
         }
     }
 
-//    /**
-//     * Prepare environment for responseAndLogError(String, String, String, HttpServletResponse).
-//     * @param request the request
-//     */
-//    public void beginResponseAndLogError(WebRequest request) {
-//        // do nothing
-//    }
-//
-//    /**
-//     * Test method for responseAndLogError(String, String, String, HttpServletResponse).
-//     * @throws Exception to JUnit
-//     */
-//    public void testResponseAndLogError() throws Exception {
-//        AjaxSupportHelper.responseAndLogError("test", "success", "a test", response);
-//    }
-//
-//
-//    /**
-//     * Verify result for test method for responseAndLogError(String, String, String, HttpServletResponse).
-//     * @param response the response
-//     * @throws Exception to JUnit
-//     */
-//    public void endResponseAndLogError(WebResponse response) throws Exception {
-//        String text = response.getText();
-//
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        Document doc = builder.parse(new ByteArrayInputStream(text.getBytes()));
-//
-//        // verify the result
-//        Element root = doc.getDocumentElement();
-//        assertEquals("The name should be response.", "response", root.getNodeName());
-//        assertEquals("The type should be test.", "test", root.getAttribute("type"));
-//
-//        NodeList children = root.getElementsByTagName("result");
-//        assertEquals("The length should be 1.", 1, children.getLength());
-//
-//        Node result = children.item(0);
-//        assertEquals("The name should be result.", "result", result.getNodeName());
-//        assertEquals("The status should be success.", "success", ((Element) result).getAttribute("status"));
-//    }
+    //    /**
+    //     * Prepare environment for responseAndLogError(String, String, String, HttpServletResponse).
+    //     * @param request the request
+    //     */
+    //    public void beginResponseAndLogError(WebRequest request) {
+    //        // do nothing
+    //    }
+    //
+    //    /**
+    //     * Test method for responseAndLogError(String, String, String, HttpServletResponse).
+    //     * @throws Exception to JUnit
+    //     */
+    //    public void testResponseAndLogError() throws Exception {
+    //        AjaxSupportHelper.responseAndLogError("test", "success", "a test", response);
+    //    }
+    //
+    //
+    //    /**
+    //     * Verify result for test method for responseAndLogError(String, String, String, HttpServletResponse).
+    //     * @param response the response
+    //     * @throws Exception to JUnit
+    //     */
+    //    public void endResponseAndLogError(WebResponse response) throws Exception {
+    //        String text = response.getText();
+    //
+    //        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    //        DocumentBuilder builder = factory.newDocumentBuilder();
+    //        Document doc = builder.parse(new ByteArrayInputStream(text.getBytes()));
+    //
+    //        // verify the result
+    //        Element root = doc.getDocumentElement();
+    //        assertEquals("The name should be response.", "response", root.getNodeName());
+    //        assertEquals("The type should be test.", "test", root.getAttribute("type"));
+    //
+    //        NodeList children = root.getElementsByTagName("result");
+    //        assertEquals("The length should be 1.", 1, children.getLength());
+    //
+    //        Node result = children.item(0);
+    //        assertEquals("The name should be result.", "result", result.getNodeName());
+    //        assertEquals("The status should be success.", "success", ((Element) result).getAttribute("status"));
+    //    }
 
     /**
      * Test method for responseAndLogError(String, String, String, HttpServletResponse).
@@ -105,7 +115,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testResponseAndLogErrorNullType() throws Exception {
         try {
-            AjaxSupportHelper.responseAndLogError(null, "success", "a test", response);
+            AjaxSupportHelper.responseAndLogError(log, null, "success", "a test", response);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -120,7 +130,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testResponseAndLogErrorEmptyType() throws Exception {
         try {
-            AjaxSupportHelper.responseAndLogError(" ", "success", "a test", response);
+            AjaxSupportHelper.responseAndLogError(log, " ", "success", "a test", response);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -135,7 +145,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testResponseAndLogErrorNullStatus() throws Exception {
         try {
-            AjaxSupportHelper.responseAndLogError("test", null, "a test", response);
+            AjaxSupportHelper.responseAndLogError(log, "test", null, "a test", response);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -150,7 +160,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testResponseAndLogErrorEmptyStatus() throws Exception {
         try {
-            AjaxSupportHelper.responseAndLogError("test", " ", "a test", response);
+            AjaxSupportHelper.responseAndLogError(log, "test", " ", "a test", response);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -161,7 +171,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      * Test method for createAndLogError(java.lang.String, java.lang.String, java.lang.String, java.lang.Object).
      */
     public void testCreateAndLogError() {
-        AjaxResponse response = AjaxSupportHelper.createAndLogError("test", "success", "a test", null);
+        AjaxResponse response = AjaxSupportHelper.createAndLogError(log, "test", "success", "a test", null);
         assertEquals("The type is not right.", "test", response.getType());
         assertEquals("The status is not right.", "success", response.getStatus());
     }
@@ -174,7 +184,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testCreateAndLogErrorNullType() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogError(null, "success", "a test", null);
+            AjaxSupportHelper.createAndLogError(log, null, "success", "a test", null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -189,7 +199,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testCreateAndLogErrorEmptyType() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogError(" ", "success", "a test", null);
+            AjaxSupportHelper.createAndLogError(log, " ", "success", "a test", null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -204,7 +214,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testCreateAndLogErrorNullStatus() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogError("test", null, "a test", response);
+            AjaxSupportHelper.createAndLogError(log, "test", null, "a test", response);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -219,7 +229,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testCreateAndLogErrorEmptyStatus() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogError("test", " ", "a test", response);
+            AjaxSupportHelper.createAndLogError(log, "test", " ", "a test", response);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -230,7 +240,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      * Test method for createAndLogSucceess(String, String, String, Object, Object).
      */
     public void testCreateAndLogSucceess() {
-        AjaxResponse response = AjaxSupportHelper.createAndLogSucceess("test", "success", "a test", null, null);
+        AjaxResponse response = AjaxSupportHelper.createAndLogSucceess(log, "test", "success", "a test", null, null);
         assertEquals("The type is not right.", "test", response.getType());
         assertEquals("The status is not right.", "success", response.getStatus());
     }
@@ -243,7 +253,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testcreateAndLogSucceessNullType() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogSucceess(null, "success", "a test", null, null);
+            AjaxSupportHelper.createAndLogSucceess(log, null, "success", "a test", null, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -258,7 +268,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testcreateAndLogSucceessEmptyType() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogSucceess(" ", "success", "a test", null, null);
+            AjaxSupportHelper.createAndLogSucceess(log, " ", "success", "a test", null, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -273,7 +283,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testcreateAndLogSucceessNullStatus() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogSucceess("test", null, "a test", response, null);
+            AjaxSupportHelper.createAndLogSucceess(log, "test", null, "a test", response, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -288,7 +298,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      */
     public void testcreateAndLogSucceessStatus() throws Exception {
         try {
-            AjaxSupportHelper.createAndLogSucceess("test", " ", "a test", response, null);
+            AjaxSupportHelper.createAndLogSucceess(log, "test", " ", "a test", response, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -300,7 +310,7 @@ public class AjaxSupportHelperTest extends JspTestCase {
      * @throws Exception to JUnit
      */
     public void testDoResponse() throws Exception {
-        AjaxResponse ajax = AjaxSupportHelper.createAndLogError("test", "success", "a test", null);
+        AjaxResponse ajax = AjaxSupportHelper.createAndLogError(log, "test", "success", "a test", null);
         AjaxSupportHelper.doResponse(response, ajax);
     }
 

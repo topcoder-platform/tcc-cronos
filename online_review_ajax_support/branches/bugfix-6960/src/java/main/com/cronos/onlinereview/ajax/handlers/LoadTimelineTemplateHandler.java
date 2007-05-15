@@ -11,6 +11,8 @@ import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.Project;
 import com.topcoder.project.phases.template.PhaseTemplate;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -35,6 +37,7 @@ import java.util.Date;
  * @version 1.0.1
  */
 public class LoadTimelineTemplateHandler extends CommonHandler {
+    private static final Log log = LogManager.getLog(LoadTimelineTemplateHandler.class.getName());
 
     /**
      * Represents the status of success.
@@ -105,38 +108,38 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
         // check all the required parameters are in the request object
         String name = request.getParameter("TemplateName");
         if (name == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The Template name is not set.", "LoadTimelineTemplate. " + "User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The Template name is not set.", "LoadTimelineTemplate. " + "User id : " + userId);
         }
         if (name.trim().length() == 0) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The Template name should not be empty.", "LoadTimelineTemplate. " + "User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The Template name should not be empty.", "LoadTimelineTemplate. " + "User id : " + userId);
         }
         Date start = null;
         try {
             start = request.getParameterAsDate("StartDate");
         } catch (ParseException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The StartDate parameter can't be parsed.", "LoadTimelineTemplate. " + "User id : " + userId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The StartDate parameter can't be parsed.", "LoadTimelineTemplate. " + "User id : " + userId, e);
         }
 
         // check the userId for validation
         if (userId == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), LOGIN_ERROR,
-                    "Doesn't login or expired.", "LoadTimelineTemplate. " + "User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), LOGIN_ERROR,
+                "Doesn't login or expired.", "LoadTimelineTemplate. " + "User id : " + userId);
         }
 
         try {
             // check that the user has the global manager role
             if (!checkUserHasGlobalManagerRole(userId.longValue())) {
                 // if doesn't have the role, return an error response
-                return AjaxSupportHelper.createAndLogError(request.getType(), ROLE_ERROR,
-                        "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId);
+                return AjaxSupportHelper.createAndLogError(log, request.getType(), ROLE_ERROR,
+                    "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId);
             }
         } catch (ResourceException e) {
             // if exception raised, return a business error response
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "User doesn't have the role.", "LoadTimelineTemplate. " + "User id : " + userId, e);
         }
 
         // find the template, if not found, return an error response
@@ -149,8 +152,8 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
             }
         }
         if (!found) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_TEMPLATE_NAME_ERROR,
-                    "Can't find the template '" + name + "'.", "LoadTimelineTemplate. " + "User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_TEMPLATE_NAME_ERROR,
+                "Can't find the template '" + name + "'.", "LoadTimelineTemplate. " + "User id : " + userId);
 
         }
 
@@ -163,15 +166,15 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
                 project = phaseTemplate.applyTemplate(name);
             }
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR, "Can't apply template",
-                    "LoadTimelineTemplate. " + "User id : " + userId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR, "Can't apply template",
+                "LoadTimelineTemplate. " + "User id : " + userId, e);
         }
 
         // generate the xml
         String xml = timelineToXml(project);
 
-        return AjaxSupportHelper.createAndLogSucceess(request.getType(), SUCCESS, "succeed to load template",
-                xml, "LoadTimelineTemplate. " + "User id : " + userId + " Start : " + start);
+        return AjaxSupportHelper.createAndLogSucceess(log, request.getType(), SUCCESS, "succeed to load template", xml,
+            "LoadTimelineTemplate. " + "User id : " + userId + " Start : " + start);
     }
 
     /**

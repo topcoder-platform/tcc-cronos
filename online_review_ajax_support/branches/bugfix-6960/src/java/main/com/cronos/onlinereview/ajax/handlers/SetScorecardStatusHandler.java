@@ -11,6 +11,8 @@ import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -32,6 +34,7 @@ import com.topcoder.management.scorecard.data.ScorecardStatus;
  * @version 1.0.1
  */
 public class SetScorecardStatusHandler extends CommonHandler {
+    private static final Log log = LogManager.getLog(SetScorecardStatusHandler.class.getName());
 
     /**
      * Represents the status of success.
@@ -156,30 +159,30 @@ public class SetScorecardStatusHandler extends CommonHandler {
         try {
             scorecardId = request.getParameterAsLong("ScorecardId");
         } catch (NumberFormatException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
                     "The scorecard id should be a long value.", "SetScorecardStatus. " + "User id : " + userId, e);
         }
 
         status = request.getParameter("Status");
         if (status == null || (!status.equals("Active") && !status.equals("Inactive"))) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
                     "The status must be Active or Inactive.", "SetScorecardStatus. " + "User id : " + userId);
         }
 
         // check the userId for validation
         if (userId == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), LOGIN_ERROR,
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), LOGIN_ERROR,
                     "Doesn't login or expired.", "SetScorecardStatus. " + "User id : " + userId);
         }
 
         // check the user has global manager role
         try {
             if (!checkUserHasGlobalManagerRole(userId.longValue())) {
-                return AjaxSupportHelper.createAndLogError(request.getType(), ROLE_ERROR,
+                return AjaxSupportHelper.createAndLogError(log, request.getType(), ROLE_ERROR,
                         "The user should have global manager role.", "SetScorecardStatus. " + "User id : " + userId);
             }
         } catch (ResourceException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
                     "Error when check user has gloable manager role.", "SetScorecardStatus. " + "User id : " + userId,
                     e);
         }
@@ -189,12 +192,12 @@ public class SetScorecardStatusHandler extends CommonHandler {
         try {
             card = this.scorecardManager.getScorecard(scorecardId);
         } catch (PersistenceException e1) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
                     "Error when get scorecard.", "SetScorecardStatus. " + "User id : " + userId
                     + "\tscorecard : " + scorecardId, e1);
         }
         if (card == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_SCORECARD_ERROR,
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_SCORECARD_ERROR,
                     "Can't find the scorecard.", "SetScorecardStatus. " + "User id : " + userId
                     + "\tcard id : " + scorecardId);
         }
@@ -210,13 +213,13 @@ public class SetScorecardStatusHandler extends CommonHandler {
         try {
             this.scorecardManager.updateScorecard(card, userId.toString());
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
+            return AjaxSupportHelper.createAndLogError(log, request.getType(),
                     BUSINESS_ERROR, "Can't update review.",
                     "SetScorecardStatus. User id : " + userId + "\tscorecard id : "
                     + scorecardId + "\tstatus" + status, e);
         }
 
-        return AjaxSupportHelper.createAndLogSucceess(request.getType(), SUCCESS, "", null,
+        return AjaxSupportHelper.createAndLogSucceess(log, request.getType(), SUCCESS, "", null,
                 "SetScorecardStatus. User id : " + userId + "\tscorecard id : " + scorecardId);
     }
 

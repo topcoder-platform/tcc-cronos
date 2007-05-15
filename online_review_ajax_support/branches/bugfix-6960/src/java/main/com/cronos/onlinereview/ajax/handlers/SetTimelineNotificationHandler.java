@@ -10,6 +10,8 @@ import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.resource.NotificationType;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -30,6 +32,7 @@ import com.topcoder.management.resource.NotificationType;
  * @version 1.0.1
  */
 public class SetTimelineNotificationHandler extends CommonHandler {
+    private static final Log log = LogManager.getLog(SetTimelineNotificationHandler.class.getName());
 
     /**
      * Represents the status of success.
@@ -82,7 +85,7 @@ public class SetTimelineNotificationHandler extends CommonHandler {
      *
      * @throws ConfigurationException if there is a configuration exception
      */
-    public  SetTimelineNotificationHandler() throws ConfigurationException {
+    public SetTimelineNotificationHandler() throws ConfigurationException {
 
         try {
             projectManager = (ProjectManager) AjaxSupportHelper.createObject(ProjectManager.class);
@@ -133,22 +136,22 @@ public class SetTimelineNotificationHandler extends CommonHandler {
         try {
             projectId = request.getParameterAsLong("ProjectId");
         } catch (NumberFormatException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The project id should be a long value.", "SetTimelineNotification. User id : " + userId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The project id should be a long value.", "SetTimelineNotification. User id : " + userId, e);
         }
 
         // status
         status = request.getParameter("Status");
         if (!status.equals("On") && !status.equals("Off")) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The status must be On or Off.", "SetTimelineNotification. User id : " + userId
-                    + "\tStatus : " + status);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The status must be On or Off.", "SetTimelineNotification. User id : " + userId + "\tStatus : "
+                    + status);
         }
 
         // check the userId for validation
         if (userId == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), LOGIN_ERROR,
-                    "Doesn't login or expired.", "SetTimelineNotification. User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), LOGIN_ERROR,
+                "Doesn't login or expired.", "SetTimelineNotification. User id : " + userId);
         }
 
         // check whether the project is : "public", one of the user's projects, the user has global manager role
@@ -161,14 +164,14 @@ public class SetTimelineNotificationHandler extends CommonHandler {
         try {
             project = this.projectManager.getProject(projectId);
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "Can't get the project.", "SetTimelineNotification. User id : " + userId
-                    + "\tproject id : " + projectId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "Can't get the project.", "SetTimelineNotification. User id : " + userId + "\tproject id : "
+                    + projectId, e);
         }
         if (project == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "Can't get the project.", "SetTimelineNotification. User id : " + userId
-                    + "\tproject id : " + projectId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "Can't get the project.", "SetTimelineNotification. User id : " + userId + "\tproject id : "
+                    + projectId);
         }
 
         // check the property
@@ -190,8 +193,8 @@ public class SetTimelineNotificationHandler extends CommonHandler {
                 }
             }
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "Can't get the user's projects.", "SetTimelineNotification. User id : " + userId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "Can't get the user's projects.", "SetTimelineNotification. User id : " + userId, e);
         }
 
         // check whether the user has global manager role
@@ -201,41 +204,35 @@ public class SetTimelineNotificationHandler extends CommonHandler {
                     accessible = true;
                 }
             } catch (ResourceException e) {
-                return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                        "Can't check the user's role : " + e, "SetTimelineNotification. User id : " + userId, e);
+                return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                    "Can't check the user's role : " + e, "SetTimelineNotification. User id : " + userId, e);
             }
         }
 
         if (!accessible) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), ROLE_ERROR,
-                    "Can't access this project.", "SetTimelineNotification. User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), ROLE_ERROR,
+                "Can't access this project.", "SetTimelineNotification. User id : " + userId);
         }
 
         // add/remove the timeline notification status
         // if the status is on
         try {
             if (status.equals("On")) {
-                getResourceManager().addNotifications(
-                        new long[] {userId.longValue()},
-                        projectId,
-                        timelineNotificationId,
-                        userId.toString());
+                getResourceManager().addNotifications(new long[] {userId.longValue()}, projectId,
+                    timelineNotificationId, userId.toString());
             } else {
-                getResourceManager().removeNotifications(
-                        new long[] {userId.longValue()},
-                        projectId,
-                        timelineNotificationId,
-                        userId.toString());
+                getResourceManager().removeNotifications(new long[] {userId.longValue()}, projectId,
+                    timelineNotificationId, userId.toString());
             }
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), BUSINESS_ERROR,
-                    "Can't add/remove notification : " + e, "SetTimelineNotification. User id : "
-                    + userId + "\tproject id : " + projectId + "\ttimelineNotifcationId : " + timelineNotificationId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "Can't add/remove notification : " + e, "SetTimelineNotification. User id : " + userId
+                    + "\tproject id : " + projectId + "\ttimelineNotifcationId : " + timelineNotificationId, e);
         }
 
-        return AjaxSupportHelper.createAndLogSucceess(request.getType(), SUCCESS,
-                "Suceeded to set timeline notification.", null, "SetTimelineNotification. User id : "
-                + userId + "\tproject id : " + projectId + "\ttimelineNotifcationId : " + timelineNotificationId);
+        return AjaxSupportHelper.createAndLogSucceess(log, request.getType(), SUCCESS,
+            "Suceeded to set timeline notification.", null, "SetTimelineNotification. User id : " + userId
+                + "\tproject id : " + projectId + "\ttimelineNotifcationId : " + timelineNotificationId);
 
     }
 }

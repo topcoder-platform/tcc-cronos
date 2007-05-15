@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.ajax;
 
+import com.topcoder.util.format.ObjectFormatter;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 
@@ -211,5 +212,386 @@ public class MockLog implements Log {
      * <p>Initializes the initial state for all created instances of <code>MockLog</code> class.</p>
      */
     public static void init() {
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, message object and
+     * formatter for the object.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level is null. The message should be
+     * formated with the specified formatter (if specified) regardless if the
+     * underlying implementation supports object formatting.
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored. If the
+     * objectFormatter is null, this method should behave the same as the
+     * log(level,message) method.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param message
+     *            A possibly null message object to log
+     * @param objectFormatter
+     *            A possibly null message object formatter
+     */
+    public void log(Level level, Object message, ObjectFormatter objectFormatter) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, message format and a
+     * single parameter for the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arg1 can be passed to the message format however).
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param arg1
+     *            A possibly null argument for the message format
+     */
+    public void log(Level level, String messageFormat, Object arg1) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, message format and two
+     * parameters for the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arg1/arg2 can be used for the message format however).
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param arg1
+     *            A possibly null argument for the message format
+     * @param arg2
+     *            A possibly null argument for the message format
+     */
+    public void log(Level level, String messageFormat, Object arg1, Object arg2) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, message format and
+     * three parameters for the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arg1/arg2/arg3 can be used for the message format however).
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param arg1
+     *            A possibly null argument for the message format
+     * @param arg2
+     *            A possibly null argument for the message format
+     * @param arg3
+     *            A possibly null argument for the message format
+     */
+    public void log(Level level, String messageFormat, Object arg1,
+            Object arg2, Object arg3) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, message format and an
+     * array of parameters to use with the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arguments can be used for the message format however).
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param args
+     *            A possibly null, possibly empty array of arguments for the
+     *            message format
+     */
+    public void log(Level level, String messageFormat, Object[] args) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, throwable and message
+     * object.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level is null. The message should be
+     * formated from the <code>LogManager.getObjectFormatter</code> unless the
+     * underlying implementation can do the formatting.
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored. If the throwable is
+     * null, this method should log in the same way as the
+     * <code>log(Level, Object)</code> method.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> Added to the contract that the message should be
+     * formatted via the <code>LogManager.getObjectFormatter</code> (rather
+     * thantoString()).
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param cause
+     *            A possibly null throwable describing an error that occurred
+     * @param message
+     *            A possibly null message object to log
+     */
+    public void log(Level level, Throwable cause, Object message) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, throwable, message
+     * object and formatter for the object.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level is null. The message should be
+     * formated with the specified formatter (if specified) regardless if the
+     * underlying implementation supports object formatting.
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored. If the
+     * objectFormatter is null, this method should behave the same as the
+     * <code>log(Level, Object)</code> method. If the throwable is null, this
+     * method should log in the same way as the
+     * <code>log(Level, Object, ObjectFormatter)</code> method.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param cause
+     *            A possibly null throwable describing an error that occurred
+     * @param message
+     *            A possibly null message object to log
+     * @param objectFormatter
+     *            A possibly null message object formatter
+     */
+    public void log(Level level, Throwable cause, Object message,
+            ObjectFormatter objectFormatter) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, throwable, message
+     * format and a single parameter for the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arg1 can be passed to the message format however).
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored. If the throwable is
+     * null, this method should log in the same way as the
+     * <code>log(Level, String, Object)</code> method.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param cause
+     *            A possibly null throwable describing an error that occurred
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param arg1
+     *            A possibly null argument for the message format
+     */
+    public void log(Level level, Throwable cause, String messageFormat,
+            Object arg1) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, throwable, message
+     * format and a two parameters for the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arg1/arg2 can be used for the message format however).
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored. If the throwable is
+     * null, this method should log in the same way as the
+     * <code>log(Level, String, Object, Object)</code> method.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param cause
+     *            A possibly null throwable describing an error that occurred
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param arg1
+     *            A possibly null argument for the message format
+     * @param arg2
+     *            A possibly null argument for the message format
+     */
+    public void log(Level level, Throwable cause, String messageFormat,
+            Object arg1, Object arg2) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, throwable, message
+     * format and three parameters for the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arg1/arg2/arg3 can be used for the message format however). Any exception
+     * that occurs should be silently ignored.
+     * </p>
+     *
+     * <p>
+     * If the throwable is null, this method should log in the same way as the
+     * <code>log(Level, String, Object, Object, Object)</code> method.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param cause
+     *            A possibly null throwable describing an error that occurred
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param arg1
+     *            A possibly null argument for the message format
+     * @param arg2
+     *            A possibly null argument for the message format
+     * @param arg3
+     *            A possibly null argument for the message format
+     */
+    public void log(Level level, Throwable cause, String messageFormat,
+            Object arg1, Object arg2, Object arg3) {
+        // empty
+    }
+
+    /**
+     * <p>
+     * Logs a given message using a given logging level, throwable, message
+     * format and an array of parameters to use with the format.
+     * </p>
+     *
+     * <p>
+     * Nothing should be logged if the level or message format is null (null
+     * arguments can be used for the message format however).
+     * </p>
+     *
+     * <p>
+     * Any exception that occurs should be silently ignored. If the throwable is
+     * null, this method should log in the same way as the
+     * <code>log(Level, String, Object[])</code> method.
+     * </p>
+     *
+     * <p>
+     * <b>Changes to v2.0: </b> This is a new method for the interface.
+     * </p>
+     *
+     * @param level
+     *            A possibly null level at which the message should be logged
+     * @param cause
+     *            A possibly null throwable describing an error that occurred
+     * @param messageFormat
+     *            A possibly null, possibly empty (trim'd) message format string
+     * @param args
+     *            A possibly null, possibly empty array of arguments for the
+     *            message format
+     */
+    public void log(Level level, Throwable cause, String messageFormat,
+            Object[] args) {
+        // empty
     }
 }

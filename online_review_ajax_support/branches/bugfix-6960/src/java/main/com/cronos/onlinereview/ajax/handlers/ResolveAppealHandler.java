@@ -20,6 +20,8 @@ import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -40,6 +42,7 @@ import com.topcoder.project.phases.PhaseType;
  * @version 1.0.1
  */
 public class ResolveAppealHandler extends ReviewCommonHandler {
+    private static final Log log = LogManager.getLog(ResolveAppealHandler.class.getName());
 
     /**
      * The magic string for status open.
@@ -328,36 +331,36 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         try {
             reviewId = request.getParameterAsLong("ReviewId");
         } catch (NumberFormatException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", userId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The review id should be a long value.", userId, e);
         }
         // ItemId
         try {
             itemId = request.getParameterAsLong("ItemId");
         } catch (NumberFormatException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The review id should be a long value.", userId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The review id should be a long value.", userId, e);
         }
 
         // status
         status = request.getParameter("Status");
         if (status == null || (!status.equals("Succeeded") && !status.equals("Failed"))) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The status must be Succeeded or Failed.", status);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The status must be Succeeded or Failed.", status);
         }
         // answer and text
         answer = request.getParameter("Answer");
         // ISV : Appeal text is required and must be provided by "Text" parameter but not "text"
         text = request.getParameter("Text");
         if ((text == null) || (text.trim().length() == 0)) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The appeal text must be provided.", "ResolveAppeal. " + "User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_PARAMETER_ERROR,
+                "The appeal text must be provided.", "ResolveAppeal. " + "User id : " + userId);
         }
 
         // check the userId for validation
         if (userId == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), LOGIN_ERROR,
-                    "Doesn't login or expired.", userId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), LOGIN_ERROR, "Doesn't login or expired.",
+                userId);
         }
 
         // check the user is the author of the review
@@ -365,14 +368,12 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         try {
             review = getReviewManager().getReview(reviewId);
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't get the review : " + e.getMessage(),
-                    "User id : " + userId + "\treview id : " + reviewId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR, "Can't get the review : "
+                + e.getMessage(), "User id : " + userId + "\treview id : " + reviewId, e);
         }
         if (review == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_REVIEW_ERROR,
-                    "Can't get the review",
-                    "User id : " + userId + "\treview id : " + reviewId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_REVIEW_ERROR, "Can't get the review",
+                "User id : " + userId + "\treview id : " + reviewId);
         }
 
         // get the reviewer resource
@@ -380,44 +381,38 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         try {
             reviewerResource = getResourceManager().getResource(review.getAuthor());
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't get reviewer resource.",
-                    "User id : " + userId + "\treview id : " + reviewId
-                    + "\treviwer id :" + review.getAuthor(), e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "Can't get reviewer resource.", "User id : " + userId + "\treview id : " + reviewId + "\treviwer id :"
+                    + review.getAuthor(), e);
         }
         // validate the review resource
         if (reviewerResource.getPhase() == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    PHASE_ERROR, "The reviewerResource should have a phase.",
-                    "User id : " + userId + "\treview id : " + reviewId
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), PHASE_ERROR,
+                "The reviewerResource should have a phase.", "User id : " + userId + "\treview id : " + reviewId
                     + "\treviwer id :" + review.getAuthor());
         }
 
         // check the user has the role of "Reviewer"
         try {
             if (!(checkResourceHasRole(reviewerResource, "Reviewer")
-                  || checkResourceHasRole(reviewerResource, "Accuracy Reviewer")
-                  || checkResourceHasRole(reviewerResource, "Failure Reviewer")
-                  || checkResourceHasRole(reviewerResource, "Stress Reviewer"))) {
-                return AjaxSupportHelper.createAndLogError(request.getType(),
-                        ROLE_ERROR, "The user should be a reviewer.",
-                        "User id : " + userId + "\treview id : " + reviewId);
+                || checkResourceHasRole(reviewerResource, "Accuracy Reviewer")
+                || checkResourceHasRole(reviewerResource, "Failure Reviewer") || checkResourceHasRole(reviewerResource,
+                "Stress Reviewer"))) {
+                return AjaxSupportHelper.createAndLogError(log, request.getType(), ROLE_ERROR,
+                    "The user should be a reviewer.", "User id : " + userId + "\treview id : " + reviewId);
             }
         } catch (ResourceException e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't check the user role.",
-                    "User id : " + userId + "\tsubmission id : " + reviewId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR, "Can't check the user role.",
+                "User id : " + userId + "\tsubmission id : " + reviewId, e);
         }
-
 
         Phase[] phases = null;
         try {
             phases = getPhaseManager().getPhases(reviewerResource.getProject().longValue()).getAllPhases();
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't get phases.",
-                    "User id : " + userId + "\treview id : " + reviewId
-                    + "\tproject id :" + reviewerResource.getProject().longValue(), e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR, "Can't get phases.",
+                "User id : " + userId + "\treview id : " + reviewId + "\tproject id :"
+                    + reviewerResource.getProject().longValue(), e);
         }
 
         // get the review phase
@@ -429,17 +424,16 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             }
         }
         if (reviewPhase == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't get review phase.",
-                    "User id : " + userId + "\treview id : " + reviewId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR, "Can't get review phase.",
+                "User id : " + userId + "\treview id : " + reviewId);
         }
 
         // validate the phase
         if (reviewPhase.getId() != reviewerResource.getPhase().longValue()) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    ROLE_ERROR, "The reviewerResource should have a phase the same with the review phase.",
-                    "User id : " + userId + "\treview id : " + reviewId
-                    + "\texpected phase id :" + reviewPhase.getId() + "\tactual id : " + reviewerResource.getPhase());
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), ROLE_ERROR,
+                "The reviewerResource should have a phase the same with the review phase.", "User id : " + userId
+                    + "\treview id : " + reviewId + "\texpected phase id :" + reviewPhase.getId() + "\tactual id : "
+                    + reviewerResource.getPhase());
         }
 
         // get the appeal response phase
@@ -453,15 +447,13 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
 
         // validate the phase
         if (appealResponsePhase == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't get appeal response phase.",
-                    "User id : " + userId + "\treview id : " + reviewId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "Can't get appeal response phase.", "User id : " + userId + "\treview id : " + reviewId);
         }
 
         if (appealResponsePhase.getPhaseStatus().getId() != openPhaseStatusId) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    PHASE_ERROR, "The phase should be open.",
-                    "User id : " + userId + "\treview id : " + reviewId + "\tphase id :" + appealResponsePhase.getId());
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), PHASE_ERROR, "The phase should be open.",
+                "User id : " + userId + "\treview id : " + reviewId + "\tphase id :" + appealResponsePhase.getId());
         }
 
         // get all the review items
@@ -476,9 +468,9 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             }
         }
         if (item == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    INVALID_ITEM_ERROR, "The item can't be found.",
-                    "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_ITEM_ERROR,
+                "The item can't be found.", "User id : " + userId + "\treview id : " + reviewId + "\titem id :"
+                    + itemId);
         }
 
         // get all the comments
@@ -516,9 +508,9 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             }
         }
         if (appealComment == null) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    PHASE_ERROR, "There should be an appeal comment.",
-                    "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), PHASE_ERROR,
+                "There should be an appeal comment.", "User id : " + userId + "\treview id : " + reviewId
+                    + "\titem id :" + itemId);
         }
         appealComment.setExtraInfo(status);
 
@@ -543,18 +535,18 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
                 }
             }
             if (originalComment == null) {
-                return AjaxSupportHelper.createAndLogError(request.getType(),
-                        INVALID_COMMENT_ERROR, "The original comment with id " + commentId + " can not be found.",
-                        "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+                return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_COMMENT_ERROR,
+                    "The original comment with id " + commentId + " can not be found.", "User id : " + userId
+                        + "\treview id : " + reviewId + "\titem id :" + itemId);
             }
 
             // verify the comment is of one of the three types
             if (originalComment.getCommentType().getId() != commentCommentType.getId()
-                    && originalComment.getCommentType().getId() != recommendedCommentType.getId()
-                    && originalComment.getCommentType().getId() != requiredCommentType.getId()) {
-                return AjaxSupportHelper.createAndLogError(request.getType(),
-                        INVALID_COMMENT_ERROR, "The original comment with id " + commentId + " can not be modified.",
-                        "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+                && originalComment.getCommentType().getId() != recommendedCommentType.getId()
+                && originalComment.getCommentType().getId() != requiredCommentType.getId()) {
+                return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_COMMENT_ERROR,
+                    "The original comment with id " + commentId + " can not be modified.", "User id : " + userId
+                        + "\treview id : " + reviewId + "\titem id :" + itemId);
             }
 
             // verify the new comment can be set
@@ -565,9 +557,9 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
             } else if (COMMENT_TYPE_REQUIRED.equals(newType)) {
                 originalComment.setCommentType(requiredCommentType);
             } else {
-                return AjaxSupportHelper.createAndLogError(request.getType(),
-                        INVALID_COMMENT_ERROR, "The new comment type " + newType + " can not be recognized.",
-                        "User id : " + userId + "\treview id : " + reviewId + "\titem id :" + itemId);
+                return AjaxSupportHelper.createAndLogError(log, request.getType(), INVALID_COMMENT_ERROR,
+                    "The new comment type " + newType + " can not be recognized.", "User id : " + userId
+                        + "\treview id : " + reviewId + "\titem id :" + itemId);
             }
         }
 
@@ -582,23 +574,20 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
 
             review.setScore(new Float(score));
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Error in calculating score.",
-                    "User id : " + userId + "\treview id : " + reviewId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR,
+                "Error in calculating score.", "User id : " + userId + "\treview id : " + reviewId, e);
         }
         // update the item
         try {
             getReviewManager().updateReview(review, userId.toString());
         } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't update review.",
-                    "User id : " + userId + "\treview id : " + reviewId, e);
+            return AjaxSupportHelper.createAndLogError(log, request.getType(), BUSINESS_ERROR, "Can't update review.",
+                "User id : " + userId + "\treview id : " + reviewId, e);
         }
 
         // succeed
-        return AjaxSupportHelper.createAndLogSucceess(request.getType(), SUCCESS,
-                "Suceeded to response appeal.", review.getScore(), "ResponseAppeal."
-                + "\tuser id : " + userId + "review id :" + review.getId()
+        return AjaxSupportHelper.createAndLogSucceess(log, request.getType(), SUCCESS, "Suceeded to response appeal.",
+            review.getScore(), "ResponseAppeal." + "\tuser id : " + userId + "review id :" + review.getId()
                 + "\titem id : " + item.getId());
     }
 }
