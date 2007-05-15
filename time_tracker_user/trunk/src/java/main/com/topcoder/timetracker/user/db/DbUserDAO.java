@@ -128,11 +128,18 @@ public class DbUserDAO implements UserDAO {
      * It is created when declared and never changed afterwards.
      * </p>
      */
-    private static final String CONTEXT = "SELECT user_account_id FROM user_account INNER JOIN "
-        + "contact_relation ON contact_relation.entity_id = user_account_id INNER JOIN contact ON "
-        + "contact.contact_id = contact_relation.contact_id INNER JOIN address_relation ON "
-        + "address_relation.entity_id = user_account_id INNER JOIN address ON address.address_id "
-        + "= address_relation.address_id WHERE";
+    private static final String CONTEXT =
+        "SELECT DISTINCT user_account_id" +
+        "  FROM user_account" +
+        " INNER JOIN contact_relation" +
+        "         ON contact_relation.entity_id = user_account_id" +
+        " INNER JOIN contact" +
+        "         ON contact.contact_id = contact_relation.contact_id" +
+        " INNER JOIN address_relation" +
+        "         ON address_relation.entity_id = user_account_id" +
+        " INNER JOIN address" +
+        "         ON address.address_id = address_relation.address_id" +
+        " WHERE";
 
     /**
      * <p>
@@ -1185,8 +1192,7 @@ public class DbUserDAO implements UserDAO {
 
         Connection conn = null;
         try {
-            // no need to use transaction here
-            conn = getConnection(true);
+            conn = getConnection(this.useTransactions);
 
             Throwable[] causes = new Throwable[userIds.length];
             boolean success = true;
@@ -1445,8 +1451,7 @@ public class DbUserDAO implements UserDAO {
     public User[] getAllUsers() throws DataAccessException {
         Connection conn = null;
         try {
-            // no need to use transaction here
-            conn = getConnection(true);
+            conn = getConnection(this.useTransactions);
 
             // get all the user ids in the database
             long[] userIds = getAllUserIds(conn);
@@ -1489,7 +1494,7 @@ public class DbUserDAO implements UserDAO {
 
             List ids = new ArrayList();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 ids.add(new Long(rs.getLong(1)));
             }
 
