@@ -28,12 +28,12 @@ import com.topcoder.timetracker.project.Project;
  */
 public class Client extends TimeTrackerBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 3846853780701648357L;
+     /**
+      * Automatically generated unique ID for use with serialization.
+      */
+     private static final long serialVersionUID = 3846853780701648357L;
 
-	/**
+    /**
      * <p>
      * Represents the the id of the company. This variable is set to 0 initially, is mutable. It is only allowed
      * to be set to &gt;0 by the setter. It is access by its getter and setter methods.
