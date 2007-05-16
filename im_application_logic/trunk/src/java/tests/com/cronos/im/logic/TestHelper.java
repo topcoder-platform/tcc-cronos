@@ -17,11 +17,11 @@ final class TestHelper {
      * The path of configuration files for this test case.
      */
     private static final String[] CONFIG_FILES = new String[] {
-        "test_files/ChatUserStatusTracker.xml",
-        "test_files/ChatStatusTracker.xml", "test_files/ChatSessionStatusTracker.xml",
-        "test_files/IMServiceHandler.xml", "test_files/Logging.xml", "test_files/ObjectFactory.xml",
-        "test_files/UserSessionEventListener.xml", "test_files/MessagePoolDetector.xml",
-        "test_files/Scheduler.xml"};
+        "ChatUserStatusTracker.xml",
+        "ChatStatusTracker.xml", "ChatSessionStatusTracker.xml",
+        "IMServiceHandler.xml", "Logging.xml", "ObjectFactory.xml",
+        "UserSessionEventListener.xml", "MessagePoolDetector.xml",
+        "Scheduler.xml"};
 
     /**
      * The namespaces in the above configuration files.
