@@ -10,6 +10,7 @@ import com.topcoder.database.statustracker.EntityStatus;
 import com.topcoder.database.statustracker.persistence.StatusTrackerPersistenceException;
 import com.topcoder.database.statustracker.persistence.EntityStatusTracker;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -48,7 +49,12 @@ public class MockEntityStatusTracker implements EntityStatusTracker {
      * Constructor.
      */
     public MockEntityStatusTracker() {
-        es = new EntityStatus(null, new Status(123), new Date(), "user");
+        Entity entity = new Entity(1, "name", new String[] {"a"}, new Status[]{
+                new Status(1), new Status(2), new Status(3), new Status(123)});
+        HashMap map = new HashMap();
+        map.put("a", "a");
+        EntityKey key = new EntityKey(entity, map);
+        es = new EntityStatus(key, new Status(123), new Date(), "user");
         instance = this;
     }
 
@@ -64,7 +70,7 @@ public class MockEntityStatusTracker implements EntityStatusTracker {
      * update the previous record, so this status will appear in the status history more than once.
      * </p>
      * 
-     * @param instance
+     * @param key
      *            the entity instance whose status is being set.
      * @param newStatus
      *            the new current status
@@ -81,9 +87,9 @@ public class MockEntityStatusTracker implements EntityStatusTracker {
      *             if the new status could not be saved, or if the previous status could not be inactivated.
      *             This exception will wrap the underlying exception.
      */
-    public EntityStatus setStatus(EntityKey instance, Status newStatus, String userName)
+    public EntityStatus setStatus(EntityKey key, Status newStatus, String userName)
             throws StatusTrackerPersistenceException {
-        es = new EntityStatus(null, newStatus, new Date(), "user");
+        es = new EntityStatus(key, newStatus, new Date(), "user");
         return es;
     }
 

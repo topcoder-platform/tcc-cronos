@@ -4,6 +4,7 @@
 package com.cronos.im.logic.accuracytests;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import com.topcoder.database.statustracker.Entity;
 import com.topcoder.database.statustracker.EntityKey;
@@ -23,7 +24,12 @@ public class MockEntityStatusTracker implements EntityStatusTracker {
     private EntityStatus entityStatus;
 
     public MockEntityStatusTracker() {
-        entityStatus = new EntityStatus(null, new Status(201), new Date(), "accuracy_user");
+        Entity entity = new Entity(1, "name", new String[] {"a"}, new Status[]{
+                new Status(1), new Status(2), new Status(3), new Status(123)});
+        HashMap map = new HashMap();
+        map.put("a", "a");
+        EntityKey key = new EntityKey(entity, map);
+        entityStatus = new EntityStatus(key, new Status(123), new Date(), "user");
     }
 
     public EntityStatus[] findByStatus(Entity type, Status[] statuses)
