@@ -182,6 +182,14 @@ public interface UserConstants {
 
     /**
      * <p>
+     * Represents the country property of the {@link #ADDRESS_TYPE_NAME} profile type.. This constant matches the
+     * contact_info.country column in the persistent store.
+     * </p>
+     */
+    public String ADDRESS_COUNTRY = "address-country";
+
+    /**
+     * <p>
      * Represents the user handle property of the {@link #CREDENTIALS_TYPE_NAME}
      * profile type. This constant matches the user.handle column in the
      * persistent store.

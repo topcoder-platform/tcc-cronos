@@ -37,6 +37,9 @@
 		<Property name="address-phone-number">
 			<Value>notempty</Value>
 		</Property>
+        <Property name="address-country">
+            <Value>notempty</Value>
+        </Property>
 	</Config>
 	<Config name="com.topcoder.user.profile.ConfigProfileType.credentials">
 		<Property name="credentials-handle">

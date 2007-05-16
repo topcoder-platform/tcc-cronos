@@ -3,6 +3,19 @@
  */
 package com.orpheus.user.persistence.impl;
 
+import com.orpheus.user.persistence.DuplicateEntryException;
+import com.orpheus.user.persistence.EntryNotFoundException;
+import com.orpheus.user.persistence.ObjectInstantiationException;
+import com.orpheus.user.persistence.PersistenceException;
+import com.orpheus.user.persistence.UserConstants;
+import com.orpheus.user.persistence.UserLogicPersistenceHelper;
+import com.orpheus.user.persistence.UserProfileDAO;
+import com.orpheus.user.persistence.ejb.UserProfileBean;
+import com.orpheus.user.persistence.ejb.UserProfileDTO;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.user.profile.BaseProfileType;
+import com.topcoder.util.cache.Cache;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,19 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.orpheus.user.persistence.DuplicateEntryException;
-import com.orpheus.user.persistence.EntryNotFoundException;
-import com.orpheus.user.persistence.ObjectInstantiationException;
-import com.orpheus.user.persistence.PersistenceException;
-import com.orpheus.user.persistence.UserConstants;
-import com.orpheus.user.persistence.UserLogicPersistenceHelper;
-import com.orpheus.user.persistence.UserProfileDAO;
-import com.orpheus.user.persistence.ejb.UserProfileBean;
-import com.orpheus.user.persistence.ejb.UserProfileDTO;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.util.cache.Cache;
-import com.topcoder.user.profile.BaseProfileType;
 
 /**
  * <p>
@@ -144,8 +144,8 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String INSERT_CONTACT_INFO_SQL_STATEMENT = "INSERT INTO contact_info "
-            + "(id, first_name, last_name, address_1, address_2, city, state, postal_code, telephone) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "(id, first_name, last_name, address_1, address_2, city, state, postal_code, telephone, country) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -177,7 +177,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * </p>
      */
     private static final String UPDATE_CONTACTINFO_SQL_STATEMENT = "UPDATE contact_info "
-            + "SET first_name=?, last_name=?, address_1=?, address_2=?, city=?, state=?, postal_code=?, telephone=? "
+            + "SET first_name=?, last_name=?, address_1=?, address_2=?, city=?, state=?, postal_code=?, telephone=?, country=? "
             + "WHERE id=?";
 
     /**
@@ -402,7 +402,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * @param profile the user profile DTO containing the player information to
      *        insert into the database
      * @param connection the database connection to use
-     * @throws IllegalArgumentException if the {@link UserProfiledTO#PLAYER_KEY}
+     * @throws IllegalArgumentException if the {@link UserProfileDTO#PLAYER_KEY}
      *         maps to <code>null</code> or a non-<code>Player</code>
      *         object in the given user profile DTO
      * @throws SQLException if inserting the player information into the
@@ -454,7 +454,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * @param profile the user profile DTO containing the admin information to
      *        insert into the database
      * @param connection the database connection to use
-     * @throws IllegalArgumentException if the {@link UserProfiledTO#ADMIN_KEY}
+     * @throws IllegalArgumentException if the {@link UserProfileDTO#ADMIN_KEY}
      *         maps to <code>null</code> or a non-<code>Admin</code> object
      *         in the given user profile DTO
      * @throws SQLException if inserting the admin information into the database
@@ -497,7 +497,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      *        insert into the database
      * @param connection the database connection to use
      * @throws IllegalArgumentException if the
-     *         {@link UserProfiledTO#SPONSOR_KEY} maps to <code>null</code> or
+     *         {@link UserProfileDTO#SPONSOR_KEY} maps to <code>null</code> or
      *         a non-<code>Sponsor</code> object in the given user profile
      *         DTO
      * @throws SQLException if inserting the sponsor information into the
@@ -601,6 +601,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         sql.setString(7, contactInfo.getState());
         sql.setString(8 , contactInfo.getPostalCode());
         sql.setString(9, contactInfo.getTelephone());
+        sql.setString(10, contactInfo.getCountry());
 
         sql.executeUpdate();
         sql.close();
@@ -703,7 +704,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * @param profile the user profile DTO containing the updated player
      *        information
      * @param connection the database connection to use
-     * @throws IllegalArgumentException if the {@link UserProfiledTO#PLAYER_KEY}
+     * @throws IllegalArgumentException if the {@link UserProfileDTO#PLAYER_KEY}
      *         maps to <code>null</code> or a non-<code>Player</code>
      *         object in the given user profile DTO
      * @throws SQLException if updating the player information in the database
@@ -766,7 +767,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * @param profile the user profile DTO containing the updated admin
      *        information
      * @param connection the database connection to use
-     * @throws IllegalArgumentException if the {@link UserProfiledTO#ADMIN_KEY}
+     * @throws IllegalArgumentException if the {@link UserProfileDTO#ADMIN_KEY}
      *         maps to <code>null</code> or a non-<code>Admin</code> object
      *         in the given user profile DTO
      * @throws SQLException if updating the admin information in the database
@@ -804,7 +805,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      *        information
      * @param connection the database connection to use
      * @throws IllegalArgumentException if the
-     *         {@link UserProfiledTO#SPONSOR_KEY} maps to <code>null</code> or
+     *         {@link UserProfileDTO#SPONSOR_KEY} maps to <code>null</code> or
      *         a non-<code>Sponsor</code> object in the given user profile
      *         DTO
      * @throws SQLException if updating the sponsor information in the database
@@ -945,9 +946,10 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         sql.setString(6, contactInfo.getState());
         sql.setString(7, contactInfo.getPostalCode());
         sql.setString(8, contactInfo.getTelephone());
+        sql.setString(9, contactInfo.getCountry());
 
         // WHERE id = ?
-        sql.setLong(9, contactInfo.getId());
+        sql.setLong(10, contactInfo.getId());
 
         sql.executeUpdate();
         sql.close();
@@ -1457,6 +1459,8 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
             return "first_name";
         } else if (criterion.equals(BaseProfileType.LAST_NAME)) {
             return "last_name";
+        } else if (criterion.equals(UserConstants.ADDRESS_COUNTRY)) {
+            return "country";
         }
 
         // No table column mapping.
@@ -1689,7 +1693,8 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
                 || tableColumn.equals("city")
                 || tableColumn.equals("state")
                 || tableColumn.equals("postal_code")
-                || tableColumn.equals("telephone")) {
+                || tableColumn.equals("telephone")
+                || tableColumn.equals("country")) {
             return true;
         }
         return false;
@@ -1959,6 +1964,7 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         contactInfo.setState(result.getString(result.findColumn("state")));
         contactInfo.setPostalCode(result.getString("postal_code"));
         contactInfo.setTelephone(result.getString("telephone"));
+        contactInfo.setCountry(result.getString("country"));
         profile.put(UserProfileDTO.CONTACT_INFO_KEY, contactInfo);
     }
 

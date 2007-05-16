@@ -169,6 +169,16 @@ public class UserConstantsTest extends TestCase {
 
     /**
      * <p>
+     * Tests that the UserConstants.ADDRESS_COUNTRY constant is equal to
+     * "address-country".
+     * </p>
+     */
+    public void testAddressPhoneNumberConstant() {
+        assertEquals("ADDRESS_COUNTRY is incorrect", UserConstants.ADDRESS_COUNTRY, "address-country");
+    }
+
+    /**
+     * <p>
      * Tests that the UserConstants.CREDENTIALS_HANDLE constant is equal to
      * "credentials-handle".
      * </p>

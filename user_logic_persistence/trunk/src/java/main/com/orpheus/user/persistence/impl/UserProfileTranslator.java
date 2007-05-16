@@ -344,6 +344,7 @@ public class UserProfileTranslator implements ObjectTranslator {
         setProfileProperty(profile, UserConstants.ADDRESS_STATE, contactInfo.getState());
         setProfileProperty(profile, UserConstants.ADDRESS_POSTAL_CODE, contactInfo.getPostalCode());
         setProfileProperty(profile, UserConstants.ADDRESS_PHONE_NUMBER, contactInfo.getTelephone());
+        setProfileProperty(profile, UserConstants.ADDRESS_COUNTRY, contactInfo.getCountry());
     }
 
     /**
@@ -603,6 +604,7 @@ public class UserProfileTranslator implements ObjectTranslator {
         contactInfo.setState((String) profile.getProperty(UserConstants.ADDRESS_STATE));
         contactInfo.setPostalCode((String) profile.getProperty(UserConstants.ADDRESS_POSTAL_CODE));
         contactInfo.setTelephone((String) profile.getProperty(UserConstants.ADDRESS_PHONE_NUMBER));
+        contactInfo.setCountry((String) profile.getProperty(UserConstants.ADDRESS_COUNTRY));
         return contactInfo;
     }
 

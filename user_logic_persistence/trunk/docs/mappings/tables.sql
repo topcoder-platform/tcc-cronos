@@ -36,7 +36,8 @@ create table contact_info (
    address_1 VARCHAR(127) NOT NULL,
    address_2 VARCHAR(127),
    city VARCHAR(127) NOT NULL,
-   state VARCHAR(29) NOT NULL,
+   state VARCHAR(29),
    postal_code VARCHAR(9) NOT NULL,
-   telephone VARCHAR(15) NOT NULL
+   telephone VARCHAR(15) NOT NULL,
+   country VARCHAR(40) NOT NULL
 );
