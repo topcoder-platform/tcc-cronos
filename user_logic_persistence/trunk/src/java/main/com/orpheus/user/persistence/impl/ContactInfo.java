@@ -3,11 +3,11 @@
  */
 package com.orpheus.user.persistence.impl;
 
-import java.io.Serializable;
-
 import com.orpheus.user.persistence.UserConstants;
 import com.orpheus.user.persistence.UserProfileDAO;
 import com.orpheus.user.persistence.ejb.UserProfileDTO;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -121,6 +121,17 @@ public class ContactInfo implements Serializable {
      * </p>
      */
     private String state;
+
+    /**
+     * <p>
+     * The country.
+     * </p>
+     * <p>
+     * This field is set and accessed in the setCountry(String) and getCountry()
+     * methods, respectively. It can be any value.
+     * </p>
+     */
+    private String country;
 
     /**
      * <p>
@@ -466,6 +477,42 @@ public class ContactInfo implements Serializable {
      */
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    /**
+     * <p>
+     * Gets the country. This field corresponds to the
+     * {@link UserConstants#ADDRESS_COUNTRY} property in a
+     * <code>UserProfile</code> object.
+     * </p>
+     * <p>
+     * Since no validation is performed when the country is set, this method may
+     * return any value, including a <code>null</code> or a blank string.
+     * </p>
+     *
+     * @return the country
+     * @see #setCountry(String)
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     * <p>
+     * Sets the country. This field corresponds to the
+     * {@link UserConstants#ADDRESS_COUNTRY} property in a
+     * <code>UserProfile</code> object.
+     * </p>
+     * <p>
+     * This method accepts any input value, even <code>null</code> or a blank
+     * string.
+     * </p>
+     *
+     * @param country the country
+     * @see #getCountry()
+     */
+    public void setCountry(String country) {
+        this.country = country;
     }
 
 }
