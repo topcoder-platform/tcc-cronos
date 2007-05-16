@@ -131,7 +131,7 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
             try {
                 connection.setAutoCommit(false);
 
-                long id = key.getType().getId();
+                long id = getPrimaryId(key);
 
                 assertStatusExists(connection, type, newStatus);
 
@@ -142,9 +142,10 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                 PreparedStatement statement =
                     connection.prepareStatement("UPDATE " + table + " SET create_date = CURRENT, modify_date = "
                                                 + "CURRENT, end_date = CURRENT, create_user = USER, modify_user = "
-                                                + "USER WHERE end_date IS NULL");
+                                                + "USER WHERE end_date IS NULL AND " + type + "_id = ?");
 
                 try {
+                    statement.setLong(1, id);
                     statement.executeUpdate();
                 } finally {
                     closeStatement(statement);
@@ -235,7 +236,7 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                                                 + "_id = ? ORDER BY end_date ASC");
 
                 try {
-                    statement.setLong(1, key.getType().getId());
+                    statement.setLong(1, getPrimaryId(key));
 
                     List ret = new ArrayList();
 
@@ -310,7 +311,7 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
         StringBuffer query = new StringBuffer();
         query.append("SELECT * FROM " + statusTable + ", " + historyTable + " WHERE " + statusTable + "." + statusID
                      + " = " + historyTable + "." + statusID + " AND end_date IS NULL AND "
-                     + historyTable + "." + typeName + "_id = ? AND " + historyTable + "." + statusID + " IN (");
+                     + historyTable + "." + statusID + " IN (");
 
         // make sure the statuses are passed while we build the query
         for (int idx = 0; idx < statuses.length; ++idx) {
@@ -326,8 +327,6 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
 
         query.append(")");
 
-        EntityKey key = new EntityKey(type, createKeyValue(type));
-
         try {
             try {
                 // make sure the tables exist
@@ -336,10 +335,10 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                 PreparedStatement statement = connection.prepareStatement(query.toString());
 
                 try {
-                    statement.setLong(1, type.getId());
+                    // statement.setLong(1, type.getId());
                     // populate the query params
                     for (int idx = 1; idx <= statuses.length; ++idx) {
-                        statement.setLong(idx+1, statuses[idx - 1].getId());
+                        statement.setLong(idx, statuses[idx - 1].getId());
                     }
 
                     List ret = new ArrayList();
@@ -348,6 +347,11 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                     ResultSet results = statement.executeQuery();
                     try {
                         while (results.next()) {
+                            // creates EntityKey from result set
+                            long entityId = results.getLong(typeName + "_id");
+
+                            EntityKey key = new EntityKey(type, String.valueOf(entityId));
+
                             ret.add(createStatus(key, results, typeName));
                         }
 
@@ -613,7 +617,7 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                                             type + "_id = ?");
 
             try {
-                statement.setLong(1, key.getType().getId());
+                statement.setLong(1, getPrimaryId(key));
 
                 ResultSet results = statement.executeQuery();
 
@@ -632,5 +636,17 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
         } catch (SQLException ex) {
             throw new StatusTrackerPersistenceException("SQL error: " + ex.getMessage(), ex);
         }
+    }
+
+    /**
+     * Gets the primary id of the entity which represents by the given <code>EntityKey</code>.
+     *
+     * @param entityKey the EntityKey instance.
+     * @return the id of the entity.
+     */
+    private long getPrimaryId(EntityKey entityKey) {
+        String primaryKey = entityKey.getType().getPrimaryKeyColumns()[0];
+
+        return Long.parseLong((String) entityKey.getValues().get(primaryKey));
     }
 }

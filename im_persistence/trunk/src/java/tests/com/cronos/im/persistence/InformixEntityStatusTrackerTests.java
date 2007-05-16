@@ -378,7 +378,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_setStatus() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "value");
+        EntityKey key = new EntityKey(ENTITY, "12345");
         tracker.setStatus(key, new Status(1), "user");
 
         PreparedStatement statement =
@@ -433,7 +433,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_getCurrentStatus() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "value");
+        EntityKey key = new EntityKey(ENTITY, "12345");
         Status status = new Status(2);
         tracker.setStatus(key, status, "user");
 
@@ -462,7 +462,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_getStatusHistory() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "value");
+        EntityKey key = new EntityKey(ENTITY, "12345");
         Status one = new Status(1);
         Status two = new Status(2);
         tracker.setStatus(key, one, "user");
@@ -531,7 +531,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_findByStatus() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "value");
+        EntityKey key = new EntityKey(ENTITY, "12345");
         Status one = new Status(1);
         Status two = new Status(2);
         tracker.setStatus(key, one, "user");

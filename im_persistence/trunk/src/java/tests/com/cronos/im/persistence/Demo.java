@@ -397,7 +397,11 @@ public class Demo extends TestCase {
         // This persistence implementation supports many getter functions:
 
         // a query to get current status for entity 1
-        EntityKey instance = new EntityKey(type, "value");
+        EntityKey instance = new EntityKey(type, "12345");
+
+        // set the status
+        persistence.setStatus(instance, new Status(1), "user");
+
         EntityStatus currStatus = persistence.getCurrentStatus(instance);
         // retrieves status of "deal"
 
@@ -414,7 +418,7 @@ public class Demo extends TestCase {
         // is for entity 2
 
         Thread.sleep(1500);
-        
+
         // we can also set the status of entity 1
         Status newStatus = new Status(3);
         persistence.setStatus(instance, newStatus, "evirn");

@@ -3,11 +3,11 @@
  */
 package com.cronos.im.persistence.accuracytests;
 
+import junit.framework.TestCase;
+
 import com.cronos.im.persistence.NullChatUserProfileAttributeValidator;
 import com.cronos.im.persistence.UserDefinedAttributeNames;
 import com.topcoder.chat.user.profile.ChatUserProfile;
-
-import junit.framework.TestCase;
 
 /**
  * <p>

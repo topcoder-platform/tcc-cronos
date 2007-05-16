@@ -106,7 +106,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
         // type
         Entity entity = new Entity(2, "entity", new String[] {"column"}, new Status[] {new Status(1), new Status(2),
             new Status(3)});
-        EntityKey entityKey = new EntityKey(entity, "value");
+        EntityKey entityKey = new EntityKey(entity, "12345");
 
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -115,11 +115,11 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
             + " CURRENT, USER, CURRENT, USER)");
 
         stmt.close();
-        
+
         informixEntityStatusTracker.setStatus(entityKey, new Status(1), "user");
 
         stmt =  conn.createStatement();
-        ResultSet results = stmt.executeQuery("SELECT * FROM entity_status_history WHERE entity_id = 2");
+        ResultSet results = stmt.executeQuery("SELECT * FROM entity_status_history WHERE entity_id = 12345");
         assertTrue("a new row should be inserted into the entity_status_history_table", results.next());
         assertNull("the row should have no end date", results.getDate("end_date"));
 
@@ -138,7 +138,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
         // type
         Entity entity = new Entity(2, "entity", new String[] {"column"}, new Status[] {new Status(1), new Status(2),
             new Status(3)});
-        EntityKey entityKey = new EntityKey(entity, "value");
+        EntityKey entityKey = new EntityKey(entity, "12345");
 
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -152,13 +152,13 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
 
         stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
             + "start_date, end_date, create_date, modify_date, create_user, modify_user) "
-            + "VALUES (2, 1, CURRENT, CURRENT, CURRENT, CURRENT, USER, USER)");
-        
+            + "VALUES (12345, 1, CURRENT, CURRENT, CURRENT, CURRENT, USER, USER)");
+
         Thread.sleep(1000);
 
         stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
             + "start_date, create_date, modify_date, create_user, modify_user) "
-            + "VALUES (2, 2, CURRENT, CURRENT, CURRENT, USER, USER)");
+            + "VALUES (12345, 2, CURRENT, CURRENT, CURRENT, USER, USER)");
         Thread.sleep(1000);
         stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
             + "start_date, create_date, modify_date, create_user, modify_user) "
@@ -182,7 +182,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
         // type
         Entity entity = new Entity(1, "entity", new String[] {"column"}, new Status[] {new Status(1), new Status(2),
             new Status(3)});
-        EntityKey entityKey = new EntityKey(entity, "value");
+        EntityKey entityKey = new EntityKey(entity, "12345");
 
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -194,7 +194,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
 
         for (int i = 1; i <= 2; i++) {
             stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
-                + "start_date, end_date, create_date, modify_date, create_user, modify_user) " + "VALUES (1, " + i
+                + "start_date, end_date, create_date, modify_date, create_user, modify_user) " + "VALUES (12345, " + i
                 + ", CURRENT, CURRENT, CURRENT, CURRENT, USER, USER)");
 
             Thread.sleep(1000);
@@ -202,13 +202,9 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
 
         stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
             + "start_date, create_date, modify_date, create_user, modify_user) "
-            + "VALUES (1, 3, CURRENT, CURRENT, CURRENT, USER, USER)");
+            + "VALUES (12345, 3, CURRENT, CURRENT, CURRENT, USER, USER)");
 
         Thread.sleep(1000);
-
-        stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
-            + "start_date, end_date, create_date, modify_date, create_user, modify_user) "
-            + "VALUES (2, 1, CURRENT, CURRENT, CURRENT, CURRENT, USER, USER)");
 
         EntityStatus[] statusHistorys = informixEntityStatusTracker.getStatusHistory(entityKey);
 
@@ -246,7 +242,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
 
         stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
             + "start_date, create_date, modify_date, create_user, modify_user) "
-            + "VALUES (1, 3, CURRENT, CURRENT, CURRENT, USER, USER)");
+            + "VALUES (1, 2, CURRENT, CURRENT, CURRENT, USER, USER)");
 
         Thread.sleep(1000);
 
@@ -254,16 +250,14 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
             + "start_date, create_date, modify_date, create_user, modify_user) "
             + "VALUES (2, 1, CURRENT, CURRENT, CURRENT, USER, USER)");
 
-        EntityStatus[] statusHistorys = informixEntityStatusTracker.findByStatus(entity, new Status[] {new Status(1),
-            new Status(2)});
+        EntityStatus[] statusHistorys = informixEntityStatusTracker.findByStatus(entity, new Status[] {new Status(3)});
 
         assertNotNull(statusHistorys);
         assertEquals("the history size is incorrect.", 0, statusHistorys.length);
 
-        statusHistorys = informixEntityStatusTracker.findByStatus(entity, new Status[] {new Status(1), new Status(2),
-            new Status(3)});
+        statusHistorys = informixEntityStatusTracker.findByStatus(entity, new Status[] {new Status(1), new Status(2)});
 
         assertNotNull(statusHistorys);
-        assertEquals("the history size is incorrect.", 1, statusHistorys.length);
+        assertEquals("the history size is incorrect.", 2, statusHistorys.length);
     }
 }
