@@ -26,12 +26,12 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  */
 public class ApplicationArea extends Enum {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -7898200254891183918L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -7898200254891183918L;
 
-	/** Enumeration value for the "Expense" application area. */
+    /** Enumeration value for the "Expense" application area. */
     public static final ApplicationArea TT_EXPENSE = new ApplicationArea("Expense");
 
     /** Enumeration value for the "Fixed Billing" application area. */
