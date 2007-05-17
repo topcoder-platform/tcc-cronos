@@ -1849,6 +1849,8 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             }
         } catch(Exception e) {
             //ignore
+            System.err.println("GameDataManagerImpl failed to persist updates to slot [" + slot.getId() + "]");
+            e.printStackTrace();
         }
     }
 
@@ -1977,6 +1979,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                         }
                     } catch (Exception e) {
                         //ignore
+                        System.err.println("GameDataManagerImpl.GameStatNotifier got an exception. Thread is not "
+                                           + "interrupted");
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2192,6 +2197,9 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                     }
                 } catch (Exception e) {
                     //ignore
+                    System.err.println("GameDataManagerImpl.NewGameAvailableNotifier got an exception. Thread is not "
+                                       + "interrupted");
+                    e.printStackTrace();
                 }
             }
 
