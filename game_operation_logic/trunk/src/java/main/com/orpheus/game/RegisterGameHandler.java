@@ -3,18 +3,11 @@
  */
 package com.orpheus.game;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataLocal;
+import com.orpheus.game.persistence.HostingBlock;
+import com.orpheus.game.persistence.HostingSlot;
 import com.topcoder.user.profile.BaseProfileType;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManagerException;
@@ -32,6 +25,13 @@ import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import com.topcoder.web.user.LoginHandler;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 /**
@@ -281,12 +281,11 @@ public class RegisterGameHandler implements Handler {
             Map parameters = new TreeMap();
             parameters.put("GAME_NAME", game.getName());
             parameters.put("START_DATE", game.getStartDate().toString());
-            parameters.put("FIRST_DOMAIN",
-                            game.getBlocks()[0].getSlots()[0].getDomain().getDomainName());
+            parameters.put("FIRST_DOMAIN", getStartingSlot(game).getDomain().getDomainName());
             context.setAttribute("body", generateEmailBody(parameters));
             ///////////////////////////////////////////////////////////
         } catch (Exception e) {
-            throw new HandlerExecutionException("error occurs while recording user registation", e);
+            throw new HandlerExecutionException("error occurs while recording user registration", e);
         }
 
         return null;
@@ -425,6 +424,28 @@ public class RegisterGameHandler implements Handler {
                 }
             }
         }
+    }
+
+    /**
+     * <p>Gets the starting slot for the specified game. Such slot is determined as the first slot which has started
+     * hosting. If there is no such slot (this, in fact, should never happen) then an exception is raised.</p>
+     *
+     * @param game a <code>Game</code> to get the starting URL for.
+     * @return a <code>HostingSlot</code> providing the details for starting slot for the speicified game. 
+     * @throws HandlerExecutionException if there are no slots which started hosting for specified game.
+     */
+    private static HostingSlot getStartingSlot(Game game) throws HandlerExecutionException {
+        HostingBlock[] blocks = game.getBlocks();
+        for (int bidx = 0; bidx < blocks.length; bidx++) {
+            HostingSlot[] slots = blocks[bidx].getSlots();
+            for (int sidx = 0; sidx < slots.length; sidx++) {
+                if (slots[sidx].getHostingStart() != null) {
+                    return slots[sidx];
+                }
+            }
+        }
+        throw new HandlerExecutionException("There are no slots which started hosting for game ["
+                                            + game.getName() + "]");
     }
 
 }
