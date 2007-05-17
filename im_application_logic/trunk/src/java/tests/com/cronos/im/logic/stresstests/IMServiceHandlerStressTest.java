@@ -12,6 +12,7 @@ import com.topcoder.service.Category;
 import com.topcoder.service.ServiceElement;
 import com.topcoder.service.ServiceEngine;
 import com.topcoder.service.ServiceEvent;
+import com.topcoder.service.ServiceStatus;
 
 /**
  * Stress Tests for IMServiceHandler.
@@ -93,7 +94,7 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
         ServiceElement responder = new ServiceElement();
         responder.setProperty(IMServiceHandler.USER_ID_KEY, new Long(TestHelper.USER_ID_TWO));
         Category category = new Category(TestHelper.CATEGORY_ID, "category");
-        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, null);
+        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, ServiceStatus.STARTED);
     }
 
     /**
@@ -160,7 +161,7 @@ public class IMServiceHandlerStressTest extends BaseStressTest {
         requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(TestHelper.USER_ID_ONE));
         requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(TestHelper.SESSION_ID_ONE));
         Category category = new Category(TestHelper.CATEGORY_ID, "cacegory");
-        serviceEvent = new ServiceEvent(serviceEngine, requester, null, category, null);
+        serviceEvent = new ServiceEvent(serviceEngine, requester, null, category, ServiceStatus.STARTED);
 
         beginTest();
         for (int i = 0; i < RUN_TIMES; i++) {

@@ -18,12 +18,13 @@ final class FailureTestHelper {
     /**
      * The path of configuration files for this test case.
      */
-    private static final String[] CONFIG_FILES = new String[] {"failure/ChatUserStatusTracker.xml",
-            "failure/ChatStatusTracker.xml", "failure/ChatSessionStatusTracker.xml",
-            "failure/IMServiceHandler.xml", "failure/Logging.xml",
-            "failure/ObjectFactory.xml", "failure/UserSessionEventListener.xml",
-            "failure/MessagePoolDetector.xml", "failure/Scheduler.xml",
-            "failure/MessagePoolDetectorInvalid.xml", "failure/IMServiceHandlerInvaild.xml"};
+    private static final String[] CONFIG_FILES = new String[] {"test_files/failure/ChatUserStatusTracker.xml",
+            "test_files/failure/ChatStatusTracker.xml", "test_files/failure/ChatSessionStatusTracker.xml",
+            "test_files/failure/IMServiceHandler.xml", "test_files/failure/Logging.xml",
+            "test_files/failure/ObjectFactory.xml", "test_files/failure/UserSessionEventListener.xml",
+            "test_files/failure/MessagePoolDetector.xml", "test_files/failure/Scheduler.xml",
+            "test_files/failure/ServiceEngine.xml",
+            "test_files/failure/MessagePoolDetectorInvalid.xml", "test_files/failure/IMServiceHandlerInvaild.xml"};
 
     /**
      * Private constructor.

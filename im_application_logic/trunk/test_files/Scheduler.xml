@@ -9,13 +9,5 @@
             <Value>JobType: JOB_TYPE_EXTERNAL</Value>
             <Value>JobCmd: dir</Value>
         </Property>
-        <Property name="Message Pool Detector">
-            <Value>StartDTG:May 10, 2003 1:00:00 AM</Value>
-            <Value>EndDTG:May 10, 2004 1:00:00 AM</Value>
-            <Value>IntervalValue:1</Value>
-            <Value>IntervalUnit:DATE</Value>
-            <Value>JobType:JOB_TYPE_EXTERNAL</Value>
-            <Value>JobCmd:java com.cronos.im.logic.MessagePoolDetector</Value>
-        </Property>
     </Config>
 </CMConfig>

@@ -19,6 +19,7 @@ import com.topcoder.service.Category;
 import com.topcoder.service.ServiceElement;
 import com.topcoder.service.ServiceEngine;
 import com.topcoder.service.ServiceEvent;
+import com.topcoder.service.ServiceStatus;
 
 /**
  * Accuracy test for <code>{@link com.cronos.im.logic.IMServiceHandler}</code> class.
@@ -217,7 +218,7 @@ public class IMServiceHandlerTest extends TestCase {
         responder.setProperty(IMServiceHandler.USER_ID_KEY,
             new Long(AccuracyTestHelper.RES_USER_ID));
         Category category = new Category(AccuracyTestHelper.CATEGORY_ID, "category");
-        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, null);
+        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, ServiceStatus.STARTED);
         handler.setResponder(requester, category, responder);
         handler.onServiced(serviceEvent);
         // Check the logs manually
@@ -239,7 +240,7 @@ public class IMServiceHandlerTest extends TestCase {
         requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(
             AccuracyTestHelper.REQ_USER_ID));
         Category category = new Category(AccuracyTestHelper.CATEGORY_ID, "category");
-        serviceEvent = new ServiceEvent(serviceEngine, requester, null, category, null);
+        serviceEvent = new ServiceEvent(serviceEngine, requester, null, category, ServiceStatus.STARTED);
         handler.onServiced(serviceEvent);
         // Check the logs manually
         // Expected actions are
@@ -263,7 +264,7 @@ public class IMServiceHandlerTest extends TestCase {
         responder.setProperty(IMServiceHandler.USER_ID_KEY,
             new Long(AccuracyTestHelper.RES_USER_ID));
         Category category = new Category(AccuracyTestHelper.CATEGORY_ID, "category");
-        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, null);
+        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, ServiceStatus.STARTED);
         handler.setResponder(requester, category, responder);
         handler.onToBeServiced(serviceEvent);
         Thread.sleep(AccuracyTestHelper.ONE_SEC);
