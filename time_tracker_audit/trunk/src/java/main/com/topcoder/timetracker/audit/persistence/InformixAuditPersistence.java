@@ -36,11 +36,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.Types;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * <p>
@@ -66,13 +66,13 @@ import java.util.List;
  */
 public class InformixAuditPersistence implements AuditPersistence {
     /** Possible SQL statement used to obtain all audit headers from DB. */
-    private static final String SQL_SELECT_HEADERS = "select a.audit_id, a.entity_id, a.creation_date, "
+    private static final String SQL_SELECT_HEADERS = "SELECT a.audit_id, a.entity_id, a.creation_date, "
         + "a.table_name, a.company_id, a.creation_user, a.action_type, a.client_id, a.project_id, "
         + "a.account_user_id, "
-        + "(select distinct c.name from client c where c.client_id = a.client_id) as client_name, "
-        + "(select distinct p.name from project p where p.project_id = a.project_id) as project_name, "
+        + "(SELECT DISTINCT c.name FROM client c WHERE c.client_id = a.client_id) AS client_name, "
+        + "(SELECT DISTINCT p.name FROM project p WHERE p.project_id = a.project_id) AS project_name, "
         + "a.app_area_id "
-        + "from audit a";
+        + "FROM audit a";
 
     /** Possible SQL statement used to obtain all audit details from DB given their audit header id. */
     private static final String SQL_SELECT_DETAILS = "SELECT audit_detail_id, old_value, new_value, column_name "
@@ -313,6 +313,10 @@ public class InformixAuditPersistence implements AuditPersistence {
     public void createAuditRecord(AuditHeader record) throws AuditPersistenceException {
         TimeTrackerAuditHelper.validateNotNull(record, "record");
 
+        if (record.getCreationDate() == null) {
+            record.setCreationDate(new Timestamp(System.currentTimeMillis()));
+        }
+
         // validate whether the not null field is not set.
         validateAuditHeader(record);
 
@@ -343,9 +347,9 @@ public class InformixAuditPersistence implements AuditPersistence {
     }
 
     /**
-     * <p>
-     * Validates whether the not null field is not set for given audit header, or the contained 'details'.
-     * </p>
+     * Validates whether the not null field is not set for given audit header, or the contained
+     * 'details'. This method does not check whether <code>creationDate</code> property of the
+     * <code>auditHeader</code> was set, since this property will never be <code>null</code>.
      *
      * @param auditHeader the audit header to validate.
      *
@@ -355,7 +359,6 @@ public class InformixAuditPersistence implements AuditPersistence {
     private void validateAuditHeader(AuditHeader auditHeader) {
         TimeTrackerAuditHelper.validateNotNull(auditHeader.getApplicationArea(), "auditHeader#applicationArea");
         TimeTrackerAuditHelper.validateNotNull(auditHeader.getTableName(), "auditHeader#tableName");
-        TimeTrackerAuditHelper.validateNotNull(auditHeader.getCreationDate(), "auditHeader#creationDate");
         TimeTrackerAuditHelper.validateNotNull(auditHeader.getCreationUser(), "auditHeader#creationUser");
 
         AuditDetail[] details = auditHeader.getDetails();
