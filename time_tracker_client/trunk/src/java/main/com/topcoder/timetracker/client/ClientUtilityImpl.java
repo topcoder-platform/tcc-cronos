@@ -35,7 +35,6 @@ import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
-
 /**
  * <p>
  * This class is the main class of this component. It provides various methods to retrieve and modify the client
@@ -51,6 +50,7 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * @version 3.2
  */
 public class ClientUtilityImpl implements ClientUtility {
+
     /**
      * <p>
      * Represents the key for id generator name.
@@ -841,8 +841,9 @@ public class ClientUtilityImpl implements ClientUtility {
     private void addToContactManager(Client client, boolean doAudit)
         throws ClientPersistenceException, ClientAuditException {
         try {
-            if (contactManager.retrieveContact(client.getContact().getId()) == null) {
-                // not exist, add the contact.
+            // if the contact does not exist in the database, add it
+            if (client.getContact().getId() <= 0
+                    || contactManager.retrieveContact(client.getContact().getId()) == null) {
                 contactManager.addContact(client.getContact(), doAudit);
             }
 
@@ -897,8 +898,9 @@ public class ClientUtilityImpl implements ClientUtility {
     private void addToAddressManager(Client client, boolean doAudit)
         throws ClientPersistenceException, ClientAuditException {
         try {
-            if (addressManager.retrieveAddress(client.getAddress().getId()) == null) {
-                // if the address not exist, add it.
+            // if the address does not exist in the database, add it
+            if (client.getAddress().getId() <= 0
+                    || addressManager.retrieveAddress(client.getAddress().getId()) == null) {
                 addressManager.addAddress(client.getAddress(), doAudit);
             }
 
@@ -980,11 +982,11 @@ public class ClientUtilityImpl implements ClientUtility {
         Project[] projects = oldClient.getProjects();
 
         for (int i = 0; i < projects.length; i++) {
-            // remove the associationS
+            // remove the associations
             removeProjectFromClient(oldClient, projects[i].getId(), doAudit);
         }
 
-        // remove from the address manager and contact manager.
+        // remove from the address manager and contact manager
         deleteFromAddressManager(oldClient, doAudit);
         deleteFromContactManager(oldClient, doAudit);
     }
