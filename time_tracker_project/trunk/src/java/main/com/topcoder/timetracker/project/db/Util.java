@@ -53,7 +53,7 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  */
 public final class Util {
 
-	/**
+    /**
      * <p>
      * This private constructor prevents to create a new instance.
      * </p>
@@ -569,21 +569,23 @@ public final class Util {
             }
 
             return value;
-        } catch (InvalidClassSpecificationException e) {
-            e.printStackTrace();
-            throw new CreateException("InvalidClassSpecificationException occurs while creating object with key ["
-                + key + "] using object factory, caused by " + e.getMessage());
-        } catch (SpecificationConfigurationException e) {
-            throw new CreateException("SpecificationConfigurationException occurs "
-                + "while creating ObjectFactory instance using namespace " + ofNamespace + ", caused by "
-                + e.getMessage());
-        } catch (IllegalReferenceException e) {
-            throw new CreateException("IllegalReferenceException occurs "
-                + "while creating ObjectFactory instance using namespace " + ofNamespace + ", caused by "
-                + e.getMessage());
-        } catch (ConfigurationException e) {
-            throw new CreateException("ConfigurationException occurs while loading the config value, caused by "
-                + e.getMessage());
+        } catch (InvalidClassSpecificationException icse) {
+            CreateException exception = new CreateException(
+                    "InvalidClassSpecificationException occurs while creating object with key ["
+                    + key + "] using object factory.");
+            throw (CreateException) exception.initCause(icse);
+        } catch (SpecificationConfigurationException sce) {
+            CreateException exception = new CreateException("SpecificationConfigurationException occurs "
+                + "while creating ObjectFactory instance using namespace " + ofNamespace + ".");
+            throw (CreateException) exception.initCause(sce);
+        } catch (IllegalReferenceException ire) {
+            CreateException exception = new CreateException("IllegalReferenceException occurs "
+                + "while creating ObjectFactory instance using namespace " + ofNamespace + ".");
+            throw (CreateException) exception.initCause(ire);
+        } catch (ConfigurationException ce) {
+            CreateException exception =
+                new CreateException("ConfigurationException occurs while loading the config value.");
+            throw (CreateException) exception.initCause(ce);
         }
     }
 
