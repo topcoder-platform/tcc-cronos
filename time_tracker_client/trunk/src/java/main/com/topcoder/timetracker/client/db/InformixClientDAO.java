@@ -48,6 +48,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 
+
 /**
  * <p>
  * This class is the Informix database implementation of the ClientDAO. It provides general retrieve/update/remove/add
@@ -63,7 +64,7 @@ import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
  */
 public class InformixClientDAO implements ClientDAO {
 
-	/**
+    /**
      * <p>
      * Represents the connection factory key.
      * </p>
@@ -418,10 +419,7 @@ public class InformixClientDAO implements ClientDAO {
 
         Client[] clients = retrieveClients(new long[]{id});
 
-        if (clients.length != 0) {
-            return clients[0];
-        }
-        return null;
+        return (clients.length != 0) ? clients[0] : null;
     }
 
     /**
@@ -694,7 +692,7 @@ public class InformixClientDAO implements ClientDAO {
         Helper.checkNull(depth, "depth");
 
         try {
-            // in order to search in the database, we have to translate the alias to the real name first.
+            // in order to search in the database, we have to translate the alias to the real name first
             return (CustomResultSet) searchBundle.search(filter, translateToColumnName(depth.getFields()));
         } catch (SearchBuilderException sbe) {
             throw new ClientPersistenceException("Filter is invalid.", sbe);
@@ -892,6 +890,9 @@ public class InformixClientDAO implements ClientDAO {
             return projects;
         } catch (SQLException sqle) {
             throw new ClientPersistenceException("Error get project from client_project.", sqle);
+        } finally {
+            releaseStatement(stmt, result);
+            releaseConnection(conn);
         }
     }
 
