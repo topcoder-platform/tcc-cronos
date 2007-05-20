@@ -28,12 +28,12 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  */
 public class SummaryDepth extends Depth {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 1710441024519625432L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 1710441024519625432L;
 
-	/**
+    /**
      * <p>
      * Represents the field will be presented in the search result. It's static and immutable, set to initially. It
      * will be reference in the constructor.

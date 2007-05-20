@@ -28,12 +28,12 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  */
 public class ClientProjectDepth extends Depth {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 8808544308167934429L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 8808544308167934429L;
 
-	/**
+    /**
      * <p>
      * Represents the field will be presented in the search result. It's static and immutable, set to initially. It
      * will be reference in the constructor.

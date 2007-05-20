@@ -4,7 +4,7 @@
 package com.topcoder.timetracker.client;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
@@ -24,6 +24,7 @@ import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
  * @version 3.2
  */
 public abstract class Depth implements Serializable {
+
     /**
      * <p>
      * Represents the fields will be included when search with this depth. This variable is set in constructor,&nbsp;
@@ -183,27 +184,23 @@ public abstract class Depth implements Serializable {
     /**
      * Check and convert a string array to List.
      *
-     * @param array the array to be converted
+     * @param strings the array to be converted
      * @param isEmptyAllowed is empty is allowed
      *
      * @return IllegalArgumentException if the argument is null or has null or empty elements
      */
-    public List asList(String[] array, boolean isEmptyAllowed) {
-        Helper.checkNull(array, "array");
+    public List asList(String[] strings, boolean isEmptyAllowed) {
+        Helper.checkNull(strings, "array");
 
-        List list = new ArrayList();
+        for (int i = 0; i < strings.length; ++i) {
+            Helper.checkNull(strings[i], "array[" + i + "]");
 
-        for (int index = 0; index < array.length; index++) {
-            Helper.checkNull(array[index], "array[" + index + "]");
-
-            if (!isEmptyAllowed && (array[index].trim().length() == 0)) {
+            if (!isEmptyAllowed && strings[i].trim().length() == 0) {
                 throw new IllegalArgumentException("The array should not contains empty String.");
             }
-
-            list.add(array[index]);
         }
 
-        return list;
+        return Arrays.asList(strings);
     }
 
 }

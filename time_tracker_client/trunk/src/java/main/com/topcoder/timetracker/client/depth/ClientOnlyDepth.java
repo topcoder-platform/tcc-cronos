@@ -27,12 +27,12 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  */
 public class ClientOnlyDepth extends Depth {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 6732977006276150592L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 6732977006276150592L;
 
-	/**
+    /**
      * <p>
      * Represents the field will be presented in the search result. It's static and immutable. It will be initially set
      * to included all the column name except ALL, PROJECT_ID. It will be reference in the constructor.
