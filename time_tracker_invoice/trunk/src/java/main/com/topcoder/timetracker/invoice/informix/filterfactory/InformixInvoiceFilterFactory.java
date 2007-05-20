@@ -175,15 +175,16 @@ public class InformixInvoiceFilterFactory {
         }
 
         if (to == null) {
-            return new GreaterThanOrEqualToFilter(name, from);
+            return new GreaterThanOrEqualToFilter(name, new java.sql.Date(from.getTime()));
         } else if (from == null) {
-            return new LessThanOrEqualToFilter(name, to);
+            return new LessThanOrEqualToFilter(name, new java.sql.Date(to.getTime()));
         }
 
         if (from.after(to)) {
             throw new IllegalArgumentException("'from' cannot be after 'to'.");
         }
-        return new BetweenFilter(name, to, from);
+
+        return new BetweenFilter(name, new java.sql.Date(to.getTime()), new java.sql.Date(from.getTime()));
     }
 
     /**
