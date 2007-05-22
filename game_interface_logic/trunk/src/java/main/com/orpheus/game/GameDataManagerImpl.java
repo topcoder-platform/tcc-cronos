@@ -60,6 +60,8 @@ import com.topcoder.util.puzzle.PuzzleTypeSource;
 import com.topcoder.util.web.sitestatistics.SiteStatistics;
 import com.topcoder.util.web.sitestatistics.StatisticsException;
 import com.topcoder.util.web.sitestatistics.TextStatistics;
+import com.topcoder.util.processor.sync.SyncProcessWrapper;
+import com.topcoder.util.processor.sync.Executable;
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
 import javax.ejb.EJBHome;
@@ -2430,8 +2432,52 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                         boolean firstUpdated = false;
 
                         for (int targetIndex = 0; targetIndex < targets.length; ++targetIndex) {
-                            DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[targetIndex], pageCache);
-
+                            // ISV : Call the spider asynchronously in order not to interrupt the thread in case the
+                            // target site is not responding or is malfunctioning
+//                            DomainTarget updatedTarget = checkAndUpdateTarget(http, targets[targetIndex], pageCache);
+                            long timeout = 5 * 60 * 1000L; // Give the spider 5 minutes to retrieve the page
+                            DomainTargetChecker targetChecker = new DomainTargetChecker(http, targets[targetIndex],
+                                                                                        pageCache,
+                                                                                        this.targetUpdateListener);
+                            SyncProcessWrapper runner = new SyncProcessWrapper(targetChecker, timeout);
+                            runner.start();
+                            // Wait until either crawling process finishes or timeout is exceeded
+                            DomainTarget updatedTarget = null;
+                            while (!runner.isFinished() && !runner.isTimeoutExceeded()) {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    stopNotifier();
+                                }
+                            }
+                            // If process has finished then check if it was successful or not and get the updated
+                            // target in former case or log the message in later case
+                            if (runner.isFinished()) {
+                                if (runner.getResult().isSuccessful()) {
+                                    updatedTarget = (DomainTarget) runner.getResult().getResult();
+                                } else {
+                                    Throwable error = runner.getResult().getException();
+                                    System.err.println("TargetCheckNotifier could not check the target ["
+                                                       + targets[targetIndex].getIdentifierText() + "] for game "
+                                                       + games[gameIndex].getName() + " and page ["
+                                                       + targets[targetIndex].getUriPath() + "] and slot ["
+                                                       + slots[slotIndex].getId() + "]"
+                                                       + " due to unexpected error :" + error.getMessage() + "]");
+                                    error.printStackTrace();
+                                }
+                            } else if (runner.isTimeoutExceeded()) {
+                                // Timeout is exceeded but the process hasn't finished yet - log the descriptive
+                                // message and leave the target unverified
+                                System.err.println("TargetCheckNotifier could not check the target ["
+                                                   + targets[targetIndex].getIdentifierText() + "] for game "
+                                                   + games[gameIndex].getName() + " and page ["
+                                                   + targets[targetIndex].getUriPath() + "] and slot ["
+                                                   + slots[slotIndex].getId() + "]. The spider could not retrieve "
+                                                   + "the desired page within configured period [" + timeout
+                                                   + "ms]");
+                            }
+                            // If target was changed then persist the new target to DB and possibly regenerate the
+                            // brainteaser
                             if (updatedTarget != null) {
                                 System.err.println("TargetCheckNotifier has found invalid target ["
                                                    + targets[targetIndex].getIdentifierText() + "] for game "
@@ -2567,44 +2613,98 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 e.printStackTrace(System.err);
 	        }
         }
-		/**
-         * <p>
-         * Checks target for existence and updates it if needed. If this method fails for any
-         * reason, the return value is <code>null</code>.
-         * </p>
-         *
-         * @return newly-created <code>DomainTarget</code> that contains updated target, or
-         *         <code>null</code> if target does not need to be updated or there was a failure
-         *         during check or update operation.
-         * @param  httpUtil <code>HttpUtility</code> object to fetch the page that possibly
-         *         contains target from hosting site over HTTP protocol.
-         * @param  target object that contains target, and which needs to be checked for validity.
-         * @param  pageCache a Map from target URLs to page content, used to cache pages on which multiple
-         *         targets appear to boost performance and reduce impact on host sites.  If a
-         *         page is loaded by this method then it will be cached in this map
+    }
+
+    private class EJBHomes {
+        EJBHome remoteHome;
+        EJBLocalHome localHome;
+
+        public EJBHomes() {}
+    }
+
+    /**
+     * <p>A helper class responsible for validating the single target which is expected to be found on specified page.
+     * In case the target is missing from the page a new target is selected.</p>
+     *
+     * @author isv
+     */
+    private class DomainTargetChecker implements Executable {
+
+        /**
+         * <p>An <code>HttpUtility</code> object to fetch the page that possibly contains target from hosting site over
+         * HTTP protocol.</p> 
          */
-        private DomainTarget checkAndUpdateTarget(HttpUtility httpUtil, DomainTarget target, Map pageCache) {
+        private final HttpUtility httpUtil;
+
+        /**
+         * <p>A <code>DomainTarget</code> object that contains target, and which needs to be checked for validity.</p>
+         */
+        private final DomainTarget target;
+
+        /**
+         * <p>A <code>Map</code> from target URLs to page content, used to cache pages on which multiple targets appear
+         * to boost performance and reduce impact on host sites. If a page is loaded by this method then it will be
+         * cached in this map.</p>
+         */
+        private final Map pageCache;
+
+        /**
+         * <p>Represents the listener registered with this thread that is interested in receiving the notification that
+         *  target has been udpated.</p>
+         */
+        private final TargetUpdateListener targetUpdateListener;
+
+        /**
+         * <p>Constructs new <code>DomainTargetChecker</code> instance for validating the specified target against
+         * specified page.</p>
+         * 
+         * @param httpUtil <code>HttpUtility</code> object to fetch the page that possibly contains target from hosting
+         *        site over HTTP protocol.
+         * @param target object that contains target, and which needs to be checked for validity.
+         * @param pageCache a Map from target URLs to page content, used to cache pages on which multiple targets
+         *        appear to boost performance and reduce impact on host sites. If a page is loaded by this method then
+         *        it will be cached in this map.
+         * @param targetUpdateListener the listener registered with this thread that is interested in receiving the
+         *        notification that target has been udpated. 
+         */
+        private DomainTargetChecker(HttpUtility httpUtil, DomainTarget target, Map pageCache,
+                                   TargetUpdateListener targetUpdateListener) {
+            this.httpUtil = httpUtil;
+            this.target = target;
+            this.pageCache = pageCache;
+            this.targetUpdateListener = targetUpdateListener;
+        }
+
+        /**
+         * <p>Checks target for existence and updates it if needed. If this method fails for any reason, the return
+         * value is <code>null</code>.</p>
+         *
+         * @return newly-created <code>DomainTarget</code> that contains updated target, or <code>null</code> if target
+         *         does not need to be updated or there was a failure during check or update operation.
+         * @throws Throwable if an unexpected error occurs.
+         */
+        public Object execute() throws Throwable {
             SiteStatistics siteStatistics;
 
             try {
-                String urlString = target.getUriPath();
+                String urlString = this.target.getUriPath();
                 String contents;
 
-                if (pageCache.containsKey(urlString)) {
-                    contents = (String) pageCache.get(urlString);
+                if (this.pageCache.containsKey(urlString)) {
+                    contents = (String) this.pageCache.get(urlString);
                 } else {
-                    contents = httpUtil.execute(target.getUriPath());
-                    pageCache.put(urlString, contents);
+                    contents = this.httpUtil.execute(this.target.getUriPath());
+                    this.pageCache.put(urlString, contents);
                 }
 
                 siteStatistics = GameDataUtility.getConfiguredSiteStatisticsInstance("SiteStatistics");
                 siteStatistics.accumulateFrom(contents, "document1");
             } catch (IOException ioe) {
-                System.err.println("IOException while trying to check address: " + target.getUriPath());
+                System.err.println("IOException while trying to check address: " + this.target.getUriPath());
                 System.err.println("Message says: " + ioe.getMessage());
                 return null; // Target has not been updated
             } catch (HttpException httpe) {
-                System.err.println("HttpException while trying to check address: " + target.getUriPath());
+                System.err.println("HttpException while trying to check address: " + this.target.getUriPath());
                 System.err.println("Message says: " + httpe.getMessage());
                 return null; // Target has not been updated
             } catch (GameDataManagerConfigurationException gdmce) {
@@ -2613,7 +2713,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
                 return null; // Target has not been updated
             } catch (StatisticsException se) {
                 System.err.println("Unable to accumulate statistics information from document located at: "
-                        + target.getUriPath());
+                        + this.target.getUriPath());
                 se.printStackTrace(System.err);
                 return null; // Target has not been updated
             }
@@ -2621,19 +2721,12 @@ public class GameDataManagerImpl extends BaseGameDataManager {
             TextStatistics[] stats = siteStatistics.getElementContentStatistics();
 
             // If the target has not been found, update it and return the updated target
-            if (!checkForTextExistence(stats, target.getIdentifierText())) {
-                return targetUpdateListener.targetUpdated(stats, target);
+            if (!checkForTextExistence(stats, this.target.getIdentifierText())) {
+                return this.targetUpdateListener.targetUpdated(stats, this.target);
             }
 
             // Target is in no need of update
             return null;
         }
-    }
-
-    private class EJBHomes {
-        EJBHome remoteHome;
-        EJBLocalHome localHome;
-
-        public EJBHomes() {}
     }
 }
