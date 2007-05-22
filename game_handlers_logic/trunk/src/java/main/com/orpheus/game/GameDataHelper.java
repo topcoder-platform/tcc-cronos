@@ -3,26 +3,6 @@
  */
 package com.orpheus.game;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.ejb.CreateException;
-import javax.ejb.EJBException;
-import javax.ejb.RemoveException;
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
@@ -37,6 +17,24 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.RemoveException;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.rmi.PortableRemoteObject;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -816,7 +814,8 @@ class GameDataHelper {
             }
 
             // The number of keys required, plus one for the slot that currently hosts the Ball:
-            int slotBound = game.getKeyCount() + 1;
+            // ISV : Uncomment once the leaderboard is back to show the players with keys useful for unlocking the Ball
+//            int slotBound = game.getKeyCount() + 1;
 
             /*
              * Assemble a list of the ids of all hosting slots that ever started hosting the Ball,
@@ -840,9 +839,10 @@ class GameDataHelper {
             }
 
             // Consider only those slots whose keys matter
-            if (slotIdList.size() > slotBound) {
-                slotIdList = slotIdList.subList(0, slotBound);
-            }
+            // ISV : Uncomment once the leaderboard is back to show the players with keys useful for unlocking the Ball
+//            if (slotIdList.size() > slotBound) {
+//                slotIdList = slotIdList.subList(0, slotBound);
+//            }
 
             /*
              * Process slot completions from each slot, collecting information on up to the
@@ -1135,7 +1135,7 @@ class GameDataHelper {
     private static class SequenceNumberComparator implements Comparator {
 
 	/**
-	 * An int multiplier for the return value of {@link #compare()}, used to reverse
+	 * An int multiplier for the return value of {@link #compare(Object, Object)}, used to reverse
 	 * the default order imposed by this <code>Comparator</code> if so configured
 	 */
 	private final int order;
