@@ -73,7 +73,7 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
         + "modification_date, modification_user) values (?,?,?,?,?,?,?,?,?,?,?)";
 
     /** The SQL String for update. */
-    private static final String UPDATE_ENTRY_SQL = "update fix_bill_entry set company_id=?, invoice_id=?, client_id=?, project_id=?,"
+    private static final String UPDATE_ENTRY_SQL = "update fix_bill_entry set company_id=?, client_id=?, project_id=?, invoice_id=?, "
         + "fix_bill_status_id=?, description=?, entry_date=?, amount=?, creation_date=?, "
         + "creation_user=?, modification_date=?, modification_user=? where fix_bill_entry_id= ?";
 
