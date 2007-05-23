@@ -3,9 +3,13 @@
  */
 package com.topcoder.timetracker.notification.send;
 
+import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.notification.Helper;
+import com.topcoder.timetracker.notification.Notification;
 import com.topcoder.timetracker.notification.NotificationConfigurationException;
+import com.topcoder.timetracker.notification.NotificationFilterFactory;
 import com.topcoder.timetracker.notification.NotificationManager;
+import com.topcoder.timetracker.notification.StringMatchType;
 
 import com.topcoder.util.file.fieldconfig.NodeList;
 import com.topcoder.util.scheduler.scheduling.ScheduledEnable;
@@ -105,16 +109,17 @@ public class NotificationEvent implements ScheduledEnable {
             }
 
             try {
-                // parse the notification id.
-                long notificationId = (new Long(jobName.substring(8))).longValue();
+                Filter jobNameFilter =
+                    NotificationFilterFactory.createJobNameFilter(this.jobName, StringMatchType.EXACT_MATCH);
+                Notification[] notifications = this.manager.searchNotifications(jobNameFilter);
 
-                // defer to the manager to send the notification.
-                manager.sendNotification(notificationId);
+                // defer to the manager to send the notification
+                this.manager.sendNotification(notifications[0].getId());
             } catch (Exception e) {
                 this.cachedException = e;
             }
 
-            isDone = true;
+            this.isDone = true;
         }
     }
 

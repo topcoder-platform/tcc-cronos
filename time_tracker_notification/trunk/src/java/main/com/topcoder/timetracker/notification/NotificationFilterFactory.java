@@ -3,18 +3,14 @@
  */
 package com.topcoder.timetracker.notification;
 
+import java.util.Date;
+
 import com.topcoder.search.builder.filter.BetweenFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
 import com.topcoder.search.builder.filter.LessThanOrEqualToFilter;
 import com.topcoder.search.builder.filter.LikeFilter;
-
-import java.io.Serializable;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * <p>
@@ -33,14 +29,14 @@ import java.util.Map;
  * @author ShindouHikaru, kzhu
  * @version 3.2
  */
-public class NotificationFilterFactory implements Serializable {
+public final class NotificationFilterFactory {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -1273007500236823519L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -1273007500236823519L;
 
-	/**
+    /**
      * <p>
      * This is the map key to use to specify the filter name for the Project Id.
      * </p>
@@ -112,6 +108,13 @@ public class NotificationFilterFactory implements Serializable {
 
     /**
      * <p>
+     * This is the map key to use to specify the filter name for the job name.
+     * </p>
+     */
+    public static final String JOB_NAME_NAME = "JOB_NAME_NAME";
+
+    /**
+     * <p>
      * This is the map key to use to specify the filter name for the creation user of the notification.
      * </p>
      */
@@ -139,62 +142,10 @@ public class NotificationFilterFactory implements Serializable {
     public static final String MODIFICATION_DATE_NAME = "MODIFICATION_DATE_NAME";
 
     /**
-     * <p>
-     * This is a mapping of column names to use.  The FilterFactory will use these column names when determining the
-     * column name to use when providing a Filter.  The Map may not be empty.
-     * </p>
-     *
-     * <p>
-     * Initial Value: Null
-     * </p>
-     *
-     * <p>
-     * Accessed In: not accessed
-     * </p>
-     *
-     * <p>
-     * Modified In: Not Modified
-     * </p>
-     *
-     * <p>
-     * Utilized In: All methods
-     * </p>
-     *
-     * <p>
-     * Valid Keys: Not null and not empty Strings. The keys represent a String describing the criterion which the
-     * column name is for.
-     * </p>
-     *
-     * <p>
-     * Valid Values: Not null and not empty Strings.  The values represent the column name in the persistent store for
-     * the given criterion.
-     * </p>
+     * This method is declared private to prevent class instantiation.
      */
-    private final Map filterNames;
-
-    /**
-     * <p>
-     * Creates a MappedNotificationFilterFactory with the specified column definitions.
-     * </p>
-     *
-     * @param filterNames The filter name definitions to use.
-     *
-     * @throws IllegalArgumentException if filterNames contains null or empty String keys or values, or if it is
-     *         missing a Map Entry for the static constants defined in this class.
-     */
-    public NotificationFilterFactory(Map filterNames) {
-        // check if the map contain null or empty String keys or values
-        Helper.checkMap(filterNames, "filterNames");
-
-        // check if the map contain all the static constants defined
-        Helper.checkMapContainKeys(filterNames,
-            new String[] {
-                ACTIVE_NAME, CLIENT_ID_NAME, COMPANY_ID_NAME, CREATION_DATE_NAME, CREATION_USER_NAME, FROM_LINE_NAME,
-                LAST_SENT_NAME, MESSAGE_NAME, MODIFICATION_DATE_NAME, MODIFICATION_USER_NAME, NEXT_SEND_NAME,
-                PROJECT_ID_NAME, RESOURCE_ID_NAME, SUBJECT_NAME
-            }, "filterNames");
-
-        this.filterNames = Collections.unmodifiableMap(filterNames);
+    private NotificationFilterFactory() {
+        // nothing
     }
 
     /**
@@ -208,10 +159,10 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if the id is not positive
      */
-    public Filter createProjectIdFilter(long projectId) {
+    public static Filter createProjectIdFilter(long projectId) {
         Helper.checkPositive(projectId, "projectId");
 
-        return new EqualToFilter((String) filterNames.get(PROJECT_ID_NAME), new Long(projectId));
+        return new EqualToFilter(PROJECT_ID_NAME, new Long(projectId));
     }
 
     /**
@@ -225,10 +176,10 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if the id is not positive
      */
-    public Filter createCompanyIdFilter(long companyId) {
+    public static Filter createCompanyIdFilter(long companyId) {
         Helper.checkPositive(companyId, "companyId");
 
-        return new EqualToFilter((String) filterNames.get(COMPANY_ID_NAME), new Long(companyId));
+        return new EqualToFilter(COMPANY_ID_NAME, new Long(companyId));
     }
 
     /**
@@ -242,10 +193,10 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if the id is not positive.
      */
-    public Filter createClientIdFilter(long clientId) {
+    public static Filter createClientIdFilter(long clientId) {
         Helper.checkPositive(clientId, "clientId");
 
-        return new EqualToFilter((String) filterNames.get(CLIENT_ID_NAME), new Long(clientId));
+        return new EqualToFilter(CLIENT_ID_NAME, new Long(clientId));
     }
 
     /**
@@ -259,10 +210,10 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if the id is positive.
      */
-    public Filter createResourceIdFilter(long resourceId) {
+    public static Filter createResourceIdFilter(long resourceId) {
         Helper.checkPositive(resourceId, "resourceId");
 
-        return new EqualToFilter((String) filterNames.get(RESOURCE_ID_NAME), new Long(resourceId));
+        return new EqualToFilter(RESOURCE_ID_NAME, new Long(resourceId));
     }
 
     /**
@@ -274,8 +225,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @return A filter with the specified criteria.
      */
-    public Filter createActiveFilter(boolean active) {
-        return new EqualToFilter((String) filterNames.get(ACTIVE_NAME), new Integer(active ? 1 : 0));
+    public static Filter createActiveFilter(boolean active) {
+        return new EqualToFilter(ACTIVE_NAME, new Integer(active ? 1 : 0));
     }
 
     /**
@@ -292,8 +243,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if both bounds are null, or if rangeStart is greater than rangeEnd.
      */
-    public Filter createLastSentFilter(Date rangeStart, Date rangeEnd) {
-        return buildRangeFilter(rangeStart, rangeEnd, (String) filterNames.get(LAST_SENT_NAME));
+    public static Filter createLastSentFilter(Date rangeStart, Date rangeEnd) {
+        return buildRangeFilter(rangeStart, rangeEnd, LAST_SENT_NAME);
     }
 
     /**
@@ -310,8 +261,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if both bounds are null, or if rangeStart is greater than rangeEnd.
      */
-    public Filter createNextSendFilter(Date rangeStart, Date rangeEnd) {
-        return buildRangeFilter(rangeStart, rangeEnd, (String) filterNames.get(NEXT_SEND_NAME));
+    public static Filter createNextSendFilter(Date rangeStart, Date rangeEnd) {
+        return buildRangeFilter(rangeStart, rangeEnd, NEXT_SEND_NAME);
     }
 
     /**
@@ -326,8 +277,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if matchType is null or String argument is null or empty String.
      */
-    public Filter createFromLineFilter(String searchString, StringMatchType matchType) {
-        return buildStringFilter(searchString, matchType, (String) filterNames.get(FROM_LINE_NAME));
+    public static Filter createFromLineFilter(String searchString, StringMatchType matchType) {
+        return buildStringFilter(searchString, matchType, FROM_LINE_NAME);
     }
 
     /**
@@ -342,13 +293,13 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if matchType is null or String argument is null or empty String.
      */
-    public Filter createMessageFilter(String searchString, StringMatchType matchType) {
-        return buildStringFilter(searchString, matchType, (String) filterNames.get(MESSAGE_NAME));
+    public static Filter createMessageFilter(String searchString, StringMatchType matchType) {
+        return buildStringFilter(searchString, matchType, MESSAGE_NAME);
     }
 
     /**
      * <p>
-     * Creates a filter according to the subject  of the notification.
+     * Creates a filter according to the subject of the notification.
      * </p>
      *
      * @param searchString the String to search for.
@@ -358,8 +309,24 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if matchType is null or String argument is null or empty String.
      */
-    public Filter createSubjectFilter(String searchString, StringMatchType matchType) {
-        return buildStringFilter(searchString, matchType, (String) filterNames.get(SUBJECT_NAME));
+    public static Filter createSubjectFilter(String searchString, StringMatchType matchType) {
+        return buildStringFilter(searchString, matchType, SUBJECT_NAME);
+    }
+
+    /**
+     * <p>
+     * Creates a filter according to the job name.
+     * </p>
+     *
+     * @param searchString the String to search for.
+     * @param matchType the type of matching you wish to perform during the search.
+     *
+     * @return A filter with the specified criteria.
+     *
+     * @throws IllegalArgumentException if matchType is null or String argument is null or empty String.
+     */
+    public static Filter createJobNameFilter(String searchString, StringMatchType matchType) {
+        return buildStringFilter(searchString, matchType, JOB_NAME_NAME);
     }
 
     /**
@@ -374,8 +341,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if matchType is null or String argument is null or empty String.
      */
-    public Filter createCreationUserFilter(String searchString, StringMatchType matchType) {
-        return buildStringFilter(searchString, matchType, (String) filterNames.get(CREATION_USER_NAME));
+    public static Filter createCreationUserFilter(String searchString, StringMatchType matchType) {
+        return buildStringFilter(searchString, matchType, CREATION_USER_NAME);
     }
 
     /**
@@ -390,8 +357,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if matchType is null or String argument is null or empty String.
      */
-    public Filter createModificationUserFilter(String searchString, StringMatchType matchType) {
-        return buildStringFilter(searchString, matchType, (String) filterNames.get(MODIFICATION_USER_NAME));
+    public static Filter createModificationUserFilter(String searchString, StringMatchType matchType) {
+        return buildStringFilter(searchString, matchType, MODIFICATION_USER_NAME);
     }
 
     /**
@@ -408,8 +375,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if both bounds are null, or if rangeStart is greater than rangeEnd.
      */
-    public Filter createCreationDateFilter(Date rangeStart, Date rangeEnd) {
-        return buildRangeFilter(rangeStart, rangeEnd, (String) filterNames.get(CREATION_DATE_NAME));
+    public static Filter createCreationDateFilter(Date rangeStart, Date rangeEnd) {
+        return buildRangeFilter(rangeStart, rangeEnd, CREATION_DATE_NAME);
     }
 
     /**
@@ -426,8 +393,8 @@ public class NotificationFilterFactory implements Serializable {
      *
      * @throws IllegalArgumentException if both bounds are null, or if rangeStart is greater than rangeEnd.
      */
-    public Filter createModificationDateFilter(Date rangeStart, Date rangeEnd) {
-        return buildRangeFilter(rangeStart, rangeEnd, (String) filterNames.get(MODIFICATION_DATE_NAME));
+    public static Filter createModificationDateFilter(Date rangeStart, Date rangeEnd) {
+        return buildRangeFilter(rangeStart, rangeEnd, MODIFICATION_DATE_NAME);
     }
 
     /**
@@ -445,14 +412,14 @@ public class NotificationFilterFactory implements Serializable {
      * @return A filter with the specified criteria
      * @throws IllegalArgumentException if error build the filter
      */
-    private Filter buildRangeFilter(Date rangeStart, Date rangeEnd, String name) {
-        if ((rangeStart != null) && (rangeEnd != null)) {
+    private static Filter buildRangeFilter(Date rangeStart, Date rangeEnd, String name) {
+        if (rangeStart != null && rangeEnd != null) {
             if (rangeStart.after(rangeEnd)) {
                 throw new IllegalArgumentException("Begin date is after end date.");
             }
 
             return new BetweenFilter(name, rangeStart, rangeEnd);
-        } else if ((rangeStart == null) && (rangeEnd == null)) {
+        } else if (rangeStart == null && rangeEnd == null) {
             throw new IllegalArgumentException("There should be at most one argument to be null.");
         } else if (rangeStart == null) {
             return new LessThanOrEqualToFilter(name, rangeEnd);
@@ -474,7 +441,7 @@ public class NotificationFilterFactory implements Serializable {
      * @return a filter for search
      * @throws IllegalArgumentException if error build the filter
      */
-    private Filter buildStringFilter(String searchString, StringMatchType matchType, String name) {
+    private static Filter buildStringFilter(String searchString, StringMatchType matchType, String name) {
         // matchType will not be null in our case.
         Helper.checkNull(matchType, "matchType");
         Helper.checkString(searchString, "searchString");

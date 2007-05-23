@@ -100,13 +100,12 @@ public class EmailNotificationSender implements NotificationSender {
         Helper.checkString(connName, "connName");
         Helper.checkNull(cm, "cm");
         Helper.checkNull(generator, "generator");
-        Helper.checkString(logName, "logName");
 
         this.contactManager = cm;
         this.generator = generator;
 
         try {
-            this.log = LogFactory.getLog(logName);
+            this.log = (logName != null) ? LogFactory.getLog(logName) : LogFactory.getLog();
         } catch (LogException le) {
             throw new NotificationConfigurationException("Error get the log.", le);
         }

@@ -1,20 +1,19 @@
 CREATE TABLE notification (
-       notification_id      integer 				NOT NULL,
-       company_id           integer                 NOT NULL,
-       from_address         varchar(255) 			NOT NULL,
-       subject              varchar(255) 			NOT NULL,
-       message              varchar(255)			NOT NULL,
-       last_time_sent       date  				        ,
-       next_time_send       date  				        ,
-       status               smallint 				NOT NULL,
-       scheduleId           integer 				NOT NULL,
-       creation_user        varchar(64) 			NOT NULL,
-       creation_date        datetime year to second NOT NULL,
-       modification_user    varchar(64) 			NOT NULL,
-       modification_date    datetime year to second NOT NULL,
-	   JobId                integer  				    ,
-primary key (notification_id)
-      constraint pk_notification
+  notification_id               INTEGER                         NOT NULL,
+  company_id                    INTEGER                         NOT NULL,
+  from_address                  VARCHAR(255)                    NOT NULL,
+  subject                       VARCHAR(255)                    NOT NULL,
+  message                       VARCHAR(255)                    NOT NULL,
+  last_time_sent                DATE,
+  next_time_send                DATE,
+  status                        SMALLINT                        NOT NULL,
+  job_name                      VARCHAR(40)                     NOT NULL,
+  scheduleId                    INTEGER                         NOT NULL,
+  creation_date                 DATETIME YEAR TO SECOND         NOT NULL,
+  creation_user                 VARCHAR(64)                     NOT NULL,
+  modification_date             DATETIME YEAR TO SECOND         NOT NULL,
+  modification_user             VARCHAR(64)                     NOT NULL,
+  PRIMARY KEY (notification_id) CONSTRAINT pk_notification
 );
 
 CREATE TABLE notify_clients (
@@ -56,5 +55,5 @@ CREATE TABLE id_sequences (
     exhausted		int NOT NULL
 );
 
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) 
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)
 VALUES ('unit_test_id_sequence', 1, 10, 0);

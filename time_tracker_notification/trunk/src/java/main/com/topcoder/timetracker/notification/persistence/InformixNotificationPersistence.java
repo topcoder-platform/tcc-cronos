@@ -3,15 +3,22 @@
  */
 package com.topcoder.timetracker.notification.persistence;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
-
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
-import com.topcoder.search.builder.database.DatabaseSearchStrategy;
+import com.topcoder.search.builder.SearchBundleManager;
 import com.topcoder.search.builder.filter.Filter;
-
 import com.topcoder.timetracker.audit.ApplicationArea;
 import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.AuditHeader;
@@ -24,25 +31,11 @@ import com.topcoder.timetracker.notification.NotificationConfigurationException;
 import com.topcoder.timetracker.notification.NotificationFilterFactory;
 import com.topcoder.timetracker.notification.NotificationPersistence;
 import com.topcoder.timetracker.notification.NotificationPersistenceException;
-
-import com.topcoder.util.datavalidator.ObjectValidator;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -59,36 +52,36 @@ import java.util.Map;
  */
 public class InformixNotificationPersistence implements NotificationPersistence {
 
-	/**
+    /**
      * <p>
      * Represents the SQL command to select the notification of specified id.
      * </p>
      */
-    private static final String SQL_SELECT_NOTIFICATION = "select notification_id, company_id, from_address,"
-        + " subject, message, last_time_sent, next_time_send, status, scheduleId, creation_user,"
-        + " creation_date, modification_user, modification_date from notification where notification_id = ?";
+    private static final String SQL_SELECT_NOTIFICATION = "SELECT notification_id, company_id, from_address,"
+        + " subject, message, last_time_sent, next_time_send, status, job_name, creation_user,"
+        + " creation_date, modification_user, modification_date FROM notification WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to select the client ids related to specified notification.
      * </p>
      */
-    private static final String SQL_SELECT_CLIENTS = "select client_id from notify_clients where notification_id = ?";
+    private static final String SQL_SELECT_CLIENTS = "SELECT client_id FROM notify_clients WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to select the resource ids related to specified notification.
      * </p>
      */
-    private static final String SQL_SELECT_RESOURCES = "select user_account_id from notify_resources"
-        + " where notification_id = ?";
+    private static final String SQL_SELECT_RESOURCES = "SELECT user_account_id FROM notify_resources"
+        + " WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to select the project ids related to specified notification.
      * </p>
      */
-    private static final String SQL_SELECT_PROJECTS = "select project_id from notify_projects"
+    private static final String SQL_SELECT_PROJECTS = "SELECT project_id FROM notify_projects"
         + " where notification_id = ?";
 
     /**
@@ -96,42 +89,42 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      * Represents the SQL command to select all the notification.
      * </p>
      */
-    private static final String SQL_SELECT_ALL_NOTIFICATION = "select notification_id, company_id, from_address,"
-        + " subject, message, last_time_sent, next_time_send, status, scheduleId, creation_user,"
-        + " creation_date, modification_user, modification_date from notification";
+    private static final String SQL_SELECT_ALL_NOTIFICATION = "SELECT notification_id, company_id, from_address,"
+        + " subject, message, last_time_sent, next_time_send, status, job_name, creation_user,"
+        + " creation_date, modification_user, modification_date FROM notification";
 
     /**
      * <p>
      * Represents SQL command to select all clients.
      * </p>
      */
-    private static final String SQL_SELECT_ALL_CLIENTS = "select creation_user, creation_date, modification_user,"
-        + " modification_date, notification_id, client_id from notify_clients where notification_id = ?";
+    private static final String SQL_SELECT_ALL_CLIENTS = "SELECT creation_user, creation_date, modification_user,"
+        + " modification_date, notification_id, client_id FROM notify_clients WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents SQL command to select all the projects.
      * </p>
      */
-    private static final String SQL_SELECT_ALL_PROJECTS = "select creation_user, creation_date, modification_user,"
-        + " modification_date, notification_id, project_id from notify_projects where notification_id = ?";
+    private static final String SQL_SELECT_ALL_PROJECTS = "SELECT creation_user, creation_date, modification_user,"
+        + " modification_date, notification_id, project_id FROM notify_projects WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents SQl command to select all the resources.
      * </p>
      */
-    private static final String SQL_SELECT_ALL_RESOURCES = "select creation_user, creation_date, modification_user,"
-        + " modification_date, notification_id, user_account_id from notify_resources where notification_id = ?";
+    private static final String SQL_SELECT_ALL_RESOURCES = "SELECT creation_user, creation_date, modification_user,"
+        + " modification_date, notification_id, user_account_id FROM notify_resources WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to insert the notification to the database.
      * </p>
      */
-    private static final String SQL_INSERT_NOTIFICATION = "insert into notification (notification_id,"
-        + " company_id, from_address, subject, message, last_time_sent, next_time_send, status, scheduleId,"
-        + " creation_user, creation_date, modification_user, modification_date) values (?, ?, ?, ?, ?, ?,"
+    private static final String SQL_INSERT_NOTIFICATION = "INSERT INTO notification (notification_id,"
+        + " company_id, from_address, subject, message, last_time_sent, next_time_send, status, job_name,"
+        + " creation_user, creation_date, modification_user, modification_date) VALUES (?, ?, ?, ?, ?, ?,"
         + " ?, ?, ?, ?, ?, ?, ?)";
 
     /**
@@ -139,8 +132,8 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      * Represents the SQL command to insert the notification clients to the database.
      * </p>
      */
-    private static final String SQL_INSERT_CLIENTS = "insert into notify_clients (creation_user,"
-        + " creation_date, modification_user, modification_date, notification_id, client_id) values"
+    private static final String SQL_INSERT_CLIENTS = "INSERT INTO notify_clients (creation_user,"
+        + " creation_date, modification_user, modification_date, notification_id, client_id) VALUES"
         + " (?, ?, ?, ?, ?, ?)";
 
     /**
@@ -148,8 +141,8 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      * Represents the SQL command to insert the notification projects to the database.
      * </p>
      */
-    private static final String SQL_INSERT_PROJECTS = "insert into notify_projects (creation_user,"
-        + " creation_date, modification_user, modification_date, notification_id, project_id) values"
+    private static final String SQL_INSERT_PROJECTS = "INSERT INTO notify_projects (creation_user,"
+        + " creation_date, modification_user, modification_date, notification_id, project_id) VALUES"
         + " (?, ?, ?, ?, ?, ?)";
 
     /**
@@ -157,8 +150,8 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      * Represents the SQL command to insert the notification resources to the database.
      * </p>
      */
-    private static final String SQL_INSERT_RESOURCES = "insert into notify_resources (creation_user,"
-        + " creation_date, modification_user, modification_date, notification_id, user_account_id) values"
+    private static final String SQL_INSERT_RESOURCES = "INSERT INTO notify_resources (creation_user,"
+        + " creation_date, modification_user, modification_date, notification_id, user_account_id) VALUES"
         + " (?, ?, ?, ?, ?, ?)";
 
     /**
@@ -166,37 +159,37 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      * Represents the SQL command to delete from the notify_clients table.
      * </p>
      */
-    private static final String SQL_DELETE_CLIENTS = "delete from notify_clients where notification_id = ?";
+    private static final String SQL_DELETE_CLIENTS = "DELETE FROM notify_clients WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to delete from the notify_projects table.
      * </p>
      */
-    private static final String SQL_DELETE_PROJECTS = "delete from notify_projects where notification_id = ?";
+    private static final String SQL_DELETE_PROJECTS = "DELETE FROM notify_projects WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to delete from the notify_resources table.
      * </p>
      */
-    private static final String SQL_DELETE_RESOURCES = "delete from notify_resources where notification_id = ?";
+    private static final String SQL_DELETE_RESOURCES = "DELETE FROM notify_resources WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to delete from the notification table.
      * </p>
      */
-    private static final String SQL_DELETE_NOTIFICATION = "delete from notification where notification_id = ?";
+    private static final String SQL_DELETE_NOTIFICATION = "DELETE FROM notification WHERE notification_id = ?";
 
     /**
      * <p>
      * Represents the SQL command to update the notification.
      * </p>
      */
-    private static final String SQL_UPDATE_NOTIFICATION = "update notification set company_id = ?,"
+    private static final String SQL_UPDATE_NOTIFICATION = "UPDATE notification SET company_id = ?,"
         + " from_address = ?, subject = ?, message = ?, last_time_sent = ?, next_time_send = ?,"
-        + " status = ?, scheduleId = ?, creation_user = ?, creation_date = ?, modification_user = ?,"
+        + " status = ?, job_name = ?, creation_user = ?, creation_date = ?, modification_user = ?,"
         + "modification_date = ? where notification_id = ?";
     /**
      * <p>
@@ -218,24 +211,6 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      * </p>
      */
     private static final int TYPE_NOTIFY_RESOURCES = 2;
-
-    /**
-     * <p>
-     * Search context for the search bundle.
-     * </p>
-     */
-    private static final String SEARCH_CONTEXT = "SELECT DISTINCT notification.notification_id FROM notification"
-        + " INNER JOIN Notify_resources ON notification.notification_id=Notify_resources.notification_id INNER JOIN"
-        + " notify_projects ON notification.notification_id= notify_projects.notification_id INNER JOIN"
-        + " notify_clients ON notification.notification_id=notify_clients.notification_id WHERE ";
-
-    /**
-     * <p>
-     * Represents the database search strategy namespace.
-     * </p>
-     */
-    private static final String SEARCH_STRATEGE_NAMESPACE = "com.topcoder.timetracker.notification"
-        + ".persistence.searchstrategy";
 
     /**
      * <p>
@@ -293,40 +268,6 @@ public class InformixNotificationPersistence implements NotificationPersistence 
     private final AuditManager auditManager;
 
     /**
-     * <p>
-     * This is the filter factory that is used to create Search Filters for searching the data store for Time Tracker
-     * Notifications using this implementation.
-     * </p>
-     *
-     * <p>
-     * It will be initialized in the constructor with the parameters depending on the search query used by the
-     * developer.
-     * </p>
-     *
-     * <p>
-     * Initial Value: Initialized in Constructor - The values to provide to the map are dependent on the query used.
-     * For more clarification, see the Algorithm Section of the CS.
-     * </p>
-     *
-     * <p>
-     * Accessed In: getNotificationFilterFactory
-     * </p>
-     *
-     * <p>
-     * Modified In: Not Modified.
-     * </p>
-     *
-     * <p>
-     * Utilized In: The filters it produces are used in searchNotifications
-     * </p>
-     *
-     * <p>
-     * Valid Values: Non-null NotificationFilterFactory object.
-     * </p>
-     */
-    private final NotificationFilterFactory filterFactory;
-
-    /**
      * Create the instance with given argument.
      *
      * @param dbFactory the db connection factory
@@ -346,7 +287,6 @@ public class InformixNotificationPersistence implements NotificationPersistence 
         Helper.checkString(idGeneratorName, "idGeneratorName");
         Helper.checkNull(am, "am");
 
-        this.filterFactory = new NotificationFilterFactory(buildFilterNames());
         this.dbFactory = dbFactory;
         this.connectionName = connName;
         this.searchBundle = sb;
@@ -366,14 +306,17 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      * @param dbFactory the db connection factory
      * @param connName the connection name
      * @param idGeneratorName the id generator name
+     * @param searchBundlesNamespace name of the configuration namespace that the search bundles are
+     *            stored in
+     * @param searchBundleName name of the bundle to use to perform search operations
      * @param am the audit manager
-     *
      * @throws NotificationConfigurationException if any error occurred
      * @throws IllegalArgumentExceptin if argument is null or string argument is empty
      */
-    public InformixNotificationPersistence(DBConnectionFactory dbFactory, String connName, String idGeneratorName,
-        AuditManager am) throws NotificationConfigurationException {
-        this(dbFactory, connName, createSearchBundle(), idGeneratorName, am);
+    public InformixNotificationPersistence(DBConnectionFactory dbFactory, String connName,
+            String searchBundlesNamespace, String searchBundleName, String idGeneratorName, AuditManager am)
+            throws NotificationConfigurationException {
+        this(dbFactory, connName, createSearchBundle(searchBundlesNamespace, searchBundleName), idGeneratorName, am);
     }
 
     /**
@@ -622,17 +565,14 @@ public class InformixNotificationPersistence implements NotificationPersistence 
     }
 
     /**
-     * <p>
-     * Retrieves the NotificationFilterFactory that is capable of creating SearchFilters to use when searching for
-     * Notifications.  This is used to conveniently specify the search criteria that should be used.  The filters
-     * returned by the given factory should be used with this instance's searchNotifications method.
-     * </p>
+     * This method had been introduced here because of the flaw in the design, but was rendered
+     * unnecesary later by the fixes introduced to the component. The method was left here though,
+     * but it should not be used as it does nothing useful and always returns <code>null</code>.
      *
-     * @return the NotificationFilterFactory that is capable of creating SearchFilters to use when searching for Time
-     *         Tracker notifications.
+     * @return always returns <code>null</code>.
      */
     public NotificationFilterFactory getNotificationFilterFactory() {
-        return filterFactory;
+        return null;
     }
 
     /**
@@ -772,38 +712,45 @@ public class InformixNotificationPersistence implements NotificationPersistence 
      */
     private void checkNotification(Notification notification)
         throws NotificationPersistenceException {
-        // from_address should not be null.
-        if (notification.getFromAddress() == null) {
+        // from_address must not be null
+        if (notification.getFromAddress() == null || notification.getFromAddress().trim().length() == 0) {
             throw new NotificationPersistenceException("Notification with null from address is illegal");
         }
 
-        // subject should not be null.
-        if (notification.getSubject() == null) {
+        // subject must not be null
+        if (notification.getSubject() == null || notification.getSubject().trim().length() == 0) {
             throw new NotificationPersistenceException("Notification with null subject is illegal.");
         }
 
-        // message should not be null.
-        if (notification.getMessage() == null) {
+        // message must not be null
+        if (notification.getMessage() == null || notification.getMessage().trim().length() == 0) {
             throw new NotificationPersistenceException("Notification with null message is illegal.");
         }
 
-        // if modification date should not be null.
-        if (notification.getModificationDate() == null) {
-            throw new NotificationPersistenceException("Notification with null modification date.");
+        Date current = null;
+
+        if (notification.getCreationDate() == null || notification.getModificationDate() == null) {
+            current = new Date();
         }
 
-        if (notification.getModificationUser() == null) {
+        // if modification date is null, assign current date and time as modification date
+        if (notification.getModificationDate() == null) {
+            notification.setModificationDate(current);
+        }
+
+        // modification user must not be null
+        if (notification.getModificationUser() == null || notification.getModificationUser().trim().length() == 0) {
             throw new NotificationPersistenceException("Notification with null modification user.");
         }
 
-        // if create user is null.
-        if (notification.getCreationUser() == null) {
-            throw new NotificationPersistenceException("Notification with null creation user.");
+        // if creation user is null, assign modification user as the creation user
+        if (notification.getCreationUser() == null || notification.getCreationUser().trim().length() == 0) {
+            notification.setCreationUser(notification.getModificationUser());
         }
 
-        // if create date is null.
+        // if creation date is null, assign current date and time as creation date
         if (notification.getCreationDate() == null) {
-            throw new NotificationPersistenceException("Notification with null create date.");
+            notification.setCreationDate(current);
         }
     }
 
@@ -872,20 +819,20 @@ public class InformixNotificationPersistence implements NotificationPersistence 
             stmt.setString(4, notification.getSubject());
             stmt.setString(5, notification.getMessage());
 
-            if (notification.getLastTimeSent() == null) {
+            if (notification.getLastTimeSent() != null) {
                 stmt.setDate(6, new java.sql.Date(notification.getLastTimeSent().getTime()));
             } else {
                 stmt.setNull(6, java.sql.Types.DATE);
             }
 
-            if (notification.getNextTimeToSend() == null) {
+            if (notification.getNextTimeToSend() != null) {
                 stmt.setDate(7, new java.sql.Date(notification.getNextTimeToSend().getTime()));
             } else {
                 stmt.setNull(7, java.sql.Types.DATE);
             }
 
             stmt.setInt(8, notification.isActive() ? 1 : 0);
-            stmt.setLong(9, notification.getScheduleId());
+            stmt.setString(9, notification.getJobName());
             stmt.setString(10, notification.getCreationUser());
             stmt.setDate(11, new java.sql.Date(notification.getCreationDate().getTime()));
             stmt.setString(12, notification.getModificationUser());
@@ -1178,32 +1125,6 @@ public class InformixNotificationPersistence implements NotificationPersistence 
     }
 
     /**
-     * Build the filter names map for the construction of the filter factory.
-     *
-     * @return filter names map
-     */
-    private Map buildFilterNames() {
-        Map filterNames = new HashMap();
-
-        filterNames.put("PROJECT_ID_NAME", "notification_projects.project_id");
-        filterNames.put("COMPANY_ID_NAME", "notification.company_id");
-        filterNames.put("CLIENT_ID_NAME", "notification_clients.client_id");
-        filterNames.put("RESOURCE_ID_NAME", "notification_resources.notification_id");
-        filterNames.put("ACTIVE_NAME", "notification.status");
-        filterNames.put("LAST_SENT_NAME", "notification.last_time_sent");
-        filterNames.put("NEXT_SEND_NAME", "notification.next_time_send");
-        filterNames.put("FROM_LINE_NAME", "notification.from_line");
-        filterNames.put("MESSAGE_NAME", "notification.message");
-        filterNames.put("SUBJECT_NAME", "notification.subject");
-        filterNames.put("CREATION_USER_NAME", "notification.creation_user");
-        filterNames.put("MODIFICATION_USER_NAME", "notification.modification_user");
-        filterNames.put("CREATION_DATE_NAME", "notification.creation_date");
-        filterNames.put("MODIFICATION_DATE_NAME", "notification.modification_date");
-
-        return filterNames;
-    }
-
-    /**
      * Retrieve notification from the result set, does not retrieve the association information
      *
      * @param result the result set used to retrieve the data
@@ -1233,7 +1154,7 @@ public class InformixNotificationPersistence implements NotificationPersistence 
                 notification.setNextTimeToSend(nextTimeSend);
             }
             notification.setActive((result.getInt("status") != 0) ? true : false);
-            notification.setScheduleId(result.getLong("scheduleId"));
+            notification.setJobName(result.getString("job_name"));
             notification.setCreationUser(result.getString("creation_user"));
             notification.setCreationDate(result.getDate("creation_date"));
             notification.setModificationUser(result.getString("modification_user"));
@@ -1367,21 +1288,21 @@ public class InformixNotificationPersistence implements NotificationPersistence 
         details[4] = buildAuditDetail("message", (oldNotification == null) ? null : oldNotification.getMessage(),
                 (newNotification == null) ? null : newNotification.getMessage());
         details[5] = buildAuditDetail("last_time_sent",
-                (oldNotification == null) ? null : (oldNotification.getLastTimeSent() == null) ?
-                        null : oldNotification.getLastTimeSent().toString(),
-                (newNotification == null) ? null : newNotification.getLastTimeSent() == null ?
-                        null : newNotification.getLastTimeSent().toString());
+                (oldNotification == null) ? null : (oldNotification.getLastTimeSent() != null) ?
+                        oldNotification.getLastTimeSent().toString() : null,
+                (newNotification == null) ? null : newNotification.getLastTimeSent() != null ?
+                        newNotification.getLastTimeSent().toString() : null);
         details[6] = buildAuditDetail("next_time_send",
-                (oldNotification == null) ? null : (oldNotification.getNextTimeToSend() == null) ?
-                        null : oldNotification.getNextTimeToSend().toString(),
-                        (newNotification == null) ? null : newNotification.getNextTimeToSend() == null ?
-                                null : newNotification.getNextTimeToSend().toString());
+                (oldNotification == null) ? null : (oldNotification.getNextTimeToSend() != null) ?
+                        oldNotification.getNextTimeToSend().toString() : null,
+                (newNotification == null) ? null : newNotification.getNextTimeToSend() != null ?
+                                newNotification.getNextTimeToSend().toString() : null);
         details[7] = buildAuditDetail("status",
                 (oldNotification == null) ? null : (oldNotification.isActive() ? "1" : "0"),
                 (newNotification == null) ? null : (newNotification.isActive() ? "1" : "0"));
-        details[8] = buildAuditDetail("schedule_id",
-                (oldNotification == null) ? null : (new Long(oldNotification.getScheduleId())).toString(),
-                (newNotification == null) ? null : (new Long(newNotification.getScheduleId())).toString());
+        details[8] = buildAuditDetail("job_name",
+                (oldNotification == null) ? null : oldNotification.getJobName(),
+                (newNotification == null) ? null : newNotification.getJobName());
         details[9] = buildAuditDetail("creation_user",
                 (oldNotification == null) ? null : oldNotification.getCreationUser(),
                 (newNotification == null) ? null : newNotification.getCreationUser());
@@ -1428,78 +1349,25 @@ public class InformixNotificationPersistence implements NotificationPersistence 
     }
 
     /**
-     * <p>
-     * Create the search bundle used for search through filter.
-     * </p>
+     * Creates the search bundle to use to perform searches.
      *
-     * @return the SearchBundle
-     * @throws NotificationConfigurationException if any error happened when create the search bundle
+     * @param searchBundlesNamespace name of the configuration namespace that search bundles are
+     *            stored in
+     * @param searchBundleName name to use to create search bundle
+     * @return constructed search bundle (an instance of the <code>SearchBundle</code> class)
+     * @throws NotificationConfigurationException if any error occurs while constructing an instance
+     *            of the search bundle.
      */
-    private static SearchBundle createSearchBundle() throws NotificationConfigurationException {
-        DatabaseSearchStrategy strategy = null;
-
+    private static SearchBundle createSearchBundle(String searchBundlesNamespace, String searchBundleName)
+            throws NotificationConfigurationException {
+        SearchBundleManager manager;
         try {
-            strategy = new DatabaseSearchStrategy(SEARCH_STRATEGE_NAMESPACE);
-        } catch (SearchBuilderConfigurationException e) {
-            throw new NotificationConfigurationException("Error while build search strategy.", e);
+            manager = new SearchBundleManager(searchBundlesNamespace);
+
+            return manager.getSearchBundle(searchBundleName);
+        } catch (SearchBuilderConfigurationException sbce) {
+            throw new NotificationConfigurationException("Error occured while creating search bundle", sbce);
         }
-
-        Map fields = new HashMap();
-
-        /**
-         * <p>Always true validate.</p>
-         * @author kzhu
-         * @version 3.2
-         */
-        final class AlwaysTrueValidator implements ObjectValidator {
-            /**
-             * <p> Default Constructor.</p>
-             *
-             */
-            public AlwaysTrueValidator() {
-            }
-
-            /**
-             * <p> Always returns null, since this validate considers any object to be valid. </p>
-             *
-             * @return null always.
-             * @param obj The object to validate (this parameter is ignored)
-             */
-            public String getMessage(Object obj) {
-                return null;
-            }
-
-            /**
-             * <p>Always returns true, since this validate considers any object to be valid.</p>
-             *
-             * @return True always.
-             * @param obj The object to validate (this parameter is ignored)
-             */
-            public boolean valid(Object obj) {
-                return true;
-            }
-        }
-
-        fields.put("notification.notification_id", new AlwaysTrueValidator());
-        fields.put("notification.company_id", new AlwaysTrueValidator());
-        fields.put("notify_projects.project_id", new AlwaysTrueValidator());
-        fields.put("notify_clients.client_id", new AlwaysTrueValidator());
-        fields.put("notify_resources.notification_id", new AlwaysTrueValidator());
-        fields.put("notification.status", new AlwaysTrueValidator());
-        fields.put("notification.last_time_sent", new AlwaysTrueValidator());
-        fields.put("notification.next_time_send", new AlwaysTrueValidator());
-        fields.put("notification.from_address", new AlwaysTrueValidator());
-        fields.put("notification.message", new AlwaysTrueValidator());
-        fields.put("notification.subject", new AlwaysTrueValidator());
-        fields.put("notification.scheduleId", new AlwaysTrueValidator());
-        fields.put("notification.creation_user", new AlwaysTrueValidator());
-        fields.put("notification.creation_date", new AlwaysTrueValidator());
-        fields.put("notification.modification_user", new AlwaysTrueValidator());
-        fields.put("notification.modification_date", new AlwaysTrueValidator());
-
-        SearchBundle sb = new SearchBundle("name", fields, SEARCH_CONTEXT, strategy);
-
-        return sb;
     }
 
     /**
@@ -1533,7 +1401,7 @@ public class InformixNotificationPersistence implements NotificationPersistence 
             }
 
             stmt.setInt(7, notification.isActive() ? 1 : 0);
-            stmt.setLong(8, notification.getScheduleId());
+            stmt.setString(8, notification.getJobName());
             stmt.setString(9, notification.getCreationUser());
             stmt.setDate(10, new java.sql.Date(notification.getCreationDate().getTime()));
             stmt.setString(11, notification.getModificationUser());

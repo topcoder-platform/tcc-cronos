@@ -21,12 +21,12 @@ import java.util.Date;
  */
 public class Notification extends TimeTrackerBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 5595866255405659827L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 5595866255405659827L;
 
-	/**
+    /**
      * <p>
      * Represents the company id.
      * </p>
@@ -94,17 +94,6 @@ public class Notification extends TimeTrackerBean {
 
     /**
      * <p>
-     * Represents the schedule id.
-     * </p>
-     *
-     * <p>
-     * It's set/accessed in set/get method.
-     * </p>
-     */
-    private long scheduleId = 0;
-
-    /**
-     * <p>
      * Represents if the notification is active.
      * </p>
      *
@@ -151,10 +140,15 @@ public class Notification extends TimeTrackerBean {
     private long[] toClients = new long[0];
 
     /**
+     * Contains the name of the job (from Job Scheduling component) to use with this notification.
+     */
+    private String jobName = null;
+
+    /**
      * Create the bean, empty constructor.
      */
     public Notification() {
-        // empty constructor,
+        // empty constructor
     }
 
     /**
@@ -297,29 +291,6 @@ public class Notification extends TimeTrackerBean {
     }
 
     /**
-     * get the schedule id.
-     *
-     * @return the schedule id
-     */
-    public long getScheduleId() {
-        return scheduleId;
-    }
-
-    /**
-     * set the schedule id.
-     *
-     * @param id the schedule id
-     *
-     * @throws IllegalArgumentException if argument is not positive
-     */
-    public void setScheduleId(long id) {
-        Helper.checkPositive(id, "id");
-
-        this.scheduleId = id;
-        this.setChanged(true);
-    }
-
-    /**
      * check if the notification is active.
      *
      * @return a boolean indicating if the notification is active
@@ -403,10 +374,37 @@ public class Notification extends TimeTrackerBean {
      * @throws IllegalArgumentException if argument is null, contains non-positive or duplicate elements
      */
     public void setToResources(long[] ids) {
-        // check if the argument is an valid array.
+        // check if the argument is an valid array
         Helper.checkUniqueArray(ids, "ids");
 
         this.toResources = (long[]) ids.clone();
+        this.setChanged(true);
+    }
+
+    /**
+     * Gets the name of the Job this notification is associated with.
+     *
+     * @return a string containing the name of the job.
+     */
+    public String getJobName() {
+        return this.jobName;
+    }
+
+    /**
+     * Sets new value for the name of the Job to associate with this notification.
+     *
+     * @param jobName
+     *            new name of the job.
+     * @throws IllegalArgumentException
+     *             if parameter <code>jobName</code> is <code>null</code> or empty (trimmed)
+     *             string.
+     */
+    public void setJobName(String jobName) {
+        // Validate argument first
+        Helper.checkString(jobName, "jobName");
+
+        // Set the value and update changed flag
+        this.jobName = jobName;
         this.setChanged(true);
     }
 }
