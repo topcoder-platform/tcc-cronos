@@ -29,6 +29,7 @@ public class InformixProjectPersistenceStressTest extends TestCase {
      *             any exception to JUnit.
      */
     protected void setUp() throws Exception {
+        StressHelper.unloadConfig();
         StressTestHelper.addConfig();
         StressTestHelper.clearAllTestRecords();
         StressTestHelper.insertTestRecords();

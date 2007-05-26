@@ -3,6 +3,7 @@
  */
 package com.topcoder.management.project.persistence.failuretests;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -43,6 +44,8 @@ public class UnManagedTransactionInformixProjectPersistenceTest extends Abstract
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ConfigHelper.releaseNamespaces();
+        ConfigHelper.loadConfiguration(new File("failure/config.xml"));
         projectPersistence = new MyUnManagedPersistence("com.topcoder.management.project.persistence.failuretests");
         setProjectPersistence(new UnmanagedTransactionInformixProjectPersistence(
                 "com.topcoder.management.project.persistence.failuretests"));

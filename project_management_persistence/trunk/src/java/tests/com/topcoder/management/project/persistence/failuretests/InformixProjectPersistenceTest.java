@@ -3,6 +3,7 @@
  */
 package com.topcoder.management.project.persistence.failuretests;
 
+import java.io.File;
 import java.sql.Connection;
 
 import junit.framework.Assert;
@@ -42,6 +43,8 @@ public class InformixProjectPersistenceTest extends AbstractInformixProjectPersi
      *             if any error occurs.
      */
     protected void setUp() throws Exception {
+        ConfigHelper.releaseNamespaces();
+        ConfigHelper.loadConfiguration(new File("failure/config.xml"));
         super.setUp();
         setProjectPersistence(new InformixProjectPersistence(
                 "com.topcoder.management.project.persistence.failuretests"));

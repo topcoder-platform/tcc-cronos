@@ -87,6 +87,7 @@ public class PersistenceStressTest extends TestCase {
      *             if there is any problem.
      */
     protected void setUp() throws Exception {
+        StressHelper.unloadConfig();
         StressHelper.loadConfig(CONFIG_FILE1);
         StressHelper.loadConfig(CONFIG_FILE2);
         persistence = new MockPersistence("InformixProjectPersistence.CustomNamespace");
