@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="com.topcoder.registration.team.service.AllTests" timestamp="2007-05-26T08:15:02" hostname="78cd8f6373c24a7" tests="154" failures="0" errors="0" time="2.563">
+  <properties>
+    <property name="object_factory.path" value="object_factory/2.0.1" />
+    <property name="object_formatter.jar.name" value="object_formatter.jar" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="document_generator.jar" value="lib/tcs/document_generator/2.0/document_generator.jar" />
+    <property name="dist_testfiles" value="build/dist/team_services-1.0/test_files" />
+    <property name="java.home" value="C:\j2sdk1.4.2_13\jre" />
+    <property name="resource_management.version" value="1.0.1" />
+    <property name="project_phases.path" value="project_phases/2.0" />
+    <property name="dist_javadocs" value="build/dist/team_services-1.0/docs/javadocs" />
+    <property name="debug" value="off" />
+    <property name="mocks.jar.name" value="mocks.jar" />
+    <property name="project_management.path" value="project_management/1.0" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="distfilename" value="team_services" />
+    <property name="component.dist.jar" value="build/dist/team_services-1.0.jar" />
+    <property name="command_line_utility.jar.name" value="command_line_utility.jar" />
+    <property name="java.endorsed.dirs" value="C:\j2sdk1.4.2_13\jre\lib\endorsed" />
+    <property name="object_factory.jar" value="lib/tcs/object_factory/2.0.1/object_factory.jar" />
+    <property name="user_project_data_store.jar.name" value="user_project_data_store.jar" />
+    <property name="sun.os.patch.level" value="Service Pack 2" />
+    <property name="design_dist.jar" value="Team_Services_1.0_design_dist.jar" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.version" value="1.4.2_13" />
+    <property name="resource_management.path" value="resource_management/1.0.1" />
+    <property name="phase_management.path" value="phase_management/1.0.2" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="dist_src" value="build/dist/team_services-1.0/src" />
+    <property name="project_phases.version" value="2.0" />
+    <property name="workdays.jar.name" value="workdays.jar" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="user.name" value="informix" />
+    <property name="document_generator.path" value="document_generator/2.0" />
+    <property name="packagedir" value="com/topcoder/registration/team/service" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="component_version" value="1.0" />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="command_line_utility.path" value="command_line_utility/1.0" />
+    <property name="reports" value="reports" />
+    <property name="build_webdir" value="build/web" />
+    <property name="search_builder.path" value="search_builder/1.3.1" />
+    <property name="component.jar" value="build/dist/lib/tcs/team_services/1.0/team_services.jar" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="javamain" value="src/java/main" />
+    <property name="build_lib" value="build/lib" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=";" />
+    <property name="srcdir" value="src" />
+    <property name="mocks.version" value="1.0" />
+    <property name="command_line_utility.version" value="1.0" />
+    <property name="file.encoding" value="GBK" />
+    <property name="mocks.path" value="mocks/1.0" />
+    <property name="typesafe_enum.version" value="1.0" />
+    <property name="command_line_utility.jar" value="lib/tcs/command_line_utility/1.0/command_line_utility.jar" />
+    <property name="ant.file" value="G:\upload\Team_Services_1.0_dev_dist\build.xml" />
+    <property name="javasrc" value="src/java" />
+    <property name="search_builder.jar" value="lib/tcs/search_builder/1.3.1/search_builder.jar" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/team_services_tests.jar" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\INFORM~1.000\LOCALS~1\Temp\" />
+    <property name="user.language" value="zh" />
+    <property name="base_exception.path" value="base_exception/1.0" />
+    <property name="user_project_data_store.version" value="2.0" />
+    <property name="line.separator" value="
+" />
+    <property name="verbose" value="no" />
+    <property name="jar_ext_libdir" value="lib" />
+    <property name="project_phases.jar.name" value="project_phases.jar" />
+    <property name="phase_management.jar" value="lib/tcs/phase_management/1.0.2/phase_management.jar" />
+    <property name="project_phases.jar" value="lib/tcs/project_phases/2.0/project_phases.jar" />
+    <property name="document_generator.jar.name" value="document_generator.jar" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="component_path" value="team_services/1.0" />
+    <property name="java.util.prefs.PreferencesFactory" value="java.util.prefs.WindowsPreferencesFactory" />
+    <property name="document_generator.version" value="2.0" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="builddir" value="build" />
+    <property name="cobertura.dir" value="lib/cobertura/1.8" />
+    <property name="dist_conf" value="build/dist/team_services-1.0/conf" />
+    <property name="object_factory.version" value="2.0.1" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="configmanager.path" value="configuration_manager/2.1.5" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="base_exception.version" value="1.0" />
+    <property name="junit.jar" value="lib/junit/3.8.2/junit.jar" />
+    <property name="configdir" value="conf" />
+    <property name="build_tcsdistdir" value="build/dist/team_services-1.0" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="dist_docs" value="build/dist/team_services-1.0/docs" />
+    <property name="user_project_data_store.path" value="user_project_data_store/2.0" />
+    <property name="workdays.jar" value="lib/tcs/workdays/1.0/workdays.jar" />
+    <property name="testlogdir" value="log" />
+    <property name="project_management.version" value="1.0" />
+    <property name="os.name" value="Windows XP" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="configmanager.jar" value="lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+    <property name="java.library.path" value="C:\j2sdk1.4.2_13\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;d:\ant\bin;C:\Program Files\Java\jre1.5.0_06\bin;C:\j2sdk1.4.2_13\bin" />
+    <property name="docpackage.jar" value="team_services_docs.jar" />
+    <property name="phase_management.jar.name" value="phase_management.jar" />
+    <property name="logging_wrapper.version" value="1.4" />
+    <property name="ant.java.version" value="1.4" />
+    <property name="basedir" value="G:\upload\Team_Services_1.0_dev_dist" />
+    <property name="java.class.version" value="48.0" />
+    <property name="base_exception.jar.name" value="base_exception.jar" />
+    <property name="ant.home" value="d:\ant\bin\.." />
+    <property name="logging_wrapper.path" value="logging_wrapper/1.4" />
+    <property name="component.war" value="${dist_examples}/team_services.war" />
+    <property name="workdays.path" value="workdays/1.0" />
+    <property name="configmanager.jar.name" value="configuration_manager.jar" />
+    <property name="net.sourceforge.cobertura.datafile" value="G:\upload\Team_Services_1.0_dev_dist\log\cobertura.ser" />
+    <property name="sun.boot.library.path" value="C:\j2sdk1.4.2_13\jre\bin" />
+    <property name="ext_libdir" value="lib" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="user.variant" value="" />
+    <property name="jar_tcs_libdir" value="lib/tcs" />
+    <property name="object_formatter.jar" value="lib/tcs/object_formatter/1.0/object_formatter.jar" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="docsdir" value="docs" />
+    <property name="dev_dist.jar" value="Team_Services_1.0_dev_dist.jar" />
+    <property name="mocks.jar" value="lib/tcs/mocks/1.0/mocks.jar" />
+    <property name="ant.project.name" value="Team Services" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="webdir" value="web" />
+    <property name="sun.cpu.isalist" value="pentium i486 i386" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="java.ext.dirs" value="C:\j2sdk1.4.2_13\jre\lib\ext" />
+    <property name="os.version" value="5.1" />
+    <property name="user.home" value="C:\Documents and Settings\informix.78CD8F6373C24A7.000" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="resource_management.jar.name" value="resource_management.jar" />
+    <property name="object_factory.jar.name" value="object_factory.jar" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="typesafe_enum.path" value="typesafe_enum/1.0" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="workdays.version" value="1.0" />
+    <property name="package" value="com.topcoder.registration.team.service" />
+    <property name="typesafe_enum.jar" value="lib/tcs/typesafe_enum/1.0/typesafe_enum.jar" />
+    <property name="base_exception.jar" value="lib/tcs/base_exception/1.0/base_exception.jar" />
+    <property name="user.dir" value="G:\upload\Team_Services_1.0_dev_dist" />
+    <property name="configmanager.version" value="2.1.5" />
+    <property name="object_formatter.version" value="1.0" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="search_builder.jar.name" value="search_builder.jar" />
+    <property name="java.vm.version" value="1.4.2_13-b06" />
+    <property name="java.class.path" value="G:\upload\Team_Services_1.0_dev_dist\build\instrumented;G:\upload\Team_Services_1.0_dev_dist\build\testClasses;G:\upload\Team_Services_1.0_dev_dist\build\classes;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\base_exception\1.0\base_exception.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\typesafe_enum\1.0\typesafe_enum.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\logging_wrapper\1.4\logging_wrapper.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\object_factory\2.0.1\object_factory.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\mocks\1.0\mocks.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\command_line_utility\1.0\command_line_utility.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\document_generator\2.0\document_generator.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\object_formatter\1.0\object_formatter.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\phase_management\1.0.2\phase_management.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\project_management\1.0\project_management.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\project_phases\2.0\project_phases.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\resource_management\1.0.1\resource_management.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\search_builder\1.3.1\search_builder.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\user_project_data_store\2.0\user_project_data_store.jar;G:\upload\Team_Services_1.0_dev_dist\lib\tcs\workdays\1.0\workdays.jar;G:\upload\Team_Services_1.0_dev_dist\conf;G:\upload\Team_Services_1.0_dev_dist\test_files;G:\upload\Team_Services_1.0_dev_dist\lib\cobertura\1.8\cobertura.jar;G:\upload\Team_Services_1.0_dev_dist\lib\cobertura\1.8\lib\asm-2.2.1.jar;G:\upload\Team_Services_1.0_dev_dist\lib\cobertura\1.8\lib\jakarta-oro-2.0.8.jar;G:\upload\Team_Services_1.0_dev_dist\lib\cobertura\1.8\lib\log4j-1.2.9.jar;D:\SVN\BugFix\IMLogic;D:\junit3.8.2\junit3.8.2;D:\ant\lib\junit.jar;D:\ant\lib\ant-launcher.jar;D:\ant\lib\ant.jar;D:\ant\lib\ant-junit.jar" />
+    <property name="dev_submission.jar" value="Team_Services_1.0_dev_submission.jar" />
+    <property name="ant.library.dir" value="D:\ant\lib" />
+    <property name="os.arch" value="x86" />
+    <property name="search_builder.version" value="1.3.1" />
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
+    <property name="user_project_data_store.jar" value="lib/tcs/user_project_data_store/2.0/user_project_data_store.jar" />
+    <property name="ant.core.lib" value="D:\ant\lib\ant.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="object_formatter.path" value="object_formatter/1.0" />
+    <property name="file.separator" value="\" />
+    <property name="java.runtime.version" value="1.4.2_13-b06" />
+    <property name="sun.boot.class.path" value="C:\j2sdk1.4.2_13\jre\lib\rt.jar;C:\j2sdk1.4.2_13\jre\lib\i18n.jar;C:\j2sdk1.4.2_13\jre\lib\sunrsasign.jar;C:\j2sdk1.4.2_13\jre\lib\jsse.jar;C:\j2sdk1.4.2_13\jre\lib\jce.jar;C:\j2sdk1.4.2_13\jre\lib\charsets.jar;C:\j2sdk1.4.2_13\jre\classes" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="design_submission.jar" value="Team_Services_1.0_design_submission.jar" />
+    <property name="project_management.jar" value="lib/tcs/project_management/1.0/project_management.jar" />
+    <property name="sun.java2d.fontpath" value="" />
+    <property name="user.country" value="CN" />
+    <property name="tcs_libdir" value="lib/tcs" />
+    <property name="resource_management.jar" value="lib/tcs/resource_management/1.0.1/resource_management.jar" />
+    <property name="component" value="Team_Services" />
+    <property name="project_management.jar.name" value="project_management.jar" />
+    <property name="ant.file.Team Services" value="G:\upload\Team_Services_1.0_dev_dist\build.xml" />
+    <property name="logging_wrapper.jar" value="lib/tcs/logging_wrapper/1.4/logging_wrapper.jar" />
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar" />
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar" />
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="phase_management.version" value="1.0.2" />
+    <property name="java.specification.version" value="1.4" />
+    <property name="testfiles" value="test_files" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="javatests" value="src/java/tests" />
+  </properties>
+  <testcase name="testCtorWithMsg" classname="com.topcoder.registration.team.service.TeamServiceConfigurationExceptionTest" time="0.032" />
+  <testcase name="testCtorWithMsgAndCause" classname="com.topcoder.registration.team.service.TeamServiceConfigurationExceptionTest" time="0.0" />
+  <testcase name="testCtorWithMsg" classname="com.topcoder.registration.team.service.TeamServicesExceptionTest" time="0.0" />
+  <testcase name="testCtorWithMsgAndCause" classname="com.topcoder.registration.team.service.TeamServicesExceptionTest" time="0.0" />
+  <testcase name="testCtorWithMsg" classname="com.topcoder.registration.team.service.UnknownEntityExceptionTest" time="0.0" />
+  <testcase name="testCtorWithMsgAndCause" classname="com.topcoder.registration.team.service.UnknownEntityExceptionTest" time="0.0" />
+  <testcase name="testCtor1Accuracy" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testCtor2WithTrueAndErrorsExist" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testCtor2WithTrueAndErrorsHasNull" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testCtor2WithTrueAndErrorsHasEmpty" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testCtor2Accuracy" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testIsSuccessful" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testSetSuccessfulWithTrueAndErrorsExist" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testSetSuccessfulAccuracy" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testGetErrors" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testSetErrorsWithNull" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testSetErrorsAccuracy" classname="com.topcoder.registration.team.service.impl.OperationResultImplTest" time="0.0" />
+  <testcase name="testCtor1Accuracy" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.015" />
+  <testcase name="testCtor2Accuracy" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testCtor2WithNullResource" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testCtor2WithNullPosition" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testGetResource" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testSetMemberResourceWithNullResource" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testSetMemberResourceAccuracy" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testGetPositionWithNullPosition" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testSetPositionWithNullPosition" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testSetPositionAccuracy" classname="com.topcoder.registration.team.service.impl.ResourcePositionImplTest" time="0.0" />
+  <testcase name="testCheckObjNotNullWithNullObj" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCheckObjNotNullWithNonNullObj" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCheckStrNotNullOrEmptyWithNullStr" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCheckStrNotNullOrEmptyWithEmptyStr" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCheckStrNotNullOrEmpty" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCheckIDNotNegativeWithNegID" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCheckErrorsArrayWithArrayHasNullEle" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCheckErrorsArrayWithArrayHasEmptyEle" classname="com.topcoder.registration.team.service.impl.UtilTest" time="0.0" />
+  <testcase name="testCtor1Accuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.203" />
+  <testcase name="testCtor2WithNullNamespace" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithEmptyNamespace" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.032" />
+  <testcase name="testCtor2WithAccepteOfferTemplateNameMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.032" />
+  <testcase name="testCtor2WithContactMemberServiceKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithFreeAgentRoleMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.032" />
+  <testcase name="testCtor2WithOfferManagerKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithPhaseManagerKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithProjectManagerKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithProjectServicesKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithRegistrationPhaseIdInvalid" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithRegistrationPhaseIdMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithRegistrationPhaseIdNegative" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithRejectOfferTemplateNameMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testCtor2WithRemoveMemberMessageTemplateNameMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithRemoveTeamMessageTemplateNameMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithResourceManagementKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithSendOfferTemplateNameMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithSpecNamespaceMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithSpecNamespaceUnknown" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.046" />
+  <testcase name="testCtor2WithSubmitterRoleIdMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithTeamCaptainRoleIdMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCtor2WithTeamManagerKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithUnknownNamespace" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithUserRetrievalClassTypeInvalid" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testCtor2WithUserRetrievalClassTypeWrong" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testCtor2WithUserRetrievalInvalid" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCtor2WithUserRetrievalKeyMissing" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdateTeamWithNullTeam" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testCreateOrUpdateTeamWithNegativeUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdateTeamWithDupTeamName" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testCreateOrUpdateTeamWithTeamNameMatchResourceHandle" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdateTeamWithUnknownTeam" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testCreateOrUpdateTeamWithInvalidTeamExceptionOccuring" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testCreateOrUpdateTeamWithPositiveTeamIdAndDupName" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdateTeamAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdateTeamAccuracy2" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testGetTeamsWithNegId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testGetTeamsWithUnknownProjectID" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testGetTeamsAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testGetTeamMembersWithNegId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testGetTeamMembersWithUnknownTeam" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testGetTeamMembersAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemoveTeamWithNegTeamId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testRemoveTeamWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testRemoveTeamWithUnknownUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemoveTeamWithRetrievalExceptionOccuring" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemoveTeamWithUnknownTeam" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testRemoveTeamAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.172" />
+  <testcase name="testRemoveTeamAccuracy2" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.094" />
+  <testcase name="testGetTeamPositionDetailsWithNegativeTeamid" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testGetTeamPositionDetailsWithUnknownTeam" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testGetTeamPositionDetailsAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testFindFreeAgentsWithNegId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testFindFreeAgentsWithUnknownProjectId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testFindFreeAgentsAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testFindFreeAgentsAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.032" />
+  <testcase name="testCreateOrUpdatePositionWithNullPosition" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testCreateOrUpdatePositionWithNegTeamId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testCreateOrUpdatePositionWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdatePositionWithUnknownUser" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testCreateOrUpdatePositionWithErrorOccurredRetirevingUser" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdatePositionAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testCreateOrUpdatePositionAccuracy2" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdatePositionAccuracy3" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testCreateOrUpdatePositionAccuracy7" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdatePositionAccuracy4" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testCreateOrUpdatePositionWithUnknownPosition" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdatePositionAccuracy5" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testCreateOrUpdatePositionAccuracy6" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdatePositionAccuracy8" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testCreateOrUpdatePositionAccuracy9" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testGetPositionWithNegId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testGetPositionWithUnknownPosition" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testGetPositionAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testRemovePositionWithNegPositionId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testRemovePositionWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemovePositionWithUnknownPositionId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testRemovePositionAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemovePositionAccuracy2" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testValidateFinalizationWithNegTeamId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testValidateFinalizationWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testValidateFinalizationWithUnknownTeamId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testValidateFinalizationWithInactiveProject" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testValidateFinalizationWithUserIdNotCaptain" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testValidateFinalizationWithTeamAlreadyFinalized" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testValidateFinalizationAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testFinalizeTeamWithNegTeamId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testFinalizeTeamWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testFinalizeTeamAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testFinalizeTeamAccuracy2" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testSendOfferWithNullOffer" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testSendOfferWithNegOfferId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testSendOfferWithUnknownPositionId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testSendOfferWithPositionFilled" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testSendOfferAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testGetOffersWithNegativeId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testGetOffersAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testAccepteOfferWithNegOfferId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testAccepteOfferWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testAccepteOfferAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testRejectOfferWithNegOfferId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.063" />
+  <testcase name="testRejectOfferWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testRejectOfferAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemoveMemberWithNegResourceId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemoveMemberWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testRemoveMemberWithUnknownResourceId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testRemoveMemberWithErrorOccurRetrievingResource" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testRemoveMemberAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testRemoveMemberAccuracy2" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testRemoveMemberAccuracy3" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testRemoveMemberAccuracy4" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testForceFinalizationWithNegProjectId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testForceFinalizationWithNegUserId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.0" />
+  <testcase name="testForceFinalizationWithUnknownProjectId" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testForceFinalizationAccuracy" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.015" />
+  <testcase name="testForceFinalizationAccuracy1" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.031" />
+  <testcase name="testForceFinalizationAccuracy2" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <testcase name="testForceFinalizationAccuracy3" classname="com.topcoder.registration.team.service.impl.TeamServicesImplTest" time="0.016" />
+  <system-out><![CDATA[Enters TeamServicesImpl#createOrUpdateTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+InvalidTeamException occurred.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+Finished calling TeamManager#createTeam method.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+Finished calling TeamManager#createTeam method.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#getTeams method.
+IllegalArgumentException occurred in TeamServicesImpl#getTeams method.
+Enters TeamServicesImpl#getTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#getTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Exits TeamServicesImpl#getTeams method.
+Enters TeamServicesImpl#getTeamMembers method.
+IllegalArgumentException occurred in TeamServicesImpl#getTeamMembers method.
+Enters TeamServicesImpl#getTeamMembers method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#getTeamMembers method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl#getTeamMembers method.
+Enters TeamServicesImpl#removeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#removeTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberServices#sendMessage method.
+Finished calling ContactMemberServices#sendMessage method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling OfferManager#expireOffer method.
+Finished calling OfferManager#expireOffer method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberServices#sendMessage method.
+Finished calling ContactMemberServices#sendMessage method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#getTeamPositionsDetails method.
+IllegalArgumentException occurred in TeamServicesImpl#getTeamPositionsDetails method.
+Enters TeamServicesImpl#getTeamPositionsDetails method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#getTeamPositionsDetails method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl#getTeamPositionsDetails method.
+Enters TeamServicesImpl#findFreeAgents method.
+IllegalArgumentException occurred in TeamServicesImpl#findFreeAgents method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+RetrievalException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Starts calling TeamManager#addPosition method.
+Finished calling TeamManager#addPosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#addPosition method.
+Finished calling TeamManager#addPosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#updatePosition method.
+InvalidPositionException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#getPosition method.
+IllegalArgumentException occurred in TeamServicesImpl#getPosition method.
+Enters TeamServicesImpl#getPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+UnkownEntityException occurred in TeamServicesImpl#getPosition method.
+Enters TeamServicesImpl#getPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Exits TeamServicesImpl#getPosition method.
+Enters TeamServicesImpl#removePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+UnkownEntityException occurred in TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling TeamManager#removePosition method.
+PositionRemovalException occurred.
+Exits TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling TeamManager#removePosition method.
+Finished calling TeamManager#removePosition method.
+Exits TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#validateFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#finalizeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#finalizeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Exits TeamServicesImpl#validateFinalization method.
+Exits TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Exits TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResoruce method.
+Starts calling ResourceManager#updateResource method.
+Finished calling ResourceManager#updateResource method.
+Exits TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#sendOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling OfferManager#sendOffer method.
+Finished calling OfferManager#sendOffer method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#getOffers method.
+IllegalArgumentException occurred in TeamServicesImpl#getOffers method.
+Enters TeamServicesImpl#getOffers method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Exits TeamServicesImpl#getOffers method.
+Enters TeamServicesImpl#acceptOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#acceptOffer method.
+Enters TeamServicesImpl#acceptOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#acceptOffer method.
+Enters TeamServicesImpl#acceptOffer method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling OfferManager#acceptOffer method.
+Finished calling OfferManager#accepteOffer method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Enters TeamServicesImpl#acceptOffer method.
+Enters TeamServicesImpl#rejectOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#rejectOffer method.
+Enters TeamServicesImpl#rejectOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#rejectOffer method.
+Enters TeamServicesImpl#rejectOffer method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling OfferManager#rejectOffer method.
+Finished calling OfferManager#rejectOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#rejectOffer method.
+Enters TeamServicesImpl#removeMember method.
+IllegalArgumentException occurred in TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+IllegalArgumentException occurred in TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#forceFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#reomvePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#reomvePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#reomvePosition method.
+Finished calling TeamManager#removePosition method.
+Starts calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

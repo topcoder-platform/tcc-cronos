@@ -1,0 +1,1404 @@
+Testsuite: com.topcoder.registration.team.service.AllTests
+Tests run: 352, Failures: 0, Errors: 0, Time elapsed: 7.687 sec
+------------- Standard Output ---------------
+Enters TeamServicesImpl#createOrUpdateTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+InvalidTeamException occurred.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+Finished calling TeamManager#createTeam method.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+Finished calling TeamManager#createTeam method.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#getTeams method.
+IllegalArgumentException occurred in TeamServicesImpl#getTeams method.
+Enters TeamServicesImpl#getTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#getTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Exits TeamServicesImpl#getTeams method.
+Enters TeamServicesImpl#getTeamMembers method.
+IllegalArgumentException occurred in TeamServicesImpl#getTeamMembers method.
+Enters TeamServicesImpl#getTeamMembers method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#getTeamMembers method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl#getTeamMembers method.
+Enters TeamServicesImpl#removeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#removeTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberServices#sendMessage method.
+Finished calling ContactMemberServices#sendMessage method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling OfferManager#expireOffer method.
+Finished calling OfferManager#expireOffer method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberServices#sendMessage method.
+Finished calling ContactMemberServices#sendMessage method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#getTeamPositionsDetails method.
+IllegalArgumentException occurred in TeamServicesImpl#getTeamPositionsDetails method.
+Enters TeamServicesImpl#getTeamPositionsDetails method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#getTeamPositionsDetails method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl#getTeamPositionsDetails method.
+Enters TeamServicesImpl#findFreeAgents method.
+IllegalArgumentException occurred in TeamServicesImpl#findFreeAgents method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+RetrievalException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Starts calling TeamManager#addPosition method.
+Finished calling TeamManager#addPosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#addPosition method.
+Finished calling TeamManager#addPosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#updatePosition method.
+InvalidPositionException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#getPosition method.
+IllegalArgumentException occurred in TeamServicesImpl#getPosition method.
+Enters TeamServicesImpl#getPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+UnkownEntityException occurred in TeamServicesImpl#getPosition method.
+Enters TeamServicesImpl#getPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Exits TeamServicesImpl#getPosition method.
+Enters TeamServicesImpl#removePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+IllegalArgumentException occurred in TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+UnkownEntityException occurred in TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling TeamManager#removePosition method.
+PositionRemovalException occurred.
+Exits TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#removePosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling TeamManager#removePosition method.
+Finished calling TeamManager#removePosition method.
+Exits TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#validateFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#finalizeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#finalizeTeam method.
+IllegalArgumentException occurred in TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Exits TeamServicesImpl#validateFinalization method.
+Exits TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Exits TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResoruce method.
+Starts calling ResourceManager#updateResource method.
+Finished calling ResourceManager#updateResource method.
+Exits TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#sendOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling OfferManager#sendOffer method.
+Finished calling OfferManager#sendOffer method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#getOffers method.
+IllegalArgumentException occurred in TeamServicesImpl#getOffers method.
+Enters TeamServicesImpl#getOffers method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Exits TeamServicesImpl#getOffers method.
+Enters TeamServicesImpl#acceptOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#acceptOffer method.
+Enters TeamServicesImpl#acceptOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#acceptOffer method.
+Enters TeamServicesImpl#acceptOffer method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling OfferManager#acceptOffer method.
+Finished calling OfferManager#accepteOffer method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Enters TeamServicesImpl#acceptOffer method.
+Enters TeamServicesImpl#rejectOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#rejectOffer method.
+Enters TeamServicesImpl#rejectOffer method.
+IllegalArgumentException occurred in TeamServicesImpl#rejectOffer method.
+Enters TeamServicesImpl#rejectOffer method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling OfferManager#rejectOffer method.
+Finished calling OfferManager#rejectOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#rejectOffer method.
+Enters TeamServicesImpl#removeMember method.
+IllegalArgumentException occurred in TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+IllegalArgumentException occurred in TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#forceFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+IllegalArgumentException occurred in TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+UnknownEntityException occurred.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#reomvePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#reomvePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#reomvePosition method.
+Finished calling TeamManager#removePosition method.
+Starts calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+InvalidTeamException occurred.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl=createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+Finished calling TeamManager#createTeam method.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#createOrUpdateTeam method.
+Starts calling ProjectServices#findActiveProjects method.
+Finished calling ProjectServices#findActiveProjects method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#createTeam method.
+Finished calling TeamManager#createTeam method.
+Exits TeamServicesImpl#createOrUpdateTeam method.
+Enters TeamServicesImpl#getTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Exits TeamServicesImpl#getTeams method.
+Enters TeamServicesImpl#getTeamMembers method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl#getTeamMembers method.
+Enters TeamServicesImpl#removeTeam method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#removeTeam method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling ResourceManager#updateResource method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberServices#sendMessage method.
+Finished calling ContactMemberServices#sendMessage method.
+Exits TeamServicesImpl#removeTeam method.
+Enters TeamServicesImpl#getTeamPositionsDetails method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Exits TeamServicesImpl#getTeamPositionsDetails method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+RetrievalException occurred in TeamServicesImpl#createOrUpdatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#addPosition method.
+Finished calling TeamManager#addPosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#createOrUpdatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#createOrUpdatePosition method.
+Enters TeamServicesImpl#getPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Exits TeamServicesImpl#getPosition method.
+Enters TeamServicesImpl#removePosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling TeamManager#removePosition method.
+Finished calling TeamManager#removePosition method.
+Exits TeamServicesImpl#removePosition method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Exits TeamServicesImpl#validateFinalization method.
+Enters TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#validateFinalization method.
+Starts calling TeamManager#getTeam method.
+Finished calling TeamManager#getTeam method.
+Starts calling ProjectServices#findActiveProjectsHeaders method.
+Finished calling ProjectServices#findActiveProjectsHeaders method.
+Exits TeamServicesImpl#validateFinalization method.
+Exits TeamServicesImpl#finalizeTeam method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#sendOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Exits TeamServicesImpl#sendOffer method.
+Enters TeamServicesImpl#getOffers method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Exits TeamServicesImpl#getOffers method.
+Enters TeamServicesImpl#acceptOffer method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling OfferManager#acceptOffer method.
+Finished calling OfferManager#accepteOffer method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Enters TeamServicesImpl#acceptOffer method.
+Enters TeamServicesImpl#rejectOffer method.
+Starts calling OfferManager#findOffers method.
+Finished calling OfferManager#findOffers method.
+Starts calling OfferManager#rejectOffer method.
+Finished calling OfferManager#rejectOffer method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#getPosition method.
+Finished calling TeamManager#getPosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#rejectOffer method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling UserRetrieval#retrieveUser method.
+Finished calling UserRetrieval#retrieveUser method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ContactMemberService#sendMessage method.
+Finished calling ContactMemberService#sendMessage method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#removeMember method.
+Starts calling ResourceManager#getResource method.
+Finished calling ResourceManager#getResource method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPosition method.
+Starts calling TeamManager#getTeamFromPosition method.
+Finished calling TeamManager#getTeamFromPosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#removeMember method.
+Enters TeamServicesImpl#forceFinalization method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Enters TeamServicesImpl#findFreeAgents method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#findPositions method.
+Finished calling TeamManager#findPositions method.
+Exits TeamServicesImpl#findFreeAgents method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectServices#getFullProjectData method.
+Finished calling ProjectServices#getFullProjectData method.
+Starts calling TeamManager#reomvePosition method.
+Finished calling TeamManager#removePosition method.
+Starts calling TeamManager#reomvePosition method.
+Finished calling TeamManager#removePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Starts calling TeamManager#updatePosition method.
+Finished calling TeamManager#updatePosition method.
+Exits TeamServicesImpl#forceFinalization method.
+------------- ---------------- ---------------
+
+Testcase: testCtorWithMsg took 0.015 sec
+Testcase: testCtorWithMsgAndCause took 0 sec
+Testcase: testCtorWithMsg took 0 sec
+Testcase: testCtorWithMsgAndCause took 0 sec
+Testcase: testCtorWithMsg took 0 sec
+Testcase: testCtorWithMsgAndCause took 0 sec
+Testcase: testCtor1Accuracy took 0 sec
+Testcase: testCtor2WithTrueAndErrorsExist took 0 sec
+Testcase: testCtor2WithTrueAndErrorsHasNull took 0 sec
+Testcase: testCtor2WithTrueAndErrorsHasEmpty took 0 sec
+Testcase: testCtor2Accuracy took 0 sec
+Testcase: testIsSuccessful took 0 sec
+Testcase: testSetSuccessfulWithTrueAndErrorsExist took 0 sec
+Testcase: testSetSuccessfulAccuracy took 0 sec
+Testcase: testGetErrors took 0 sec
+Testcase: testSetErrorsWithNull took 0 sec
+Testcase: testSetErrorsAccuracy took 0 sec
+Testcase: testCtor1Accuracy took 0 sec
+Testcase: testCtor2Accuracy took 0 sec
+Testcase: testCtor2WithNullResource took 0 sec
+Testcase: testCtor2WithNullPosition took 0 sec
+Testcase: testGetResource took 0 sec
+Testcase: testSetMemberResourceWithNullResource took 0 sec
+Testcase: testSetMemberResourceAccuracy took 0 sec
+Testcase: testGetPositionWithNullPosition took 0 sec
+Testcase: testSetPositionWithNullPosition took 0 sec
+Testcase: testSetPositionAccuracy took 0 sec
+Testcase: testCheckObjNotNullWithNullObj took 0 sec
+Testcase: testCheckObjNotNullWithNonNullObj took 0 sec
+Testcase: testCheckStrNotNullOrEmptyWithNullStr took 0 sec
+Testcase: testCheckStrNotNullOrEmptyWithEmptyStr took 0 sec
+Testcase: testCheckStrNotNullOrEmpty took 0 sec
+Testcase: testCheckIDNotNegativeWithNegID took 0 sec
+Testcase: testCheckErrorsArrayWithArrayHasNullEle took 0 sec
+Testcase: testCheckErrorsArrayWithArrayHasEmptyEle took 0 sec
+Testcase: testCtor1Accuracy took 0.531 sec
+Testcase: testCtor2WithNullNamespace took 0.031 sec
+Testcase: testCtor2WithEmptyNamespace took 0.032 sec
+Testcase: testCtor2WithAccepteOfferTemplateNameMissing took 0.047 sec
+Testcase: testCtor2WithContactMemberServiceKeyMissing took 0.078 sec
+Testcase: testCtor2WithFreeAgentRoleMissing took 0.047 sec
+Testcase: testCtor2WithOfferManagerKeyMissing took 0.063 sec
+Testcase: testCtor2WithPhaseManagerKeyMissing took 0.031 sec
+Testcase: testCtor2WithProjectManagerKeyMissing took 0.047 sec
+Testcase: testCtor2WithProjectServicesKeyMissing took 0.031 sec
+Testcase: testCtor2WithRegistrationPhaseIdInvalid took 0.062 sec
+Testcase: testCtor2WithRegistrationPhaseIdMissing took 0.016 sec
+Testcase: testCtor2WithRegistrationPhaseIdNegative took 0.047 sec
+Testcase: testCtor2WithRejectOfferTemplateNameMissing took 0.016 sec
+Testcase: testCtor2WithRemoveMemberMessageTemplateNameMissing took 0.062 sec
+Testcase: testCtor2WithRemoveTeamMessageTemplateNameMissing took 0.031 sec
+Testcase: testCtor2WithResourceManagementKeyMissing took 0.032 sec
+Testcase: testCtor2WithSendOfferTemplateNameMissing took 0.015 sec
+Testcase: testCtor2WithSpecNamespaceMissing took 0.031 sec
+Testcase: testCtor2WithSpecNamespaceUnknown took 0.047 sec
+Testcase: testCtor2WithSubmitterRoleIdMissing took 0.032 sec
+Testcase: testCtor2WithTeamCaptainRoleIdMissing took 0.015 sec
+Testcase: testCtor2WithTeamManagerKeyMissing took 0.063 sec
+Testcase: testCtor2WithUnknownNamespace took 0.031 sec
+Testcase: testCtor2WithUserRetrievalClassTypeInvalid took 0.016 sec
+Testcase: testCtor2WithUserRetrievalClassTypeWrong took 0.015 sec
+Testcase: testCtor2WithUserRetrievalInvalid took 0.063 sec
+Testcase: testCtor2WithUserRetrievalKeyMissing took 0.015 sec
+Testcase: testCreateOrUpdateTeamWithNullTeam took 0.016 sec
+Testcase: testCreateOrUpdateTeamWithNegativeUserId took 0.016 sec
+Testcase: testCreateOrUpdateTeamWithDupTeamName took 0.046 sec
+Testcase: testCreateOrUpdateTeamWithTeamNameMatchResourceHandle took 0.047 sec
+Testcase: testCreateOrUpdateTeamWithUnknownTeam took 0.016 sec
+Testcase: testCreateOrUpdateTeamWithInvalidTeamExceptionOccuring took 0.016 sec
+Testcase: testCreateOrUpdateTeamWithPositiveTeamIdAndDupName took 0.015 sec
+Testcase: testCreateOrUpdateTeamAccuracy1 took 0 sec
+Testcase: testCreateOrUpdateTeamAccuracy2 took 0.047 sec
+Testcase: testGetTeamsWithNegId took 0.016 sec
+Testcase: testGetTeamsWithUnknownProjectID took 0.015 sec
+Testcase: testGetTeamsAccuracy took 0.016 sec
+Testcase: testGetTeamMembersWithNegId took 0 sec
+Testcase: testGetTeamMembersWithUnknownTeam took 0.016 sec
+Testcase: testGetTeamMembersAccuracy took 0.015 sec
+Testcase: testRemoveTeamWithNegTeamId took 0.016 sec
+Testcase: testRemoveTeamWithNegUserId took 0.047 sec
+Testcase: testRemoveTeamWithUnknownUserId took 0.015 sec
+Testcase: testRemoveTeamWithRetrievalExceptionOccuring took 0 sec
+Testcase: testRemoveTeamWithUnknownTeam took 0.016 sec
+Testcase: testRemoveTeamAccuracy1 took 0.578 sec
+Testcase: testRemoveTeamAccuracy2 took 0.109 sec
+Testcase: testGetTeamPositionDetailsWithNegativeTeamid took 0 sec
+Testcase: testGetTeamPositionDetailsWithUnknownTeam took 0.016 sec
+Testcase: testGetTeamPositionDetailsAccuracy took 0.016 sec
+Testcase: testFindFreeAgentsWithNegId took 0.015 sec
+Testcase: testFindFreeAgentsWithUnknownProjectId took 0 sec
+Testcase: testFindFreeAgentsAccuracy1 took 0.063 sec
+Testcase: testFindFreeAgentsAccuracy took 0.015 sec
+Testcase: testCreateOrUpdatePositionWithNullPosition took 0.016 sec
+Testcase: testCreateOrUpdatePositionWithNegTeamId took 0.016 sec
+Testcase: testCreateOrUpdatePositionWithNegUserId took 0 sec
+Testcase: testCreateOrUpdatePositionWithUnknownUser took 0.015 sec
+Testcase: testCreateOrUpdatePositionWithErrorOccurredRetirevingUser took 0.016 sec
+Testcase: testCreateOrUpdatePositionAccuracy1 took 0.047 sec
+Testcase: testCreateOrUpdatePositionAccuracy2 took 0.015 sec
+Testcase: testCreateOrUpdatePositionAccuracy3 took 0.032 sec
+Testcase: testCreateOrUpdatePositionAccuracy7 took 0 sec
+Testcase: testCreateOrUpdatePositionAccuracy4 took 0 sec
+Testcase: testCreateOrUpdatePositionWithUnknownPosition took 0.016 sec
+Testcase: testCreateOrUpdatePositionAccuracy5 took 0.016 sec
+Testcase: testCreateOrUpdatePositionAccuracy6 took 0.015 sec
+Testcase: testCreateOrUpdatePositionAccuracy8 took 0.016 sec
+Testcase: testCreateOrUpdatePositionAccuracy9 took 0.015 sec
+Testcase: testGetPositionWithNegId took 0.063 sec
+Testcase: testGetPositionWithUnknownPosition took 0 sec
+Testcase: testGetPositionAccuracy took 0.016 sec
+Testcase: testRemovePositionWithNegPositionId took 0.015 sec
+Testcase: testRemovePositionWithNegUserId took 0 sec
+Testcase: testRemovePositionWithUnknownPositionId took 0.016 sec
+Testcase: testRemovePositionAccuracy1 took 0.015 sec
+Testcase: testRemovePositionAccuracy2 took 0.016 sec
+Testcase: testValidateFinalizationWithNegTeamId took 0 sec
+Testcase: testValidateFinalizationWithNegUserId took 0.016 sec
+Testcase: testValidateFinalizationWithUnknownTeamId took 0 sec
+Testcase: testValidateFinalizationWithInactiveProject took 0.062 sec
+Testcase: testValidateFinalizationWithUserIdNotCaptain took 0.016 sec
+Testcase: testValidateFinalizationWithTeamAlreadyFinalized took 0.031 sec
+Testcase: testValidateFinalizationAccuracy took 0.016 sec
+Testcase: testFinalizeTeamWithNegTeamId took 0.015 sec
+Testcase: testFinalizeTeamWithNegUserId took 0.016 sec
+Testcase: testFinalizeTeamAccuracy1 took 0 sec
+Testcase: testFinalizeTeamAccuracy2 took 0.031 sec
+Testcase: testSendOfferWithNullOffer took 0.063 sec
+Testcase: testSendOfferWithNegOfferId took 0.015 sec
+Testcase: testSendOfferWithUnknownPositionId took 0 sec
+Testcase: testSendOfferWithPositionFilled took 0.016 sec
+Testcase: testSendOfferAccuracy took 0.047 sec
+Testcase: testGetOffersWithNegativeId took 0.015 sec
+Testcase: testGetOffersAccuracy took 0 sec
+Testcase: testAccepteOfferWithNegOfferId took 0.016 sec
+Testcase: testAccepteOfferWithNegUserId took 0.016 sec
+Testcase: testAccepteOfferAccuracy1 took 0.078 sec
+Testcase: testRejectOfferWithNegOfferId took 0.015 sec
+Testcase: testRejectOfferWithNegUserId took 0 sec
+Testcase: testRejectOfferAccuracy took 0.047 sec
+Testcase: testRemoveMemberWithNegResourceId took 0.016 sec
+Testcase: testRemoveMemberWithNegUserId took 0 sec
+Testcase: testRemoveMemberWithUnknownResourceId took 0.016 sec
+Testcase: testRemoveMemberWithErrorOccurRetrievingResource took 0.062 sec
+Testcase: testRemoveMemberAccuracy took 0.031 sec
+Testcase: testRemoveMemberAccuracy2 took 0.016 sec
+Testcase: testRemoveMemberAccuracy3 took 0 sec
+Testcase: testRemoveMemberAccuracy4 took 0.016 sec
+Testcase: testForceFinalizationWithNegProjectId took 0.015 sec
+Testcase: testForceFinalizationWithNegUserId took 0 sec
+Testcase: testForceFinalizationWithUnknownProjectId took 0.063 sec
+Testcase: testForceFinalizationAccuracy took 0.031 sec
+Testcase: testForceFinalizationAccuracy1 took 0.016 sec
+Testcase: testForceFinalizationAccuracy2 took 0.015 sec
+Testcase: testForceFinalizationAccuracy3 took 0.031 sec
+Testcase: testCtorWithMsgAccuracy took 0 sec
+Testcase: testCtorWithMsgAndCauseAccuracy took 0 sec
+Testcase: testCtorWithMsg took 0 sec
+Testcase: testCtorWithMsgAndCause took 0 sec
+Testcase: testCtorWithMsgAccuracy took 0 sec
+Testcase: testCtorWithMsgAndCauseAccuracy took 0 sec
+Testcase: testCtor2Accuracy took 0 sec
+Testcase: testIsSuccessful took 0 sec
+Testcase: testSetSuccessfulAccuracy took 0 sec
+Testcase: testGetErrors took 0 sec
+Testcase: testSetErrorsWithNull took 0 sec
+Testcase: testSetErrorsAccuracy took 0 sec
+Testcase: testCtor1_Accuracy took 0 sec
+Testcase: testCtor1Accuracy took 0 sec
+Testcase: testCtor2Accuracy took 0 sec
+Testcase: testGetResource took 0 sec
+Testcase: testSetMemberResourceAccuracy took 0 sec
+Testcase: testSetPositionAccuracy took 0 sec
+Testcase: testGetPositionAccuracy took 0 sec
+Testcase: testCtor1Accuracy took 0.016 sec
+Testcase: testCreateOrUpdateTeam_AccuracyWithDuplicatedTeamName took 0.063 sec
+Testcase: testCreateOrUpdateTeam_AccuracyTeamNameMatchResourceHandle took 0.015 sec
+Testcase: testCreateOrUpdateTeam_AccuracyInvalidTeamExceptionOccuring took 0 sec
+Testcase: testCreateOrUpdateTeam_AccuracyPositiveTeamIdAndDupName took 0.016 sec
+Testcase: testCreateOrUpdateTeam_Accuracy1 took 0.015 sec
+Testcase: testCreateOrUpdateTeam_Accuracy2 took 0.016 sec
+Testcase: testGetTeams_Accuracy took 0 sec
+Testcase: testGetTeamMembers_Accuracy took 0.016 sec
+Testcase: testRemoveTeam_Accuracy0 took 0.015 sec
+Testcase: testRemoveTeam_Accuracy1 took 0.032 sec
+Testcase: testGetTeamPositionDetails_Accuracy took 0.015 sec
+Testcase: testFindFreeAgents_Accuracy took 0.063 sec
+Testcase: testCreateOrUpdatePosition_Accuracy0 took 0 sec
+Testcase: testCreateOrUpdatePosition_Accuracy1 took 0.015 sec
+Testcase: testCreateOrUpdatePosition_Accuracy2 took 0.016 sec
+Testcase: testCreateOrUpdatePosition_Accuracy3 took 0.016 sec
+Testcase: testCreateOrUpdatePosition_Accuracy4 took 0 sec
+Testcase: testCreateOrUpdatePosition_Accuracy5 took 0.015 sec
+Testcase: testCreateOrUpdatePosition_Accuracy6 took 0.016 sec
+Testcase: testCreateOrUpdatePosition_Accuracy7 took 0.015 sec
+Testcase: testCreateOrUpdatePosition_Accuracy8 took 0 sec
+Testcase: testGetPosition_Accuracy took 0.063 sec
+Testcase: testRemovePosition_Accuracy took 0.016 sec
+Testcase: testValidateFinalization_AccuracyInactiveProject took 0 sec
+Testcase: testValidateFinalization_AccuracyUserIdNotCaptain took 0.015 sec
+Testcase: testFinalizeTeam_Accuracy took 0.016 sec
+Testcase: testSendOffer_Accuracy_UnknownPositionId took 0.015 sec
+Testcase: testSendOffer_Accuracy_PositionFilled took 0 sec
+Testcase: testGetOffers_Accuracy took 0.016 sec
+Testcase: testAccepteOffer_Accuracy took 0.141 sec
+Testcase: testRejectOffer_Accuracy took 0.031 sec
+Testcase: testRemoveMember_Accuracy0 took 0.016 sec
+Testcase: testRemoveMember_Accuracy1 took 0.031 sec
+Testcase: testRemoveMember_Accuracy2 took 0.015 sec
+Testcase: testRemoveMember_Accuracy3 took 0.016 sec
+Testcase: testRemoveMember_Accuracy4 took 0.078 sec
+Testcase: testForceFinalization_Accuracy took 0 sec
+Testcase: testOperationResultImpl_InvalidErrors took 0 sec
+Testcase: testOperationResultImpl_NullError took 0 sec
+Testcase: testOperationResultImpl_EmptyError took 0 sec
+Testcase: testSetErrors_InvalidErrors took 0 sec
+Testcase: testSetErrors_NullError took 0 sec
+Testcase: testSetErrors_EmptyError took 0 sec
+Testcase: testSetSuccessful_HasErrors took 0 sec
+Testcase: testResourcePositionImpl_NullMemberResource took 0 sec
+Testcase: testResourcePositionImpl_NullPosition took 0 sec
+Testcase: testSetMemberResource_NullMemberResource took 0 sec
+Testcase: testSetPosition_NullPosition took 0 sec
+Testcase: testTeamServicesImpl_UnknownNamespace took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig1 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig2 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig3 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig4 took 0.032 sec
+Testcase: testTeamServicesImpl_InvalidConfig5 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig6 took 0.062 sec
+Testcase: testTeamServicesImpl_InvalidConfig7 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig8 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig9 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig10 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig11 took 0.079 sec
+Testcase: testTeamServicesImpl_InvalidConfig12 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig13 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig14 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig15 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig16 took 0.078 sec
+Testcase: testTeamServicesImpl_InvalidConfig17 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig18 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig19 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig20 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig21 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig22 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig23 took 0.062 sec
+Testcase: testTeamServicesImpl_InvalidConfig24 took 0.032 sec
+Testcase: testTeamServicesImpl_InvalidConfig25 took 0.046 sec
+Testcase: testTeamServicesImpl_InvalidConfig26 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig27 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig28 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig29 took 0.078 sec
+Testcase: testTeamServicesImpl_InvalidConfig30 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig31 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig32 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig33 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig34 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig35 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig36 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig37 took 0.078 sec
+Testcase: testTeamServicesImpl_InvalidConfig38 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig39 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig40 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig41 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig42 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig43 took 0.078 sec
+Testcase: testTeamServicesImpl_InvalidConfig44 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig45 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig46 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig47 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig48 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig49 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig50 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig51 took 0.079 sec
+Testcase: testTeamServicesImpl_InvalidConfig52 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig53 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig54 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig55 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig56 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig57 took 0.063 sec
+Testcase: testTeamServicesImpl_InvalidConfig58 took 0.031 sec
+Testcase: testTeamServicesImpl_InvalidConfig59 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig60 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig61 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig62 took 0.016 sec
+Testcase: testTeamServicesImpl_InvalidConfig63 took 0.078 sec
+Testcase: testTeamServicesImpl_InvalidConfig64 took 0.015 sec
+Testcase: testTeamServicesImpl_InvalidConfig65 took 0.016 sec
+Testcase: testTeamServicesImpl_NullNamespace took 0.016 sec
+Testcase: testTeamServicesImpl_EmptyNamespace took 0 sec
+Testcase: testCreateOrUpdateTeam_NullTeam took 0.015 sec
+Testcase: testCreateOrUpdateTeam_NegativeUserId took 0 sec
+Testcase: testCreateOrUpdateTeam_UnknownEntityException took 0.016 sec
+Testcase: testCreateOrUpdateTeam_TeamPersistenceException took 0.015 sec
+Testcase: testGetTeams_NegativeProjectId took 0 sec
+Testcase: testGetTeams_UnknownProjectId took 0.016 sec
+Testcase: testGetTeams_ProjectServicesException took 0.063 sec
+Testcase: testGetTeams_TeamPersistenceException took 0.015 sec
+Testcase: testGetTeamMembers_NegativeTeamId took 0 sec
+Testcase: testGetTeamMembers_UnknownTeamId took 0.016 sec
+Testcase: testGetTeamMembers_TeamServicesException took 0 sec
+Testcase: testRemoveTeam_NegativeTeamId took 0.015 sec
+Testcase: testRemoveTeam_NegativeUserId took 0 sec
+Testcase: testRemoveTeam_UnknownTeamId took 0.016 sec
+Testcase: testRemoveTeam_OfferManagerException took 0.016 sec
+Testcase: testGetTeamPositionsDetails_NegativeTeamId took 0 sec
+Testcase: testGetTeamPositionsDetails_UnknownTeamId took 0.015 sec
+Testcase: testGetTeamPositionsDetails_TeamServicesException took 0 sec
+Testcase: testFindFreeAgents_NegativeProjectId took 0.016 sec
+Testcase: testFindFreeAgents_UnknownProjectId took 0 sec
+Testcase: testCreateOrUpdatePosition_NullPosition took 0.046 sec
+Testcase: testCreateOrUpdatePosition_NegativeTeamId took 0.016 sec
+Testcase: testCreateOrUpdatePosition_NegativeUserId took 0.016 sec
+Testcase: testGetPosition_NegativePositionId took 0 sec
+Testcase: testGetPosition_UnknownPositionId took 0.015 sec
+Testcase: testGetPosition_TeamPersistenceException took 0 sec
+Testcase: testRemovePosition_NegativePositionId took 0.016 sec
+Testcase: testRemovePosition_NegativeUserId took 0 sec
+Testcase: testRemovePosition_UnknownPositionId took 0.016 sec
+Testcase: testRemovePosition_TeamPersistenceException took 0.015 sec
+Testcase: testValidateFinalization_NegativeTeamId took 0 sec
+Testcase: testValidateFinalization_NegativeUserId took 0.016 sec
+Testcase: testValidateFinalization_UnknownTeamId took 0 sec
+Testcase: testFinalizeTeam_NegativeTeamId took 0.015 sec
+Testcase: testFinalizeTeam_NegativeUserId took 0 sec
+Testcase: testFinalizeTeam_UnknownTeamId took 0.016 sec
+Testcase: testSendOffer_NullOffer took 0 sec
+Testcase: testSendOffer_OfferIdLessThanZero took 0.063 sec
+Testcase: testSendOffer_TeamPersistenceException took 0.015 sec
+Testcase: testGetOffers_NegativeUserId took 0.016 sec
+Testcase: testGetOffers_OfferManagerException took 0 sec
+Testcase: testAcceptOffer_NegativeOfferId took 0.015 sec
+Testcase: testAcceptOffer_NegativeUserId took 0 sec
+Testcase: testAcceptOffer_OfferManagerException took 0.016 sec
+Testcase: testAcceptOffer_TeamPersistenceException took 0 sec
+Testcase: testRejectOffer_NegativeOfferId took 0.016 sec
+Testcase: testRejectOffer_NegativeUserId took 0 sec
+Testcase: testRejectOffer_TeamPersistenceException took 0.015 sec
+Testcase: testRejectOffer_OfferManagerException took 0.016 sec
+Testcase: testRemoveMember_NegativeResourceId took 0 sec
+Testcase: testRemoveMember_NegativeUserId took 0.016 sec
+Testcase: testRemoveMember_UnknownResourceId took 0 sec
+Testcase: testForceFinalization_NegativeProjectId took 0.062 sec
+Testcase: testForceFinalization_NegativeUserId took 0.016 sec
+Testcase: testForceFinalization_UnknownProjectId took 0 sec
+Testcase: testForceFinalization_ProjectServicesException took 0.015 sec
+Testcase: testForceFinalization_TeamPersistenceException took 0 sec
+Testcase: testCreateUpdateTeam took 0.063 sec
+Testcase: testGetTeams took 0.031 sec
+Testcase: testFindFreeAgents took 0.031 sec
+Testcase: testCreateUpdatePosition took 0.032 sec
+Testcase: testValidateFinalization took 0.062 sec
