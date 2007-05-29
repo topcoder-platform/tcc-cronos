@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>  
+<CMConfig>
+
+<!--    -->
+<Config name="com.cronos.onlinereview.login.authenticator.SecurityManagerAuthenticator.invalid_context_name">
+		<Property name="context_name">
+			<Value>ThisContextNameIsExpectedNotExist</Value>
+		</Property>
+
+		<Property name="login_bean_name">
+			<Value>security/Login</Value>
+		</Property>
+
+</Config>
+
+<!--    -->
+<Config name="com.cronos.onlinereview.login.authenticator.SecurityManagerAuthenticator.miss_loginbean_name">
+		<Property name="context_name">
+			<Value>security</Value>
+		</Property>
+</Config>
+
+<!--    -->
+<Config name="com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser.invalid">
+  <Property name="key">
+     <Value>topcoder</Value>
+  </Property>
+</Config>
+
+</CMConfig>
