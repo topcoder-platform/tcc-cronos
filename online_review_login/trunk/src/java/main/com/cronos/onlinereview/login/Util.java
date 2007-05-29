@@ -36,14 +36,6 @@ public final class Util {
     public static final String PASSWORD = "password";
 
     /**
-     * Represents the key of redirectToProjectID value.
-     * <p>
-     * It can be used to retrieve redirectToProjectID value from <code>ActionForm</code> and <code>Principal</code>.
-     * </p>
-     */
-    public static final String REDIRECT_TO_PROJECT_ID = "redirectToProjectID";
-
-    /**
      * Represents the key of forwardUrl value.
      * <p>
      * It can be used to retrieve forward url value from <code>ActionForm</code> and <code>Principal</code>.

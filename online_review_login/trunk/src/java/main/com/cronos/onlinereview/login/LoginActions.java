@@ -214,7 +214,6 @@ public class LoginActions extends DispatchAction {
             DynaValidatorForm validatorForm = (DynaValidatorForm) form;
             String userName = getFormProperty(validatorForm, Util.USERNAME);
             String password = getFormProperty(validatorForm, Util.PASSWORD);
-            String projectId = request.getParameter(Util.REDIRECT_TO_PROJECT_ID);
             String forwardUrl = request.getParameter(Util.FOWARD_URL);
 
             // create a principal with user name and password
@@ -226,16 +225,16 @@ public class LoginActions extends DispatchAction {
             Response authResponse = authenticator.authenticate(principal);
             authResponseParser.setLoginState(principal, authResponse, request, response);
             if (authResponse.isSuccessful()) {
+                request.getSession().removeAttribute("redirectBackUrl");
                 if (forwardUrl != null && forwardUrl.trim().length() != 0) {
-                    return cloneForwardAndAppendToPath(
-                            mapping.findForward("redirectToURL"), "&url=" + forwardUrl);
-                } else if (projectId == null || projectId.trim().length() == 0) {
+                    return constructNewForward(mapping.findForward("success"), forwardUrl);
+                } else {
                     return mapping.findForward("success");
-                } else {            
-                    return cloneForwardAndAppendToPath(
-                            mapping.findForward("redirectToProject"), "&pid=" + projectId);
                 }
             } else {
+                // TODO: Actually in case of wrong login attempt, an attribute should be place into the request
+                // This is to let use the same page in the application for the first login
+                // and for every subsequent incorrect login attempt
                 return mapping.findForward("failure");
             }
         } catch (MissingPrincipalKeyException e) {
@@ -254,28 +253,29 @@ public class LoginActions extends DispatchAction {
     }
 
     /**
-     * This static method clones specified action forward and appends specified string argument to
-     * the path of the newly-created forward.
+     * This static method creates a new action forward based on the foward specified by
+     * <code>basedOn</code> parameter (only module is considered). The newly created forward will
+     * be pointing to the URL specified by <code>forwardUrl</code> parameter, have
+     * &quotsomeNewForward;&quot; name, and always use 'redirect' thechique (i.e. the browser will
+     * display the path of this forward in its Address field).
      *
-     * @return cloned and mofied action forward.
-     * @param forward
-     *            an action forward to clone.
-     * @param arg0
-     *            a string that should be appended to the path of the newly-cloned forward. This
-     *            parameter must not be <code>null</code>, but can be an empty string.
-     * @throws IllegalArgumentException
-     *             if any of the parameters are <code>null</code>.
+     * @return a newly created action forward that points to URL specified by
+     *         <code>forwardUrl</code> parameter.
+     * @param basedOn
+     *            a forward to base newly created forward on.
+     * @param forwardUrl
+     *            an URL string for the new forward.
      */
-    private static ActionForward cloneForwardAndAppendToPath(ActionForward forward, String arg0) {
+    private static ActionForward constructNewForward(ActionForward basedOn, String forwardUrl) {
         // Create new ActionForward object
         ActionForward clonedForward = new ActionForward();
 
         // Clone (copy) the fields
-        clonedForward.setModule(forward.getModule());
-        clonedForward.setName(forward.getName());
-        clonedForward.setRedirect(forward.getRedirect());
+        clonedForward.setModule(basedOn.getModule());
+        clonedForward.setName("someNewForward");
+        clonedForward.setRedirect(true);
         // Append string argument
-        clonedForward.setPath(forward.getPath() + arg0);
+        clonedForward.setPath(forwardUrl);
 
         // Return the newly-created action forward
         return clonedForward;
