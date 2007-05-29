@@ -647,6 +647,6 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
     private long getPrimaryId(EntityKey entityKey) {
         String primaryKey = entityKey.getType().getPrimaryKeyColumns()[0];
 
-        return Long.parseLong((String) entityKey.getValues().get(primaryKey));
+        return ((Long) entityKey.getValues().get(primaryKey)).longValue();
     }
 }

@@ -17,7 +17,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -378,7 +380,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_setStatus() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "12345");
+        EntityKey key = new EntityKey(ENTITY, createValues());
         tracker.setStatus(key, new Status(1), "user");
 
         PreparedStatement statement =
@@ -433,7 +435,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_getCurrentStatus() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "12345");
+        EntityKey key = new EntityKey(ENTITY, createValues());
         Status status = new Status(2);
         tracker.setStatus(key, status, "user");
 
@@ -462,7 +464,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_getStatusHistory() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "12345");
+        EntityKey key = new EntityKey(ENTITY, createValues());
         Status one = new Status(1);
         Status two = new Status(2);
         tracker.setStatus(key, one, "user");
@@ -531,7 +533,7 @@ public class InformixEntityStatusTrackerTests extends TestCase {
      * @throws Exception if an unexpected exception occurs
      */
     public void test_findByStatus() throws Exception {
-        EntityKey key = new EntityKey(ENTITY, "12345");
+        EntityKey key = new EntityKey(ENTITY, createValues());
         Status one = new Status(1);
         Status two = new Status(2);
         tracker.setStatus(key, one, "user");
@@ -545,5 +547,18 @@ public class InformixEntityStatusTrackerTests extends TestCase {
         EntityStatus[] status = tracker.findByStatus(ENTITY, new Status[] {one, two});
         assertEquals("there should be one status returned", 1, status.length);
         assertEquals("the status should be status two (the current status)", two, status[0].getStatus());
+    }
+
+    /**
+     * Creates the values map for the entity key.
+     *
+     * @return the values map for the entity key
+     */
+    private static Map createValues() {
+        Map m = new HashMap();
+
+        m.put("column", new Long(12345));
+
+        return m;
     }
 }

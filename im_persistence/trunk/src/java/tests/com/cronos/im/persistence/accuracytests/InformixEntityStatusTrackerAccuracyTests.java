@@ -17,6 +17,9 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.datavalidator.NullValidator;
 import com.topcoder.util.datavalidator.ObjectValidator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * <p>
  * Accuracy test for <code>{@link InformixEntityStatusTracker}</code> class.
@@ -106,7 +109,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
         // type
         Entity entity = new Entity(2, "entity", new String[] {"column"}, new Status[] {new Status(1), new Status(2),
             new Status(3)});
-        EntityKey entityKey = new EntityKey(entity, "12345");
+        EntityKey entityKey = new EntityKey(entity, createValues());
 
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -138,7 +141,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
         // type
         Entity entity = new Entity(2, "entity", new String[] {"column"}, new Status[] {new Status(1), new Status(2),
             new Status(3)});
-        EntityKey entityKey = new EntityKey(entity, "12345");
+        EntityKey entityKey = new EntityKey(entity, createValues());
 
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -182,7 +185,7 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
         // type
         Entity entity = new Entity(1, "entity", new String[] {"column"}, new Status[] {new Status(1), new Status(2),
             new Status(3)});
-        EntityKey entityKey = new EntityKey(entity, "12345");
+        EntityKey entityKey = new EntityKey(entity, createValues());
 
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
@@ -259,5 +262,18 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
 
         assertNotNull(statusHistorys);
         assertEquals("the history size is incorrect.", 2, statusHistorys.length);
+    }
+
+    /**
+     * Creates the values map for the entity key.
+     *
+     * @return the values map for the entity key
+     */
+    private static Map createValues() {
+        Map m = new HashMap();
+
+        m.put("column", new Long(12345));
+
+        return m;
     }
 }

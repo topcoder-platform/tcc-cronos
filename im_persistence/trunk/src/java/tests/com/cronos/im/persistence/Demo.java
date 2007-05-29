@@ -397,7 +397,9 @@ public class Demo extends TestCase {
         // This persistence implementation supports many getter functions:
 
         // a query to get current status for entity 1
-        EntityKey instance = new EntityKey(type, "12345");
+        Map m = new HashMap();
+        m.put("column", new Long(12345));
+        EntityKey instance = new EntityKey(type, m);
 
         // set the status
         persistence.setStatus(instance, new Status(1), "user");

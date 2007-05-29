@@ -18,8 +18,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.Map;
 
 /**
  * Test helper class.
@@ -132,7 +133,9 @@ public class TestHelper {
      */
     public static EntityKey createEntityKey(String entityName)
         throws Exception {
-        return new EntityKey(createEntity(entityName), "1");
+        Map m = new HashMap();
+        m.put("entity_status_id", new Long(1));
+        return new EntityKey(createEntity(entityName), m);
     }
 
     /**

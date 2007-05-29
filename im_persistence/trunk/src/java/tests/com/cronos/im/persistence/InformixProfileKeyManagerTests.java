@@ -771,7 +771,7 @@ public class InformixProfileKeyManagerTests extends TestCase {
     public void test_getProfileKeys4() throws Exception {
         ipkm.createProfileKey(new ProfileKey("ivern", "Registered"));
         ipkm.createProfileKey(new ProfileKey("mess", "Registered"));
-        ipkm.createProfileKey(new ProfileKey("Pops", "Unregistered"));
+        ProfileKey key = ipkm.createProfileKey(new ProfileKey("Pops", "Unregistered"));
 
         ProfileKey[][] keys = ipkm.getProfileKeys(new String[] {"Registered", "Unregistered"});
         assertEquals("there should be two arrays", 2, keys.length);
@@ -784,6 +784,6 @@ public class InformixProfileKeyManagerTests extends TestCase {
                    || (name1.equals("mess") && name2.equals("ivern")));
 
         assertEquals("the second array should have 1 key", 1, keys[1].length);
-        assertEquals("the key should be Pops", "Pops", keys[1][0].getUsername());
+        assertEquals("the key should be " + key.getUsername(), key.getUsername(), keys[1][0].getUsername());
     }
 }

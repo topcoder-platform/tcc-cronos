@@ -17,7 +17,7 @@ import com.topcoder.util.idgenerator.IDGenerator;
 
 /**
  * <p>Failure test cases for InformixProfileKeyManager.</p>
- * 
+ *
  * @author waits
  * @version 1.0
  */
@@ -297,7 +297,7 @@ public class InformixProfileKeyManagerFailureTests extends BasePersistenceSuppor
         throws Exception {
         this.manager = new InformixProfileKeyManager(TestHelper.INFORMIX_PROFILE_KEY_MANAGER_NAMESPACE);
 
-        ProfileKey key = this.manager.createProfileKey(TestHelper.createProfileKey(1, "john", "Unregistered"));
+        ProfileKey key = this.manager.createProfileKey(TestHelper.createProfileKey(1, "john", "Registered"));
 
         try {
             this.manager.createProfileKey(key);

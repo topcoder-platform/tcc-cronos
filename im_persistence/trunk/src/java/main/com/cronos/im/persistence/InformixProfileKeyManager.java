@@ -174,6 +174,10 @@ public class InformixProfileKeyManager extends AbstractPersistenceWithGenerator 
                     throw new ProfileKeyManagerPersistenceException("error creating ID: " + ex.getMessage(), ex);
                 }
 
+                if (!isRegistered) {
+                    username = String.valueOf(id);
+                }
+
                 // insert the profile
                 insertProfile(connection, username, id, isRegistered);
 

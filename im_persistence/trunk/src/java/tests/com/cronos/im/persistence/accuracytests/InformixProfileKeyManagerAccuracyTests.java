@@ -105,7 +105,7 @@ public class InformixProfileKeyManagerAccuracyTests extends BaseTestCase {
         ProfileKey profileKey = new ProfileKey("tc1", InformixProfileKeyManager.TYPE_REGISTERED);
         informixProfileKeyManager.createProfileKey(profileKey);
         profileKey = new ProfileKey("tc2", InformixProfileKeyManager.TYPE_UNREGISTERED);
-        informixProfileKeyManager.createProfileKey(profileKey);
+        profileKey = informixProfileKeyManager.createProfileKey(profileKey);
 
         Statement stmt = getConnection().createStatement();
         ResultSet rs = stmt
@@ -115,7 +115,8 @@ public class InformixProfileKeyManagerAccuracyTests extends BaseTestCase {
 
         rs.close();
 
-        rs = stmt.executeQuery("select count(user_id) from all_user where username=\"tc2\" AND registered_flag='N'");
+        rs = stmt.executeQuery("select count(user_id) from all_user where username=\"" + profileKey.getUsername()
+                               + "\" AND registered_flag='N'");
         assertTrue(rs.next());
         assertTrue(rs.getLong(1) == 1);
         rs.close();
