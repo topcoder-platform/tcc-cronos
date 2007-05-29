@@ -9,7 +9,7 @@
     <property name="package" value="com.cronos.onlinereview.login" />
     <property name="packagedir" value="com/cronos/onlinereview/login" />
     <property name="distfilename" value="online_review_login" />
-    <property name="component_version" value="1.0" />
+    <property name="component_version" value="1.0.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -69,7 +69,7 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
     
     <!-- TCS Dependencies -->
-    <property name="configmanager.version" value="2.1.4"/>
+    <property name="configmanager.version" value="2.1.5"/>
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
