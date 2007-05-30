@@ -40,6 +40,11 @@ import java.util.Set;
  * @version 1.0
  */
 public class MessengerImpl implements Messenger {
+    /**
+     * The ID for the system.This constant is used to verify whether the sender user id is for
+     * the system and if so, there is no need to check for blocked users in postMessageXXX methods.
+     */
+    private static final int SYSTEM_ID = -1;
 
     /**
      * The <c>MessagePool</c> used to hold the user message in either session or user scope.
@@ -119,11 +124,15 @@ public class MessengerImpl implements Messenger {
 
         try {
             long senderUserId = retriever.retrieve(msg.getSender());
-            // Check If the sender of the message is blocked from sending the message to
-            // specified user and end method call if so.
-            if (contactManager.isBlockedUser(userId, senderUserId)) {
-                return;
+            // There is no need to check for blocked users when the message sender is system(-1).
+            if (senderUserId != SYSTEM_ID) {
+                // Check If the sender of the message is blocked from sending the message to
+                // specified user and end method call if so.
+                if (contactManager.isBlockedUser(userId, senderUserId)) {
+                    return;
+                }
             }
+
             // Post the message into the message pool of the user.
             pool.push(userId, msg);
 
@@ -170,10 +179,13 @@ public class MessengerImpl implements Messenger {
 
         try {
             long senderUserId = retriever.retrieve(msg.getSender());
-            // Check If the sender of the message is blocked from sending the message to
-            // specified user and end method call if so.
-            if (contactManager.isBlockedUser(userId, senderUserId)) {
-                return;
+            // There is no need to check for blocked users when the message sender is system(-1).
+            if (senderUserId != SYSTEM_ID) {
+                // Check if the sender of the message is blocked from sending the message to
+                // specified user and end method call if so.
+                if (contactManager.isBlockedUser(userId, senderUserId)) {
+                    return;
+                }
             }
             // Post the message into the the user's session message pool.
             pool.push(userId, sessionId, msg);
@@ -225,12 +237,15 @@ public class MessengerImpl implements Messenger {
             // If the sender of the message is included between the active users retrieved from session
             // it should be removed. Also if the sender of the message is blocked by any user in the
             // users denoted by <c>userIds</c>, remove the user from the userIds array.
+            // If the sender of the message is the system(-1) then there is no need to check if the user
+            // is blocked.
             long senderUserId = retriever.retrieve(msg.getSender());
             long[] userIds = session.getActiveUsers();
             // Avoid having duplicate user ids.
             Set userIdsSet = new HashSet();
             for (int i = 0; i < userIds.length; i++) {
-                if (userIds[i] != senderUserId && !contactManager.isBlockedUser(userIds[i], senderUserId)) {
+                if (userIds[i] != senderUserId
+                    && (senderUserId == SYSTEM_ID || !contactManager.isBlockedUser(userIds[i], senderUserId))) {
                     userIdsSet.add(new Long(userIds[i]));
                 }
             }

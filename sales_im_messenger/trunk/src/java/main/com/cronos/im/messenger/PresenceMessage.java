@@ -100,8 +100,7 @@ public class PresenceMessage extends XMLMessage {
         try {
             StringBuffer xmlStringBuffer = new StringBuffer();
             // Build the xml by respecting the structure defined in docs/AskForChatMessage.xsd
-            xmlStringBuffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-                .append("<message type=\"PresenceMessage\">");
+            xmlStringBuffer.append("<message type=\"PresenceMessage\">");
             // Add to xmlStringBuffer the basic informations about this message.
             XMLMessageHelper.addXmlForBasicXMLMessage(xmlStringBuffer, context, this);
 
