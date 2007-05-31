@@ -23,12 +23,12 @@ import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
  */
 public class FieldLikeCriteria implements Criteria {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 377012624336202616L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 377012624336202616L;
 
-	/**
+    /**
      * Represents the constant for the description field in the expense entry table.
      */
     public static final String DESCRIPTION_FIELD = "expense_entry.description";

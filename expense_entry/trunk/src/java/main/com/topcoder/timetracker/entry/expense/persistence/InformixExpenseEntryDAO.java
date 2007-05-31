@@ -3,8 +3,21 @@
  */
 package com.topcoder.timetracker.entry.expense.persistence;
 
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.timetracker.audit.ApplicationArea;
 import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.AuditHeader;
@@ -18,28 +31,10 @@ import com.topcoder.timetracker.entry.expense.ExpenseStatusManager;
 import com.topcoder.timetracker.entry.expense.ExpenseTypeManager;
 import com.topcoder.timetracker.entry.expense.InsufficientDataException;
 import com.topcoder.timetracker.entry.expense.criteria.Criteria;
-import com.topcoder.timetracker.invoice.InvoiceException;
-import com.topcoder.timetracker.invoice.InvoiceManager;
 import com.topcoder.timetracker.rejectreason.RejectReason;
 import com.topcoder.timetracker.rejectreason.RejectReasonDAO;
 import com.topcoder.timetracker.rejectreason.RejectReasonDAOException;
-
 import com.topcoder.util.objectfactory.ObjectFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Types;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -108,7 +103,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
     /** Represents the prepared SQL statement to update an expense entry. */
     private static final String UPDATE_ENTRY_SQL =
-        "UPDATE expense_entry SET company_id=?, client_id=?, projectId=?, invoice_id=?, expense_type_id=?, expense_status_id=?, "
+        "UPDATE expense_entry SET company_id=?, client_id=?, project_id=?, invoice_id=?, expense_type_id=?, expense_status_id=?, "
         + "description=?, entry_date=?, amount=?, billable=?, modification_date=?, modification_user=?, "
         + "mileage=? WHERE expense_entry_id=?";
 
@@ -217,9 +212,6 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
     /** Represents the property name to retrieve the audit_manager_key value. */
     private static final String AUDIT_MANAGER_KEY_PROPERTY = "audit_manager_key";
 
-    /** Represents the property name to retrieve the invoice_manager_key value. */
-    private static final String INVOICE_MANAGER_KEY_PROPERTY = "invoice_manager_key";
-
     /** Represents the property name to retrieve the type_manager_key value. */
     private static final String EXPENSE_TYPE_MANAGER_KEY_PROPERTY = "type_manager_key";
 
@@ -258,17 +250,6 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
      * </p>
      */
     private final DBConnectionFactory connectionFactory;
-
-    /**
-     * <p>
-     * Represents the invoice manager to be used to perform the CRUD operations of invoice instances.
-     * </p>
-     *
-     * <p>
-     * This variable is immutable, it is initialized in constructor and will never be null.
-     * </p>
-     */
-    private final InvoiceManager invoiceManager;
 
     /**
      * <p>
@@ -354,8 +335,6 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
                 EXPENSE_TYPE_MANAGER_KEY_PROPERTY, true);
         String expenseStatusManagerKey = ExpenseEntryHelper.getStringPropertyValue(namespace,
                 EXPENSE_STATUS_MANAGER_KEY_PROPERTY, true);
-        String invoiceManagerKey = ExpenseEntryHelper.getStringPropertyValue(namespace, INVOICE_MANAGER_KEY_PROPERTY,
-                true);
         String rejectReasonDAOKey = ExpenseEntryHelper.getStringPropertyValue(namespace,
                 REJECT_REASON_DAO_KEY_PROPERTY, true);
         this.connectionName = ExpenseEntryHelper.getStringPropertyValue(namespace, CONNECTION_NAME_PROPERTY, false);
@@ -371,8 +350,6 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
                 expenseTypeManagerKey, ExpenseTypeManager.class);
         this.expenseStatusManager = (ExpenseStatusManager) ExpenseEntryHelper.createObject(objectFactory,
                 expenseStatusManagerKey, ExpenseStatusManager.class);
-        this.invoiceManager = (InvoiceManager) ExpenseEntryHelper.createObject(objectFactory, invoiceManagerKey,
-                InvoiceManager.class);
         this.rejectReasonDAO = (RejectReasonDAO) ExpenseEntryHelper.createObject(objectFactory, rejectReasonDAOKey,
                 RejectReasonDAO.class);
     }
@@ -596,7 +573,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         } else {
             return new String[] {
                 String.valueOf(entry.getId()), String.valueOf(entry.getCompanyId()),
-                String.valueOf((entry.getInvoice() == null) ? (-1) : entry.getInvoice().getId()),
+                String.valueOf(entry.getInvoiceId()),
                 String.valueOf(entry.getExpenseType().getId()), String.valueOf(entry.getStatus().getId()),
                 entry.getDescription(), String.valueOf(entry.getDate()), String.valueOf(entry.getAmount()),
                 String.valueOf(entry.isBillable()), String.valueOf(entry.getCreationDate()), entry.getCreationUser(),
@@ -706,8 +683,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             statement.setLong(++index, entry.getClientId());
             statement.setLong(++index, entry.getProjectId());
 
-            if (entry.getInvoice() != null) {
-                statement.setLong(++index, entry.getInvoice().getId());
+            if (entry.getInvoiceId() != -1) {
+                statement.setLong(++index, entry.getInvoiceId());
             } else {
                 statement.setNull(++index, Types.INTEGER);
             }
@@ -1113,8 +1090,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             statement.setLong(++index, entry.getClientId());
             statement.setLong(++index, entry.getProjectId());
 
-            if (entry.getInvoice() != null) {
-                statement.setLong(++index, entry.getInvoice().getId());
+            if (entry.getInvoiceId() != -1) {
+                statement.setLong(++index, entry.getInvoiceId());
             } else {
                 statement.setNull(++index, Types.INTEGER);
             }
@@ -1304,7 +1281,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             long invoiceId = resultSet.getLong(INVOICE_ID_COLUMN);
 
             if (!resultSet.wasNull()) {
-                entry.setInvoice(this.invoiceManager.getInvoice(invoiceId));
+                entry.setInvoiceId(invoiceId);
             }
 
             entry.setExpenseType(this.expenseTypeManager.retrieveType(resultSet.getLong(TYPE_ID_COLUMN)));
@@ -1341,8 +1318,6 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
         } catch (IllegalArgumentException e) {
             throw new PersistenceException("Column value cannot be empty string.", e);
-        } catch (InvoiceException e) {
-            throw new PersistenceException("Fails to get the invoice.", e);
         }
 
         // retrieve the reject reasons

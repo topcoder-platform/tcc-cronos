@@ -28,12 +28,12 @@ import java.util.Date;
  */
 public class FieldBetweenCriteria implements Criteria {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 5344534418718392709L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 5344534418718392709L;
 
-	/**
+    /**
      * Represents the constant for the expense amount field in the expense entry table.
      */
     public static final String AMOUNT_FIELD = "expense_entry.amount";

@@ -141,11 +141,6 @@
     <property name="time_tracker_common.path" value="time_tracker_common/${time_tracker_common.version}"/>
     <property name="time_tracker_common.jar" value="${tcs_libdir}/${time_tracker_common.path}/${time_tracker_common.jar.name}"/>
 
-    <property name="time_tracker_invoice.version" value="1.0"/>
-    <property name="time_tracker_invoice.jar.name" value="time_tracker_invoice.jar"/>
-    <property name="time_tracker_invoice.path" value="time_tracker_invoice/${time_tracker_invoice.version}"/>
-    <property name="time_tracker_invoice.jar" value="${tcs_libdir}/${time_tracker_invoice.path}/${time_tracker_invoice.jar.name}"/>
-
     <property name="time_tracker_reject_reason.version" value="3.2"/>
     <property name="time_tracker_reject_reason.jar.name" value="time_tracker_reject_reason.jar"/>
     <property name="time_tracker_reject_reason.path" value="time_tracker_reject_reason/${time_tracker_reject_reason.version}"/>
@@ -178,7 +173,6 @@
         <pathelement location="${time_tracker_audit.jar}" />
         <pathelement location="${time_tracker_base_entry.jar}" />
         <pathelement location="${time_tracker_common.jar}" />
-        <pathelement location="${time_tracker_invoice.jar}" />
         <pathelement location="${time_tracker_reject_reason.jar}" />
 
         <pathelement location="${junit.jar}" />

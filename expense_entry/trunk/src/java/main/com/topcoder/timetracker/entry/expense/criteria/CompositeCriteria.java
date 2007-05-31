@@ -27,12 +27,12 @@ import java.util.List;
  */
 public class CompositeCriteria implements Criteria {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -716274716914347896L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -716274716914347896L;
 
-	/**
+    /**
      * Represents the constant for the AND boolean operator keyword.
      */
     public static final String AND_COMPOSITION = "AND";

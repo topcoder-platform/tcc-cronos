@@ -413,15 +413,8 @@ public final class ExpenseEntryHelper {
             throw new IllegalArgumentException("The ID of expense status shoule be positive.");
         }
 
-        if (value.getInvoice() != null) {
-            if (value.getInvoice().getId() <= 0) {
-                throw new IllegalArgumentException("The ID of invoice shoule be positive.");
-            }
-
-            if (value.getInvoice().getCompanyId() != value.getCompanyId()) {
-                throw new IllegalArgumentException(
-                    "The company ID of invoice does not match the company id of the entry.");
-            }
+        if (value.getInvoiceId() != -1 && value.getInvoiceId() <= 0) {
+            throw new IllegalArgumentException("The ID of invoice is wrong: " + value.getInvoiceId() + ".");
         }
 
         Map rejectReasons = value.getRejectReasons();

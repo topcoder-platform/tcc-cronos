@@ -20,14 +20,14 @@ package com.topcoder.timetracker.entry.expense.criteria;
  */
 public class RejectReasonCriteria implements Criteria {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -1113543884562151469L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -1113543884562151469L;
 
-	/**
-	 * Represents the default where clause string of this criteria.
-	 */
+    /**
+     * Represents the default where clause string of this criteria.
+     */
     private static final String WHERE_CLAUSE = "? IN (SELECT reject_reason_id FROM exp_reject_reason "
         + "WHERE exp_reject_reason.expense_entry_id = expense_entry.expense_entry_id)";
 

@@ -3,10 +3,9 @@
  */
 package com.topcoder.timetracker.entry.expense;
 
-import com.topcoder.timetracker.entry.base.BaseEntry;
-import com.topcoder.timetracker.invoice.Invoice;
-
 import java.math.BigDecimal;
+
+import com.topcoder.timetracker.entry.base.BaseEntry;
 
 /**
  * <p>
@@ -36,14 +35,14 @@ import java.math.BigDecimal;
  */
 public class ExpenseEntry extends BaseEntry {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -7321093032974434117L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -7321093032974434117L;
 
-	/**
-	 * Represents the amount of money of this expense. Default is null. It cannot be negative once set.
-	 */
+    /**
+     * Represents the amount of money of this expense. Default is null. It cannot be negative once set.
+     */
     private BigDecimal amount = null;
 
     /**
@@ -52,17 +51,25 @@ public class ExpenseEntry extends BaseEntry {
      */
     private int mileage = 0;
 
-    /** Represents the type of this expense. Default is null. It cannot be null once set. */
+    /**
+      * Represents the type of this expense. Default is null. It cannot be null once set.
+      */
     private ExpenseType expenseType = null;
 
-    /** Represents the status of this expense. Default is null. It cannot be null once set. */
+    /**
+      * Represents the status of this expense. Default is null. It cannot be null once set.
+      */
     private ExpenseStatus status = null;
 
-    /** Represents a flag indicating whether the client should be billed for this expense. Default is false. */
+    /**
+      * Represents a flag indicating whether the client should be billed for this expense. Default is false.
+      */
     private boolean billable = false;
 
-    /** Represents the invoice of this expense. Can be null if the expense has not yet been invoiced. */
-    private Invoice invoice;
+    /**
+      * Represents the invoice ID for of this expense. Can be -1 if the expense has not yet been invoiced.
+      */
+    private long invoiceId;
 
     /**
      * <p>
@@ -103,7 +110,7 @@ public class ExpenseEntry extends BaseEntry {
         }
 
         if (!amount.equals(this.amount)) {
-            this.setChanged(true);
+            setChanged(true);
         }
 
         this.amount = amount;
@@ -124,7 +131,7 @@ public class ExpenseEntry extends BaseEntry {
         }
 
         if (this.mileage != mileage) {
-            this.setChanged(true);
+            setChanged(true);
         }
 
         this.mileage = mileage;
@@ -143,7 +150,7 @@ public class ExpenseEntry extends BaseEntry {
         ExpenseEntryHelper.validateNotNull(expenseType, "expenseType");
 
         if (!expenseType.equals(this.expenseType)) {
-            this.setChanged(true);
+            setChanged(true);
         }
 
         this.expenseType = expenseType;
@@ -162,7 +169,7 @@ public class ExpenseEntry extends BaseEntry {
         ExpenseEntryHelper.validateNotNull(status, "status");
 
         if (!status.equals(this.status)) {
-            this.setChanged(true);
+            setChanged(true);
         }
 
         this.status = status;
@@ -177,7 +184,7 @@ public class ExpenseEntry extends BaseEntry {
      */
     public void setBillable(boolean billable) {
         if (this.billable != billable) {
-            this.setChanged(true);
+            setChanged(true);
         }
 
         this.billable = billable;
@@ -191,7 +198,7 @@ public class ExpenseEntry extends BaseEntry {
      * @return the amount of money of this expense.
      */
     public BigDecimal getAmount() {
-        return amount;
+        return this.amount;
     }
 
     /**
@@ -202,7 +209,7 @@ public class ExpenseEntry extends BaseEntry {
      * @return the mileage.
      */
     public int getMileage() {
-        return mileage;
+        return this.mileage;
     }
 
     /**
@@ -213,7 +220,7 @@ public class ExpenseEntry extends BaseEntry {
      * @return the type of this expense.
      */
     public ExpenseType getExpenseType() {
-        return expenseType;
+        return this.expenseType;
     }
 
     /**
@@ -224,7 +231,7 @@ public class ExpenseEntry extends BaseEntry {
      * @return the current status of this expense.
      */
     public ExpenseStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     /**
@@ -235,7 +242,7 @@ public class ExpenseEntry extends BaseEntry {
      * @return <code>true</code> if the client should be billed for this expense; <code>false</code> otherwise.
      */
     public boolean isBillable() {
-        return billable;
+        return this.billable;
     }
 
     /**
@@ -243,28 +250,27 @@ public class ExpenseEntry extends BaseEntry {
      * Sets the current invoice of this expense. Can accept null, which would mean un-invoiced expense.
      * </p>
      *
-     * @param invoice the current invoice of this expense.
+     * @param invoiceId the current invoice ID for this expense.
      */
-    public void setInvoice(Invoice invoice) {
-        if (this.invoice == null) {
-            if (invoice != null) {
-                this.setChanged(true);
-            }
-        } else if (!this.invoice.equals(invoice)) {
-            this.setChanged(true);
+    public void setInvoiceId(long invoiceId) {
+        if (invoiceId <= 0) {
+            invoiceId = -1;
+        }
+        if (getInvoiceId() != invoiceId) {
+            setChanged(true);
         }
 
-        this.invoice = invoice;
+        this.invoiceId = invoiceId;
     }
 
     /**
      * <p>
-     * Gets the current invoice of this expense. Could possibly return a null if the invoice is not set.
+     * Gets the current invoice ID for this expense. Could possibly return a null if the invoice is not set.
      * </p>
      *
-     * @return invoice the current invoice of this expense.
+     * @return the current invoice ID for this expense.
      */
-    public Invoice getInvoice() {
-        return this.invoice;
+    public long getInvoiceId() {
+        return this.invoiceId;
     }
 }

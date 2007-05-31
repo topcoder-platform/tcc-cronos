@@ -50,12 +50,12 @@ import javax.naming.NamingException;
  */
 public class ExpenseEntryBean extends BasicExpenseEntryBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -4218882682990558608L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -4218882682990558608L;
 
-	/**
+    /**
      * <p>
      * Represents the namespace used to retrieve the jndi_context property value.
      * </p>

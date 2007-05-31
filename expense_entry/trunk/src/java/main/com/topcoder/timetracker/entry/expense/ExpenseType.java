@@ -29,14 +29,14 @@ import com.topcoder.timetracker.common.TimeTrackerBean;
  */
 public class ExpenseType extends TimeTrackerBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 5273202174900863941L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 5273202174900863941L;
 
-	/**
-	 * Represents the active status of this expense type. Default is false.
-	 */
+    /**
+     * Represents the active status of this expense type. Default is false.
+     */
     private boolean active = false;
 
     /**

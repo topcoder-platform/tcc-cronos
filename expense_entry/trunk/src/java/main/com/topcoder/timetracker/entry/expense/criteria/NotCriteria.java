@@ -22,12 +22,12 @@ import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
  */
 public class NotCriteria implements Criteria {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -5261300327950472954L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -5261300327950472954L;
 
-	/**
+    /**
      * Represents the contained criteria which will be negated(cannot be null).
      */
     private final Criteria criteria;

@@ -21,12 +21,12 @@ import com.topcoder.util.errorhandling.BaseException;
  */
 public class InsufficientDataException extends BaseException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 3028089326968110841L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 3028089326968110841L;
 
-	/**
+    /**
      * <p>
      * Creates a new instance of <code>InsufficientDataException</code> class with a detail error message.
      * </p>

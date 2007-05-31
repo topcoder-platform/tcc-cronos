@@ -44,12 +44,12 @@ import javax.ejb.SessionContext;
  */
 public class BasicExpenseEntryBean implements SessionBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -5460751388340330374L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -5460751388340330374L;
 
-	/**
+    /**
      * <p>
      * Represents the namespace used to retrieve the jndi_context property value.
      * </p>

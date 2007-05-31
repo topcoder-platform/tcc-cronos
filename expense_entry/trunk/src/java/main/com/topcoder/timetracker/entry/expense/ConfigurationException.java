@@ -20,12 +20,12 @@ import com.topcoder.util.errorhandling.BaseException;
  */
 public class ConfigurationException extends BaseException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -2258432630383045904L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -2258432630383045904L;
 
-	/**
+    /**
      * <p>
      * Creates a new instance of <code>ConfigurationException</code> class with a detail error message.
      * </p>

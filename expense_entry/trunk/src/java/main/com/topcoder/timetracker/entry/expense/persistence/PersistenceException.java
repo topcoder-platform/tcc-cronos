@@ -23,12 +23,12 @@ import com.topcoder.util.errorhandling.BaseException;
  */
 public class PersistenceException extends BaseException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -7381193438907411750L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -7381193438907411750L;
 
-	/**
+    /**
      * <p>
      * Creates a new instance of <code>PersistenceException</code> class with a detail error message.
      * </p>
