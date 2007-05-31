@@ -967,7 +967,7 @@ public abstract class AbstractInformixProjectPersistence implements
 			int size = result.getRecordCount();
 			Project[] projects = new Project[size];
 			for (int i = 0; i < size; i++) {
-				result.absolute(i);
+				result.absolute(i + 1);
 				 // create the ProjectStatus object
 			    ProjectStatus status = new ProjectStatus(result.getLong(1), result.getString(2));
 
