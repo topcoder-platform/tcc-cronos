@@ -30,6 +30,7 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
+import com.topcoder.util.log.Level;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
@@ -70,8 +71,9 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @author tuenm, urtks, bendlund, fuyun
  * @version 1.1
  */
-public abstract class AbstractInformixProjectPersistence implements
-        ProjectPersistence {
+public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+			.getLog(AbstractInformixProjectPersistence.class.getName());
 
 	/**
      * <p>
@@ -968,28 +970,34 @@ public abstract class AbstractInformixProjectPersistence implements
 			Project[] projects = new Project[size];
 			for (int i = 0; i < size; i++) {
 				result.absolute(i + 1);
+//				for (int j = 1; j <= 11; j++) {
+//					log.log(Level.INFO, "reg: " + i + " column: " + j + "=" + result.getObject(j));
+//				}
 				 // create the ProjectStatus object
-			    ProjectStatus status = new ProjectStatus(result.getLong(1), result.getString(2));
+			    ProjectStatus status = new ProjectStatus(result.getLong(2), result.getString(3));
 
 			    // create the ProjectType object
-			    ProjectType type = new ProjectType(result.getLong(5), result.getString(6));
+			    ProjectType type = new ProjectType(result.getLong(6), result.getString(7));
 
 			    // create the ProjectCategory object
-			    ProjectCategory category = new ProjectCategory(result.getLong(3), result.getString(4), type);
+			    ProjectCategory category = new ProjectCategory(result.getLong(4), result.getString(5), type);
 
 			    // create a new instance of ProjectType class
-			    projects[i] = new Project(result.getLong(0), category, status);
+			    projects[i] = new Project(result.getLong(1), category, status);
 
 			    // assign the audit information
-			    projects[i].setCreationUser(result.getString(7));
-			    projects[i].setCreationTimestamp(result.getDate(8));
-			    projects[i].setModificationUser(result.getString(9));
-			    projects[i].setModificationTimestamp(result.getDate(10));
+			    projects[i].setCreationUser(result.getString(8));
+			    projects[i].setCreationTimestamp(result.getDate(9));
+			    projects[i].setModificationUser(result.getString(10));
+			    projects[i].setModificationTimestamp(result.getDate(11));
 			    
 			    ps.setLong(1, projects[i].getId());
 			    ResultSet rs = ps.executeQuery();
 			    while (rs.next()) {
-			    	projects[i].setProperty(rs.getString(1), rs.getString(2));
+//			    	String key = rs.getString(2);
+//			    	String value = rs.getString(3);
+//			    	log.log(Level.INFO, "projectID: " + projects[i].getId() + ": " + key + "=" + value); 
+			    	projects[i].setProperty(rs.getString(2), rs.getString(3));
 			    }			    
 			}
 			return projects;
