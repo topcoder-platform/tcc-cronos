@@ -40,13 +40,30 @@ public class FixedBillingEntriesReportBuilder extends InformixReportSearchBuilde
 
     /**
      * <p>
-     * Constructs a new <code>FixedBillingEntriesReportBuilder</code>.
+     * Constructs a new <code>FixedBillingEntriesReportBuilder</code> with search bundle read from
+     * the default namespace.
      * </p>
      *
-     * @throws ReportConfigException if there is any problem with configuration file.
+     * @throws ReportConfigException
+     *             if there is any problem with configuration file.
      */
     public FixedBillingEntriesReportBuilder() throws ReportConfigException {
         super();
+    }
+
+    /**
+     * <p>
+     * Constructs a new <code>FixedBillingEntriesReportBuilder</code> with search bundle read from
+     * specified namespace.
+     * </p>
+     *
+     * @param searchBundlesNamespace
+     *            A namespace containing search bundle definitions.
+     * @throws ReportConfigException
+     *             if there is any problem with configuration file.
+     */
+    public FixedBillingEntriesReportBuilder(String searchBundlesNamespace) throws ReportConfigException {
+        super(searchBundlesNamespace);
     }
 
     /**

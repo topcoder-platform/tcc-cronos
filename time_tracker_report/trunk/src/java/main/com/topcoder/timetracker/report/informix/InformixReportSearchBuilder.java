@@ -60,8 +60,26 @@ public abstract class InformixReportSearchBuilder implements ReportSearchBuilder
      * @throws ReportConfigException if an error occurs when config file is read.
      */
     protected InformixReportSearchBuilder() throws ReportConfigException {
+        this(DEFAULT_SEARCH_BUNDLE_MANAGER_NAMESPACE);
+    }
+
+    /**
+     * <p>
+     * Constructs a new <code>InformixReportSarchBuilder</code> with specified namespace.
+     * </p>
+     *
+     * @param searchBundlesNamespace
+     *            A namespace containing search bundle definitions.
+     * @throws ReportConfigException if an error occurs when config file is read.
+     */
+    protected InformixReportSearchBuilder(String searchBundlesNamespace) throws ReportConfigException {
+        if (searchBundlesNamespace == null || searchBundlesNamespace.trim().length() == 0) {
+            throw new IllegalArgumentException(
+                    "Parameter 'searchBundlesNamespace' must not be null or empty (trimmed) string.");
+        }
+
         try {
-            searchBundleManager = new SearchBundleManager(DEFAULT_SEARCH_BUNDLE_MANAGER_NAMESPACE);
+            searchBundleManager = new SearchBundleManager(searchBundlesNamespace);
         } catch (SearchBuilderConfigurationException ex) {
             throw new ReportConfigException("Exception while creating search bundle manager.", ex);
         }

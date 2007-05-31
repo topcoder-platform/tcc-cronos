@@ -41,13 +41,30 @@ public class ExpenseEntriesReportBuilder extends InformixReportSearchBuilder {
 
     /**
      * <p>
-     * Constructs a new <code>ExpenseEntriesReportBuilder</code>.
+     * Constructs a new <code>ExpenseEntriesReportBuilder</code> with search bundle read from the
+     * default namespace.
      * </p>
      *
-     * @throws ReportConfigException thrown by the super constructor.
+     * @throws ReportConfigException
+     *             thrown by the super constructor.
      */
     public ExpenseEntriesReportBuilder() throws ReportConfigException {
         super();
+    }
+
+    /**
+     * <p>
+     * Constructs a new <code>ExpenseEntriesReportBuilder</code> with search bunlde read from
+     * specified namespace.
+     * </p>
+     *
+     * @param searchBundlesNamespace
+     *            A namespace containing search bundle definitions.
+     * @throws ReportConfigException
+     *             thrown by the super constructor.
+     */
+    public ExpenseEntriesReportBuilder(String searchBundlesNamespace) throws ReportConfigException {
+        super(searchBundlesNamespace);
     }
 
     /**
