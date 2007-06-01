@@ -104,12 +104,15 @@ public class ClientLoginActionTest extends BasicActionTestCaseAdapter {
      * Executes the client login as unregistered.
      * </p>
      *
+     * @throws Exception
+     *             throws exception if any to JUnit.
      */
-    public void testExecuteAccuracy1() {
+    public void testExecuteAccuracy1() throws Exception {
         getActionMockObjectFactory().getMockRequest().setupAddParameter("type", "unreg");
         getActionMockObjectFactory().getMockRequest().setupAddParameter("fname", "test");
         getActionMockObjectFactory().getMockRequest().setupAddParameter("lname", "user");
         getActionMockObjectFactory().getMockRequest().setupAddParameter("email", "tester@topcoder.com");
+        TestHelper.executeDeleteStatement("DELETE FROM profile WHERE username = 'test user'");
 
         actionPerform(ClientLoginAction.class);
 

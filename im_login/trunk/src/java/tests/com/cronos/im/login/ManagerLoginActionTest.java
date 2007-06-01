@@ -121,8 +121,6 @@ public class ManagerLoginActionTest extends BasicActionTestCaseAdapter {
         assertEquals("Chat profile user name mismatch", profile.getUsername(), "manager");
         assertEquals("Chat profile role property mismatch", profile.getPropertyValue(managerLoginAction
                 .getRoleKey())[0], "manager");
-        assertEquals("Chat profile category property mismatch", profile.getPropertyValue(managerLoginAction
-                .getCategoryKey())[0], "3");
     }
 
     /**
