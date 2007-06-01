@@ -67,7 +67,7 @@
 		        <Value>1</Value>
 		      </Property>
 		      <Property name="values">
-		        <Value>{"Registered"}</Value>
+		        <Value>{"Registered", "Unregistered"}</Value>
 		      </Property>
 		</Property>
 		<Property name="chatUserProfilePersistence">
@@ -83,7 +83,7 @@
 		        <Value>1</Value>
 		      </Property>
 		      <Property name="values">
-		        <Value>{chatUserProfilePersistence}</Value>
+		        <Value>{chatUserProfilePersistence, chatUserProfilePersistence}</Value>
 		      </Property>
 		</Property>
 		<Property name="profileKeyManager">
