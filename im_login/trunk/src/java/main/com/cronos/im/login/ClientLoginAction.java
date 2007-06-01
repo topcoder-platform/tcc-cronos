@@ -20,6 +20,8 @@ import org.apache.struts.action.ActionMapping;
 
 import com.topcoder.chat.user.profile.ChatUserProfile;
 import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
+import com.topcoder.chat.user.profile.DuplicateProfileException;
+import com.topcoder.chat.user.profile.DuplicateProfileKeyException;
 import com.topcoder.chat.user.profile.ProfileKeyManagerPersistenceException;
 import com.topcoder.chat.user.profile.ProfileNotFoundException;
 import com.topcoder.chat.user.profile.UnrecognizedDataSourceTypeException;
@@ -236,13 +238,18 @@ public class ClientLoginAction extends LoginAction {
      *             if persistence related error occurs with the <code>ChatUserProfilePersistence</code>.
      * @throws ProfileNotFoundException
      *             if the chat user profile is not present in the persistence.
+     * @throws DuplicateProfileException
+     *             If the profile already exists in the persistence.
+     * @throws DuplicateProfileKeyException
+     *             If the manager requires that the key not already exist in the ProfileKeyManager
+     *             then this exception may be thrown.
      */
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
             HttpServletResponse response) throws ConfigurationException, DBConnectionException, SQLException,
             InvalidClassSpecificationException, SpecificationConfigurationException, IllegalReferenceException,
             RemoteException, ProfileNotFoundException, ChatUserProfilePersistenceException,
             ProfileKeyManagerPersistenceException, UnrecognizedDataSourceTypeException, NamingException,
-            CreateException {
+            CreateException, DuplicateProfileException, DuplicateProfileKeyException {
 
         String user = request.getParameter(IMLoginHelper.USER);
         String category = request.getParameter(IMLoginHelper.CATEGORY);
@@ -273,8 +280,30 @@ public class ClientLoginAction extends LoginAction {
      *
      * @param request
      *            the http request
+     * @throws UnrecognizedDataSourceTypeException
+     *             if the type sources provided is not registered with the <code>ChatUserProfileManager</code>.
+     * @throws DuplicateProfileException
+     *             If the profile already exists in the persistence.
+     * @throws DuplicateProfileKeyException
+     *             If the manager requires that the key not already exist in the ProfileKeyManager
+     *             then this exception may be thrown.
+     * @throws ChatUserProfilePersistenceException
+     *             if persistence related error occurs with the <code>ChatUserProfilePersistence</code>.
+     * @throws ProfileKeyManagerPersistenceException
+     *             if any ProfileKey related persistence error occurs.
+     * @throws IllegalReferenceException
+     *             if cannot properly match specifications given for <code>ChatUserProfileManager</code> to each
+     *             other, or the properties are malformed.
+     * @throws SpecificationConfigurationException
+     *             if <code>ObjectFactory</code> creations fails.
+     * @throws InvalidClassSpecificationException
+     *             createObject method failure, if the specification is not valid and can't be used to create an
+     *             object.
      */
-    private void unregisteredClientLogin(HttpServletRequest request) {
+    private void unregisteredClientLogin(HttpServletRequest request) throws InvalidClassSpecificationException,
+            SpecificationConfigurationException, IllegalReferenceException, ProfileKeyManagerPersistenceException,
+            ChatUserProfilePersistenceException, DuplicateProfileException, DuplicateProfileKeyException,
+            UnrecognizedDataSourceTypeException {
         String fName = request.getParameter("fname");
         String lName = request.getParameter("lname");
         String userName = fName + " " + lName;
@@ -299,7 +328,7 @@ public class ClientLoginAction extends LoginAction {
         if (title != null) {
             profile.addProperty(getTitleKey(), title);
         }
-
+        getChatUserProfileManager().createProfile(profile);
         request.getSession().setAttribute(getUserProfileKey(), profile);
 
         doLog(userName, ACTION_NAME, "" + profile.getId(), "Logging in the user as UnRegistered", Level.INFO);
