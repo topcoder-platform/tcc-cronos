@@ -84,7 +84,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdateTeam_AccuracyWithDuplicatedTeamName() throws Exception {
         TeamHeader team = new TeamHeader();
-        team.setTeamId(-1);
         team.setName("Robot Team");
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());
@@ -103,7 +102,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdateTeam_AccuracyTeamNameMatchResourceHandle() throws Exception {
         TeamHeader team = new TeamHeader();
-        team.setTeamId(-1);
         team.setName("argolite");
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());
@@ -161,7 +159,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdateTeam_Accuracy1() throws Exception {
         TeamHeader team = new TeamHeader();
-        team.setTeamId(-10);
         team.setName("tests");
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertTrue("Result should be successful.", result.isSuccessful());
@@ -283,7 +280,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdatePosition_Accuracy0() throws Exception {
         TeamPosition pos = new TeamPosition();
-        pos.setPositionId(-1);
         pos.setName("exa");
         pos.setMemberResourceId(1);
 
@@ -304,7 +300,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdatePosition_Accuracy1() throws Exception {
         TeamPosition pos = new TeamPosition();
-        pos.setPositionId(-1);
         pos.setName("Good Position");
         pos.setMemberResourceId(1);
 
@@ -325,7 +320,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdatePosition_Accuracy2() throws Exception {
         TeamPosition pos = new TeamPosition();
-        pos.setPositionId(-1);
         pos.setName("new position");
         pos.setFilled(true);
         pos.setMemberResourceId(1);
@@ -346,7 +340,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdatePosition_Accuracy3() throws Exception {
         TeamPosition pos = new TeamPosition();
-        pos.setPositionId(-1);
         pos.setName("name");
         pos.setMemberResourceId(1);
 
@@ -431,7 +424,6 @@ public class TeamServicesImplUnitTests extends TestCase {
      */
     public void testCreateOrUpdatePosition_Accuracy7() throws Exception {
         TeamPosition pos = new TeamPosition();
-        pos.setPositionId(-1);
         pos.setName("new position");
         pos.setFilled(false);
         pos.setMemberResourceId(1);

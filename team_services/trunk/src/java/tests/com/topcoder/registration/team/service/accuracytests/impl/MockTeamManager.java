@@ -101,10 +101,13 @@ public class MockTeamManager implements TeamManager {
         MockTeamImpl theTeam = new MockTeamImpl();
 
         TeamHeader team = new TeamHeader();
-        team.setTeamId(teamId);
+        if (teamId != -1) {
+            team.setTeamId(teamId);
+        }
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
+        team.setCaptainPaymentPercentage(0);
         if (teamId == 19 || teamId == 18) {
             team.setProjectId(5);
         } else if (teamId == 15) {
@@ -117,11 +120,13 @@ public class MockTeamManager implements TeamManager {
         pos.setPositionId(2);
         pos.setMemberResourceId(1);
         pos.setName("Good Position");
+        pos.setPaymentPercentage(0);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
         pos1.setMemberResourceId(1);
         pos1.setName("Good Position");
+        pos1.setPaymentPercentage(0);
 
         theTeam.setTeamHeader(team);
         theTeam.setPositions(new TeamPosition[] {pos, pos1});
@@ -142,6 +147,7 @@ public class MockTeamManager implements TeamManager {
      */
     public TeamHeader[] findTeams(long projectId) {
         TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setTeamId(1);
         return new TeamHeader[] {team};
     }
@@ -159,6 +165,7 @@ public class MockTeamManager implements TeamManager {
      */
     public TeamHeader[] findTeams(long[] projectIds) {
         TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setTeamId(1);
         return new TeamHeader[] {team};
     }
@@ -176,6 +183,7 @@ public class MockTeamManager implements TeamManager {
      */
     public TeamHeader[] findTeams(Filter filter) {
     	TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setTeamId(1);
         return new TeamHeader[] {team};
     }
@@ -198,6 +206,7 @@ public class MockTeamManager implements TeamManager {
         MockTeamImpl theTeam = new MockTeamImpl();
 
         TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
@@ -211,6 +220,7 @@ public class MockTeamManager implements TeamManager {
         pos.setName("Good Position");
         pos.setPublished(true);
         pos.setFilled(false);
+        pos.setPaymentPercentage(0);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
@@ -218,6 +228,7 @@ public class MockTeamManager implements TeamManager {
         pos1.setName("Good Position");
         pos1.setPublished(true);
         pos1.setFilled(false);
+        pos1.setPaymentPercentage(0);
 
         theTeam.setTeamHeader(team);
         theTeam.setPositions(new TeamPosition[] {pos, pos1});
@@ -313,6 +324,7 @@ public class MockTeamManager implements TeamManager {
         pos.setName("Good Position");
         pos.setFilled(false);
         pos.setPublished(true);
+        pos.setPaymentPercentage(0);
 
         return pos;
     }
@@ -332,6 +344,7 @@ public class MockTeamManager implements TeamManager {
 
         TeamPosition pos = new TeamPosition();
         pos.setMemberResourceId(2);
+        pos.setPaymentPercentage(0);
         return new TeamPosition[] {pos};
     }
 

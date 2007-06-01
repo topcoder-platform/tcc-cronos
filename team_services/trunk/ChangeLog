@@ -1,0 +1,15 @@
+Since Mock Component has a bit much different from the real one. Some code and test code has been
+modified.
+
+TeamServicesImpl.java
+Add
+TeamPersistenceException and 
+com.topcoder.management.team.UnknownEntityException process.
+
+All(accuracy, failure, stress, unit)
+MockOfferManager and MockTeamManager has been modified, 
+int their methods, the PaymentPercentage has been set, and if the id is negative, the
+header's id will not be set.
+
+In All(accuracy, failure, stress, unit)
+TeamServicesImplTest will not set the teamHeader's id to -1

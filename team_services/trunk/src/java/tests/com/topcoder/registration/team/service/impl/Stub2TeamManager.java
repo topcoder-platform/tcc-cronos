@@ -101,6 +101,7 @@ public class Stub2TeamManager implements TeamManager {
         TeamImpl theTeam = new TeamImpl();
 
         TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setTeamId(teamId);
         team.setName("Robot Team");
         team.setDescription("A strong team.");
@@ -118,12 +119,14 @@ public class Stub2TeamManager implements TeamManager {
         pos.setMemberResourceId(1);
         pos.setName("Good Position");
         pos.setFilled(true);
+        pos.setPaymentPercentage(0);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
         pos1.setMemberResourceId(1);
         pos1.setName("Good Position");
         pos1.setFilled(false);
+        pos1.setPaymentPercentage(0);
         if (teamId == 18) {
             team.setFinalized(true);
         } else {
@@ -165,6 +168,7 @@ public class Stub2TeamManager implements TeamManager {
      */
     public TeamHeader[] findTeams(long[] projectIds) {
         TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setTeamId(1);
         return new TeamHeader[] {team};
     }
@@ -182,6 +186,7 @@ public class Stub2TeamManager implements TeamManager {
      */
     public TeamHeader[] findTeams(Filter filter) {
         TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setTeamId(1);
         return new TeamHeader[] {team};
     }
@@ -204,6 +209,7 @@ public class Stub2TeamManager implements TeamManager {
         TeamImpl theTeam = new TeamImpl();
 
         TeamHeader team = new TeamHeader();
+        team.setCaptainPaymentPercentage(0);
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
@@ -215,6 +221,7 @@ public class Stub2TeamManager implements TeamManager {
         pos.setName("Good Position");
         pos.setPublished(true);
         pos.setFilled(false);
+        pos.setPaymentPercentage(0);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
@@ -222,6 +229,7 @@ public class Stub2TeamManager implements TeamManager {
         pos1.setName("Good Position");
         pos1.setPublished(true);
         pos1.setFilled(false);
+        pos1.setPaymentPercentage(0);
 
         theTeam.setTeamHeader(team);
         theTeam.setPositions(new TeamPosition[] {pos, pos1});
@@ -317,6 +325,7 @@ public class Stub2TeamManager implements TeamManager {
         pos.setName("Good Position");
         pos.setFilled(false);
         pos.setPublished(true);
+        pos.setPaymentPercentage(0);
 
         return pos;
     }

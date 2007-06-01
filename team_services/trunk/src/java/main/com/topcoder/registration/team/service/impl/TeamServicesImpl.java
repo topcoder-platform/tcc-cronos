@@ -766,6 +766,14 @@ public class TeamServicesImpl implements TeamServices {
             // error occurred, set the result to be unsuccessful
             operationResult.setSuccessful(false);
             operationResult.setErrors(new String[] {ex.getMessage()});
+        } catch (com.topcoder.management.team.UnknownEntityException ex) {
+            log(Level.ERROR, "UnknownEntityException occurred.");
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {ex.getMessage()});
+        } catch (TeamPersistenceException ex) {
+            log(Level.ERROR, "TeamPersistenceException occurred.");
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {ex.getMessage()});
         }
 
         log(Level.INFO, "Exits TeamServicesImpl#createOrUpdateTeam method.");
@@ -1513,6 +1521,19 @@ public class TeamServicesImpl implements TeamServices {
             operationResult.setErrors(new String[] {ex.getMessage()});
             log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
             return operationResult;
+        } catch (TeamPersistenceException ex) {
+            log(Level.ERROR,
+            "TeamPersistenceException occurred in TeamServicesImpl#createOrUpdatePosition method.");
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {ex.getMessage()});
+            log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
+            return operationResult;
+        } catch (com.topcoder.management.team.UnknownEntityException ex) {
+            log(Level.ERROR,
+            "UnknownEntityException occurred in TeamServicesImpl#createOrUpdatePosition method.");
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {ex.getMessage()});
+            log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
         }
 
         log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
@@ -2566,6 +2587,18 @@ public class TeamServicesImpl implements TeamServices {
             operationResult.setSuccessful(false);
             operationResult.setErrors(new String[] {ex.getMessage()});
             return operationResult;
+        } catch (com.topcoder.management.team.UnknownEntityException ex) {
+            log(Level.ERROR, "UnknownEntityException occurred.");
+            // error occurred when updating position, return unsuccessful operationResult
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {ex.getMessage()});
+            return operationResult;
+        } catch (TeamPersistenceException ex) {
+            log(Level.ERROR, "TeamPersistenceException occurred.");
+            // error occurred when updating position, return unsuccessful operationResult
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {ex.getMessage()});
+            return operationResult;
         }
         // represents the Message to be sent
         Message message = new Message();
@@ -2877,6 +2910,14 @@ public class TeamServicesImpl implements TeamServices {
                 operationResult.setSuccessful(false);
                 operationResult.setErrors(new String[] {ex.getMessage()});
                 return operationResult;
+            } catch (com.topcoder.management.team.UnknownEntityException ex) {
+                operationResult.setSuccessful(false);
+                operationResult.setErrors(new String[] {ex.getMessage()});
+                return operationResult;
+            } catch (TeamPersistenceException ex) {
+                operationResult.setSuccessful(false);
+                operationResult.setErrors(new String[] {ex.getMessage()});
+                return operationResult;
             }
         }
         Message message = new Message();
@@ -3000,6 +3041,14 @@ public class TeamServicesImpl implements TeamServices {
                 logDebug("Finished calling TeamManager#updatePosition method.");
             } catch (InvalidPositionException ex) {
                 // error occurred, return false
+                operationResult.setSuccessful(false);
+                operationResult.setErrors(new String[] {ex.getMessage()});
+                return false;
+            } catch (com.topcoder.management.team.UnknownEntityException ex) {
+                operationResult.setSuccessful(false);
+                operationResult.setErrors(new String[] {ex.getMessage()});
+                return false;
+            } catch (TeamPersistenceException ex) {
                 operationResult.setSuccessful(false);
                 operationResult.setErrors(new String[] {ex.getMessage()});
                 return false;
@@ -3150,6 +3199,16 @@ public class TeamServicesImpl implements TeamServices {
                     teamManager.updatePosition(positions[j], userId);
                     logDebug("Finished calling TeamManager#updatePosition method.");
                 } catch (InvalidPositionException ex) {
+                    operationResult.setSuccessful(false);
+                    operationResult.setErrors(new String[] {ex.getMessage()});
+                    log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
+                    return operationResult;
+                } catch (com.topcoder.management.team.UnknownEntityException ex) {
+                    operationResult.setSuccessful(false);
+                    operationResult.setErrors(new String[] {ex.getMessage()});
+                    log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
+                    return operationResult;
+                } catch (TeamPersistenceException ex) {
                     operationResult.setSuccessful(false);
                     operationResult.setErrors(new String[] {ex.getMessage()});
                     log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");

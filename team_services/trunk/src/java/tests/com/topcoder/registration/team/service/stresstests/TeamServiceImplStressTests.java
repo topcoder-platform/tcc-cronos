@@ -70,7 +70,6 @@ public class TeamServiceImplStressTests extends TestCase {
     public void testCreateUpdateTeam() {
         for (int i = 0; i < times; i++) {
             TeamHeader team = new TeamHeader();
-            team.setTeamId(-1);
             team.setName("create team" + i);
             OperationResult result = teamServices.createOrUpdateTeam(team, 1);
             assertTrue("Result should be successful.", result.isSuccessful());
@@ -111,7 +110,6 @@ public class TeamServiceImplStressTests extends TestCase {
     public void testCreateUpdatePosition() {
         for (int i = 0; i < times; i++) {
             TeamPosition pos = new TeamPosition();
-            pos.setPositionId(-1);
             pos.setFilled(true);
             pos.setName("new position");
             pos.setMemberResourceId(1);

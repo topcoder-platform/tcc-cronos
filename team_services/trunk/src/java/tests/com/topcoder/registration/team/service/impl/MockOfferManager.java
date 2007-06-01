@@ -118,6 +118,7 @@ public class MockOfferManager implements OfferManager {
         offer.setPositionId(1);
         offer.setFromUserId(1);
         offer.setToUserId(1);
+        offer.setPercentageOffered(0);
         OfferStatus status = new OfferStatus();
         status.setStatusType(OfferStatusType.OFFERED);
         offer.setStatus(status);

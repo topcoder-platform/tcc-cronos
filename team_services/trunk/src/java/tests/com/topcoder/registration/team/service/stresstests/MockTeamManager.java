@@ -95,7 +95,9 @@ public class MockTeamManager implements TeamManager {
         TeamImpl theTeam = new TeamImpl();
 
         TeamHeader team = new TeamHeader();
-        team.setTeamId(teamId);
+        if (teamId != -1) {
+            team.setTeamId(teamId);
+        }
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);

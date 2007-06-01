@@ -25,7 +25,7 @@ public class MockTeamManager implements TeamManager {
 
     public void updateTeam(TeamHeader arg0, long arg1) throws InvalidTeamException {
         if (arg0.getTeamId() == 1001) {
-            throw new TeamPersistenceException();
+            throw new TeamPersistenceException("test");
         }
     }
 
@@ -62,7 +62,7 @@ public class MockTeamManager implements TeamManager {
 
     public TeamHeader[] findTeams(long arg0) {
         if (arg0 == 1001) {
-            throw new TeamPersistenceException();
+            throw new TeamPersistenceException("");
         }
         return null;
     }
