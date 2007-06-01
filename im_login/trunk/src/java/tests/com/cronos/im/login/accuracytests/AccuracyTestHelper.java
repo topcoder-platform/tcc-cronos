@@ -4,6 +4,10 @@
 package com.cronos.im.login.accuracytests;
 
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Iterator;
 
 import javax.naming.InitialContext;
@@ -12,6 +16,7 @@ import org.mockejb.MockContainer;
 import org.mockejb.SessionBeanDescriptor;
 import org.mockejb.jndi.MockContextFactory;
 
+import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.security.login.LoginRemote;
 import com.topcoder.security.login.LoginRemoteHome;
 import com.topcoder.util.config.ConfigManager;
@@ -157,6 +162,75 @@ public class AccuracyTestHelper {
             mockContainer.deploy(beanDescriptor);
             initialized = true;
         }
+    }
+
+    /**
+     * Executes the given sql delete statement.
+     * 
+     * @param statement
+     *            The statement to execute.
+     * 
+     * @throws Exception
+     *             to junit.
+     */
+    static void executeDeleteStatement(String sqlStatement) throws Exception {
+        Connection connection = getConnection();
+        Statement statement = connection.createStatement();
+        try {
+            statement.executeUpdate(sqlStatement);
+        } finally {
+            releaseResources(null, statement, connection);
+        }
+    }
+    
+    /**
+     * <p>
+     * Releases the database resources used in test cases.
+     * </p>
+     *
+     * @param resultSet
+     *            The <code>ResultSet</code> instance to close, it can be <code>null</code>.
+     * @param statement
+     *            The <code>Statement</code> instance to close, it can be <code>null</code>.
+     * @param connection
+     *            The <code>Connection</code> instance to close, it can be <code>null</code>.
+     */
+    private static void releaseResources(ResultSet resultSet, Statement statement, Connection connection) {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        } catch (SQLException exception) {
+            // ignore
+        }
+        try {
+            if (statement != null) {
+                statement.close();
+            }
+        } catch (SQLException exception) {
+            // ignore
+        }
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException exception) {
+            // ignore
+        }
+    }
+
+    /**
+     * <p>
+     * Creates a database connection.
+     * </p>
+     * 
+     * @return the connection.
+     * @throws Exception
+     *             to junit.
+     */
+    private static Connection getConnection() throws Exception {
+        return new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")
+                .createConnection();
     }
 
 }

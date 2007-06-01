@@ -82,6 +82,8 @@ public class ClientLoginActionConfigTest extends BasicActionTestCaseAdapter {
             mockObjectFactory.getMockRequest().setupAddParameter("fname", "unknown");
             mockObjectFactory.getMockRequest().setupAddParameter("lname", "user");
             mockObjectFactory.getMockRequest().setupAddParameter("email", "accuracy@topcoder.com");
+            AccuracyTestHelper.executeDeleteStatement("DELETE FROM profile WHERE username = 'unknown user'");
+
             actionPerform(ClientLoginAction.class);
 
             // checks for any action messages

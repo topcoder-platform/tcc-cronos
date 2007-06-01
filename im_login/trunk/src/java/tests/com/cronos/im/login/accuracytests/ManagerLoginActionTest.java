@@ -138,15 +138,6 @@ public class ManagerLoginActionTest extends BasicActionTestCaseAdapter {
             // retrieves the profile key
             String roleKey = (String) getRoleKey.invoke(managerLoginAction, new Object[] {});
 
-            // retrieves the category key
-            getCategoryKey = AccuracyTestHelper.getMethod("com.cronos.im.login.LoginAction", "getCategoryKey",
-                    new Class[] {});
-
-            getCategoryKey.setAccessible(true);
-
-            // retrieves the profile key
-            String catKey = (String) getCategoryKey.invoke(managerLoginAction, new Object[] {});
-
             assertTrue("Corresponding profile of manager is not set is session attribute",
                     chatProfile instanceof ChatUserProfile);
 
@@ -155,7 +146,6 @@ public class ManagerLoginActionTest extends BasicActionTestCaseAdapter {
             assertEquals("failed to set the role properly", "manager",
                     chatUserProfile.getPropertyValue(roleKey)[0]);
 
-            assertEquals("failed to set category properly", "2", chatUserProfile.getPropertyValue(catKey)[0]);
 
             assertEquals("failed to set the user profile properly", "manager", chatUserProfile.getUsername());
 
