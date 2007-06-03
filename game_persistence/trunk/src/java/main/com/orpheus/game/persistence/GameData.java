@@ -4,12 +4,11 @@
 package com.orpheus.game.persistence;
 
 import com.topcoder.util.puzzle.PuzzleData;
-
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
-import java.rmi.RemoteException;
-
 import javax.ejb.EJBObject;
+import java.rmi.RemoteException;
+import java.util.Map;
 
 
 /**
@@ -518,4 +517,13 @@ public interface GameData extends EJBObject {
      * @throws PersistenceException If there is any problem in the persistence layer
      */
     long [] findCompletedGameIds(long playerId) throws RemoteException, PersistenceException;
+
+    /**
+     * <p>Returns the statistics for downloaded plugins. </p>
+     *
+     * @return a mapping from plugin name to number of plugin downloads.
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     */
+    Map getPluginDownloadStats() throws RemoteException, PersistenceException;
 }

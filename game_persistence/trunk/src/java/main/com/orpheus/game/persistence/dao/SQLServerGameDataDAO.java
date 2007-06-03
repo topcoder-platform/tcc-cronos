@@ -59,6 +59,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedHashMap;
 
 
 /**
@@ -253,6 +254,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /** Constant represents the sql clause get all plugin download with name. */
     private static final String SQL_SELECT_PLUGIN_DOWNLOADS = "SELECT * FROM plugin_downloads WHERE plugin_name = ?";
+
+    /** Constant represents the sql clause get all plugin download with name. */
+    private static final String SQL_SELECT_PLUGIN_DOWNLOADS_STATS = "SELECT * FROM plugin_downloads";
 
     /** Constant represents the sql clause insert record into plyr_compltd_game. */
     private static final String SQL_INSERT_PLYR_COMPLTD_GAME = "INSERT INTO plyr_compltd_game(game_id,player_id) VALUES(?,?)";
@@ -2629,6 +2633,38 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             throw new PersistenceException("Error in operation the database while find ballColor.", e);
         } catch (Exception e) {
             throw new PersistenceException("Error in find ball color.", e);
+        }
+    }
+
+    /**
+     * <p>Returns the statistics for downloaded plugins. </p>
+     *
+     * @return a mapping from plugin name to number of plugin downloads. 
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public Map getPluginDownloadStats() throws PersistenceException {
+        try {
+            Connection conn = this.getConnection();
+            Map stats = new LinkedHashMap();
+            try {
+                ResultSet rs = query(conn, SQL_SELECT_PLUGIN_DOWNLOADS_STATS, null);
+                try {
+                    while (rs.next()) {
+                        stats.put(rs.getString("plugin_name"), new Integer(rs.getInt("count")));
+                    }
+                    return stats;
+                } finally {
+                    close(rs);
+                }
+            } finally {
+                close(conn);
+            }
+        } catch (DBConnectionException e) {
+            throw new PersistenceException("Error in create connection from database factory.", e);
+        } catch (SQLException e) {
+            throw new PersistenceException("Error in query database when retrieve keyText for player.", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error in getKeysForPlayer from database.", e);
         }
     }
 

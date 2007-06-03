@@ -6,6 +6,7 @@ package com.orpheus.game.persistence;
 import com.topcoder.util.puzzle.PuzzleData;
 
 import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -50,7 +51,7 @@ public interface GameDataDAO {
      * @return array of hosting slots
      *
      * @throws EntryNotFoundException If blockId or any bidId doesn't exist in the persistence
-     * @throws IllegalEntryException If any bidId does not belong to the blockId
+     * @throws InvalidEntryException If any bidId does not belong to the blockId
      * @throws PersistenceException If there is any problem in the persistence layer.
      * @throws IllegalArgumentException If bidIds is null
      */
@@ -383,7 +384,7 @@ public interface GameDataDAO {
      * @return array of slot competition events
      *
      * @throws EntryNotFoundException If gameId or slotId is not in persistence
-     * @throws IllegalEntryException If slotId is not part of the game indicated by gameId
+     * @throws InvalidEntryException If slotId is not part of the game indicated by gameId
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     SlotCompletion[] findSlotCompletions(long gameId, long slotId)
@@ -474,4 +475,12 @@ public interface GameDataDAO {
      * @throws PersistenceException If there is any problem in the persistence layer
      */
     long [] findCompletedGameIds(long playerId) throws PersistenceException;
+
+    /**
+     * <p>Returns the statistics for downloaded plugins. </p>
+     *
+     * @return a mapping from plugin name to number of plugin downloads.
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    Map getPluginDownloadStats() throws PersistenceException;
 }

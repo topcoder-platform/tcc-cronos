@@ -17,13 +17,12 @@ import com.orpheus.game.persistence.InstantiationException;
 import com.orpheus.game.persistence.InvalidEntryException;
 import com.orpheus.game.persistence.PersistenceException;
 import com.orpheus.game.persistence.SlotCompletion;
-
 import com.topcoder.util.puzzle.PuzzleData;
-
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import java.util.Map;
 
 
 /**
@@ -139,7 +138,7 @@ public class GameDataBean implements SessionBean {
      * @return array of hosting slots
      *
      * @throws EntryNotFoundException If blockId or any bidId doesn't exist in the persistence
-     * @throws IllegalEntryException If any bidId does not belong to the blockId
+     * @throws InvalidEntryException If any bidId does not belong to the blockId
      * @throws PersistenceException If there is any problem in the persistence layer.
      * @throws IllegalArgumentException If bidIds is null
      */
@@ -788,7 +787,22 @@ public class GameDataBean implements SessionBean {
             throw e;
         } 
     }
-    
+
+    /**
+     * <p>Returns the statistics for downloaded plugins. </p>
+     *
+     * @return a mapping from plugin name to number of plugin downloads.
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public Map getPluginDownloadStats() throws PersistenceException {
+        try {
+            return getDAO().getPluginDownloadStats();
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+
     /**
      * <p>Helper class to get the GameDataDAO from GameDataDAOFactory.</p>
      * @return GameDataDAO instance
