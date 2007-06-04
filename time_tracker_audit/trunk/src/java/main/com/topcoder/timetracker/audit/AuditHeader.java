@@ -31,12 +31,12 @@ import java.sql.Timestamp;
  */
 public class AuditHeader implements Serializable {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 4259460446248503425L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 4259460446248503425L;
 
-	/**
+    /**
      * <p>
      * Represents the identification number for this audit header.
      * </p>
