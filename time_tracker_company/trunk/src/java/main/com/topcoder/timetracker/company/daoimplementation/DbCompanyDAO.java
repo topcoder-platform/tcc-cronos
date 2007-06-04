@@ -58,7 +58,6 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
-
 /**
  * <p>
  * Database implementation of the <code>CompanyDAO</code> interface. It is capable of persisting and retrieving Time
@@ -669,7 +668,7 @@ public class DbCompanyDAO implements CompanyDAO {
         auditHeader.setCreationUser(user);
         auditHeader.setCreationDate(this.date2Timestamp(now));
         auditHeader.setEntityId(companyId);
-        auditHeader.setResourceId(companyId);
+        auditHeader.setCompanyId(companyId);
         auditHeader.setTableName("company");
         auditHeader.setDetails((AuditDetail[]) auditDetails.toArray(new AuditDetail[auditDetails.size()]));
 
