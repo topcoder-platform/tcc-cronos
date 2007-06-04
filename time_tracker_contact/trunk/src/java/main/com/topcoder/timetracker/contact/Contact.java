@@ -5,7 +5,6 @@ package com.topcoder.timetracker.contact;
 
 import com.topcoder.timetracker.common.TimeTrackerBean;
 
-
 /**
  * <p>
  * This class holds the information of an entry in table <em>contact</em>.

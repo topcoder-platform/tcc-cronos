@@ -42,7 +42,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * <p>
  * This class is the Informix database implementation of the <code>ContactDAO</code>.
@@ -91,7 +90,8 @@ import java.util.Map;
  *  This class is thread safe by being immutable. However the thread safety is also depended on database transactions.
  * </p>
  *
- * @author TCSDESIGNER, TCSDEVELOPER
+ * @author TCSDESIGNER
+ * @author TCSDEVELOPER
  * @version 3.2
  */
 public class InformixContactDAO implements ContactDAO {
@@ -1161,12 +1161,12 @@ public class InformixContactDAO implements ContactDAO {
                         if (existingContact.getContactType() != null) {
                             //use existing type
                             type = existingContact.getContactType();
-                            relatedId = existingContact.getId();
+                            relatedId = ((Contact) contactToAssociation.get(existingContact)).getId();
                         } else if (contact.getContactType() != null) {
                             //use given type
                             type = contact.getContactType();
                         } else {
-                            //no type, no audit
+                            //no type -- no audit
                             continue;
                         }
                         AuditHeader auditHeader = this.getAuditRecord(existingContact, contact);

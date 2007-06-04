@@ -145,20 +145,21 @@ public class Address extends TimeTrackerBean {
     }
 
     /**
-     * <p>Set the second line. Could be null.</p>
-     *
+     * Sets the second line, which can be <code>null</code>.
      * <p>
-     * If the given value is valid and does not equal the value previously set, this address will be marked as changed.
+     * If the given value is valid and does not equal the value previously set, this address will be
+     * marked as changed.
      * </p>
      *
-     * @param line2 possibly null, non empty string representing line2
-     *
-     * @throws IllegalArgumentException if the line2 is empty(trim'd)
+     * @param line2
+     *            possibly <code>null</code> or empty (after trimming) string representing the 2nd
+     *            line of address.
      */
     public void setLine2(String line2) {
+        if (line2 != null && line2.trim().length() == 0) {
+            line2 = null;
+        }
         if (line2 != null) {
-            Helper.validateStringWithIAE(line2, "Line2 of Address");
-
             if (!line2.equals(this.line2)) {
                 this.setChanged(true);
             }

@@ -29,6 +29,7 @@ import com.topcoder.timetracker.contact.AddressType;
 import com.topcoder.timetracker.contact.AuditException;
 import com.topcoder.timetracker.contact.BatchOperationException;
 import com.topcoder.timetracker.contact.ConfigurationException;
+import com.topcoder.timetracker.contact.ContactType;
 import com.topcoder.timetracker.contact.Helper;
 import com.topcoder.timetracker.contact.IDGenerationException;
 import com.topcoder.timetracker.contact.PersistenceException;
@@ -613,16 +614,16 @@ class DAOHelper {
      * @param id The related id
      */
     static void setApplicationAreaAndRelatedId(AuditHeader header, Enum type, long id) {
-        if (type.getOrdinal() == 0) {
+        if (type == AddressType.PROJECT || type == ContactType.PROJECT) {
             header.setApplicationArea(ApplicationArea.TT_PROJECT);
             header.setProjectId(id);
-        } else if (type.getOrdinal() == 1) {
+        } else if (type == AddressType.CLIENT || type == ContactType.CLIENT) {
             header.setApplicationArea(ApplicationArea.TT_CLIENT);
             header.setClientId(id);
-        } else if (type.getOrdinal() == 2) {
+        } else if (type == AddressType.COMPANY || type == ContactType.COMPANY) {
             header.setApplicationArea(ApplicationArea.TT_COMPANY);
             header.setCompanyId(id);
-        } else if (type.getOrdinal() == AddressType.USER.getOrdinal()) {
+        } else if (type == AddressType.USER || type == ContactType.USER) {
             header.setResourceId(id);
             header.setApplicationArea(ApplicationArea.TT_USER);
         }

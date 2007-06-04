@@ -331,7 +331,7 @@ public class Helper {
 
     /**
      * <p>
-     * Validates whether the given <code>String</code> is not null and not empty(trimmed).
+     * Validates whether the given <code>String</code> is not null and not empty (trimmed).
      * </p>
      *
      * @param string The <code>String</code> to validated.

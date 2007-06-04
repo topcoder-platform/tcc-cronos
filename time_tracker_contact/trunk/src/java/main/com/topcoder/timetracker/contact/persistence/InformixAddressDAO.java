@@ -1558,8 +1558,8 @@ public class InformixAddressDAO implements AddressDAO {
                         long relatedId = -1;
                         if (existingAddress.getAddressType() != null) {
                             //use existing type
-                            relatedId = ((Address) addressToAssociation.get(existingAddress)).getId();
                             type = existingAddress.getAddressType();
+                            relatedId = ((Address) addressToAssociation.get(existingAddress)).getId();
                         } else if (address.getAddressType() != null) {
                             //use given type
                             type = address.getAddressType();
