@@ -15,6 +15,7 @@ import com.topcoder.registration.team.service.OperationResult;
 import com.topcoder.registration.team.service.ResourcePosition;
 import com.topcoder.registration.team.service.TeamServiceConfigurationException;
 import com.topcoder.registration.team.service.UnknownEntityException;
+import com.topcoder.registration.team.service.impl.MockTeamManager;
 
 import junit.framework.TestCase;
 
@@ -2248,6 +2249,22 @@ public class TeamServicesImplTest extends TestCase {
     public void testRemoveMemberAccuracy4() throws Exception {
         OperationResult result = services.removeMember(1, 106);
         assertFalse("'result' should be unsuccessful.", result.isSuccessful());
+    }
+
+    /**
+     * <p>
+     * Test for <code>removeMember(resourceId, usreId)</code> method.
+     * </p>
+     * <p>
+     * Tests it with unfinalized team. expects successful result.
+     * </p>
+     * @throws Exception
+     *             to JUnit
+     */
+    public void testRemoveMemberAccuracy5() throws Exception {
+        MockTeamManager.setFlag(false);
+        OperationResult result = services.removeMember(1, 1);
+        assertTrue("'result' should be successful.", result.isSuccessful());
     }
 
     /**

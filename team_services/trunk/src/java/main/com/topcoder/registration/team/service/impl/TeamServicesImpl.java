@@ -2899,7 +2899,7 @@ public class TeamServicesImpl implements TeamServices {
                 return operationResult;
             }
         } else {
-            positions[0].setPositionId(-1);
+            positions[0].setMemberResourceId(-1);
             try {
                 // updates this position
                 logDebug("Starts calling TeamManager#updatePosition method.");

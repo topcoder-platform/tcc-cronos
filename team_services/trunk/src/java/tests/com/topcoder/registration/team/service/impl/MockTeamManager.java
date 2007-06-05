@@ -33,10 +33,28 @@ public class MockTeamManager implements TeamManager {
     private static int id = 1;
 
     /**
+     * <p>
+     * The helper flag;
+     * </p>
+     */
+    private static boolean flag = true;
+
+    /**
      * Constructs an instance.
      */
     public MockTeamManager() {
 
+    }
+
+    /**
+     * <p>
+     * Sets the flag.
+     * </p>
+     * @param f
+     *            the flag value
+     */
+    public static void setFlag(boolean f) {
+        flag = f;
     }
 
     /**
@@ -108,13 +126,10 @@ public class MockTeamManager implements TeamManager {
         TeamImpl theTeam = new TeamImpl();
 
         TeamHeader team = new TeamHeader();
-        if (teamId != -1) {
-            team.setTeamId(teamId);
-        }
+        team.setTeamId(teamId);
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
-        team.setCaptainPaymentPercentage(0);
         if (teamId == 19 || teamId == 18) {
             team.setProjectId(5);
         } else if (teamId == 15) {
@@ -127,13 +142,11 @@ public class MockTeamManager implements TeamManager {
         pos.setPositionId(2);
         pos.setMemberResourceId(1);
         pos.setName("Good Position");
-        pos.setPaymentPercentage(10);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
         pos1.setMemberResourceId(1);
         pos1.setName("Good Position");
-        pos1.setPaymentPercentage(10);
         if (teamId == 18) {
             team.setFinalized(true);
         }
@@ -157,7 +170,6 @@ public class MockTeamManager implements TeamManager {
      */
     public TeamHeader[] findTeams(long projectId) {
         TeamHeader team = new TeamHeader();
-        team.setCaptainPaymentPercentage(0);
         team.setTeamId(1);
         return new TeamHeader[] {team};
     }
@@ -175,7 +187,6 @@ public class MockTeamManager implements TeamManager {
      */
     public TeamHeader[] findTeams(long[] projectIds) {
         TeamHeader team = new TeamHeader();
-        team.setCaptainPaymentPercentage(0);
         team.setTeamId(1);
         return new TeamHeader[] {team};
     }
@@ -213,12 +224,12 @@ public class MockTeamManager implements TeamManager {
         TeamImpl theTeam = new TeamImpl();
 
         TeamHeader team = new TeamHeader();
-        team.setCaptainPaymentPercentage(0);
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
         team.setProjectId(id);
-        team.setFinalized(true);
+
+        team.setFinalized(flag);
         id++;
 
         TeamPosition pos = new TeamPosition();
@@ -227,7 +238,6 @@ public class MockTeamManager implements TeamManager {
         pos.setName("Good Position");
         pos.setPublished(true);
         pos.setFilled(false);
-        pos.setPaymentPercentage(10);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
@@ -235,7 +245,6 @@ public class MockTeamManager implements TeamManager {
         pos1.setName("Good Position");
         pos1.setPublished(true);
         pos1.setFilled(false);
-        pos1.setPaymentPercentage(10);
 
         theTeam.setTeamHeader(team);
         theTeam.setPositions(new TeamPosition[] {pos, pos1});
@@ -334,7 +343,6 @@ public class MockTeamManager implements TeamManager {
         pos.setName("Good Position");
         pos.setFilled(false);
         pos.setPublished(true);
-        pos.setPaymentPercentage(10);
 
         return pos;
     }
@@ -354,7 +362,6 @@ public class MockTeamManager implements TeamManager {
 
         TeamPosition pos = new TeamPosition();
         pos.setMemberResourceId(2);
-        pos.setPaymentPercentage(30);
         return new TeamPosition[] {pos};
     }
 
