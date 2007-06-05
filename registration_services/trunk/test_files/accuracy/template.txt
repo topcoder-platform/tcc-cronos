@@ -1,0 +1,6 @@
+Following registration has been removed.
+Team name\: %TEAM_NAME{the team name}%,
+Team description\: %TEAM_DESCRIPTION{the team description}%,
+Project name\: %PROJECT_NAME{the project name}%,
+User handle\: %HANDLE{the user handle}%,
+Role name\: %ROLE_NAME{the role name}%

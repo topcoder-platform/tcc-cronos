@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.topcoder.registration.service.impl.RegistrationServicesImpl">
+    		<Property name="specNamespace">
+            <Value>com.topcoder.util.objectfactory</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>validatorKey</Value>
+        </Property>
+        <Property name="userRetrievalKey">
+            <Value>userRetrievalKey</Value>
+        </Property>
+        <Property name="resourceManagerKey">
+            <Value>resourceManagerKey</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>projectServicesKey</Value>
+        </Property>
+        <Property name="phaseManagerKey">
+            <Value>phaseManagerKey</Value>
+        </Property>
+				<Property name="banManagerKey">
+            <Value>banManagerKey</Value>
+        </Property>
+        <Property name="teamServicesKey">
+            <Value>teamServicesKey</Value>
+        </Property>
+        <Property name="contactMemberServiceKey">
+            <Value>contactMemberServiceKey</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>teamManagerKey</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>SystemLog</Value>
+        </Property>
+        <Property name="registrationPhaseId">
+            <Value>1</Value>
+        </Property>
+        <Property name="availableRoleIds">
+            <Value>1</Value>
+            <Value>2</Value>
+        </Property>
+        <Property name="externalRoleIds">
+            <Value>3</Value>
+            <Value>4</Value>
+        </Property>
+        <Property name="teamCaptainRoleId">
+            <Value>2</Value>
+        </Property>
+        <Property name="operator">
+            <Value>1</Value>
+        </Property>
+        <Property name="activeProjectStatusId">
+            <Value>2</Value>
+        </Property>
+        <Property name="removalMessageTemplateName">
+            <Value>test_files/FailureTests/template.txt</Value>
+        </Property>
+    </Config>
+    <!-- Configuration for ObjectFactory -->
+    <Config name="com.topcoder.util.objectfactory">
+        <Property name="validatorKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockRegistrationValidator</Value>
+            </Property>
+        </Property>
+        <Property name="userRetrievalKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockUserRetrieval</Value>
+            </Property>
+        </Property>
+        <Property name="projectServicesKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockProjectServices</Value>
+            </Property>
+        </Property>
+        <Property name="teamManagerKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockTeamManager</Value>
+            </Property>
+        </Property>
+        <Property name="phaseManagerKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockPhaseManager</Value>
+            </Property>
+        </Property>
+        <Property name="banManagerKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockBanManager</Value>
+            </Property>
+        </Property>
+        <Property name="teamServicesKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockTeamServices</Value>
+            </Property>
+        </Property>
+        <Property name="contactMemberServiceKey">
+            <Property name="type">
+                <Value>com.topcoder.registration.service.failuretests.impl.MockContactMemberService</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>
