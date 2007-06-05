@@ -29,12 +29,12 @@ import com.topcoder.timetracker.entry.time.StringMatchType;
  */
 public class DbBaseFilterFactory implements BaseFilterFactory {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -3569029766560992615L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -3569029766560992615L;
 
-	/**
+    /**
      * <p>
      * This is the map key to use to specify the column name for the Creation Date.
      * </p>
@@ -107,7 +107,9 @@ public class DbBaseFilterFactory implements BaseFilterFactory {
      * (e.g. rangeStart &gt; rangeEnd), or if both arguments are null.
      */
     public Filter createCreationDateFilter(Date rangeStart, Date rangeEnd) {
-        return Util.createRangeFilter(CREATION_DATE_COLUMN_NAME, rangeStart, rangeEnd);
+        return Util.createRangeFilter(CREATION_DATE_COLUMN_NAME,
+                (rangeStart != null) ? new java.sql.Date(rangeStart .getTime()) : null,
+                (rangeEnd != null) ? new java.sql.Date(rangeEnd.getTime()) : null);
     }
 
     /**
@@ -146,7 +148,9 @@ public class DbBaseFilterFactory implements BaseFilterFactory {
      * (eg. rangeStart &gt; rangeEnd), or if both arguments are null.
      */
     public Filter createModificationDateFilter(Date rangeStart, Date rangeEnd) {
-        return Util.createRangeFilter(MODIFICATION_DATE_COLUMN_NAME, rangeStart, rangeEnd);
+        return Util.createRangeFilter(MODIFICATION_DATE_COLUMN_NAME,
+                (rangeStart != null) ? new java.sql.Date(rangeStart.getTime()) : null,
+                (rangeEnd != null) ? new java.sql.Date(rangeEnd.getTime()) : null);
     }
 
     /**

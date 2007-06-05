@@ -58,12 +58,12 @@ import com.topcoder.timetracker.entry.time.StringMatchType;
  */
 public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements TimeEntryFilterFactory {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -4344942949268600542L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -4344942949268600542L;
 
-	/**
+    /**
      * <p>
      * This is the map key to use to specify the column name for the Invoice Id.
      * </p>
@@ -238,7 +238,9 @@ public class DbTimeEntryFilterFactory extends DbBaseFilterFactory implements Tim
      * @throws IllegalArgumentException if both parameters are null, or rangeStart &gt; rangeEnd.
      */
     public Filter createEntryDateFilter(Date rangeStart, Date rangeEnd) {
-        return Util.createRangeFilter(ENTRY_DATE_COLUMN_NAME, rangeStart, rangeEnd);
+        return Util.createRangeFilter(ENTRY_DATE_COLUMN_NAME,
+                (rangeStart != null) ? new java.sql.Date(rangeStart.getTime()) : null,
+                (rangeEnd != null) ? new java.sql.Date(rangeEnd.getTime()) : null);
     }
 
     /**
