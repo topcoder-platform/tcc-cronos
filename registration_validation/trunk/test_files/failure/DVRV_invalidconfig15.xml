@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- Namespace for DataValidationRegistrationValidator class -->
+    <Config name="com.topcoder.registration.validation.DataValidationRegistrationValidator">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>myValidator</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+    </Config>
+   
+    <!-- Namespace for ObjectFactory component -->
+    <Config name="com.topcoder.specify">
+         <Property name="myValidator">
+            <Property name="type"> 
+                <Value>com.topcoder.registration.validation.validators.util.NullValidator</Value>
+            </Property>
+        </Property>
+ 
+       <Property name="myTeamManager">
+            <Property name="type"> 
+                <Value>com.topcoder.management.team.impl.MockTeamManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.team.impl.MockTeamManagerImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+       <Property name="xxx">
+            <Property name="type">
+                <Value>com.topcoder.project.service.impl.MockProjectServicesImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.project.service.impl.MockProjectServicesImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+
+       <Property name="myBanManager">
+            <Property name="type"> 
+                <Value>com.topcoder.management.ban.manager.MockBanManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.ban.manager.MockBanManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

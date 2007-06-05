@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+    <Config name="MemberMinimumReliabilityForRatingTypeValidator">
+
+        <Property name="bundleLocaleLanguage">
+            <Value>en</Value>
+        </Property>
+        <Property name="bundleLocaleCountry">
+            <Value>ca</Value>
+        </Property>
+        <Property name="bundleLocaleVariant">
+            <Value>Traditional_WIN</Value>
+        </Property>
+        <Property name="messageKey">
+            <Value>messageKey</Value>
+        </Property>
+
+        <Property name="minimumReliability">
+            <Value>80.0</Value>
+        </Property>
+        <Property name="ratingType">
+            <Value>Design</Value>
+        </Property>
+    </Config>
+</CMConfig>

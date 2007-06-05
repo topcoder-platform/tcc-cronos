@@ -1,0 +1,49 @@
+Dear Reviewers,
+Thank you very much for your review.
+There are some thing I want to make it clear here.
+
+1,
+about the mock classes.
+This component need to mock many classes.
+beside the "MockComponents" provided at the forum->Development Phase Documents ,
+I have write the following four mock classes to test the component.
+In order to make "ant test" successful,  
+the following mock classes have to be put in the test path.
+The  mock classes can be found at "./test_files/MockClasses"
+==========================================
+MockBanManager.java
+MockProjectServicesImpl.java
+MockTeamManagerImpl.java
+MockTeamImpl.java
+============================================
+
+2,
+about MockBanManager.java.
+"public boolean isBanned(long userId)" is used for test.
+
+This mocked method will return true if "userId == 3",
+return false if "userId != 3".
+
+3,
+about MockTeamManagerImpl.java.
+"public Team getTeam(long teamId)"is used for test.
+
+for this mocked method
+if (teamId == 1) the returned team has a position that is filled.
+else the returned team has no position that are filled.
+
+4,
+about MockProjectServicesImpl.java.
+public FullProjectData[] findActiveProjects()  is used in the test.
+
+This method is used to count all projects 
+whose activeProject.resources contains a given resource.id.
+
+This mocked method will return three activeProject.
+and all three activeProject will contains two resources, 
+one of the resource.id is 11, the other is 66.
+
+Thank you again for your review. 
+Wellcome for all your advice which will help me very much in future.
+*^_^*
+Best Wishes

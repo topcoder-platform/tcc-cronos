@@ -1,0 +1,260 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- Namespace for DataValidationRegistrationValidator class -->
+    <Config name="testDemoConfig">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>myValidator</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+  
+   
+	<!-- Namespace for AndValidator class -->
+	<Config name="util.AndValidator">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator1">
+			<Value>myInnerValidator1</Value>
+		</Property>
+		<Property name="innerValidator2">
+			<Value>myInnerValidator2</Value>
+		</Property>
+		<Property name="innerValidator3">
+			<Value>myInnerValidator3</Value>
+		</Property>
+		<Property name="shortCircuited">
+			<Value>false</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+	
+  	<!-- Namespace for MemberMinimumRatingForRatingTypeValidator class -->
+	<Config name="simple.MemberMinimumRatingForRatingTypeValidator">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="minimumRating">
+			<Value>1300</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+	
+   	<!-- Namespace for MemberNotTeamMemberForProjectValidator class -->
+	<Config name="simple.MemberNotTeamMemberForProjectValidator">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="minimumReliability">
+			<Value>60.1</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+	
+   	<!-- Namespace for ProjectInPhaseValidator class -->	
+ 	<Config name="simple.ProjectInPhaseValidator">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="phaseId">
+			<Value>3</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+    
+    <!-- Namespace for ObjectFactory component -->
+    <Config name="com.topcoder.specify">
+         <Property name="myValidator">
+            <Property name="type"> 
+                <Value>com.topcoder.registration.validation.validators.util.AndValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>util.AndValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+ 
+         <Property name="myInnerValidator1">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberNotTeamMemberForProjectValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>simple.MemberNotTeamMemberForProjectValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="myInnerValidator2">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberMinimumRatingForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>simple.MemberMinimumRatingForRatingTypeValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="myInnerValidator3">
+            <Property name="type"> 
+                <Value>com.topcoder.registration.validation.validators.simple.ProjectInPhaseValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>simple.ProjectInPhaseValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+       <Property name="myTeamManager">
+            <Property name="type"> 
+                <Value>com.topcoder.management.team.impl.MockTeamManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.team.impl.MockTeamManagerImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+       <Property name="myProjectServices">
+            <Property name="type">
+                <Value>com.topcoder.project.service.impl.MockProjectServicesImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.project.service.impl.MockProjectServicesImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+
+       <Property name="myBanManager">
+            <Property name="type"> 
+                <Value>com.topcoder.management.ban.manager.MockBanManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.ban.manager.MockBanManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

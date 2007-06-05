@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="ProjectTypeConditionalValidator">
+        <Property name="specNamespace">
+            <Value>ProjectTypeConditionalValidator.ObjectFactory</Value>
+        </Property>
+        <Property name="xxx">
+            <Value>validator</Value>
+        </Property>
+        <Property name="projectTypeId">
+            <Value>1</Value>
+        </Property>
+    </Config>
+    
+    <Config name="ProjectTypeConditionalValidator.ObjectFactory">
+        <Property name="validator">
+            <Property name="type">
+                <Value>com.topcoder.registration.validation.validators.util.NullValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

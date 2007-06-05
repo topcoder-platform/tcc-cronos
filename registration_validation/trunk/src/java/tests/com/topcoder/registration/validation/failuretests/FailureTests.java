@@ -7,7 +7,6 @@
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Failure test cases.</p>
@@ -19,7 +18,31 @@ public class FailureTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        //suite.addTest(XXX.suite());
+        suite.addTestSuite(AbstractConfigurableValidatorFailureTests.class);
+        suite.addTestSuite(AndValidatorFailureTests.class);
+        suite.addTestSuite(DataValidationRegistrationValidatorFailureTests.class);
+        suite.addTestSuite(MemberMinimumNumberOfRatingsForRatingTypeValidatorFailureTests.class);
+        suite.addTestSuite(MemberMinimumRatingForRatingTypeValidatorFailureTests.class);
+        suite.addTestSuite(MemberMinimumReliabilityForRatingTypeValidatorFailureTests.class);
+        suite.addTestSuite(MemberMinimumVolatilityForRatingTypeValidatorFailureTests.class);
+        suite.addTestSuite(MemberNotBarredValidatorFailureTests.class);
+        suite.addTestSuite(MemberNotExceededMaxProjectRegistrationLimitValidatorFailureTests.class);
+        suite.addTestSuite(MemberNotRegisteredWithRoleForProjectValidatorFailureTests.class);
+        suite.addTestSuite(MemberNotTeamCaptainWithMembersForProjectValidatorFailureTests.class);
+        suite.addTestSuite(MemberNotTeamMemberForProjectValidatorFailureTests.class);
+        suite.addTestSuite(NotValidatorFailureTests.class);
+        suite.addTestSuite(NullValidatorFailureTests.class);
+        suite.addTestSuite(OperationResultImplFailureTests.class);
+        suite.addTestSuite(OrValidatorFailureTests.class);
+        suite.addTestSuite(ProjectCategoryConditionalValidatorFailureTests.class);
+        suite.addTestSuite(ProjectIdentifierConditionalValidatorFailureTests.class);
+        suite.addTestSuite(ProjectInPhaseValidatorFailureTests.class);
+        suite.addTestSuite(ProjectOfCategoryValidatorFailureTests.class);
+        suite.addTestSuite(ProjectOfTypeValidatorFailureTests.class);
+        suite.addTestSuite(ProjectTypeConditionalValidatorFailureTests.class);
+        suite.addTestSuite(RegisteringResourceRoleConditionalValidatorFailureTests.class);
+        suite.addTestSuite(ValidationInfoFailureTests.class);
+        
         return suite;
     }
 

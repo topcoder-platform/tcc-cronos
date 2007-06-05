@@ -1,0 +1,2 @@
+# This is a sample template.
+Hello %HANDLE%, wellcome!

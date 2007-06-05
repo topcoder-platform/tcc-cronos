@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="RegisteringResourceRoleConditionalValidator">
+        <Property name="specNamespace">
+            <Value>RegisteringResourceRoleConditionalValidator.ObjectFactory</Value>
+        </Property>
+        <Property name="innerValidator">
+            <Value>validator</Value>
+        </Property>
+        <Property name="xxx">
+            <Value>1</Value>
+        </Property>
+    </Config>
+    
+    <Config name="RegisteringResourceRoleConditionalValidator.ObjectFactory">
+        <Property name="validator">
+            <Property name="type">
+                <Value>com.topcoder.registration.validation.validators.util.NullValidator</Value>
+            </Property>
+            
+        </Property>
+    </Config>
+</CMConfig>
