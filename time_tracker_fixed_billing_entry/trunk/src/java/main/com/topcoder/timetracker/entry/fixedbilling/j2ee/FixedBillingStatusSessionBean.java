@@ -39,9 +39,9 @@ public class FixedBillingStatusSessionBean implements FixedBillingStatusManager,
     /**
      * Automatically generated unique ID for use with serialization.
      */
-	private static final long serialVersionUID = 7279172590010386817L;
+    private static final long serialVersionUID = 7279172590010386817L;
 
-	/**
+    /**
      * <p>
      * This is the instance of SessionContext that was provided by the EJB container.  It is stored and made available
      * to subclasses.  It is also used when performing a rollback.

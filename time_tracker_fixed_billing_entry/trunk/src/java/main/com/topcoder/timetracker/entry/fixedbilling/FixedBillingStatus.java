@@ -24,9 +24,9 @@ public class FixedBillingStatus extends TimeTrackerBean {
     /**
      * Automatically generated unique ID for use with serialization.
      */
-	private static final long serialVersionUID = 2617426129556930894L;
+    private static final long serialVersionUID = 2617426129556930894L;
 
-	/**
+    /**
      * <p>
      * This is a short String that describes the status.
      * </p>

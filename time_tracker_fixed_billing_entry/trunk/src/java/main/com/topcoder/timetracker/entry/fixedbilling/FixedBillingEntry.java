@@ -30,9 +30,9 @@ public class FixedBillingEntry extends BaseEntry {
     /**
      * Automatically generated unique ID for use with serialization.
      */
-	private static final long serialVersionUID = -9189558790907155274L;
+    private static final long serialVersionUID = -9189558790907155274L;
 
-	/**
+    /**
      * <p>
      * This is the amount of money that was spent.
      * </p>

@@ -189,26 +189,6 @@ public final class Helper {
     }
 
     /**
-     * Check whether the dates are valid.
-     *
-     * @param rangeStart the start Date.
-     * @param rangeEnd the end Date.
-     *
-     * @throws IllegalArgumentException if the given dates are invalid.
-     */
-    public static void checkDateRange(Date rangeStart, Date rangeEnd) {
-        if ((rangeStart == null) && (rangeEnd == null)) {
-            throw new IllegalArgumentException("At least one of the date should not be null.");
-        }
-
-        if ((rangeStart != null) && (rangeEnd != null)) {
-            if (rangeStart.after(rangeEnd)) {
-                throw new IllegalArgumentException("The range specified is invalid.");
-            }
-        }
-    }
-
-    /**
      * Check whether the values are valid.
      *
      * @param rangeStart the start value.
@@ -237,15 +217,18 @@ public final class Helper {
      *
      * @throws IllegalArgumentException if the given values are invalid.
      */
-    public static Filter createDateRangeFilter(String name, Date rangeStart, Date rangeEnd) {
-        checkDateRange(rangeStart, rangeEnd);
-
-        if ((rangeStart != null) && (rangeEnd == null)) {
-            return new GreaterThanOrEqualToFilter(name, rangeStart);
-        } else if ((rangeStart == null) && (rangeEnd != null)) {
-            return new LessThanOrEqualToFilter(name, rangeEnd);
+    public static Filter createDateRangeFilter(String name, Date start, Date end) {
+        if (start != null && end == null) {
+            return new GreaterThanOrEqualToFilter(name, new java.sql.Date(start.getTime()));
+        } else if (start == null && end != null) {
+            return new LessThanOrEqualToFilter(name, new java.sql.Date(end.getTime()));
+        } else if (start != null && end != null) {
+            if (start.after(end)) {
+                throw new IllegalArgumentException("The range specified is invalid.");
+            }
+            return new BetweenFilter(name, new java.sql.Date(end.getTime()), new java.sql.Date(start.getTime()));
         } else {
-            return new BetweenFilter(name, rangeStart, rangeEnd);
+            throw new IllegalArgumentException("At least one of the date should not be null.");
         }
     }
 
@@ -306,7 +289,6 @@ public final class Helper {
         if (ids == null) {
             throw new IllegalArgumentException("The " + name + " should not be null.");
         }
-
         if (ids.length == 0) {
             throw new IllegalArgumentException("The array should not be null.");
         }

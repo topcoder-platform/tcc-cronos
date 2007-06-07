@@ -23,9 +23,9 @@ public class StringMatchType extends Enum {
     /**
      * Automatically generated unique ID for use with serialization.
      */
-	private static final long serialVersionUID = -3738176249130557574L;
+    private static final long serialVersionUID = -3738176249130557574L;
 
-	/**
+    /**
      * <p>
      * This specifies that the criterion should be based on whether it begins with the specified String.
      * </p>

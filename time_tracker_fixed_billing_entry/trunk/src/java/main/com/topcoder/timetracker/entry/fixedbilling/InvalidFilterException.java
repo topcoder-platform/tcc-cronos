@@ -17,9 +17,9 @@ public class InvalidFilterException extends DataAccessException {
     /**
      * Automatically generated unique ID for use with serialization.
      */
-	private static final long serialVersionUID = 1206558706140330262L;
+    private static final long serialVersionUID = 1206558706140330262L;
 
-	/**
+    /**
      * <p>
      * Constructor accepting a message.
      * </p>

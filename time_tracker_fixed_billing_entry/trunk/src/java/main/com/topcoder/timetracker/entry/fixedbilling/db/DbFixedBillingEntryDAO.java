@@ -70,10 +70,10 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
     /** The SQL String for insert. */
     private static final String INSERT_ENTRY_SQL = "insert into fix_bill_entry(fix_bill_entry_id, company_id, client_id, project_id,"
         + "invoice_id, fix_bill_status_id, description, entry_date, amount, creation_date, creation_user, "
-        + "modification_date, modification_user) values (?,?,?,?,?,?,?,?,?,?,?)";
+        + "modification_date, modification_user) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     /** The SQL String for update. */
-    private static final String UPDATE_ENTRY_SQL = "update fix_bill_entry set company_id=?, client_id=?, project_id=?, invoice_id=?, "
+    private static final String UPDATE_ENTRY_SQL = "update fix_bill_entry set company_id=?, invoice_id=?, client_id=?, project_id=?, "
         + "fix_bill_status_id=?, description=?, entry_date=?, amount=?, creation_date=?, "
         + "creation_user=?, modification_date=?, modification_user=? where fix_bill_entry_id= ?";
 
@@ -708,6 +708,9 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
             for (Iterator itr = ids.iterator(); itr.hasNext(); ) {
                 idArray[i] = ((Long)itr.next()).longValue();
                 i++;
+            }
+            if (idArray.length == 0) {
+            	return new FixedBillingEntry[0];
             }
             entries = this.getFixedBillingEntries(idArray);
         } catch (PersistenceOperationException poe) {

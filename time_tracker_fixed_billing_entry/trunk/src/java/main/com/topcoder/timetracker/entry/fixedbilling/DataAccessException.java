@@ -24,9 +24,9 @@ public class DataAccessException extends BaseException {
     /**
      * Automatically generated unique ID for use with serialization.
      */
-	private static final long serialVersionUID = 1582882539949468049L;
+    private static final long serialVersionUID = 1582882539949468049L;
 
-	/**
+    /**
      * <p>
      * Constructor accepting a message.
      * </p>
