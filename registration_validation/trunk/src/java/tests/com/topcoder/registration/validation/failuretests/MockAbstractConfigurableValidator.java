@@ -42,7 +42,6 @@ class MockAbstractConfigurableValidator extends AbstractConfigurableValidator {
         super(message);
     }
 
-    @Override
     public String getMessage(Object arg0) {
         if (arg0 == null) {
             throw new IllegalArgumentException("");

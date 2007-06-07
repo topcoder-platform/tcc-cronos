@@ -12,7 +12,7 @@ import com.cronos.onlinereview.external.RatingType;
 import com.cronos.onlinereview.external.impl.ExternalUserImpl;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.registration.service.RegistrationInfo;
-import com.topcoder.registration.service.RegistrationInfoImpl;
+import com.topcoder.registration.service.impl.RegistrationInfoImpl;
 import com.topcoder.registration.team.service.OperationResult;
 import com.topcoder.registration.validation.DataValidationRegistrationValidator;
 import com.topcoder.registration.validation.validators.conditional.ProjectTypeConditionalValidator;
@@ -235,6 +235,7 @@ public class RegistrationValidationStressTest extends TestCase {
 		for (int i = 0; i < 100 * COUNT; ++i) {
 			BundleInfo bundleInfo = new BundleInfo();
 			bundleInfo.setBundle("myBundle");
+            bundleInfo.setMessageKey("messageKey");
 			bundleInfo.setDefaultMessage("myTemplate.txt");
 
 			MemberMustBeRegisteredValidator innerValidator = new MemberMustBeRegisteredValidator(

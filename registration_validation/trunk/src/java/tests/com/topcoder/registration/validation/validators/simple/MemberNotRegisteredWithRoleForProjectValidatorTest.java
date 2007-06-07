@@ -4,7 +4,7 @@
 package com.topcoder.registration.validation.validators.simple;
 
 import com.topcoder.registration.service.RegistrationInfo;
-import com.topcoder.registration.service.RegistrationInfoImpl;
+import com.topcoder.registration.service.impl.RegistrationInfoImpl;
 import com.topcoder.registration.validation.TestHelper;
 import com.topcoder.registration.validation.RegistrationValidationHelper;
 

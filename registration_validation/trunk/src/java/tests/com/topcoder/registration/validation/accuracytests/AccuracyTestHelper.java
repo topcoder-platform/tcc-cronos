@@ -25,7 +25,7 @@ import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.registration.service.RegistrationInfo;
-import com.topcoder.registration.service.RegistrationInfoImpl;
+import com.topcoder.registration.service.impl.RegistrationInfoImpl;
 import com.topcoder.registration.validation.ConfigurableValidator;
 import com.topcoder.registration.validation.DataValidationRegistrationValidator;
 import com.topcoder.registration.validation.ValidationInfo;

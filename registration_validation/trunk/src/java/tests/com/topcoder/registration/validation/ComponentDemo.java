@@ -13,7 +13,7 @@ import java.io.PrintStream;
 import com.cronos.onlinereview.external.RatingType;
 import com.topcoder.registration.service.RegistrationInfo;
 import com.cronos.onlinereview.external.RatingInfo;
-import com.topcoder.registration.service.RegistrationInfoImpl;
+import com.topcoder.registration.service.impl.RegistrationInfoImpl;
 import com.topcoder.date.workdays.DefaultWorkdaysFactory;
 import com.topcoder.management.ban.BanManager;
 import com.topcoder.management.project.Project;
@@ -203,6 +203,7 @@ public class ComponentDemo extends TestCase {
     public void testDemo2() throws Exception {
         BundleInfo bundleInfo = new BundleInfo();
         bundleInfo.setBundle("mybundle");
+        bundleInfo.setMessageKey("messageKey");
         bundleInfo.setDefaultMessage("./test_files/myTemplate.txt");
 
         // Suppose the registrant has user ID = 1 and is a Free Agent, and the
@@ -288,6 +289,7 @@ public class ComponentDemo extends TestCase {
     public void testDemo3() throws Exception {
         BundleInfo bundleInfo = new BundleInfo();
         bundleInfo.setBundle("myBundle");
+        bundleInfo.setMessageKey("messageKey");
         bundleInfo.setDefaultMessage("./test_files/myTemplate.txt");
         // Creates an instance of the custom validator MemberMustBeRegisteredValidator.
         MemberMustBeRegisteredValidator innerValidator = new MemberMustBeRegisteredValidator(

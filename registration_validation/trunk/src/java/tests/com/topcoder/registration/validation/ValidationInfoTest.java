@@ -13,7 +13,7 @@ import com.topcoder.date.workdays.Workdays;
 import com.topcoder.date.workdays.WorkdaysFactory;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.registration.service.RegistrationInfo;
-import com.topcoder.registration.service.RegistrationInfoImpl;
+import com.topcoder.registration.service.impl.RegistrationInfoImpl;
 
 import junit.framework.TestCase;
 

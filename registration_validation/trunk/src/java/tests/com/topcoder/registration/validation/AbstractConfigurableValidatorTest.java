@@ -211,7 +211,7 @@ public class AbstractConfigurableValidatorTest extends TestCase {
         bundleInfo = new BundleInfo();
         bundleInfo.setBundle("myBundle", Locale.getDefault());
         // bundleInfo.setDefaultMessage("defaultMessage");
-        bundleInfo.setMessageKey("messageKey");
+        //bundleInfo.setMessageKey("messageKey");
 
         try {
             new MockAbstractConfigurableValidator(bundleInfo);

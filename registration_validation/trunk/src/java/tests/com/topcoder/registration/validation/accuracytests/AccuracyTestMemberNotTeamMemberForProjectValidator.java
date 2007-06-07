@@ -6,7 +6,7 @@ package com.topcoder.registration.validation.accuracytests;
 import junit.framework.TestCase;
 
 import com.topcoder.registration.service.RegistrationInfo;
-import com.topcoder.registration.service.RegistrationInfoImpl;
+import com.topcoder.registration.service.impl.RegistrationInfoImpl;
 import com.topcoder.registration.validation.ValidationInfo;
 import com.topcoder.registration.validation.validators.simple.MemberNotTeamMemberForProjectValidator;
 import com.topcoder.util.datavalidator.BundleInfo;
