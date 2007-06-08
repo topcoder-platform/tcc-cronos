@@ -29,14 +29,13 @@ import java.util.Arrays;
  * @author wangqing, TCSDEVELOPER
  * @version 3.2
  */
-public class RejectReasonSearchBuilder {
+public final class RejectReasonSearchBuilder {
+
     /**
-     * <p>
-     * Creates a new RejectReasonSearchBuilder instance.
-     * </p>
+     * This constructor is decrared private to prohibit class instantiation.
      */
-    public RejectReasonSearchBuilder() {
-        // Empty.
+    private RejectReasonSearchBuilder() {
+        // nothing
     }
 
     /**
@@ -51,7 +50,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input filter is null.
      */
-    public Filter and(Filter filterA, Filter filterB) {
+    public static Filter and(Filter filterA, Filter filterB) {
         return new AndFilter(filterA, filterB);
     }
 
@@ -66,7 +65,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input array is null or empty.
      */
-    public Filter and(Filter[] filters) {
+    public static Filter and(Filter[] filters) {
         if (filters == null) {
             throw new IllegalArgumentException("The filters is null.");
         }
@@ -86,7 +85,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input filter is null.
      */
-    public Filter or(Filter filterA, Filter filterB) {
+    public static Filter or(Filter filterA, Filter filterB) {
         return new OrFilter(filterA, filterB);
     }
 
@@ -101,7 +100,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input array is null or empty.
      */
-    public Filter or(Filter[] filters) {
+    public static Filter or(Filter[] filters) {
         if (filters == null) {
             throw new IllegalArgumentException("The filters is null.");
         }
@@ -120,7 +119,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException the input filter is null.
      */
-    public Filter not(Filter filter) {
+    public static Filter not(Filter filter) {
         return new NotFilter(filter);
     }
 
@@ -135,7 +134,7 @@ public class RejectReasonSearchBuilder {
      * @return an EqualToFilter with RejectReasonDAO.SEARCH_COMPANY_ID as the field name and the provided value as the
      *         search value.
      */
-    public Filter hasCompanyIdFilter(long companyId) {
+    public static Filter hasCompanyIdFilter(long companyId) {
         if (companyId <= 0) {
             throw new IllegalArgumentException("The companyId must be a positive integer.");
         }
@@ -156,7 +155,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if the description is null or an empty String.
      */
-    public Filter hasDescriptionFilter(String description) {
+    public static Filter hasDescriptionFilter(String description) {
         if (description == null) {
             throw new IllegalArgumentException("The description is null.");
         }
@@ -179,7 +178,7 @@ public class RejectReasonSearchBuilder {
      * @return an EqualToFilter with RejectReasonDAO.SEARCH_ACTIVE_STATUS as the field name and the provided value as
      *         the search value.
      */
-    public Filter hasActiveStatusFilter(int activeStatus) {
+    public static Filter hasActiveStatusFilter(int activeStatus) {
         if ((activeStatus != 0) && (activeStatus != 1)) {
             throw new IllegalArgumentException("The activeStatus must be 0 or 1.");
         }
@@ -199,7 +198,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if both parameters are null, or if endDate is less than startDate.
      */
-    public Filter createdWithinDateRangeFilter(Date startDate, Date endDate) {
+    public static Filter createdWithinDateRangeFilter(Date startDate, Date endDate) {
         return FilterCreationHelper.createRangeFilter(RejectReasonDAO.SEARCH_CREATED_DATE, startDate, endDate);
     }
 
@@ -216,7 +215,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if the parameter is null or an empty String.
      */
-    public Filter createdByUserFilter(String username) {
+    public static Filter createdByUserFilter(String username) {
         if (username == null) {
             throw new IllegalArgumentException("The username is null.");
         }
@@ -240,7 +239,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if both parameters are null, or if endDate is less than startDate.
      */
-    public Filter modifiedWithinDateRangeFilter(Date startDate, Date endDate) {
+    public static Filter modifiedWithinDateRangeFilter(Date startDate, Date endDate) {
         return FilterCreationHelper.createRangeFilter(RejectReasonDAO.SEARCH_MODIFICATION_DATE, startDate, endDate);
     }
 
@@ -257,7 +256,7 @@ public class RejectReasonSearchBuilder {
      *
      * @throws IllegalArgumentException if the parameter is null or an empty String.
      */
-    public Filter modifiedByUserFilter(String username) {
+    public static Filter modifiedByUserFilter(String username) {
         if (username == null) {
             throw new IllegalArgumentException("The username is null.");
         }

@@ -14,7 +14,6 @@ import java.sql.Date;
 
 import java.util.Arrays;
 
-
 /**
  * <p>
  * This is a convenience class that may be used to build filters for performing searches in the RejectEmailDAO. It
@@ -29,14 +28,13 @@ import java.util.Arrays;
  * @author wangqing, TCSDEVELOPER
  * @version 3.2
  */
-public class RejectEmailSearchBuilder {
+public final class RejectEmailSearchBuilder {
+
     /**
-     * <p>
-     * Creates a new RejectEmailSearchBuilder instance.
-     * </p>
+     * This constructor is declared private to prohibit class instantiation.
      */
-    public RejectEmailSearchBuilder() {
-        // Empty.
+    private RejectEmailSearchBuilder() {
+        // nothing
     }
 
     /**
@@ -51,7 +49,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input filter is null.
      */
-    public Filter and(Filter filterA, Filter filterB) {
+    public static Filter and(Filter filterA, Filter filterB) {
         return new AndFilter(filterA, filterB);
     }
 
@@ -66,7 +64,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input array is null or empty.
      */
-    public Filter and(Filter[] filters) {
+    public static Filter and(Filter[] filters) {
         if (filters == null) {
             throw new IllegalArgumentException("The filters is null.");
         }
@@ -86,7 +84,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input filter is null.
      */
-    public Filter or(Filter filterA, Filter filterB) {
+    public static Filter or(Filter filterA, Filter filterB) {
         return new OrFilter(filterA, filterB);
     }
 
@@ -101,7 +99,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if any of the input array is null or empty.
      */
-    public Filter or(Filter[] filters) {
+    public static Filter or(Filter[] filters) {
         if (filters == null) {
             throw new IllegalArgumentException("The filters is null.");
         }
@@ -120,7 +118,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException the input filter is null.
      */
-    public Filter not(Filter filter) {
+    public static Filter not(Filter filter) {
         return new NotFilter(filter);
     }
 
@@ -135,7 +133,7 @@ public class RejectEmailSearchBuilder {
      * @return an EqualToFilter with RejectEmailDAO.SEARCH_COMPANY_ID as the field name and the provided value as the
      *         search value.
      */
-    public Filter hasCompanyIdFilter(long companyId) {
+    public static Filter hasCompanyIdFilter(long companyId) {
         if (companyId <= 0) {
             throw new IllegalArgumentException("The companyId must be a positive integer.");
         }
@@ -156,11 +154,10 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if the body is null or an empty String.
      */
-    public Filter hasBodyFilter(String body) {
+    public static Filter hasBodyFilter(String body) {
         if (body == null) {
             throw new IllegalArgumentException("The body is null.");
         }
-
         if (body.trim().length() == 0) {
             throw new IllegalArgumentException("The body is empty.");
         }
@@ -180,7 +177,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if both parameters are null, or if endDate is less than startDate.
      */
-    public Filter createdWithinDateRangeFilter(Date startDate, Date endDate) {
+    public static Filter createdWithinDateRangeFilter(Date startDate, Date endDate) {
         return FilterCreationHelper.createRangeFilter(RejectEmailDAO.SEARCH_CREATED_DATE, startDate, endDate);
     }
 
@@ -197,7 +194,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if the parameter is null or an empty String.
      */
-    public Filter createdByUserFilter(String username) {
+    public static Filter createdByUserFilter(String username) {
         if (username == null) {
             throw new IllegalArgumentException("The username is null.");
         }
@@ -221,7 +218,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if both parameters are null, or if endDate is less than startDate.
      */
-    public Filter modifiedWithinDateRangeFilter(Date startDate, Date endDate) {
+    public static Filter modifiedWithinDateRangeFilter(Date startDate, Date endDate) {
         return FilterCreationHelper.createRangeFilter(RejectEmailDAO.SEARCH_MODIFICATION_DATE, startDate, endDate);
     }
 
@@ -238,7 +235,7 @@ public class RejectEmailSearchBuilder {
      *
      * @throws IllegalArgumentException if the parameter is null or an empty String.
      */
-    public Filter modifiedByUserFilter(String username) {
+    public static Filter modifiedByUserFilter(String username) {
         if (username == null) {
             throw new IllegalArgumentException("The username is null.");
         }
