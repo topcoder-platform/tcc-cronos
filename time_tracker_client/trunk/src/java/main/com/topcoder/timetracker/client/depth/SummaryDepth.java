@@ -75,11 +75,13 @@ public class SummaryDepth extends Depth {
             client.setId(result.getLong("client_id"));
             client.setName(result.getString("name"));
 
-            Project project = new Project();
+            if (result.getObject("project_id") != null) {
+                Project project = new Project();
 
-            project.setId(result.getLong("project_id"));
+                project.setId(result.getLong("project_id"));
 
-            client.setProjects(new Project[] {project});
+                client.setProjects(new Project[] {project});
+            }
 
             return client;
         } catch (InvalidCursorStateException icse) {
