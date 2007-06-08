@@ -573,7 +573,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         } else {
             return new String[] {
                 String.valueOf(entry.getId()), String.valueOf(entry.getCompanyId()),
-                String.valueOf(entry.getInvoiceId()),
+                String.valueOf(entry.getInvoiceId()), String.valueOf(entry.getClientId()),
+                String.valueOf(entry.getProjectId()),
                 String.valueOf(entry.getExpenseType().getId()), String.valueOf(entry.getStatus().getId()),
                 entry.getDescription(), String.valueOf(entry.getDate()), String.valueOf(entry.getAmount()),
                 String.valueOf(entry.isBillable()), String.valueOf(entry.getCreationDate()), entry.getCreationUser(),

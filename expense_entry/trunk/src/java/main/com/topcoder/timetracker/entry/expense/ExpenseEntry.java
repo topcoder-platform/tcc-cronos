@@ -69,7 +69,7 @@ public class ExpenseEntry extends BaseEntry {
     /**
       * Represents the invoice ID for of this expense. Can be -1 if the expense has not yet been invoiced.
       */
-    private long invoiceId;
+    private long invoiceId = -1;
 
     /**
      * <p>
