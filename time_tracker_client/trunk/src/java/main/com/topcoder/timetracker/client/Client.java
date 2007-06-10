@@ -361,7 +361,8 @@ public class Client extends TimeTrackerBean {
      * @return non null, possible empty array containing non null project
      */
     public Project[] getProjects() {
-        return (Project[]) this.projects.toArray(new Project[this.projects.size()]);
+        return (this.projects != null) ?
+                (Project[]) this.projects.toArray(new Project[this.projects.size()]) : new Project[0];
     }
 
     /**
