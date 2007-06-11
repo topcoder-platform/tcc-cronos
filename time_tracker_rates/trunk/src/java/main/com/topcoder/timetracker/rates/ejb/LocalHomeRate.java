@@ -6,7 +6,6 @@ package com.topcoder.timetracker.rates.ejb;
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 
-
 /**
  * <p>This is a simple local home interface used to create a local bean for the Rate persistence functionality.</p>
  *
@@ -14,6 +13,7 @@ import javax.ejb.EJBLocalHome;
  * @version 3.2
   */
 public interface LocalHomeRate extends EJBLocalHome {
+
     /**
      * <p>Create a LocalRate instance.</p>
      *

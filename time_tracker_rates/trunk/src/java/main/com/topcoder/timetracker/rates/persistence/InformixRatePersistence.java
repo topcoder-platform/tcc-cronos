@@ -38,7 +38,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * <p>The InformixRatePersistence class is the default persistence plugin for this component - it stores the rate
  * information inside Informix tables. Implementing the RatePersistence interface, it provides the basic CRUD
@@ -59,6 +58,7 @@ import java.util.List;
  * @version 3.2
  */
 public class InformixRatePersistence implements RatePersistence {
+
     /** Name of the table this class modifies. */
     private static final String AUDIT_TABLE_NAME = "comp_rate";
 

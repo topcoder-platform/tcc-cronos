@@ -15,12 +15,12 @@ package com.topcoder.timetracker.rates;
  */
 public class RatePersistenceException extends RateManagerException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -3443950911545234995L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -3443950911545234995L;
 
-	/**
+    /**
      * String-only constructor for the exception, taking a message detailing why the exception occurred.
      * @param message Descriptive reason the error occurred.
      */

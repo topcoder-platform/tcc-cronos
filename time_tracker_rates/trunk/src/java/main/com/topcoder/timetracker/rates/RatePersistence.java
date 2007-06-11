@@ -15,6 +15,7 @@ package com.topcoder.timetracker.rates;
  * @version 3.2
   */
 public interface RatePersistence {
+
     /**
      * Adds a collection of rates into persistence. In addition, this method may optionally add audit records
      * for each persistence action taken.

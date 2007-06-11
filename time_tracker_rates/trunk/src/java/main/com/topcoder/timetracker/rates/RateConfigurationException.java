@@ -16,12 +16,12 @@ import com.topcoder.util.errorhandling.BaseException;
  */
 public class RateConfigurationException extends BaseException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -5647556890095049256L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -5647556890095049256L;
 
-	/**
+    /**
      * String-only constructor for the exception, taking a message detailing why the exception occurred.
      * @param message Descriptive reason the error occurred.
      */

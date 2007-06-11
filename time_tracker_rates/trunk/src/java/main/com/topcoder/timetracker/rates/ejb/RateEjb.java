@@ -34,12 +34,12 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  */
 public class RateEjb implements SessionBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 2125904035291617864L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 2125904035291617864L;
 
-	/**
+    /**
      * Represents the property name to retrieve the object factory namespace from sessionContext. If it's
      * absent, the default namespace "com.topcoder.util.objectfactory.ObjectFactory" will be used.
      */

@@ -12,7 +12,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-
 /**
  * <p>This class acts as a business delegate. A RateManager is the entrypoint into the storage and retrieval of
  * rates within the system - it provides the basic CRUD methods, for both single and multiple Rates. Each method
@@ -25,6 +24,7 @@ import javax.naming.NamingException;
  * @version 3.2
  */
 public class RateManager {
+
     /**
      * The default namespace to use for this component. In this case, the value is the package name:
      * "com.topcoder.timetracker.rates" This is public, static and immutable, and used within the no-argument

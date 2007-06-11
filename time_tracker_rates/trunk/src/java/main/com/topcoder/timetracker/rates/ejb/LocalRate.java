@@ -8,7 +8,6 @@ import com.topcoder.timetracker.rates.RatePersistenceException;
 
 import javax.ejb.EJBLocalObject;
 
-
 /**
  * <p>This is a local interface for the contract for CRUD operations on rate persistence data. This interface
  * will be used in implementing a stateless session ejb with container manager transactions.</p>
@@ -20,6 +19,7 @@ import javax.ejb.EJBLocalObject;
  * @version 3.2
   */
 public interface LocalRate extends EJBLocalObject {
+
     /**
      * <p>Adds a collection of rates into persistence. In addition, this method may optionally add audit
      * records for each persistence action taken.</p>

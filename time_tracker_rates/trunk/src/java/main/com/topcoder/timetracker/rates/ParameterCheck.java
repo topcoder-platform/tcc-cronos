@@ -10,7 +10,8 @@ package com.topcoder.timetracker.rates;
  * @version 1.0
  */
 public final class ParameterCheck {
-/**
+
+    /**
      * Private ctor preventing this class from being instantiated.
      */
     private ParameterCheck() {

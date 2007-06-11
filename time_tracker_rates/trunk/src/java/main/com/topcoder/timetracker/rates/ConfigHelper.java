@@ -6,7 +6,6 @@ package com.topcoder.timetracker.rates;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 
-
 /**
  * <p>Helper class used to process component configuration.</p>
  * <p>Thread-Safety: This class is thread safe since it's not mutable.</p>
@@ -15,6 +14,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * @version 1.0
  */
 public final class ConfigHelper {
+
     /**
      * Private constructor preventing this class from being instantiated.
      */
