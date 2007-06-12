@@ -150,7 +150,7 @@
     <property name="phase_management.path" value="phase_management/${phase_management.version}"/>
     <property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}"/>
 
-    <property name="review_score_calculator.version" value="1.0.1"/>
+    <property name="review_score_calculator.version" value="1.0.3"/>
     <property name="review_score_calculator.jar.name" value="review_score_calculator.jar"/>
     <property name="review_score_calculator.path" value="review_score_calculator/${review_score_calculator.version}"/>
     <property name="review_score_calculator.jar" value="${tcs_libdir}/${review_score_calculator.path}/${review_score_calculator.jar.name}"/>
