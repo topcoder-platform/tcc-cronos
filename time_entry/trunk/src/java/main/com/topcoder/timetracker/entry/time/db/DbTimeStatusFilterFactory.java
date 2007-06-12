@@ -43,12 +43,12 @@ import com.topcoder.timetracker.entry.time.StringMatchType;
  */
 public class DbTimeStatusFilterFactory extends DbBaseFilterFactory implements TimeStatusFilterFactory {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 547855095449898886L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 547855095449898886L;
 
-	/**
+    /**
      * <p>
      * This is the map key to use to specify the column name for the description.
      * </p>

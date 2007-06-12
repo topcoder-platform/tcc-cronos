@@ -22,12 +22,12 @@ package com.topcoder.timetracker.entry.time;
  */
 public class InvalidCompanyException extends DataAccessException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -7605766581978692164L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -7605766581978692164L;
 
-	/**
+    /**
      * <p>
      * This is the company id of the time entry being associated
      * with an entity.

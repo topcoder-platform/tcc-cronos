@@ -22,12 +22,12 @@ import com.topcoder.timetracker.entry.time.db.Util;
  */
 public class TimeStatus extends TimeTrackerBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -5443471328068682500L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -5443471328068682500L;
 
-	/**
+    /**
      * <p>
      * This is a short String that describes the status.
      * </p>
