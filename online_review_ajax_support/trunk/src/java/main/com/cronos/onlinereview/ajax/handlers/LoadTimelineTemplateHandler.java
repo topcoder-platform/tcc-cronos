@@ -212,10 +212,11 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
      * @param sb the string buffer to handle the xml
      */
     private static void phaseToXml(Phase phase, StringBuffer sb) {
-
         // start the element
         sb.append("<phase type=\"");
         sb.append(phase.getPhaseType().getName());
+        sb.append("\" id=\"");
+        sb.append(phase.getId());
         sb.append("\">");
 
         // start date
