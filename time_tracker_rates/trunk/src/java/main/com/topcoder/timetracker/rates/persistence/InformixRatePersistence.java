@@ -3,9 +3,17 @@
  */
 package com.topcoder.timetracker.rates.persistence;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
-
 import com.topcoder.timetracker.audit.ApplicationArea;
 import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.AuditHeader;
@@ -19,7 +27,6 @@ import com.topcoder.timetracker.rates.Rate;
 import com.topcoder.timetracker.rates.RateConfigurationException;
 import com.topcoder.timetracker.rates.RatePersistence;
 import com.topcoder.timetracker.rates.RatePersistenceException;
-
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
@@ -28,15 +35,6 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>The InformixRatePersistence class is the default persistence plugin for this component - it stores the rate
@@ -219,8 +217,9 @@ public class InformixRatePersistence implements RatePersistence {
             conn = getConnection();
 
             PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_RATE);
+            final Date now = new Date(System.currentTimeMillis());
 
-            for (; i < rates.length; i++) {
+            for (; i < rates.length; ++i) {
                 Company comp = rates[i].getCompany();
 
                 //if company is null, skip this record
@@ -231,12 +230,16 @@ public class InformixRatePersistence implements RatePersistence {
                     throw new RatePersistenceException(msg);
                 }
 
+                rates[i].setCreationDate(now);
+                rates[i].setModificationUser(rates[i].getCreationUser());
+                rates[i].setModificationDate(now);
+
                 pstmt.setLong(1, comp.getId());
                 pstmt.setLong(2, rates[i].getId());
                 pstmt.setDouble(3, rates[i].getRate());
-                pstmt.setTimestamp(4, new Timestamp(rates[i].getCreationDate().getTime()));
+                pstmt.setDate(4, now);
                 pstmt.setString(5, rates[i].getCreationUser());
-                pstmt.setTimestamp(6, new Timestamp(rates[i].getModificationDate().getTime()));
+                pstmt.setDate(6, now);
                 pstmt.setString(7, rates[i].getModificationUser());
                 pstmt.executeUpdate();
 
