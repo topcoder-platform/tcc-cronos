@@ -1066,7 +1066,13 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         timeEntry.setCompanyId(result.getLong(index++));
         timeEntry.setClientId(result.getLong(index++));
         timeEntry.setProjectId(result.getLong(index++));
-        timeEntry.setInvoiceId(result.getLong(index++));
+
+        if (result.getObject(index) != null) {
+            timeEntry.setInvoiceId(result.getLong(index++));
+        } else {
+            timeEntry.setInvoiceId(-1);
+            ++index;
+        }
 
         // get the time status association
         long statusId = result.getLong(index++);
