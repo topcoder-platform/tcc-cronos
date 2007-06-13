@@ -302,7 +302,11 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         params.add(new Long(timeEntry.getCompanyId()));
         params.add(new Long(timeEntry.getClientId()));
         params.add(new Long(timeEntry.getProjectId()));
-        params.add(new Long(timeEntry.getInvoiceId()));
+        if (timeEntry.getInvoiceId() > 0) {
+            params.add(new Long(timeEntry.getInvoiceId()));
+        } else {
+            params.add(new SqlType(Types.INTEGER));
+        }
         params.add(new Long(timeEntry.getStatus().getId()));
         params.add(new Long(timeEntry.getTaskType().getId()));
 

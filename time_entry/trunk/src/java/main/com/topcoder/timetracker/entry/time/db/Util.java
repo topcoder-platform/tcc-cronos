@@ -419,7 +419,11 @@ public final class Util {
 
             return pstmt.executeBatch();
         } catch (BatchUpdateException e) {
-            int[] updateCounts = e.getUpdateCounts();
+            int[] updateCounts = new int[params.length];
+            int[] obtainedUpdateCounts = e.getUpdateCounts();
+            for (int i = 0; i < obtainedUpdateCounts.length; ++i) {
+                updateCounts[i] = obtainedUpdateCounts[i];
+            }
             Throwable[] causes = new Throwable[updateCounts.length];
             for (int i = 0; i < updateCounts.length; i++) {
                 if (updateCounts[i] == 0) {
