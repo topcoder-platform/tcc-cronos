@@ -89,6 +89,22 @@ public class ProjectWorker extends TimeTrackerBean {
 
     /**
      * <p>
+     * This is the cost of the worker. It represents the amount that can be billed to client for
+     * each hour that is spent at work.
+     * </p>
+     *
+     * <p>
+     * It is -1 initially and can be accessed by getter and setter.
+     * </p>
+     *
+     * <p>
+     * It can not be negative after it is set.
+     * </p>
+     */
+    private double cost = -1;
+
+    /**
+     * <p>
      * This is an identifier that is used to represent the the project that this user is working on.
      * </p>
      *
@@ -223,6 +239,45 @@ public class ProjectWorker extends TimeTrackerBean {
 
         if (payRate != this.payRate) {
             this.payRate = payRate;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the cost of the worker.
+     * </p>
+     *
+     * <p>
+     * It represents the amount that can be billed to client for each hour that is spent at work.
+     * </p>
+     *
+     * @return the cost of the worker.
+     */
+    public double getCost() {
+        return cost;
+    }
+
+    /**
+     * <p>
+     * Sets the cost of the worker.
+     * </p>
+     *
+     * <p>
+     * It represents the amount that can be billed to client for each hour that is spent at work.
+     * </p>
+     *
+     * @param cost the cost of for the worker.
+     *
+     * @throws IllegalArgumentException if cost is negative.
+     */
+    public void setCost(double cost) {
+        if (cost < 0) {
+            throw new IllegalArgumentException("The given cost is negative.");
+        }
+
+        if (cost != this.cost) {
+            this.cost = cost;
             setChanged(true);
         }
     }

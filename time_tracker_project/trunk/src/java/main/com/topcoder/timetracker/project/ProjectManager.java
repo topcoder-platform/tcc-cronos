@@ -75,6 +75,38 @@ public class ProjectManager extends TimeTrackerBean {
 
     /**
      * <p>
+     * This is the rate of pay for the worker. It represents the amount that can be billed for each hour that
+     * is spent at work.
+     * </p>
+     *
+     * <p>
+     * It is -1 initially and can be accessed by getter and setter.
+     * </p>
+     *
+     * <p>
+     * It can not be negative after it is set.
+     * </p>
+     */
+    private double payRate = -1;
+
+    /**
+     * <p>
+     * This is the cost of the worker. It represents the amount that can be billed to client for
+     * each hour that is spent at work.
+     * </p>
+     *
+     * <p>
+     * It is -1 initially and can be accessed by getter and setter.
+     * </p>
+     *
+     * <p>
+     * It can not be negative after it is set.
+     * </p>
+     */
+    private double cost = -1;
+
+    /**
+     * <p>
      * Default Constructor.
      * </p>
      */
@@ -144,6 +176,84 @@ public class ProjectManager extends TimeTrackerBean {
 
         if (userId != this.userId) {
             this.userId = userId;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the rate of pay for the worker.
+     * </p>
+     *
+     * <p>
+     * It represents the amount that can be billed for each hour that is spent at work.
+     * </p>
+     *
+     * @return the rate of pay for the worker.
+     */
+    public double getPayRate() {
+        return payRate;
+    }
+
+    /**
+     * <p>
+     * Sets the rate of pay for the worker.
+     * </p>
+     *
+     * <p>
+     * It represents the amount that can be billed for each hour that is spent at work.
+     * </p>
+     *
+     * @param payRate the rate of pay for the worker.
+     *
+     * @throws IllegalArgumentException if payRate is a negative number.
+     */
+    public void setPayRate(double payRate) {
+        if (payRate < 0) {
+            throw new IllegalArgumentException("The given pay rate is negative.");
+        }
+
+        if (payRate != this.payRate) {
+            this.payRate = payRate;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the cost of the worker.
+     * </p>
+     *
+     * <p>
+     * It represents the amount that can be billed to client for each hour that is spent at work.
+     * </p>
+     *
+     * @return the cost of the worker.
+     */
+    public double getCost() {
+        return cost;
+    }
+
+    /**
+     * <p>
+     * Sets the cost of the worker.
+     * </p>
+     *
+     * <p>
+     * It represents the amount that can be billed to client for each hour that is spent at work.
+     * </p>
+     *
+     * @param cost the cost of for the worker.
+     *
+     * @throws IllegalArgumentException if cost is negative.
+     */
+    public void setCost(double cost) {
+        if (cost < 0) {
+            throw new IllegalArgumentException("The given cost is negative.");
+        }
+
+        if (cost != this.cost) {
+            this.cost = cost;
             setChanged(true);
         }
     }

@@ -65,17 +65,17 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
      * </p>
      */
     private static final String INSERT_PROJECT_MANAGER = "insert into project_manager (project_id, "
-        + "user_account_id, creation_date, creation_user, modification_date, modification_user) "
-        + "values (?, ?, ?, ?, ?, ?)";
+        + "user_account_id, pay_rate, cost, creation_date, creation_user, modification_date, modification_user) "
+        + "values (?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * Represents the sql script to update a record in project_manager table.
      * </p>
      */
-    private static final String UPDATE_PROJECT_MANAGER = "update project_manager set creation_date = ?, "
-        + "creation_user = ?, modification_date = ?, modification_user = ? where project_id = ? and "
-        + "user_account_id = ?";
+    private static final String UPDATE_PROJECT_MANAGER = "update project_manager set pay_rate = ?, cost = ?, "
+        + "creation_date = ?, creation_user = ?, modification_date = ?, modification_user = ? "
+        + "where project_id = ? and user_account_id = ?";
 
     /**
      * <p>
@@ -90,7 +90,7 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
      * Represents the sql script to select a record from project_manager table.
      * </p>
      */
-    private static final String SELECT_PROJECT_MANAGER = "select project_id, user_account_id, "
+    private static final String SELECT_PROJECT_MANAGER = "select project_id, user_account_id, pay_rate, cost, "
         + "creation_date, creation_user, modification_date, modification_user from "
         + "project_manager where project_id = ? and user_account_id = ?";
 
@@ -99,7 +99,7 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
      * Represents the sql script to insert all the records in project_manager table.
      * </p>
      */
-    private static final String SELECT_ALL_PMS = "select project_id, user_account_id, "
+    private static final String SELECT_ALL_PMS = "select project_id, user_account_id, pay_rate, cost, "
         + "creation_date, creation_user, modification_date, modification_user from project_manager";
 
     /**
@@ -175,6 +175,8 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
                 List params = new ArrayList();
                 params.add(new Long(managers[i].getProjectId()));
                 params.add(new Long(managers[i].getUserId()));
+                params.add(new Double(managers[i].getPayRate()));
+                params.add(new Double(managers[i].getCost()));
                 params.add(managers[i].getCreationDate());
                 params.add(managers[i].getCreationUser());
                 params.add(managers[i].getModificationDate());
@@ -246,6 +248,10 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
                 String.valueOf(newProjectManager.getProjectId())));
             auditDetails.add(Util.createAuditDetail("user_account_id", null,
                 String.valueOf(newProjectManager.getUserId())));
+            auditDetails.add(Util.createAuditDetail("pay_rate", null,
+                    String.valueOf(newProjectManager.getPayRate())));
+            auditDetails.add(Util.createAuditDetail("cost", null,
+                    String.valueOf(newProjectManager.getCost())));
             auditDetails.add(Util.createAuditDetail("creation_date", null,
                 newProjectManager.getCreationDate().toString()));
             auditDetails.add(Util.createAuditDetail("creation_user", null, newProjectManager.getCreationUser()));
@@ -259,6 +265,8 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
                 null));
             auditDetails.add(Util.createAuditDetail("user_account_id", String.valueOf(oldProjectManager.getUserId()),
                 null));
+            auditDetails.add(Util.createAuditDetail("pay_rate", String.valueOf(oldProjectManager.getPayRate()), null));
+            auditDetails.add(Util.createAuditDetail("cost", String.valueOf(oldProjectManager.getCost()), null));
             auditDetails.add(Util.createAuditDetail("creation_date", oldProjectManager.getCreationDate().toString(),
                 null));
             auditDetails.add(Util.createAuditDetail("creation_user", oldProjectManager.getCreationUser(), null));
@@ -272,6 +280,10 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
                 String.valueOf(newProjectManager.getProjectId())));
             auditDetails.add(Util.createAuditDetail("user_account_id", String.valueOf(oldProjectManager.getUserId()),
                 String.valueOf(newProjectManager.getUserId())));
+            auditDetails.add(Util.createAuditDetail("pay_rate", String.valueOf(oldProjectManager.getPayRate()),
+                    String.valueOf(newProjectManager.getPayRate())));
+            auditDetails.add(Util.createAuditDetail("cost", String.valueOf(oldProjectManager.getCost()),
+                    String.valueOf(newProjectManager.getCost())));
             auditDetails.add(Util.createAuditDetail("creation_date", oldProjectManager.getCreationDate().toString(),
                 newProjectManager.getCreationDate().toString()));
             auditDetails.add(Util.createAuditDetail("creation_user", oldProjectManager.getCreationUser(),
@@ -363,6 +375,8 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
                 oldManagers[i] = getProjectManager(conn, managers[i].getProjectId(), managers[i].getUserId());
 
                 List params = new ArrayList();
+                params.add(new Double(managers[i].getPayRate()));
+                params.add(new Double(managers[i].getCost()));
                 params.add(managers[i].getCreationDate());
                 params.add(managers[i].getCreationUser());
                 params.add(managers[i].getModificationDate());
@@ -479,6 +493,9 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
         long userId = rs.getLong(index++);
         manager.setId(userId);
         manager.setUserId(userId);
+
+        manager.setPayRate(rs.getDouble(index++));
+        manager.setCost(rs.getDouble(index++));
 
         manager.setCreationDate(rs.getDate(index++));
         manager.setCreationUser(rs.getString(index++));
@@ -626,6 +643,9 @@ public class DbProjectManagerDAO extends BaseDAO implements ProjectManagerDAO {
         long userId = rs.getLong(index++);
         manager.setId(userId);
         manager.setUserId(userId);
+
+        manager.setPayRate(rs.getDouble(index++));
+        manager.setCost(rs.getDouble(index++));
 
         manager.setCreationDate(rs.getDate(index++));
         manager.setCreationUser(rs.getString(index++));
