@@ -34,12 +34,12 @@ import com.topcoder.timetracker.user.filterfactory.Util;
  */
 public class User extends TimeTrackerBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -5134657804874224299L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -5134657804874224299L;
 
-	/**
+    /**
      * <p>
      * This is the user's password.
      * </p>
