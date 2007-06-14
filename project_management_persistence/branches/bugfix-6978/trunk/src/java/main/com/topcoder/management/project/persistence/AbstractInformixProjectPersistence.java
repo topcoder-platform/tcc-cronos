@@ -25,10 +25,14 @@ import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.persistence.Helper.DataType;
+import com.topcoder.management.project.persistence.logging.LogMessage;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -69,7 +73,6 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  */
 public abstract class AbstractInformixProjectPersistence implements
         ProjectPersistence {
-
     /**
      * <p>
      * Represents the default value for Project Id sequence name. It is used to
@@ -367,7 +370,7 @@ public abstract class AbstractInformixProjectPersistence implements
 
         // get db connection factory namespace
         String factoryNamespace = Helper.getConfigurationParameterValue(cm,
-                namespace, CONNECTION_FACTORY_NAMESPACE_PARAMETER, true);
+                namespace, CONNECTION_FACTORY_NAMESPACE_PARAMETER, true, getLogger());
 
         // try to create a DBConnectionFactoryImpl instance from
         // factoryNamespace
@@ -381,11 +384,11 @@ public abstract class AbstractInformixProjectPersistence implements
 
         // get the connection name
         connectionName = Helper.getConfigurationParameterValue(cm, namespace,
-                CONNECTION_NAME_PARAMETER, false);
+                CONNECTION_NAME_PARAMETER, false, getLogger());
 
         // try to get project id sequence name
         String projectIdSequenceName = Helper.getConfigurationParameterValue(
-                cm, namespace, PROJECT_ID_SEQUENCE_NAME_PARAMETER, false);
+                cm, namespace, PROJECT_ID_SEQUENCE_NAME_PARAMETER, false, getLogger());
         // use default name if project id sequence name is not provided
         if (projectIdSequenceName == null) {
             projectIdSequenceName = PROJECT_ID_SEQUENCE_NAME;
@@ -394,7 +397,7 @@ public abstract class AbstractInformixProjectPersistence implements
         // try to get project audit id sequence name
         String projectAuditIdSequenceName = Helper
                 .getConfigurationParameterValue(cm, namespace,
-                        PROJECT_AUDIT_ID_SEQUENCE_NAME_PARAMETER, false);
+                        PROJECT_AUDIT_ID_SEQUENCE_NAME_PARAMETER, false, getLogger());
         // use default name if project audit id sequence name is not provided
         if (projectAuditIdSequenceName == null) {
             projectAuditIdSequenceName = PROJECT_AUDIT_ID_SEQUENCE_NAME;
@@ -405,6 +408,7 @@ public abstract class AbstractInformixProjectPersistence implements
             projectIdGenerator = IDGeneratorFactory
                     .getIDGenerator(projectIdSequenceName);
         } catch (IDGenerationException e) {
+        	getLogger().log(Level.ERROR, "The projectIdSequence [" + projectIdSequenceName+"] is invalid.");
             throw new PersistenceException("Unable to create IDGenerator for '"
                     + projectIdSequenceName + "'.", e);
         }
@@ -412,6 +416,7 @@ public abstract class AbstractInformixProjectPersistence implements
             projectAuditIdGenerator = IDGeneratorFactory
                     .getIDGenerator(projectAuditIdSequenceName);
         } catch (IDGenerationException e) {
+        	getLogger().log(Level.ERROR, "The projectAuditIdSequence [" + projectAuditIdSequenceName +"] is invalid.");
             throw new PersistenceException("Unable to create IDGenerator for '"
                     + projectAuditIdSequenceName + "'.", e);
         }
@@ -449,6 +454,10 @@ public abstract class AbstractInformixProjectPersistence implements
         // database.
         Date createDate;
 
+        getLogger().log(Level.INFO, new LogMessage(null, operator, 
+        		"creating new project: " + project.getAllProperties()));
+
+        
         try {
             // create the connection
             conn = openConnection();
@@ -457,7 +466,7 @@ public abstract class AbstractInformixProjectPersistence implements
             if (project.getId() > 0) {
                 if (Helper.checkEntityExists("project", "project_id", project
                         .getId(), conn)) {
-                    throw new PersistenceException(
+                	throw new PersistenceException(
                             "The project with the same id [" + project.getId()
                                     + "] already exists.");
                 }
@@ -466,6 +475,7 @@ public abstract class AbstractInformixProjectPersistence implements
             try {
                 // generate id for the project
                 newId = new Long(projectIdGenerator.getNextID());
+                getLogger().log(Level.INFO, new LogMessage(newId, operator, "generate id for new project"));
             } catch (IDGenerationException e) {
                 throw new PersistenceException(
                         "Unable to generate id for the project.", e);
@@ -474,13 +484,18 @@ public abstract class AbstractInformixProjectPersistence implements
             // create the project
             createProject(newId, project, operator, conn);
 
+            getLogger().log(Level.INFO, new LogMessage(newId, operator,
+                  "execute sql:" + "SELECT create_date FROM project WHERE project_id=?"));
+            
             // get the creation date.
             createDate = (Date) Helper.doSingleValueQuery(conn,
                     "SELECT create_date FROM project WHERE project_id=?",
                     new Object[] {newId}, Helper.DATE_TYPE);
-
+            
             closeConnection(conn);
         } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR,
+        			new LogMessage(null, operator, "Fails to create project " + project.getAllProperties(), e));
             if (conn != null) {
                 closeConnectionOnError(conn);
             }
@@ -535,7 +550,9 @@ public abstract class AbstractInformixProjectPersistence implements
         Date modifyDate;
 
         Connection conn = null;
-
+        
+        getLogger().log(Level.INFO, new LogMessage(new Long(project.getId()), operator, 
+        		"updating project: " + project.getAllProperties()));
         try {
             // create the connection
             conn = openConnection();
@@ -550,6 +567,8 @@ public abstract class AbstractInformixProjectPersistence implements
             // update the project
             updateProject(project, reason, operator, conn);
 
+            getLogger().log(Level.INFO, new LogMessage(new Long(project.getId()), operator,
+                    "execute sql:" + "SELECT modify_date " + "FROM project WHERE project_id=?"));
             // get the modification date.
             modifyDate = (Date) Helper.doSingleValueQuery(conn,
                     "SELECT modify_date " + "FROM project WHERE project_id=?",
@@ -558,7 +577,9 @@ public abstract class AbstractInformixProjectPersistence implements
 
             closeConnection(conn);
         } catch (PersistenceException e) {
-            if (conn != null) {
+        	getLogger().log(Level.ERROR,
+        			new LogMessage(null, operator, "Fails to update project " + project.getAllProperties(), e));
+        	if (conn != null) {
                 closeConnectionOnError(conn);
             }
             throw e;
@@ -610,8 +631,10 @@ public abstract class AbstractInformixProjectPersistence implements
                     "Array 'ids' should not be empty.");
         }
 
+        String idstring = "";
         // check if ids contains an id that is <= 0
         for (int i = 0; i < ids.length; ++i) {
+        	idstring += ids[i] + ",";
             if (ids[i] <= 0) {
                 throw new IllegalArgumentException(
                         "Array 'ids' contains an id that is <= 0.");
@@ -620,6 +643,7 @@ public abstract class AbstractInformixProjectPersistence implements
 
         Connection conn = null;
 
+        getLogger().log(Level.INFO, "get projects with the ids: " + idstring.substring(0, idstring.length() - 1));
         try {
             // create the connection
             conn = openConnection();
@@ -629,6 +653,8 @@ public abstract class AbstractInformixProjectPersistence implements
             closeConnection(conn);
             return projects;
         } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving projects with ids: " + idstring.substring(0, idstring.length() - 1), e));
             if (conn != null) {
                 closeConnectionOnError(conn);
             }
@@ -646,6 +672,7 @@ public abstract class AbstractInformixProjectPersistence implements
     public ProjectType[] getAllProjectTypes() throws PersistenceException {
         Connection conn = null;
 
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getAllProjectTypes method."));
         try {
             // create the connection
             conn = openConnection();
@@ -655,6 +682,7 @@ public abstract class AbstractInformixProjectPersistence implements
             closeConnection(conn);
             return projectTypes;
         } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,"Fail to getAllProjectTypes.", e));
             if (conn != null) {
                 closeConnectionOnError(conn);
             }
@@ -672,7 +700,7 @@ public abstract class AbstractInformixProjectPersistence implements
     public ProjectCategory[] getAllProjectCategories()
         throws PersistenceException {
         Connection conn = null;
-
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getAllProjectCategories method."));
         try {
             // create the connection
             conn = openConnection();
@@ -683,6 +711,7 @@ public abstract class AbstractInformixProjectPersistence implements
             closeConnection(conn);
             return projectCategories;
         } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,"Fail to getAllProjectCategories.", e));
             if (conn != null) {
                 closeConnectionOnError(conn);
             }
@@ -699,7 +728,7 @@ public abstract class AbstractInformixProjectPersistence implements
      */
     public ProjectStatus[] getAllProjectStatuses() throws PersistenceException {
         Connection conn = null;
-
+        getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getAllProjectStatuses method."));
         try {
             // create the connection
             conn = openConnection();
@@ -709,6 +738,7 @@ public abstract class AbstractInformixProjectPersistence implements
             closeConnection(conn);
             return projectStatuses;
         } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,"Fail to getAllProjectStatuses.", e));
             if (conn != null) {
                 closeConnectionOnError(conn);
             }
@@ -725,7 +755,7 @@ public abstract class AbstractInformixProjectPersistence implements
      */
     public ProjectPropertyType[] getAllProjectPropertyTypes()
         throws PersistenceException {
-
+    	getLogger().log(Level.INFO, new LogMessage(null,null,"Enter getAllProjectPropertyTypes method."));
         Connection conn = null;
 
         try {
@@ -736,6 +766,7 @@ public abstract class AbstractInformixProjectPersistence implements
             closeConnection(conn);
             return propertyTypes;
         } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,"Fail to getAllProjectPropertyTypes.", e));
             if (conn != null) {
                 closeConnectionOnError(conn);
             }
@@ -763,6 +794,11 @@ public abstract class AbstractInformixProjectPersistence implements
         return factory;
     }
 
+    /**
+     * <p>Return the getLogger().</p>
+     * @return the <code>Log</code> instance used to take the log message
+     */
+    protected abstract Log getLogger();
     /**
      * <p>
      * Abstract method used to get an open connection from which to perform DB
@@ -834,6 +870,8 @@ public abstract class AbstractInformixProjectPersistence implements
     private void createProject(Long projectId, Project project,
             String operator, Connection conn) throws PersistenceException {
 
+    	getLogger().log(Level.INFO, "execute sql:" + CREATE_PROJECT_SQL);
+    	
         // insert the project into database
         Object[] queryArgs = new Object[] {projectId,
             new Long(project.getProjectStatus().getId()),
@@ -863,6 +901,9 @@ public abstract class AbstractInformixProjectPersistence implements
             Connection conn) throws PersistenceException {
         Long projectId = new Long(project.getId());
 
+        getLogger().log(Level.INFO, new LogMessage(projectId, operator,
+        		"update project, execute sql:" + CREATE_PROJECT_PROPERTY_SQL));
+        
         // update the project type and project category
         Object[] queryArgs = new Object[] {
             new Long(project.getProjectStatus().getId()),
@@ -927,6 +968,9 @@ public abstract class AbstractInformixProjectPersistence implements
      */
     private ProjectPropertyType[] getAllProjectPropertyTypes(Connection conn)
         throws PersistenceException {
+    	
+    	getLogger().log(Level.INFO, "execute sql:" + QUERY_ALL_PROJECT_PROPERTY_TYPES_SQL);
+    	
         // find all project property types in the table.
         Object[][] rows = Helper.doQuery(conn,
                 QUERY_ALL_PROJECT_PROPERTY_TYPES_SQL, new Object[] {},
@@ -973,6 +1017,8 @@ public abstract class AbstractInformixProjectPersistence implements
         // get the id list string
         String idList = idListBuffer.toString();
 
+        getLogger().log(Level.INFO, "execute sql:" + QUERY_PROJECTS_SQL + idList);
+        
         // find projects in the table.
         Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_SQL + idList,
                 new Object[] {}, QUERY_PROJECTS_COLUMN_TYPES);
@@ -1009,6 +1055,8 @@ public abstract class AbstractInformixProjectPersistence implements
         // get the Id-Project map
         Map projectMap = makeIdProjectMap(projects);
 
+        getLogger().log(Level.INFO, "execute sql:" + QUERY_PROJECT_PROPERTIES_SQL + idList);
+        
         // find project properties in the table.
         rows = Helper.doQuery(conn, QUERY_PROJECT_PROPERTIES_SQL + idList,
                 new Object[] {}, QUERY_PROJECT_PROPERTIES_COLUMN_TYPES);
@@ -1036,6 +1084,9 @@ public abstract class AbstractInformixProjectPersistence implements
      */
     private ProjectType[] getAllProjectTypes(Connection conn)
         throws PersistenceException {
+    	
+    	getLogger().log(Level.INFO, "execute sql:" + QUERY_ALL_PROJECT_TYPES_SQL);
+    	
         // find all project types in the table.
         Object[][] rows = Helper.doQuery(conn, QUERY_ALL_PROJECT_TYPES_SQL,
                 new Object[] {}, QUERY_ALL_PROJECT_TYPES_COLUMN_TYPES);
@@ -1066,6 +1117,7 @@ public abstract class AbstractInformixProjectPersistence implements
     private void createProjectProperties(Long projectId, Map idValueMap,
             String operator, Connection conn) throws PersistenceException {
 
+    	getLogger().log(Level.INFO, new LogMessage(projectId, operator, "execute sql:" + CREATE_PROJECT_PROPERTY_SQL));
         PreparedStatement preparedStatement = null;
         try {
             // prepare the statement.
@@ -1125,6 +1177,10 @@ public abstract class AbstractInformixProjectPersistence implements
 
         PreparedStatement preparedStatement = null;
         try {
+        	
+        	 getLogger().log(Level.INFO, 
+             		new LogMessage(projectId, operator, "update project, execute sql:" + UPDATE_PROJECT_PROPERTY_SQL));
+        	 
             // prepare the statement.
             preparedStatement = conn
                     .prepareStatement(UPDATE_PROJECT_PROPERTY_SQL);
@@ -1178,6 +1234,9 @@ public abstract class AbstractInformixProjectPersistence implements
         throws PersistenceException {
         Set idSet = new HashSet();
 
+        getLogger().log(Level.INFO, 
+        		new LogMessage(projectId, null, "update project, execute sql:" + QUERY_PROJECT_PROPERTY_IDS_SQL));
+        
         // find projects in the table.
         Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_PROPERTY_IDS_SQL,
                 new Object[] {projectId},
@@ -1203,7 +1262,8 @@ public abstract class AbstractInformixProjectPersistence implements
      */
     private void deleteProjectProperties(Long projectId, Set propertyIdSet,
             Connection conn) throws PersistenceException {
-
+    	
+    	 
         // check if the property id set is empty
         // do nothing if property id set is empty
         if (!propertyIdSet.isEmpty()) {
@@ -1220,6 +1280,9 @@ public abstract class AbstractInformixProjectPersistence implements
             }
             idListBuffer.append(')');
 
+            getLogger().log(Level.INFO, new LogMessage(projectId, null,
+               	 "execute sql:" + DELETE_PROJECT_PROPERTIES_SQL + idListBuffer.toString()));
+            
             // delete the properties whose id is in the set
             Helper.doDMLQuery(conn, DELETE_PROJECT_PROPERTIES_SQL
                     + idListBuffer.toString(), new Object[] {projectId});
@@ -1242,11 +1305,15 @@ public abstract class AbstractInformixProjectPersistence implements
         try {
             // generate a new audit id
             auditId = new Long(projectAuditIdGenerator.getNextID());
+            getLogger().log(Level.INFO, new LogMessage(projectId, operator, "generate new id for the project audit."));
+            
         } catch (IDGenerationException e) {
             throw new PersistenceException(
                     "Unable to generate id for project.", e);
         }
 
+        getLogger().log(Level.INFO, "execute sql:" + CREATE_PROJECT_AUDIT_SQL);
+        
         // insert the update reason information to project_audit table
         Object[] queryArgs = new Object[] {auditId, projectId, reason,
             operator, operator};
@@ -1292,6 +1359,8 @@ public abstract class AbstractInformixProjectPersistence implements
     private ProjectCategory[] getAllProjectCategories(Connection conn)
         throws PersistenceException {
 
+    	getLogger().log(Level.INFO, "execute sql:" + QUERY_ALL_PROJECT_CATEGORIES_SQL);
+    	
         // find all project categories in the table.
         Object[][] rows = Helper.doQuery(conn,
                 QUERY_ALL_PROJECT_CATEGORIES_SQL, new Object[] {},
@@ -1325,6 +1394,9 @@ public abstract class AbstractInformixProjectPersistence implements
      */
     private ProjectStatus[] getAllProjectStatuses(Connection conn)
         throws PersistenceException {
+    	
+    	getLogger().log(Level.INFO, "execute sql: " + QUERY_ALL_PROJECT_STATUSES_SQL);
+    	
         // find all project statuses in the table.
         Object[][] rows = Helper.doQuery(conn, QUERY_ALL_PROJECT_STATUSES_SQL,
                 new Object[] {}, QUERY_ALL_PROJECT_STATUSES_COLUMN_TYPES);

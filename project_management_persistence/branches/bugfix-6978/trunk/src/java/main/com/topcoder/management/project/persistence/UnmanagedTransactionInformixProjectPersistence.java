@@ -7,6 +7,10 @@ import java.sql.Connection;
 
 import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.PersistenceException;
+import com.topcoder.management.project.persistence.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -31,7 +35,8 @@ import com.topcoder.management.project.PersistenceException;
  */
 public class UnmanagedTransactionInformixProjectPersistence extends
         AbstractInformixProjectPersistence {
-
+	/** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(UnmanagedTransactionInformixProjectPersistence.class.getName()); 
     /**
      * <p>
      * Creates a new instance of
@@ -104,6 +109,11 @@ public class UnmanagedTransactionInformixProjectPersistence extends
      * @throws PersistenceException if there's a problem getting the Connection
      */
     protected Connection openConnection() throws PersistenceException {
+    	 if ( getConnectionName() == null){
+         	logger.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
+         } else {
+         	logger.log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: " + getConnectionName()));
+         }
         return Helper.createConnection(getConnectionFactory(),
                 getConnectionName());
     }
@@ -122,6 +132,7 @@ public class UnmanagedTransactionInformixProjectPersistence extends
     protected void closeConnection(Connection connection)
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
+        logger.log(Level.INFO, "close the connection.");
         Helper.closeConnection(connection);
     }
 
@@ -140,4 +151,12 @@ public class UnmanagedTransactionInformixProjectPersistence extends
         throws PersistenceException {
         closeConnection(connection);
     }
+
+    /**
+     * <p>Return the logger.</p>
+     * @return the <code>Log</code> instance used to take the log message
+     */
+	protected Log getLogger() {
+		return logger;
+	}
 }
