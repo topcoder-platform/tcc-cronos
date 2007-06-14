@@ -1,69 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CMConfig>
-	<!--
-		Profile types configuration.
-	-->
-	<Config name="com.topcoder.user.profile.ConfigProfileType.base">
-		<Property name="first_name">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="last_name">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="email_address">
-			<Value>notempty</Value>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.player">
-		<Property name="player-payment-pref">
-			<Value>notnull</Value>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.sponsor">
-		<Property name="sponsor-fax-number">
-			<Value>notnull</Value>
-		</Property>
-		<Property name="sponsor-payment-pref">
-			<Value>notnull</Value>
-		</Property>
-		<Property name="sponsor-is-approved">
-			<Value>true,false,Y,N</Value>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.admin">
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.address">
-		<Property name="address-street1">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="address-street2">
-			<Value>notnull</Value>
-		</Property>
-		<Property name="address-city">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="address-state">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="address-postal-code">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="address-phone-number">
-			<Value>notempty</Value>
-		</Property>
+    <!--
+            Profile types configuration.
+    -->
+    <Config name="com.topcoder.user.profile.ConfigProfileType.base">
+        <Property name="first_name">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="last_name">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="email_address">
+            <Value>notempty</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.player">
+        <Property name="player-payment-pref">
+            <Value>notnull</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.sponsor">
+        <Property name="sponsor-fax-number">
+            <Value>notnull</Value>
+        </Property>
+        <Property name="sponsor-payment-pref">
+            <Value>notnull</Value>
+        </Property>
+        <Property name="sponsor-is-approved">
+            <Value>true,false,Y,N</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.admin">
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.address">
+        <Property name="address-street1">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="address-street2">
+            <Value>notnull</Value>
+        </Property>
+        <Property name="address-city">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="address-state">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="address-postal-code">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="address-phone-number">
+            <Value>notempty</Value>
+        </Property>
         <Property name="address-country">
             <Value>notempty</Value>
         </Property>
-	</Config>
-	<Config name="com.topcoder.user.profile.ConfigProfileType.credentials">
-		<Property name="credentials-handle">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="credentials-password">
-			<Value>notempty</Value>
-		</Property>
-		<Property name="credentials-is-active">
-			<Value>true,false,Y,N</Value>
-		</Property>
-	</Config>
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.credentials">
+        <Property name="credentials-handle">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="credentials-password">
+            <Value>notempty</Value>
+        </Property>
+        <Property name="credentials-is-active">
+            <Value>true,false,Y,N</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.preferences">
+        <Property name="prefs-sound">
+            <Value>notnull</Value>
+        </Property>
+        <Property name="prefs-general-notification">
+            <Value>notnull</Value>
+        </Property>
+    </Config>
 </CMConfig>

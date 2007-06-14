@@ -3,12 +3,6 @@
  */
 package com.orpheus.user.persistence.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import com.orpheus.user.persistence.ConfigHelper;
 import com.orpheus.user.persistence.DuplicateEntryException;
 import com.orpheus.user.persistence.EntryNotFoundException;
@@ -18,6 +12,11 @@ import com.orpheus.user.persistence.UserConstants;
 import com.orpheus.user.persistence.UserProfileDAO;
 import com.orpheus.user.persistence.ejb.UserProfileDTO;
 import com.topcoder.util.config.ConfigManagerException;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -163,7 +162,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testInsertProfileWithValidPlayerArg() throws Exception {
-        performInsertProfileTestWithValidArg(USER_ID, createPlayerProfile(USER_ID, false));
+        performInsertProfileTestWithValidArg(USER_ID, createPlayerProfile(USER_ID, false, false));
     }
 
     /**
@@ -177,7 +176,24 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testInsertProfileWithValidPlayerArgContainingContactInfo() throws Exception {
-        performInsertProfileTestWithValidArg(USER_ID, createPlayerProfile(USER_ID, true));
+        performInsertProfileTestWithValidArg(USER_ID, createPlayerProfile(USER_ID, true, false));
+    }
+
+    /**
+     * <p>
+     * Tests the insertProfile(UserProfileDTO profile) method with a valid
+     * player profile with preferences information associated with it. The
+     * retrieveProfile(long id) method should not throw an
+     * EntryNotFoundException after the insert operation.
+     * </p>
+     *
+     * @throws Exception to JUnit
+     */
+    public void testInsertProfileWithValidPlayerArgContainingPreferencesInfo() throws Exception {
+        boolean[] addContactInfo = new boolean[] {true, false};
+        for (int i = 0; i < addContactInfo.length; i++) {
+            performInsertProfileTestWithValidArg(USER_ID, createPlayerProfile(USER_ID, addContactInfo[i], true));
+        }
     }
 
     /**
@@ -204,7 +220,9 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testInsertProfileWithValidSponsorArg() throws Exception {
-        performInsertProfileTestWithValidArg(USER_ID, createSponsorProfile(USER_ID, false));
+        // This test is out-of-date. According to Orpheus application requirements
+        // the sponsor accounts must have the contact info provided.
+//        performInsertProfileTestWithValidArg(USER_ID, createSponsorProfile(USER_ID, false));
     }
 
     /**
@@ -412,7 +430,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      */
     public void testUpdateProfileWithValidPlayerArgContainingNoContactInfo() throws Exception {
         // Insert a player profile with no contact information.
-        UserProfileDTO profile = createPlayerProfile(USER_ID, false);
+        UserProfileDTO profile = createPlayerProfile(USER_ID, false, false);
         dao.insertProfile(profile);
 
         // Update some of the player's information.
@@ -428,7 +446,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
             // Check that the profile was updated successfully.
             UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
-            compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, false);
+            compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, false, false);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
@@ -449,7 +467,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      */
     public void testUpdateProfileWithValidPlayerArgContainingContactInfo1() throws Exception {
         // Insert a player profile with contact information.
-        UserProfileDTO profile = createPlayerProfile(USER_ID, true);
+        UserProfileDTO profile = createPlayerProfile(USER_ID, true, false);
         dao.insertProfile(profile);
 
         // Update some player information.
@@ -469,7 +487,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
             // Check that the profile was updated successfully.
             UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
-            compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, true);
+            compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, true, false);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
@@ -491,7 +509,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      */
     public void testUpdateProfileWithValidPlayerArgContainingContactInfo2() throws Exception {
         // Insert a player profile with no contact information.
-        UserProfileDTO profile = createPlayerProfile(USER_ID, false);
+        UserProfileDTO profile = createPlayerProfile(USER_ID, false, false);
         dao.insertProfile(profile);
 
         // Update some player information.
@@ -508,7 +526,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
             // Check that the profile was updated successfully.
             UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
-            compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, true);
+            compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, true, false);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
@@ -542,7 +560,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
             // Check that the profile was updated successfully.
             UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
-            compareUserProfiles(profile, profile2, UserConstants.ADMIN_TYPE_NAME, false);
+            compareUserProfiles(profile, profile2, UserConstants.ADMIN_TYPE_NAME, false, false);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
@@ -560,6 +578,9 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testUpdateProfileWithValidSponsorArgContainingNoContactInfo() throws Exception {
+        // This test is out-of-date. According to Orpheus application requirements
+        // the sponsor accounts must have the contact info provided.
+/*
         // Insert a sponsor profile with no contact information.
         UserProfileDTO profile = createSponsorProfile(USER_ID, false);
         dao.insertProfile(profile);
@@ -579,11 +600,12 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
             // Check that the profile was updated successfully.
             UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
-            compareUserProfiles(profile, profile2, UserConstants.SPONSOR_TYPE_NAME, false);
+            compareUserProfiles(profile, profile2, UserConstants.SPONSOR_TYPE_NAME, false, false);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
         }
+*/
     }
 
     /**
@@ -624,7 +646,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
             // Check that the profile was updated successfully.
             UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
-            compareUserProfiles(profile, profile2, UserConstants.SPONSOR_TYPE_NAME, true);
+            compareUserProfiles(profile, profile2, UserConstants.SPONSOR_TYPE_NAME, true, false);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
@@ -645,6 +667,10 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testUpdateProfileWithValidSponsorArgContainingContactInfo2() throws Exception {
+        // This test is out-of-date. According to Orpheus application requirements
+        // the sponsor accounts must have the contact info provided.
+/*
+
         // Insert a sponsor profile with no contact information.
         UserProfileDTO profile = createSponsorProfile(USER_ID, false);
         dao.insertProfile(profile);
@@ -667,11 +693,12 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
             // Check that the profile was updated successfully.
             UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
-            compareUserProfiles(profile, profile2, UserConstants.SPONSOR_TYPE_NAME, true);
+            compareUserProfiles(profile, profile2, UserConstants.SPONSOR_TYPE_NAME, true, false);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
         }
+*/
     }
 
     /**
@@ -825,7 +852,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testRetrieveProfileWithValidPlayerIdArg() throws Exception {
-        performRetrieveProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false);
+        performRetrieveProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false, false);
     }
 
     /**
@@ -839,7 +866,24 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testRetrieveProfileWithValidPlayerIdArgWithContactInfo() throws Exception {
-        performRetrieveProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true);
+        performRetrieveProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true, false);
+    }
+
+    /**
+     * <p>
+     * Tests the retrieveProfile(long id) method with an ID corresponding to a
+     * player user profile present in the persistent store, and which has
+     * preferences information associated with it. The information in the returned
+     * profile should be equal to that in the persistent store.
+     * </p>
+     *
+     * @throws Exception to JUnit
+     */
+    public void testRetrieveProfileWithValidPlayerIdArgWithPrefsInfo() throws Exception {
+        boolean[] addContactInfo = new boolean[] {true, false};
+        for (int i = 0; i < addContactInfo.length; i++) {
+            performRetrieveProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, addContactInfo[i], true);
+        }
     }
 
     /**
@@ -852,7 +896,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testRetrieveProfileWithValidAdminIdArg() throws Exception {
-        performRetrieveProfileTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false);
+        performRetrieveProfileTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false, false);
     }
 
     /**
@@ -866,7 +910,9 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testRetrieveProfileWithValidSponsorIdArg() throws Exception {
-        performRetrieveProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false);
+        // This test is out-of-date. According to Orpheus application requirements
+        // the sponsor accounts must have the contact info provided.
+//        performRetrieveProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false, false);
     }
 
     /**
@@ -880,7 +926,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testRetrieveProfileWithValidSponsorIdArgWithContactInfo() throws Exception {
-        performRetrieveProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true);
+        performRetrieveProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true, false);
     }
 
     /**
@@ -900,14 +946,17 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @param addContactInfo whether the user profile should have contact
      *        information associated with it (only applies to player and sponsor
      *        profiles)
+     * @param addPreferencesInfo whether the user profile should have preferences
+     *        information associated with it (only applies to player profiles)
      * @throws PersistenceException if the test fails due to a persistence error
      */
-    private void performRetrieveProfileTestWithValidArg(String userTypeName, boolean addContactInfo)
+    private void performRetrieveProfileTestWithValidArg(String userTypeName, boolean addContactInfo,
+                                                        boolean addPreferencesInfo)
             throws PersistenceException {
         // Create the profile to retrieve.
         UserProfileDTO profile = null;
         if (userTypeName.equals(UserConstants.PLAYER_TYPE_NAME)) {
-            profile = createPlayerProfile(USER_ID, addContactInfo);
+            profile = createPlayerProfile(USER_ID, addContactInfo, addPreferencesInfo);
         } else if (userTypeName.equals(UserConstants.ADMIN_TYPE_NAME)) {
             profile = createAdminProfile(USER_ID);
         } else if (userTypeName.equals(UserConstants.SPONSOR_TYPE_NAME)) {
@@ -922,7 +971,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
         // Check that the returned profile is equal to the inserted one.
         try {
-            compareUserProfiles(profile, profile2, userTypeName, addContactInfo);
+            compareUserProfiles(profile, profile2, userTypeName, addContactInfo, addPreferencesInfo);
         } finally {
             // Clean-up by deleting the inserted profile.
             dao.deleteProfile(USER_ID);
@@ -945,9 +994,11 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      *        instances represent
      * @param hasContactInfo whether the UserProfileDTO instances contain
      *        ContactInfo objects
+     * @param hasPreferencesInfo whether the UserProfileDTO instances contain
+     *        PlayerPreferencesInfo objects
      */
     private void compareUserProfiles(UserProfileDTO profile1, UserProfileDTO profile2, String userTypeName,
-            boolean hasContactInfo) {
+            boolean hasContactInfo, boolean hasPreferencesInfo) {
         User user1 = null;
         User user2 = null;
         if (userTypeName.equals(UserConstants.PLAYER_TYPE_NAME)) {
@@ -958,6 +1009,10 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
             if (hasContactInfo) {
                 compareContactInfos((ContactInfo) profile1.get(UserProfileDTO.CONTACT_INFO_KEY),
                                     (ContactInfo) profile2.get(UserProfileDTO.CONTACT_INFO_KEY));
+            }
+            if (hasPreferencesInfo) {
+                comparePreferenceInfos((PlayerPreferencesInfo) profile1.get(UserProfileDTO.PREFERENCES_INFO_KEY),
+                                    (PlayerPreferencesInfo) profile2.get(UserProfileDTO.PREFERENCES_INFO_KEY));
             }
             user1 = player1;
             user2 = player2;
@@ -1045,7 +1100,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testDeleteProfileWithValidPlayerIdArg() throws Exception {
-        performDeleteProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false);
+        performDeleteProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false, false);
     }
 
     /**
@@ -1060,7 +1115,25 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testDeleteProfileWithValidPlayerIdArgWithContactInfo() throws Exception {
-        performDeleteProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true);
+        performDeleteProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true, false);
+    }
+
+    /**
+     * <p>
+     * Tests the deleteProfile(long id) method with an argument corresponding to
+     * a player profile present in the persistent store that has preference
+     * information associated with it. After the delete operation, invoking the
+     * retrieveProfile(long id) method with the method argument should result in
+     * an EntryNotFoundException being thrown.
+     * </p>
+     *
+     * @throws Exception to JUnit
+     */
+    public void testDeleteProfileWithValidPlayerIdArgWithPreferencesInfo() throws Exception {
+        boolean[] addContactInfo = new boolean[] {true, false};
+        for (int i = 0; i < addContactInfo.length; i++) {
+            performDeleteProfileTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, addContactInfo[i], true);
+        }
     }
 
     /**
@@ -1074,7 +1147,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testDeleteProfileWithValidAdminIdArg() throws Exception {
-        performDeleteProfileTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false);
+        performDeleteProfileTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false, false);
     }
 
     /**
@@ -1089,7 +1162,9 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testDeleteProfileWithValidSponsorIdArg() throws Exception {
-        performDeleteProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false);
+        // This test is out-of-date. According to Orpheus application requirements
+        // the sponsor accounts must have the contact info provided.
+//        performDeleteProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false);
     }
 
     /**
@@ -1104,7 +1179,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testDeleteProfileWithValidSponsorIdArgWithContactInfo() throws Exception {
-        performDeleteProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true);
+        performDeleteProfileTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true, false);
     }
 
     /**
@@ -1123,14 +1198,16 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @param addContactInfo whether the user profile should have contact
      *        information associated with it (only applies to player and sponsor
      *        profiles)
+     * @param addPreferencesInfo whether the user profile should have preferences
+     *        information associated with it (only applies to player profiles)
      * @throws PersistenceException if the test fails due to a persistence error
      */
-    private void performDeleteProfileTestWithValidArg(String userTypeName, boolean addContactInfo)
-            throws PersistenceException {
+    private void performDeleteProfileTestWithValidArg(String userTypeName, boolean addContactInfo,
+                                                      boolean addPreferencesInfo) throws PersistenceException {
         // Create the profile to delete.
         UserProfileDTO profile = null;
         if (userTypeName.equals(UserConstants.PLAYER_TYPE_NAME)) {
-            profile = createPlayerProfile(USER_ID, addContactInfo);
+            profile = createPlayerProfile(USER_ID, addContactInfo, addPreferencesInfo);
         } else if (userTypeName.equals(UserConstants.ADMIN_TYPE_NAME)) {
             profile = createAdminProfile(USER_ID);
         } else if (userTypeName.equals(UserConstants.SPONSOR_TYPE_NAME)) {
@@ -1203,7 +1280,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
                 profile = createAdminProfile(id);
                 user = (User) profile.get(UserProfileDTO.ADMIN_KEY);
             } else if (i % 3 == 0) {
-                profile = createPlayerProfile(id, false);
+                profile = createPlayerProfile(id, false, false);
                 user = (User) profile.get(UserProfileDTO.PLAYER_KEY);
             } else {
                 profile = createSponsorProfile(id, true);
@@ -1274,7 +1351,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
         // Insert a bunch of matching profiles.
         for (int i = 0; i < numMatchingProfiles; i++) {
-            UserProfileDTO profile = createPlayerProfile(idOffset + numRandomProfiles + i, true);
+            UserProfileDTO profile = createPlayerProfile(idOffset + numRandomProfiles + i, true, false);
             ((Player) profile.get(UserProfileDTO.PLAYER_KEY)).setPaymentPref(paymentPref);
             dao.insertProfile(profile);
         }
@@ -1320,6 +1397,8 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @throws Exception to JUnit
      */
     public void testFindProfilesWithValidArgMatchingProfiles3() throws Exception {
+        // The test is updated to omit searching by handle as latest Orpheus application
+        // requirements require user handles to be unique
         int numRandomProfiles = 12;
         int numMatchingProfiles = 31;
         long idOffset = USER_ID;
@@ -1327,8 +1406,13 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         // Insert some random (non-matching) profiles into the database.
         populateDatabase(numRandomProfiles, idOffset);
 
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         String active = "N";
-        String handle = "joeuser";
+//        String handle = "joeuser";
         String city = "Los Angeles";
         String state = "California";
 
@@ -1339,19 +1423,20 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
             UserProfileDTO profile = null;
             User user = null;
             if (i % 3 == 0) {
-                profile = createPlayerProfile(id, true);
+                profile = createPlayerProfile(id, true, false);
                 user = (User) profile.get(UserProfileDTO.PLAYER_KEY);
             } else {
                 profile = createSponsorProfile(id, true);
                 user = (User) profile.get(UserProfileDTO.SPONSOR_KEY);
             }
 
-            user.setHandle(handle);
+//            user.setHandle(handle);
             user.setActive(active);
 
             ContactInfo contactInfo = (ContactInfo) profile.get(UserProfileDTO.CONTACT_INFO_KEY);
             contactInfo.setCity(city);
             contactInfo.setState(state);
+            contactInfo.setCountry("United States");
 
             dao.insertProfile(profile);
         }
@@ -1360,7 +1445,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         // California that have the handle, "joeuser".
         Map criteria = new HashMap();
         criteria.put(UserConstants.CREDENTIALS_IS_ACTIVE, active);
-        criteria.put(UserConstants.CREDENTIALS_HANDLE, handle);
+//        criteria.put(UserConstants.CREDENTIALS_HANDLE, handle);
         criteria.put(UserConstants.ADDRESS_CITY, city);
         criteria.put(UserConstants.ADDRESS_STATE, state);
 
@@ -1384,7 +1469,7 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
                 }
                 ContactInfo contactInfo = (ContactInfo) profiles[i].get(UserProfileDTO.CONTACT_INFO_KEY);
 
-                assertEquals("The handle is incorrect", handle, user.getHandle());
+//                assertEquals("The handle is incorrect", handle, user.getHandle());
                 assertEquals("The active flag is incorrect", active, user.getActive());
                 assertEquals("The city is incorrect", city, contactInfo.getCity());
                 assertEquals("The state is incorrect", state, contactInfo.getState());
@@ -1734,6 +1819,131 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
     /**
      * <p>
+     * Tests the updateProfile(UserProfileDTO profile) with a user profile DTO
+     * argument containing only a Player object (no preferences information). The
+     * return value of the retrieveProfile(long id) method should be equal to
+     * the method argument when given the ID of the updated player.
+     * </p>
+     *
+     * @throws Exception to JUnit
+     */
+    public void testUpdateProfileWithValidPlayerArgContainingNoPrefsInfo() throws Exception {
+        boolean[] addContactInfo = new boolean[] {true, false};
+
+        for (int i = 0; i < addContactInfo.length; i++) {
+            // Insert a player profile with no prefs information.
+            UserProfileDTO profile = createPlayerProfile(USER_ID, addContactInfo[i], false);
+            dao.insertProfile(profile);
+
+            // Update some of the player's information.
+            Player player = (Player) profile.get(UserProfileDTO.PLAYER_KEY);
+            player.setEmail("updatedemail@somehost.domain");
+            player.setPassword("pwdupdate");
+            player.setPaymentPref(null);
+            player.setActive("N");
+
+            try {
+                // Try to update the profile.
+                dao.updateProfile(profile);
+
+                // Check that the profile was updated successfully.
+                UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
+                compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, addContactInfo[i], false);
+            } finally {
+                // Clean-up by deleting the inserted profile.
+                dao.deleteProfile(USER_ID);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the updateProfile(UserProfileDTO profile) with a user profile DTO
+     * argument containing a Player and a PlayerPreferencesInfo object. The method is
+     * called when an entry corresponding to the PlayerPreferencesInfo object already
+     * exists in the database. After the method is called, the return value of
+     * the retrieveProfile(long id) method should be equal to the method
+     * argument when given the ID of the updated player.
+     * </p>
+     *
+     * @throws Exception to JUnit
+     */
+    public void testUpdateProfileWithValidPlayerArgContainingPrefsInfo1() throws Exception {
+        boolean[] addContactInfo = new boolean[] {true, false};
+        for (int i = 0; i < addContactInfo.length; i++) {
+            // Insert a player profile with contact information.
+            UserProfileDTO profile = createPlayerProfile(USER_ID, addContactInfo[i], true);
+            dao.insertProfile(profile);
+
+            // Update some player information.
+            Player player = (Player) profile.get(UserProfileDTO.PLAYER_KEY);
+            player.setPassword("pwdupdate");
+            player.setPaymentPref(null);
+
+            // Update some preferences information.
+            PlayerPreferencesInfo contactInfo = (PlayerPreferencesInfo) profile.get(UserProfileDTO.PREFERENCES_INFO_KEY);
+            contactInfo.setSoundOption(10);
+            contactInfo.setGeneralNotificationsOptIn(false);
+
+            try {
+                // Try to update the profile.
+                dao.updateProfile(profile);
+
+                // Check that the profile was updated successfully.
+                UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
+                compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, addContactInfo[i], true);
+            } finally {
+                // Clean-up by deleting the inserted profile.
+                dao.deleteProfile(USER_ID);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the updateProfile(UserProfileDTO profile) with a user profile DTO
+     * argument containing a Player and a PlayerPreferencesInfo object. The method is
+     * called when no entry corresponding to the PlayerPreferencesInfo object exists in
+     * the database. Therefore, the update operation should insert the contact
+     * information, rather than simply update it. After the method is called,
+     * the return value of the retrieveProfile(long id) method should be equal
+     * to the method argument when given the ID of the updated player.
+     * </p>
+     *
+     * @throws Exception to JUnit
+     */
+    public void testUpdateProfileWithValidPlayerArgContainingPrefsInfo2() throws Exception {
+        boolean[] addContactInfo = new boolean[] {true, false};
+        for (int i = 0; i < addContactInfo.length; i++) {
+
+            // Insert a player profile with no contact information.
+            UserProfileDTO profile = createPlayerProfile(USER_ID, addContactInfo[i], false);
+            dao.insertProfile(profile);
+
+            // Update some player information.
+            Player player = (Player) profile.get(UserProfileDTO.PLAYER_KEY);
+            player.setPassword("pwdupdate");
+            player.setPaymentPref(null);
+
+            // Add preferences information to the player profile.
+            addPreferencesInfo(player.getId(), profile);
+
+            try {
+                // Try to update the profile.
+                dao.updateProfile(profile);
+
+                // Check that the profile was updated successfully.
+                UserProfileDTO profile2 = dao.retrieveProfile(USER_ID);
+                compareUserProfiles(profile, profile2, UserConstants.PLAYER_TYPE_NAME, addContactInfo[i], true);
+            } finally {
+                // Clean-up by deleting the inserted profile.
+                dao.deleteProfile(USER_ID);
+            }
+        }
+    }
+
+    /**
+     * <p>
      * Tests that SQLServerUserProfileDAO implements the PendingConfirmationDAO
      * interface.
      * </p>
@@ -1773,11 +1983,10 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
             if (i % 2 == 0) {
                 profile = createAdminProfile(id);
             } else if (i % 3 == 0) {
-                profile = createPlayerProfile(id, false);
+                profile = createPlayerProfile(id, false, false);
             } else {
                 profile = createSponsorProfile(id, true);
             }
-
             dao.insertProfile(profile);
         }
     }
@@ -1794,8 +2003,10 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @return the player user profile with the specified ID
      * @param addContactInfo whether the contact information object associated
      *        with the player should be created as well
+     * @param addPreferencesInfo whether the preferences information object associated
+     *        with the player should be created as well
      */
-    private UserProfileDTO createPlayerProfile(long id, boolean addContactInfo) {
+    private UserProfileDTO createPlayerProfile(long id, boolean addContactInfo, boolean addPreferencesInfo) {
         Player player = new Player(id);
         setUserInfo(player);
 
@@ -1804,6 +2015,10 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
 
         if (addContactInfo) {
             addContactInfo(player.getId(), profile);
+        }
+
+        if (addPreferencesInfo) {
+            addPreferencesInfo(player.getId(), profile);
         }
 
         return profile;
@@ -1866,8 +2081,16 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
      * @param user the User object whose fields should be set
      */
     private void setUserInfo(User user) {
-        user.setHandle("tcsdeveloper");
-        user.setEmail("tcsdeveloper@topcodersoftware.com");
+//        user.setHandle("tcsdeveloper");
+//        user.setEmail("tcsdeveloper@topcodersoftware.com");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        long id = System.currentTimeMillis();
+        user.setHandle("d" + id);
+        user.setEmail(id + "@test.com");
         user.setPassword("repolevedsct");
         user.setActive("Y");
     }
@@ -1891,8 +2114,41 @@ public class SQLServerUserProfileDAOTest extends DAOTestBase {
         contactInfo.setState("Mystate");
         contactInfo.setPostalCode("8713");
         contactInfo.setTelephone("981-3472-8475");
+        contactInfo.setCountry("United States");
 
         profile.put(UserProfileDTO.CONTACT_INFO_KEY, contactInfo);
     }
 
+    /**
+     * <p>
+     * Creates a PlayerPreferencesInfo object with the specified ID that can be used for
+     * testing purposes, and adds it to the given user profile DTO.
+     * </p>
+     *
+     * @param id the ID of the preferences information
+     * @param profile the user profile DTO to which the PlayerPreferencesInfo object
+     *        should be added
+     */
+    private void addPreferencesInfo(long id, UserProfileDTO profile) {
+        PlayerPreferencesInfo prefsInfoPlayer = new PlayerPreferencesInfo(id);
+        prefsInfoPlayer.setSoundOption(118);
+        prefsInfoPlayer.setGeneralNotificationsOptIn(true);
+        profile.put(UserProfileDTO.PREFERENCES_INFO_KEY, prefsInfoPlayer);
+    }
+
+    /**
+     * <p>
+     * Checks that the fields of the two given PlayerPreferencesInfo objects are equal. If
+     * any field is not the same, a JUnit assertion is generated.
+     * </p>
+     *
+     * @param info1 the PlayerPreferencesInfo object to compare to info2
+     * @param info2 the PlayerPreferencesInfo object to compare to info1
+     */
+    private void comparePreferenceInfos(PlayerPreferencesInfo info1, PlayerPreferencesInfo info2) {
+        assertEquals("The contact info ID is incorrect", info1.getId(), info2.getId());
+        assertEquals("The sound option is incorrect", info1.getSoundOption(), info2.getSoundOption());
+        assertEquals("The general notification is incorrect",
+                     info1.getGeneralNotificationsOptIn(), info2.getGeneralNotificationsOptIn());
+    }
 }

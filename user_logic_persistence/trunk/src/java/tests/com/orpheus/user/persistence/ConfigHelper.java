@@ -3,8 +3,6 @@
  */
 package com.orpheus.user.persistence;
 
-import java.io.File;
-
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 
@@ -158,6 +156,7 @@ public class ConfigHelper {
         loadConfig(PROFILETYPES_CONFIG, PROFILETYPES_NAMESPACE_PREFIX + ".sponsor");
         loadConfig(PROFILETYPES_CONFIG, PROFILETYPES_NAMESPACE_PREFIX + ".address");
         loadConfig(PROFILETYPES_CONFIG, PROFILETYPES_NAMESPACE_PREFIX + ".credentials");
+        loadConfig(PROFILETYPES_CONFIG, PROFILETYPES_NAMESPACE_PREFIX + ".preferences");
     }
 
     /**

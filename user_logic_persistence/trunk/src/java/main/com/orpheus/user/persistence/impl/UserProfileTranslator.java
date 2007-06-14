@@ -232,6 +232,11 @@ public class UserProfileTranslator implements ObjectTranslator {
             setContactInformation(profile, profileDTO);
         }
 
+        // Set the player preferences information if any.
+        if (profileDTO.contains(UserProfileDTO.PREFERENCES_INFO_KEY)) {
+            setPreferencesInformation(profile, profileDTO);
+        }
+
         return player;
     }
 
@@ -520,6 +525,13 @@ public class UserProfileTranslator implements ObjectTranslator {
             profileDTO.put(UserProfileDTO.CONTACT_INFO_KEY, contactInfo);
         }
 
+        // Create the player preferences information if the preferences profile type
+        // exists in the user profile, and add it to the user profile DTO.
+        if (profile.getProfileType(UserConstants.PREFERENCES_TYPE_NAME) != null) {
+            PlayerPreferencesInfo playerPreferencesInfo = createPreferencesInfo(player.getId(), profile);
+            profileDTO.put(UserProfileDTO.PREFERENCES_INFO_KEY, playerPreferencesInfo);
+        }
+
         return player;
     }
 
@@ -608,4 +620,59 @@ public class UserProfileTranslator implements ObjectTranslator {
         return contactInfo;
     }
 
+    /**
+     * <p>
+     * Creates and returns a <code>PlayerPreferencesInfo</code> object with the specified
+     * ID from the given user profile.
+     * </p>
+     *
+     * @param prefsInfoId the ID of the <code>PlayerPreferencesInfo</code> object to
+     *        create
+     * @param profile the user profile from which to create the
+     *        <code>PlayerPreferencesInfo</code> object
+     * @return the <code>PlayerPreferencesInfo</code> object that was created
+     * @throws TranslationException if creating the <code>PlayerPreferencesInfo</code>
+     *         object from the given user profile fails
+     */
+    private PlayerPreferencesInfo createPreferencesInfo(long prefsInfoId, UserProfile profile) throws TranslationException {
+        PlayerPreferencesInfo prefsInfoPlayer = new PlayerPreferencesInfo(prefsInfoId);
+        Integer soundOption = (Integer) profile.getProperty(UserConstants.PREFS_SOUND);
+        prefsInfoPlayer.setSoundOption(soundOption.intValue());
+        Boolean optInFlag = (Boolean) profile.getProperty(UserConstants.PREFS_GENERAL_NOTIFICATION);
+        prefsInfoPlayer.setGeneralNotificationsOptIn(optInFlag.booleanValue());
+        return prefsInfoPlayer;
+    }
+
+    /**
+     * <p>
+     * Retrieves the <code>PlayerPreferencesInfo</code> object from the given user
+     * profile DTO, adds the <code>UserConstants.PREFERENCES_TYPE_NAME</code>
+     * profile type to the given user profile, and set the corresponding preferences
+     * information properties in the user profile.
+     * </p>
+     *
+     * @param profile the user profile in which to set the preferences information
+     *        information
+     * @param profileDTO the user profile DTO from which to retrieve the
+     *        <code>PlayerPreferencesInfo</code> object
+     * @throws TranslationException if the user profile DTO does not contain an
+     *         <code>PlayerPreferencesInfo</code> object
+     */
+    private void setPreferencesInformation(UserProfile profile, UserProfileDTO profileDTO) throws TranslationException {
+        Object bean = profileDTO.get(UserProfileDTO.PREFERENCES_INFO_KEY);
+        if (!(bean instanceof PlayerPreferencesInfo)) {
+            throw new TranslationException("The " + UserProfileDTO.PREFERENCES_INFO_KEY
+                    + " key in the UserProfileDTO does not map to a PlayerPreferencesInfo object");
+        }
+
+        PlayerPreferencesInfo prefsInfoPlayer = (PlayerPreferencesInfo) bean;
+
+        // Add the preferences profile type.
+        addProfileType(profile, UserConstants.PREFERENCES_TYPE_NAME);
+
+        // Set the preferences information.
+        setProfileProperty(profile, UserConstants.PREFS_SOUND, new Integer(prefsInfoPlayer.getSoundOption()));
+        setProfileProperty(profile, UserConstants.PREFS_GENERAL_NOTIFICATION,
+                           Boolean.valueOf(prefsInfoPlayer.getGeneralNotificationsOptIn()));
+    }
 }

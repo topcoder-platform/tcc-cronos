@@ -3,10 +3,6 @@
  */
 package com.orpheus.user.persistence.impl;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import com.orpheus.user.persistence.ConfigHelper;
 import com.orpheus.user.persistence.ObjectInstantiationException;
 import com.orpheus.user.persistence.ObjectTranslator;
@@ -18,6 +14,9 @@ import com.topcoder.user.profile.ConfigProfileType;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.user.profile.manager.ConfigProfileTypeFactory;
 import com.topcoder.util.config.ConfigManagerException;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * <p>
@@ -247,6 +246,27 @@ public class UserProfileTranslatorTest extends TestCase {
      * </p>
      */
     private static final String TELEPHONE = "121-8254-1306";
+
+    /**
+     * <p>
+     * A sample country to put in the test user profile.
+     * </p>
+     */
+    private static final String COUNTRY = "United States";
+
+    /**
+     * <p>
+     * A sample sound option field to put in the test user profile.
+     * </p>
+     */
+    private static final Integer SOUND_OPTION = new Integer(121);
+
+    /**
+     * <p>
+     * A sample general notification option field to put in the test user profile.
+     * </p>
+     */
+    private static final Boolean GENERAL_NOTIFICATION_OPTIN = Boolean.TRUE;
 
     /**
      * <p>
@@ -480,7 +500,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleVOWithValidPlayerProfileDTO() throws Exception {
-        performAssembleVOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false);
+        performAssembleVOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false, false);
     }
 
     /**
@@ -494,7 +514,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleVOWithValidPlayerProfileDTOAndContactInfo() throws Exception {
-        performAssembleVOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true);
+        performAssembleVOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true, false);
     }
 
     /**
@@ -507,7 +527,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleVOWithValidAdminProfileDTO() throws Exception {
-        performAssembleVOTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false);
+        performAssembleVOTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false, false);
     }
 
     /**
@@ -521,7 +541,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleVOWithValidSponsorProfileDTO() throws Exception {
-        performAssembleVOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false);
+        performAssembleVOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false, false);
     }
 
     /**
@@ -535,7 +555,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleVOWithValidSponsorProfileDTOAndContactInfo() throws Exception {
-        performAssembleVOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true);
+        performAssembleVOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true, false);
     }
 
     /**
@@ -561,10 +581,12 @@ public class UserProfileTranslatorTest extends TestCase {
      *        sponsor
      * @param addContactInfo whether the user contact information should be
      *        added to the user profile
+     * @param addPreferencesInfo whether the user preferences information should be
+     *        added to the user profile (for players only)
      * @throws TranslationException if translating the DTO to the VO fails
      */
-    private void performAssembleVOTestWithValidArg(String userTypeName, boolean addContactInfo)
-            throws TranslationException {
+    private void performAssembleVOTestWithValidArg(String userTypeName, boolean addContactInfo,
+                                                   boolean addPreferencesInfo) throws TranslationException {
         // Create the user profile.
         UserProfileDTO profileDTO = new UserProfileDTO();
 
@@ -611,7 +633,17 @@ public class UserProfileTranslatorTest extends TestCase {
             contactInfo.setState(STATE);
             contactInfo.setPostalCode(POSTAL_CODE);
             contactInfo.setTelephone(TELEPHONE);
+            contactInfo.setCountry(COUNTRY);
             profileDTO.put(UserProfileDTO.CONTACT_INFO_KEY, contactInfo);
+        }
+
+        // If addPreferencesInfo is true and the user is a player,
+        // add the address profile type and preferences information to the profile.
+        if (addPreferencesInfo && (userTypeName.equals(UserConstants.PLAYER_TYPE_NAME))) {
+            PlayerPreferencesInfo prefsInfo = new PlayerPreferencesInfo(ID);
+            prefsInfo.setSoundOption(SOUND_OPTION.intValue());
+            prefsInfo.setGeneralNotificationsOptIn(GENERAL_NOTIFICATION_OPTIN.booleanValue());
+            profileDTO.put(UserProfileDTO.PREFERENCES_INFO_KEY, prefsInfo);
         }
 
         // Translate to a UserProfile.
@@ -665,6 +697,16 @@ public class UserProfileTranslatorTest extends TestCase {
                          profile.getProperty(UserConstants.ADDRESS_POSTAL_CODE));
             assertEquals("The telephone is incorrect", TELEPHONE,
                          profile.getProperty(UserConstants.ADDRESS_PHONE_NUMBER));
+        }
+
+        // If the user is a player, then check the preferences information if it exists.
+        if (addPreferencesInfo && (userTypeName.equals(UserConstants.PLAYER_TYPE_NAME))) {
+            assertNotNull("The preferences profile type does not exist in the profile",
+                          profile.getProfileType(UserConstants.PREFERENCES_TYPE_NAME));
+            assertEquals("The preferences info ID is incorrect", new Long(ID), profile.getIdentifier());
+            assertEquals("The sound option is incorrect", SOUND_OPTION, profile.getProperty(UserConstants.PREFS_SOUND));
+            assertEquals("The general notification is incorrect",
+                         GENERAL_NOTIFICATION_OPTIN, profile.getProperty(UserConstants.PREFS_GENERAL_NOTIFICATION));
         }
 
         assertNotNull("The credentials profile type does not exist in the profile",
@@ -845,7 +887,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleDTOWithValidPlayerProfile() throws Exception {
-        performAssembleDTOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false);
+        performAssembleDTOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, false, false);
     }
 
     /**
@@ -859,7 +901,24 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleDTOWithValidPlayerProfileWithContactInfo() throws Exception {
-        performAssembleDTOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true);
+        performAssembleDTOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, true, false);
+    }
+
+    /**
+     * <p>
+     * Tests the assembleDTO(Object valueObject) with a valid player profile
+     * containing preferences information. The returned UserProfileDTO should
+     * contain a Player and and PlayerPreferencesInfo object, which contain all the player
+     * and preferences information present in the given user profile.
+     * </p>
+     *
+     * @throws Exception to JUnit
+     */
+    public void testAssembleDTOWithValidPlayerProfileWithPreferencesInfo() throws Exception {
+        boolean[] addContactInfo = new boolean[] {true, false};
+        for (int i = 0; i < addContactInfo.length; i++) {
+            performAssembleDTOTestWithValidArg(UserConstants.PLAYER_TYPE_NAME, addContactInfo[i], true);
+        }
     }
 
     /**
@@ -872,7 +931,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleDTOWithValidAdminProfile() throws Exception {
-        performAssembleDTOTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false);
+        performAssembleDTOTestWithValidArg(UserConstants.ADMIN_TYPE_NAME, false, false);
     }
 
     /**
@@ -886,7 +945,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleDTOWithValidSponsorProfile() throws Exception {
-        performAssembleDTOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false);
+        performAssembleDTOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, false, false);
     }
 
     /**
@@ -900,7 +959,7 @@ public class UserProfileTranslatorTest extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAssembleDTOWithValidSponsorProfileWithContactInfo() throws Exception {
-        performAssembleDTOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true);
+        performAssembleDTOTestWithValidArg(UserConstants.SPONSOR_TYPE_NAME, true, false);
     }
 
     /**
@@ -926,10 +985,13 @@ public class UserProfileTranslatorTest extends TestCase {
      *        sponsor
      * @param addContactInfo whether the user contact information should be
      *        added to the user profile
+     * @param addPreferencesInfo whether the user preferences information should be
+     *        added to the user profile (for players only)
      * @throws Exception if testing the assembleDTO(Object valueObject) method
      *         fails
      */
-    private void performAssembleDTOTestWithValidArg(String userTypeName, boolean addContactInfo) throws Exception {
+    private void performAssembleDTOTestWithValidArg(String userTypeName, boolean addContactInfo,
+                                                    boolean addPreferencesInfo) throws Exception {
         // Create the user profile.
         UserProfile profile = new UserProfile(new Long(ID));
 
@@ -975,6 +1037,14 @@ public class UserProfileTranslatorTest extends TestCase {
             profile.setProperty(UserConstants.ADDRESS_PHONE_NUMBER, TELEPHONE);
         }
 
+        // If addPreferencesInfo is true and the user is a player,
+        // add the address profile type and contact information to the profile.
+        if (addPreferencesInfo && (userTypeName.equals(UserConstants.PLAYER_TYPE_NAME))) {
+            profile.addProfileType(factory.getProfileType(UserConstants.PREFERENCES_TYPE_NAME));
+            profile.setProperty(UserConstants.PREFS_SOUND, SOUND_OPTION);
+            profile.setProperty(UserConstants.PREFS_GENERAL_NOTIFICATION, GENERAL_NOTIFICATION_OPTIN);
+        }
+
         // Translate to a UserProfileDTO.
         UserProfileDTO profileDTO = (UserProfileDTO) translator.assembleDTO(profile);
 
@@ -1017,6 +1087,19 @@ public class UserProfileTranslatorTest extends TestCase {
             assertEquals("The state is incorrect", STATE, contactInfo.getState());
             assertEquals("The postal code is incorrect", POSTAL_CODE, contactInfo.getPostalCode());
             assertEquals("The telephone is incorrect", TELEPHONE, contactInfo.getTelephone());
+        }
+
+        // If the user is a player then check the preferences information if it
+        // exists.
+        if (addPreferencesInfo && (userTypeName.equals(UserConstants.PLAYER_TYPE_NAME))) {
+            assertTrue("There should be preferences information",
+                       profileDTO.contains(UserProfileDTO.PREFERENCES_INFO_KEY));
+            PlayerPreferencesInfo prefsInfo
+                = (PlayerPreferencesInfo) profileDTO.get(UserProfileDTO.PREFERENCES_INFO_KEY);
+            assertEquals("The contact info ID is incorrect", ID, prefsInfo.getId());
+            assertEquals("The sound option is incorrect", SOUND_OPTION, new Integer(prefsInfo.getSoundOption()));
+            assertEquals("The general notification is incorrect",
+                         GENERAL_NOTIFICATION_OPTIN, Boolean.valueOf(prefsInfo.getGeneralNotificationsOptIn()));
         }
 
         // Check the general user information.

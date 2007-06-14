@@ -92,6 +92,15 @@ public interface UserConstants {
 
     /**
      * <p>
+     * Represents a user preferences profile type. Profiles of this type will
+     * contain the various options selected by the user. So far these are the
+     * 
+     * </p>
+     */
+    public String PREFERENCES_TYPE_NAME = "preferences";
+
+    /**
+     * <p>
      * Represents the payment preference property of the
      * {@link #PLAYER_TYPE_NAME} profile type. This constant matches the
      * player.payment_pref column in the persistent store.
@@ -215,4 +224,21 @@ public interface UserConstants {
      */
     public String CREDENTIALS_IS_ACTIVE = "credentials-is-active";
 
+    /**
+     * <p>
+     * Represents the selected sound option field property of the
+     * {@link #PREFERENCES_TYPE_NAME} profile type. This constant matches the
+     * preferences.sound column in the persistent store.
+     * </p>
+     */
+    public String PREFS_SOUND = "prefs-sound";
+
+    /**
+     * <p>
+     * Represents the selected sound option field property of the
+     * {@link #PREFERENCES_TYPE_NAME} profile type. This constant matches the
+     * preferences.sound column in the persistent store.
+     * </p>
+     */
+    public String PREFS_GENERAL_NOTIFICATION = "prefs-general-notification";
 }

@@ -173,7 +173,7 @@ public class UserConstantsTest extends TestCase {
      * "address-country".
      * </p>
      */
-    public void testAddressPhoneNumberConstant() {
+    public void testAddressCountryConstant() {
         assertEquals("ADDRESS_COUNTRY is incorrect", UserConstants.ADDRESS_COUNTRY, "address-country");
     }
 
@@ -206,6 +206,27 @@ public class UserConstantsTest extends TestCase {
     public void testCredentialsIsActiveConstant() {
         assertEquals("CREDENTIALS_IS_ACTIVE is incorrect",
                      UserConstants.CREDENTIALS_IS_ACTIVE, "credentials-is-active");
+    }
+
+    /**
+     * <p>
+     * Tests that the UserConstants.PREFS_SOUND constant is equal to
+     * "prefs-sound".
+     * </p>
+     */
+    public void testPreferencesSoundConstant() {
+        assertEquals("PREFS_SOUND is incorrect", UserConstants.PREFS_SOUND, "prefs-sound");
+    }
+
+    /**
+     * <p>
+     * Tests that the UserConstants.PREFS_GENERAL_NOTIFICATION constant is equal to
+     * "prefs-general-notification".
+     * </p>
+     */
+    public void testPreferencesGeneralNotificationConstant() {
+        assertEquals("PREFS_GENERAL_NOTIFICATION is incorrect",
+                     UserConstants.PREFS_GENERAL_NOTIFICATION, "prefs-general-notification");
     }
 
     /**

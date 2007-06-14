@@ -149,6 +149,15 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
 
     /**
      * <p>
+     * The SQL statement to insert preferences information into the database.
+     * </p>
+     */
+    private static final String INSERT_PREFERENCES_SQL_STATEMENT = "INSERT INTO player_preferences "
+            + "(player_id, sound_option, notification_general) "
+            + "VALUES (?, ?, ?)";
+
+    /**
+     * <p>
      * The SQL statement to update a user in the database.
      * </p>
      */
@@ -182,12 +191,22 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
 
     /**
      * <p>
+     * The SQL statement to update the preferences information in the database.
+     * </p>
+     */
+    private static final String UPDATE_PREFERENCES_SQL_STATEMENT = "UPDATE player_preferences "
+            + "SET sound_option=?, notification_general=? WHERE player_id=?";
+
+    /**
+     * <p>
      * The SQL statement to select the player information from the database.
      * </p>
      */
-    private static final String SELECT_PLAYER_SQL_STATEMENT = "SELECT * FROM ( "
+    private static final String SELECT_PLAYER_SQL_STATEMENT
+        = "SELECT *, player_preferences.player_id AS prefs_id FROM ( "
             + "SELECT * FROM any_user INNER JOIN player ON any_user.id=player.any_user_id WHERE id=?) AS userplayer "
-            + "LEFT OUTER JOIN contact_info ON userplayer.contact_info_id=contact_info.id";
+            + "LEFT OUTER JOIN contact_info ON userplayer.contact_info_id=contact_info.id "
+            + "LEFT OUTER JOIN player_preferences ON userplayer.id=player_preferences.player_id";
 
     /**
      * <p>
@@ -211,9 +230,11 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
      * The SQL statement to select all the players from the database.
      * </p>
      */
-    private static final String SELECT_ALL_PLAYERS_SQL_STATEMENT = "SELECT * FROM ( "
+    private static final String SELECT_ALL_PLAYERS_SQL_STATEMENT
+        = "SELECT *, player_preferences.player_id AS prefs_id FROM ( "
             + "SELECT * FROM any_user INNER JOIN player ON any_user.id=player.any_user_id) AS userplayer "
-            + "LEFT OUTER JOIN contact_info ON userplayer.contact_info_id=contact_info.id";
+            + "LEFT OUTER JOIN contact_info ON userplayer.contact_info_id=contact_info.id "
+            + "LEFT OUTER JOIN player_preferences ON userplayer.id=player_preferences.player_id";
 
     /**
      * <p>
@@ -441,6 +462,8 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
 
         sql.executeUpdate();
         sql.close();
+        
+        insertPreferencesInfo(profile, connection);
     }
 
     /**
@@ -732,6 +755,15 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         } else {
             // Otherwise, simply update the existing contact information.
             contactInfo = updateContactInfo(profile, connection);
+        }
+        // Update the preferences table.
+        if (!recordExists(player.getId(), "player_preferences", "player_id", connection)) {
+            // Insert the preferences information if it does not exist in the
+            // database.
+            insertPreferencesInfo(profile, connection);
+        } else {
+            // Otherwise, simply update the existing preferences information.
+            updatePreferencesInfo(profile, connection);
         }
 
         // Update the player table...
@@ -1840,6 +1872,9 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         // Retrieve the player's contact information if any.
         retrieveContactInfo(profile, results);
 
+        // Retrieve the player's preferences information if any.
+        retrievePreferencesInfo(profile, results);
+
         return profile;
     }
 
@@ -2044,4 +2079,129 @@ public class SQLServerUserProfileDAO implements UserProfileDAO {
         return BOOLEAN_FALSE_STRING;
     }
 
+    /**
+     * <p>
+     * Retrieves the <code>ContactInfo</code> object from the given user
+     * profile DTO, inserts the contact information contained in the object into
+     * the database, and returns the object. If the user profile DTO does not
+     * contain a <code>ContactInfo</code> object, this method simply returns
+     * <code>null</code>.
+     * </p>
+     *
+     * @param profile the user profile DTO containing the contact information to
+     *        insert into the database
+     * @param connection the database connection to use
+     * @return the <code>ContactInfo</code> object in the given user profile
+     *         DTO, or <code>null</code> if no such object exists in the user
+     *         profile DTO
+     * @throws SQLException if inserting the contact information into the
+     *         database fails
+     */
+    private PlayerPreferencesInfo insertPreferencesInfo(UserProfileDTO profile, Connection connection) throws SQLException {
+        Object bean = profile.get(UserProfileDTO.PREFERENCES_INFO_KEY);
+
+        // No preferences information.
+        if (bean == null) {
+            return null;
+        }
+
+        if (!(bean instanceof PlayerPreferencesInfo)) {
+            throw new IllegalArgumentException("The " + UserProfileDTO.PREFERENCES_INFO_KEY
+                    + " key in the UserProfileDTO does not map to a PlayerPreferencesInfo object");
+        }
+
+        PlayerPreferencesInfo prefsInfoPlayer = (PlayerPreferencesInfo) bean;
+
+        // Insert into the preferences table.
+        PreparedStatement sql = connection.prepareStatement(INSERT_PREFERENCES_SQL_STATEMENT);
+        sql.setLong(1, prefsInfoPlayer.getId());
+        sql.setInt(2, prefsInfoPlayer.getSoundOption());
+        sql.setBoolean(3, prefsInfoPlayer.getGeneralNotificationsOptIn());
+
+        sql.executeUpdate();
+        sql.close();
+
+        return prefsInfoPlayer;
+    }
+
+    /**
+     * <p>
+     * Retrieves the <code>PlayerPreferencesInfo</code> object from the given user
+     * profile DTO, updates the corresponding record in the database with the
+     * updated preferences information contained in the object, and returns the
+     * object. If the user profile DTO does not contain a
+     * <code>PlayerPreferencesInfo</code> object, this method simply returns
+     * <code>null</code>.
+     * </p>
+     *
+     * @param profile the user profile DTO containing the updated preferences
+     *        information
+     * @param connection the database connection to use
+     * @return the <code>PlayerPreferencesInfo</code> object in the given user profile
+     *         DTO, or <code>null</code> if no such object exists in the user
+     *         profile DTO
+     * @throws SQLException if updating the preferences information in the database
+     *         fails
+     */
+    private PlayerPreferencesInfo updatePreferencesInfo(UserProfileDTO profile, Connection connection) throws SQLException {
+        Object bean = profile.get(UserProfileDTO.PREFERENCES_INFO_KEY);
+
+        // No contact information.
+        if (bean == null) {
+            return null;
+        }
+
+        if (!(bean instanceof PlayerPreferencesInfo)) {
+            throw new IllegalArgumentException("The " + UserProfileDTO.PREFERENCES_INFO_KEY
+                    + " key in the UserProfileDTO does not map to a PlayerPreferencesInfo object");
+        }
+
+        PlayerPreferencesInfo prefsInfoPlayer = (PlayerPreferencesInfo) bean;
+
+        // Update the contact_info table.
+        PreparedStatement sql = connection.prepareStatement(UPDATE_PREFERENCES_SQL_STATEMENT);
+
+        sql.setInt(1, prefsInfoPlayer.getSoundOption());
+        sql.setBoolean(2, prefsInfoPlayer.getGeneralNotificationsOptIn());
+
+        // WHERE id = ?
+        sql.setLong(3, prefsInfoPlayer.getId());
+
+        sql.executeUpdate();
+        sql.close();
+
+        return prefsInfoPlayer;
+    }
+
+    /**
+     * <p>
+     * Retrieves the contact information from the given result set as a
+     * <code>ContactInfo</code> object, and inserts it into the given user
+     * profile DTO. If there are no contact information in the result set (i.e.
+     * if the contact_info_id field is <code>null</code>), this method simply
+     * returns.
+     * </p>
+     *
+     * @param profile the user profile DTO into which the contact information
+     *        will be put
+     * @param result the result set from which to retrieve the contact
+     *        information
+     * @throws SQLException if retrieving the contact information from the
+     *         result set fails
+     */
+    private void retrievePreferencesInfo(UserProfileDTO profile, ResultSet result) throws SQLException {
+        long prefsInfoId = result.getLong(result.findColumn("prefs_id"));
+
+        // If there are no preferences information associated with the user (i.e. if
+        // the prefs_id field is null), simply return.
+        if (result.wasNull()) {
+            return;
+        }
+
+        // Create a PlayerPreferencesInfo object and put it in the user profile DTO.
+        PlayerPreferencesInfo prefsInfoPlayer = new PlayerPreferencesInfo(prefsInfoId);
+        prefsInfoPlayer.setSoundOption(result.getInt(result.findColumn("sound_option")));
+        prefsInfoPlayer.setGeneralNotificationsOptIn(result.getBoolean(result.findColumn("notification_general")));
+        profile.put(UserProfileDTO.PREFERENCES_INFO_KEY, prefsInfoPlayer);
+    }
 }

@@ -3,15 +3,16 @@
  */
 package com.orpheus.user.persistence.ejb;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.orpheus.user.persistence.impl.Admin;
 import com.orpheus.user.persistence.impl.ContactInfo;
 import com.orpheus.user.persistence.impl.Player;
+import com.orpheus.user.persistence.impl.PlayerPreferencesInfo;
 import com.orpheus.user.persistence.impl.Sponsor;
 import com.orpheus.user.persistence.impl.UserProfileTranslator;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -67,6 +68,13 @@ public class UserProfileDTO implements Serializable {
      * </p>
      */
     public static final String CONTACT_INFO_KEY = "contact_info";
+
+    /**
+     * <p>
+     * Represents the key which maps to a {@link PlayerPreferencesInfo} object.
+     * </p>
+     */
+    public static final String PREFERENCES_INFO_KEY = "preferences";
 
     /**
      * <p>

@@ -3,14 +3,13 @@
  */
 package com.orpheus.user.persistence.ejb;
 
-import java.io.Serializable;
-
+import com.orpheus.user.persistence.impl.Admin;
+import com.orpheus.user.persistence.impl.Player;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.orpheus.user.persistence.impl.Admin;
-import com.orpheus.user.persistence.impl.Player;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -123,6 +122,16 @@ public class UserProfileDTOTest extends TestCase {
      */
     public void testContactInfoKeyConstant() {
         assertEquals("CONTACT_INFO_KEY is incorrect", UserProfileDTO.CONTACT_INFO_KEY, "contact_info");
+    }
+
+    /**
+     * <p>
+     * Tests that the UserProfileDTO.PREFERENCES_INFO_KEY constant is equal to
+     * "preferences".
+     * </p>
+     */
+    public void testPreferencesInfoKeyConstant() {
+        assertEquals("PREFERENCES_INFO_KEY is incorrect", UserProfileDTO.PREFERENCES_INFO_KEY, "preferences");
     }
 
     /**
