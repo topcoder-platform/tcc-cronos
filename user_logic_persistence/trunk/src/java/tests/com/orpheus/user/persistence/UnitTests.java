@@ -6,20 +6,20 @@ package com.orpheus.user.persistence;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import com.orpheus.user.persistence.ejb.ConfirmationMessageDTOTest;
-import com.orpheus.user.persistence.ejb.PendingConfirmationBeanTest;
-import com.orpheus.user.persistence.ejb.UserProfileBeanTest;
-import com.orpheus.user.persistence.ejb.UserProfileDTOTest;
+import com.orpheus.user.persistence.impl.SQLServerUserProfileDAOTest;
+import com.orpheus.user.persistence.impl.PlayerPreferencesInfoTest;
+import com.orpheus.user.persistence.impl.UserTest;
 import com.orpheus.user.persistence.impl.AdminTest;
-import com.orpheus.user.persistence.impl.ConfirmationMessageTranslatorTest;
+import com.orpheus.user.persistence.impl.UserProfileTranslatorTest;
 import com.orpheus.user.persistence.impl.ContactInfoTest;
+import com.orpheus.user.persistence.impl.SponsorTest;
 import com.orpheus.user.persistence.impl.PlayerTest;
 import com.orpheus.user.persistence.impl.SQLServerPendingConfirmationDAOTest;
-import com.orpheus.user.persistence.impl.SQLServerUserProfileDAOTest;
-import com.orpheus.user.persistence.impl.SponsorTest;
-import com.orpheus.user.persistence.impl.UserProfileTranslatorTest;
-import com.orpheus.user.persistence.impl.UserTest;
+import com.orpheus.user.persistence.impl.ConfirmationMessageTranslatorTest;
+import com.orpheus.user.persistence.ejb.ConfirmationMessageDTOTest;
+import com.orpheus.user.persistence.ejb.UserProfileDTOTest;
+import com.orpheus.user.persistence.ejb.UserProfileBeanTest;
+import com.orpheus.user.persistence.ejb.PendingConfirmationBeanTest;
 
 /**
  * <p>
@@ -72,6 +72,7 @@ public class UnitTests extends TestCase {
         suite.addTest(ConfirmationMessageTranslatorTest.suite());
         suite.addTest(ContactInfoTest.suite());
         suite.addTest(PlayerTest.suite());
+        suite.addTest(PlayerPreferencesInfoTest.suite());
         suite.addTest(SponsorTest.suite());
         suite.addTest(SQLServerPendingConfirmationDAOTest.suite());
         suite.addTest(SQLServerUserProfileDAOTest.suite());
