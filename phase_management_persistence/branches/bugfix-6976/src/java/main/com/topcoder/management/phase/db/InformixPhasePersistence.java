@@ -12,6 +12,9 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.phase.ConfigurationException;
 import com.topcoder.management.phase.PhasePersistenceException;
 import com.topcoder.util.idgenerator.IDGenerator;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -43,7 +46,8 @@ import com.topcoder.util.idgenerator.IDGenerator;
  * @since 1.0
  */
 public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
-
+	/** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(InformixPhasePersistence.class.getName()); 
     /**
      * <p>
      * An simple constructor which will populate the connectionFactory and
@@ -138,6 +142,8 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
 
         Helper.checkNull(connection, "connection");
 
+        getLogger().log(Level.INFO, "close the connection.");
+        
         try {
             connection.close();
         } catch (SQLException e) {
@@ -165,6 +171,8 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
         Helper.checkMap(context, "context");
 
         Connection conn = checkConnectionExists(context, "context");
+        
+        getLogger().log(Level.INFO, "committing transaction.");
         try {
             conn.commit();
         } catch (SQLException e) {
@@ -192,6 +200,7 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
         Helper.checkMap(context, "context");
 
         Connection conn = checkConnectionExists(context, "context");
+        getLogger().log(Level.INFO, "rollback transaction.");
         try {
             conn.rollback();
         } catch (SQLException e) {
@@ -234,5 +243,13 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
         }
         return conn;
     }
+
+    /**
+     * <p>Return the logger.</p>
+     * @return the <code>Log</code> instance used to take the log message
+     */
+	protected Log getLogger() {
+		return LOGGER;
+	}
 
 }

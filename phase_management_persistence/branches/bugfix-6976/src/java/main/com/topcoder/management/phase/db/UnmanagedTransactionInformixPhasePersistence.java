@@ -12,6 +12,9 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.phase.ConfigurationException;
 import com.topcoder.management.phase.PhasePersistenceException;
 import com.topcoder.util.idgenerator.IDGenerator;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -40,7 +43,8 @@ import com.topcoder.util.idgenerator.IDGenerator;
  */
 public class UnmanagedTransactionInformixPhasePersistence extends
         AbstractInformixPhasePersistence {
-
+	/** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(UnmanagedTransactionInformixPhasePersistence.class.getName()); 
     /**
      * <p>
      * An simple constructor which will populate the connectionFactory and
@@ -106,6 +110,9 @@ public class UnmanagedTransactionInformixPhasePersistence extends
     protected void disposeConnection(Connection connection) {
 
         Helper.checkNull(connection, "connection");
+        
+        getLogger().log(Level.INFO, "close the connection.");
+        
         try {
             connection.close();
         } catch (SQLException e) {
@@ -161,5 +168,11 @@ public class UnmanagedTransactionInformixPhasePersistence extends
     protected void startTransaction(Map context) {
         Helper.checkMap(context, "context");
     }
-
+    /**
+     * <p>Return the logger.</p>
+     * @return the <code>Log</code> instance used to take the log message
+     */
+	protected Log getLogger() {
+		return LOGGER;
+	}
 }

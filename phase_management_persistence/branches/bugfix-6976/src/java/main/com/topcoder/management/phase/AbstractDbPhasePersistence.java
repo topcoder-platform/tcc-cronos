@@ -10,11 +10,14 @@ import java.util.Map;
 
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.management.phase.logging.LogMessage;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
 
 /**
  * <p>
@@ -134,7 +137,7 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
             throw new IllegalArgumentException(
                     "namespace cannot be empty String.");
         }
-
+        
         String className = getProperty(namespace,
                 "ConnectionFactory.className", true);
         String ns = getProperty(namespace, "ConnectionFactory.namespace", true);
@@ -193,7 +196,11 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
      */
     protected Connection getConnection() throws PhasePersistenceException {
         try {
-
+        	if ( connectionName == null){
+            	getLogger().log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
+            } else {
+            	getLogger().log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: " + connectionName));
+            }
             return connectionName == null ? connectionFactory
                     .createConnection() : connectionFactory
                     .createConnection(connectionName);
@@ -288,6 +295,11 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
     }
 
     /**
+     * <p>Return the getLogger().</p>
+     * @return the <code>Log</code> instance used to take the log message
+     */
+    protected abstract Log getLogger();
+    /**
      * Creates the IDGenerator instance using the sequence name and the
      * generator class.
      * @param sequence the name of the id sequence.
@@ -296,7 +308,7 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
      * @throws ConfigurationException if error occurs while creating the
      *             IdGenerator.
      */
-    private static IDGenerator createIdGenerator(String sequence,
+    private IDGenerator createIdGenerator(String sequence,
             String className) throws ConfigurationException {
         try {
             if (className == null) {
@@ -304,19 +316,31 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
             }
             return IDGeneratorFactory.getIDGenerator(sequence, className);
         } catch (IDGenerationException ex) {
+        	getLogger().log(Level.FATAL,
+        			"Error occurs while creation IdGenerator.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException(
                     "Error occurs while creation IdGenerator.", ex);
         } catch (ClassNotFoundException ex) {
-            throw new ConfigurationException("No generator class.", ex);
+        	getLogger().log(Level.FATAL,
+        			"No generator class.\n" + LogMessage.getExceptionStackTrace(ex));
+            throw new ConfigurationException("No generator class for the id generator class.", ex);
         } catch (NoSuchMethodException ex) {
+        	getLogger().log(Level.FATAL,
+        			"Missing public constructor for id generator class.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException("Missing public constructor.", ex);
         } catch (InstantiationException ex) {
+        	getLogger().log(Level.FATAL,
+        			"Error occurs while creation IdGenerator.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException(
                     "Error occurs while creation IdGenerator.", ex);
         } catch (IllegalAccessException ex) {
+        	getLogger().log(Level.FATAL,
+        			"Error occurs while creation IdGenerator.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException(
                     "Error occurs while creation IdGenerator.", ex);
         } catch (InvocationTargetException ex) {
+        	getLogger().log(Level.FATAL,
+        			"Error occurs while creation IdGenerator.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException(
                     "Error occurs while creation IdGenerator.", ex);
         }
@@ -332,28 +356,35 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
      *             ConfigManager, or there is no require property, or the
      *             property has empty value.
      */
-    private static String getProperty(String namespace, String name,
+    private String getProperty(String namespace, String name,
             boolean required) throws ConfigurationException {
 
         ConfigManager cm = ConfigManager.getInstance();
         try {
             String value = cm.getString(namespace, name);
             if (required && (value == null)) {
+            	getLogger().log(Level.FATAL,"The required property[" + name
+            			+ "] is missing in the namespace[" + namespace + "].");
                 throw new ConfigurationException("Missing required property: "
                         + name + " in namespace: " + namespace);
             }
 
             // check if the value is empty
             if ((value != null) && (value.trim().length() == 0)) {
+            	getLogger().log(Level.FATAL,"The property[" + name
+            			+ "]'s value is empty in the namespace[" + namespace + "].");
                 throw new ConfigurationException("Empty value for property: "
                         + name + " in namespace: " + namespace);
             }
-
+            getLogger().log(Level.INFO, "Read propery[" + name + "] which is " + (required?" required ": " optional ")
+            		+ " with value[" + value + "] from namespace [" + namespace +"].");
             return value;
         } catch (UnknownNamespaceException ex) {
-            throw new ConfigurationException("Miising config namespace: "
+        	getLogger().log(Level.FATAL,"Missing config namespace: " + namespace);
+            throw new ConfigurationException("Missing config namespace: "
                     + namespace, ex);
         }
+        
     }
 
     /**
@@ -363,13 +394,14 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
      * @return the DbConnectionFactory instance.
      * @throws ConfigurationException if any error occurs.
      */
-    private static DBConnectionFactory createConnectionFactory(
+    private DBConnectionFactory createConnectionFactory(
             String className, String ns) throws ConfigurationException {
 
         try {
             // get the class.
             Class cl = Class.forName(className);
             if (!DBConnectionFactory.class.isAssignableFrom(cl)) {
+            	getLogger().log(Level.FATAL, "The The class is not DbConnectionFactory." + className);
                 throw new ConfigurationException(
                         "The class is not DbConnectionFactory.");
             }
@@ -380,6 +412,8 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
         } catch (ConfigurationException ex) {
             throw ex;
         } catch (Exception ex) {
+        	getLogger().log(Level.FATAL,
+        			"Error occurs while creating the factory.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException(
                     "Error occurs while creating the factory.", ex);
         }

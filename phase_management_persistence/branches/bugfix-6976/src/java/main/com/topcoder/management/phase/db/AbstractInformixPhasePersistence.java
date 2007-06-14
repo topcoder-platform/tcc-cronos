@@ -492,6 +492,7 @@ public abstract class AbstractInformixPhasePersistence extends
 
         PreparedStatement pstmt = null;
 
+        
         // get the connection.
         Connection conn = getConnection();
 
