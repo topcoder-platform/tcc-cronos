@@ -8,8 +8,6 @@ import com.topcoder.timetracker.client.ClientPersistenceException;
 import com.topcoder.timetracker.client.Depth;
 import com.topcoder.timetracker.client.Helper;
 import com.topcoder.timetracker.client.db.ClientColumnName;
-import com.topcoder.timetracker.client.db.ClientProjectColumnName;
-import com.topcoder.timetracker.project.Project;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
@@ -41,7 +39,6 @@ public class SummaryDepth extends Depth {
      */
     private static final String[] fields = {
             ClientColumnName.ID.getName(), ClientColumnName.NAME.getName(),
-            ClientProjectColumnName.PROJECT_ID.getName()
     };
 
     /**
@@ -74,14 +71,6 @@ public class SummaryDepth extends Depth {
         try {
             client.setId(result.getLong("client_id"));
             client.setName(result.getString("name"));
-
-            if (result.getObject("project_id") != null) {
-                Project project = new Project();
-
-                project.setId(result.getLong("project_id"));
-
-                client.setProjects(new Project[] {project});
-            }
 
             return client;
         } catch (InvalidCursorStateException icse) {

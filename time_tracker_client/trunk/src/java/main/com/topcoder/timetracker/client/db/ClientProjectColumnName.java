@@ -18,12 +18,12 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  */
 public class ClientProjectColumnName extends Enum {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -2745117141586917844L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -2745117141586917844L;
 
-	/**
+    /**
      * <p>
      * Represents the client id column name in client_project table. It will never be null. It will be referenced in
      * ClientInformixDAO class.
