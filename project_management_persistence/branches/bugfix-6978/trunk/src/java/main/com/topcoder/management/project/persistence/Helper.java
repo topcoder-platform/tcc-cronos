@@ -643,8 +643,8 @@ class Helper {
                     + "] is empty (trimmed).");
         }
 
-        logger.log(Level.INFO, "Read propery[" + name + "] which is "
-        		+ (required?" required ": " optional ") + " with value[" + value + "] from namespace [" + namespace +"].");
+        logger.log(Level.INFO, "Read propery[" + name + "] which is " + (required?" required ": " optional ")
+        		+ " with value[" + value + "] from namespace [" + namespace +"].");
         
         return value;
     }
