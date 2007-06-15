@@ -14,26 +14,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.topcoder.timetracker.entry.time.BatchOperationException;
-import com.topcoder.timetracker.entry.time.ConfigurationException;
-import com.topcoder.timetracker.entry.time.DataAccessException;
-import com.topcoder.timetracker.entry.time.TaskType;
-import com.topcoder.timetracker.entry.time.TimeEntryFilterFactory;
-import com.topcoder.timetracker.entry.time.TimeStatus;
-import com.topcoder.timetracker.entry.time.TimeStatusDAO;
-import com.topcoder.timetracker.entry.time.TaskTypeDAO;
-import com.topcoder.timetracker.entry.time.UnrecognizedEntityException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.timetracker.entry.time.TimeEntryDAO;
-import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.audit.ApplicationArea;
 import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.AuditHeader;
+import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.audit.AuditManagerException;
 import com.topcoder.timetracker.audit.AuditType;
+import com.topcoder.timetracker.entry.time.BatchOperationException;
+import com.topcoder.timetracker.entry.time.ConfigurationException;
+import com.topcoder.timetracker.entry.time.DataAccessException;
+import com.topcoder.timetracker.entry.time.TaskTypeDAO;
 import com.topcoder.timetracker.entry.time.TimeEntry;
+import com.topcoder.timetracker.entry.time.TimeEntryDAO;
+import com.topcoder.timetracker.entry.time.TimeEntryFilterFactory;
+import com.topcoder.timetracker.entry.time.TimeStatusDAO;
+import com.topcoder.timetracker.entry.time.UnrecognizedEntityException;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
@@ -66,17 +64,6 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @version 3.2
  */
 public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
-    /**
-     * <p>
-     * This is an <code>Exception</code> instance that will be used to mark a bean is no need to create
-     * again in the batch operation.
-     * </p>
-     *
-     * <p>
-     * This inner cause will not make the batch operation fail, it is only used to skip some beans.
-     * </p>
-     */
-    private static final Exception CREATED_EXCEPTION = new Exception("Created.");
 
     /**
      * <p>
@@ -228,30 +215,6 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
 
             Throwable[] causes = new Throwable[timeEntries.length];
 
-            // create the associated task types if necessary
-            TaskType[] taskTypes = getNextStepTaskTypes(timeEntries, causes, true);
-            if (taskTypes.length != 0) {
-                try {
-                    taskTypeDao.createTaskTypes(taskTypes);
-                } catch (BatchOperationException e) {
-                    Util.updateCauses(causes, e);
-                }
-            }
-            resetCreatedException(causes);
-            Util.checkStepResult(causes);
-
-            // create the associated time statuses if necessary
-            TimeStatus[] timeStatuses = getNextStepTimeStatuses(timeEntries, causes, true);
-            if (timeStatuses.length != 0) {
-                try {
-                    timeStatusDao.createTimeStatuses(timeStatuses);
-                } catch (BatchOperationException e) {
-                    Util.updateCauses(causes, e);
-                }
-            }
-            resetCreatedException(causes);
-            Util.checkStepResult(causes);
-
             List params = new ArrayList();
 
             // get the insert parameters for the time entries to create
@@ -326,95 +289,6 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         params.add(timeEntry.getModificationUser());
 
         return params;
-    }
-
-    /**
-     * <p>
-     * This method gets the time status instances from the given <code>timeEntries</code> to process.
-     * </p>
-     *
-     * <p>
-     * Only the time status instances of time entries that don't have any exception in the previous steps
-     * will be processed.
-     * </p>
-     *
-     * <p>
-     * Note, for the creation, time status instances that have their ids set will be skipped too.
-     * </p>
-     *
-     * @param timeEntries the time entry of the batch operation
-     * @param causes the inner causes of the batch operation
-     * @param create the flag to identify it is a creation or modification
-     * @return the <code>TimeStatus</code> array to be processed in the next step
-     */
-    private TimeStatus[] getNextStepTimeStatuses(TimeEntry[] timeEntries, Throwable[] causes, boolean create) {
-        List timeStatuses = new ArrayList();
-
-        for (int i = 0; i < causes.length; i++) {
-            TimeStatus timeStatus = timeEntries[i].getStatus();
-
-            if (causes[i] == null) {
-                if (create && timeStatus.getId() != -1) {
-                    causes[i] = CREATED_EXCEPTION;
-                } else {
-                    timeStatuses.add(timeStatus);
-                }
-            }
-        }
-
-        return (TimeStatus[]) timeStatuses.toArray(new TimeStatus[timeStatuses.size()]);
-    }
-
-    /**
-     * <p>
-     * This method gets the task type instances from the given <code>timeEntries</code> to process.
-     * </p>
-     *
-     * <p>
-     * Only the task type instances of time entries that don't have any exception in the previous steps
-     * will be processed.
-     * </p>
-     *
-     * <p>
-     * Note, for the creation, task type instances that have their ids set will be skipped too.
-     * </p>
-     *
-     * @param timeEntries the time entry of the batch operation
-     * @param causes the inner causes of the batch operation
-     * @param create the flag to identify it is a creation or modification
-     * @return the <code>TaskType</code> array to be processed in the next step
-     */
-    private TaskType[] getNextStepTaskTypes(TimeEntry[] timeEntries, Throwable[] causes, boolean create) {
-        List taskTypes = new ArrayList();
-
-        for (int i = 0; i < causes.length; i++) {
-            TaskType task = timeEntries[i].getTaskType();
-
-            if (causes[i] == null) {
-                if (create && task.getId() != -1) {
-                    causes[i] = CREATED_EXCEPTION;
-                } else {
-                    taskTypes.add(task);
-                }
-            }
-        }
-
-        return (TaskType[]) taskTypes.toArray(new TaskType[taskTypes.size()]);
-    }
-
-    /**
-     * <p>
-     * This method reset the inner causes that are <code>CREATED_EXCEPTION</code> to null.
-     * </p>
-     *
-     * @param causes the inner causes of the batch operation
-     */
-    private void resetCreatedException(Throwable[] causes) {
-        for (int i = 0; i < causes.length; i++) {
-            if (causes[i] == CREATED_EXCEPTION) {
-                causes[i] = null;
-            }
-        }
     }
 
     /**
@@ -679,28 +553,6 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
                 Util.updateCauses(causes, e);
             }
             Util.checkStepResult(causes);
-
-            // update the associated task types
-            TaskType[] taskTypes = getNextStepTaskTypes(timeEntries, causes, false);
-            if (taskTypes.length != 0) {
-                try {
-                    taskTypeDao.updateTaskTypes(taskTypes);
-                } catch (BatchOperationException e) {
-                    Util.updateCauses(causes, e);
-                }
-                Util.checkStepResult(causes);
-            }
-
-            // update the associated time statuses
-            TimeStatus[] timeStatuses = getNextStepTimeStatuses(timeEntries, causes, false);
-            if (timeStatuses.length != 0) {
-                try {
-                    timeStatusDao.updateTimeStatuses(timeStatuses);
-                } catch (BatchOperationException e) {
-                    Util.updateCauses(causes, e);
-                }
-                Util.checkStepResult(causes);
-            }
 
             if (audit) {
                 audit(oldTimeEntries, timeEntries, causes);
