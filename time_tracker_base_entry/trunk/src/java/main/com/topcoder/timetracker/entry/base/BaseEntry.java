@@ -47,14 +47,14 @@ public abstract class BaseEntry extends TimeTrackerBean {
      * it has been set.
      */
     private long companyId;
-    
+
     /**
      * This is a unique client id that identifies this entry (i.e. which company this belongs to) This is
      * initialized/set/get through the appropriate getter/setter. Generally the user should not change this value once
      * it has been set.
      */
     private long clientId;
-    
+
     /**
      * This is a unique project id that identifies this entry (i.e. which company this belongs to) This is
      * initialized/set/get through the appropriate getter/setter. Generally the user should not change this value once
@@ -78,7 +78,7 @@ public abstract class BaseEntry extends TimeTrackerBean {
     public long getCompanyId() {
         return companyId;
     }
-    
+
     /**
      * Return the client id for this entry. This is important in identifying the cot off time for a particular
      * entry based on the client settings.
@@ -88,7 +88,7 @@ public abstract class BaseEntry extends TimeTrackerBean {
     public long getClientId() {
         return clientId;
     }
-    
+
     /**
      * Return the project id for this entry. This is important in identifying the cot off time for a particular
      * entry based on the project settings.
@@ -135,8 +135,9 @@ public abstract class BaseEntry extends TimeTrackerBean {
      */
     public void setCompanyId(long companyId) {
         this.companyId = companyId;
+        setChanged(true);
     }
-    
+
     /**
      * Set the client id for this entry. This is important in identifying the cut off time for a particular
      * entry based on the client settings.
@@ -145,8 +146,9 @@ public abstract class BaseEntry extends TimeTrackerBean {
      */
     public void setClientId(long clientId) {
         this.clientId = clientId;
+        setChanged(true);
     }
-    
+
     /**
      * Set the project id for this entry. This is important in identifying the cut off time for a particular
      * entry based on the project settings.
@@ -155,6 +157,7 @@ public abstract class BaseEntry extends TimeTrackerBean {
      */
     public void setProjectId(long projectId) {
         this.projectId = projectId;
+        setChanged(true);
     }
 
     /**
@@ -168,7 +171,10 @@ public abstract class BaseEntry extends TimeTrackerBean {
     public void setDate(Date date) {
         ParameterCheck.checkNull("date", date);
 
-        this.date = new Date(date.getTime());
+        if (!date.equals(this.date)) {
+            this.date = new Date(date.getTime());
+            setChanged(true);
+        }
     }
 
     /**
@@ -180,7 +186,10 @@ public abstract class BaseEntry extends TimeTrackerBean {
      */
     public void setDescription(String description) {
         ParameterCheck.checkNull("description", description);
-        this.description = description;
+        if (!description.equals(this.description)) {
+            this.description = description;
+            setChanged(true);
+        }
     }
 
     /**
@@ -210,5 +219,6 @@ public abstract class BaseEntry extends TimeTrackerBean {
         }
 
         this.rejectReasons = tmp;
+        setChanged(true);
     }
 }
