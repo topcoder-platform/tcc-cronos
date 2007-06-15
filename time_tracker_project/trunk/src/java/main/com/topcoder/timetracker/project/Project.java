@@ -55,7 +55,7 @@ public class Project extends TimeTrackerBean {
      * It can not be null or empty string after it is set.
      * </p>
      */
-    private String description;
+    private String description = "";
 
     /**
      * <p>
@@ -248,7 +248,9 @@ public class Project extends TimeTrackerBean {
      * @throws IllegalArgumentException if description is null or an empty String.
      */
     public void setDescription(String description) {
-        Util.checkString(description, "description");
+        if (description == null || description.trim().length() == 0) {
+            description = "";
+        }
 
         if (!description.equals(this.description)) {
             this.description = description;

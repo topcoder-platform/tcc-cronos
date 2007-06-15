@@ -452,7 +452,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         params.add(new Long(project.isActive() ? 1 : 0));
 
         // description can be null in the database
-        if (project.getDescription() == null) {
+        if (project.getDescription().length() == 0) {
             params.add(new SqlType(Types.VARCHAR));
         } else {
             params.add(project.getDescription());
@@ -889,7 +889,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         params.add(new Long(project.isActive() ? 1 : 0));
 
         // description can be null in the database
-        if (project.getDescription() == null) {
+        if (project.getDescription().length() == 0) {
             params.add(new SqlType(Types.VARCHAR));
         } else {
             params.add(project.getDescription());
@@ -1078,13 +1078,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         project.setCompanyId(rs.getLong(index++));
         project.setClientId(rs.getLong(index++));
         project.setActive(rs.getLong(index++) == 1);
-
-        // description in the database can be null
-        String description = rs.getString(index++);
-        if (description != null) {
-            project.setDescription(description);
-        }
-
+        project.setDescription(rs.getString(index++));
         project.setSalesTax(rs.getDouble(index++));
         project.setTerms(termManager.retrievePaymentTerm(rs.getLong(index++)));
         project.setStartDate(rs.getDate(index++));
