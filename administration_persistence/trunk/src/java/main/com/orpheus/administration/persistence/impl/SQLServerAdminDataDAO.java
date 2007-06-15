@@ -130,7 +130,8 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     /**
      * The statement used check for an existing winner.
      */
-    private static final String CHECK_EXISTING_WINNER = "SELECT COUNT(*) FROM plyr_won_game WHERE game_id = ?";
+    private static final String CHECK_EXISTING_WINNER
+        = "SELECT COUNT(*) FROM plyr_won_game WHERE game_id = ? AND player_id = ?";
 
     /**
      * The statement used to insert a puzzle resource.
@@ -431,7 +432,9 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             try {
                 long gameID = winner.getGameId();
                 long playerID = winner.getPlayerId();
-                checkForExistingWinner(connection, gameID);
+                // According to latest requirements there may be several winners per game so the check is checking
+                // against player ID also
+                checkForExistingWinner(connection, gameID, playerID);
                 setWinnerHandled(connection, winner, gameID, playerID);
                 insertPlayerWonGame(connection, gameID, playerID, date, calculatePayout(gameID));
             } finally {
@@ -602,20 +605,22 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     }
 
     /**
-     * Verifies that there is not already a winner for the specified game ID.
+     * Verifies that there is not already the specified winner for the specified game ID.
      *
      * @param connection the database connection
      * @param gameID the game ID
+     * @param playerID the player ID
      * @throws SQLException if a database error occurs
      * @throws PersistenceException if the query does not return any results
      * @throws InvalidEntryException if a winner already exists for the specified game ID
      */
-    private static void checkForExistingWinner(Connection connection, long gameID)
+    private static void checkForExistingWinner(Connection connection, long gameID, long playerID)
         throws SQLException, PersistenceException {
         PreparedStatement statement = connection.prepareStatement(CHECK_EXISTING_WINNER);
 
         try {
             statement.setLong(1, gameID);
+            statement.setLong(2, playerID);
             ResultSet results = statement.executeQuery();
             try {
                 if (!results.next()) {
@@ -623,7 +628,8 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
                 }
 
                 if (results.getLong(1) > 0) {
-                    throw new InvalidEntryException("game '" + gameID + "' already has a winner", new Long(gameID));
+                    throw new InvalidEntryException("game '" + gameID + "' already has a winner '" + playerID + "'",
+                                                    new Long(gameID));
                 }
             } finally {
                 results.close();
