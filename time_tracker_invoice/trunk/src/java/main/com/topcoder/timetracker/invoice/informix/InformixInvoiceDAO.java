@@ -34,6 +34,7 @@ import com.topcoder.timetracker.entry.expense.InsufficientDataException;
 import com.topcoder.timetracker.entry.expense.criteria.Criteria;
 import com.topcoder.timetracker.entry.expense.criteria.FieldMatchCriteria;
 import com.topcoder.timetracker.entry.expense.persistence.PersistenceException;
+import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntry;
 import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryManager;
 import com.topcoder.timetracker.invoice.ArgumentCheckUtil;
 import com.topcoder.timetracker.invoice.ConfigUtil;
@@ -961,8 +962,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
             // get all fixed billing entries for the project
             long[] fixedBillingEntryIds =
                 projectUtility.retrieveEntriesForProject(projectId, EntryType.FIXED_BILLING_ENTRY);
-            BaseEntry[] fixedBillingEntries =
-                fixedBillingEntryManager.getFixedBillingEntries(fixedBillingEntryIds);
+            BaseEntry[] fixedBillingEntries = (fixedBillingEntryIds.length != 0) ?
+                    fixedBillingEntryManager.getFixedBillingEntries(fixedBillingEntryIds) : new FixedBillingEntry[0];
 
             // if there is a pending entries, return false
             if (checkPending(fixedBillingEntries)) {
@@ -971,7 +972,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
 
             // get all expense entries for the project
             long[] expenseEntryIds = projectUtility.retrieveEntriesForProject(projectId, EntryType.EXPENSE_ENTRY);
-            ExpenseEntry[] expenseEntries = expenseManager.retrieveEntries(expenseEntryIds);
+            ExpenseEntry[] expenseEntries = (expenseEntryIds.length != 0) ?
+                    expenseManager.retrieveEntries(expenseEntryIds) : new ExpenseEntry[0];
 
             // if there is a pending entries, return false
             if (checkPending(expenseEntries)) {
@@ -1016,7 +1018,7 @@ public class InformixInvoiceDAO implements InvoiceDAO {
     }
 
     /**
-     * Checks if there is still a PENDING entry in the array of entries.
+     * Checks if there is still a Pending entry in the array of entries.
      *
      * @param entries
      *            the given array of entries
@@ -1025,7 +1027,7 @@ public class InformixInvoiceDAO implements InvoiceDAO {
      */
     private boolean checkPending(BaseEntry[] entries) {
         for (int i = 0; i < entries.length; i++) {
-            if ("PENDING".equals(entries[i].getDescription())) {
+            if ("Pending".equalsIgnoreCase(entries[i].getDescription())) {
                 return true;
             }
         }
