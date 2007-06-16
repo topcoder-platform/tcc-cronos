@@ -634,7 +634,12 @@ public final class Helper {
             entry.setStatus(status);
             entry.setTaskType(type);
 
-            entry.setDescription(resultSet.getString("time_entry_description"));
+            // needed because query returns null sometimes for the time_entry_description
+            String description = resultSet.getString("time_entry_description");
+            if (description == null)    {
+                description = "";
+            }
+            entry.setDescription(description);
             entry.setDate(resultSet.getDate("time_entry_entry_date"));
             entry.setHours(resultSet.getDouble("time_entry_hours"));
             entry.setBillable(resultSet.getByte("time_entry_billable") != 0);
