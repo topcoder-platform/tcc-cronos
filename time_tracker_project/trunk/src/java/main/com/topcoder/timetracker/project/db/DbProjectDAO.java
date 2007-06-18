@@ -85,8 +85,8 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
      * </p>
      */
     private static final String INSERT_PROJECT = "insert into project(project_id, name, company_id, "
-        + "active, description, sales_tax, payment_terms_id, start_date, end_date, creation_date, "
-        + "creation_user, modification_date, modification_user) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        + "active, description, sales_tax, po_box_number, payment_terms_id, start_date, end_date, creation_date, "
+        + "creation_user, modification_date, modification_user) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -102,8 +102,8 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
      * </p>
      */
     private static final String UPDATE_PROJECT = "update project set name = ?, company_id = ?, "
-        + "active = ?, description = ?, sales_tax = ?, payment_terms_id = ?, start_date = ?, end_date = ?, "
-        + "creation_date = ?, creation_user = ?, modification_date = ?, modification_user = ? "
+        + "active = ?, description = ?, sales_tax = ?, po_box_number = ?, payment_terms_id = ?, start_date = ?, "
+        + "end_date = ?, creation_date = ?, creation_user = ?, modification_date = ?, modification_user = ? "
         + "where project_id = ?";
 
     /**
@@ -135,7 +135,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
      * </p>
      */
     private static final String SELECT_PROJECT = "select project.project_id, name, company_id, client_id, active, "
-        + "description, sales_tax, payment_terms_id, start_date, end_date, project.creation_date, "
+        + "description, sales_tax, po_box_number, payment_terms_id, start_date, end_date, project.creation_date, "
         + "project.creation_user, project.modification_date, project.modification_user from project, client_project "
         + "where project.project_id = client_project.project_id";
 
@@ -378,6 +378,11 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
                 throw new IllegalArgumentException("Some projects have unset client id.");
             }
 
+            // null P.O. box number is not allowed
+            if (projects[i].getPoBoxNumber() == null) {
+                throw new IllegalArgumentException("Some projects have unset P.O. box number.");
+            }
+
             // null address is not allowed
             if (projects[i].getAddress() == null) {
                 throw new IllegalArgumentException("Some projects have null address.");
@@ -459,6 +464,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         }
 
         params.add(new Double(project.getSalesTax()));
+        params.add(project.getPoBoxNumber());
         params.add(new Long(project.getTerms().getId()));
         params.add(project.getStartDate());
         params.add(project.getEndDate());
@@ -553,6 +559,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
             auditDetails.add(Util.createAuditDetail("name", null, newProject.getName()));
             auditDetails.add(Util.createAuditDetail("company_id", null, String.valueOf(newProject.getCompanyId())));
             auditDetails.add(Util.createAuditDetail("active", null, String.valueOf(newProject.getActive())));
+            auditDetails.add(Util.createAuditDetail("po_box_number", null, newProject.getPoBoxNumber()));
             auditDetails.add(Util.createAuditDetail("description", null, newProject.getDescription()));
             auditDetails.add(Util.createAuditDetail("start_date", null, newProject.getStartDate().toString()));
             auditDetails.add(Util.createAuditDetail("end_date", null, newProject.getEndDate().toString()));
@@ -568,6 +575,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
             auditDetails.add(Util.createAuditDetail("name", oldProject.getName(), null));
             auditDetails.add(Util.createAuditDetail("company_id", String.valueOf(oldProject.getCompanyId()), null));
             auditDetails.add(Util.createAuditDetail("active", String.valueOf(oldProject.getActive()), null));
+            auditDetails.add(Util.createAuditDetail("po_box_number", oldProject.getPoBoxNumber(), null));
             auditDetails.add(Util.createAuditDetail("description", oldProject.getDescription(), null));
             auditDetails.add(Util.createAuditDetail("start_date", oldProject.getStartDate().toString(), null));
             auditDetails.add(Util.createAuditDetail("end_date", oldProject.getEndDate().toString(), null));
@@ -586,6 +594,8 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
                 String.valueOf(newProject.getCompanyId())));
             auditDetails.add(Util.createAuditDetail("active", String.valueOf(oldProject.getActive()),
                 String.valueOf(newProject.getActive())));
+            auditDetails.add(Util.createAuditDetail("po_box_number", oldProject.getPoBoxNumber(),
+                    newProject.getPoBoxNumber()));
             auditDetails.add(Util.createAuditDetail("description", oldProject.getDescription(),
                 newProject.getDescription()));
             auditDetails.add(Util.createAuditDetail("start_date", oldProject.getStartDate().toString(),
@@ -896,6 +906,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         }
 
         params.add(new Double(project.getSalesTax()));
+        params.add(project.getPoBoxNumber());
         params.add(new Long(project.getTerms().getId()));
         params.add(project.getStartDate());
         params.add(project.getEndDate());
@@ -1080,6 +1091,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         project.setActive(rs.getLong(index++) == 1);
         project.setDescription(rs.getString(index++));
         project.setSalesTax(rs.getDouble(index++));
+        project.setPoBoxNumber(rs.getString(index++));
         project.setTerms(termManager.retrievePaymentTerm(rs.getLong(index++)));
         project.setStartDate(rs.getDate(index++));
         project.setEndDate(rs.getDate(index++));

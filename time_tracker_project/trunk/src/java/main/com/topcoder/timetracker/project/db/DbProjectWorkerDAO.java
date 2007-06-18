@@ -64,8 +64,8 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
      * </p>
      */
     private static final String INSERT_PROJECT_WORKER = "insert into project_worker(project_id, "
-        + "user_account_id, start_date, end_date, pay_rate, cost, creation_date, creation_user, "
-        + "modification_date, modification_user) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        + "user_account_id, start_date, end_date, pay_rate, cost, active, creation_date, creation_user, "
+        + "modification_date, modification_user) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -73,7 +73,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
      * </p>
      */
     private static final String UPDATE_PROJECT_WORKER = "update project_worker set start_date = ?, "
-        + "end_date = ?, pay_rate = ?, cost = ?, creation_date = ?, creation_user = ?, modification_date = ?, "
+        + "end_date = ?, pay_rate = ?, cost = ?, active = ?, creation_date = ?, creation_user = ?, modification_date = ?, "
         + "modification_user = ? where project_id = ? and user_account_id = ?";
 
     /**
@@ -82,7 +82,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
      * </p>
      */
     private static final String SELECT_PROJECT_WORKER = "select project_id, user_account_id, "
-        + "start_date, end_date, pay_rate, cost, creation_date, "
+        + "start_date, end_date, pay_rate, cost, active, creation_date, "
         + "creation_user, modification_date, modification_user from project_worker where "
         + "project_id = ? and user_account_id = ?";
 
@@ -100,8 +100,8 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
      * </p>
      */
     private static final String SELECT_ALL_WORKERS = "select project_id, user_account_id, "
-        + "start_date, end_date, pay_rate, cost, creation_date, creation_user, modification_date, "
-        + "modification_user from project_worker";
+        + "start_date, end_date, pay_rate, cost, active, creation_date, creation_user, "
+        + "modification_date, modification_user from project_worker";
 
     /**
      * <p>
@@ -181,6 +181,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
                 params.add(workers[i].getEndDate());
                 params.add(new Double(workers[i].getPayRate()));
                 params.add(new Double(workers[i].getCost()));
+                params.add(new Integer((workers[i].isActive()) ? 1 : 0));
                 params.add(workers[i].getCreationDate());
                 params.add(workers[i].getCreationUser());
                 params.add(workers[i].getModificationDate());
@@ -256,6 +257,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
             auditDetails.add(Util.createAuditDetail("end_date", null, newProjectWorker.getEndDate().toString()));
             auditDetails.add(Util.createAuditDetail("pay_rate", null, String.valueOf(newProjectWorker.getPayRate())));
             auditDetails.add(Util.createAuditDetail("cost", null, String.valueOf(newProjectWorker.getCost())));
+            auditDetails.add(Util.createAuditDetail("active", null, String.valueOf(newProjectWorker.isActive())));
             auditDetails.add(Util.createAuditDetail("creation_date", null,
                 newProjectWorker.getCreationDate().toString()));
             auditDetails.add(Util.createAuditDetail("creation_user", null, newProjectWorker.getCreationUser()));
@@ -272,6 +274,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
             auditDetails.add(Util.createAuditDetail("end_date", oldProjectWorker.getEndDate().toString(), null));
             auditDetails.add(Util.createAuditDetail("pay_rate", String.valueOf(oldProjectWorker.getPayRate()), null));
             auditDetails.add(Util.createAuditDetail("cost", String.valueOf(oldProjectWorker.getCost()), null));
+            auditDetails.add(Util.createAuditDetail("active", String.valueOf(oldProjectWorker.isActive()), null));
             auditDetails.add(Util.createAuditDetail("creation_date", oldProjectWorker.getCreationDate().toString(),
                 null));
             auditDetails.add(Util.createAuditDetail("creation_user", oldProjectWorker.getCreationUser(), null));
@@ -293,6 +296,8 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
                 String.valueOf(newProjectWorker.getPayRate())));
             auditDetails.add(Util.createAuditDetail("cost", String.valueOf(oldProjectWorker.getCost()),
                     String.valueOf(newProjectWorker.getCost())));
+            auditDetails.add(Util.createAuditDetail("active", String.valueOf(oldProjectWorker.isActive()),
+                    String.valueOf(newProjectWorker.isActive())));
             auditDetails.add(Util.createAuditDetail("creation_date", oldProjectWorker.getCreationDate().toString(),
                 newProjectWorker.getCreationDate().toString()));
             auditDetails.add(Util.createAuditDetail("creation_user", oldProjectWorker.getCreationUser(),
@@ -427,6 +432,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
                 params.add(workers[i].getEndDate());
                 params.add(new Double(workers[i].getPayRate()));
                 params.add(new Double(workers[i].getCost()));
+                params.add(new Integer((workers[i].isActive()) ? 1 : 0));
                 params.add(workers[i].getCreationDate());
                 params.add(workers[i].getCreationUser());
                 params.add(workers[i].getModificationDate());
@@ -528,6 +534,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
         worker.setEndDate(rs.getDate(index++));
         worker.setPayRate(rs.getDouble(index++));
         worker.setCost(rs.getDouble(index++));
+        worker.setActive(rs.getInt(index++) == 1);
         worker.setCreationDate(rs.getDate(index++));
         worker.setCreationUser(rs.getString(index++));
         worker.setModificationDate(rs.getDate(index++));
@@ -735,6 +742,7 @@ public class DbProjectWorkerDAO extends BaseDAO implements ProjectWorkerDAO {
         worker.setEndDate(rs.getDate(index++));
         worker.setPayRate(rs.getDouble(index++));
         worker.setCost(rs.getDouble(index++));
+        worker.setActive(rs.getInt(index++) == 1);
         worker.setCreationDate(rs.getDate(index++));
         worker.setCreationUser(rs.getString(index++));
         worker.setModificationDate(rs.getDate(index++));

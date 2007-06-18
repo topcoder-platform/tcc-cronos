@@ -36,12 +36,12 @@ import com.topcoder.timetracker.project.db.Util;
  */
 public class Project extends TimeTrackerBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 3094214342878839547L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 3094214342878839547L;
 
-	/**
+    /**
      * <p>
      * This is the description of a project, which is a human-readable String that briefly
      * describes the project.
@@ -135,6 +135,20 @@ public class Project extends TimeTrackerBean {
      * </p>
      */
     private double salesTax;
+
+    /**
+     * <p>
+     * This is the P.O. box number for the project.
+     * </p>
+     * <p>
+     * It is null initially and can be accessed by getter and setter.
+     * </p>
+     *
+     * <p>
+     * It can not be null after it is set.
+     * </p>
+     */
+    private String poBoxNumber;
 
     /**
      * <p>
@@ -411,6 +425,32 @@ public class Project extends TimeTrackerBean {
 
         if (salesTax != this.salesTax) {
             this.salesTax = salesTax;
+            setChanged(true);
+        }
+    }
+
+    /**
+     * Retrieves the P.O. box number for the project.
+     *
+     * @return the P.O. box number for the project.
+     */
+    public String getPoBoxNumber() {
+        return this.poBoxNumber;
+    }
+
+    /**
+     * Sets the P.O. box number for the project.
+     *
+     * @param poBoxNumber
+     *            the P.O. box number for the project.
+     * @throws IllegalArgumentException
+     *             if <code>poBoxNumber</code> is <code>null</code> or an empty string.
+     */
+    public void setPoBoxNumber(String poBoxNumber) {
+        Util.checkString(poBoxNumber, "poBoxNumber");
+
+        if (!poBoxNumber.equals(this.poBoxNumber)) {
+            this.poBoxNumber = poBoxNumber;
             setChanged(true);
         }
     }

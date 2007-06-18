@@ -85,7 +85,7 @@ public class ProjectWorker extends TimeTrackerBean {
      * It can not be negative after it is set.
      * </p>
      */
-    private double payRate = -1;
+    private double payRate = -1.0;
 
     /**
      * <p>
@@ -101,7 +101,18 @@ public class ProjectWorker extends TimeTrackerBean {
      * It can not be negative after it is set.
      * </p>
      */
-    private double cost = -1;
+    private double cost = -1.0;
+
+    /**
+     * <p>
+     * This variable determines whether the worker is active.
+     * </p>
+     *
+     * <p>
+     * It is <code>true</code> initially and can be accessed by getter and setter.
+     * </p>
+     */
+    private boolean active = true;
 
     /**
      * <p>
@@ -280,6 +291,25 @@ public class ProjectWorker extends TimeTrackerBean {
             this.cost = cost;
             setChanged(true);
         }
+    }
+
+    /**
+     * Returns a <code>boolean</code> value that determines whether the worker is active.
+     *
+     * @return <code>true</code> if the worker is active, <code>false</code> otherwise.
+     */
+    public boolean isActive() {
+        return this.active;
+    }
+
+    /**
+     * Sets new <code>boolean</code> value that determines whether the worker is active.
+     *
+     * @param active
+     *            activeness of the worker.
+     */
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     /**
