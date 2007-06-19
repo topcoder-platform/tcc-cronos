@@ -178,6 +178,8 @@ public abstract class AbstractDbPhasePersistence implements PhasePersistence {
         if (idGen == null) {
             throw new IllegalArgumentException("idGen cannot be null.");
         }
+        getLogger().log(Level.INFO, "Instantiate AbstractDbPhasePersistence with given connectionFactory,"
+        		+ ", connectionName[" + connectionName + "] and the IdGen");
         this.connectionFactory = connectionFactory;
         this.connectionName = connectionName;
         this.idGenenerator = idGen;

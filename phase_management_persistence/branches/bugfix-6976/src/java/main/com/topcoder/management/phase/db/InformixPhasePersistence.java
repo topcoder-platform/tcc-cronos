@@ -221,7 +221,8 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
      *             or value).
      */
     protected void startTransaction(Map context) {
-        Helper.checkMap(context, "context");
+    	Helper.checkMap(context, "context");
+    	getLogger().log(Level.INFO, "start transaction.");
     }
 
     /**
