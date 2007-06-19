@@ -504,19 +504,8 @@ public class Invoice extends TimeTrackerBean {
      *            the invoice details to set
      */
     public void setServiceDetails(InvoiceServiceDetail[] serviceDetails) {
-        servicesSubTotal = new BigDecimal(0);
-
         this.serviceDetails = serviceDetails;
-
-        // ignores subTotal if expenseEntries is null
-        if (serviceDetails != null) {
-            for (int i = 0; i < serviceDetails.length; i++) {
-                // ignores the element if it is null
-                if (serviceDetails[i] != null && serviceDetails[i].getAmount() != null) {
-                    servicesSubTotal = servicesSubTotal.add(serviceDetails[i].getAmount());
-                }
-            }
-        }
+        recalculateServicesSubTotal();
         setChanged(true);
     }
 
@@ -682,6 +671,7 @@ public class Invoice extends TimeTrackerBean {
      */
     public void setFixedBillingEntries(FixedBillingEntry[] fixedBillingEntries) {
         this.fixedBillingEntries = fixedBillingEntries;
+        recalculateServicesSubTotal();
         setChanged(true);
     }
 
@@ -707,4 +697,30 @@ public class Invoice extends TimeTrackerBean {
         setChanged(true);
     }
 
+    /**
+     * Thie method recalculates services subtotal for the invoice. It is called by either
+     * <code>setServiceDetails</code> or <code>setFixedBillingEntries</code> methods.
+     */
+    private void recalculateServicesSubTotal() {
+        this.servicesSubTotal = new BigDecimal(0.0);
+
+        // Calculate total for service details (time enrties) first
+        if (this.serviceDetails != null) {
+            for (int i = 0; i < this.serviceDetails.length; ++i) {
+                // ignores the element if it is null
+                if (this.serviceDetails[i] != null && this.serviceDetails[i].getAmount() != null) {
+                    this.servicesSubTotal = this.servicesSubTotal.add(this.serviceDetails[i].getAmount());
+                }
+            }
+        }
+        // Calculate total for fixed billing enrties
+        if (this.fixedBillingEntries != null) {
+            for (int i = 0; i < this.fixedBillingEntries.length; ++i) {
+                // ignores the element if it is null
+                if (this.fixedBillingEntries[i] != null) {
+                    this.servicesSubTotal = this.servicesSubTotal.add(new BigDecimal(this.fixedBillingEntries[i].getAmount()));
+                }
+            }
+        }
+    }
 }
