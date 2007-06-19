@@ -117,8 +117,10 @@ public class MockProjectManager implements ProjectManager {
      *             if error occurred while accessing the database.
      */
     public Project getProject(long id) throws PersistenceException {
-        return new Project(1, new ProjectCategory(1, "Project1", new ProjectType(1, "design")), new ProjectStatus(
-            1, "active"));
+        Project ret = new Project(1, new ProjectCategory(1, "Project1", new ProjectType(1, "design")), new ProjectStatus(
+                1, "active"));
+        ret.setProperty("External Reference ID", "1");
+        return ret;
     }
 
     /**

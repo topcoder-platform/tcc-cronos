@@ -1,0 +1,15 @@
+2007-6-19
+ProjectServicesImpl class:
+add
+private static final String EXTERNAL_REFERENCE_ID = "External Reference ID";
+as the project id key.
+
+And in getFullProjectData method:
+use this:
+long externalProjectId =
+Long.parseLong((String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID));
+ExternalProject externalProject = projectRetrieval.retrieveProject(externalProjectId);
+
+to get external project.
+
+catch the NumberFormatException.

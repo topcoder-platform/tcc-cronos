@@ -108,11 +108,16 @@ public class MockProjectManager implements ProjectManager {
      */
     public Project getProject(long arg0) throws PersistenceException {
         if (arg0 == 1) {
-            return new Project(1, new ProjectCategory(1, "Project Services", new ProjectType(1, "type1")),
+            Project ret = new Project(1, new ProjectCategory(1, "Project Services", new ProjectType(1, "type1")),
                     new ProjectStatus(1, "active"));
+            ret.setProperty("External Reference ID", "1");
+            return ret;
+            
         } else if (arg0 == 2) {
-            return new Project(2, new ProjectCategory(2, "Project Services", new ProjectType(1, "type1")),
+            Project ret = new Project(2, new ProjectCategory(2, "Project Services", new ProjectType(1, "type1")),
                     new ProjectStatus(2, "inactive"));
+            ret.setProperty("External Reference ID", "2");
+            return ret;
         }
 
         return null;

@@ -105,7 +105,13 @@ public class MockProjectManager implements ProjectManager {
         if (id == 11) {
             throw new PersistenceException("Persistence error occurred.");
         }
-        return new Project(1, category, new ProjectStatus(1, "active"));
+        Project ret = new Project(1, category, new ProjectStatus(1, "active"));
+        if (id == 12) {
+            ret.setProperty("External Reference ID", "12");
+        } else {
+            ret.setProperty("External Reference ID", "1");
+        }
+        return ret;
     }
 
     /**

@@ -72,11 +72,15 @@ public class MockProjectManager implements ProjectManager {
             throw new PersistenceException("Fail");
         }
         if (arg0 == 1) {
-            return new Project(1, new ProjectCategory(1, "Java", new ProjectType(1, "Level1")),
+            Project ret = new Project(1, new ProjectCategory(1, "Java", new ProjectType(1, "Level1")),
                     new ProjectStatus(1, "active"));
+            ret.setProperty("External Reference ID", "1");
+            return ret;
         } else if (arg0 == 3) {
-            return new Project(3, new ProjectCategory(1, ".NET", new ProjectType(1, "Level1")),
+            Project ret = new Project(3, new ProjectCategory(1, ".NET", new ProjectType(1, "Level1")),
                     new ProjectStatus(1, "active"));
+            ret.setProperty("External Reference ID", "3");
+            return ret;
         } else {
             return null;
         }

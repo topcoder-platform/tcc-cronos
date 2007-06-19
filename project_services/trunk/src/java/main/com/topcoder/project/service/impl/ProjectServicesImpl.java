@@ -163,6 +163,13 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the <b>externalReferenceID</b> property key.
+     * </p>
+     */
+    private static final String EXTERNAL_REFERENCE_ID = "External Reference ID";
+
+    /**
+     * <p>
      * Represents the <code>ProjectRetrieval</code> instance that is used to retrieve the project
      * technologies information. It is set in the constructor to a non-null value, and will never
      * change.
@@ -586,12 +593,19 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // retrieves the external project with given project id
             logDebug("Starts calling ProjectRetrieval#retrieveProject method.");
-            ExternalProject externalProject = projectRetrieval.retrieveProject(projectId);
+            long externalProjectId =
+                Long.parseLong((String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID));
+            ExternalProject externalProject = projectRetrieval.retrieveProject(externalProjectId);
             logDebug("Finished calling ProjectRetrieval#retrieveProject method.");
 
             // gets the technologies associated with give project and sets them to fullProjectData
             fullProjectData.setTechnologies(externalProject.getTechnologies());
 
+        } catch (NumberFormatException ex) {
+            log(Level.ERROR,
+            "ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.");
+            throw new ProjectServicesException(
+            "PhaseManagementException occurred when retrieving project phases.", ex);
         } catch (PhaseManagementException ex) {
             log(Level.ERROR,
                 "ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.");

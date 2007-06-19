@@ -12,7 +12,7 @@
 <div class="separator">&nbsp;</div>
 <table class="report">
 <thead><tr>  <td class="heading">Classes in this File</td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Line Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Branch Coverage</a></td>  <td class="heading"><a class="dfn" href="help.html" onclick="popupwindow('help.html'); return false;">Complexity</a></td></tr></thead>
-  <tr><td><a href="com.topcoder.project.service.impl.ProjectServicesImpl.html">ProjectServicesImpl</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">97%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:97px"><span class="text">140/144</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">6/6</span></div></div></td></tr></table></td><td class="value"><span class="hidden">4.0;</span>4</td></tr>
+  <tr><td><a href="com.topcoder.project.service.impl.ProjectServicesImpl.html">ProjectServicesImpl</a></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">95%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:95px"><span class="text">141/148</span></div></div></td></tr></table></td><td><table cellpadding="0px" cellspacing="0px" class="percentgraph"><tr class="percentgraph"><td align="right" class="percentgraph" width="40">100%</td><td class="percentgraph"><div class="percentgraph"><div class="greenbar" style="width:100px"><span class="text">6/6</span></div></div></td></tr></table></td><td class="value"><span class="hidden">4.166666666666667;</span>4.167</td></tr>
 
 </table>
 <div class="separator">&nbsp;</div>
@@ -348,835 +348,859 @@
 <tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;166</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;ProjectRetrieval&lt;/code&gt; instance that is used to retrieve the project</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;b&gt;externalReferenceID&lt;/b&gt; property key.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * technologies information. It is set in the constructor to a non-null value, and will never</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * change.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTERNAL_REFERENCE_ID = <span class="string">"External Reference ID"</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;171</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> ProjectRetrieval projectRetrieval;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;172</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;173</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;ProjectRetrieval&lt;/code&gt; instance that is used to retrieve the project</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;174</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * technologies information. It is set in the constructor to a non-null value, and will never</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;ResourceManager&lt;/code&gt; instance that is used to retrieve resources. It</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * change.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;176</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * is set in the constructor to a non-null value, and will never change.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;177</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;178</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> ProjectRetrieval projectRetrieval;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;179</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> ResourceManager resourceManager;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;180</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;182</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;ResourceManager&lt;/code&gt; instance that is used to retrieve resources. It</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;PhaseManager&lt;/code&gt; instance that is used to obtain phase information</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;184</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * about a project. It is set in the constructor to a non-null value, and will never change.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;185</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> PhaseManager phaseManager;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;188</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;189</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;TeamManager&lt;/code&gt; instance that is used to retrieve teams. It is set</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;192</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * in the constructor to a non-null value, and will never change.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;193</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;194</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;195</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> TeamManager teamManager;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;196</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;197</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;198</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;199</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;ProjectManager&lt;/code&gt; instance that is used to retrieve projects. It</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * is set in the constructor to a non-null value, and will never change.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;184</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;185</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> ResourceManager resourceManager;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;188</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;189</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;PhaseManager&lt;/code&gt; instance that is used to obtain phase information</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * about a project. It is set in the constructor to a non-null value, and will never change.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;192</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;193</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;194</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> PhaseManager phaseManager;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;195</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;196</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;197</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;198</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;TeamManager&lt;/code&gt; instance that is used to retrieve teams. It is set</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;199</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * in the constructor to a non-null value, and will never change.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;201</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;202</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> TeamManager teamManager;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> ProjectManager projectManager;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;204</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;205</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;206</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the &lt;code&gt;ProjectManager&lt;/code&gt; instance that is used to retrieve projects. It</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;207</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Used extensively in this class to log information. This will include logging method entry and</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * is set in the constructor to a non-null value, and will never change.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;208</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * exit, errors, debug information for calls to other components, etc.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;209</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;210</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;211</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Note that logging is optional and can be null, in which case, no logging will take place. It</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;212</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * will be set in the constructor and will not change.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;213</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;214</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;215</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> Log logger;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;216</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;210</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> ProjectManager projectManager;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;211</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;217</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;212</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;218</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;213</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;214</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Used extensively in this class to log information. This will include logging method entry and</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;215</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * exit, errors, debug information for calls to other components, etc.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;216</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;217</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;218</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Note that logging is optional and can be null, in which case, no logging will take place. It</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;219</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the id of the active project status.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * will be set in the constructor and will not change.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;220</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;221</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;222</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * It is set in the constructor to a non-negative value, and will never change.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;223</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;224</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;225</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> activeProjectStatusId;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;226</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;222</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> Log logger;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;223</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;227</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;224</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;225</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;226</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Represents the id of the active project status.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;227</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;228</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;229</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Default constructor.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * It is set in the constructor to a non-negative value, and will never change.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;230</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;231</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ConfigurationException</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;232</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If any configuration error occurs, such as unknown namespace, or missing required</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> activeProjectStatusId;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;233</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             values, or errors while constructing the managers and services</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;234</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;235</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProjectServicesImpl() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;236</td>  <td class="nbHitsCovered">&nbsp;46</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>(DEFAULT_NAMESPACE);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;237</td>  <td class="nbHitsCovered">&nbsp;46</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;236</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Default constructor.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;237</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;238</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;240</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;241</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Namespace constructor. Initializes this instance from configuration info from the &lt;b&gt;Config</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;242</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Manager&lt;/b&gt;. It will use the &lt;b&gt;Object Factory&lt;/b&gt; to create instances of required objects.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;243</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;244</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param namespace</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;245</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            The configuration namespace</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;246</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;247</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If namespace is null/empty</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;248</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ConfigurationException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;249</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If any configuration error occurs, such as unknown namespace, or missing required</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;240</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             values, or errors while constructing the managers and services</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;241</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;242</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProjectServicesImpl() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;243</td>  <td class="nbHitsCovered">&nbsp;46</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>(DEFAULT_NAMESPACE);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;244</td>  <td class="nbHitsCovered">&nbsp;46</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;245</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;246</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;247</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;248</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Namespace constructor. Initializes this instance from configuration info from the &lt;b&gt;Config</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;249</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Manager&lt;/b&gt;. It will use the &lt;b&gt;Object Factory&lt;/b&gt; to create instances of required objects.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;250</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             values, or errors while constructing the managers and services.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;251</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;252</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProjectServicesImpl(String namespace) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;253</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;        Util.checkStrNotNullOrEmpty(namespace, <span class="string">"namespace"</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;254</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;255</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;        ConfigManager cm = ConfigManager.getInstance();</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;256</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;257</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets namespace for ConfigManagerSpecificationFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;258</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;            String specNamespace = cm.getString(namespace, SPEC_NAMESPACE);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;259</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// creates an instance of ObjectFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;260</td>  <td class="nbHitsCovered">&nbsp;73</td>  <td class="src"><pre class="src">&nbsp;            ObjectFactory objectFactory = <span class="keyword">new</span> ObjectFactory(<span class="keyword">new</span> ConfigManagerSpecificationFactory(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;261</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                specNamespace));</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;262</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;263</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of userRetrievalKey and creates an instance by ObjectFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;264</td>  <td class="nbHitsCovered">&nbsp;68</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.projectRetrieval = (ProjectRetrieval) createObject(cm, objectFactory, namespace,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;265</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                PROJECT_RETRIEVAL_KEY);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;266</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of resourceManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;267</td>  <td class="nbHitsCovered">&nbsp;64</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.resourceManager = (ResourceManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;268</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                RESOURCE_MANAGER_KEY);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;269</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of phaseManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;270</td>  <td class="nbHitsCovered">&nbsp;61</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.phaseManager = (PhaseManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;271</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                PHASE_MANAGER_KEY);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;272</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of projectManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;273</td>  <td class="nbHitsCovered">&nbsp;58</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.projectManager = (ProjectManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;274</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                PROJECT_MANAGER_KEY);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;275</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of teamManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;276</td>  <td class="nbHitsCovered">&nbsp;55</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.teamManager = (TeamManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;277</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                TEAM_MANAGER_KEY);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;278</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;279</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets name of the log and gets the logger instance from LogManager if necessary</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;280</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            String logName = cm.getString(namespace, LOGGER_NAME);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;281</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.logger = ((logName == <span class="keyword">null</span>) ? <span class="keyword">null</span> : LogManager.getLog(logName));</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;282</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;283</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of activeProjectStatusId</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;284</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            String activeStatusId = cm.getString(namespace, ACTIVE_PROJECT_STATUS_ID);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;285</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// parses it to 'long' value, if error occurs or negative value returned, throw an</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;286</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// exception</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;287</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">long</span> theActiveProjectStatusId = Long.parseLong(activeStatusId);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;288</td>  <td class="nbHitsCovered">&nbsp;50</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (theActiveProjectStatusId &lt; 0) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;289</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;290</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                    <span class="string">"Value of [activeProjectStatusId] should not be negative."</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;291</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.activeProjectStatusId = theActiveProjectStatusId;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;293</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;294</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (UnknownNamespaceException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;295</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;296</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"Given namespace can't be recognized by ConfigManager."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;297</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (IllegalReferenceException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;298</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;299</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"IllegalReferenceException occurred when initializing ObjectFactory."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;300</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (SpecificationConfigurationException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;301</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;302</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"SpecificationConfigurationException occurred when initializing ObjectFactory."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;303</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (InvalidClassSpecificationException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(<span class="string">"The configuration for ObjectFactory is invalid."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;305</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (NumberFormatException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;306</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;307</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"Long value in configuration can not be converted to 'long' type."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;308</td>  <td class="nbHitsCovered">&nbsp;12</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (IllegalArgumentException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;309</td>  <td class="nbHitsCovered">&nbsp;12</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;310</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"Some configuration value for ObjectFactory is null or empty."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;311</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (ClassCastException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;312</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;313</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"Object created by ObjectFactory can not be casted to specific type."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;314</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;315</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;316</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;317</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;318</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;319</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Parameter constructor.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;320</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;321</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projectRetrieval</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;322</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ProjectRetrieval instance that is used to retrieve the project technologies</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;323</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            information</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;324</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param resourceManager</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;325</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ResourceManager instance that is used to retrieve resources</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;326</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param phaseManager</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;327</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the PhaseManager instance that is used to obtain phase information about a project</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;328</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param teamManager</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;329</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the TeamManager instance that is used to retrieve teams</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;330</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projectManager</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;331</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ProjectManager instance that is used to retrieve projects</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;332</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param logger</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;333</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            used to log information</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;334</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param activeProjectStatusId</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;335</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the id of the active project status</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;336</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;337</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if projectRetrieval or resourceManager or phaseManager or teamManager or</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;338</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             projectManager is null, or activeProjectStatusId is negative</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;339</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;340</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProjectServicesImpl(ProjectRetrieval projectRetrieval, ResourceManager resourceManager,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;341</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        PhaseManager phaseManager, TeamManager teamManager, ProjectManager projectManager,</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;342</td>  <td class="nbHitsCovered">&nbsp;57</td>  <td class="src"><pre class="src">&nbsp;        Log logger, <span class="keyword">long</span> activeProjectStatusId) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;343</td>  <td class="nbHitsCovered">&nbsp;57</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(projectRetrieval, <span class="string">"projectRetrieval"</span>, <span class="keyword">null</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;344</td>  <td class="nbHitsCovered">&nbsp;55</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(resourceManager, <span class="string">"resourceManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;345</td>  <td class="nbHitsCovered">&nbsp;53</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(phaseManager, <span class="string">"phaseManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;346</td>  <td class="nbHitsCovered">&nbsp;51</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(teamManager, <span class="string">"teamManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;347</td>  <td class="nbHitsCovered">&nbsp;49</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(projectManager, <span class="string">"projectManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;348</td>  <td class="nbHitsCovered">&nbsp;47</td>  <td class="src"><pre class="src">&nbsp;        Util.checkIDNotNegative(activeProjectStatusId, <span class="string">"activeProjectStatusId"</span>, <span class="keyword">null</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;349</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;350</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.projectRetrieval = projectRetrieval;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;351</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.resourceManager = resourceManager;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;352</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.phaseManager = phaseManager;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;353</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.teamManager = teamManager;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;354</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.projectManager = projectManager;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;355</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.logger = logger;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;356</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.activeProjectStatusId = activeProjectStatusId;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;357</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;358</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;359</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;360</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;361</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;362</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Creates new object by ObjectFactory.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;363</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;364</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param cm</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;365</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            ConfigManager instance</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;366</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param objFactory</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;367</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            ObjectFactory instance</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;368</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param namespace</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;369</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the namespace of configuration</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;370</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param propertyName</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;371</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the property name in configuration</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;372</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return the new created object</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;373</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;252</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            The configuration namespace</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;253</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;374</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if any property value in configuration is null or empty</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;375</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws InvalidClassSpecificationException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;376</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if configuration for ObjectFactory is invalid</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws UnknownNamespaceException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;378</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if given namespace is unknown by ConfigManager</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;379</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;254</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If namespace is null/empty</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;255</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ConfigurationException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;256</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If any configuration error occurs, such as unknown namespace, or missing required</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;257</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             values, or errors while constructing the managers and services.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;258</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;380</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Object createObject(ConfigManager cm, ObjectFactory objFactory, String namespace,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;381</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        String propertyName) <span class="keyword">throws</span> InvalidClassSpecificationException, UnknownNamespaceException {</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;382</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="comment">// gets the property value by ConfigManager</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;383</td>  <td class="nbHitsCovered">&nbsp;306</td>  <td class="src"><pre class="src">&nbsp;        String propertyValue = cm.getString(namespace, propertyName);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;384</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="comment">// creates a new object using ObjectFactory</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;385</td>  <td class="nbHitsCovered">&nbsp;306</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> objFactory.createObject(propertyValue);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;386</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;387</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;259</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProjectServicesImpl(String namespace) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;260</td>  <td class="nbHitsCovered">&nbsp;79</td>  <td class="src"><pre class="src">&nbsp;        Util.checkStrNotNullOrEmpty(namespace, <span class="string">"namespace"</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;261</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;388</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;389</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;390</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Logs messages if necessary.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;391</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;392</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param level</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;393</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the log level</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;394</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param msg</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;395</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the log message</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;396</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;397</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> log(Level level, String msg) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;398</td>  <td class="nbHitsCovered">&nbsp;36345</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (logger != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;399</td>  <td class="nbHitsCovered">&nbsp;36332</td>  <td class="src"><pre class="src">&nbsp;            logger.log(level, msg);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;400</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;401</td>  <td class="nbHitsCovered">&nbsp;36345</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;402</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;403</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;404</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;405</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Logs debug level message while calling external Topcoder classes.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;406</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;407</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param msg</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;408</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the logging message</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;409</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;410</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> logDebug(String msg) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;411</td>  <td class="nbHitsCovered">&nbsp;18231</td>  <td class="src"><pre class="src">&nbsp;        log(Level.DEBUG, msg);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;412</td>  <td class="nbHitsCovered">&nbsp;18231</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;413</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;414</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;415</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;416</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all active projects along with all known associated information. Returns</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;417</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * empty array if no projects found.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;418</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;419</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return FullProjectData array with full projects info, or empty array if none found</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;420</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;421</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;422</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;423</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> FullProjectData[] findActiveProjects() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;424</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findActiveProjects method."</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;425</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="comment">// finds the active projects</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;426</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = findActiveProjectsHeaders();</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;427</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="comment">// assembles the full project datas</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;428</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData[] fullDatas = assembleFullProjectDatas(projects);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;429</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;430</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findActiveProjects method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;431</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullDatas;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;432</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;433</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;434</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;435</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;436</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all active projects. Returns empty array if no projects found.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;437</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;438</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return Project array with project info, or empty array if none found</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;439</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;440</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;441</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;442</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Project[] findActiveProjectsHeaders() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;443</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findActiveProjectsHeaders method."</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;444</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;445</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="comment">// represents the active projects</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;446</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = <span class="keyword">null</span>;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;447</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;262</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;        ConfigManager cm = ConfigManager.getInstance();</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;263</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;448</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// find all projects</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;449</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;450</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;            projects = projectManager.searchProjects(ProjectFilterUtility</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;451</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                .buildStatusIdEqualFilter(activeProjectStatusId));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;452</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;453</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;264</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets namespace for ConfigManagerSpecificationFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;265</td>  <td class="nbHitsCovered">&nbsp;75</td>  <td class="src"><pre class="src">&nbsp;            String specNamespace = cm.getString(namespace, SPEC_NAMESPACE);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;266</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// creates an instance of ObjectFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;267</td>  <td class="nbHitsCovered">&nbsp;73</td>  <td class="src"><pre class="src">&nbsp;            ObjectFactory objectFactory = <span class="keyword">new</span> ObjectFactory(<span class="keyword">new</span> ConfigManagerSpecificationFactory(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;268</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                specNamespace));</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;269</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;454</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PersistenceException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;455</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;456</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#findActiveProjectsHeaders method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;457</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;270</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of userRetrievalKey and creates an instance by ObjectFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;271</td>  <td class="nbHitsCovered">&nbsp;68</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.projectRetrieval = (ProjectRetrieval) createObject(cm, objectFactory, namespace,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;272</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                PROJECT_RETRIEVAL_KEY);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;273</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of resourceManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;274</td>  <td class="nbHitsCovered">&nbsp;64</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.resourceManager = (ResourceManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;275</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                RESOURCE_MANAGER_KEY);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;276</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of phaseManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;277</td>  <td class="nbHitsCovered">&nbsp;61</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.phaseManager = (PhaseManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;278</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                PHASE_MANAGER_KEY);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;279</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of projectManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;280</td>  <td class="nbHitsCovered">&nbsp;58</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.projectManager = (ProjectManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                PROJECT_MANAGER_KEY);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;282</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of teamManagerKey and creates an instance by ObjectFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;283</td>  <td class="nbHitsCovered">&nbsp;55</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.teamManager = (TeamManager) createObject(cm, objectFactory, namespace,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;284</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                TEAM_MANAGER_KEY);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;285</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;286</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets name of the log and gets the logger instance from LogManager if necessary</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;287</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            String logName = cm.getString(namespace, LOGGER_NAME);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;288</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.logger = ((logName == <span class="keyword">null</span>) ? <span class="keyword">null</span> : LogManager.getLog(logName));</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;289</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;290</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the value of activeProjectStatusId</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;291</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            String activeStatusId = cm.getString(namespace, ACTIVE_PROJECT_STATUS_ID);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;292</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// parses it to 'long' value, if error occurs or negative value returned, throw an</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;293</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// exception</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;294</td>  <td class="nbHitsCovered">&nbsp;52</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">long</span> theActiveProjectStatusId = Long.parseLong(activeStatusId);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;295</td>  <td class="nbHitsCovered">&nbsp;50</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (theActiveProjectStatusId &lt; 0) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;296</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;297</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                    <span class="string">"Value of [activeProjectStatusId] should not be negative."</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;298</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;299</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">this</span>.activeProjectStatusId = theActiveProjectStatusId;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;300</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;301</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (UnknownNamespaceException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;302</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;303</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"Given namespace can't be recognized by ConfigManager."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (IllegalReferenceException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;305</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;306</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"IllegalReferenceException occurred when initializing ObjectFactory."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;307</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (SpecificationConfigurationException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;308</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;309</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"SpecificationConfigurationException occurred when initializing ObjectFactory."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;310</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (InvalidClassSpecificationException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;311</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(<span class="string">"The configuration for ObjectFactory is invalid."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;312</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (NumberFormatException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;313</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;314</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"Long value in configuration can not be converted to 'long' type."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;315</td>  <td class="nbHitsCovered">&nbsp;12</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (IllegalArgumentException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;316</td>  <td class="nbHitsCovered">&nbsp;12</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;317</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"Some configuration value for ObjectFactory is null or empty."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;318</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (ClassCastException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;319</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ConfigurationException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;320</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"Object created by ObjectFactory can not be casted to specific type."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;321</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;322</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;323</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;324</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;325</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;326</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Parameter constructor.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;327</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;328</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projectRetrieval</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;329</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ProjectRetrieval instance that is used to retrieve the project technologies</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;330</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            information</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;331</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param resourceManager</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;332</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ResourceManager instance that is used to retrieve resources</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;333</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param phaseManager</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;334</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the PhaseManager instance that is used to obtain phase information about a project</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;335</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param teamManager</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;336</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the TeamManager instance that is used to retrieve teams</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;337</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projectManager</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;338</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ProjectManager instance that is used to retrieve projects</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;339</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param logger</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;340</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            used to log information</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;341</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param activeProjectStatusId</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;342</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the id of the active project status</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;343</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;344</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if projectRetrieval or resourceManager or phaseManager or teamManager or</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;345</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             projectManager is null, or activeProjectStatusId is negative</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;346</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;347</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProjectServicesImpl(ProjectRetrieval projectRetrieval, ResourceManager resourceManager,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;348</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        PhaseManager phaseManager, TeamManager teamManager, ProjectManager projectManager,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;349</td>  <td class="nbHitsCovered">&nbsp;57</td>  <td class="src"><pre class="src">&nbsp;        Log logger, <span class="keyword">long</span> activeProjectStatusId) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;350</td>  <td class="nbHitsCovered">&nbsp;57</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(projectRetrieval, <span class="string">"projectRetrieval"</span>, <span class="keyword">null</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;351</td>  <td class="nbHitsCovered">&nbsp;55</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(resourceManager, <span class="string">"resourceManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;352</td>  <td class="nbHitsCovered">&nbsp;53</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(phaseManager, <span class="string">"phaseManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;353</td>  <td class="nbHitsCovered">&nbsp;51</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(teamManager, <span class="string">"teamManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;354</td>  <td class="nbHitsCovered">&nbsp;49</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(projectManager, <span class="string">"projectManager"</span>, <span class="keyword">null</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;355</td>  <td class="nbHitsCovered">&nbsp;47</td>  <td class="src"><pre class="src">&nbsp;        Util.checkIDNotNegative(activeProjectStatusId, <span class="string">"activeProjectStatusId"</span>, <span class="keyword">null</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;356</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;357</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.projectRetrieval = projectRetrieval;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;358</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.resourceManager = resourceManager;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;359</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.phaseManager = phaseManager;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;360</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.teamManager = teamManager;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;361</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.projectManager = projectManager;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;362</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.logger = logger;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;363</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.activeProjectStatusId = activeProjectStatusId;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;364</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;365</td>  <td class="nbHitsCovered">&nbsp;45</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;366</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;367</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;368</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;369</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Creates new object by ObjectFactory.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;370</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;371</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param cm</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;372</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            ConfigManager instance</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;373</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param objFactory</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;374</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            ObjectFactory instance</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;375</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param namespace</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;376</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the namespace of configuration</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param propertyName</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;378</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the property name in configuration</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;379</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return the new created object</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;380</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;381</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if any property value in configuration is null or empty</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;382</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws InvalidClassSpecificationException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;383</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if configuration for ObjectFactory is invalid</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;384</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws UnknownNamespaceException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;385</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if given namespace is unknown by ConfigManager</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;386</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;387</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Object createObject(ConfigManager cm, ObjectFactory objFactory, String namespace,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;388</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        String propertyName) <span class="keyword">throws</span> InvalidClassSpecificationException, UnknownNamespaceException {</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;389</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">// gets the property value by ConfigManager</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;390</td>  <td class="nbHitsCovered">&nbsp;306</td>  <td class="src"><pre class="src">&nbsp;        String propertyValue = cm.getString(namespace, propertyName);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;391</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">// creates a new object using ObjectFactory</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;392</td>  <td class="nbHitsCovered">&nbsp;306</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> objFactory.createObject(propertyValue);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;393</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;394</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;395</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;396</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;397</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Logs messages if necessary.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;398</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;399</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param level</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;400</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the log level</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;401</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param msg</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;402</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the log message</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;403</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;404</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> log(Level level, String msg) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;405</td>  <td class="nbHitsCovered">&nbsp;36345</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (logger != <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;406</td>  <td class="nbHitsCovered">&nbsp;36332</td>  <td class="src"><pre class="src">&nbsp;            logger.log(level, msg);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;407</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsCovered">&nbsp;36345</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;409</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;410</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;411</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;412</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Logs debug level message while calling external Topcoder classes.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;413</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;414</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param msg</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;415</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the logging message</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;416</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;417</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> logDebug(String msg) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;418</td>  <td class="nbHitsCovered">&nbsp;18231</td>  <td class="src"><pre class="src">&nbsp;        log(Level.DEBUG, msg);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;419</td>  <td class="nbHitsCovered">&nbsp;18231</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;420</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;421</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;422</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;423</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all active projects along with all known associated information. Returns</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;424</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * empty array if no projects found.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;425</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;426</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return FullProjectData array with full projects info, or empty array if none found</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;427</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;428</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;429</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;430</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> FullProjectData[] findActiveProjects() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;431</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findActiveProjects method."</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;432</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">// finds the active projects</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;433</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = findActiveProjectsHeaders();</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;434</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">// assembles the full project datas</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;435</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData[] fullDatas = assembleFullProjectDatas(projects);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;436</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;437</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findActiveProjects method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;438</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullDatas;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;439</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;440</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;441</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;442</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;443</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all active projects. Returns empty array if no projects found.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;444</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;445</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return Project array with project info, or empty array if none found</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;446</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;447</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;448</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;449</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Project[] findActiveProjectsHeaders() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;450</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findActiveProjectsHeaders method."</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;451</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;452</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">// represents the active projects</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;453</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;454</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;455</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// find all projects</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;456</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;457</td>  <td class="nbHitsCovered">&nbsp;2010</td>  <td class="src"><pre class="src">&nbsp;            projects = projectManager.searchProjects(ProjectFilterUtility</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;458</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"PersisteceException occurred when operating ProjectManager."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;459</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                .buildStatusIdEqualFilter(activeProjectStatusId));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;459</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;460</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;461</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findActiveProjectsHeaders method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;462</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> projects;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;461</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PersistenceException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;462</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;463</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;464</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#findActiveProjectsHeaders method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;464</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;465</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;466</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"PersisteceException occurred when operating ProjectManager."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;466</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;467</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all projects along with all known associated information that match the</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;468</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * search criteria. Returns empty array if no projects found.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;469</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;468</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findActiveProjectsHeaders method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;469</td>  <td class="nbHitsCovered">&nbsp;2008</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> projects;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;470</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return FullProjectData array with full projects info, or empty array if none found</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;471</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;472</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            The search criteria to filter projects</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;473</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;474</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If filter is null</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;475</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;476</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;477</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;478</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> FullProjectData[] findFullProjects(Filter filter) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;479</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findFullProjects method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;480</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(filter, <span class="string">"filter"</span>, logger);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;481</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;482</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="comment">// filter ProjectHeaders</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;483</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = findProjectsHeaders(filter);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;484</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="comment">// assembles FullProjectDatas</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;485</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData[] fullProjects = assembleFullProjectDatas(projects);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;486</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;487</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findFullProjects method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;488</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullProjects;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;489</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;490</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;471</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;491</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;472</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;492</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;473</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;493</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all projects that match the search criteria. Returns empty array if no</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;494</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * projects found.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;495</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;474</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all projects along with all known associated information that match the</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;475</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * search criteria. Returns empty array if no projects found.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;476</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;496</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return Project array with project info, or empty array if none found</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;497</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;477</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return FullProjectData array with full projects info, or empty array if none found</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;478</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param filter</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;498</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;479</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *            The search criteria to filter projects</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;499</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;480</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;500</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;481</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If filter is null</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;501</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;482</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;502</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;483</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;503</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;484</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;504</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Project[] findProjectsHeaders(Filter filter) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;505</td>  <td class="nbHitsCovered">&nbsp;2009</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findProjectsHeaders method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;506</td>  <td class="nbHitsCovered">&nbsp;2009</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(filter, <span class="string">"filter"</span>, logger);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;507</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;485</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> FullProjectData[] findFullProjects(Filter filter) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;486</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findFullProjects method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;487</td>  <td class="nbHitsCovered">&nbsp;1004</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(filter, <span class="string">"filter"</span>, logger);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;488</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;508</td>  <td class="nbHitsCovered">&nbsp;2007</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;489</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">// filter ProjectHeaders</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;490</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = findProjectsHeaders(filter);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;491</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="comment">// assembles FullProjectDatas</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;492</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData[] fullProjects = assembleFullProjectDatas(projects);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;493</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;494</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findFullProjects method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;495</td>  <td class="nbHitsCovered">&nbsp;1002</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullProjects;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;496</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;497</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;498</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;499</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;500</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method finds all projects that match the search criteria. Returns empty array if no</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;501</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * projects found.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;502</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;503</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return Project array with project info, or empty array if none found</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;504</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param filter</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;505</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            The search criteria to filter projects</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;506</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;507</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If filter is null</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;508</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;509</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;510</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// searches projects using given filter</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;511</td>  <td class="nbHitsCovered">&nbsp;2007</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;512</td>  <td class="nbHitsCovered">&nbsp;2007</td>  <td class="src"><pre class="src">&nbsp;            projects = projectManager.searchProjects(filter);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;513</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;511</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Project[] findProjectsHeaders(Filter filter) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;512</td>  <td class="nbHitsCovered">&nbsp;2009</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#findProjectsHeaders method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;513</td>  <td class="nbHitsCovered">&nbsp;2009</td>  <td class="src"><pre class="src">&nbsp;        Util.checkObjNotNull(filter, <span class="string">"filter"</span>, logger);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;514</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;515</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PersistenceException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;516</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;515</td>  <td class="nbHitsCovered">&nbsp;2007</td>  <td class="src"><pre class="src">&nbsp;        Project[] projects = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;516</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;517</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#findProjectsHeaders method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;518</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;519</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"PersistenceException occurred when searching projects."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;520</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// searches projects using given filter</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;518</td>  <td class="nbHitsCovered">&nbsp;2007</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;519</td>  <td class="nbHitsCovered">&nbsp;2007</td>  <td class="src"><pre class="src">&nbsp;            projects = projectManager.searchProjects(filter);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;520</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectManager#searchProjects method."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;521</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;522</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findProjectsHeaders method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;523</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> projects;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;522</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PersistenceException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;523</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;524</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;525</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#findProjectsHeaders method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;525</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;526</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;527</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"PersistenceException occurred when searching projects."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;527</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;528</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method retrieves the project along with all known associated information. Returns null</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;529</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * if not found.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;530</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;529</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#findProjectsHeaders method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;530</td>  <td class="nbHitsCovered">&nbsp;2005</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> projects;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;531</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return the project along with all known associated information</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;532</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projectId</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;533</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ID of the project to retrieve</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;534</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;535</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if projectId is negative</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * This method retrieves the project along with all known associated information. Returns null</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;536</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * if not found.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;537</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if there is a system error while performing the search</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;538</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws TeamPersistenceException</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return the project along with all known associated information</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;539</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if error occurred when searching teams</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projectId</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;540</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            the ID of the project to retrieve</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;541</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> FullProjectData getFullProjectData(<span class="keyword">long</span> projectId) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;542</td>  <td class="nbHitsCovered">&nbsp;1027</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;543</td>  <td class="nbHitsCovered">&nbsp;1027</td>  <td class="src"><pre class="src">&nbsp;        Util.checkIDNotNegative(projectId, <span class="string">"projectId"</span>, logger);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IllegalArgumentException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;542</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if projectId is negative</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;543</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;544</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;545</td>  <td class="nbHitsCovered">&nbsp;1025</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData fullProjectData = <span class="keyword">null</span>;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if there is a system error while performing the search</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;545</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws TeamPersistenceException</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;546</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             if error occurred when searching teams</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;547</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the phase project</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;548</td>  <td class="nbHitsCovered">&nbsp;1025</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling PhaseManager#getPhases method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;549</td>  <td class="nbHitsCovered">&nbsp;1025</td>  <td class="src"><pre class="src">&nbsp;            com.topcoder.project.phases.Project phaseProject = phaseManager.getPhases(projectId);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;550</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling PhaseManager#getPhases method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;551</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (phaseProject == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;552</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#getFullProjectData method."</span>);</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;553</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;548</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> FullProjectData getFullProjectData(<span class="keyword">long</span> projectId) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;549</td>  <td class="nbHitsCovered">&nbsp;1027</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;550</td>  <td class="nbHitsCovered">&nbsp;1027</td>  <td class="src"><pre class="src">&nbsp;        Util.checkIDNotNegative(projectId, <span class="string">"projectId"</span>, logger);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;551</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;552</td>  <td class="nbHitsCovered">&nbsp;1025</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData fullProjectData = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;553</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;554</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the phase project</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;555</td>  <td class="nbHitsCovered">&nbsp;1025</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling PhaseManager#getPhases method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;556</td>  <td class="nbHitsCovered">&nbsp;1025</td>  <td class="src"><pre class="src">&nbsp;            com.topcoder.project.phases.Project phaseProject = phaseManager.getPhases(projectId);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;557</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling PhaseManager#getPhases method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;558</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (phaseProject == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;559</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#getFullProjectData method."</span>);</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;560</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;561</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;555</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;562</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;556</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;563</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// creates an instance of FullProjectData with phaseProject</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;557</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData = <span class="keyword">new</span> FullProjectData(phaseProject.getStartDate(), phaseProject</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;558</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;564</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData = <span class="keyword">new</span> FullProjectData(phaseProject.getStartDate(), phaseProject</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;565</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                .getWorkdays());</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;559</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;566</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;560</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;567</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the project header</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;561</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectManager#getProject method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;562</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            Project projectHeader = projectManager.getProject(projectId);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;563</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectManager#getProject method."</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;564</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// if not found, return null</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;565</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (projectHeader == <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;566</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#getFullProjectData method."</span>);</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;567</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;568</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;569</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// sets the project header</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;570</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setProjectHeader(projectHeader);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;568</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectManager#getProject method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;569</td>  <td class="nbHitsCovered">&nbsp;1023</td>  <td class="src"><pre class="src">&nbsp;            Project projectHeader = projectManager.getProject(projectId);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;570</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectManager#getProject method."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;571</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;572</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// searches the resources associated with give project</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;573</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ResourceManager#searchResources method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;574</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            Resource[] resources = resourceManager.searchResources(ResourceFilterBuilder</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// if not found, return null</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;572</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (projectHeader == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;573</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#getFullProjectData method."</span>);</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;574</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;575</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                .createProjectIdFilter(projectId));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;576</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ResourceManager#searchResources method."</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;577</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// sets the resources to fullProjectData</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;578</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setResources(resources);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;579</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;576</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// sets the project header</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;577</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setProjectHeader(projectHeader);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;578</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;580</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// searches the teams associated with given project</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;581</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling TeamManager#findTeams method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;582</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            TeamHeader[] teams = teamManager.findTeams(projectId);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;583</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling TeamManager#findTeams method."</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;579</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// searches the resources associated with give project</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;580</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ResourceManager#searchResources method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;581</td>  <td class="nbHitsCovered">&nbsp;1021</td>  <td class="src"><pre class="src">&nbsp;            Resource[] resources = resourceManager.searchResources(ResourceFilterBuilder</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;582</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                .createProjectIdFilter(projectId));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;583</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ResourceManager#searchResources method."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;584</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// sets the teams to fullProjectData</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;585</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setTeams(teams);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// sets the resources to fullProjectData</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;585</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setResources(resources);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;586</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;587</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// retrieves the external project with given project id</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;588</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectRetrieval#retrieveProject method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;589</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            ExternalProject externalProject = projectRetrieval.retrieveProject(projectId);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;590</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectRetrieval#retrieveProject method."</span>);</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// searches the teams associated with given project</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;588</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling TeamManager#findTeams method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;589</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            TeamHeader[] teams = teamManager.findTeams(projectId);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;590</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling TeamManager#findTeams method."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;591</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// sets the teams to fullProjectData</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;592</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setTeams(teams);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;593</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;592</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the technologies associated with give project and sets them to fullProjectData</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;593</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setTechnologies(externalProject.getTechnologies());</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;594</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;595</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PhaseManagementException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;596</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// retrieves the external project with given project id</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;595</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Starts calling ProjectRetrieval#retrieveProject method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;596</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">long</span> externalProjectId =</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;597</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                Long.parseLong((String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;598</td>  <td class="nbHitsCovered">&nbsp;1018</td>  <td class="src"><pre class="src">&nbsp;            ExternalProject externalProject = projectRetrieval.retrieveProject(externalProjectId);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;599</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;            logDebug(<span class="string">"Finished calling ProjectRetrieval#retrieveProject method."</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;600</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;601</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="comment">// gets the technologies associated with give project and sets them to fullProjectData</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;602</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;            fullProjectData.setTechnologies(externalProject.getTechnologies());</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;603</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;604</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        } <span class="keyword">catch</span> (NumberFormatException ex) {</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;605</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            log(Level.ERROR,</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;606</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;607</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;608</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;            <span class="string">"PhaseManagementException occurred when retrieving project phases."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;609</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PhaseManagementException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;610</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;611</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;598</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;599</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;612</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;613</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"PhaseManagementException occurred when retrieving project phases."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;600</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PersistenceException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;601</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;602</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;614</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (PersistenceException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;615</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;616</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;603</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;604</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;617</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;618</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"PersistenceException occurred when retrieving project."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;605</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (SearchBuilderException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;606</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;607</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;608</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;609</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"SearchBuilderException occurred when searching resources."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;610</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (ResourcePersistenceException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;611</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;612</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;613</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;614</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"ResourcePersistenceException occurred when searching resources."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;615</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (RetrievalException ex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;616</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;617</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;618</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;619</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;                <span class="string">"RetrievalException occurred when retrieving external project."</span>, ex);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;620</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;619</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (SearchBuilderException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;620</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;621</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;622</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;623</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullProjectData;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;624</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;625</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;622</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;623</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"SearchBuilderException occurred when searching resources."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;624</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (ResourcePersistenceException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;625</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;626</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;627</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;627</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;628</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Helper method to obtains full project information for each of the passed projects. The</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;629</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * returned array will be of the same dimension as the passed array, and each</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;630</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;code&gt;Project&lt;/code&gt; in projects will correspond to its &lt;code&gt;FullProjectData&lt;/code&gt; at</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"ResourcePersistenceException occurred when searching resources."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;629</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (RetrievalException ex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;630</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            log(Level.ERROR,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;631</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * the same index in the returned array. Since this is a helper method, no parameter checking is</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;632</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * done.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;632</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ProjectServicesException(</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;633</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;634</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return FullProjectData array with the full project info.</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;                <span class="string">"RetrievalException occurred when retrieving external project."</span>, ex);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;634</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;635</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projects</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;636</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            The projects whose full associated information needs to be retrieved</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;637</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;636</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#getFullProjectData method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;637</td>  <td class="nbHitsCovered">&nbsp;1016</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullProjectData;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;638</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;639</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;640</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> FullProjectData[] assembleFullProjectDatas(Project[] projects) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;641</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#assembleFullProjectDatas method."</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;642</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;643</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData[] fullProjects = <span class="keyword">new</span> FullProjectData[projects.length];</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;644</td>  <td class="nbHitsCovered">&nbsp;2019</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; projects.length; i++) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;645</td>  <td class="nbHitsCovered">&nbsp;13</td>  <td class="src"><pre class="src">&nbsp;            fullProjects[i] = getFullProjectData(projects[i].getId());</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;646</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;647</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;648</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#assembleFullProjectDatas method."</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;649</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullProjects;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;650</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;639</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;640</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;641</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;642</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * Helper method to obtains full project information for each of the passed projects. The</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;643</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * returned array will be of the same dimension as the passed array, and each</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;644</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;code&gt;Project&lt;/code&gt; in projects will correspond to its &lt;code&gt;FullProjectData&lt;/code&gt; at</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;645</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * the same index in the returned array. Since this is a helper method, no parameter checking is</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;646</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * done.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;647</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * &lt;/p&gt;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;648</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return FullProjectData array with the full project info.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;649</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param projects</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;650</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *            The projects whose full associated information needs to be retrieved</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;651</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ProjectServicesException</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;652</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *             If there is a system error while performing the search</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;653</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;654</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> FullProjectData[] assembleFullProjectDatas(Project[] projects) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;655</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Enters ProjectServicesImpl#assembleFullProjectDatas method."</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;656</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;657</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData[] fullProjects = <span class="keyword">new</span> FullProjectData[projects.length];</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;658</td>  <td class="nbHitsCovered">&nbsp;2019</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; projects.length; i++) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;659</td>  <td class="nbHitsCovered">&nbsp;13</td>  <td class="src"><pre class="src">&nbsp;            fullProjects[i] = getFullProjectData(projects[i].getId());</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;660</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;661</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;662</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        log(Level.INFO, <span class="string">"Exits ProjectServicesImpl#assembleFullProjectDatas method."</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;663</td>  <td class="nbHitsCovered">&nbsp;2006</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> fullProjects;</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;664</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;665</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-5-31 ÉÏÎç12:56.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-6-20 ÉÏÎç1:08.</div>
 </body>
 </html>
