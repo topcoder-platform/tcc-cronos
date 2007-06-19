@@ -416,7 +416,9 @@ public final class Helper {
 
             entry.setId(resultSet.getLong("fix_bill_entry_fix_bill_entry_id"));
             entry.setCompanyId(resultSet.getLong("fix_bill_entry_company_id"));
-            entry.setInvoiceId(resultSet.getLong("fix_bill_entry_invoice_id"));
+			if (resultSet.getObject("fix_bill_entry_invoice_id") != null)	{
+				entry.setInvoiceId(resultSet.getLong("fix_bill_entry_invoice_id"));
+			}
 
             entry.setFixedBillingStatus(status);
             entry.setDescription(resultSet.getString("fix_bill_entry_description"));
