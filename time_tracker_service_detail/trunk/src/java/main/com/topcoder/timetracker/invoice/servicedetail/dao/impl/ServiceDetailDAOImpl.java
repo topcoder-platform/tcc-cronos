@@ -439,14 +439,14 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         AuditHeader header = new AuditHeader();
         header.setEntityId(newDetail.getId());
         header.setTableName("service_details");
-        header.setCompanyId(newDetail.getId());
+        header.setCompanyId(newDetail.getTimeEntry().getCompanyId());
         if (oldDetail == null) {
             header.setActionType(AuditType.INSERT);
         } else {
             header.setActionType(AuditType.UPDATE);
         }
         header.setApplicationArea(ApplicationArea.TT_INVOICE);
-        header.setResourceId(newDetail.getId());
+//        header.setResourceId(newDetail.getId());
         header.setCreationUser(newDetail.getCreationUser());
 
         // id
@@ -1166,10 +1166,10 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                         AuditHeader header = new AuditHeader();
                         header.setEntityId(ids[i]);
                         header.setTableName("service_details");
-                        header.setCompanyId(ids[i]);
+//                        header.setCompanyId(ids[i]);
                         header.setActionType(AuditType.DELETE);
                         header.setApplicationArea(ApplicationArea.TT_INVOICE);
-                        header.setResourceId(ids[i]);
+//                        header.setResourceId(ids[i]);
                         if (auditDetails[6] != null) {
                             header.setCreationUser(auditDetails[6].getOldValue());
                         }
@@ -1246,10 +1246,10 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 AuditHeader header = new AuditHeader();
                 header.setEntityId(id);
                 header.setTableName("service_details");
-                header.setCompanyId(id);
+//                header.setCompanyId(id);
                 header.setActionType(AuditType.DELETE);
                 header.setApplicationArea(ApplicationArea.TT_INVOICE);
-                header.setResourceId(id);
+//                header.setResourceId(id);
                 header.setCreationUser(auditDetails[6].getOldValue());
 
                 header.setDetails(auditDetails);
