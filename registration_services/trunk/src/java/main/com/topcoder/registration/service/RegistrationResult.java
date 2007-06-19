@@ -4,6 +4,7 @@
 package com.topcoder.registration.service;
 
 import com.topcoder.management.resource.Resource;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -24,7 +25,7 @@ import com.topcoder.management.resource.Resource;
  * @author argolite, moonli
  * @version 1.0
  */
-public interface RegistrationResult {
+public interface RegistrationResult extends Serializable {
 
     /**
      * <p>

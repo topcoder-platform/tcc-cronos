@@ -2,6 +2,7 @@
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.registration.service;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -20,7 +21,7 @@ package com.topcoder.registration.service;
  * @author argolite, moonli
  * @version 1.0
  */
-public interface RemovalResult {
+public interface RemovalResult extends Serializable {
 
     /**
      * <p>

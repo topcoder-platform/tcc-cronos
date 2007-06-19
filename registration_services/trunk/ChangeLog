@@ -1,0 +1,7 @@
+2007-6-19
+RegistrationInfo
+RegistrationPosition
+RegistrationResult
+RemovalResult
+
+are made serializable.

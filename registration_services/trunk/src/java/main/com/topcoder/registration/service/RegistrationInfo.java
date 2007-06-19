@@ -2,7 +2,7 @@
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.registration.service;
-
+import java.io.Serializable;
 /**
  * <p>
  * The interface that defines the properties of a registration, which include a project, user, and
@@ -21,7 +21,7 @@ package com.topcoder.registration.service;
  * @author argolite, moonli
  * @version 1.0
  */
-public interface RegistrationInfo {
+public interface RegistrationInfo extends Serializable {
 
     /**
      * <p>

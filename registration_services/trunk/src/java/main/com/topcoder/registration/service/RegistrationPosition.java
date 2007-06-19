@@ -5,6 +5,7 @@ package com.topcoder.registration.service;
 
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.ResourceRole;
+import java.io.Serializable;
 import com.topcoder.project.phases.Phase;
 
 /**
@@ -26,7 +27,7 @@ import com.topcoder.project.phases.Phase;
  * @author argolite, moonli
  * @version 1.0
  */
-public interface RegistrationPosition {
+public interface RegistrationPosition extends Serializable {
 
     /**
      * <p>
