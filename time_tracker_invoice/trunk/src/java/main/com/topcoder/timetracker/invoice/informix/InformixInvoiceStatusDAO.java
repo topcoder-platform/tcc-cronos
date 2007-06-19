@@ -189,6 +189,10 @@ public class InformixInvoiceStatusDAO implements InvoiceStatusDAO {
                 while (rs.next()) {
                     long id = rs.getLong("invoice_status_id");
                     String description = rs.getString("description");
+                    // Skip illegal IDs
+                    if (id <= 0) {
+                        continue;
+                    }
                     InvoiceStatus invoiceStatus =
                         new InvoiceStatus(id, description, rs.getString("creation_user"), rs
                             .getString("modification_user"), rs.getDate("creation_date"), rs

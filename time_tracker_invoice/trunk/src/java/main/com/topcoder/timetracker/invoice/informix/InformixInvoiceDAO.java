@@ -455,9 +455,36 @@ public class InformixInvoiceDAO implements InvoiceDAO {
                 invoice.getDueDate(), new Boolean(invoice.isPaid()), new Long(invoice.getCompanyId()),
                 new Long(invoice.getInvoiceStatus().getId())}, 1);
 
-            expenseManager.addEntries(invoice.getExpenseEntries(), audit);
-            fixedBillingEntryManager.createFixedBillingEntries(invoice.getFixedBillingEntries(), audit);
-            serviceDetailManager.addServiceDetails(invoice.getServiceDetails(), audit);
+            InvoiceServiceDetail[] serviceDetails = invoice.getServiceDetails();
+            ExpenseEntry[] expenseEntries = invoice.getExpenseEntries();
+            FixedBillingEntry[] fixedBillingEntries = invoice.getFixedBillingEntries();
+            Date now = new Date();
+
+            for (int i = 0; i < serviceDetails.length; ++i) {
+                serviceDetails[i].setInvoice(invoice);
+                serviceDetails[i].setModificationDate(now);
+                serviceDetails[i].setModificationUser(invoice.getCreationUser());
+            }
+            for (int i = 0; i < expenseEntries.length; ++i) {
+                expenseEntries[i].setInvoiceId(invoice.getId());
+                expenseEntries[i].setModificationDate(now);
+                expenseEntries[i].setModificationUser(invoice.getCreationUser());
+            }
+            for (int i = 0; i < fixedBillingEntries.length; ++i) {
+                fixedBillingEntries[i].setInvoiceId(invoice.getId());
+                fixedBillingEntries[i].setModificationDate(now);
+                fixedBillingEntries[i].setModificationUser(invoice.getCreationUser());
+            }
+
+            if (serviceDetails.length != 0) {
+                serviceDetailManager.addServiceDetails(serviceDetails, audit);
+            }
+            if (expenseEntries.length != 0) {
+                expenseManager.updateEntries(expenseEntries, audit);
+            }
+            if (fixedBillingEntries.length != 0) {
+                fixedBillingEntryManager.updateFixedBillingEntries(fixedBillingEntries, audit);
+            }
 
             if (audit) {
                 audit(null, invoice);
