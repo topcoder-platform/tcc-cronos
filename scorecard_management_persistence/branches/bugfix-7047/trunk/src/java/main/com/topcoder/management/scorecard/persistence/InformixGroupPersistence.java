@@ -18,6 +18,10 @@ import com.topcoder.management.scorecard.data.Group;
 import com.topcoder.management.scorecard.data.NamedScorecardStructure;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.Section;
+import com.topcoder.management.scorecard.persistence.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * This class contains operations to create and update group instances into the Informix database. It is package
@@ -31,6 +35,9 @@ import com.topcoder.management.scorecard.data.Section;
  */
 class InformixGroupPersistence {
 
+	/** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(InformixGroupPersistence.class.getName());
+    
     /**
      * Selects the groups using the parent id.
      */
@@ -86,7 +93,6 @@ class InformixGroupPersistence {
         if (connection == null) {
             throw new IllegalArgumentException("connection cannot be null.");
         }
-
         this.connection = connection;
     }
 
@@ -115,6 +121,8 @@ class InformixGroupPersistence {
             throw new IllegalArgumentException("operator cannot be empty String.");
         }
 
+        logger.log(Level.INFO, new LogMessage("Group", null, operator,
+        		"create new Group with order:" + order + " and parentId:" + parentId));
         // get next id
         long groupId = DBUtils.nextId(IdGeneratorUtility.getGroupIdGenerator());
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -122,8 +130,9 @@ class InformixGroupPersistence {
         InformixSectionPersistence sectionPersistence = new InformixSectionPersistence(connection);
         PreparedStatement pstmt = null;
 
+        logger.log(Level.INFO, "insert record into scorecard_group with group_id:" + groupId);
         try {
-            // create statement
+        	// create statement
             pstmt = connection.prepareStatement(INSERT_SCORECARD_GROUP);
 
             // set the variables
@@ -142,6 +151,7 @@ class InformixGroupPersistence {
             pstmt.executeUpdate();
             sectionPersistence.createSections(group.getAllSections(), operator, groupId);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Group", new Long(groupId), operator, "Fail to create Group.", ex));
             throw new PersistenceException("Error occur while creating the scorecard group.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -161,6 +171,9 @@ class InformixGroupPersistence {
      * @throws PersistenceException if error occurred while accessing the database.
      */
     void createGroups(Group[] groups, String operator, long parentId) throws PersistenceException {
+    	logger.log(Level.INFO,
+    			new LogMessage("Group", null, operator, "create new Groups with parentId:" + parentId));
+    	
         // generate the ids
         long[] groupIds = DBUtils.generateIdsArray(groups.length, IdGeneratorUtility.getGroupIdGenerator());
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -188,9 +201,13 @@ class InformixGroupPersistence {
 
                 // execute the update and creates sections of this group
                 pstmt.executeUpdate();
+                
+                logger.log(Level.INFO, "insert record into scorecard_group table with groupId:" + groupIds[i]);
                 sectionPersistence.createSections(groups[i].getAllSections(), operator, groupIds[i]);
             }
         } catch (SQLException ex) {
+        	logger.log(Level.INFO, new LogMessage("Group", null, operator,
+        			"Failed to create new Groups with parentId:" + parentId, ex));
             throw new PersistenceException("Error occur while creating the scorecard group.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -248,6 +265,10 @@ class InformixGroupPersistence {
             throw new IllegalArgumentException("deletedQuestionIds cannot be null.");
         }
 
+        logger.log(Level.INFO, new LogMessage("Group", new Long(group.getId()), operator,
+        		"create new Group with order:" + order + " ,parentId:" + parentId
+        		+ ", oldScorecard:" + oldScorecard.getId()));
+        
         Set oldSectionIds = getSectionsIds(group, oldScorecard);
         // mark all old section as 'to delete'
         deletedSectionIds.addAll(oldSectionIds);
@@ -286,6 +307,7 @@ class InformixGroupPersistence {
     private static void updateGroup(Connection conn, Group group, String operator, long parentId, int order)
         throws PersistenceException {
 
+    	logger.log(Level.INFO, "update scorecard_group with groupId:" + group.getId());
         PreparedStatement pstmt = null;
         try {
             // prepare the statement
@@ -304,9 +326,12 @@ class InformixGroupPersistence {
             pstmt.setLong(7, group.getId());
 
             if (pstmt.executeUpdate() != 1) {
+            	logger.log(Level.ERROR, "No group with id = " + group.getId());
                 throw new PersistenceException("No group with id = " + group.getId());
             }
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Group", new Long(group.getId()), operator,
+        			"Error occurs while updating the group.", ex));
             throw new PersistenceException("Error occurs while updating the group.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -352,6 +377,9 @@ class InformixGroupPersistence {
     public void deleteGroups(long[] ids) throws PersistenceException {
         DBUtils.checkIdsArray(ids, "ids");
 
+        logger.log(Level.INFO, new LogMessage("Group", null, null,
+        		"Delete Groups with ids:" + InformixPersistenceHelper.generateIdString(ids)));
+        
         PreparedStatement pstmt = null;
         PreparedStatement pstmt2 = null;
         ResultSet rs = null;
@@ -359,6 +387,8 @@ class InformixGroupPersistence {
             // selects the sections ids for given groups
             pstmt = connection.prepareStatement(SELECT_SCORECARD_SECTION_ID
                     + DBUtils.createQuestionMarks(ids.length));
+            logger.log(Level.INFO,
+            		"delete record from scorecard_groups with ids:" + InformixPersistenceHelper.generateIdString(ids));
             // deletes the given groups
             pstmt2 = connection
                     .prepareStatement(DELETE_SCORECARD_GROUPS + DBUtils.createQuestionMarks(ids.length));
@@ -385,6 +415,8 @@ class InformixGroupPersistence {
             // delete the groups
             pstmt2.executeUpdate();
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Group", null, null,
+            		"Failed to Delete Groups with ids:" + InformixPersistenceHelper.generateIdString(ids), ex));
             throw new PersistenceException("Error occurs while deleting the questions.", ex);
         } finally {
             DBUtils.close(rs);
@@ -406,7 +438,8 @@ class InformixGroupPersistence {
         if (id <= 0) {
             throw new IllegalArgumentException("The id must be positive. Id: " + id);
         }
-
+        logger.log(Level.INFO, new LogMessage("Group", new Long(id), null, "retrieve group"));
+        
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
@@ -423,6 +456,7 @@ class InformixGroupPersistence {
                 return group;
             }
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Group", new Long(id), null, "Failed to retrieve group", ex));
             throw new PersistenceException("Error occurs while retrieving the group.", ex);
         } finally {
             DBUtils.close(rs);
@@ -462,6 +496,8 @@ class InformixGroupPersistence {
 
             return (Group[]) result.toArray(new Group[result.size()]);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Group", null, null,
+        			"Failed to retrieve group with parentId:" + parentId , ex));
             throw new PersistenceException("Error occurs while retrieving the group.", ex);
         } finally {
             DBUtils.close(rs);

@@ -10,8 +10,12 @@ import java.sql.Statement;
 import java.util.List;
 
 import com.topcoder.management.scorecard.PersistenceException;
+import com.topcoder.management.scorecard.persistence.logging.LogMessage;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -23,6 +27,11 @@ import com.topcoder.util.idgenerator.IDGenerator;
  */
 final class DBUtils {
 
+	/**
+	 * Logger instance.
+	 */
+	private static final Log logger = LogFactory.getLog(DBUtils.class.getName());
+	
     /**
      * Empty constructor.
      */
@@ -37,6 +46,7 @@ final class DBUtils {
     public static void close(Connection conn) {
         if (conn != null) {
             try {
+            	logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException e) {
                 // ignore
@@ -81,6 +91,7 @@ final class DBUtils {
      */
     public static void rollback(Connection conn) {
         try {
+        	logger.log(Level.INFO, "rollback the connection.");
             conn.rollback();
         } catch (SQLException ex) {
             // ignore
@@ -123,8 +134,12 @@ final class DBUtils {
      */
     public static long nextId(IDGenerator generator) throws PersistenceException {
         try {
-            return generator.getNextID();
+            long id =  generator.getNextID();
+            logger.log(Level.INFO, "Generate next id using the idgenerator:" + generator.getIDName());
+            return id;
         } catch (IDGenerationException ex) {
+        	logger.log(Level.ERROR, "Fail to generate next id using the idgenerator:"
+        			+ generator.getIDName() + "\n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur while generating new id.", ex);
         }
     }
@@ -143,8 +158,11 @@ final class DBUtils {
         try {
             for (int i = 0; i < result.length; i++) {
                 result[i] = idGenerator.getNextID();
+                logger.log(Level.INFO, "Generate next id using the idgenerator:" + idGenerator.getIDName());
             }
         } catch (IDGenerationException ex) {
+        	logger.log(Level.ERROR, "Fail to generate next id using the idgenerator:"
+        			+ idGenerator.getIDName() + "\n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur while generating new id.", ex);
         }
 

@@ -15,6 +15,10 @@ import java.util.List;
 import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.data.Question;
 import com.topcoder.management.scorecard.data.QuestionType;
+import com.topcoder.management.scorecard.persistence.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * This class contains operations to create and update question instances into the Informix database. It is package
@@ -27,6 +31,10 @@ import com.topcoder.management.scorecard.data.QuestionType;
  * @version 1.0
  */
 class InformixQuestionPersistence {
+	
+	/** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(InformixQuestionPersistence.class.getName());
+    
 
     /**
      * Selects all questions by parent id.
@@ -118,12 +126,16 @@ class InformixQuestionPersistence {
         if (operator.trim().length() == 0) {
             throw new IllegalArgumentException("operator cannot be empty String.");
         }
+        
+        logger.log(Level.INFO, new LogMessage("Question", null, operator,
+        		"Create new Question with order:" + order + " and parentId:" + parentId));
 
         // get the id
         long id = DBUtils.nextId(IdGeneratorUtility.getQuestionIdGenerator());
 
         PreparedStatement pstmt = null;
         try {
+        	logger.log(Level.INFO, "insert record into scorecard_question with question id:" + id);
             // create the statement and set the values
             pstmt = connection.prepareStatement(INSERT_SCORECARD_QUESTION);
 
@@ -152,6 +164,8 @@ class InformixQuestionPersistence {
             pstmt.executeUpdate();
 
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Question", new Long(id), operator,
+            		"Failed to Create new Question with order:" + order + " and parentId:" + parentId, ex));
             throw new PersistenceException("Error occurs while creating questions.", ex);
 
         } finally {
@@ -171,6 +185,9 @@ class InformixQuestionPersistence {
      * @throws PersistenceException if any database error occurs.
      */
     void createQuestions(Question[] questions, String operator, long parentId) throws PersistenceException {
+    	logger.log(Level.INFO,
+    			new LogMessage("Question", null, operator, "Create new Questions with parentId:" + parentId));
+    	
         // generate the ids
         long[] ids = DBUtils.generateIdsArray(questions.length, IdGeneratorUtility.getQuestionIdGenerator());
         PreparedStatement pstmt = null;
@@ -200,10 +217,13 @@ class InformixQuestionPersistence {
                 pstmt.setString(12, operator);
                 pstmt.setTimestamp(13, time);
 
+                logger.log(Level.INFO, "insert record into scorecard_question with question id:" + ids[i]);
                 pstmt.executeUpdate();
             }
 
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Question", null, operator,
+            		"Failed to Create new Questions with parentId:" + parentId, ex));
             throw new PersistenceException("Error occurs while creating questions.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -239,8 +259,13 @@ class InformixQuestionPersistence {
             throw new IllegalArgumentException("operator cannot be empty String.");
         }
 
+        logger.log(Level.INFO, new LogMessage("Question", new Long(question.getId()), operator,
+        		"Update Question with order:" + order + " and parentId:" + parentId));
+        
         PreparedStatement pstmt = null;
         try {
+        	logger.log(Level.INFO, "update record in scorecard_question with question id:" + question.getId());
+        	
             // prepare the statement
             pstmt = connection.prepareStatement(UPDATE_SCORECARD_QUESTION);
 
@@ -266,9 +291,12 @@ class InformixQuestionPersistence {
             pstmt.setLong(11, question.getId());
 
             if (pstmt.executeUpdate() != 1) {
+            	logger.log(Level.ERROR, "The question not exists in the database. Id: " + question.getId());
                 throw new PersistenceException("The question not exists in the database. Id: " + question.getId());
             }
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Question", new Long(question.getId()), operator,
+            		"Failed to Update Question with order:" + order + " and parentId:" + parentId, ex));
             throw new PersistenceException("Error occurs while updating the question.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -287,7 +315,9 @@ class InformixQuestionPersistence {
      */
     public void deleteQuestions(long[] ids) throws PersistenceException {
         DBUtils.checkIdsArray(ids, "ids");
-
+        logger.log(Level.INFO, new LogMessage("Question", null, null,
+        		"Delete Questions with ids:" + InformixPersistenceHelper.generateIdString(ids)));
+        
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement(DELETE_SCORECARD_QUESTIONS
@@ -298,6 +328,8 @@ class InformixQuestionPersistence {
 
             pstmt.executeUpdate();
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Question", null, null,
+            		"Failed to delete Questions with ids:" + InformixPersistenceHelper.generateIdString(ids)));
             throw new PersistenceException("Error occurs while deleting the questions.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -317,6 +349,8 @@ class InformixQuestionPersistence {
             throw new IllegalArgumentException("The id must be positive.");
         }
 
+        logger.log(Level.INFO, new LogMessage("Question", new Long(id), null, "retrieve Question"));
+        
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
@@ -329,6 +363,8 @@ class InformixQuestionPersistence {
                 return populateQuestion(rs);
             }
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR,
+        			new LogMessage("Question", new Long(id), null, "Failed to retrieve Question", ex));
             throw new PersistenceException("Error occurs while retrieving question.", ex);
         } finally {
             DBUtils.close(rs);
@@ -349,6 +385,9 @@ class InformixQuestionPersistence {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
+        logger.log(Level.INFO, new LogMessage("Question", null, null,
+    			"retrieve Question with parent id:" + parentId));
+        
         try {
             pstmt = connection.prepareStatement(SELECT_SCORECARD_QUESTION_BY_PARENT_ID);
             pstmt.setLong(1, parentId);
@@ -361,6 +400,8 @@ class InformixQuestionPersistence {
 
             return (Question[]) result.toArray(new Question[result.size()]);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Question", null, null,
+        			"Failed to retrieve Question with parent id:" + parentId, ex));
             throw new PersistenceException("Error occurs while retrieving question.", ex);
         } finally {
             DBUtils.close(rs);

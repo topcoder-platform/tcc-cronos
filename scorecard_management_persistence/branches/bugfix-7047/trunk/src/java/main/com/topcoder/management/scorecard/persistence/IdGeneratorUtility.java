@@ -4,11 +4,15 @@
 package com.topcoder.management.scorecard.persistence;
 
 import com.topcoder.management.scorecard.ConfigurationException;
+import com.topcoder.management.scorecard.persistence.logging.LogMessage;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -22,6 +26,12 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * @version 1.0
  */
 class IdGeneratorUtility {
+	
+	/**
+	 * Logger instance.
+	 */
+	private static final Log logger = LogFactory.getLog(IdGeneratorUtility.class.getName());
+	
     /**
      * The default name of the id generator for the scorecards.
      */
@@ -120,12 +130,19 @@ class IdGeneratorUtility {
             name = ConfigManager.getInstance().getString(namespace, property);
             if ((name == null) || (name.trim().length() == 0)) {
                 name = defaultName;
+            } else {
+            	logger.log(Level.INFO,
+            			"Read property " + property + "[" + name + "] from namespace:" + namespace);
             }
-
-            return IDGeneratorFactory.getIDGenerator(defaultName);
+   
+            IDGenerator idGenerator = IDGeneratorFactory.getIDGenerator(defaultName);
+            logger.log(Level.INFO, "create IDGenerator instance with the idGenerator name:" + defaultName);
+            return idGenerator;
         } catch (IDGenerationException ex) {
+        	logger.log(Level.FATAL, "Fails to create id generator.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException("Error occur while creating id generator: " + name, ex);
         } catch (UnknownNamespaceException ex) {
+        	logger.log(Level.FATAL, "Fails to create id generator.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException("Error occur while reading configuration.", ex);
         }
     }
