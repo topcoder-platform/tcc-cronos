@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
+import com.topcoder.management.resource.persistence.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -39,7 +43,10 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
  */
 public class SqlResourcePersistence extends AbstractResourcePersistence {
 
-    /**
+	/** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(SqlResourcePersistence.class.getName()); 
+    
+	/**
      * <p>
      * Creates a new <code>SqlResourcePersistence</code> using the connectionFactory.
      * </p>
@@ -86,8 +93,11 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
         Connection connection = null;
         try {
             if (getConnectionName() == null || getConnectionName().trim().length() == 0) {
+            	LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
                 connection = getConnectionFactory().createConnection();
             } else {
+            	LOGGER.log(Level.INFO, new LogMessage(null, null,
+            			"creating db connection using connection name: " + getConnectionName()));
                 connection = getConnectionFactory().createConnection(getConnectionName());
             }
             connection.setAutoCommit(false);
@@ -118,6 +128,7 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
         Util.checkNull(connection, "connection");
         try {
             if (!connection.isClosed()) {
+            	LOGGER.log(Level.INFO, "committing transaction");
                 connection.commit();
             }
         } catch (SQLException e) {
@@ -148,6 +159,7 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
         Util.checkNull(connection, "connection");
         try {
             if (!connection.isClosed()) {
+            	LOGGER.log(Level.INFO, "rollback transaction");
                 connection.rollback();
             }
         } catch (SQLException e) {

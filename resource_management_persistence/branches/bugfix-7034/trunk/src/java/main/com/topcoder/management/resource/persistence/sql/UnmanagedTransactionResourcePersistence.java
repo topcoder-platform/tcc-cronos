@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
+import com.topcoder.management.resource.persistence.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -36,6 +40,9 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
  */
 public class UnmanagedTransactionResourcePersistence extends AbstractResourcePersistence {
 
+	/** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(UnmanagedTransactionResourcePersistence.class.getName()); 
+    
     /**
      * <p>
      * Creates a new <code>UnmanagedTransactionResourcePersistence</code> using connectionFactory.
@@ -81,9 +88,12 @@ public class UnmanagedTransactionResourcePersistence extends AbstractResourcePer
      */
     protected Connection openConnection() throws ResourcePersistenceException {
         try {
-            if (getConnectionName() == null || getConnectionName().trim().length() == 0) {
+        	if (getConnectionName() == null || getConnectionName().trim().length() == 0) {
+        		LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
                 return getConnectionFactory().createConnection();
             }
+        	LOGGER.log(Level.INFO, new LogMessage(null, null,
+        			"creating db connection using connection name: " + getConnectionName()));
             return getConnectionFactory().createConnection(getConnectionName());
         } catch (DBConnectionException e) {
             throw new ResourcePersistenceException("Failed to create the connection", e);
@@ -108,7 +118,8 @@ public class UnmanagedTransactionResourcePersistence extends AbstractResourcePer
         Util.checkNull(connection, "connection");
         try {
             if (!connection.isClosed()) {
-                connection.close();
+            	LOGGER.log(Level.INFO, "close the connection.");
+            	connection.close();
             }
         } catch (SQLException e) {
             // ignore
