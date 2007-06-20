@@ -20,7 +20,11 @@ import com.cronos.onlinereview.external.RetrievalException;
 import com.cronos.onlinereview.external.UserProjectDataStoreHelper;
 import com.cronos.onlinereview.external.UserRetrieval;
 import com.cronos.onlinereview.external.RatingType;
+import com.cronos.onlinereview.external.logging.LogMessage;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -48,6 +52,9 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
  * @since 1.0
  */
 public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
+
+    /** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(DBUserRetrieval.class.getName());
 
     /**
      * <p>
@@ -171,6 +178,9 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
      *             if any exception occurred during processing; it will wrap the underlying exception.
      */
     public ExternalUser retrieveUser(long id) throws RetrievalException {
+    	
+    	LOGGER.log(Level.INFO, new LogMessage("user", new Long(id), "retrieve ExternalUser."));
+    	
         // Gets Users by calling retrieveUsers(long[]).
         ExternalUser[] users = retrieveUsers(new long[] {id});
 
@@ -196,7 +206,9 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
      *             if any exception occurred during processing; it will wrap the underlying exception.
      */
     public ExternalUser retrieveUser(String handle) throws RetrievalException {
-        // Gets Users by calling retrieveUsers(String[]).
+    	LOGGER.log(Level.INFO,
+    			new LogMessage("user", null, "retrieve ExternalUser with handle:" + handle));
+    	// Gets Users by calling retrieveUsers(String[]).
         ExternalUser[] users = retrieveUsers(new String[] {handle});
 
         // If the array is empty, return null; else, return this first one.
@@ -230,6 +242,9 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
             return new ExternalUser[0];
         }
 
+        LOGGER.log(Level.INFO, new LogMessage("user", null,
+        		"retrieve user with ids:" + UserProjectDataStoreHelper.getIdString(ids)));
+        
         // Selects users by ids.
         String queryAndClause = " AND u.user_id in ";
 
@@ -267,6 +282,9 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
         // Selects users by handles.
         String queryAndClause = " AND u.handle in ";
 
+        LOGGER.log(Level.INFO, new LogMessage("user", null,"retrieve users with handles:"
+        		+ UserProjectDataStoreHelper.getConString(handles)));
+        
         // Delegates to retrieveUsers(String, Object, int, boolean).
         return retrieveUsers(queryAndClause, handles, handles.length, false);
     }
@@ -304,6 +322,9 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
         // Selects users by handles.
         String queryAndClause = " AND u.handle_lower in ";
 
+        LOGGER.log(Level.INFO, new LogMessage("user", null,"retrieve users(IgnoreCase) with handles:"
+        		+ UserProjectDataStoreHelper.getConString(handles)));
+        
         // Delegates to retrieveUsers(String, Object, int, boolean).
         return retrieveUsers(queryAndClause, handles, handles.length, true);
     }
@@ -340,6 +361,9 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
             throw new IllegalArgumentException("The firstName and lastName cannot both be empty.");
         }
 
+        LOGGER.log(Level.INFO, new LogMessage("user", null,"retrieve users with firstName:" + firstName
+        		+ ", lastName :" + lastName));
+        
         // Creates an ArrayList for storing the names.
         List names = new ArrayList();
         names.add(firstName);
@@ -417,6 +441,8 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
             retUserImpl = new ExternalUserImpl(id, handle, firstName, lastName, email);
 
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Fails to create ExternalUserImpl from the result set. \n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Some of the user values cannot be retrieved.", e);
         }
 
@@ -456,6 +482,8 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
             }
 
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Fails to create ExternalUserImpl from the result set. \n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("ResultSet execute error or some of the user email values "
                     + "cannot be retrieved.", e);
         } finally {
@@ -518,9 +546,13 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
                 }
             }
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Fails to create ExternalUserImpl from the result set. \n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("ResultSet execute error or some of the user rating values "
                     + "cannot be retrieved.", e);
         } catch (IllegalArgumentException e) {
+        	LOGGER.log(Level.ERROR, "Fails to create ExternalUserImpl from the result set. \n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Some parameters of RatingType.getRatingType() or "
                     + "RatingInfo.ctor() invalid.", e);
         } finally {
@@ -721,6 +753,8 @@ public class DBUserRetrieval extends BaseDBRetrieval implements UserRetrieval {
                 }
             }
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Database access error occurs while setting the " + name + " parameters. \n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Database access error occurs while setting the " + name + " parameters.", e);
         }
 

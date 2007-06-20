@@ -16,9 +16,13 @@ import com.cronos.onlinereview.external.ExternalProject;
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.cronos.onlinereview.external.RetrievalException;
 import com.cronos.onlinereview.external.UserProjectDataStoreHelper;
+import com.cronos.onlinereview.external.logging.LogMessage;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -48,6 +52,8 @@ import com.topcoder.util.config.UnknownNamespaceException;
  */
 public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrieval {
 
+	/** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(DBProjectRetrieval.class.getName());
     /**
      * <p>
      * The name of the forum type property in the config file.
@@ -175,8 +181,8 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
      */
     public DBProjectRetrieval(DBConnectionFactory connFactory, String connName, int forumType) throws ConfigException {
         super(connFactory, connName);
-
         UserProjectDataStoreHelper.validateNegative(forumType, "forumType");
+        LOGGER.log(Level.INFO, "set the forumType:" + forumType);
         this.forumType = forumType;
     }
 
@@ -212,17 +218,23 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
                 // Sets the forumType value to 2 as default.
                 this.forumType = FORUM_TYPE_DEFAULT_VALUE;
             } else {
-                int forumTypeInt = Integer.parseInt(forumTypeStr);
+            	int forumTypeInt = Integer.parseInt(forumTypeStr);
 
                 // If the forumType property is not positive.
                 if (forumTypeInt <= 0) {
                     throw new ConfigException("The forumType property should be positive.");
                 }
+                LOGGER.log(Level.INFO,
+                		"get the forumType property with value:" + forumTypeInt + " from namespace:" + namespace);
                 this.forumType = forumTypeInt;
             }
         } catch (NumberFormatException e) {
+        	LOGGER.log(Level.FATAL, new LogMessage(null, null,
+        			"The forumType property is not an inegter in the namespace:" + namespace, e));
             throw new ConfigException("The forumType property cannot be parsed into an integer.", e);
         } catch (UnknownNamespaceException e) {
+        	LOGGER.log(Level.FATAL, new LogMessage(null, null,
+        			"The namespace" + namespace + " of the ConfigManager could not be found.", e));
             throw new ConfigException("The namespace of the ConfigManager could not be found.", e);
         }
     }
@@ -245,7 +257,10 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
      *             if any exception occurred during processing; it will wrap the underlying exception.
      */
     public ExternalProject retrieveProject(long id) throws RetrievalException {
-        // Gets projects by calling retrieveProjects(long[]).
+    	
+    	LOGGER.log(Level.INFO, new LogMessage("project", new Long(id), "retrieve ExternalProject."));
+        
+    	// Gets projects by calling retrieveProjects(long[]).
         ExternalProject[] projects = retrieveProjects(new long[] {id});
 
         // If the array is empty, return null; else, return this first one.
@@ -273,7 +288,8 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
      *             if any exception occurred during processing; it will wrap the underlying exception.
      */
     public ExternalProject[] retrieveProject(String name, String version) throws RetrievalException {
-        // Delegates to retrieveProjects(String[], String[]).
+    	LOGGER.log(Level.INFO,
+    			new LogMessage("project", null, "retrieve project with name:" + name + " version:" + version));
         return retrieveProjects(new String[] {name}, new String[] {version});
     }
 
@@ -304,6 +320,9 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
             return new ExternalProject[0];
         }
 
+        LOGGER.log(Level.INFO, new LogMessage("project", null,
+        		"retrieve project with ids:" + UserProjectDataStoreHelper.getIdString(ids)));
+        
         // Constructs the queryAndClause string.
         String queryAndClause = "and cv.comp_vers_id in ";
 
@@ -355,7 +374,8 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
         for (int i = 0; i < names.length; i++) {
             namesPlusVersions[i] = names[i] + versions[i];
         }
-
+        LOGGER.log(Level.INFO, new LogMessage("project", null,"retrieve projects with names and versions:"
+        		+ UserProjectDataStoreHelper.getConString(namesPlusVersions)));
         // Delegates to retrieveProjects(String, Object, int).
         return retrieveProjects(queryAndClause, namesPlusVersions, names.length);
     }
@@ -416,8 +436,12 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
             }
 
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Fails to create ExternalProjectImpl instance from resultset.\n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Some of the project values cannot be retrieved.", e);
         } catch (NumberFormatException e) {
+        	LOGGER.log(Level.ERROR, "Fails to create ExternalProjectImpl instance from resultset.\n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("The value of ForumId is not set as long value.", e);
         }
 
@@ -476,6 +500,8 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
                 }
             }
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Database access error occurs while setting the parameters.\n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Database access error occurs while setting the parameters.", e);
         }
 
@@ -511,6 +537,8 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
                 }
             }
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Database access error occurs while setting the parameters.\n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Database access error occurs while setting the parameters.", e);
         }
         // update the technologies
@@ -550,6 +578,8 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
                 }
             }
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, "Database access error occurs while updating technologies.\n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Database access error occurs while updating technologies.", e);
         } finally {
             if (rs != null) {

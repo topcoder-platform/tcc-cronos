@@ -14,6 +14,7 @@ import com.cronos.onlinereview.external.ConfigException;
 import com.cronos.onlinereview.external.ExternalObject;
 import com.cronos.onlinereview.external.RetrievalException;
 import com.cronos.onlinereview.external.UserProjectDataStoreHelper;
+import com.cronos.onlinereview.external.logging.LogMessage;
 import com.topcoder.db.connectionfactory.ConfigurationException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -21,6 +22,9 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -50,6 +54,9 @@ public abstract class BaseDBRetrieval {
      */
     public static final String NAMESPACE = "com.cronos.onlinereview.external";
 
+    /** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(BaseDBRetrieval.class.getName());
+    
     /**
      * <p>
      * The name of the connection name in the config file.
@@ -101,11 +108,13 @@ public abstract class BaseDBRetrieval {
         UserProjectDataStoreHelper.validateNull(connFactory, "connFactory");
         UserProjectDataStoreHelper.validateStringEmptyNull(connName, "connName");
 
+        LOGGER.log(Level.INFO, "Instantiate instance with connectionFactory and connection name:" + connName);
         // Tests whether the connection name is correct to the connection factory.
         Connection conn = null;
         try {
             conn = connFactory.createConnection(connName);
         } catch (DBConnectionException e) {
+        	LOGGER.log(Level.FATAL, "The connection name doesn't correspond to a connection the factory knows about");
             throw new ConfigException("The connection name doesn't correspond to a connection the "
                     + "factory knows about", e);
         } finally {
@@ -144,6 +153,8 @@ public abstract class BaseDBRetrieval {
     protected BaseDBRetrieval(String namespace) throws ConfigException {
         UserProjectDataStoreHelper.validateStringEmptyNull(namespace, "namespace");
 
+        LOGGER.log(Level.INFO, "Instantiate instance with the namespace:" + namespace);
+        
         DBConnectionFactoryImpl connFactoryImpl;
         String connectionName;
 
@@ -151,19 +162,30 @@ public abstract class BaseDBRetrieval {
         // And does the configure validation.
         try {
             connFactoryImpl = new DBConnectionFactoryImpl(namespace);
+            LOGGER.log(Level.INFO, "create DBConnectionFactoryImpl with the namespace:" + namespace);
             connectionName = (String) ConfigManager.getInstance().getProperty(namespace, CONNNAME_STRING);
 
             if (connectionName != null && !connFactoryImpl.contains(connectionName)) {
+            	LOGGER.log(Level.FATAL, "The connection name is unknown to the connection factory.");
                 throw new ConfigException("The connection name is unknown to the connection factory.");
             }
+            LOGGER.log(Level.INFO, "get connectionName:" + connectionName + " from the namespace:" + namespace);
         } catch (UnknownNamespaceException e) {
+        	LOGGER.log(Level.FATAL, new LogMessage(null, null, "The namespace could not be found.", e));
             throw new ConfigException("The namespace could not be found.", e);
         } catch (UnknownConnectionException e) {
+        	LOGGER.log(Level.FATAL,
+        			new LogMessage(null, null, "Error occurs due to the unknown connection.", e));
             throw new ConfigException("Error occurs due to the unknown connection.", e);
         } catch (ConfigurationException e) {
+        	LOGGER.log(Level.FATAL,
+        			new LogMessage(null, null, "Error occurs while reading the configuration properties and "
+                            + "initializing the state of the factory.", e));
             throw new ConfigException("Error occurs while reading the configuration properties and "
                     + "initializing the state of the factory.", e);
         } catch (IllegalArgumentException e) {
+        	LOGGER.log(Level.FATAL,
+        			new LogMessage(null, null,"The connection name defined can not be empty.", e));
             throw new ConfigException("The connection name defined can not be empty.", e);
         }
 
@@ -200,6 +222,8 @@ public abstract class BaseDBRetrieval {
                 map.put(new Long(externalObject.getId()), externalObject);
             }
         } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR,
+        			"Error occurs during the retrieve objects processing.\n" + LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("Error occurs during the retrieve objects processing.", e);
         } finally {
             if (rs != null) {
@@ -244,11 +268,17 @@ public abstract class BaseDBRetrieval {
     protected Connection getConnection() throws RetrievalException {
         try {
             if (connName != null) {
+            	LOGGER.log(Level.INFO, new LogMessage(null, null,
+            			"creating db connection using connection name: " + connName));
                 return this.connFactory.createConnection(this.connName);
             } else {
+            	LOGGER.log(Level.INFO, new LogMessage(null, null,
+            			"creating db connection using default connection name"));
                 return this.connFactory.createConnection();
             }
         } catch (DBConnectionException e) {
+        	LOGGER.log(Level.ERROR, "Fail to get connection with " + (connName == null? "default":connName)
+        			+ " connection name.\n" + LogMessage.getExceptionStackTrace(e));
             throw new RetrievalException("The connection could not be created.", e);
         }
     }
@@ -283,6 +313,7 @@ public abstract class BaseDBRetrieval {
         // Tries to close the Connection.
         try {
             if (connection != null) {
+            	LOGGER.log(Level.INFO, "close the connection.");
                 connection.close();
             }
         } catch (SQLException e) {
@@ -291,6 +322,8 @@ public abstract class BaseDBRetrieval {
 
         // If any Exception caught, just throws it at the end.
         if (retException != null) {
+        	LOGGER.log(Level.ERROR,
+        			new LogMessage(null, null, "Error occurs while closing the resources.", retException));
             throw new RetrievalException("Error occurs while closing the resources.", retException);
         }
     }

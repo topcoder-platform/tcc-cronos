@@ -308,4 +308,37 @@ public final class UserProjectDataStoreHelper {
 
         return questionMarks.toString();
     }
+    
+    /**
+     * Return the id string seperated by comma for the given long id array.
+     * 
+     * @param ids the id array
+     * @return string seperated by comma
+     */
+	public static String getIdString(long[] ids) {
+		String idString = "";
+        for(int i = 0; i < ids.length; i++) {
+        	idString += ids[i];
+        	if ( i < ids.length -1) {
+        		idString += ",";
+        	}
+        }
+		return idString;
+	}
+	/**
+     * Return the id string seperated by comma for the given param array.
+     * 
+     * @param params the param array
+     * @return string seperated by comma
+     */
+	public static String getConString(String[] params) {
+		String ret = "";
+        for(int i = 0; i < params.length; i++) {
+        	ret += params[i];
+        	if ( i < params.length -1) {
+        		ret += ",";
+        	}
+        }
+		return ret;
+	}
 }
