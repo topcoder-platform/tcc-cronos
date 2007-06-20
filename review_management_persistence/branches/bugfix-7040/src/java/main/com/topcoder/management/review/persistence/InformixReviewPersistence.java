@@ -852,8 +852,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
             // create the review.
             createReview(review, operator, conn, changeTable);
 
-            LOGGER.log(Level.INFO, "get the creation date with the sql:" + "SELECT create_date FROM "
-                    + REVIEW_TABLE + " WHERE review_id=?");
             // get the creation date.
             createDate = (Date) Helper.doSingleValueQuery(conn, "SELECT create_date FROM "
                 + REVIEW_TABLE + " WHERE review_id=?", new Object[] {changeTable.get(review)},
@@ -912,8 +910,9 @@ public class InformixReviewPersistence implements ReviewPersistence {
         Object[] queryArgs = new Object[] {newId, new Long(review.getAuthor()),
             new Long(review.getSubmission()), new Long(review.getScorecard()),
             new Long(review.isCommitted() ? 1 : 0), review.getScore(), operator, operator};
-        LOGGER.log(Level.INFO, "execute sql:" + CREATE_REVIEW_SQL);
         Helper.doDMLQuery(conn, CREATE_REVIEW_SQL, queryArgs);
+        
+        LOGGER.log(Level.INFO, "insert record into " + REVIEW_TABLE + " with new id:" + newId);
 
         // create review comments
         createReviewComments(review.getAllComments(), makeAscendingLongArray(review
@@ -960,7 +959,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
                 Object[] queryArgs = new Object[] {newId, new Long(comment.getAuthor()), reviewId,
                     new Long(comment.getCommentType().getId()), comment.getComment(),
                     comment.getExtraInfo(), indices[i], operator, operator};
-                LOGGER.log(Level.INFO, "execute sql" + CREATE_REVIEW_COMMENT_SQL);
+                LOGGER.log(Level.INFO, "insert record into " + REVIEW_COMMENT_TABLE + " with new id:" + newId);
                 Helper.doDMLQuery(conn, CREATE_REVIEW_COMMENT_SQL, queryArgs);
             }
         } catch (IDGenerationException e) {
@@ -1005,7 +1004,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
                 Object[] queryArgs = new Object[] {newId, reviewId, new Long(item.getQuestion()),
                     item.getDocument(), item.getAnswer(), indices[i], operator, operator};
                 
-                LOGGER.log(Level.INFO, "execute sql" + CREATE_REVIEW_ITEM_SQL);
+                LOGGER.log(Level.INFO, "insert record into " + REVIEW_ITEM_TABLE + " with new id:" + newId);
                 
                 Helper.doDMLQuery(conn, CREATE_REVIEW_ITEM_SQL, queryArgs);
 
@@ -1056,7 +1055,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
                     new Long(comment.getCommentType().getId()), comment.getComment(),
                     comment.getExtraInfo(), indices[i], operator, operator};
                 
-                LOGGER.log(Level.INFO, "execute sql" + CREATE_REVIEW_ITEM_COMMENT_SQL);
+                LOGGER.log(Level.INFO, "insert record into " + REVIEW_ITEM_COMMENT_TABLE + " with new id:" + newId);
                 
                 Helper.doDMLQuery(conn, CREATE_REVIEW_ITEM_COMMENT_SQL, queryArgs);
             }
@@ -1126,9 +1125,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
             // update the review.
             updateReview(review, operator, conn, changeTable);
-
-            LOGGER.log(Level.INFO, "get the modification date with the sql:" + "SELECT modify_date FROM "
-                    + REVIEW_TABLE + " WHERE review_id=?");
             
             // get the modification date.
             modifyDate = (Date) Helper.doSingleValueQuery(conn, "SELECT modify_date FROM "
@@ -1176,7 +1172,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
             new Long(review.getSubmission()), new Long(review.getScorecard()),
             new Long(review.isCommitted() ? 1 : 0), review.getScore(), operator, reviewId};
         
-        LOGGER.log(Level.INFO, "execute sql:" + UPDATE_REVIEW_SQL);
+        LOGGER.log(Level.INFO, "update record in the  " + REVIEW_TABLE + " table with id:" + reviewId.longValue());
+        
         Helper.doDMLQuery(conn, UPDATE_REVIEW_SQL, queryArgs);
 
         // update review comments
@@ -1265,7 +1262,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             new Long(comment.getCommentType().getId()), comment.getComment(),
             comment.getExtraInfo(), index, operator, new Long(comment.getId())};
         
-        LOGGER.log(Level.INFO, "execute sql:" + UPDATE_REVIEW_COMMENT_SQL);
+        LOGGER.log(Level.INFO, "update record in the " + REVIEW_COMMENT_TABLE + " table with id:" + comment.getId());
         
         Helper.doDMLQuery(conn, UPDATE_REVIEW_COMMENT_SQL, queryArgs);
     }
@@ -1452,8 +1449,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
     private Set getReviewCommentIDs(Long reviewId, Connection conn)
         throws ReviewPersistenceException {
 
-    	LOGGER.log(Level.INFO, "execute sql:" + QUERY_REVIEW_COMMENT_IDS_SQL);
-    	
         Object[][] rows = Helper.doQuery(conn, QUERY_REVIEW_COMMENT_IDS_SQL,
             new Object[] {reviewId}, new DataType[] {Helper.LONG_TYPE});
 
@@ -1548,10 +1543,12 @@ public class InformixReviewPersistence implements ReviewPersistence {
         // enumerate each id
         for (Iterator it = reviewCommentIDs.iterator(); it.hasNext();) {
 
-        	LOGGER.log(Level.INFO, "execute sql:" + REVIEW_COMMENT_TABLE);
+        	Long id = (Long) it.next();
         	
-            Helper.deleteEntities(REVIEW_COMMENT_TABLE, "review_comment_id", ((Long) it.next())
-                .longValue(), conn);
+        	LOGGER.log(Level.INFO, "delete entry from "
+        			+ REVIEW_COMMENT_TABLE + " with the review comment id:" + id.longValue());
+        	
+        	Helper.deleteEntities(REVIEW_COMMENT_TABLE, "review_comment_id", id.longValue(), conn);
         }
     }
 
@@ -1571,11 +1568,13 @@ public class InformixReviewPersistence implements ReviewPersistence {
         for (Iterator it = reviewItemIDs.iterator(); it.hasNext();) {
             long itemId = ((Long) it.next()).longValue();
 
-            LOGGER.log(Level.INFO, "execute sql:" + REVIEW_ITEM_COMMENT_TABLE);
+            LOGGER.log(Level.INFO, "delete entry from "
+        			+ REVIEW_ITEM_COMMENT_TABLE + " with the review item id:" + itemId);
             
             Helper.deleteEntities(REVIEW_ITEM_COMMENT_TABLE, "review_item_id", itemId, conn);
             
-            LOGGER.log(Level.INFO, "execute sql:" + REVIEW_ITEM_TABLE);
+            LOGGER.log(Level.INFO, "delete entry from "
+        			+ REVIEW_ITEM_TABLE + " with the review item id:" + itemId);
             
             Helper.deleteEntities(REVIEW_ITEM_TABLE, "review_item_id", itemId, conn);
         }
@@ -1596,10 +1595,12 @@ public class InformixReviewPersistence implements ReviewPersistence {
         // enumerate each id
         for (Iterator it = reviewItemCommentIDs.iterator(); it.hasNext();) {
 
-        	LOGGER.log(Level.INFO, "execute sql:" + REVIEW_ITEM_COMMENT_TABLE);
+        	long id = ((Long) it.next()).longValue();
         	
-            Helper.deleteEntities(REVIEW_ITEM_COMMENT_TABLE, "review_item_comment_id", ((Long) it
-                .next()).longValue(), conn);
+        	LOGGER.log(Level.INFO, "delete entry from "
+        			+ REVIEW_ITEM_COMMENT_TABLE + " with the review_item_comment_id:" + id);
+        	
+            Helper.deleteEntities(REVIEW_ITEM_COMMENT_TABLE, "review_item_comment_id", id, conn);
         }
     }
 
@@ -1644,7 +1645,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             Helper.commitTransaction(conn, LOGGER);
             return review;
         } catch (ReviewPersistenceException e) {
-        	LOGGER.log(Level.ERROR, new LogMessage(new Long(id), null, "Error occurs during update Review.", e));
+        	LOGGER.log(Level.ERROR, new LogMessage(new Long(id), null, "Error occurs during retreive Review.", e));
             Helper.rollBackTransaction(conn, LOGGER);
             throw e;
         } finally {
@@ -1687,6 +1688,9 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
         String idList;
 
+        LOGGER.log(Level.INFO, new LogMessage(null, null,
+        		"Search " +( complete ? " complete " : " not completed" )+ " Reviews "));
+        
         // try to get the id list string using search bundle
         try {
             // do the search using search bundle
@@ -1711,8 +1715,10 @@ public class InformixReviewPersistence implements ReviewPersistence {
             // get the string from string buffer
             idList = idListBuffer.toString();
         } catch (SearchBuilderException e) {
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs during search Review.", e));
             throw new ReviewPersistenceException("Unable to perform search using SearchBundle.", e);
         } catch (InvalidCursorStateException e) {
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs during search Review.", e));
             throw new ReviewPersistenceException("Unable to perform search using SearchBundle.", e);
         }
 
@@ -1734,6 +1740,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             Helper.commitTransaction(conn, LOGGER);
             return reviews;
         } catch (ReviewPersistenceException e) {
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs during search/retrieve Review.", e));
             Helper.rollBackTransaction(conn, LOGGER);
             throw e;
         } finally {
@@ -1760,9 +1767,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
             Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE};
         Object[][] rows = Helper.doQuery(conn, QUERY_REVIEWS_SQL.replaceFirst(
             ID_ARRAY_PARAMETER_REGULAR_EXP, idList), new Object[] {}, columnTypes);
-        
-        LOGGER.log(Level.INFO, "execute sql: " + QUERY_REVIEWS_SQL.replaceFirst(
-                ID_ARRAY_PARAMETER_REGULAR_EXP, idList));
         
         // create the Review array.
         Review[] reviews = new Review[rows.length];
@@ -1929,8 +1933,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
         Object[][] rows = Helper.doQuery(conn, QUERY_REVIEW_ITEM_COMMENTS_SQL.replaceFirst(
             ID_ARRAY_PARAMETER_REGULAR_EXP, idList), new Object[] {}, columnTypes);
 
-        LOGGER.log(Level.INFO, "execute sql:" + QUERY_REVIEW_ITEM_COMMENTS_SQL.replaceFirst(
-                ID_ARRAY_PARAMETER_REGULAR_EXP, idList));
         // enumerate each comment
         for (int i = 0; i < rows.length; ++i) {
             Object[] row = rows[i];
@@ -2003,6 +2005,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
     public CommentType[] getAllCommentTypes() throws ReviewPersistenceException {
         Connection conn = null;
 
+        LOGGER.log(Level.INFO, new LogMessage(null, null, " retrieve all comment types."));
+        
         try {
             // create the connection
             conn = createTransactionalConnection();
@@ -2012,6 +2016,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             Helper.commitTransaction(conn, LOGGER);
             return commentTypes;
         } catch (ReviewPersistenceException e) {
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Error occurs retrieve all comment types .", e));
             Helper.rollBackTransaction(conn, LOGGER);
             throw e;
         } finally {
@@ -2078,13 +2083,17 @@ public class InformixReviewPersistence implements ReviewPersistence {
         Map changeTable = new HashMap();
 
         Connection conn = null;
-
+        
+        LOGGER.log(Level.INFO, new LogMessage(new Long(reviewId), operator, "Add comment to the review."));
+        
         try {
             // create the connection
             conn = createTransactionalConnection();
 
             // check if the review id exists
             if (Helper.countEntities(REVIEW_TABLE, "review_id", reviewId, conn) == 0) {
+            	LOGGER.log(Level.ERROR, new LogMessage(new Long(reviewId), operator,
+            			"The review id [" + reviewId + "] does not exist in the database."));
                 throw new ReviewEntityNotFoundException("The review id [" + reviewId
                     + "] does not exist in table [" + REVIEW_TABLE + "].", reviewId);
             }
@@ -2100,6 +2109,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
             Helper.commitTransaction(conn, LOGGER);
         } catch (ReviewPersistenceException e) {
+        	LOGGER.log(Level.ERROR, new LogMessage(new Long(reviewId), operator, "Error occurs adding comment to review .", e));
             Helper.rollBackTransaction(conn, LOGGER);
             throw e;
         } finally {
@@ -2145,12 +2155,16 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
         Connection conn = null;
 
+        LOGGER.log(Level.INFO, new LogMessage(null, operator, "Add comment to the Item with the itemid:" + itemId));
+        
         try {
             // create the connection
             conn = createTransactionalConnection();
 
             // check if the review item id exists
             if (Helper.countEntities(REVIEW_ITEM_TABLE, "review_item_id", itemId, conn) == 0) {
+            	LOGGER.log(Level.ERROR, new LogMessage(new Long(itemId), operator,
+            			"The item id [" + itemId + "] does not exist in the database."));
                 throw new ReviewEntityNotFoundException("The item id [" + itemId
                     + "] does not exist in table [" + REVIEW_ITEM_TABLE + "].", itemId);
             }
@@ -2166,6 +2180,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
             Helper.commitTransaction(conn, LOGGER);
         } catch (ReviewPersistenceException e) {
+        	LOGGER.log(Level.ERROR, new LogMessage(null, operator,
+        			"Error occurs add item comment with the item id[" + itemId + "].", e));
             Helper.rollBackTransaction(conn, LOGGER);
             throw e;
         } finally {
