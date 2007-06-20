@@ -48,7 +48,7 @@ public class InvoiceServiceDetail extends TimeTrackerBean {
      * This is mutable, may be changed by corresponding setter, negative value possible only as default
      * </p>
      */
-    private int rate = -1;
+    private double rate = -1.0;
 
     /**
      * <p>
@@ -130,7 +130,7 @@ public class InvoiceServiceDetail extends TimeTrackerBean {
      *
      * @return the rate
      */
-    public int getRate() {
+    public double getRate() {
         return this.rate;
     }
 
@@ -145,13 +145,12 @@ public class InvoiceServiceDetail extends TimeTrackerBean {
      * @throws IllegalArgumentException
      *             if parameter is less than 0
      */
-    public void setRate(int rate) {
-        if (rate < 0) {
+    public void setRate(double rate) {
+        if (rate < 0.0) {
             throw new IllegalArgumentException("rate can't be less than 0");
         }
 
         this.rate = rate;
-
         setChanged(true);
     }
 

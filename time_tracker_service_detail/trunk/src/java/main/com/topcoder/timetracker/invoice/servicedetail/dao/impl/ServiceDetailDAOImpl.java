@@ -12,8 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -26,6 +28,9 @@ import com.topcoder.timetracker.audit.AuditHeader;
 import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.audit.AuditManagerException;
 import com.topcoder.timetracker.audit.AuditType;
+import com.topcoder.timetracker.entry.time.BatchOperationException;
+import com.topcoder.timetracker.entry.time.InvalidCompanyException;
+import com.topcoder.timetracker.entry.time.TimeEntry;
 import com.topcoder.timetracker.entry.time.TimeEntryManager;
 import com.topcoder.timetracker.entry.time.UnrecognizedEntityException;
 import com.topcoder.timetracker.invoice.Invoice;
@@ -37,16 +42,21 @@ import com.topcoder.timetracker.invoice.servicedetail.EntityNotFoundException;
 import com.topcoder.timetracker.invoice.servicedetail.InvalidDataException;
 import com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail;
 import com.topcoder.timetracker.invoice.servicedetail.dao.ServiceDetailDAO;
+import com.topcoder.timetracker.project.ProjectManager;
+import com.topcoder.timetracker.project.ProjectManagerFilterFactory;
+import com.topcoder.timetracker.project.ProjectManagerUtility;
 import com.topcoder.timetracker.project.ProjectWorker;
 import com.topcoder.timetracker.project.ProjectWorkerFilterFactory;
 import com.topcoder.timetracker.project.ProjectWorkerUtility;
+import com.topcoder.timetracker.user.StringMatchType;
 import com.topcoder.timetracker.user.User;
+import com.topcoder.timetracker.user.UserFilterFactory;
 import com.topcoder.timetracker.user.UserManager;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.idgenerator.IDGenerationException;
-import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.idgenerator.IDGenerator;
+import com.topcoder.util.idgenerator.IDGeneratorFactory;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.SpecificationFactory;
@@ -75,6 +85,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
 
     /** Property key for project worker utility configuration. */
     private static final String PROJECT_WORKER_UTILITY_NAME_KEY = "project_worker_utility_name";
+
+    /** Property key for project manager utility configuration. */
+    private static final String PROJECT_MANAGER_UTILITY_NAME_KEY = "project_manager_utility_name";
 
     /** Property key for time entry manager configuration. */
     private static final String TIME_ENTRY_MANAGER_NAME_KEY = "time_entry_manager_name";
@@ -166,6 +179,14 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
 
     /**
      * <p>
+     * This attributes is used to retrieve rate when service detail is added to database. This is immutable, sets
+     * by constructor, null impossible.
+     * </p>
+     */
+    private final ProjectManagerUtility projectManagerUtility;
+
+    /**
+     * <p>
      * This attributes is used to indicate mode of usage of batch operation. If it is true we allowed using batch
      * operation, if false we do not allowed doing it. This attribute was added because not all drivers support
      * batch operations. This is immutable, sets by constructor.
@@ -234,6 +255,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 (TimeEntryManager) getObjectFromFactory(namespace, TIME_ENTRY_MANAGER_NAME_KEY, objectFactory);
             projectWorkerUtility =
                 (ProjectWorkerUtility) getObjectFromFactory(namespace, PROJECT_WORKER_UTILITY_NAME_KEY,
+                    objectFactory);
+            projectManagerUtility =
+                (ProjectManagerUtility) getObjectFromFactory(namespace, PROJECT_MANAGER_UTILITY_NAME_KEY,
                     objectFactory);
             userManager = (UserManager) getObjectFromFactory(namespace, USER_MANAGER_NAME_KEY, objectFactory);
 
@@ -337,7 +361,6 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
             connection = connectionFactory.createConnection();
 
             addServiceDetail(connection, detail, audit);
-
         } catch (DBConnectionException e) {
             throw new DataAccessException("An exception happens when creating connection", e);
         } finally {
@@ -388,7 +411,7 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
             insertStatement.setLong(1, detail.getId());
             insertStatement.setLong(2, detail.getTimeEntry().getId());
             insertStatement.setLong(3, detail.getInvoice().getId());
-            insertStatement.setInt(4, detail.getRate());
+            insertStatement.setInt(4, (int) (detail.getRate() * 100.0));
             insertStatement.setBigDecimal(5, detail.getAmount());
             insertStatement.setDate(6, now);
             insertStatement.setString(7, detail.getCreationUser());
@@ -401,6 +424,22 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 AuditHeader header = createAuditHeader(null, detail, now);
 
                 auditManager.createAuditRecord(header);
+            }
+
+            TimeEntry timeEntry = detail.getTimeEntry();
+
+            timeEntry.setInvoiceId(detail.getInvoice().getId());
+            timeEntry.setModificationDate(detail.getModificationDate());
+            timeEntry.setModificationUser(detail.getModificationUser());
+
+            try {
+                timeEntryManager.updateTimeEntry(timeEntry, audit);
+            } catch (UnrecognizedEntityException uee) {
+                throw new DataAccessException("Error updating associated Time Entry.", uee);
+            } catch (InvalidCompanyException ice) {
+                throw new DataAccessException("Error updating associated Time Entry.", ice);
+            } catch (com.topcoder.timetracker.entry.time.DataAccessException dae) {
+                throw new DataAccessException("Error updating associated Time Entry.", dae);
             }
 
             detail.setChanged(false);
@@ -522,30 +561,46 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         throws InvalidDataException, com.topcoder.timetracker.project.DataAccessException,
             com.topcoder.timetracker.user.DataAccessException {
         if (searchRate) {
-            ProjectWorkerFilterFactory filterFactory = projectWorkerUtility.getProjectWorkerFilterFactory();
-            Filter filter = filterFactory.createProjectIdFilter(detail.getInvoice().getProjectId());
+            final String creationUsername = detail.getTimeEntry().getCreationUser();
 
-            ProjectWorker[] workers = projectWorkerUtility.searchProjectWorkers(filter);
+            UserFilterFactory userFilterFactory = userManager.getUserFilterFactory();
+            Filter userFilter = userFilterFactory.createUsernameFilter(StringMatchType.EXACT_MATCH, creationUsername);
+            User[] users = userManager.searchUsers(userFilter);
 
-            String creationUsername = detail.getTimeEntry().getCreationUser();
-
-            long[] userIds = new long[workers.length];
-            boolean found = false;
-            for (int i = 0; i < workers.length; i++) {
-                userIds[i] = workers[i].getUserId();
-                User user = userManager.getUser(userIds[i]);
-                if (user.getUsername().equals(creationUsername)) {
-                    detail.setRate((int) workers[i].getPayRate()); // TODO: SHOULD allow setting double values
-                    found = true;
-                    break;
-                }
+            if (users.length == 0) {
+                throw new InvalidDataException("No such user [" + creationUsername + "] in the database.");
             }
-            if (!found) {
-                throw new InvalidDataException("No such user [" + creationUsername + "] in the database");
+
+            ProjectWorkerFilterFactory workerFilterFactory = projectWorkerUtility.getProjectWorkerFilterFactory();
+            Filter projectWorkerFilter = workerFilterFactory.createProjectIdFilter(detail.getInvoice().getProjectId());
+
+            ProjectManagerFilterFactory managerFilterFactory = projectManagerUtility.getProjectManagerFilterFactory();
+            Filter projectManagerFilter =
+                managerFilterFactory.createProjectIdFilter(detail.getInvoice().getProjectId());
+
+            ProjectWorker[] workers = projectWorkerUtility.searchProjectWorkers(projectWorkerFilter);
+            ProjectManager[] managers = projectManagerUtility.searchProjectManagers(projectManagerFilter);
+
+            Map userRates = new HashMap();
+
+            for (int i = 0; i < workers.length; ++i) {
+                userRates.put(new Long(workers[i].getUserId()), new Double(workers[i].getPayRate()));
             }
+            for (int i = 0; i < managers.length; ++i) {
+                userRates.put(new Long(managers[i].getUserId()), new Double(managers[i].getPayRate()));
+            }
+
+            Double rate = (Double) userRates.get(new Long(users[0].getId()));
+
+            if (rate == null) {
+                throw new InvalidDataException("User [" + creationUsername +
+                        "] is not assigned to the project with ID " + detail.getInvoice().getProjectId() + ".");
+            }
+
+            detail.setRate(rate.doubleValue());
         } else {
             if (detail.getRate() == -1) {
-                throw new InvalidDataException("Rate should be positive");
+                throw new InvalidDataException("Rate should be positive.");
             }
         }
         detail.setAmount(new BigDecimal(detail.getTimeEntry().getHours() * detail.getRate()));
@@ -781,7 +836,7 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
 
             updateStatement.setLong(1, detail.getTimeEntry().getId());
             updateStatement.setLong(2, detail.getInvoice().getId());
-            updateStatement.setInt(3, detail.getRate());
+            updateStatement.setInt(3, (int) (detail.getRate() * 100.0));
             updateStatement.setBigDecimal(4, detail.getAmount());
             updateStatement.setDate(5, now);
             updateStatement.setString(6, detail.getModificationUser());
@@ -873,7 +928,7 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         InvoiceServiceDetail detail = new InvoiceServiceDetail();
         detail.setId(set.getLong("service_detail_id"));
         detail.setAmount(set.getBigDecimal("amount"));
-        detail.setRate(set.getInt("rate"));
+        detail.setRate(set.getInt("rate") / 100.0);
         detail.setInvoice(invoice);
         detail.setTimeEntry(timeEntryManager.getTimeEntry(set.getLong("time_entry_id")));
         detail.setCreationDate(set.getDate("creation_date"));
@@ -1020,8 +1075,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
             try {
                 // create connection
                 connection = connectionFactory.createConnection();
-
                 insertStatement = connection.prepareStatement(INSERT_QUERY);
+
+                TimeEntry[] timeEntries = new TimeEntry[details.length];
 
                 for (int i = 0; i < details.length; i++) {
 
@@ -1039,7 +1095,7 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                     insertStatement.setLong(1, details[i].getId());
                     insertStatement.setLong(2, details[i].getTimeEntry().getId());
                     insertStatement.setLong(3, details[i].getInvoice().getId());
-                    insertStatement.setInt(4, details[i].getRate());
+                    insertStatement.setInt(4, (int) (details[i].getRate() * 100.0));
                     insertStatement.setBigDecimal(5, details[i].getAmount());
                     insertStatement.setDate(6, now);
                     insertStatement.setString(7, details[i].getCreationUser());
@@ -1047,6 +1103,11 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                     insertStatement.setString(9, details[i].getModificationUser());
 
                     insertStatement.addBatch();
+
+                    timeEntries[i] = details[i].getTimeEntry();
+                    timeEntries[i].setInvoiceId(details[i].getInvoice().getId());
+                    timeEntries[i].setModificationDate(details[i].getModificationDate());
+                    timeEntries[i].setModificationUser(details[i].getModificationUser());
 
                     if (audit) {
                         auditManager.createAuditRecord(createAuditHeader(null, details[i], now));
@@ -1056,6 +1117,14 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
                 int[] is = insertStatement.executeBatch();
 
                 checkBatchError(details, is);
+
+                try {
+                    timeEntryManager.updateTimeEntries(timeEntries, audit);
+                } catch (BatchOperationException boe) {
+                    throw new DataAccessException("Error updating associated Time Entry.", boe);
+                } catch (com.topcoder.timetracker.entry.time.DataAccessException dae) {
+                    throw new DataAccessException("Error updating associated Time Entry.", dae);
+                }
 
                 for (int i = 0; i < details.length; ++i) {
                     details[i].setChanged(false);
@@ -1343,7 +1412,7 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
 
                     updateStatement.setLong(1, details[i].getTimeEntry().getId());
                     updateStatement.setLong(2, details[i].getInvoice().getId());
-                    updateStatement.setInt(3, details[i].getRate());
+                    updateStatement.setInt(3, (int) (details[i].getRate() * 100.0));
                     updateStatement.setBigDecimal(4, details[i].getAmount());
                     updateStatement.setDate(5, now);
                     updateStatement.setString(6, details[i].getModificationUser());
