@@ -274,10 +274,10 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         params.add(new Long(timeEntry.getTaskType().getId()));
 
         // description can be null in the database
-        if (timeEntry.getDescription() == null) {
-            params.add(new SqlType(Types.VARCHAR));
-        } else {
+        if (timeEntry.getDescription() != null) {
             params.add(timeEntry.getDescription());
+        } else {
+            params.add(new SqlType(Types.VARCHAR));
         }
 
         params.add(timeEntry.getDate());
@@ -580,15 +580,19 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         params.add(new Long(entry.getCompanyId()));
         params.add(new Long(entry.getClientId()));
         params.add(new Long(entry.getProjectId()));
-        params.add(new Long(entry.getInvoiceId()));
+        if (entry.getInvoiceId() > 0) {
+            params.add(new Long(entry.getInvoiceId()));
+        } else {
+            params.add(new SqlType(Types.INTEGER));
+        }
         params.add(new Long(entry.getStatus().getId()));
         params.add(new Long(entry.getTaskType().getId()));
 
         // description can be null in the database
-        if (entry.getDescription() == null) {
-            params.add(new SqlType(Types.VARCHAR));
-        } else {
+        if (entry.getDescription() != null) {
             params.add(entry.getDescription());
+        } else {
+            params.add(new SqlType(Types.VARCHAR));
         }
 
         params.add(entry.getDate());
