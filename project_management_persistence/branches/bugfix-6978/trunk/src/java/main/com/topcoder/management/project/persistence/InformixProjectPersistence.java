@@ -46,7 +46,7 @@ public class InformixProjectPersistence extends
         AbstractInformixProjectPersistence {
 
 	/** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(InformixProjectPersistence.class.getName()); 
+    private static final Log LOGGER = LogFactory.getLog(InformixProjectPersistence.class.getName()); 
 
     
     /**
@@ -127,9 +127,9 @@ public class InformixProjectPersistence extends
 
         String connectionName = getConnectionName();
         if ( connectionName == null){
-        	logger.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
+        	LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
         } else {
-        	logger.log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: " + connectionName));
+        	LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: " + connectionName));
         }
         Connection conn = Helper.createConnection(getConnectionFactory(),
                 connectionName);
@@ -161,7 +161,7 @@ public class InformixProjectPersistence extends
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
-        	logger.log(Level.INFO, "committing transaction");
+        	LOGGER.log(Level.INFO, "committing transaction");
             Helper.commitTransaction(connection);
         } finally {
             Helper.closeConnection(connection);
@@ -185,7 +185,7 @@ public class InformixProjectPersistence extends
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
-        	logger.log(Level.INFO, "rollback transaction");
+        	LOGGER.log(Level.INFO, "rollback transaction");
             Helper.rollBackTransaction(connection);
         } finally {
             Helper.closeConnection(connection);
@@ -197,6 +197,6 @@ public class InformixProjectPersistence extends
      * @return the <code>Log</code> instance used to take the log message
      */
 	protected Log getLogger() {
-		return logger;
+		return LOGGER;
 	}
 }

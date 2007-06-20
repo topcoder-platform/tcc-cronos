@@ -36,7 +36,7 @@ import com.topcoder.util.log.LogFactory;
 public class UnmanagedTransactionInformixProjectPersistence extends
         AbstractInformixProjectPersistence {
 	/** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(UnmanagedTransactionInformixProjectPersistence.class.getName()); 
+    private static final Log LOGGER = LogFactory.getLog(UnmanagedTransactionInformixProjectPersistence.class.getName()); 
     /**
      * <p>
      * Creates a new instance of
@@ -110,9 +110,9 @@ public class UnmanagedTransactionInformixProjectPersistence extends
      */
     protected Connection openConnection() throws PersistenceException {
     	 if ( getConnectionName() == null){
-         	logger.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
+         	LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
          } else {
-         	logger.log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: " + getConnectionName()));
+         	LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: " + getConnectionName()));
          }
         return Helper.createConnection(getConnectionFactory(),
                 getConnectionName());
@@ -132,7 +132,7 @@ public class UnmanagedTransactionInformixProjectPersistence extends
     protected void closeConnection(Connection connection)
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
-        logger.log(Level.INFO, "close the connection.");
+        LOGGER.log(Level.INFO, "close the connection.");
         Helper.closeConnection(connection);
     }
 
@@ -157,6 +157,6 @@ public class UnmanagedTransactionInformixProjectPersistence extends
      * @return the <code>Log</code> instance used to take the log message
      */
 	protected Log getLogger() {
-		return logger;
+		return LOGGER;
 	}
 }
