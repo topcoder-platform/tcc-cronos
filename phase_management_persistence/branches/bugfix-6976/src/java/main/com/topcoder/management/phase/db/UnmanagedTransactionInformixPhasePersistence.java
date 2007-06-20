@@ -111,7 +111,7 @@ public class UnmanagedTransactionInformixPhasePersistence extends
 
         Helper.checkNull(connection, "connection");
         
-        getLogger().log(Level.INFO, "close the connection.");
+        LOGGER.log(Level.INFO, "close the connection.");
         
         try {
             connection.close();
@@ -168,11 +168,4 @@ public class UnmanagedTransactionInformixPhasePersistence extends
     protected void startTransaction(Map context) {
         Helper.checkMap(context, "context");
     }
-    /**
-     * <p>Return the logger.</p>
-     * @return the <code>Log</code> instance used to take the log message
-     */
-	protected Log getLogger() {
-		return LOGGER;
-	}
 }

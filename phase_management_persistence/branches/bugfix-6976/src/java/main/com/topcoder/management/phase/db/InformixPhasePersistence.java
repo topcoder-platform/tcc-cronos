@@ -142,7 +142,7 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
 
         Helper.checkNull(connection, "connection");
 
-        getLogger().log(Level.INFO, "close the connection.");
+        LOGGER.log(Level.INFO, "close the connection.");
         
         try {
             connection.close();
@@ -172,7 +172,7 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
 
         Connection conn = checkConnectionExists(context, "context");
         
-        getLogger().log(Level.INFO, "committing transaction.");
+        LOGGER.log(Level.INFO, "committing transaction.");
         try {
             conn.commit();
         } catch (SQLException e) {
@@ -200,7 +200,7 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
         Helper.checkMap(context, "context");
 
         Connection conn = checkConnectionExists(context, "context");
-        getLogger().log(Level.INFO, "rollback transaction.");
+        LOGGER.log(Level.INFO, "rollback transaction.");
         try {
             conn.rollback();
         } catch (SQLException e) {
@@ -222,7 +222,7 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
      */
     protected void startTransaction(Map context) {
     	Helper.checkMap(context, "context");
-    	getLogger().log(Level.INFO, "start transaction.");
+    	LOGGER.log(Level.INFO, "start transaction.");
     }
 
     /**
@@ -244,13 +244,5 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
         }
         return conn;
     }
-
-    /**
-     * <p>Return the logger.</p>
-     * @return the <code>Log</code> instance used to take the log message
-     */
-	protected Log getLogger() {
-		return LOGGER;
-	}
 
 }

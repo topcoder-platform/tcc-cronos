@@ -38,6 +38,7 @@ import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -103,6 +104,9 @@ import com.topcoder.util.log.Log;
 public abstract class AbstractInformixPhasePersistence extends
         AbstractDbPhasePersistence {
 
+	 /** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(AbstractInformixPhasePersistence.class.getName()); 
+    
     /**
      * Checks if the dependency exists in the database.
      */
@@ -324,7 +328,7 @@ public abstract class AbstractInformixPhasePersistence extends
      */
     public Project getProjectPhases(long projectId)
         throws PhasePersistenceException {
-    	getLogger().log(Level.INFO, new LogMessage(null, null, "Get project [ " + projectId + "]'s phases."));
+    	LOGGER.log(Level.INFO, new LogMessage(null, null, "Get project [ " + projectId + "]'s phases."));
         return getProjectPhases(new long[] {projectId})[0];
     }
 
@@ -353,27 +357,37 @@ public abstract class AbstractInformixPhasePersistence extends
             return new Project[0];
         }
 
-        String idString = "";
-        for(int i = 0 ; i < projectIds.length; i++) {
-        	idString += projectIds[i];
-        	if ( i < projectIds.length -1) {
-        		idString += ",";
-        	}
-        }
-        getLogger().log(Level.INFO, new LogMessage(null, null, "Get projects [ " + idString + "]'s phases."));
+        String idString = getIdString(projectIds);
+        LOGGER.log(Level.INFO, new LogMessage(null, null, "Get projects [ " + idString + "]'s phases."));
         Connection conn = getConnection();
 
         try {
             Project[] projects = getProjectPhasesImpl(conn, projectIds);
             return projects;
         } catch (SQLException ex) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to get phases for the projects:[" + idString + "].", ex));
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fails to get phases for the projects:[" + idString + "].", ex));
             throw new PhasePersistenceException(
                     "Error occurs while retrieving the projects.", ex);
         } finally {
             disposeConnection(conn);
         }
     }
+
+    /**
+     * Get id string spereated by comma for the ids.
+     * @param ids the id array
+     * @return string seperated by comma
+     */
+	private String getIdString(long[] ids) {
+		String idString = "";
+        for(int i = 0 ; i < ids.length; i++) {
+        	idString += ids[i];
+        	if ( i < ids.length -1) {
+        		idString += ",";
+        	}
+        }
+		return idString;
+	}
 
     /**
      * <p>
@@ -385,7 +399,7 @@ public abstract class AbstractInformixPhasePersistence extends
      *             database or creating PhaseTypes.
      */
     public PhaseType[] getAllPhaseTypes() throws PhasePersistenceException {
-    	getLogger().log(Level.INFO, new LogMessage(null, null, "Get all phase types."));
+    	LOGGER.log(Level.INFO, new LogMessage(null, null, "Get all phase types."));
     	 
         Connection conn = getConnection();
         Statement stmt = null;
@@ -393,7 +407,7 @@ public abstract class AbstractInformixPhasePersistence extends
 
         try {
 
-        	getLogger().log(Level.INFO, "execute sql:" + SELECT_PHASE_TYPES);
+        	LOGGER.log(Level.INFO, "get all phase types.");
         	
             // create statement
             stmt = conn.createStatement();
@@ -410,7 +424,7 @@ public abstract class AbstractInformixPhasePersistence extends
             // convert list to array and return
             return (PhaseType[]) result.toArray(new PhaseType[result.size()]);
         } catch (SQLException ex) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to get all phases types.", ex));
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fails to get all phases types.", ex));
             throw new PhasePersistenceException(
                     "Error occurs while retrieving phase types.", ex);
         } finally {
@@ -430,14 +444,14 @@ public abstract class AbstractInformixPhasePersistence extends
      *             database or creating PhaseStatus.
      */
     public PhaseStatus[] getAllPhaseStatuses() throws PhasePersistenceException {
-    	getLogger().log(Level.INFO, new LogMessage(null, null, "Get all phase status."));
+    	LOGGER.log(Level.INFO, new LogMessage(null, null, "Get all phase status."));
     	Connection conn = getConnection();
         Statement stmt = null;
         ResultSet rs = null;
 
         try {
 
-        	getLogger().log(Level.INFO, "execute sql:" + SELECT_PHASE_STATUS_IDS);
+        	LOGGER.log(Level.INFO, "get all phase status.");
         	
             // create the statement
             stmt = conn.createStatement();
@@ -454,7 +468,7 @@ public abstract class AbstractInformixPhasePersistence extends
             return (PhaseStatus[]) result
                     .toArray(new PhaseStatus[result.size()]);
         } catch (SQLException ex) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to get all phases status.", ex));
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fails to get all phases status.", ex));
             throw new PhasePersistenceException(
                     "Error occurs while database operation.", ex);
         } finally {
@@ -515,7 +529,7 @@ public abstract class AbstractInformixPhasePersistence extends
 
         PreparedStatement pstmt = null;
 
-        getLogger().log(Level.INFO, new LogMessage(null, operator, "creating new " + phases.length + " phases."));
+        LOGGER.log(Level.INFO, new LogMessage(null, operator, "creating new " + phases.length + " phases."));
         // get the connection.
         Connection conn = getConnection();
 
@@ -526,7 +540,7 @@ public abstract class AbstractInformixPhasePersistence extends
             // start the transaction
             startTransaction(context);
 
-            getLogger().log(Level.INFO, "execute sql:" + SELECT_PHASE_CRITERIA);
+            LOGGER.log(Level.INFO, "execute sql:" + SELECT_PHASE_CRITERIA);
             Map lookUp = getCriteriaTypes(conn);
             createPhasesImpl(conn, phases, operator, lookUp);
             // if all OK - commit transaction
@@ -534,13 +548,13 @@ public abstract class AbstractInformixPhasePersistence extends
         } catch (SQLException ex) {
             // roll back the transaction
             rollbackTransaction(context);
-            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to create new phases.", ex));
+            LOGGER.log(Level.ERROR, new LogMessage(null, operator, "Fails to create new phases.", ex));
             throw new PhasePersistenceException(
                     "Error occurs while creating the phases.", ex);
         } catch (PhasePersistenceException ppe) {
             // roll back the transaction
             rollbackTransaction(context);
-            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to create new phases.", ppe));
+            LOGGER.log(Level.ERROR, new LogMessage(null, operator, "Fails to create new phases.", ppe));
             throw ppe;
         } finally {
             close(pstmt);
@@ -560,7 +574,7 @@ public abstract class AbstractInformixPhasePersistence extends
      * @throws PhasePersistenceException if database related error occurs.
      */
     public Phase getPhase(long phaseId) throws PhasePersistenceException {
-    	getLogger().log(Level.INFO, new LogMessage(null, null, "Get phase with the id[" + phaseId + "]."));
+    	LOGGER.log(Level.INFO, new LogMessage(null, null, "Get phase with the id[" + phaseId + "]."));
         return getPhases(new long[] {phaseId})[0];
     }
 
@@ -584,21 +598,15 @@ public abstract class AbstractInformixPhasePersistence extends
         if (phaseIds.length == 0) {
             return new Phase[0];
         }
-        String idString = "";
-        for(int i = 0 ; i < phaseIds.length; i++) {
-        	idString += phaseIds[i];
-        	if ( i < phaseIds.length -1) {
-        		idString += ",";
-        	}
-        }
-        getLogger().log(Level.INFO, new LogMessage(null, null, "Get phases with the ids:[" + idString +"]."));
+        String idString = getIdString(phaseIds);
+        LOGGER.log(Level.INFO, new LogMessage(null, null, "Get phases with the ids:[" + idString +"]."));
         
         Connection conn = getConnection();
 
         try {
             return getPhasesImpl(conn, phaseIds);
         } catch (SQLException ex) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to get phases with the ids:[" + idString +"].", ex));
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fail to get phases with the ids:[" + idString +"].", ex));
             throw new PhasePersistenceException(
                     "Error occurs while retrieving phases.", ex);
         } finally {
@@ -623,7 +631,7 @@ public abstract class AbstractInformixPhasePersistence extends
             throw new IllegalArgumentException("phase cannot be null.");
         }
 
-        getLogger().log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, "Update phase."));
+        LOGGER.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, "Update phase."));
         
         updatePhases(new Phase[] {phase}, operator);
     }
@@ -657,15 +665,9 @@ public abstract class AbstractInformixPhasePersistence extends
             return;
         }
 
-        String idString = "";
-        for(int i = 0 ; i < phases.length; i++) {
-        	idString += phases[i].getId();
-        	if ( i < phases.length -1) {
-        		idString += ",";
-        	}
-        }
+        String idString = getPhasesIdString(phases);
         
-        getLogger().log(Level.INFO, new LogMessage(null, operator, "Update phases with the ids:[" + idString + "]."));
+        LOGGER.log(Level.INFO, new LogMessage(null, operator, "Update phases with the ids:[" + idString + "]."));
         
         // get the connection
         Connection conn = getConnection();
@@ -682,12 +684,12 @@ public abstract class AbstractInformixPhasePersistence extends
             // start the transaction
             startTransaction(context);
 
-            getLogger().log(Level.INFO, "execute sql:" + SELECT_PHASE_CRITERIA);
+            LOGGER.log(Level.INFO, "execute sql:" + SELECT_PHASE_CRITERIA);
             
             // get the phases criteria lookups
             Map lookUps = getCriteriaTypes(conn);
             
-            getLogger().log(Level.INFO, "execute sql:" + UPDATE_PHASE);
+            LOGGER.log(Level.INFO, "execute sql:" + UPDATE_PHASE);
             
             // create the statement
             pstmt = conn.prepareStatement(UPDATE_PHASE);
@@ -737,7 +739,7 @@ public abstract class AbstractInformixPhasePersistence extends
             commitTransaction(context);
         } catch (SQLException ex) {
             rollbackTransaction(context);
-            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fail to update phases with the ids:[" + idString +"].", ex));
+            LOGGER.log(Level.ERROR, new LogMessage(null, operator, "Fail to update phases with the ids:[" + idString +"].", ex));
             throw new PhasePersistenceException(
                     "Error occurs while updating phases.", ex);
         } finally {
@@ -745,6 +747,22 @@ public abstract class AbstractInformixPhasePersistence extends
             disposeConnection(conn);
         }
     }
+
+    /**
+     * Get the id string of the given Phase array, seperated by comma.
+     * @param phases the Phase array
+     * @return id string seperated by comma
+     */
+	private String getPhasesIdString(Phase[] phases) {
+		String idString = "";
+        for(int i = 0 ; i < phases.length; i++) {
+        	idString += phases[i].getId();
+        	if ( i < phases.length -1) {
+        		idString += ",";
+        	}
+        }
+		return idString;
+	}
 
     /**
      * <p>
@@ -760,7 +778,7 @@ public abstract class AbstractInformixPhasePersistence extends
         if (phase == null) {
             throw new IllegalArgumentException("phase cannot be null.");
         }
-        getLogger().log(Level.INFO, new LogMessage(new Long(phase.getId()), null, "Delete phase."));
+        LOGGER.log(Level.INFO, new LogMessage(new Long(phase.getId()), null, "Delete phase."));
         deletePhases(new Phase[] {phase});
     }
 
@@ -780,15 +798,9 @@ public abstract class AbstractInformixPhasePersistence extends
         if (phases.length == 0) {
             return;
         }
-        String idString = "";
-        for(int i = 0 ; i < phases.length; i++) {
-        	idString += phases[i].getId();
-        	if ( i < phases.length -1) {
-        		idString += ",";
-        	}
-        }
+        String idString = getPhasesIdString(phases);
         
-        getLogger().log(Level.INFO, new LogMessage(null, null, "Delete phases with the ids:[" + idString + "]."));
+        LOGGER.log(Level.INFO, new LogMessage(null, null, "Delete phases with the ids:[" + idString + "]."));
         
         String inSet = createQuestionMarks(phases.length);
         // get the connection.
@@ -806,11 +818,9 @@ public abstract class AbstractInformixPhasePersistence extends
             // create the statements for all 3 tables (phase, dependencies and
             // criteria)
             
-            getLogger().log(Level.INFO, "execute sql:" + DELETE_FROM_PHASE_DEPENDENCY + inSet
-                    + DELETE_FROM_PHASE_DEPENDENCY_OR + inSet);
-            getLogger().log(Level.INFO, "execute sql:" + DELETE_PROJECT_PHASE + inSet);
-            getLogger().log(Level.INFO, "execute sql:" + DELETE_PHASE_CRITERIA_FOR_PHASES
-                    + inSet);
+            LOGGER.log(Level.INFO, "delete records from phase_dependency with phaseIds " + idString );
+            LOGGER.log(Level.INFO, "delete records from project_phase with phaseIds " + idString );
+            LOGGER.log(Level.INFO, "delete records from phase_criteria with phaseIds " + idString );
             
             pstmt = conn.prepareStatement(DELETE_FROM_PHASE_DEPENDENCY + inSet
                     + DELETE_FROM_PHASE_DEPENDENCY_OR + inSet);
@@ -837,7 +847,7 @@ public abstract class AbstractInformixPhasePersistence extends
             commitTransaction(context);
         } catch (SQLException ex) {
             rollbackTransaction(context);
-            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to update phases with the ids:[" + idString +"].", ex));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fail to update phases with the ids:[" + idString +"].", ex));
             throw new PhasePersistenceException(
                     "Error occurs while deleting phases.", ex);
         } finally {
@@ -888,14 +898,13 @@ public abstract class AbstractInformixPhasePersistence extends
         try {
             conn = getConnection();
         } catch (PhasePersistenceException e) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to check whether it is new Dependency.", e));
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fail to check whether it is new Dependency.", e));
             return false;
         }
 
         try {
 
-        	getLogger().log(Level.INFO, "execute sql:" + CHECK_DEPENDENCY);
-            // create the statement
+        	// create the statement
             pstmt = conn.prepareStatement(CHECK_DEPENDENCY);
             pstmt.setLong(1, dependency.getDependency().getId());
             pstmt.setLong(2, dependency.getDependent().getId());
@@ -905,7 +914,7 @@ public abstract class AbstractInformixPhasePersistence extends
             // if has any result - phase is not new
             return !rs.next();
         } catch (SQLException ex) {
-        	getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to check whether it's new Dependency.", ex));
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Fail to check whether it's new Dependency.", ex));
             return false;
         } finally {
             close(rs);
@@ -956,8 +965,6 @@ public abstract class AbstractInformixPhasePersistence extends
         Workdays workdays = new DefaultWorkdaysFactory()
                 .createWorkdaysInstance();
 
-        getLogger().log(Level.INFO, "execute sql:" + SELECT_PROJECT_IDS);
-        
         try {
             pstmt = conn.prepareStatement(SELECT_PROJECT_IDS
                     + createQuestionMarks(projectIds.length));
@@ -984,9 +991,7 @@ public abstract class AbstractInformixPhasePersistence extends
 
             Map phasesMap = new HashMap();
 
-            getLogger().log(Level.INFO, "execute sql:" + SELECT_PHASE_FOR_PROJECTS);
-            
-            // prepare the query to retrieve the phases .
+             // prepare the query to retrieve the phases .
             pstmt = conn.prepareStatement(SELECT_PHASE_FOR_PROJECTS
                     + createQuestionMarks(projectIds.length));
             for (int i = 0; i < projectIds.length; i++) {
@@ -1112,8 +1117,6 @@ public abstract class AbstractInformixPhasePersistence extends
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
-        getLogger().log(Level.INFO, "execute sql:" + SELECT_DEPENDENCY_FOR_PROJECTS);
-        
         try {
             // create the statement
             pstmt = conn.prepareStatement(SELECT_DEPENDENCY_FOR_PROJECTS
@@ -1183,8 +1186,6 @@ public abstract class AbstractInformixPhasePersistence extends
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
-        getLogger().log(Level.INFO, "execute sql:" + SELECT_PHASE_CRITERIA_FOR_PROJECTS);
-        
         try {
             // create the statement
             pstmt = conn.prepareStatement(SELECT_PHASE_CRITERIA_FOR_PROJECTS
@@ -1318,8 +1319,6 @@ public abstract class AbstractInformixPhasePersistence extends
         List dependencies = new ArrayList();
         PreparedStatement pstmt = null;
 
-        getLogger().log(Level.INFO, "execute sql:" + INSERT_PHASE);
-        
         try {
 
             // create insert statement
@@ -1335,7 +1334,9 @@ public abstract class AbstractInformixPhasePersistence extends
 
             // iterate over the phases array
             for (int i = 0; i < phases.length; i++) {
-                // generate the new id for phase
+            	
+            	LOGGER.log(Level.INFO, "insert record into phase");
+            	// generate the new id for phase
                 phases[i].setId(nextId());
                 // add all phase dependencies to the list
                 dependencies.addAll(Arrays.asList(phases[i]
@@ -1402,7 +1403,7 @@ public abstract class AbstractInformixPhasePersistence extends
                 pstmt.setBoolean(4, dependency.isDependentStart());
                 pstmt.setLong(5, dependency.getLagTime());
 
-                getLogger().log(Level.INFO, "execute sql:" + INSERT_PHASE_DEPENDENCY);
+                LOGGER.log(Level.INFO, " insert record into phase_dependency");
                 
                 // create the dependency
                 pstmt.executeUpdate();
@@ -1491,7 +1492,7 @@ public abstract class AbstractInformixPhasePersistence extends
                 if (id != null) {
                     pstmt.setLong(2, id.longValue());
                     pstmt.setString(3, (String) entry.getValue());
-                    getLogger().log(Level.INFO, "execute sql:" + INSERT_PHASE_CRITERIA);
+                    LOGGER.log(Level.INFO, "insert record into phase_criteria with phaseId:" + phase.getId());
                     pstmt.executeUpdate();
                 }
             }
@@ -1511,7 +1512,9 @@ public abstract class AbstractInformixPhasePersistence extends
      */
     private long nextId() throws PhasePersistenceException {
         try {
-            return super.getIDGenerator().getNextID();
+        	long id =  super.getIDGenerator().getNextID();
+        	LOGGER.log(Level.INFO, "generate next id from the generator:" + getIDGenerator().getIDName());
+        	return id;
         } catch (IDGenerationException ex) {
             throw new PhasePersistenceException(
                     "Error occurs while generating new ids.", ex);
@@ -1539,7 +1542,6 @@ public abstract class AbstractInformixPhasePersistence extends
         // instance
         Map phases = new HashMap();
 
-        getLogger().log(Level.INFO, "execute sql:" + SELECT_PROJECT_PHASE_ID);
         try {
             // get all the phase - project mapping from the database - just in
             // case the actual value were outdated
@@ -1639,8 +1641,6 @@ public abstract class AbstractInformixPhasePersistence extends
         // the map for the old criteria
         Map oldCriteria = new HashMap();
 
-        getLogger().log(Level.INFO, "execute sql:" + SELECT_PHASE_CRITERIA_FOR_PHASE);
-        
         try {
             // current update time
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1660,7 +1660,7 @@ public abstract class AbstractInformixPhasePersistence extends
                 oldCriteria.put(name, value);
             }
 
-            getLogger().log(Level.INFO, "execute sql:" + UPDATE_PHASE_CRITERIA);
+            LOGGER.log(Level.INFO, "update phase_criteria with phaseId:" + phase.getId());
             
             // create the update statement for all criteria
             updateStatement = conn.prepareStatement(UPDATE_PHASE_CRITERIA);
@@ -1694,7 +1694,7 @@ public abstract class AbstractInformixPhasePersistence extends
 
             // if any value left in old criteria - they need to be removed.
             if (oldCriteria.size() > 0) {
-            	getLogger().log(Level.INFO, "execute sql:" + DELETE_PHASE_CRITERIA);
+            	LOGGER.log(Level.INFO, "delete records from phase_criteria with phaseId:" + phase.getId());
             	
                 deleteStatement = conn.prepareStatement(DELETE_PHASE_CRITERIA
                         + createQuestionMarks(oldCriteria.size()));
@@ -1743,9 +1743,7 @@ public abstract class AbstractInformixPhasePersistence extends
         PreparedStatement selectStatement = null;
         ResultSet rs = null;
 
-        getLogger().log(Level.INFO, "execute sql:" + SELECT_DEPENDENCY);
-        
-        // this list will keep dependencies to remove and to update
+         // this list will keep dependencies to remove and to update
         List depsToRemove = new ArrayList();
         List depsToUpdate = new ArrayList();
         try {
@@ -1793,13 +1791,13 @@ public abstract class AbstractInformixPhasePersistence extends
 
             // if there is something to remove
             if (depsToRemove.size() > 0) {
-            	getLogger().log(Level.INFO, "execute sql:" + DELETE_PHASE_DEPENDENCY);
+            	LOGGER.log(Level.INFO, "execute sql:" + DELETE_PHASE_DEPENDENCY);
                 deleteDependencies(conn, depsToRemove, phase.getId());
             }
 
             // if there is something to update
             if (depsToUpdate.size() > 0) {
-            	getLogger().log(Level.INFO, "execute sql:" + UPDATE_PHASE_DEPENDENCY);
+            	LOGGER.log(Level.INFO, "execute sql:" + UPDATE_PHASE_DEPENDENCY);
                 updateDependencies(conn, depsToUpdate, operator);
             }
 
