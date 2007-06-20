@@ -595,7 +595,6 @@ public class InformixInvoiceDAO implements InvoiceDAO {
         Date creationDate = null;
         int auditType = 0;
         long projectId = -1;
-        long id = -1;
         entityId = newInvoice.getId();
         // on update, the value is modificationUser, on insert, creation and modification should be same, so
         // using modificationUser is generic solution
@@ -607,7 +606,6 @@ public class InformixInvoiceDAO implements InvoiceDAO {
             auditType = AuditType.UPDATE;
         }
         projectId = newInvoice.getProjectId();
-        id = newInvoice.getId();
 
         AuditHeader header = new AuditHeader();
         header.setApplicationArea(ApplicationArea.TT_INVOICE);
@@ -617,8 +615,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
         header.setCreationUser(creationUser);
         header.setCreationDate(new Timestamp(creationDate.getTime()));
         header.setActionType(auditType);
+        header.setCompanyId(newInvoice.getCompanyId());
         header.setProjectId(projectId);
-        header.setResourceId(id);
 
         AuditDetail[] details = new AuditDetail[15];
 
