@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -108,6 +110,17 @@ public class InformixInvoiceDAO implements InvoiceDAO {
 
     /** Invoice selection query. */
     private static final String SELECT_FROM_INVOICE = "SELECT * FROM invoice";
+
+    /**
+     * Represents formatting object used to format dates as simple date, in US format.
+     */
+    private static final Format dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+    /**
+     * Represents formatting object used to format dates as date with time of the date, in US
+     * format.
+     */
+    private static final Format timestampFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
 
     /**
      * <p>
@@ -627,19 +640,19 @@ public class InformixInvoiceDAO implements InvoiceDAO {
             createAuditDetail("project_id", oldInvoice == null ? null : oldInvoice.getProjectId() + "", ""
                 + newInvoice.getProjectId());
         details[2] =
-            createAuditDetail("creation_date", oldInvoice == null ? null : oldInvoice.getCreationDate() + "",
-                newInvoice.getCreationDate() + "");
+            createAuditDetail("creation_date", oldInvoice == null ? null : formatTimestamp(oldInvoice.getCreationDate()),
+                    formatTimestamp(newInvoice.getCreationDate()));
         details[3] =
             createAuditDetail("creation_user", oldInvoice == null ? null : oldInvoice.getCreationUser(),
                 newInvoice.getCreationUser());
-        details[4] =
-            createAuditDetail("modification_date", oldInvoice == null ? null : oldInvoice.getModificationDate()
-                + "", newInvoice.getModificationDate() + "");
+        details[4] = createAuditDetail("modification_date",
+                (oldInvoice != null) ? formatTimestamp(oldInvoice.getModificationDate()) : null,
+                formatTimestamp(newInvoice.getModificationDate()));
         details[5] =
             createAuditDetail("modification_user", oldInvoice == null ? null : oldInvoice.getModificationUser(),
                 newInvoice.getModificationUser());
         details[6] =
-            createAuditDetail("salextax", oldInvoice == null ? null : oldInvoice.getSalesTax() + "", ""
+            createAuditDetail("salesTax", oldInvoice == null ? null : oldInvoice.getSalesTax() + "", ""
                 + newInvoice.getSalesTax());
         details[7] =
             createAuditDetail("payment_terms_id", oldInvoice == null ? null : oldInvoice.getPaymentTerm().getId()
@@ -650,12 +663,12 @@ public class InformixInvoiceDAO implements InvoiceDAO {
         details[9] =
             createAuditDetail("po_number", oldInvoice == null ? null : oldInvoice.getPurchaseOrderNumber(),
                 newInvoice.getPurchaseOrderNumber());
-        details[10] =
-            createAuditDetail("invoice_date", oldInvoice == null ? null : oldInvoice.getInvoiceDate() + "",
-                newInvoice.getInvoiceDate() + "");
-        details[11] =
-            createAuditDetail("due_date", oldInvoice == null ? null : oldInvoice.getDueDate() + "", ""
-                + newInvoice.getDueDate());
+        details[10] = createAuditDetail("invoice_date",
+                (oldInvoice != null) ? formatDate(oldInvoice.getInvoiceDate()) : null,
+                formatDate(newInvoice.getInvoiceDate()));
+        details[11] = createAuditDetail("due_date",
+                (oldInvoice != null) ? formatDate(oldInvoice.getDueDate()) : null,
+                formatDate(newInvoice.getDueDate()));
         details[12] =
             createAuditDetail("paid", oldInvoice == null ? null : oldInvoice.isPaid() + "", ""
                 + newInvoice.isPaid());
@@ -688,13 +701,35 @@ public class InformixInvoiceDAO implements InvoiceDAO {
      *
      * @return the audit detail
      */
-    private AuditDetail createAuditDetail(String columnName, String oldValue, String newValue) {
+    private static AuditDetail createAuditDetail(String columnName, String oldValue, String newValue) {
         AuditDetail detail = new AuditDetail();
         detail.setColumnName(columnName);
         detail.setOldValue(oldValue);
         detail.setNewValue(newValue);
 
         return detail;
+    }
+
+    /**
+     * Formats specified date as simple date (i.e. without time of the day).
+     *
+     * @return string representation of the date formatted as date.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatDate(Date date) {
+        return dateFormat.format(date);
+    }
+
+    /**
+     * Formats specified date as time stamp (i.e. with time of the day).
+     *
+     * @return string representation of the date formatted as time stamp.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatTimestamp(Date date) {
+        return timestampFormat.format(date);
     }
 
     /**
