@@ -9,7 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +101,17 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
     private static final String SELECT_TIME_ENTRIES = "select time_entry_id, company_id, client_id, project_id, invoice_id, time_status_id, "
         + "task_type_id, description, entry_date, hours, billable, creation_date, creation_user, modification_date, "
         + "modification_user from time_entry";
+
+    /**
+     * Represents formatting object used to format dates as simple date, in US format.
+     */
+    private static final Format dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+    /**
+     * Represents formatting object used to format dates as date with time of the date, in US
+     * format.
+     */
+    private static final Format timestampFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
 
     /**
      * <p>
@@ -372,8 +386,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
             // only the time entry that doesn't have any exception will be audited
             if (causes[i] == null) {
                 try {
-                    audit(oldTimeEntries == null ? null : oldTimeEntries[i], newTimeEntries == null ? null
-                        : newTimeEntries[i]);
+                    audit((oldTimeEntries != null) ? oldTimeEntries[i] : null,
+                            (newTimeEntries != null) ? newTimeEntries[i] : null);
                 } catch (AuditManagerException e) {
                     causes[i] = new DataAccessException("Failed to audit the time entry.", e);
                 }
@@ -431,13 +445,13 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
             auditDetails.add(Util.createAuditDetail("task_type_id", null,
                 String.valueOf(newTimeEntry.getTaskType().getId())));
             auditDetails.add(Util.createAuditDetail("description", null, newTimeEntry.getDescription()));
-            auditDetails.add(Util.createAuditDetail("entry_date", null, newTimeEntry.getDate().toString()));
+            auditDetails.add(Util.createAuditDetail("entry_date", null, formatDate(newTimeEntry.getDate())));
             auditDetails.add(Util.createAuditDetail("hours", null, String.valueOf(newTimeEntry.getHours())));
             auditDetails.add(Util.createAuditDetail("billable", null, String.valueOf(newTimeEntry.getBillable())));
-            auditDetails.add(Util.createAuditDetail("creation_date", null, newTimeEntry.getCreationDate().toString()));
+            auditDetails.add(Util.createAuditDetail("creation_date", null, formatTimestamp(newTimeEntry.getCreationDate())));
             auditDetails.add(Util.createAuditDetail("creation_user", null, newTimeEntry.getCreationUser()));
             auditDetails.add(Util.createAuditDetail("modification_date", null,
-                newTimeEntry.getModificationDate().toString()));
+                    formatTimestamp(newTimeEntry.getModificationDate())));
             auditDetails.add(Util.createAuditDetail("modification_user", null, newTimeEntry.getModificationUser()));
         } else if (newTimeEntry == null && oldTimeEntry != null) {
             // for delete operation
@@ -452,12 +466,12 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
             auditDetails.add(Util.createAuditDetail("task_type_id", String.valueOf(oldTimeEntry.getTaskType().getId()),
                 null));
             auditDetails.add(Util.createAuditDetail("description", oldTimeEntry.getDescription(), null));
-            auditDetails.add(Util.createAuditDetail("entry_date", oldTimeEntry.getDate().toString(), null));
+            auditDetails.add(Util.createAuditDetail("entry_date", formatDate(oldTimeEntry.getDate()), null));
             auditDetails.add(Util.createAuditDetail("hours", String.valueOf(oldTimeEntry.getHours()), null));
             auditDetails.add(Util.createAuditDetail("billable", String.valueOf(oldTimeEntry.getBillable()), null));
-            auditDetails.add(Util.createAuditDetail("creation_date", oldTimeEntry.getCreationDate().toString(), null));
+            auditDetails.add(Util.createAuditDetail("creation_date", formatTimestamp(oldTimeEntry.getCreationDate()), null));
             auditDetails.add(Util.createAuditDetail("creation_user", oldTimeEntry.getCreationUser(), null));
-            auditDetails.add(Util.createAuditDetail("modification_date", oldTimeEntry.getModificationDate().toString(),
+            auditDetails.add(Util.createAuditDetail("modification_date", formatTimestamp(oldTimeEntry.getModificationDate()),
                 null));
             auditDetails.add(Util.createAuditDetail("modification_user", oldTimeEntry.getModificationUser(), null));
         } else {
@@ -479,18 +493,18 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
                 String.valueOf(newTimeEntry.getTaskType().getId())));
             auditDetails.add(Util.createAuditDetail("description", oldTimeEntry.getDescription(),
                 newTimeEntry.getDescription()));
-            auditDetails.add(Util.createAuditDetail("entry_date", oldTimeEntry.getDate().toString(),
-                newTimeEntry.getDate().toString()));
+            auditDetails.add(Util.createAuditDetail("entry_date", formatDate(oldTimeEntry.getDate()),
+                formatDate(newTimeEntry.getDate())));
             auditDetails.add(Util.createAuditDetail("hours", String.valueOf(oldTimeEntry.getHours()),
                 String.valueOf(newTimeEntry.getHours())));
             auditDetails.add(Util.createAuditDetail("billable", String.valueOf(oldTimeEntry.getBillable()),
                 String.valueOf(newTimeEntry.getBillable())));
-            auditDetails.add(Util.createAuditDetail("creation_date", oldTimeEntry.getCreationDate().toString(),
-                newTimeEntry.getCreationDate().toString()));
+            auditDetails.add(Util.createAuditDetail("creation_date", formatTimestamp(oldTimeEntry.getCreationDate()),
+                formatTimestamp(newTimeEntry.getCreationDate())));
             auditDetails.add(Util.createAuditDetail("creation_user", oldTimeEntry.getCreationUser(),
                 newTimeEntry.getCreationUser()));
-            auditDetails.add(Util.createAuditDetail("modification_date", oldTimeEntry.getModificationDate().toString(),
-                newTimeEntry.getModificationDate().toString()));
+            auditDetails.add(Util.createAuditDetail("modification_date", formatTimestamp(oldTimeEntry.getModificationDate()),
+                formatTimestamp(newTimeEntry.getModificationDate())));
             auditDetails.add(Util.createAuditDetail("modification_user", oldTimeEntry.getModificationUser(),
                 newTimeEntry.getModificationUser()));
         }
@@ -498,6 +512,28 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         header.setDetails((AuditDetail[]) auditDetails.toArray(new AuditDetail[auditDetails.size()]));
 
         this.getAuditManager().createAuditRecord(header);
+    }
+
+    /**
+     * Formats specified date as simple date (i.e. without time of the day).
+     *
+     * @return string representation of the date formatted as date.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatDate(Date date) {
+        return dateFormat.format(date);
+    }
+
+    /**
+     * Formats specified date as time stamp (i.e. with time of the day).
+     *
+     * @return string representation of the date formatted as time stamp.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatTimestamp(Date date) {
+        return timestampFormat.format(date);
     }
 
     /**
