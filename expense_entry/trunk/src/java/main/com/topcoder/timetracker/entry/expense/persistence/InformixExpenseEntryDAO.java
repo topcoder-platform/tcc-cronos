@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +37,6 @@ import com.topcoder.timetracker.rejectreason.RejectReason;
 import com.topcoder.timetracker.rejectreason.RejectReasonDAO;
 import com.topcoder.timetracker.rejectreason.RejectReasonDAOException;
 import com.topcoder.util.objectfactory.ObjectFactory;
-
 
 /**
  * <p>
@@ -154,10 +155,10 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
     /** Represents the column name for company id. */
     private static final String COMPANY_ID_COLUMN = "company_id";
-    
+
     /** Represents the column name for client id. */
     private static final String CLIENT_ID_COLUMN = "client_id";
-    
+
     /** Represents the column name for project id. */
     private static final String PROJECT_ID_COLUMN = "project_id";
 
@@ -227,6 +228,17 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         DATE_COLUMN, AMOUNT_COLUMN, BILLABLE_COLUMN, CREATION_DATE_COLUMN, CREATION_USER_COLUMN,
         MODIFICATION_DATE_COLUMN, MODIFICATION_USER_COLUMN, MILEAGE_COLUMN
     };
+
+    /**
+     * Represents formatting object used to format dates as simple date, in US format.
+     */
+    private static final Format dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+    /**
+     * Represents formatting object used to format dates as date with time of the date, in US
+     * format.
+     */
+    private static final Format timestampFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
 
     /**
      * <p>
@@ -506,14 +518,11 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         List details = new ArrayList();
 
         for (int i = 0; i < oldColumns.length; i++) {
-            //when in update type, the non-changed columns will not be audited
-            if ((auditType == AuditType.UPDATE)) {
+            if (auditType == AuditType.UPDATE) {
                 if (oldColumns[i] == null) {
                     if (newColumns[i] == null) {
                         continue;
                     }
-                } else if (oldColumns[i].equals(newColumns[i])) {
-                    continue;
                 }
                 if (ENTRY_COLUMNS[i].equals(CREATION_USER_COLUMN)) {
                     continue;
@@ -576,12 +585,34 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
                 String.valueOf(entry.getInvoiceId()), String.valueOf(entry.getClientId()),
                 String.valueOf(entry.getProjectId()),
                 String.valueOf(entry.getExpenseType().getId()), String.valueOf(entry.getStatus().getId()),
-                entry.getDescription(), String.valueOf(entry.getDate()), String.valueOf(entry.getAmount()),
-                String.valueOf(entry.isBillable()), String.valueOf(entry.getCreationDate()), entry.getCreationUser(),
-                String.valueOf(entry.getModificationDate()), entry.getModificationUser(),
+                entry.getDescription(), formatDate(entry.getDate()), String.valueOf(entry.getAmount()),
+                String.valueOf(entry.isBillable()), formatTimestamp(entry.getCreationDate()), entry.getCreationUser(),
+                formatTimestamp(entry.getModificationDate()), entry.getModificationUser(),
                 String.valueOf(entry.getMileage())
             };
         }
+    }
+
+    /**
+     * Formats specified date as simple date (i.e. without time of the day).
+     *
+     * @return string representation of the date formatted as date.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatDate(Date date) {
+        return dateFormat.format(date);
+    }
+
+    /**
+     * Formats specified date as time stamp (i.e. with time of the day).
+     *
+     * @return string representation of the date formatted as time stamp.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatTimestamp(Date date) {
+        return timestampFormat.format(date);
     }
 
     /**
@@ -1278,7 +1309,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             entry.setCompanyId(resultSet.getLong(COMPANY_ID_COLUMN));
             entry.setClientId(resultSet.getLong(CLIENT_ID_COLUMN));
             entry.setProjectId(resultSet.getLong(PROJECT_ID_COLUMN));
-            
+
             long invoiceId = resultSet.getLong(INVOICE_ID_COLUMN);
 
             if (!resultSet.wasNull()) {
