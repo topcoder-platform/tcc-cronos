@@ -39,11 +39,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 
 /**
  * <p>
@@ -124,6 +125,17 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
 
     /** The SQL String field for invoice_id. */
     private static final String INVOICE_ID_FIELD = "invoice_id";
+
+    /**
+     * Represents formatting object used to format dates as simple date, in US format.
+     */
+    private static final Format dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+
+    /**
+     * Represents formatting object used to format dates as date with time of the date, in US
+     * format.
+     */
+    private static final Format timestampFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
 
     /**
      * <p>
@@ -298,18 +310,18 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
             (newEntry == null) ? null : String.valueOf(newEntry.getFixedBillingStatus().getId()), actionType);
         addAuditDetail(auditDetails, DESCRIPTION_FIELD, (oldEntry == null) ? null : oldEntry.getDescription(),
             (newEntry == null) ? null : newEntry.getDescription(), actionType);
-        addAuditDetail(auditDetails, ENTRY_DATE_FIELD, (oldEntry == null) ? null : oldEntry.getDate().toString(),
-            (newEntry == null) ? null : newEntry.getDate().toString(), actionType);
+        addAuditDetail(auditDetails, ENTRY_DATE_FIELD, (oldEntry == null) ? null : formatDate(oldEntry.getDate()),
+            (newEntry == null) ? null : formatDate(newEntry.getDate()), actionType);
         addAuditDetail(auditDetails, AMOUNT_FIELD, (oldEntry == null) ? null : String.valueOf(oldEntry.getAmount()),
             (newEntry == null) ? null : String.valueOf(newEntry.getAmount()), actionType);
         addAuditDetail(auditDetails, CREATION_DATE_FIELD,
-            (oldEntry == null) ? null : oldEntry.getCreationDate().toString(),
-            (newEntry == null) ? null : newEntry.getCreationDate().toString(), actionType);
+            (oldEntry == null) ? null : formatTimestamp(oldEntry.getCreationDate()),
+            (newEntry == null) ? null : formatTimestamp(newEntry.getCreationDate()), actionType);
         addAuditDetail(auditDetails, CREATION_USER_FIELD, (oldEntry == null) ? null : oldEntry.getCreationUser(),
             (newEntry == null) ? null : newEntry.getCreationUser(), actionType);
         addAuditDetail(auditDetails, MODIFICATION_DATE_FIELD,
-            (oldEntry == null) ? null : oldEntry.getModificationDate().toString(),
-            (newEntry == null) ? null : newEntry.getModificationDate().toString(), actionType);
+            (oldEntry == null) ? null : formatTimestamp(oldEntry.getModificationDate()),
+            (newEntry == null) ? null : formatTimestamp(newEntry.getModificationDate()), actionType);
         addAuditDetail(auditDetails, MODIFICATION_USER_FIELD,
             (oldEntry == null) ? null : oldEntry.getModificationUser(),
             (newEntry == null) ? null : newEntry.getModificationUser(), actionType);
@@ -330,7 +342,7 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
      * @param newValue the new value.
      * @param auditType the audit type.
      */
-    private void addAuditDetail(List auditDetails, String columnName, String oldValue, String newValue, int auditType)
+    private static void addAuditDetail(List auditDetails, String columnName, String oldValue, String newValue, int auditType)
     {
         AuditDetail auditDetail = new AuditDetail();
 
@@ -339,16 +351,34 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
         } else if (auditType == AuditType.DELETE) {
             auditDetail.setOldValue(oldValue);
         } else if (auditType == AuditType.UPDATE) {
-            if (oldValue.equals(newValue)) {
-                return;
-            }
-
             auditDetail.setNewValue(newValue);
             auditDetail.setOldValue(oldValue);
         }
 
         auditDetail.setColumnName(columnName);
         auditDetails.add(auditDetail);
+    }
+
+    /**
+     * Formats specified date as simple date (i.e. without time of the day).
+     *
+     * @return string representation of the date formatted as date.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatDate(java.util.Date date) {
+        return dateFormat.format(date);
+    }
+
+    /**
+     * Formats specified date as time stamp (i.e. with time of the day).
+     *
+     * @return string representation of the date formatted as time stamp.
+     * @param date
+     *            a date to format.
+     */
+    private static String formatTimestamp(java.util.Date date) {
+        return timestampFormat.format(date);
     }
 
     /**
