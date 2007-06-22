@@ -14,6 +14,7 @@ import com.topcoder.management.phase.ConfigurationException;
 import com.topcoder.management.phase.PhasePersistenceException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.idgenerator.IDGenerator;
+import com.topcoder.util.log.Log;
 
 /**
  * <p>
@@ -245,6 +246,14 @@ public class AbstractDbPhasePersistenceTest extends TestCase {
         public IDGenerator getIDGenerator() {
             return super.getIDGenerator();
         }
+
+        /**
+         * Return null.
+         * @return null
+         */
+		protected Log getLogger() {
+			return null;
+		}
 
     }
 
