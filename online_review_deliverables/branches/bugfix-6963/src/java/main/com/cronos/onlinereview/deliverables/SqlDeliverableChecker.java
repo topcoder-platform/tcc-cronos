@@ -3,6 +3,8 @@
  */
 package com.cronos.onlinereview.deliverables;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +13,9 @@ import java.sql.SQLException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.DeliverableChecker;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -30,7 +35,9 @@ import com.topcoder.management.deliverable.DeliverableChecker;
  * @version 1.0
  */
 public abstract class SqlDeliverableChecker implements DeliverableChecker {
-
+	 /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(SqlDeliverableChecker.class.getName()); 
+    
     /**
      * connectionName: The name of the connection producer to use when a connection to the database is retrieved
      * from the DBConnectionFactory. This field is immutable and can be null or non-null. When non-null, no
@@ -77,6 +84,7 @@ public abstract class SqlDeliverableChecker implements DeliverableChecker {
             throw new IllegalArgumentException("connection name cannot be empty.");
         }
 
+        logger.log(Level.INFO, "Instantiate instance with connectionFactory and connectionName:" + connectionName);
         this.connectionFactory = connectionFactory;
         this.connectionName = connectionName;
     }
@@ -93,9 +101,10 @@ public abstract class SqlDeliverableChecker implements DeliverableChecker {
      */
     protected Connection createDatabaseConnection() throws DBConnectionException {
         if (connectionName == null) {
+        	logger.log(Level.INFO, "Create db connection with default connection name.");
             return connectionFactory.createConnection();
         }
-
+        logger.log(Level.INFO, "Create db connection with connection name:" + connectionName);
         return connectionFactory.createConnection(connectionName);
     }
 
@@ -125,11 +134,27 @@ public abstract class SqlDeliverableChecker implements DeliverableChecker {
 
         if (conn != null) {
             try {
+            	logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException ex) {
                 // ignore
             }
         }
+    }
+    
+    /**
+     * Return the exception stack trace string.
+     *
+     * @param cause the exception to be recorded
+     *
+     * @return stack strace
+     */
+    static String getExceptionStackTrace(Throwable cause) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        cause.printStackTrace(new PrintStream(out));
+
+        return out.toString();
     }
 
 }

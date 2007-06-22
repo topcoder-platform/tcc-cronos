@@ -13,6 +13,9 @@ import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.deliverable.persistence.DeliverableCheckingException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -34,6 +37,9 @@ import com.topcoder.management.deliverable.persistence.DeliverableCheckingExcept
  */
 public abstract class SingleQuerySqlDeliverableChecker extends SqlDeliverableChecker {
 
+	 /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(SingleQuerySqlDeliverableChecker.class.getName()); 
+    
     /**
      * Creates a new SingleQuerySqlDeliverableChecker.
      *
@@ -99,8 +105,12 @@ public abstract class SingleQuerySqlDeliverableChecker extends SqlDeliverableChe
                 }
             }
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR,
+        			"Fail to check the deliverable:" + deliverable.getId() + " \n" + getExceptionStackTrace(ex));
             throw new DeliverableCheckingException("Error occurs while database check operation.", ex);
         } catch (DBConnectionException ex) {
+        	logger.log(Level.ERROR,
+        			"Fail to check the deliverable:" + deliverable.getId() + " \n" + getExceptionStackTrace(ex));
             throw new DeliverableCheckingException("Error occurs while creating database connection.", ex);
         } finally {
             close(conn, pstmt, rs);

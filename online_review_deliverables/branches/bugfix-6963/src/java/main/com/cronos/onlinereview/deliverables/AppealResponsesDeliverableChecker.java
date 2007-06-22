@@ -14,6 +14,9 @@ import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.deliverable.persistence.DeliverableCheckingException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -32,6 +35,9 @@ import com.topcoder.management.deliverable.persistence.DeliverableCheckingExcept
  */
 public class AppealResponsesDeliverableChecker extends SqlDeliverableChecker {
 
+	/** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(AppealResponsesDeliverableChecker.class.getName()); 
+    
     /**
      * This SQL query returns all the modify dates for all responses with type 'Appeal Response'
      * for given resource id.
@@ -132,8 +138,12 @@ public class AppealResponsesDeliverableChecker extends SqlDeliverableChecker {
             }
 
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, "Fail to check appeal responses Deliverable with id:" + deliverable.getId()
+        			+ " \n" + getExceptionStackTrace(ex));
             throw new DeliverableCheckingException("Error occurs while checking in database.", ex);
         } catch (DBConnectionException ex) {
+        	logger.log(Level.ERROR, "Fail to check appeal responses Deliverable with id:" + deliverable.getId()
+        			+ " \n" + getExceptionStackTrace(ex));
             throw new DeliverableCheckingException("Error occurs while creating connection.", ex);
         } finally {
             close(conn, pstmt, rs);
