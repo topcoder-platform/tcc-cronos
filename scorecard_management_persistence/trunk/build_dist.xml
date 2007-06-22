@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.scorecard.persistence" />
     <property name="packagedir" value="com/topcoder/management/scorecard/persistence" />
     <property name="distfilename" value="scorecard_management_persistence" />
-    <property name="component_version" value="1.0" />
+    <property name="component_version" value="1.0.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->

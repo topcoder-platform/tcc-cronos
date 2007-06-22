@@ -19,7 +19,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  *
  * @author tuenm
  * @author kr00tki
- * @version 1.0
+ * @version 1.0.1
  */
 class IdGeneratorUtility {
     /**

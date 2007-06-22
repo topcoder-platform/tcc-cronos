@@ -28,7 +28,7 @@ import com.topcoder.management.scorecard.data.Section;
  *
  * @author tuenm
  * @author kr00tki
- * @version 1.0
+ * @version 1.0.1
  */
 class InformixSectionPersistence {
 

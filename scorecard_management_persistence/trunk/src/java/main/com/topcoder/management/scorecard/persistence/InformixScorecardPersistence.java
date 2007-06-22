@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
+ * Copyright (c) 2006-2007, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.management.scorecard.persistence;
 
@@ -30,6 +30,8 @@ import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * This class contains operations to create and update scorecard instances into the Informix database. It
@@ -44,7 +46,8 @@ import com.topcoder.util.config.ConfigManagerException;
  *
  * @author tuenm
  * @author kr00tki
- * @version 1.0
+ * @author George1
+ * @version 1.0.1
  */
 public class InformixScorecardPersistence implements ScorecardPersistence {
 
@@ -601,6 +604,79 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         } finally {
             DBUtils.close(conn);
         }
+    }
+
+    /**
+     * <p>
+     * Retrieves an array of the scorecard instances from the persistence given their ids. The scorecard instances
+     * can be retrieved with or without its sub items, depends on the 'complete' parameter.
+     * </p>
+     *
+     * @param resultSet The result of the SELECT operation.
+     * @param complete Indicates whether to retrieve the scorecard including its sub items.
+     * @return An array of scorecard instances.
+     * @throws IllegalArgumentException if the ids is less than or equal to zero. Or the input array is null or
+     *         empty.
+     * @throws PersistenceException if error occurred while accessing the persistence.
+     */
+    public Scorecard[] getScorecards(CustomResultSet resultSet, boolean complete) throws PersistenceException {
+        if (resultSet == null) {
+            throw new IllegalArgumentException("resultSet cannot be null.");
+        }
+
+        Connection conn = createConnection();
+        InformixGroupPersistence groupPersistence = null;
+        List scorecards = new ArrayList();
+
+        if (complete) {
+            groupPersistence = new InformixGroupPersistence(conn);
+        }
+
+        try {
+            while (resultSet.next()) {
+                Scorecard scorecard = populateScorecard(resultSet);
+                if (groupPersistence != null) {
+                    scorecard.addGroups(groupPersistence.getGroups(scorecard.getId()));
+                }
+                scorecards.add(scorecard);
+            }
+
+            return (Scorecard[]) scorecards.toArray(new Scorecard[scorecards.size()]);
+        } catch (InvalidCursorStateException icse) {
+            throw new PersistenceException("Error occured fetching scorecards from the database.", icse);
+        } finally {
+            DBUtils.close(conn);
+        }
+    }
+
+    /**
+     * Create the Scorecard instance using the data from the ResultSet object.
+     *
+     * @param rs the source result set.
+     * @return the Scorecard instance.
+     * @throws InvalidCursorStateException if any database error occurs.
+     */
+    private static Scorecard populateScorecard(CustomResultSet rs) throws InvalidCursorStateException {
+        Scorecard card = new Scorecard(rs.getLong("scorecard_id"));
+        card.setCategory(rs.getLong("project_category_id"));
+        card.setVersion(rs.getString("version"));
+        card.setMinScore(rs.getFloat("min_score"));
+        card.setMaxScore(rs.getFloat("max_score"));
+        card.setName(rs.getString("scorecard_name"));
+
+        ScorecardStatus status = new ScorecardStatus();
+        status.setId(rs.getLong("status_id"));
+        status.setName(rs.getString("status_name"));
+        card.setScorecardStatus(status);
+
+        card.setScorecardType(new ScorecardType(rs.getLong("type_id"), rs.getString("type_name")));
+
+        card.setModificationUser(rs.getString("modify_user"));
+        card.setCreationUser(rs.getString("create_user"));
+        card.setCreationTimestamp(rs.getTimestamp("create_date"));
+        card.setModificationTimestamp(rs.getTimestamp("modify_date"));
+
+        return card;
     }
 
     /**

@@ -19,7 +19,7 @@ import java.util.Iterator;
  * Informix Persistence Helper class. This class includes argument validator and some other helper utilities.
  *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.0.1
  */
 class InformixPersistenceHelper {
 
