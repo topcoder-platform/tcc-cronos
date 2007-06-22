@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 
 import com.topcoder.management.deliverable.Submission;
@@ -24,6 +25,9 @@ import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -62,6 +66,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
     /** constant for Review phase type. */
     private static final String PHASE_TYPE_REVIEW = "Review";
 
+    /**
+     * The logger instance.
+     */
+    private static final Log logger = LogFactory.getLog(ReviewPhaseHandler.class.getName());
+    
     /**
      * Create a new instance of ReviewPhaseHandler using the default namespace for loading configuration settings.
      *
@@ -124,9 +133,14 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 //Search all "Active" submissions for current project
                 Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
                         phase.getProject().getId());
+                if ( subs.length == 0) {
+                	logger.log(Level.WARN, "Can't start review phase because there is no active submission.");
+                }
                 return (subs.length > 0);
-            } catch (SQLException sqle) {
-                throw new PhaseHandlingException("Failed to search submissions.", sqle);
+            } catch (SQLException e) {
+            	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+            			"Fail to check if the review phase can start.", e));
+                throw new PhaseHandlingException("Failed to search submissions.", e);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }

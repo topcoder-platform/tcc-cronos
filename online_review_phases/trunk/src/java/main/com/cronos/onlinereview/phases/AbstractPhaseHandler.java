@@ -10,6 +10,7 @@ import java.util.Date;
 
 import com.cronos.onlinereview.external.ExternalUser;
 import com.cronos.onlinereview.external.RetrievalException;
+import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.NotificationTypeLookupUtility;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -34,6 +35,9 @@ import com.topcoder.util.file.fieldconfig.Field;
 import com.topcoder.util.file.fieldconfig.Node;
 import com.topcoder.util.file.fieldconfig.TemplateFields;
 import com.topcoder.util.file.templatesource.TemplateSourceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 
 /**
@@ -95,6 +99,10 @@ import com.topcoder.util.file.templatesource.TemplateSourceException;
  * @version 1.0
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
+	
+	 /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(AbstractPhaseHandler.class.getName()); 
+    
     /** constant for "Project Name" project info. */
     private static final String PROJECT_NAME = "Project Name";
 
@@ -248,6 +256,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     protected AbstractPhaseHandler(String namespace) throws ConfigurationException {
         PhasesHelper.checkString(namespace, "namespace");
 
+        logger.log(Level.INFO, "create instance with namespace:" + namespace);
         //initialize DBConnectionFactory from given namespace, throw exception if property is missing.
         this.factory = PhasesHelper.createDBConnectionFactory(namespace, PROP_CONNECTION_FACTORY_NS);
 
@@ -323,8 +332,10 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         PhaseStatus status = phase.getPhaseStatus();
 
         if (PhasesHelper.isPhaseToStart(status) && sendStartPhaseEmail) {
+        	logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), null, "send start phase Email."));
             sendEmail(phase, true);
         } else if (PhasesHelper.isPhaseToEnd(status) && sendEndPhaseEmail) {
+        	logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), null, "send end phase Email."));
             sendEmail(phase, false);
         }
     }
@@ -340,12 +351,14 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     protected Connection createConnection() throws PhaseHandlingException {
         try {
             if (connectionName == null) {
+            	logger.log(Level.INFO, "create db connection with default connection name.");
                 return factory.createConnection();
             } else {
+            	logger.log(Level.INFO, "create db connection with connection name:" + connectionName);
                 return factory.createConnection(connectionName);
             }
         } catch (DBConnectionException ex) {
-            throw new PhaseHandlingException("Could not create connection", ex);
+        	throw new PhaseHandlingException("Could not create connection", ex);
         }
     }
 
@@ -388,13 +401,22 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             //retrieve project information
             project = managerHelper.getProjectManager().getProject(projectId);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Could not lookup project info type id for " +
+                    NOTIFICATION_TYPE_TIMELINE_NOTIFICATION + ".\n", ex));
             throw new PhaseHandlingException("Could not lookup project info type id for " +
                 NOTIFICATION_TYPE_TIMELINE_NOTIFICATION, ex);
         } catch (ResourcePersistenceException ex) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"There was a problem with resource retrieval.\n", ex));
             throw new PhaseHandlingException("There was a problem with resource retrieval", ex);
         } catch (RetrievalException ex) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"There was a problem with user retrieval.\n", ex));
             throw new PhaseHandlingException("There was a problem with user retrieval", ex);
         } catch (PersistenceException ex) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"There was a problem with project retrieval.\n", ex));
             throw new PhaseHandlingException("There was a problem with project retrieval", ex);
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -428,20 +450,36 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 EmailEngine.send(message);
             }
         } catch (ConfigManagerException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("There was a configuration error", e);
         } catch (InvalidConfigException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("There was a configuration error", e);
         } catch (TemplateSourceException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("Problem with template source", e);
         } catch (TemplateFormatException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("Problem with template format", e);
         } catch (TemplateDataFormatException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("Problem with template data format", e);
         } catch (AddressException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("Problem with email address", e);
         } catch (SendingException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("Problem with sending email", e);
         } catch (Exception e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to send email.\n", e));
             throw new PhaseHandlingException("Problem with sending email", e);
         }
     }

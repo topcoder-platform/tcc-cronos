@@ -16,6 +16,7 @@ import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.util.log.Level;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -54,6 +55,8 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public class AggregationPhaseHandler extends AbstractPhaseHandler {
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+			.getLog(AggregationPhaseHandler.class.getName());
     /**
      * Represents the default namespace of this class. It is used in the default constructor to load
      * configuration settings.
@@ -132,12 +135,17 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             Connection conn = null;
             try {
                 conn = createConnection();
-                Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(), 
                         conn, phase.getProject().getId());
 
                 Resource[] aggregator = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
                         conn, new String[] {"Aggregator"}, phase.getId());
-
+                if (winner == null) {
+                	log.log(Level.WARN, "can't open aggregation because there is no winner for project: " + phase.getProject().getId());
+                }
+                if (aggregator.length != 1) {
+                	log.log(Level.WARN, "can't open aggregation because there is no Aggregator for project: " + phase.getProject().getId());
+                }
                 //return true if there is a winner and an aggregator
                 return (winner != null) && (aggregator.length == 1);
             } finally {
@@ -230,7 +238,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                         PhasesHelper.REVIEWER_ROLE_NAMES, reviewPhase.getId());
 
                 //find winning submitter.
-                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(),
                         conn, phase.getProject().getId());
                 if (winningSubmitter == null) {
                     throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());

@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
@@ -17,6 +18,9 @@ import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -55,6 +59,11 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.ScreeningPhaseHandler";
 
+    /**
+     * The logger instance.
+     */
+    private static final Log logger = LogFactory.getLog(ScreeningPhaseHandler.class.getName());
+    
     /** constant for "Submitter" role name. */
     private static final String ROLE_SUBMITTER = "Submitter";
 
@@ -121,6 +130,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SCREENING);
 
+        logger.log(Level.INFO,
+        		new LogMessage(new Long(phase.getId()), null, "checks if the phase can perform the phase operations."));
         //will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
@@ -136,19 +147,28 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 //Search all "Active" submissions for current project
                 Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
                         conn, phase.getProject().getId());
+                if ( subs.length == 0) {
+                	logger.log(Level.WARN, "can't open screening phase because there is no active submission for project:"
+                			+ phase.getProject().getId());
+                }
                 return (subs.length > 0);
             } catch (SQLException sqle) {
+            	logger.log(Level.ERROR, "Fail to checks if it can perform the phase operation.");
                 throw new PhaseHandlingException("Failed to search submissions.", sqle);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
             if (!PhasesHelper.arePhaseDependenciesMet(phase, false)) {
+            	logger.log(Level.WARN, "can't executed screening phase because the dependencies are not met for project:"
+            			+ phase.getProject().getId());
                 return false;
             }
 
             Boolean bPrimaryScreening = isPrimaryScreening(phase);
             if (bPrimaryScreening == null) {
+            	logger.log(Level.WARN, "can't executed screening phase because it is not primary screening mode for project:"
+            			+ phase.getProject().getId());
                 return false;
             }
 
@@ -187,7 +207,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SCREENING);
-
+        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator,
+        		"execute screening phase with some phase operation."));
+        
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         //when phase is stopping
@@ -205,7 +227,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                         phase.getId(), new String[] { ROLE_PRIMARY_SCREENER, ROLE_SCREENER }, null);
 
                 if (submissions.length != screenReviews.length) {
-                    throw new PhaseHandlingException("Submission count does not match screening count for project:"
+                	logger.log(Level.ERROR, "Submission count does not match screening count for project:"
+                            + phase.getProject().getId());
+                	throw new PhaseHandlingException("Submission count does not match screening count for project:"
                             + phase.getProject().getId());
                 }
 
@@ -221,6 +245,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                     }
                 }
             } catch (SQLException e) {
+            	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+            			"Fail to execute screening phase.", e));
                 throw new PhaseHandlingException("Problem when looking up ids.", e);
             } finally {
                 PhasesHelper.closeConnection(conn);
@@ -276,9 +302,10 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             //Save the submitter to the persistence
             getManagerHelper().getResourceManager().updateResource(submitter, operator);
 
+            logger.log(Level.INFO, "The submission get screening score:" + screeningScore.toString());
             //If screeningScore < screening minimum score, Set submission status to "Failed Screening"
             if (screeningScore.floatValue() < minScore) {
-
+            	logger.log(Level.INFO, "The submssion : " + submission.getId() + " failed screening.");
                 SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
                     SUBMISSION_STATUS_FAILED_SCREENING);
                 submission.setSubmissionStatus(subStatus);
@@ -325,6 +352,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(fullFilter);
 
             if (submissions.length != 1) {
+            	logger.log(Level.ERROR, "Inconsistent data: Multiple submissions during the phase:" + phase.getId());
                 throw new PhaseHandlingException("Inconsistent data: Multiple submissions");
             }
 
@@ -335,6 +363,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                     new String[] { ROLE_SCREENER }, null);
 
             if (screenReviews.length != 1) {
+            	logger.log(Level.ERROR, "Inconsistent data: Multiple reviews during the phase:" + phase.getId());
                 throw new PhaseHandlingException("Inconsistent data: Multiple reviews");
             }
 
@@ -342,16 +371,27 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
             //Check if the screening review is associated with the submission
             if (submission.getId() != screenReview.getSubmission()) {
+            	logger.log(Level.WARN, "can not execute screening phase because the submission"
+            			+ " is not associated with the screen review scorecard.");
                 return false;
             }
 
             //Check if the screening scorecards are committed
-            return screenReview.isCommitted();
+            boolean committed =  screenReview.isCommitted();
+            if (!committed) {
+            	logger.log(Level.WARN, "can not execute screening phase because the submission's"
+            			+ " screen review scorecard is not committed.");
+            }
+            return committed;
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("There was a submission retrieval error", e);
+        	throw new PhaseHandlingException("There was a submission retrieval error", e);
         } catch (SearchBuilderException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to check if the scorecard for screening phase is committed.", e));
             throw new PhaseHandlingException("There was a search builder error", e);
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to check if the scorecard for screening phase is committed.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -384,6 +424,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
             // If the number of reviews doesn't match submission number - not all reviews are commited for sure
             if (screenReviews.length != submissions.length) {
+            	logger.log(Level.WARN,
+            			"Can not executed screening phase because the number of reviews doesn't"
+            			+ " match submission number in this primary screening mode.");
                 return false;
             }
 
@@ -399,6 +442,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
                         //also check if each review is committed
                         if (!screenReviews[j].isCommitted()) {
+                        	logger.log(Level.WARN, 
+                        			"Can not executed screening phase because some screen reviews"
+                        			+ " are not committed in this primary screening mode.");
                             return false;
                         }
 
@@ -408,6 +454,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
                 //if a review was not found for a particular submission, return false.
                 if (!foundReview) {
+                	logger.log(Level.WARN, 
+                			"Can not executed screening phase because no review"
+                			+ " can be found for the submission:" + subId + " in this primary screening mode");
                     return false;
                 }
             }
@@ -415,6 +464,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             return true;
 
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"Fail to check if the primary scordcard is committed",e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
