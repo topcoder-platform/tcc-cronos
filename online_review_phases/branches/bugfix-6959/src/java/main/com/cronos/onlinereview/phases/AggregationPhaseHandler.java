@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
@@ -17,6 +18,8 @@ import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -55,9 +58,7 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public class AggregationPhaseHandler extends AbstractPhaseHandler {
-	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
-			.getLog(AggregationPhaseHandler.class.getName());
-    /**
+	/**
      * Represents the default namespace of this class. It is used in the default constructor to load
      * configuration settings.
      */
@@ -73,6 +74,10 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         "Submitter Comment", "Manager Comment"};
 
     /**
+	 * The logger.
+	 */
+	private static final Log log = LogFactory.getLog(AggregationPhaseHandler.class.getName());
+	/**
      * Create a new instance of AggregationPhaseHandler using the default namespace for loading configuration settings.
      *
      * @throws ConfigurationException if errors occurred while loading configuration settings.
@@ -153,8 +158,16 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             }
         } else {
             //return true if all dependencies have stopped and aggregation worksheet exists.
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && isAggregationWorksheetPresent(phase));
+        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
+            if (!met) {
+            	log.log(Level.WARN, "Can not execute Aggregation phase because the phase dependencies have not been met.");
+            }
+            boolean worksheetPresent = isAggregationWorksheetPresent(phase);
+            if ( !worksheetPresent) {
+            	log.log(Level.WARN, "Can not execute Aggregation phase because the aggregation worksheet is not present.");
+            }
+            
+            return worksheetPresent && met;
         }
     }
 
@@ -184,7 +197,9 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_AGGREGATION);
-
+        log.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
+        		"execute Aggregation phase with some phase operation."));
+        
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
@@ -217,6 +232,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     new String[] { "Aggregator" }, phase.getId());
             if (aggregators.length == 0) {
+            	log.log(Level.ERROR,
+            			new LogMessage(new Long(phase.getId()), operator, "No Aggregator resource found."));
                 throw new PhaseHandlingException("No Aggregator resource found for phase: " + phase.getId());
             }
             String aggregatorUserId = (String) aggregators[0].getProperty("External Reference ID");
@@ -241,6 +258,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(),
                         conn, phase.getProject().getId());
                 if (winningSubmitter == null) {
+                	log.log(Level.ERROR, "No winner for project with id" + phase.getProject().getId());
                     throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
                 }
 
@@ -248,6 +266,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
                 Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
                 if (submissions == null || submissions.length != 1) {
+                	log.log(Level.ERROR, "No winner for project with id" + phase.getProject().getId());
                     throw new PhaseHandlingException("No winning submission for project with id"
                             + phase.getProject().getId());
                 }
@@ -310,9 +329,12 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 aggWorksheet = PhasesHelper.cloneReview(aggWorksheet);
                 getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
             }
+            log.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, "create aggregate worksheet."));
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review", e);
         } catch (SQLException e) {
+        	log.log(Level.ERROR,
+        			new LogMessage(new Long(phase.getId()), operator, "Fail to create aggregate worksheet.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
@@ -338,6 +360,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             Review review = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), phase.getId());
             return (review != null && review.isCommitted());
         } catch (SQLException e) {
+        	log.log(Level.ERROR,
+        			new LogMessage(new Long(phase.getId()), null, "Fail to check if aggregate worksheet present.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);

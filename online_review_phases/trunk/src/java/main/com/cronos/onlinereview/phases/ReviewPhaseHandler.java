@@ -145,9 +145,19 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && allReviewsDone(phase)
-                    && allTestCasesUploaded(phase));
+        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
+            if (!met) {
+            	logger.log(Level.WARN, "Can not execute register phase because the phase dependencies have not been met.");
+            }
+            boolean reviewDone = allReviewsDone(phase);
+            if (!reviewDone){
+            	logger.log(Level.WARN, "Can not execute register phase because not all the reviews are done.");
+            }
+            boolean uploaded = allTestCasesUploaded(phase);
+            if (!uploaded) {
+            	logger.log(Level.WARN, "Can not execute register phase because not all the test cases are uploaded.");
+            }
+            return met && reviewDone && uploaded;
         }
     }
 
@@ -178,6 +188,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (!toStart) {
+        	logger.log(Level.INFO,
+        			new LogMessage(new Long(phase.getId()), operator, "execute(end/cancel) review phase."));
             updateSubmissionScores(phase, operator);
         }
 
@@ -234,6 +246,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
                 //if no. of reviews do not match no. of reviewers return false.
                 if (noReviews != reviewers.length) {
+                	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), operator,
+                			"Number of reviews does not match number of reviewers"));
                     throw new PhaseHandlingException("Number of reviews does not match number of reviewers");
                 }
 
@@ -253,6 +267,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             //this will hold as many elements as submissions
             AggregatedSubmission[] aggregations = scoreAggregator.aggregateScores(submissionScores);
 
+            logger.log(Level.INFO, "update submission with the initial review score.");
             //again iterate over submissions to set the initial score
             for (int iSub = 0; iSub < subs.length; iSub++) {
                 Submission submission = subs[iSub];
@@ -265,6 +280,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 getManagerHelper().getResourceManager().updateResource(submitter, operator);
             }
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), operator,
+        			"Fail to update the submission's score.", e));
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving/updating resource", e);
@@ -347,6 +364,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             return true;
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+        			"fail to check if all the reviews are done.", e));
             throw new PhaseHandlingException("Error retrieving submission status id", e);
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -439,6 +458,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             return getManagerHelper().getResourceManager().searchResources(fullFilter);
         } catch (SQLException e) {
+        	logger.log(Level.ERROR,
+        			new LogMessage(new Long(phase.getId()), null, "Fail to get reviewers.", e));
             throw new PhaseHandlingException("Problem connecting to database", e);
         } catch (SearchBuilderConfigurationException e) {
             throw new PhaseHandlingException("Problem with search builder configuration", e);

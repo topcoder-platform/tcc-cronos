@@ -457,6 +457,8 @@ final class PhasesHelper {
             	logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException ex) {
+            	logger.log(Level.ERROR,
+            			"can not close the connection. \n" + LogMessage.getExceptionStackTrace(ex));
                 throw new PhaseHandlingException("Could not close connection", ex);
             }
         }
@@ -829,6 +831,7 @@ final class PhasesHelper {
         } else if (reviews.length == 1) {
             return reviews[0];
         } else {
+        	logger.log(Level.ERROR, "Cannot have multiple aggregation scorecards.");
             throw new PhaseHandlingException("Cannot have multiple aggregation scorecards.");
         }
     }
@@ -1004,6 +1007,8 @@ final class PhasesHelper {
         } catch (com.topcoder.management.project.PersistenceException e) {
         	throw new PhaseHandlingException("Problem retrieving project id: " + projectId, e);
 		} catch (SQLException e) {
+			logger.log(Level.ERROR,
+					new LogMessage(null, null, "Fail to find the winning submission for the project:" + projectId));
 			throw new PhaseHandlingException("Problem when looking up id", e);
 		} catch (SearchBuilderConfigurationException e) {
 			throw new PhaseHandlingException("Problem with search builder configuration", e);

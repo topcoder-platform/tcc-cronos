@@ -358,6 +358,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 return factory.createConnection(connectionName);
             }
         } catch (DBConnectionException ex) {
+        	logger.log(Level.ERROR, "Fail to create db connection.\n" + LogMessage.getExceptionStackTrace(ex));
         	throw new PhaseHandlingException("Could not create connection", ex);
         }
     }

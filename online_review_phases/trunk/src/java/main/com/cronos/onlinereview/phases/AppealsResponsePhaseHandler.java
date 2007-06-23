@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
@@ -21,6 +22,9 @@ import com.topcoder.management.review.scoreaggregator.RankedSubmission;
 import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
 
 import com.topcoder.project.phases.Phase;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -63,6 +67,11 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /** constant for appeals response phase type. */
     private static final String PHASE_TYPE_APPEALS_RESPONSE = "Appeals Response";
 
+    /**
+     * The logger instance.
+     */
+    private static final Log logger = LogFactory.getLog(AppealsPhaseHandler.class.getName());
+    
     /**
      * Create a new instance of AppealsResponsePhaseHandler using the default namespace for loading configuration
      * settings.
@@ -115,8 +124,15 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
-                    && allAppealsResolved(phase));
+        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
+            if (!met) {
+            	logger.log(Level.WARN, "Can not execute Appeals Response phase because the phase dependencies have not been met.");
+            }
+            boolean resolved = allAppealsResolved(phase);
+            if ( ! resolved) {
+            	logger.log(Level.WARN, "Can not execute Appeals Response phase because not all the Appeals are resolved.");
+            }
+            return met && resolved;
         }
     }
 
@@ -152,6 +168,9 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS_RESPONSE);
 
+        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
+        		"execute Appeals Response phase with some phase operation."));
+        
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (!toStart) {
@@ -196,6 +215,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                     PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             if (reviews.length == 0) {
+            	logger.log(Level.ERROR,
+            			new LogMessage(new Long(phase.getId()), operator, "No reviews found for phase: " + reviewPhaseId));
                 throw new PhaseHandlingException("No reviews found for phase: " + reviewPhaseId);
             }
 
@@ -263,6 +284,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
                 //if failed review, then update the status
                 if (aggScore < minScore) {
+                	logger.log(Level.INFO, "The submitter:" + submitterId + " failed review, its score is:"
+                			+ aggScore + " and placement:" + placement);
                     submission.setSubmissionStatus(failedStatus);
                     getManagerHelper().getUploadManager().updateSubmission(submission, operator);
                 } else {
@@ -274,6 +297,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                     	if (placement == 2) {
                     		runnerUpSubmitter = submitter;
                     	}
+                    	logger.log(Level.INFO, "The submitter:" + submitterId + " with score:"
+                    			+ aggScore + " get second placement:" + placement);
                     	submission.setSubmissionStatus(noWinStatus);
                         getManagerHelper().getUploadManager().updateSubmission(submission, operator);
                     }
@@ -285,6 +310,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
             //cannot be the case where there is a runner up but no winner
             if (runnerUpSubmitter != null && winningSubmitter == null) {
+            	logger.log(Level.ERROR, "Runner up present, but no winner for project with id:"
+            			+ phase.getProject().getId());
                 throw new PhaseHandlingException("Runner up present, but no winner for project with id:"
                     + phase.getProject().getId());
             }
@@ -304,11 +331,15 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                     project.setProperty("Runner-up External Reference ID", runnerExtId);
                 }
 
+                logger.log(Level.INFO, "The submitter:" + winningSubmitter.getId()
+                		+ " win the project:" + phase.getProject().getId());
                 //update the project
                 getManagerHelper().getProjectManager().updateProject(project, "Update the winner and runner up.",
                     operator);
             }
         } catch (SQLException e) {
+        	logger.log(Level.ERROR,
+        			new LogMessage(new Long(phase.getId()), null, "fail to update appeal response result.", e));
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem with resource persistence", e);
@@ -340,7 +371,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 return submissions[i];
             }
         }
-        throw new PhaseHandlingException("submissions not found for submissionId: " + submissionId);
+        logger.log(Level.ERROR, "submission not found for submissionId: " + submissionId);
+        throw new PhaseHandlingException("submission not found for submissionId: " + submissionId);
     }
 
     /**
@@ -432,6 +464,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
             return true;
         } catch (SQLException e) {
+        	logger.log(Level.ERROR,
+        			new LogMessage(new Long(phase.getId()), null, "Fail to check if all the appeals are resolved.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
