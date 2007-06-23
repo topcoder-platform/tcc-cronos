@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import com.cronos.onlinereview.autoscreening.management.Helper;
 import com.cronos.onlinereview.autoscreening.management.PersistenceException;
 import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
+import com.cronos.onlinereview.autoscreening.management.logging.LogMessage;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -135,10 +136,12 @@ public abstract class DbScreeningManager implements ScreeningManager {
             conn.setAutoCommit(false);
             return conn;
         } catch (DBConnectionException e) {
-        	logger.log(Level.ERROR, "Failed to create database connection.");
+        	logger.log(Level.ERROR,
+        			"Failed to create database connection.\n" + LogMessage.getExceptionStackTrace(e));
             throw new PersistenceException("Failed to create database connection.", e);
         } catch (SQLException e) {
-        	logger.log(Level.ERROR, "Failed to start transaction of the connection.");
+        	logger.log(Level.ERROR,
+        			"Failed to start transaction of the connection.\n" + LogMessage.getExceptionStackTrace(e));
             throw new PersistenceException(
                     "Failed to set database connection auto commit to false.", e);
         }
