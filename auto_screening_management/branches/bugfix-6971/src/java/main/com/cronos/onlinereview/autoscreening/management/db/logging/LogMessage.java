@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.onlinereview.autoscreening.management.logging;
+package com.cronos.onlinereview.autoscreening.management.db.logging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

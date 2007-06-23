@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import com.cronos.onlinereview.autoscreening.management.Helper;
 import com.cronos.onlinereview.autoscreening.management.PersistenceException;
 import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
-import com.cronos.onlinereview.autoscreening.management.logging.LogMessage;
+import com.cronos.onlinereview.autoscreening.management.db.logging.LogMessage;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;

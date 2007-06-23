@@ -23,7 +23,7 @@ import com.cronos.onlinereview.autoscreening.management.ScreeningStatus;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskAlreadyExistsException;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistException;
-import com.cronos.onlinereview.autoscreening.management.logging.LogMessage;
+import com.cronos.onlinereview.autoscreening.management.db.logging.LogMessage;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
