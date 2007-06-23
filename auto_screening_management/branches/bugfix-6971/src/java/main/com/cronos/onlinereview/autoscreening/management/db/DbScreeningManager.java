@@ -12,6 +12,9 @@ import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -32,7 +35,9 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
  * @version 1.0
  */
 public abstract class DbScreeningManager implements ScreeningManager {
-
+	 /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(DbScreeningManager.class.getName()); 
+    
     /**
      * <p>
      * Represents the database connection factory to produce connections (based on the connection
@@ -98,6 +103,10 @@ public abstract class DbScreeningManager implements ScreeningManager {
     protected DbScreeningManager(DBConnectionFactoryImpl connectionFactory, String connectionName) {
         Helper.checkNull(connectionFactory, "connectionFactory");
         Helper.checkString(connectionName, "connectionName");
+        
+        logger.log(Level.INFO,
+        		"Instantiate SqlDeliverablePersistence with connectionFactory and connectioName:" + connectionName);
+        
         this.connectionFactory = connectionFactory;
         this.connectionName = connectionName;
     }
@@ -117,15 +126,19 @@ public abstract class DbScreeningManager implements ScreeningManager {
         try {
             Connection conn = null;
             if (connectionName == null) {
+            	logger.log(Level.INFO, "create db connection using default connection name");
                 conn = connectionFactory.createConnection();
             } else {
+            	logger.log(Level.INFO, "create db connection using connection name:" + connectionName);
                 conn = connectionFactory.createConnection(connectionName);
             }
             conn.setAutoCommit(false);
             return conn;
         } catch (DBConnectionException e) {
+        	logger.log(Level.ERROR, "Failed to create database connection.");
             throw new PersistenceException("Failed to create database connection.", e);
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, "Failed to start transaction of the connection.");
             throw new PersistenceException(
                     "Failed to set database connection auto commit to false.", e);
         }

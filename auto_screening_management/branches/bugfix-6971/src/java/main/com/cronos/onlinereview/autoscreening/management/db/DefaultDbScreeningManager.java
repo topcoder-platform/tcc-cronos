@@ -23,10 +23,14 @@ import com.cronos.onlinereview.autoscreening.management.ScreeningStatus;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskAlreadyExistsException;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistException;
+import com.cronos.onlinereview.autoscreening.management.logging.LogMessage;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorImpl;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -141,6 +145,9 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
      * The tenth index when set parameters in prepared statement.
      */
     private static final int TENTH_INDEX = 10;
+    
+    /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(DefaultDbScreeningManager.class.getName()); 
 
     /**
      * <p>
@@ -187,6 +194,7 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             IDGeneratorImpl idGenerator) {
         super(connectionFactory);
         Helper.checkNull(idGenerator, "idGenerator");
+        logger.log(Level.INFO, "init DefaultDbScreeningManager with connection factory and idGenerator.");
         this.idGenerator = idGenerator;
     }
 
@@ -211,6 +219,8 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             String connectionName, IDGeneratorImpl idGenerator) {
         super(connectionFactory, connectionName);
         Helper.checkNull(idGenerator, "idGenerator");
+        logger.log(Level.INFO,
+        		"init DefaultDbScreeningManager with connection factory/connection name and idGenerator.");
         this.idGenerator = idGenerator;
     }
 
@@ -254,6 +264,7 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             checkTask(upload, conn);
 
             long id = idGenerator.getNextID();
+            logger.log(Level.INFO, "generate next id from the idgenerator:" + idGenerator.getIDName());
             // get and set the prepareStatement
             ps = conn.prepareStatement(INSERT_TASK);
             ps.setLong(FIRST_INDEX, id);
@@ -265,9 +276,12 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             ps.setTimestamp(SEVENTH_INDEX, new Timestamp(System.currentTimeMillis()));
 
             ps.executeUpdate();
+            
+            logger.log(Level.INFO, "Commit the transaction.");
             conn.commit();
         } catch (SQLException e) {
             rollback(conn);
+            logger.log(Level.ERROR, new LogMessage(upload, operator, "Fail to init screening task.", e));
             throw new PersistenceException("Failed to insert a row into the screening_task table.",
                     e);
         } catch (IDGenerationException e) {
@@ -301,9 +315,12 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             ps.executeQuery();
             rs = ps.getResultSet();
             if (rs.next()) {
+            	logger.log(Level.ERROR, new LogMessage(upload, null,
+            			"The upload already has the screening task"));
                 throw new ScreeningTaskAlreadyExistsException(upload);
             }
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, new LogMessage(upload, null, "Fail to check if the task exists.", e));
             throw new PersistenceException(
                     "Failed to check if the upload already initiated a screening task.", e);
         } finally {
@@ -330,6 +347,8 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             ps.executeQuery();
             rs = ps.getResultSet();
             if (!rs.next()) {
+            	logger.log(Level.ERROR, "There is no id exist in database which is associated to "
+                        + ScreeningStatus.PENDING + ".");
                 throw new PersistenceException(
                         "There is no id exist in database which is associated to "
                                 + ScreeningStatus.PENDING + ".");
@@ -337,6 +356,8 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             // return the id of the pending screening status
             return rs.getLong(FIRST_INDEX);
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, "Failed to get id of the pending screening status.\n"
+        			+ LogMessage.getExceptionStackTrace(e));
             throw new PersistenceException("Failed to get id of the pending screening status.", e);
         } finally {
             doClose(null, ps, rs);
@@ -364,6 +385,7 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
         ScreeningTaskDoesNotExistException {
         Helper.checkNonPositive(upload, "upload");
 
+        logger.log(Level.INFO, new LogMessage(upload, null, "Retrieve screening detail"));
         // get database connection
         Connection conn = createConnection();
 
@@ -422,6 +444,8 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
                 task.addScreeningResult(screeningResult);
             }
         } catch (SQLException e) {
+        	logger.log(Level.ERROR, new LogMessage(new Long(task.getUpload()), null,
+        			"Get screening results for the task:" + task.getId(), e));
             throw new PersistenceException("Failed to get screening results from the database.", e);
         } finally {
             doClose(null, ps, rs);
@@ -454,6 +478,8 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
      */
     public ScreeningTask[] getScreeningTasks(long[] uploads) throws PersistenceException,
         ScreeningTaskDoesNotExistException {
+    	logger.log(Level.INFO,
+    			new LogMessage(null, null, "Retrieve screening tasks with ids:" + getIdString(uploads)));
         return getScreeningTasks(uploads, false);
     }
 
@@ -498,6 +524,9 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
             set.add(new Long(uploads[i]));
         }
 
+        logger.log(Level.INFO, new LogMessage(null, null,
+        		"Retrieve ScreeningTasks with ids:" + getIdString(uploads) + " and "
+        		+ (allowNonExist?"allows":"not allow")+ " upload with no screening task initiated"));
         // get database connection
         Connection conn = createConnection();
 
@@ -590,10 +619,13 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
                         notExistUploads[index++] = uploads[i];
                     }
                 }
+                logger.log(Level.ERROR, "screening task not exists for some uploads");
                 throw new ScreeningTaskDoesNotExistException(notExistUploads);
             }
             return tasks;
         } catch (SQLException e) {
+        	logger.log(Level.ERROR,
+        			"Fail to get screening task. \n " + LogMessage.getExceptionStackTrace(e));
             throw new PersistenceException("Failed to get screening tasks from database.", e);
         } finally {
             doClose(null, ps, rs);
@@ -608,6 +640,7 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
      */
     private void rollback(Connection conn) {
         try {
+        	logger.log(Level.INFO, "rollback the connection.");
             conn.rollback();
         } catch (SQLException sqle) {
             // ignore
@@ -648,10 +681,26 @@ public class DefaultDbScreeningManager extends DbScreeningManager {
         // close the connection
         try {
             if (connection != null) {
+            	logger.log(Level.INFO, "close the connection.");
                 connection.close();
             }
         } catch (SQLException e) {
             // ignore
         }
     }
+    /**
+     * Get id string spereated by comma for the ids.
+     * @param ids the id array
+     * @return string seperated by comma
+     */
+	private String getIdString(long[] ids) {
+		String idString = "";
+        for(int i = 0 ; i < ids.length; i++) {
+        	idString += ids[i];
+        	if ( i < ids.length -1) {
+        		idString += ",";
+        	}
+        }
+		return idString;
+	}
 }
