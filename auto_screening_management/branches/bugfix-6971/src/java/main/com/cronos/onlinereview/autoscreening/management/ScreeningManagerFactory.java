@@ -3,6 +3,10 @@
  */
 package com.cronos.onlinereview.autoscreening.management;
 
+import com.cronos.onlinereview.autoscreening.management.db.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
@@ -57,6 +61,9 @@ public class ScreeningManagerFactory {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.autoscreening.management";
 
+    /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(ScreeningManagerFactory.class.getName()); 
+    
     /**
      * <p>
      * Private constructor to prevent outside instantiation. Does nothing.
@@ -103,20 +110,30 @@ public class ScreeningManagerFactory {
         throws ConfigurationException {
         Helper.checkString(namespace, "namespace");
 
+        logger.log(Level.INFO, "Create ScreeningManager with namespace:" + namespace);
+        
         try {
             ObjectFactory objectFactory = new ObjectFactory(new ConfigManagerSpecificationFactory(
                     namespace));
             return (ScreeningManager) objectFactory.createObject(ScreeningManager.class);
         } catch (SpecificationConfigurationException e) {
+        	logger.log(Level.FATAL, "Fail to create screeningManager from namespace:"
+        			+ namespace + " \n." + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("Failed to create ConfigManagerSpecificationFactory.",
                     e);
         } catch (IllegalReferenceException e) {
+        	logger.log(Level.FATAL, "Fail to create screeningManager from namespace:"
+        			+ namespace + " \n." + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("Failed to create ConfigManagerSpecificationFactory.",
                     e);
         } catch (InvalidClassSpecificationException e) {
+        	logger.log(Level.FATAL, "Fail to create screeningManager from namespace:"
+        			+ namespace + " \n." + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException(
                     "Failed to create ScreeningManager instance via configuration.", e);
         } catch (ClassCastException e){
+        	logger.log(Level.FATAL, "Fail to create screeningManager from namespace:"
+        			+ namespace + " \n." + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException(
                     "Failed to create ScreeningManager instance, the configed"
                             + "object is not a ScreeningManager implement.");
