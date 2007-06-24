@@ -292,7 +292,9 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
         auditHeader.setCreationUser(entry.getCreationUser());
         auditHeader.setCreationDate(new Timestamp(System.currentTimeMillis()));
         auditHeader.setActionType(actionType);
-        //auditHeader.setResourceId(entry.getId());
+        if (entry.getModificationUserId() > 0) {
+            auditHeader.setResourceId(entry.getModificationUserId());
+        }
 
         //Create the audit detail.
         List auditDetails = new ArrayList();

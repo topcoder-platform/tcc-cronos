@@ -56,6 +56,11 @@ public class FixedBillingEntry extends BaseEntry {
     private long invoiceId;
 
     /**
+     * This is ID of a user who modified this fixed billing entry. This ID will be used for auditing.
+     */
+    private long modificationUserId = -1;
+
+    /**
      * <p>
      * Default constructor.
      * </p>
@@ -127,6 +132,28 @@ public class FixedBillingEntry extends BaseEntry {
         }
 
         this.invoiceId = invoiceId;
+    }
+
+    /**
+     * Gets an ID of the user who modified this fixed billing entry.
+     *
+     * @return an ID of the user who modified this fixed billing entry.
+     */
+    public long getModificationUserId() {
+        return this.modificationUserId;
+    }
+
+    /**
+     * Sets ID of the user who modified this fixed billing entry.
+     *
+     * @param modificationUserId an ID of the user who modified this fixed billing entry.
+     * @throws IllegalArgumentException if the <code>modificationUserId</code> is less than or equal to zero.
+     */
+    public void setModificationUserId(long modificationUserId) {
+        if (modificationUserId <= 0) {
+            throw new IllegalArgumentException("Modification user's ID is invalid:" + modificationUserId + ".");
+        }
+        this.modificationUserId = modificationUserId;
     }
 
     /**
