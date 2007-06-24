@@ -112,6 +112,19 @@ public class TimeEntry extends BaseEntry {
 
     /**
      * <p>
+     * This is ID of a user who modified a time entry. This ID will be used for auditing.
+     * </p>
+     * <p>
+     * It is <code>-1</code> initially and can be accessed by getter and setter.
+     * </p>
+     * <p>
+     * The value for this variable must be greater that zero.
+     * </p>
+     */
+    private long modificationUserId = -1;
+
+    /**
+     * <p>
      * Default constructor.
      * </p>
      */
@@ -231,9 +244,7 @@ public class TimeEntry extends BaseEntry {
     }
 
     /**
-     * <p>
      * Gets the Time Tracker Invoice id which is associated with this <code>TimeEntry</code>(if any).
-     * </p>
      *
      * @return the Time Tracker Invoice id which is associated with this <code>TimeEntry</code> (if any).
      */
@@ -245,7 +256,6 @@ public class TimeEntry extends BaseEntry {
      * <p>
      * Sets is the Time Tracker Invoice id which is associated with this <code>TimeEntry</code> (if any).
      * </p>
-     *
      * <p>
      * Note, if the new value is not equal to the old value, then the changed flag will set to
      * <code>true</code>.
@@ -253,7 +263,6 @@ public class TimeEntry extends BaseEntry {
      *
      * @param invoiceId the Time Tracker Invoice id which is associated with
      * this <code>TimeEntry</code> (if any).
-     *
      * @throws IllegalArgumentException if the invoice id is &lt; -1
      */
     public void setInvoiceId(long invoiceId) {
@@ -265,6 +274,28 @@ public class TimeEntry extends BaseEntry {
             this.invoiceId = invoiceId;
             setChanged(true);
         }
+    }
+
+    /**
+     * Gets an ID of the user who modified this time entry.
+     *
+     * @return an ID of the user who modified this time entry.
+     */
+    public long getModificationUserId() {
+        return this.modificationUserId;
+    }
+
+    /**
+     * Sets ID of the user who modified this time entry.
+     *
+     * @param modificationUserId an ID of the user who modified this time entry.
+     * @throws IllegalArgumentException if the <code>modificationUserId</code> is less than or equal to zero.
+     */
+    public void setModificationUserId(long modificationUserId) {
+        if (modificationUserId <= 0) {
+            throw new IllegalArgumentException("Modification user's ID is invalid:" + modificationUserId + ".");
+        }
+        this.modificationUserId = modificationUserId;
     }
 
     /**
