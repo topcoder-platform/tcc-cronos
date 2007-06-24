@@ -1,0 +1,217 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052\deftab420{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fnil\fprq2\fcharset2 Wingdings;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue127;\red255\green0\blue0;\red0\green0\blue255;\red127\green127\blue127;\red127\green0\blue127;\red0\green127\blue127;}
+{\*\generator Msftedit 5.41.21.2500;}\viewkind4\uc1\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx720\ul\b\f0\fs32 Online Review Login Component Specification\par
+\pard\nowidctlpar\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1\fs24 1.\tab Design\f0\fs20\par
+\pard\nowidctlpar\li720\sa120\b0\f1 The component provides the login and logout action support for the Online Review application. Users can pass the user name and password for authentication. In order to make the component as flexible as possible, this component leverages the TopCoder Authenticator Factory framework to make the authentication pluggable. Before integrating the authenticator, application users must implement AuthResponsePaser interface to custom their own \ldblquote login\rdblquote  and \ldblquote logout\rdblquote  function. In the current version, SecurityManagerAuthenticator is implemented to authenticate the user name and password by employing the LoginBean from the Security Manager component.\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li720\sa120\b0 The LoginActionServlet and LoginActions follow the MVC design pattern of struts.\f0\par
+\f1 AuthResponseParser implements the Strategy pattern.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Struts\f0\par
+\f1 EJB \par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 1.3\tab Required Algorithms\par
+\b0\i 1.3.1\f0\tab\f1 Forward to pages\f0\par
+\pard\nowidctlpar\li720\cf1\i0\f2\fs18 LoginActions in this component is responsible for forwarding the request to target pages based on the authentication response or user action.\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0 If authentication succeeded, users will be forwarded to the \ldblquote success\rdblquote  page.\line If failed, users will be forwarded to the \ldblquote failure\rdblquote  page.\line If users logged out, they will be forwarded to the \ldblquote logout\rdblquote  page.\f1\fs20\par
+\cf2\f2\fs18 Following is the forward rules specified in the struts-config.xml:\par
+\fs16 <action-mappings>\par
+\pard\nowidctlpar\fi-320\li1040\sa120\sl240\slmult0 <action path="/login" unknown="false" type="com.cronos.onlinereview.login.LoginActions"\par
+\pard\nowidctlpar\fi10\li1037\sa120\sl240\slmult0 validate="true" name="loginForm" scope="session" parameter="method" input=\rdblquote login.jsp\rdblquote >\par
+\pard\nowidctlpar\fi-560\li1597\sa120\sl240\slmult0 <exception type="com.topcoder.security.authenicationfactory.AuthenticateException" key="exception.com.cronos.onlinereview.login.LoginActions.login.AuthenticateException" path="/login.jsp" />\par
+<exception type="\cf0\f0\fs24  \cf2\f2\fs16 com.topcoder.security.authenicationfactory.MissingPrincipalKeyException" key="exception.com.cronos.onlinereview.login.LoginActions.login.MissingPrincipalException" path="/login.jsp" />\par
+<exception type="\cf0\f0\fs24  \cf2\f2\fs16 com.topcoder.security.authenicationfactory.InvalidPrincipalException" key="exception.com.cronos.onlinereview.login.LoginActions.login.InvalidPrincipalException" path="/login.jsp" />\par
+\par
+<exception \line type="com.cronos.onlinereview.login.  LoginActions.AuthResponseParserException" key="exception.com.cronos.onlinereview.login.LoginActions.login.AuthResponseParserException" path="/login.jsp" />\par
+\pard\nowidctlpar\fi-320\li1040\sa120\sl240\slmult0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0     <forward name="success" path="/projectlist.jsp" redirect="false"/>\par
+    <forward name="failure" path="/login.jsp" redirect="false"/>\par
+</action>\par
+\pard\nowidctlpar\fi-320\li1040\sa120\sl240\slmult0 <action path="/logout" unknown="false" type="com.cronos.onlinereview.login.LoginActions"\par
+\pard\nowidctlpar\fi330\li720\sa120\sl240\slmult0 validate="false" scope="session" parameter="method" input=\rdblquote login.jsp\rdblquote >\par
+\pard\nowidctlpar\fi-560\li1597\sa120\sl240\slmult0 <exception \line type="com.cronos.onlinereview.login.  LoginActions.AuthResponseParserException" key="exception.com.cronos.onlinereview.login.LoginActions.logout.AuthResponseParserException" path="/login.jsp" />\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0     <forward name="logout" path="/login.jsp" redirect="false"/>\par
+</action>\par
+</action-mappings>\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.2\f0\tab\f1 Dynamical validation of form fields\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\i0\f2\fs18 This component uses DynaValidatorForm to validate the form fields.  \par
+The form field is specified in the form bean element of struts-config:\par
+\cf2\fs16 <form-beans>\par
+\pard\nowidctlpar\fi-1280\li2000\sa120\sl240\slmult0   <form-bean name="loginForm" dynamic="true" type="org.apache.struts.validator.DynaValidatorForm">\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0     <form-property name="userName" type="java.lang.String"/>\par
+    <form-property name="password" type="java.lang.String"/>\par
+  </form-bean>\par
+</form-beans>\par
+\pard\nowidctlpar\li720\fs18\par
+\cf1 We can use struts validation framework to specify the validation rules:\par
+Following is part of validation.xml:\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf2\fs16 <formset>\par
+<form name="loginForm">\par
+    <field property="userName" depends="required ">\par
+\tab <msg name="required" key="error.com.cronos.onlinereview.login.username"/>\par
+    </field>\par
+    <field property="password" depends="required">\par
+\tab <msg name="required" key="error.com.cronos.onlinereview.login.password"/>\par
+    </field>\par
+</form>  \par
+</formset>\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\i\f1\fs20 1.3.3\f0\tab\f1 Resource bundle for the error messages by LoginActions\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\i0\f2\fs18 Following is the resource message keys for the above two algorithms:\par
+\par
+\cf2\fs16 exception.com.cronos.onlinereview.login.LoginActions.login.AuthenticateException=Unexpected error occurred during authentication\par
+exception.com.cronos.onlinereview.login.LoginActions.login.InvalidPrincipalException= Incorrect user name or password\par
+exception.com.cronos.onlinereview.login.LoginActions.login.MissingPrincipalKeyException= User name or password required\par
+exception.com.cronos.onlinereview.login.LoginActions.login.AuthResponseParserException= Unexpected error occurred during authentication\par
+exception.com.cronos.onlinereview.login.LoginActions.logout.AuthResponseParserException= Unexpected error occurred\par
+\par
+error.com.cronos.onlinereview.login.password=Password required\par
+error.com.cronos.onlinereview.login.username=User name required\par
+\pard\nowidctlpar\fi-300\li1020\sa120\f0\fs20\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\f1 1.4\tab Component Class Overview\f0\par
+\pard\nowidctlpar\li720\sa120\f1 LoginActions\b0 : \par
+LoginActions defines login and logout actions for this component.\par
+Login action is responsible for logging in the user to the application,\par
+Logout action is responsible for logging out the user.\par
+If any exception occurs in both action methods, resource key should be added to the ActionMessage.\par
+Since all the exceptions will be caught in both methods, Logger is employed to log any caught exception. Note that log mechanism is optional.\par
+This class is thread safe.\par
+\par
+\b SecurityManagerAuthenticator\b0 : \par
+This class is used to authenticate user. The authentication work will be delegated to the LoginBean. The login bean will be retrieved from the JNDI Context by the bean name.\f0\par
+\f1 This class is thread safe since it does not contain any mutable inner state.\f0\par
+\f1\par
+\b AuthResponseParser\b0  \par
+This interface defines the contract of keeping the track of the log state stored in the request or session. The setLoginState method is used to set the user log state (failed or succeeded). The unsetLoginState method is used to unset the user log state.\par
+In order to integrate other authenticator implementation into this component, application user must also provide the corresponding implementation of this interface to manage the log states.\par
+The implementation of this interface is required to be thread safe.\par
+\par
+\b SecurityManagerAuthResponseParser\b0 : \par
+This class is used to manage the log state in request for the SecurityManagerAuthenticator, so it\rquote s expected that Response#getDetails() should return com.topcoder.security.TCSubject.\par
+In the setLoginState method, if authentication succeeded, it will store in the user identifier in the session identifier.\par
+In the unsetLoginState method, it will remove the user identifier from the session and invalidate the session.\par
+\par
+This class is thread safe since it does not contain any mutable state.\f0\par
+\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.5\tab Component Exception Definitions\f0\par
+\pard\nowidctlpar\li720\sa120\f1 IllegalArgumentException\par
+\b0 This exception is thrown in various methods if null object is not allowed, or the given string argument is empty. Refer to the documentation in Poseidon for more details.\f0\par
+\cf3\b\f1 NOTE: Empty string means string of zero length or string full of whitespaces.\par
+\cf0 javax.servlet.ServletException\f0\par
+\b0\f1 It is thrown from LoginActionServlet. \f0\par
+\b\f1 java.io.IOException\par
+\b0 It is thrown from LoginActionServlet. \f0\par
+\b\f1 ConfigurationException\f0\par
+\b0\f1 This exception is thrown from the constructor taking a namespace argument, if failed to load configuration values from the ConfigManager or the configuration values are invalid.\par
+\b AuthResposenParsingException\par
+\b0 This exception is thrown by AuthResponseParser interface and its implementation if any error occurred when they check and set the http request and response.\par
+\b AuthenticateException\f0\par
+\b0\f1 This exception will be thrown by SecurityManagerAuthenticator\b\f0\par
+\f1 InvalidPrincipalException\f0\par
+\b0\f1 This exception will be thrown by SecurityManagerAuthenticator\b\f0\par
+\f1 InvalidPrincipalException\f0\par
+\b0\f1 This exception will be thrown by SecurityManagerAuthenticator\b\f0\par
+\pard\nowidctlpar\sa120\b0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\b0 The servlet engine creates single LoginActionServlet and single LoginActions instance to handle all users\rquote  actions, so they must be thread-safe. LoginActionServlet is thread safe, since all its referred components are thread safe. LoginActions is also stateless to ensure the thread-safety.\f0\par
+\f1 SecurityManagerAuthenticator is thread safe since it does not contain any mutable inner stat.  The authenticate method of the authenticator simply uses the bean to authentication user name and password, both of which will not been modified during authentication, though user might change the password after login.\par
+AuthResponseParser and it\rquote s implementation are required to be thread safe. In the current version, SecurityManagerResonseParser is thread safe since it also does not contain any mutable inner state.\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 2.\tab Environment Requirements\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 2.1\tab Environment\par
+\pard\nowidctlpar\li720\sa120\b0 Java 1.4 or higher.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\f0\par
+\pard\nowidctlpar\li720\sa120\f1 Configuration Manager 2.1.4\par
+\b0 It is used to load configuration values.\par
+\pard\nowidctlpar\sa120\b\tab Logging Wrapper 1.2\par
+\tab\b0 It\rquote s used to log the exception stack trace. \par
+\b\tab JNDI Utility 1.0\par
+\tab\b0 It\rquote s used to look up the login bean.\par
+\b\tab Authentication Factory 2.0\par
+\tab\b0 It is used to authenticate the user.\par
+\b\tab Security Manager 1.1\par
+\tab\b0 It is used by SecurityManagerAuthenticator to authenticate user.\par
+\b\tab Base Exception 1.0\par
+\tab\b0 Custom exceptions extend the BaseException.\par
+\pard\nowidctlpar\f0\fs24\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b\f1\fs20 2.3\tab Third Party Components\par
+\pard\nowidctlpar\fi800\sa120\qj\b0 Struts 1.2.9.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 com.cronos.onlinereview.login\par
+com.cronos.onlinereview.login.authenticator\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f0\par
+\pard\nowidctlpar\li720\b0\fs24 Configuration values for \f1\fs20 LoginActions\f0\fs24\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b\f1\fs20 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\f0 auth_response_parser.class\cell\b0\f1 The full qualified class name of the authentication response parser. \b Required\b0 .\cell com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b auth_response_parser.namespace\cell\b0 The configuration namespace used by authentication response parser to load the configuration values. \b Required\b0 . \cell com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b authenticator_name\cell\b0 The authenticator name used to get authenticator from AuthenticatorFactory, \b  Required\b0 .\cell SecurityManagerAuthenticator\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b logger_name\cell\b0 The logger name used to get log from LogFactory. \b Optional\b0 .\cell loginActionsLoggerName\cell\row\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\fi720\fs24 Configuration values for SecurityManagerAuthenticator\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b\f1\fs20 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\f0 context_name\cell\b0\f1 The context name used to get the Context from JNDIUtils. \b Optional\b0 .\cell someContextName\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b login_bean_name\cell\b0 The login bean name used to look up the login bean in the context. \b Required\b0 . \cell loginBeanName\cell\row\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\fi840\fs24 Configuration values for \f1\fs20 SecurityManager\f0\fs24 AuthResponseParser\fs20\par
+\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\b\f1 Parameter\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx2835\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx5387\clbrdrl\brdrw15\brdrs\clbrdrt\brdrw15\brdrs\clbrdrr\brdrw15\brdrs\clbrdrb\brdrw15\brdrs \cellx7371\pard\intbl\nowidctlpar\sa120\f0 user_identifer_key\cell\b0\f1 The user identifier key name. \b Required\b0 .\cell user_identifier_key\cell\row\pard\nowidctlpar\sa120\f0\par
+\pard\nowidctlpar\li720\sa120\cf2\f1\fs16\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\cf0\b\fs20 3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 ConfigurationManager, LogFactory and Authenticator Factory should be properly configured to make this component work.\par
+\pard\nowidctlpar\sa120\f0\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\b\f1 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-420\li1140\sa120\tx1140\lang2052\b0\f3\'d8\lang1033\tab\f1 Extract the component distribution.\par
+\pard\nowidctlpar\fi-420\li1140\sa120\lang2052\f3\'d8\lang1033\tab\f1 Follow \cf4\ul Dependencies Configuration\cf0\ulnone .\par
+\lang2052\f3\'d8\lang1033\tab\f1 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\b0 Preload the configuration file into Configuration Manager. Follow demo.\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx0\b 4.3\tab Demo\f0\par
+\pard\nowidctlpar\li720\cf5\b0\f2\fs18 Assume the configuration file in 3.2 is used here. And follow the algorithm section about how to configure the struts-config.xml and resource message file\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.1\tab Log in\f0\par
+\pard\nowidctlpar\fi453\li2\cf3\i0\f2\fs16 <%@ \cf5 taglib \cf6 uri\cf1 =\cf4 "/WEB-INF/struts-bean.tld" \cf6 prefix\cf1 =\cf4 "bean"\cf3 %>\cf0\par
+\pard\nowidctlpar\fi453\cf3 <%@ \cf5 taglib \cf6 uri\cf1 =\cf4 "/WEB-INF/struts-html.tld" \cf6 prefix\cf1 =\cf4 "html"\cf3 %>\cf0\par
+\cf3 <%@ \cf5 taglib \cf6 uri\cf1 =\cf4 "/WEB-INF/struts-logic.tld" \cf6 prefix\cf1 =\cf4 "logic"\cf3 %>\cf0\par
+\cf7 <!\cf5 DOCTYPE \cf2 HTML \cf5 PUBLIC \cf2 "-//W3C//DTD HTML 4.01 Transitional//EN"\cf7 >\cf0\par
+\cf7 <\cf5 html\cf7 >\cf0\par
+\cf7 <\cf5 head\cf7 >\cf0\par
+\cf7 <\cf5 meta \cf6 http-equiv\cf1 =\cf4 "Content-Type" \cf6 content\cf1 =\cf4 "text/html; charset=UTF-8"\cf7 >\cf0\par
+\cf7 <\cf5 title\cf7 >\cf1 Insert title here\cf7 </\cf5 title\cf7 >\cf0\par
+\cf7 </\cf5 head\cf7 >\cf0\par
+\cf7 <\cf5 body\cf7 >\cf0\par
+\cf7 <\cf5 html:errors \cf7 />\cf0\par
+\cf7 <\cf5 br\cf7 >\cf0\par
+\pard\nowidctlpar\fi-560\li1009\cf7 <\cf5 form \cf6 action\cf1 =\cf4 "/LoginPage/login"\cf7 ><\cf5 input \cf6 type\cf1 =\cf4 "text" \cf6 name\cf1 =\cf4 "method" \cf6 value\cf1 =\cf4 "login"\cf7 >\cf1  \cf7 <\cf5 input \cf6 type\cf1 =\cf4 "text" \cf6 name\cf1 =\cf4 "userName"\cf7 >\cf1  \cf7 <\cf5 br\cf7 >\cf0\par
+\pard\nowidctlpar\fi453\cf7 <\cf5 input \cf6 type\cf1 =\cf4 "text" \cf6 name\cf1 =\cf4 "password"\cf7 >\cf1  \cf7 <\cf5 br\cf7 >\cf0\par
+\cf7 <\cf5 input \cf6 type\cf1 =\cf4 "submit" \cf6 name\cf1 =\cf4 "login" \cf6 value\cf1 =\cf4 "login"\cf7 ></\cf5 form\cf7 >\cf0\par
+\cf7 <\cf5 br\cf7 >\cf0\par
+\cf7 </\cf5 body\cf7 >\cf0\par
+\pard\nowidctlpar\fi453\li2\cf7 </\cf5 html\cf7 >\cf2\par
+\pard\keepn\nowidctlpar\sb120\sa60\sl240\slmult0\tx0\cf0\i\f1\fs20 4.3.2\tab Log out\f0\par
+\pard\nowidctlpar\fi453\li2\cf3\i0\f2\fs16 <%@ \cf5 taglib \cf6 uri\cf1 =\cf4 "/WEB-INF/struts-bean.tld" \cf6 prefix\cf1 =\cf4 "bean"\cf3 %>\cf0\par
+\pard\nowidctlpar\fi453\cf3 <%@ \cf5 taglib \cf6 uri\cf1 =\cf4 "/WEB-INF/struts-html.tld" \cf6 prefix\cf1 =\cf4 "html"\cf3 %>\cf0\par
+\cf3 <%@ \cf5 taglib \cf6 uri\cf1 =\cf4 "/WEB-INF/struts-logic.tld" \cf6 prefix\cf1 =\cf4 "logic"\cf3 %>\cf0\par
+\cf7 <!\cf5 DOCTYPE \cf2 HTML \cf5 PUBLIC \cf2 "-//W3C//DTD HTML 4.01 Transitional//EN"\cf7 >\cf0\par
+\cf7 <\cf5 html\cf7 >\cf0\par
+\cf7 <\cf5 head\cf7 >\cf0\par
+\cf7 <\cf5 meta \cf6 http-equiv\cf1 =\cf4 "Content-Type" \cf6 content\cf1 =\cf4 "text/html; charset=UTF-8"\cf7 >\cf0\par
+\cf7 <\cf5 title\cf7 >\cf1 Insert title here\cf7 </\cf5 title\cf7 >\cf0\par
+\cf7 </\cf5 head\cf7 >\cf0\par
+\cf7 <\cf5 body\cf7 >\cf0\par
+\cf7 <\cf5 html:errors \cf7 />\cf0\par
+\cf7 <\cf5 br\cf7 >\cf1\tab\cf0\par
+\cf7 <\cf5 br\cf7 >\cf0\par
+\par
+\cf7 <\cf5 br\cf7 >\cf0\par
+\cf7 <\cf5 a \cf6 href\cf1 =\cf4 "/LoginPage /logout?method=logout"\cf7 >\cf1 Logout\cf7 </\cf5 a\cf7 >\cf0\par
+\cf7 </\cf5 body\cf7 >\cf0\par
+\pard\nowidctlpar\fi453\li2\cf7 </\cf5 html\cf7 >\cf2\par
+\pard\nowidctlpar\fi-360\li1080\cf5\fs18\par
+\pard\keepn\nowidctlpar\sb120\sa120\sl240\slmult0\tx360\cf0\b\f1\fs20 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li701\sa120\b0 More existing authenticator implementations (like LDAP authenticator) could be integrated into this component.\f0\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\par
+\pard\nowidctlpar\fs24\par
+}
+ 
