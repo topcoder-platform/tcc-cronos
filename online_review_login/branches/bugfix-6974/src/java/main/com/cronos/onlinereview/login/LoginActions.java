@@ -232,6 +232,9 @@ public class LoginActions extends DispatchAction {
                     return mapping.findForward("success");
                 }
             } else {
+            	if ( logger != null) {
+            		logger.log(Level.WARN, "Login failure with username:" + userName);
+            	}
                 // TODO: Actually in case of wrong login attempt, an attribute should be place into the request
                 // This is to let use the same page in the application for the first login
                 // and for every subsequent incorrect login attempt
