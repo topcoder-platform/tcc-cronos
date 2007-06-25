@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence;
 
@@ -52,8 +52,10 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * <p>
  * Thread Safety: This class is not thread safe.
  * </p>
- * @author woodjhon, urtks
- * @version 1.0
+ * @author woodjhon
+ * @author urtks
+ * @author George1
+ * @version 1.0.1
  */
 public class InformixReviewPersistence implements ReviewPersistence {
     /**
@@ -551,7 +553,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
      *             if error happens when creating the connection
      */
     private Connection createTransactionalConnection() throws ReviewPersistenceException {
-        try { 
+        try {
             Connection conn = dbFactory.createConnection(connectionName);
             conn.setAutoCommit(false);
             //conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
@@ -1588,57 +1590,63 @@ public class InformixReviewPersistence implements ReviewPersistence {
      * @exception ReviewPersistenceException
      *                if failed to search the reviews.
      */
-    public Review[] searchReviews(Filter filter, boolean complete)
-        throws ReviewPersistenceException {
+    public Review[] searchReviews(Filter filter, boolean complete) throws ReviewPersistenceException {
         Helper.assertObjectNotNull(filter, "filter");
 
-        String idList;
+        List reviewsList = new ArrayList();
 
-        // try to get the id list string using search bundle
         try {
             // do the search using search bundle
             CustomResultSet resultSet = (CustomResultSet) searchBundle.search(filter);
 
-            // add each review id to the string buffer
-            StringBuffer idListBuffer = new StringBuffer();
-
-            int idx = 0;
-            while (resultSet.next()) {
-                if (idx++ != 0) {
-                    idListBuffer.append(",");
-                }
-                idListBuffer.append(resultSet.getObject(1));
-            }
-
-            // if no records found, simply return an empty array.
-            if (idx == 0) {
+            if (resultSet.getRecordCount() == 0) {
                 return new Review[0];
             }
 
-            // get the string from string buffer
-            idList = idListBuffer.toString();
-        } catch (SearchBuilderException e) {
-            throw new ReviewPersistenceException("Unable to perform search using SearchBundle.", e);
-        } catch (InvalidCursorStateException e) {
-            throw new ReviewPersistenceException("Unable to perform search using SearchBundle.", e);
+            while (resultSet.next()) {
+                reviewsList.add(getReview(resultSet));
+            }
+        } catch (InvalidCursorStateException icse) {
+            throw new ReviewPersistenceException("Error retrieving review from the result set.", icse);
+        } catch (SearchBuilderException sbe) {
+            throw new ReviewPersistenceException("Error searching the reviews.", sbe);
         }
 
+        Review[] reviews = (Review[]) reviewsList.toArray(new Review[reviewsList.size()]);
+
+        if (!complete) {
+            return reviews;
+        }
+
+        StringBuffer idList = new StringBuffer();
         Connection conn = null;
+
+        for (int i = 0; i < reviews.length; ++i) {
+            if (i != 0) {
+                idList.append(",");
+            }
+            idList.append(reviews[i].getId());
+        }
 
         try {
             // create the connection
             conn = createTransactionalConnection();
 
-            // get the reviews from the id list string
-            Review[] reviews;
-            // check if get associated items and comments.
-            if (complete) {
-                reviews = getReviewsComplete(idList, conn);
-            } else {
-                reviews = getReviews(idList, conn);
-            }
+            // get the Id-CommentType map
+            Map commentTypeMap = makeIdCommentTypeMap(getAllCommentTypes(conn));
+            // get the Id-Review Map
+            Map reviewMap = makeIdReviewMap(reviews);
+            String idsList = idList.toString();
 
-            Helper.commitTransaction(conn);
+            // get the review comments
+            getReviewComments(idsList, conn, reviewMap, commentTypeMap);
+
+            // get the review items
+            Item[] items = getReviewItems(idsList, conn, reviewMap);
+
+            // get the review item comments
+            getReviewItemComments(idsList, conn, makeIdItemMap(items), commentTypeMap);
+
             return reviews;
         } catch (ReviewPersistenceException e) {
             Helper.rollBackTransaction(conn);
@@ -1725,6 +1733,36 @@ public class InformixReviewPersistence implements ReviewPersistence {
         getReviewItemComments(idList, conn, makeIdItemMap(items), commentTypeMap);
 
         return reviews;
+    }
+
+    /**
+     * Creates a review from result set's row.
+     *
+     * @return created review.
+     * @param resultSet
+     *            a result set pointing to the row describing new review to create
+     * @throws InvalidCursorStateException
+     *             if any error occurs reading the result set.
+     */
+    private Review getReview(CustomResultSet resultSet) throws InvalidCursorStateException {
+        Review review = new Review();
+
+        review.setId(resultSet.getLong("review_id"));
+        review.setAuthor(resultSet.getLong("resource_id"));
+        review.setSubmission(resultSet.getLong("submission_id"));
+        review.setScorecard(resultSet.getLong("scorecard_id"));
+        review.setCommitted(resultSet.getLong("committed") != 0);
+        if (resultSet.getObject("score") != null) {
+            review.setScore(new Float(resultSet.getFloat("score")));
+        } else {
+            review.setScore(null);
+        }
+        review.setCreationUser(resultSet.getString("create_user"));
+        review.setCreationTimestamp(resultSet.getDate("create_date"));
+        review.setModificationUser(resultSet.getString("modify_user"));
+        review.setModificationTimestamp(resultSet.getDate("modify_date"));
+
+        return review;
     }
 
     /**

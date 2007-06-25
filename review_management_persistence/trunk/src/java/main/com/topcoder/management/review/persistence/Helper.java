@@ -19,7 +19,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
 /**
  * Helper class for this component.
  * @author urtks
- * @version 1.0
+ * @version 1.0.1
  */
 class Helper {
 
