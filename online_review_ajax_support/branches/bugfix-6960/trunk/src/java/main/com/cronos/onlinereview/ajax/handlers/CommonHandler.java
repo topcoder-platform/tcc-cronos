@@ -14,6 +14,9 @@ import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
 /**
@@ -44,6 +47,11 @@ public abstract class CommonHandler implements AjaxRequestHandler {
      */
     protected static final String EXTERNAL_REFERENCE_ID_PROPERTY = "External Reference ID";
 
+    /**
+     * The logger.
+     */
+    private static final Log logger = LogFactory.getLog(CommonHandler.class.getName());
+    
     /**
      * <p>
      * The resource manager used to get resource data
@@ -76,6 +84,7 @@ public abstract class CommonHandler implements AjaxRequestHandler {
 
             resourceManager = (ResourceManager) factory.createObject(ResourceManager.class);
 
+            logger.log(Level.INFO, "create ResourceManager from objectfactory with its class type.");
             // get all the resource roles
             ResourceRole[] roles = resourceManager.getAllResourceRoles();
 

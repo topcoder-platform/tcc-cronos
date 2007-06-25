@@ -6,6 +6,8 @@ package com.cronos.onlinereview.ajax;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
@@ -51,10 +53,7 @@ import java.util.Map;
  * @version 1.0.1
  */
 public final class AjaxSupportServlet extends HttpServlet {
-	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
-			.getLog(AjaxSupportServlet.class.getName());
-	
-    /**
+	/**
      * Represents the property name of handlers.
      */
     private static final String HANDLERS_PROPERTY = "Handlers";
@@ -68,7 +67,11 @@ public final class AjaxSupportServlet extends HttpServlet {
      * Represents the namespace to retrieve the properties.
      */
     private static final String NAMESPACE = "com.cronos.onlinereview.ajax";
-
+    /**
+     * The logger.
+     */
+    private static final Log logger = LogFactory.getLog(AjaxSupportServlet.class.getName());
+    
     /**
      * <p>
      * The Ajax request handlers map, as defined in the configuration.
@@ -111,6 +114,7 @@ public final class AjaxSupportServlet extends HttpServlet {
      */
     public void init(ServletConfig config) throws ServletException {
 
+    	logger.log(Level.INFO, "Init Ajax Support Servlet from namespace:" + NAMESPACE);
         super.init(config);
 
         // create a new instance of ConfigManager class
@@ -121,27 +125,37 @@ public final class AjaxSupportServlet extends HttpServlet {
             this.userIdAttributeName = cm.getString(NAMESPACE, USER_ID_PROPERTY_NAME);
 
             if (userIdAttributeName == null || userIdAttributeName.trim().length() == 0) {
+            	logger.log(Level.FATAL, "The UserIdAttributeName is missing in the namespace:" + NAMESPACE);
                 throw new ServletException("The UserIdAttributeName is required.");
             }
 
+            logger.log(Level.INFO, "Get property[" + USER_ID_PROPERTY_NAME
+            		+ "] with value[" + userIdAttributeName + "] from namespace:" + NAMESPACE);
             ObjectFactory factory = AjaxSupportHelper.createObjectFactory();
 
+            
             // get the list of all the Ajax request handlers names from the config manager
             String[] handlerNames = cm.getStringArray(NAMESPACE, HANDLERS_PROPERTY);
             if (handlerNames != null) {
-                for (int i = 0; i < handlerNames.length; i++) {
+            	for (int i = 0; i < handlerNames.length; i++) {
                     if (handlerNames[i] == null || handlerNames[i].trim().length() == 0) {
+                    	logger.log(Level.FATAL, "The handler name should not be null/empty in namespace:" + NAMESPACE);
                         throw new ServletException("The handler name should not be null/empty.");
                     }
+                    logger.log(Level.INFO, "Get property array [" + HANDLERS_PROPERTY
+                    		+ "] with one value :" + handlerNames[i] + " from namespace:" + NAMESPACE);
                     AjaxRequestHandler handler = (AjaxRequestHandler) factory.createObject(handlerNames[i]);
                     this.handlers.put(handlerNames[i], handler);
                 }
             }
         } catch (UnknownNamespaceException e) {
+        	logger.log(Level.FATAL, "The namespace[" + NAMESPACE + "] is not loaded.");
             throw new ServletException("The namespace can't be found.", e);
         } catch (InvalidClassSpecificationException e) {
+        	logger.log(Level.FATAL, "Can not create object.\n" + AjaxSupportHelper.getExceptionStackTrace(e));
             throw new ServletException("Can't create handler : " + e.getMessage() + ", " + e.getCause().getMessage(), e);
         } catch (ConfigurationException e) {
+        	logger.log(Level.FATAL, "Can not create object.\n" + AjaxSupportHelper.getExceptionStackTrace(e));
             throw new ServletException("Can't create factory.", e);
         }
     }
@@ -179,6 +193,8 @@ public final class AjaxSupportServlet extends HttpServlet {
         if (session != null) {
             Object obj = session.getAttribute(this.userIdAttributeName);
             if (obj != null && !(obj instanceof Long)) {
+            	logger.log(Level.ERROR,
+            			"The user id should be Long in session with attribute name:" + userIdAttributeName);
                 throw new ServletException("The user id should be Long.");
             }
             userId = (Long) obj;
@@ -218,7 +234,7 @@ public final class AjaxSupportServlet extends HttpServlet {
             			.append(" = ")
             			.append(ajaxRequest.getParameter(param));
             	}
-            	log.log(Level.WARN, "problem handling request, status: " + resp.getStatus() +
+            	logger.log(Level.WARN, "problem handling request, status: " + resp.getStatus() +
             			"\ntype: " + resp.getType() +
             			"\nparams: " + (buf.length() == 0 ? "" : buf.substring(1)) + 
             			"\nuserId: " + userId +
