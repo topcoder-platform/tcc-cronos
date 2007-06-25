@@ -134,9 +134,9 @@ public class InformixAddressDAO implements AddressDAO {
         + "address_relation.modification_date as relation_modification_date,"
         + "address_relation.creation_user as relation_creation_user,"
         + "address_relation.modification_user as relation_modification_user "
-        + "from address left join address_relation on address.address_id = address_relation.address_id, state_name,"
-        + "country_name where address.state_name_id = state_name.state_name_id and "
-        + "address.country_name_id = country_name.country_name_id";
+        + "from address, country_name, state_name, OUTER address_relation "
+        + "where address.state_name_id = state_name.state_name_id and "
+        + "address.country_name_id = country_name.country_name_id AND address.address_id = address_relation.address_id";
 
     /**
      * <p>SQL clause used to select all records from <em>country_name</em> table.</p>

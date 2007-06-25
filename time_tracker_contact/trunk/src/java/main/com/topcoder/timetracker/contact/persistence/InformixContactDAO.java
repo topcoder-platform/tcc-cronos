@@ -121,8 +121,8 @@ public class InformixContactDAO implements ContactDAO {
         + "contact_relation.creation_date as relation_creation_date,"
         + "contact_relation.modification_date as relation_modification_date,"
         + "contact_relation.creation_user as relation_creation_user,"
-        + "contact_relation.modification_user as relation_modification_user from contact"
-        + " left join contact_relation on contact.contact_id = contact_relation.contact_id";
+        + "contact_relation.modification_user as relation_modification_user from contact, "
+        + "OUTER contact_relation WHERE contact.contact_id = contact_relation.contact_id";
 
     /**
      * <p>
@@ -762,7 +762,7 @@ public class InformixContactDAO implements ContactDAO {
         String inClause = null;
 
         if (ids != null) {
-            inClause = DAOHelper.convertIds(new StringBuffer(" where contact.contact_id in "), ids,
+            inClause = DAOHelper.convertIds(new StringBuffer(" AND contact.contact_id in "), ids,
                         "ID of Contact");
         }
 
