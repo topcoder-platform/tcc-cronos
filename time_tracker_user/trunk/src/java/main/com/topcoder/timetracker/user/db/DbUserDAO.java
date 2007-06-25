@@ -130,16 +130,16 @@ public class DbUserDAO implements UserDAO {
      */
     private static final String CONTEXT =
         "SELECT DISTINCT user_account_id" +
-        "  FROM user_account" +
-        " INNER JOIN contact_relation" +
-        "         ON contact_relation.entity_id = user_account_id" +
-        " INNER JOIN contact" +
-        "         ON contact.contact_id = contact_relation.contact_id" +
-        " INNER JOIN address_relation" +
-        "         ON address_relation.entity_id = user_account_id" +
-        " INNER JOIN address" +
-        "         ON address.address_id = address_relation.address_id" +
-        " WHERE";
+        "  FROM user_account," +
+        "       address," +
+        "       contact," +
+        "       address_relation," +
+        "       contact_relation" +
+        " WHERE address_relation.entity_id = user_account_id" +
+        "   AND contact_relation.entity_id = user_account_id" +
+        "   AND address.address_id = address_relation.address_id" +
+        "   AND contact.contact_id = contact_relation.contact_id" +
+        "   AND ";
 
     /**
      * <p>
