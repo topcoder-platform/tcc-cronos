@@ -24,7 +24,7 @@ import com.topcoder.management.deliverable.persistence.PersistenceException;
  * com.topcoder.management.deliverable.persistence.sql., including the methods
  * to validate arguments and the methods to access database.
  * @author urtks
- * @version 1.0
+ * @version 1.0.2
  */
 class Helper {
     /**

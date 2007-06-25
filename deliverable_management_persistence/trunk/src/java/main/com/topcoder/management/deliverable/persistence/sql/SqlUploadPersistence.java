@@ -1,10 +1,11 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql;
 
 import java.lang.reflect.Array;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.AuditedDeliverableStructure;
@@ -18,6 +19,8 @@ import com.topcoder.management.deliverable.persistence.PersistenceException;
 import com.topcoder.management.deliverable.persistence.UploadPersistence;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.persistence.sql.Helper.DataType;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * <p>
@@ -38,8 +41,10 @@ import com.topcoder.management.deliverable.persistence.sql.Helper.DataType;
  * component is used on multiple machines or multiple instances are used, so
  * this is not a thread-safety concern.
  * </p>
- * @author aubergineanode, urtks
- * @version 1.0
+ * @author aubergineanode
+ * @author urtks
+ * @author George1
+ * @version 1.0.2
  */
 public class SqlUploadPersistence implements UploadPersistence {
     /**
@@ -1121,6 +1126,35 @@ public class SqlUploadPersistence implements UploadPersistence {
     }
 
     /**
+     * Loads uploads from the result of the SELECT operation.
+     *
+     * @return an array of loaded uploads.
+     * @param resultSet
+     *            The result of the SELECT operation.
+     * @throws UploadPersistenceException
+     *             if any error occurs while loading uploads.
+     */
+    public Upload[] loadUploads(CustomResultSet resultSet) throws UploadPersistenceException {
+        Helper.assertObjectNotNull(resultSet, "resultSet");
+
+        if (resultSet.getRecordCount() == 0) {
+            return new Upload[0];
+        }
+
+        try {
+            List uploads = new ArrayList();
+
+            while (resultSet.next()) {
+                uploads.add(loadUpload(resultSet));
+            }
+
+            return (Upload[]) uploads.toArray(new Upload[uploads.size()]);
+        } catch (InvalidCursorStateException icse) {
+            throw new UploadPersistenceException("Error loading uploads.", icse);
+        }
+    }
+
+    /**
      * <p>
      * Loads the Submission with the given id from persistence. Returns null if
      * there is no Submission with the given id.
@@ -1190,6 +1224,35 @@ public class SqlUploadPersistence implements UploadPersistence {
     }
 
     /**
+     * Loads submissions from the result of the SELECT operation.
+     *
+     * @return an array of loaded submissions.
+     * @param resultSet
+     *            The result of the SELECT operation.
+     * @throws UploadPersistenceException
+     *             if any error occurs while loading submissions.
+     */
+    public Submission[] loadSubmissions(CustomResultSet resultSet) throws UploadPersistenceException {
+        Helper.assertObjectNotNull(resultSet, "resultSet");
+
+        if (resultSet.getRecordCount() == 0) {
+            return new Submission[0];
+        }
+
+        try {
+            List submissions = new ArrayList();
+
+            while (resultSet.next()) {
+                submissions.add(loadSubmission(resultSet));
+            }
+
+            return (Submission[]) submissions.toArray(new Submission[submissions.size()]);
+        } catch (InvalidCursorStateException icse) {
+            throw new UploadPersistenceException("Error loading submission.", icse);
+        }
+    }
+
+    /**
      * Load data items from the data row and fill the fields of an Upload
      * instance.
      * @param upload
@@ -1247,5 +1310,94 @@ public class SqlUploadPersistence implements UploadPersistence {
         submission.setUpload(upload);
 
         return startIndex;
+    }
+
+    /**
+     * Loads submission from the result of the SELECT operation.
+     *
+     * @return loaded submission.
+     * @param resultSet
+     *            Result of the SELECT operation.
+     * @throws InvalidCursorStateException
+     *             if any error occurs while reading the result.
+     */
+    private Submission loadSubmission(CustomResultSet resultSet) throws InvalidCursorStateException {
+        Submission submission = new Submission();
+
+        submission.setId(resultSet.getLong("submission_id"));
+        submission.setCreationUser(resultSet.getString("submission_create_user"));
+        submission.setCreationTimestamp(resultSet.getDate("submission_create_date"));
+        submission.setModificationUser(resultSet.getString("submission_modify_user"));
+        submission.setModificationTimestamp(resultSet.getDate("submission_modify_date"));
+
+        // create a new SubmissionStatus object
+        SubmissionStatus submissionStatus = new SubmissionStatus();
+
+        submissionStatus.setId(resultSet.getLong("submission_status_id"));
+        submissionStatus.setCreationUser(resultSet.getString("submission_status_create_user"));
+        submissionStatus.setCreationTimestamp(resultSet.getDate("submission_status_create_date"));
+        submissionStatus.setModificationUser(resultSet.getString("submission_status_modify_user"));
+        submissionStatus.setModificationTimestamp(resultSet.getDate("submission_status_modify_date"));
+        submissionStatus.setName(resultSet.getString("submission_status_name"));
+        submissionStatus.setDescription(resultSet.getString("submission_status_description"));
+
+        submission.setSubmissionStatus(submissionStatus);
+
+        // create a new Upload object
+        Upload upload = loadUpload(resultSet);
+        submission.setUpload(upload);
+
+        return submission;
+    }
+
+    /**
+     * Loads upload from the result of the SELECT operation.
+     *
+     * @return loaded upload.
+     * @param resultSet
+     *            Result of the SELECT operation.
+     * @throws InvalidCursorStateException
+     *             if any error occurs while reading the result.
+     */
+    private Upload loadUpload(CustomResultSet resultSet) throws InvalidCursorStateException {
+        Upload upload = new Upload();
+
+        upload.setId(resultSet.getLong("upload_id"));
+        upload.setCreationUser(resultSet.getString("upload_create_user"));
+        upload.setCreationTimestamp(resultSet.getDate("upload_create_date"));
+        upload.setModificationUser(resultSet.getString("upload_modify_user"));
+        upload.setModificationTimestamp(resultSet.getDate("upload_modify_date"));
+
+        upload.setProject(resultSet.getLong("project_id"));
+        upload.setOwner(resultSet.getLong("resource_id"));
+        upload.setParameter(resultSet.getString("upload_parameter"));
+
+        // create a new UploadType object
+        UploadType uploadType = new UploadType();
+
+        uploadType.setId(resultSet.getLong("upload_type_id"));
+        uploadType.setCreationUser(resultSet.getString("upload_type_create_user"));
+        uploadType.setCreationTimestamp(resultSet.getDate("upload_type_create_date"));
+        uploadType.setModificationUser(resultSet.getString("upload_type_modify_user"));
+        uploadType.setModificationTimestamp(resultSet.getDate("upload_type_modify_date"));
+        uploadType.setName(resultSet.getString("upload_type_name"));
+        uploadType.setDescription(resultSet.getString("upload_type_description"));
+
+        upload.setUploadType(uploadType);
+
+        // create a new UploadStatus object
+        UploadStatus uploadStatus = new UploadStatus();
+
+        uploadStatus.setId(resultSet.getLong("upload_status_id"));
+        uploadStatus.setCreationUser(resultSet.getString("upload_status_create_user"));
+        uploadStatus.setCreationTimestamp(resultSet.getDate("upload_status_create_date"));
+        uploadStatus.setModificationUser(resultSet.getString("upload_status_modify_user"));
+        uploadStatus.setModificationTimestamp(resultSet.getDate("upload_status_modify_date"));
+        uploadStatus.setName(resultSet.getString("upload_status_name"));
+        uploadStatus.setDescription(resultSet.getString("upload_status_description"));
+
+        upload.setUploadStatus(uploadStatus);
+
+        return upload;
     }
 }

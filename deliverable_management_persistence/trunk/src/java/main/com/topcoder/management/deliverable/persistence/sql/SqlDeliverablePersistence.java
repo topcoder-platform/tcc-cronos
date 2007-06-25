@@ -32,7 +32,7 @@ import com.topcoder.management.deliverable.persistence.sql.Helper.DataType;
  * this is not a thread-safety concern.
  * </p>
  * @author aubergineanode, urtks
- * @version 1.0
+ * @version 1.0.2
  */
 public class SqlDeliverablePersistence implements DeliverablePersistence {
 

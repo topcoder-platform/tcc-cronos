@@ -9,13 +9,14 @@
     <property name="package" value="com.topcoder.management.deliverable.persistence" />
     <property name="packagedir" value="com/topcoder/management/deliverable/persistence" />
     <property name="distfilename" value="deliverable_management_persistence" />
-    <property name="component_version" value="1.0.1" />
+    <property name="component_version" value="1.0.2" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
     <property name="tcs_libdir" value="lib/tcs" />
     <property name="ext_libdir" value="lib" />
+    <property name="cronos_libdir" value="../lib" />
     <property name="jar_tcs_libdir" value="lib/tcs" />
     <property name="jar_ext_libdir" value="lib" />
     <property name="docsdir" value="docs" />
@@ -79,6 +80,11 @@
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
     
+    <property name="database_abstraction.version" value="1.1"/>
+    <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
+    <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
+    <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
+    
     <property name="db_connection_factory.version" value="1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
@@ -114,6 +120,7 @@
         <pathelement location="${junit.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${search_builder.jar}" />
+        <pathelement location="${database_abstraction.jar}" />
         <pathelement location="${db_connection_factory.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${object_factory.jar}" />
