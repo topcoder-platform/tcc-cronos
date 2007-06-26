@@ -10,9 +10,14 @@ import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.SendingException;
 import com.topcoder.message.email.TCSEmailMessage;
 
+import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.InFilter;
 import com.topcoder.timetracker.contact.AssociationException;
 import com.topcoder.timetracker.contact.Contact;
+import com.topcoder.timetracker.contact.ContactFilterFactory;
 import com.topcoder.timetracker.contact.ContactManager;
+import com.topcoder.timetracker.contact.ContactType;
 import com.topcoder.timetracker.contact.PersistenceException;
 import com.topcoder.timetracker.notification.Helper;
 import com.topcoder.timetracker.notification.Notification;
@@ -28,7 +33,9 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogException;
 import com.topcoder.util.log.LogFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -134,9 +141,9 @@ public class EmailNotificationSender implements NotificationSender {
             return;
         }
 
-        sendToIds(notification, notification.getToClients());
-        sendToIds(notification, notification.getToProjects());
-        sendToIds(notification, notification.getToResources());
+        sendToIds(notification, notification.getToClients(), ContactType.CLIENT);
+        sendToIds(notification, notification.getToProjects(), ContactType.PROJECT);
+        sendToIds(notification, notification.getToResources(), ContactType.USER);
     }
 
     /**
@@ -147,30 +154,40 @@ public class EmailNotificationSender implements NotificationSender {
      *
      * @throws NotificationSendingException if any error occurred
      */
-    private void sendToIds(Notification notificaion, long[] ids)
+    private void sendToIds(Notification notificaion, long[] ids, ContactType contactType)
         throws NotificationSendingException {
-        // traverse the id list
-        for (int i = 0; i < ids.length; i++) {
-            Contact contact = null;
+        List idsList = new ArrayList();
 
+        for(int i = 0; i < ids.length; ++i)  {
+            idsList.add(new Long(ids[i]));
+        }
+
+        Filter idsFilter = new InFilter("entity_id", idsList);
+        Filter typeFilter = ContactFilterFactory.createTypeFilter(contactType);
+        Filter combinedFilter = new AndFilter(idsFilter, typeFilter);
+        Contact[] contacts;
+
+        try {
+            contacts = contactManager.searchContacts(combinedFilter);
+        } catch (PersistenceException pe) {
             try {
-                // get the contact information.
-                contact = contactManager.retrieveContact(ids[i]);
-            } catch (PersistenceException pe) {
-                try {
-                    this.log.log(Level.ERROR, createLog(notificaion.getId(), pe.getMessage()));
-                } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.");
-                }
-                throw new NotificationSendingException("Error when retrieving contact information.", pe);
-            } catch (AssociationException ae) {
-                try {
-                    this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
-                } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.");
-                }
-                throw new NotificationSendingException("Error when retrieving contact information.", ae);
+                this.log.log(Level.ERROR, createLog(notificaion.getId(), pe.getMessage()));
+            } catch (LogException le) {
+                throw new NotificationSendingException("Error logging.");
             }
+            throw new NotificationSendingException("Error when retrieving contact information.", pe);
+        } catch (AssociationException ae) {
+            try {
+                this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
+            } catch (LogException le) {
+                throw new NotificationSendingException("Error logging.");
+            }
+            throw new NotificationSendingException("Error when retrieving contact information.", ae);
+        }
+
+        // traverse the id list
+        for (int i = 0; i < contacts.length; ++i) {
+            Contact contact = contacts[i];
 
             // generate the message body
             String messageBody = null;
