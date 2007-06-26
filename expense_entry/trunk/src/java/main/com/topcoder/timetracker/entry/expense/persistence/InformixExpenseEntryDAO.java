@@ -134,10 +134,11 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         + "expense_entry.expense_type_id, expense_entry.expense_status_id, expense_entry.description, "
         + "expense_entry.entry_date, expense_entry.amount, expense_entry.billable, expense_entry.creation_date, "
         + "expense_entry.creation_user, expense_entry.modification_date, expense_entry.modification_user,"
-        + "expense_entry.mileage FROM expense_entry "
-        + ", expense_type, expense_status "
+        + "expense_entry.mileage FROM expense_entry, "
+        + "expense_type, expense_status, user_account "
         + "WHERE expense_entry.expense_type_id = expense_type.expense_type_id "
-        + "AND expense_entry.expense_status_id = expense_status.expense_status_id";
+        + "AND expense_entry.expense_status_id = expense_status.expense_status_id "
+        + "AND user_account.user_name = expense_entry.creation_user";
 
     /** Represents the prepared SQL statement to check the expense type id is associated with the company id. */
     private static final String CHECK_COMPANY_ID_EXPENSE_TYPE_SQL = "Select 1 counts from comp_exp_type "
