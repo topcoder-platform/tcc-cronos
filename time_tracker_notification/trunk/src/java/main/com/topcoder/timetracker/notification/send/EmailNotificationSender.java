@@ -4,6 +4,7 @@
 package com.topcoder.timetracker.notification.send;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -144,9 +145,9 @@ public class EmailNotificationSender implements NotificationSender {
 
         Map emails = new HashMap();
 
-        emails.putAll(collectEmails(notification, notification.getToClients(), ContactType.CLIENT));
-        emails.putAll(collectEmails(notification, notification.getToClients(), ContactType.PROJECT));
-        emails.putAll(collectEmails(notification, notification.getToClients(), ContactType.USER));
+        collectEmails(notification, notification.getToClients(), ContactType.CLIENT, emails);
+        collectEmails(notification, notification.getToProjects(), ContactType.PROJECT, emails);
+        collectEmails(notification, notification.getToResources(), ContactType.USER, emails);
 
         sendToEmails(notification, emails);
     }
@@ -156,18 +157,19 @@ public class EmailNotificationSender implements NotificationSender {
      * where each key is unique e-mail to send to, and value contains additional information about
      * the contact associated with that e-mail.
      *
-     * @return a map where each key is unique e-mail to send to, and value contains additional
-     *         information about the contact associated with that e-mail.
      * @param notificaion
      *            the notification to be sent
      * @param ids
      *            list of entity IDs.
      * @param contactType
      *            type of entity to search contacts for.
+     * @param emails
+     *            a map where each key is unique e-mail to send to, and value contains additional
+     *            information about the contact associated with that e-mail.
      * @throws NotificationSendingException
      *             if any error occurrs.
      */
-    private Map collectEmails(Notification notificaion, long[] ids, ContactType contactType)
+    private void collectEmails(Notification notificaion, long[] ids, ContactType contactType, Map emails)
             throws NotificationSendingException {
         List idsList = new ArrayList();
 
@@ -186,25 +188,21 @@ public class EmailNotificationSender implements NotificationSender {
             try {
                 this.log.log(Level.ERROR, createLog(notificaion.getId(), pe.getMessage()));
             } catch (LogException le) {
-                throw new NotificationSendingException("Error logging.");
+                throw new NotificationSendingException("Error logging.", le);
             }
             throw new NotificationSendingException("Error when retrieving contact information.", pe);
         } catch (AssociationException ae) {
             try {
                 this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
             } catch (LogException le) {
-                throw new NotificationSendingException("Error logging.");
+                throw new NotificationSendingException("Error logging.", le);
             }
             throw new NotificationSendingException("Error when retrieving contact information.", ae);
         }
 
-        Map emails = new HashMap();
-
         for (int i = 0; i < contacts.length; ++i) {
             emails.put(contacts[i].getEmailAddress(), contacts[i]);
         }
-
-        return emails;
     }
 
     /**
@@ -219,9 +217,9 @@ public class EmailNotificationSender implements NotificationSender {
      */
     private void sendToEmails(Notification notificaion, Map emails) throws NotificationSendingException {
         // traverse the id list
-        for (Iterator iter = emails.keySet().iterator(); iter.hasNext(); ) {
-            String email = (String) iter.next();
-            Contact contact = (Contact) emails.get(email);
+        Collection contacts = emails.values();
+        for (Iterator iter = contacts.iterator(); iter.hasNext(); ) {
+            Contact contact = (Contact) iter.next();
 
             // generate the message body
             String messageBody = null;
@@ -242,7 +240,7 @@ public class EmailNotificationSender implements NotificationSender {
             TCSEmailMessage message = new TCSEmailMessage();
 
             try {
-                message.addToAddress(contactName + "<" + email + ">", TCSEmailMessage.TO);
+                message.addToAddress(contactName + " <" + contact.getEmailAddress() + ">", TCSEmailMessage.TO);
                 message.setFromAddress(notificaion.getFromAddress());
                 message.setBody(messageBody);
 
@@ -251,21 +249,21 @@ public class EmailNotificationSender implements NotificationSender {
                 try {
                     this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
                 } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.");
+                    throw new NotificationSendingException("Error logging.", le);
                 }
                 throw new NotificationSendingException("The email address is invalid.", ae);
             } catch (ConfigManagerException cme) {
                 try {
                     this.log.log(Level.ERROR, createLog(notificaion.getId(), cme.getMessage()));
                 } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.");
+                    throw new NotificationSendingException("Error logging.", le);
                 }
                 throw new NotificationSendingException("Can not load config.", cme);
             } catch (SendingException se) {
                 try {
                     this.log.log(Level.ERROR, createLog(notificaion.getId(), se.getMessage()));
                 } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.");
+                    throw new NotificationSendingException("Error logging.", le);
                 }
                 throw new NotificationSendingException("There is problem sending.", se);
             }
