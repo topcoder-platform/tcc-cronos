@@ -6,7 +6,6 @@ package com.topcoder.timetracker.notification.ejb;
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 
-
 /**
  * <p>
  * LocalHome interface for the NotificationPersistence.  It contains only a single no-param create method that produces
@@ -18,9 +17,10 @@ import javax.ejb.EJBLocalHome;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public interface NotificationPersistenceLocalHome extends EJBLocalHome {
+
     /**
      * <p>
      * Creates an instance of NotificationPersistenceLocal, which is a handle to the SessionBean.

@@ -48,7 +48,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class InformixNotificationPersistence implements NotificationPersistence {
 

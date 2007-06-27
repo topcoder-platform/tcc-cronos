@@ -22,7 +22,6 @@ import javax.naming.NamingException;
 
 import javax.rmi.PortableRemoteObject;
 
-
 /**
  * <p>
  * This is a Business Delegate that may be used within a J2EE application.  It is responsible for looking up the local
@@ -34,9 +33,10 @@ import javax.rmi.PortableRemoteObject;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class NotificationPersistenceDelegate implements NotificationPersistence {
+
     /**
      * <p>
      * Represents key to retrieve location.

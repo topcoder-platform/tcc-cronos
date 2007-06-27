@@ -27,9 +27,10 @@ import com.topcoder.util.scheduler.scheduling.ScheduledEnable;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class NotificationEvent implements ScheduledEnable {
+
     /**
      * <p>
      * The job in which this event will be executed.

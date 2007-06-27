@@ -27,7 +27,7 @@ import com.topcoder.search.builder.filter.LikeFilter;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public final class NotificationFilterFactory {
 

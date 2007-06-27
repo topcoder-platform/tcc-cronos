@@ -30,16 +30,16 @@ import javax.ejb.SessionContext;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class NotificationPersistenceSessionBean implements NotificationPersistence, SessionBean {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -4553510465048551485L;
+    /**
+      * Automatically generated unique ID for use with serialization.
+      */
+    private static final long serialVersionUID = -4553510465048551485L;
 
-	/**
+    /**
      * <p>
      * This is the instance of SessionContext that was provided by the EJB container.  It is stored and made available
      * to subclasses. It is also used when performing a rollback.

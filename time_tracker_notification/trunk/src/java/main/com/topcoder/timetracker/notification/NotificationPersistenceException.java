@@ -12,16 +12,16 @@ import com.topcoder.util.errorhandling.BaseException;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class NotificationPersistenceException extends BaseException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 7025155006313090495L;
+    /**
+      * Automatically generated unique ID for use with serialization.
+      */
+    private static final long serialVersionUID = 7025155006313090495L;
 
-	/**
+    /**
      * Create the exception with error message.
      *
      * @param msg the error message

@@ -7,7 +7,6 @@ import com.topcoder.timetracker.notification.NotificationPersistence;
 
 import javax.ejb.EJBLocalObject;
 
-
 /**
  * <p>
  * Local interface for NotificationPersistence.  It contains exactly the same methods as NotificationPersistence
@@ -20,7 +19,7 @@ import javax.ejb.EJBLocalObject;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public interface NotificationPersistenceLocal extends NotificationPersistence, EJBLocalObject {
 }

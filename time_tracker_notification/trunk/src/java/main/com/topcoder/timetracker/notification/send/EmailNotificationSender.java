@@ -3,13 +3,18 @@
  */
 package com.topcoder.timetracker.notification.send;
 
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.message.email.AddressException;
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.SendingException;
 import com.topcoder.message.email.TCSEmailMessage;
-
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.InFilter;
@@ -26,17 +31,11 @@ import com.topcoder.timetracker.notification.NotificationPersistence;
 import com.topcoder.timetracker.notification.NotificationPersistenceException;
 import com.topcoder.timetracker.notification.NotificationSender;
 import com.topcoder.timetracker.notification.NotificationSendingException;
-
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogException;
 import com.topcoder.util.log.LogFactory;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 
 /**
  * <p>
@@ -49,8 +48,10 @@ import java.util.List;
  * <b>Thread Safety:</b> This class is thread safe since it¡¯s immutable.
  * </p>
  *
- * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @author ShindouHikaru
+ * @author kzhu
+ * @author George1
+ * @version 1.0
  */
 public class EmailNotificationSender implements NotificationSender {
 
@@ -141,21 +142,33 @@ public class EmailNotificationSender implements NotificationSender {
             return;
         }
 
-        sendToIds(notification, notification.getToClients(), ContactType.CLIENT);
-        sendToIds(notification, notification.getToProjects(), ContactType.PROJECT);
-        sendToIds(notification, notification.getToResources(), ContactType.USER);
+        Map emails = new HashMap();
+
+        emails.putAll(collectEmails(notification, notification.getToClients(), ContactType.CLIENT));
+        emails.putAll(collectEmails(notification, notification.getToClients(), ContactType.PROJECT));
+        emails.putAll(collectEmails(notification, notification.getToClients(), ContactType.USER));
+
+        sendToEmails(notification, emails);
     }
 
     /**
-     * Send the notification to the id list.
+     * This method searches for the contacts by their associated entities' IDs and returns a map
+     * where each key is unique e-mail to send to, and value contains additional information about
+     * the contact associated with that e-mail.
      *
-     * @param notificaion the notification to be sent
-     * @param ids the id list
-     *
-     * @throws NotificationSendingException if any error occurred
+     * @return a map where each key is unique e-mail to send to, and value contains additional
+     *         information about the contact associated with that e-mail.
+     * @param notificaion
+     *            the notification to be sent
+     * @param ids
+     *            list of entity IDs.
+     * @param contactType
+     *            type of entity to search contacts for.
+     * @throws NotificationSendingException
+     *             if any error occurrs.
      */
-    private void sendToIds(Notification notificaion, long[] ids, ContactType contactType)
-        throws NotificationSendingException {
+    private Map collectEmails(Notification notificaion, long[] ids, ContactType contactType)
+            throws NotificationSendingException {
         List idsList = new ArrayList();
 
         for(int i = 0; i < ids.length; ++i)  {
@@ -185,13 +198,33 @@ public class EmailNotificationSender implements NotificationSender {
             throw new NotificationSendingException("Error when retrieving contact information.", ae);
         }
 
-        // traverse the id list
+        Map emails = new HashMap();
+
         for (int i = 0; i < contacts.length; ++i) {
-            Contact contact = contacts[i];
+            emails.put(contacts[i].getEmailAddress(), contacts[i]);
+        }
+
+        return emails;
+    }
+
+    /**
+     * This method sends the notification to the list of e-mails.
+     *
+     * @param notificaion
+     *            the notification to be sent.
+     * @param emails
+     *            map of e-mail/Contact pairs.
+     * @throws NotificationSendingException
+     *             if any error occurrs.
+     */
+    private void sendToEmails(Notification notificaion, Map emails) throws NotificationSendingException {
+        // traverse the id list
+        for (Iterator iter = emails.keySet().iterator(); iter.hasNext(); ) {
+            String email = (String) iter.next();
+            Contact contact = (Contact) emails.get(email);
 
             // generate the message body
             String messageBody = null;
-
             String contactName = contact.getFirstName() + " " + contact.getLastName();
 
             try {
@@ -209,7 +242,7 @@ public class EmailNotificationSender implements NotificationSender {
             TCSEmailMessage message = new TCSEmailMessage();
 
             try {
-                message.addToAddress(contactName + "<" + contact.getEmailAddress() + ">", TCSEmailMessage.TO);
+                message.addToAddress(contactName + "<" + email + ">", TCSEmailMessage.TO);
                 message.setFromAddress(notificaion.getFromAddress());
                 message.setBody(messageBody);
 

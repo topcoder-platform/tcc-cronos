@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
  * <p>
  * A Helper class provides the argument validation and reading config.
@@ -26,6 +25,7 @@ import java.util.Set;
  * @version 1.0
  */
 public final class Helper {
+
     /**
      * Private constructor to prevent this class to be instantiated.
      */

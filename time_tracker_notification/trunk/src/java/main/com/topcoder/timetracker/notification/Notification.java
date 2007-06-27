@@ -17,7 +17,7 @@ import java.util.Date;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class Notification extends TimeTrackerBean {
 

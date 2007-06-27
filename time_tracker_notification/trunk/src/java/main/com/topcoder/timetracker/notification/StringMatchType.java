@@ -16,16 +16,16 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class StringMatchType extends Enum {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 964874786410105161L;
+    /**
+      * Automatically generated unique ID for use with serialization.
+      */
+    private static final long serialVersionUID = 964874786410105161L;
 
-	/**
+    /**
      * <p>
      * This specifies that the criterion should be based on whether it begins with the specified String.
      * </p>

@@ -7,7 +7,6 @@ import com.topcoder.search.builder.filter.Filter;
 
 import com.topcoder.util.objectfactory.ObjectFactory;
 
-
 /**
  * <p>
  * NotificationManager groups all the methods of NotificationPersistence and SendNotification interfaces for easy
@@ -24,9 +23,10 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class NotificationManager {
+
     /**
      * <p>
      * Represents the key to get the object factory name from.

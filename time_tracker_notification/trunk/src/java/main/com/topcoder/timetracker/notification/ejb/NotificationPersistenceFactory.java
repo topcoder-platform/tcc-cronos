@@ -9,7 +9,6 @@ import com.topcoder.timetracker.notification.NotificationPersistence;
 
 import com.topcoder.util.objectfactory.ObjectFactory;
 
-
 /**
  * <p>
  * This is a class that acts as a factory for the NotificationPersistence, and may be used to easily access the
@@ -24,9 +23,10 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class NotificationPersistenceFactory {
+
     /**
      * <p>
      * This is the namespace to use when creating a ConfigManagerSpecificationFactory. It is also the namespace that

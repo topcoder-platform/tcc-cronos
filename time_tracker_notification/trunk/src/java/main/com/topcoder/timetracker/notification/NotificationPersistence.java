@@ -16,9 +16,10 @@ import com.topcoder.search.builder.filter.Filter;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public interface NotificationPersistence {
+
     /**
      * Get the notification by notification id.
      *

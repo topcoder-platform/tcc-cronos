@@ -10,9 +10,10 @@ package com.topcoder.timetracker.notification;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public interface NotificationSender {
+
     /**
      * Send the notification with given id.
      *

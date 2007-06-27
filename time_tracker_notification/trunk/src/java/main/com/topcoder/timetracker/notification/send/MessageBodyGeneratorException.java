@@ -12,16 +12,16 @@ import com.topcoder.util.errorhandling.BaseException;
  * </p>
  *
  * @author ShindouHikaru, kzhu
- * @version 3.2
+ * @version 1.0
  */
 public class MessageBodyGeneratorException extends BaseException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -9160553141208560595L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+      */
+    private static final long serialVersionUID = -9160553141208560595L;
 
-	/**
+    /**
      * Create the exception with error message.
      *
      * @param msg the error message
