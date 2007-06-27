@@ -497,8 +497,8 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
                     state.setLong(++index, entries[i].getCompanyId());
 
                     //If invoice id is 0, should set it as null.
-                    if (entries[i].getInvoiceId() == 0) {
-                        state.setNull(++index, Types.DOUBLE);
+                    if (entries[i].getInvoiceId() <= 0) {
+                        state.setNull(++index, Types.INTEGER);
                     } else {
                         state.setLong(++index, entries[i].getInvoiceId());
                     }
