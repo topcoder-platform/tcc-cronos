@@ -1126,7 +1126,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             statement.setLong(++index, entry.getClientId());
             statement.setLong(++index, entry.getProjectId());
 
-            if (entry.getInvoiceId() != -1) {
+            if (entry.getInvoiceId() > 0) {
                 statement.setLong(++index, entry.getInvoiceId());
             } else {
                 statement.setNull(++index, Types.INTEGER);
