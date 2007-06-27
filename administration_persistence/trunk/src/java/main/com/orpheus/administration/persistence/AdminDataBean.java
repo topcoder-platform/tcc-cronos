@@ -6,10 +6,9 @@ package com.orpheus.administration.persistence;
 
 import com.topcoder.util.puzzle.PuzzleData;
 
-import java.util.Date;
-
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import java.util.Date;
 
 /**
  * <p>The EJB that handles the actual client requests. It simply delegates all operations to the {@link AdminDataDAO
@@ -157,6 +156,25 @@ public class AdminDataBean implements SessionBean {
     public void rejectWinner(PendingWinner winner) throws PersistenceException {
         try {
             getAdminDataDAO().rejectWinner(winner);
+        } catch (PersistenceException ex) {
+            sessionContext.setRollbackOnly();
+            throw ex;
+        }
+    }
+
+    /**
+     * <p>Creates new Ball color with specified name and associated with the specified image providing the Ball color
+     * icon.  Uses the DAO factory to obtain the {@link AdminDataDAO} to which to delegate this action.</p>
+     *
+     * @param colorName a <code>String</code> providing the name for the new Ball color.
+     * @param imageId a <code>long</code> providing the ID of an image associated with new Ball color.
+     * @return a <code>long</code> providing the unique ID for the create Ball color.
+     * @throws PersistenceException if an error occurs while accessing the persistent storage.
+     * @throws IllegalArgumentException if specified <code>colorName</code> is <code>null</code> or empty.
+     */
+    public long createBallColor(String colorName, long imageId) throws PersistenceException {
+        try {
+            return getAdminDataDAO().createBallColor(colorName, imageId);
         } catch (PersistenceException ex) {
             sessionContext.setRollbackOnly();
             throw ex;

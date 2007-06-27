@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -154,6 +155,11 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
      * The statement used to insert a puzzle.
      */
     private static final String INSERT_PUZZLE = "{call InsertPuzzle (?,?)}";
+
+    /**
+     * The insert statement used to insert a new ball color.
+     */
+    private static final String INSERT_BALL_COLOR = "INSERT INTO ball_color (name, download_obj_id) VALUES (?, ?)";
 
     /**
      * The database connection factory used to obtain connections for performing the requested operations. This
@@ -469,6 +475,48 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             }
         } catch (SQLException ex) {
             throw new PersistenceException("error rejecting winner: " + ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Creates new Ball color with specified name and associated with the specified image providing the Ball color icon.
+     *
+     * @param colorName a <code>String</code> providing the name for the new Ball color.
+     * @param imageId a <code>long</code> providing the ID of an image associated with new Ball color.
+     * @return a <code>long</code> providing the unique ID for the create Ball color.
+     * @throws PersistenceException if an error occurs while accessing the persistent storage.
+     * @throws IllegalArgumentException if specified <code>colorName</code> is <code>null</code> or empty.
+     */
+    public long createBallColor(String colorName, long imageId) throws PersistenceException {
+        if ((colorName == null) || (colorName.trim().length() == 0)) {
+            throw new IllegalArgumentException("The parameter [colorName] is not valid. [" + colorName + "]");
+        }
+
+        Connection connection = getConnection();
+
+        try {
+            PreparedStatement statement
+                = connection.prepareStatement(INSERT_BALL_COLOR, Statement.RETURN_GENERATED_KEYS);
+            try {
+                statement.setString(1, colorName);
+                statement.setLong(2, imageId);
+                int rowsInserted = statement.executeUpdate();
+                if (rowsInserted != 1) {
+                    throw new PersistenceException("Invalid number of rows inserted when creating ball color ["
+                                                   + colorName + "]: " + rowsInserted);
+                }
+                ResultSet keys = statement.getGeneratedKeys();
+                if (keys.next()) {
+                    return keys.getLong(1);
+                } else {
+                    throw new PersistenceException("The ID for created ball color [" + colorName + "] is not returned");
+                }
+            } finally {
+                statement.close();
+                connection.close();
+            }
+        } catch (SQLException ex) {
+            throw new PersistenceException("error creating ball color [" + colorName + "]: " + ex.getMessage(), ex);
         }
     }
 

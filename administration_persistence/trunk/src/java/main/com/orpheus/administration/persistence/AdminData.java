@@ -6,11 +6,9 @@ package com.orpheus.administration.persistence;
 
 import com.topcoder.util.puzzle.PuzzleData;
 
-import java.rmi.RemoteException;
-
-import java.util.Date;
-
 import javax.ejb.EJBObject;
+import java.rmi.RemoteException;
+import java.util.Date;
 
 /**
  * <p>This the remote interface used to talk to the {@link AdminDataBean AdminDataBean}. It supports all client
@@ -104,6 +102,18 @@ public interface AdminData extends EJBObject {
      * @throws RemoteException if there is a network issue
      */
     public void rejectWinner(PendingWinner winner) throws PersistenceException, RemoteException;
+
+    /**
+     * Creates new Ball color with specified name and associated with the specified image providing the Ball color icon.
+     *
+     * @param colorName a <code>String</code> providing the name for the new Ball color.
+     * @param imageId a <code>long</code> providing the ID of an image associated with new Ball color.
+     * @return a <code>long</code> providing the unique ID for the create Ball color.
+     * @throws PersistenceException if an error occurs while accessing the persistent storage.
+     * @throws RemoteException if there is a network issue
+     * @throws IllegalArgumentException if specified <code>colorName</code> is <code>null</code> or empty.
+     */
+    public long createBallColor(String colorName, long imageId) throws PersistenceException, RemoteException;
 }
 
 

@@ -6,9 +6,8 @@ package com.orpheus.administration.persistence;
 
 import com.topcoder.util.puzzle.PuzzleData;
 
-import java.util.Date;
-
 import javax.ejb.EJBLocalObject;
+import java.util.Date;
 
 /**
  * <p>This the local interface used to talk to the {@link AdminDataBean AdminDataBean}. Supports all client
@@ -93,6 +92,17 @@ public interface AdminDataLocal extends EJBLocalObject {
      * @throws PersistenceException if any persistence error occurs
      */
     public void rejectWinner(PendingWinner winner) throws PersistenceException;
+
+    /**
+     * Creates new Ball color with specified name and associated with the specified image providing the Ball color icon.
+     *
+     * @param colorName a <code>String</code> providing the name for the new Ball color.
+     * @param imageId a <code>long</code> providing the ID of an image associated with new Ball color.
+     * @return a <code>long</code> providing the unique ID for the create Ball color.
+     * @throws PersistenceException if an error occurs while accessing the persistent storage.
+     * @throws IllegalArgumentException if specified <code>colorName</code> is <code>null</code> or empty.
+     */
+    public long createBallColor(String colorName, long imageId) throws PersistenceException;
 }
 
 
