@@ -24,12 +24,12 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  */
 public class StringMatchType extends Enum {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = -2500639364006680362L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -2500639364006680362L;
 
-	/**
+    /**
      * <p>
      * This specifies that the criterion should be based on whether it begins with the specified String.
      * </p>
