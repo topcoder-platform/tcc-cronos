@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
-
 package com.topcoder.timetracker.report;
 
 import com.topcoder.timetracker.report.informix.ReportEntryBean;
@@ -23,6 +22,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 3.1
  */
 public interface ReportSearchBuilder {
+
     /**
      * <p>
      * Returns the generic report using the filter, sort by the columns where each columns in i-th

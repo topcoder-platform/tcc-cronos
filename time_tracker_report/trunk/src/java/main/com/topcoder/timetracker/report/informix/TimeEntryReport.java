@@ -26,11 +26,11 @@ import com.topcoder.timetracker.project.ProjectWorker;
 public class TimeEntryReport extends ReportEntryBean {
 
     /**
-	 * Automatically generated unique ID for use qith serialization.
-	 */
-	private static final long serialVersionUID = 480997046478353848L;
+     * Automatically generated unique ID for use qith serialization.
+     */
+    private static final long serialVersionUID = 480997046478353848L;
 
-	/**
+    /**
      * <p>
      * Represents the time entry. It's changeable , can be null and it's null at the beginning.
      * </p>

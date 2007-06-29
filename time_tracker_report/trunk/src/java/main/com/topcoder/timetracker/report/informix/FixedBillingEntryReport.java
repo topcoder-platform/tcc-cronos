@@ -23,11 +23,11 @@ import com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatus;
 public class FixedBillingEntryReport extends ReportEntryBean {
 
     /**
-	 * Automatically generated unique ID for use qith serialization.
-	 */
-	private static final long serialVersionUID = 3562198654935306492L;
+     * Automatically generated unique ID for use qith serialization.
+     */
+    private static final long serialVersionUID = 3562198654935306492L;
 
-	/**
+    /**
      * <p>
      * Represents the fixed billing entry. It's changeable , can be null and it's null at the
      * beginning.

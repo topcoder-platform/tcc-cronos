@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
-
 package com.topcoder.timetracker.report.informix;
 
 import com.topcoder.timetracker.client.Client;

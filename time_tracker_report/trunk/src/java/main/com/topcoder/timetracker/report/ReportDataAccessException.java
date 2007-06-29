@@ -20,11 +20,11 @@ package com.topcoder.timetracker.report;
 public class ReportDataAccessException extends ReportException {
 
     /**
-	 * Automatically generated unique ID for use qith serialization.
-	 */
-	private static final long serialVersionUID = 6064265589243176418L;
+     * Automatically generated unique ID for use qith serialization.
+     */
+    private static final long serialVersionUID = 6064265589243176418L;
 
-	/**
+    /**
      * <p>
      * Constructs a new <code>ReportDataAccessException</code>, with the given error message.
      * </p>

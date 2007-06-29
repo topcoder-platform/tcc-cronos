@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
  */
-
 package com.topcoder.timetracker.report.informix;
 
 import com.topcoder.timetracker.report.ReportDAO;
@@ -67,6 +66,7 @@ import java.util.Map;
  * @version 3.1
  */
 public class InformixReportDAO implements ReportDAO {
+
     /**
      * <p>
      * Represents the default namespace for this class, for load the configuration.

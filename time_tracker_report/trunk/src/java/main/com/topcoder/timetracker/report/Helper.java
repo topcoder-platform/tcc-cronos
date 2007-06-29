@@ -43,9 +43,7 @@ import com.topcoder.timetracker.project.ProjectWorker;
 public final class Helper {
 
     /**
-     * <p>
      * Private constructor to prevent instantiation of this class.
-     * </p>
      */
     private Helper() {
         // empty
@@ -537,6 +535,9 @@ public final class Helper {
             entry.setCreationUser(resultSet.getString("expense_entry_creation_user"));
             entry.setModificationDate(resultSet.getTimestamp("expense_entry_modification_date"));
             entry.setModificationUser(resultSet.getString("expense_entry_modification_user"));
+            if (resultSet.getObject("expense_entry_mileage") != null) {
+                entry.setMileage(resultSet.getInt("expense_entry_mileage"));
+            }
         } catch (InvalidCursorStateException e) {
             throw new ReportDataAccessException("Exception when creating a ExpenseEntry object.", e);
         }
