@@ -130,6 +130,7 @@ public class MockTeamManager implements TeamManager {
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
+        team.setCaptainPaymentPercentage(0);
         if (teamId == 19 || teamId == 18) {
             team.setProjectId(5);
         } else if (teamId == 15) {
@@ -140,13 +141,17 @@ public class MockTeamManager implements TeamManager {
 
         TeamPosition pos = new TeamPosition();
         pos.setPositionId(2);
-        pos.setMemberResourceId(1);
+        pos.setMemberResourceId(2);
+        pos.setPaymentPercentage(0);
         pos.setName("Good Position");
+        pos.setFilled(true);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
-        pos1.setMemberResourceId(1);
+        pos1.setMemberResourceId(2);
         pos1.setName("Good Position");
+        pos1.setPaymentPercentage(0);
+        pos1.setFilled(true);
         if (teamId == 18) {
             team.setFinalized(true);
         }
@@ -228,6 +233,7 @@ public class MockTeamManager implements TeamManager {
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
         team.setProjectId(id);
+        team.setCaptainPaymentPercentage(0);
 
         team.setFinalized(flag);
         id++;
@@ -237,6 +243,7 @@ public class MockTeamManager implements TeamManager {
         pos.setMemberResourceId(2);
         pos.setName("Good Position");
         pos.setPublished(true);
+        pos.setPaymentPercentage(0);
         pos.setFilled(false);
 
         TeamPosition pos1 = new TeamPosition();
@@ -244,6 +251,7 @@ public class MockTeamManager implements TeamManager {
         pos1.setMemberResourceId(2);
         pos1.setName("Good Position");
         pos1.setPublished(true);
+        pos1.setPaymentPercentage(0);
         pos1.setFilled(false);
 
         theTeam.setTeamHeader(team);
@@ -342,6 +350,7 @@ public class MockTeamManager implements TeamManager {
         pos.setMemberResourceId(2);
         pos.setName("Good Position");
         pos.setFilled(false);
+        pos.setPaymentPercentage(0);
         pos.setPublished(true);
 
         return pos;

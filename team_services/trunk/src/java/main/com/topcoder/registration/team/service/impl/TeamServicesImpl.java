@@ -1317,15 +1317,17 @@ public class TeamServicesImpl implements TeamServices {
         TeamPosition[] teamPos = team.getPositions();
 
         // represents the ResourcePosition array to be returned
-        ResourcePosition[] rp = new ResourcePosition[teamPos.length];
-        for (int i = 0; i < rp.length; i++) {
+        //FIX BUG TCRT-8531
+        List resoucePositions = new ArrayList();
+        for (int i = 0; i < teamPos.length; i++) {
             try {
-                // gets the Resource associated with this position
-                logDebug("Starts calling ResourceManager#getResource method.");
-                Resource resource = resourceManager.getResource(teamPos[i].getMemberResourceId());
-                logDebug("Finished calling ResourceManager#getResource method.");
-
-                rp[i] = new ResourcePositionImpl(resource, teamPos[i]);
+                if (teamPos[i].getFilled()) {
+                    // gets the Resource associated with this position
+                    logDebug("Starts calling ResourceManager#getResource method.");
+                    Resource resource = resourceManager.getResource(teamPos[i].getMemberResourceId());
+                    logDebug("Finished calling ResourceManager#getResource method.");
+                    resoucePositions.add(new ResourcePositionImpl(resource, teamPos[i]));
+                }
             } catch (ResourcePersistenceException ex) {
                 log(Level.ERROR,
                     "TeamServicesException occurred in TeamServicesImpl#getTeamPositionsDetails method.");
@@ -1334,6 +1336,7 @@ public class TeamServicesImpl implements TeamServices {
             }
         }
 
+        ResourcePosition[] rp = (ResourcePosition[]) resoucePositions.toArray(new ResourcePosition[0]);
         log(Level.INFO, "Exits TeamServicesImpl#getTeamPositionsDetails method.");
         return rp;
     }
@@ -1381,8 +1384,9 @@ public class TeamServicesImpl implements TeamServices {
             TeamPosition[] positions = teamManager.findPositions(filter);
             logDebug("Finished calling TeamManager#findPositions method.");
 
+            // FIX BUG TCRT-8524
             // if no positions found, add this resource to Free Agents list
-            if (positions.length == 0) {
+            if (positions.length == 0 && resources[i].getResourceRole().getId() != teamCaptainRoleId) {
                 freeAgents.add(resources[i]);
             }
         }
@@ -2187,13 +2191,46 @@ public class TeamServicesImpl implements TeamServices {
         logDebug("Finished calling TeamManager#getPosition method.");
 
         // position.filled should be false, position.published should be true
-        if (position.getFilled() || !position.getPublished()) {
+        //FIX BUG TCRT-8530
+        if (position.getFilled())
+        {
             operationResult.setSuccessful(false);
             operationResult
                 .setErrors(new String[] {"The position associated with given offer should"
-                    + " be published and not filled."});
+                    + " be not filled."});
             log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
             return operationResult;
+        }
+
+        if (!position.getPublished()) {
+            
+            Resource resource = null;
+            try {
+                resource = this.resourceManager.getResource(position.getMemberResourceId());
+            } catch (ResourcePersistenceException e) {
+                operationResult.setSuccessful(false);
+                operationResult.setErrors(new String[]{
+                "ResourcePersistenceException occurred in TeamServicesImpl#sendOffer method."});
+                log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
+                return operationResult;
+            }
+
+            if (resource == null) {
+                operationResult.setSuccessful(false);
+                operationResult
+                    .setErrors(new String[] {"The resource associated with given offer does not exist."});
+                log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
+                return operationResult;
+            }
+
+            if (resource.getResourceRole().getId() != this.teamCaptainRoleId) {
+                operationResult.setSuccessful(false);
+                operationResult
+                    .setErrors(new String[] {"The position associated with given offer should"
+                        + " be published."});
+                log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
+                return operationResult;
+            }
         }
         // the project should be in registration phase
         if (!checkProjectOfTeamInRegistration(team, operationResult)) {

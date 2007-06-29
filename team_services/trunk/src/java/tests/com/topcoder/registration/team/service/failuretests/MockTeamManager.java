@@ -49,6 +49,7 @@ public class MockTeamManager implements TeamManager {
         if (arg0 == 1002) {
             TeamPosition position = new TeamPosition();
             position.setMemberResourceId(1006);
+            position.setFilled(true);
             TeamPosition[] positions = new TeamPosition[]{position};
             team.setPositions(positions);
             return team;

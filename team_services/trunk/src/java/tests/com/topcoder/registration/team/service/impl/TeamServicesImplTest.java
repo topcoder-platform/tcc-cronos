@@ -1373,7 +1373,7 @@ public class TeamServicesImplTest extends TestCase {
         TeamPosition pos = new TeamPosition();
         pos.setFilled(true);
         pos.setName("new position");
-        pos.setMemberResourceId(1);
+        pos.setMemberResourceId(2);
 
         OperationResult result = services.createOrUpdatePosition(pos, 1, 1);
         assertTrue("Result should be successful.", result.isSuccessful());

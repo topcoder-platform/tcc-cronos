@@ -13,3 +13,24 @@ header's id will not be set.
 
 In All(accuracy, failure, stress, unit)
 TeamServicesImplTest will not set the teamHeader's id to -1
+
+2007-6-29
+FIX BUG TCRT-8531
+in
+TeamServicesImpl#getTeamPositionsDetails
+when getTeamPositionsDetails, it only pick the position will is filled.
+
+FIX BUG TCRT-8524
+in
+TeamServicesImpl#findFreeAgents
+if the resouce doesn't appear in positon table, it will check whether it is team captain.
+like this:
+if (positions.length == 0 && resources[i].getResourceRole().getId() != teamCaptainRoleId) {
+ freeAgents.add(resources[i]);
+}
+
+FIX BUG TCRT-8530
+in
+TeamServicesImpl#sendOffer
+if the position is not published, it will check whether it is team caption, if it is, the
+position is valid.

@@ -116,14 +116,14 @@ public class StubTeamManager implements TeamManager {
 
         TeamPosition pos = new TeamPosition();
         pos.setPositionId(2);
-        pos.setMemberResourceId(1);
+        pos.setMemberResourceId(2);
         pos.setName("Good Position");
         pos.setFilled(true);
         pos.setPaymentPercentage(0);
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
-        pos1.setMemberResourceId(1);
+        pos1.setMemberResourceId(2);
         pos1.setName("Good Position");
         pos1.setFilled(true);
         pos1.setPaymentPercentage(0);

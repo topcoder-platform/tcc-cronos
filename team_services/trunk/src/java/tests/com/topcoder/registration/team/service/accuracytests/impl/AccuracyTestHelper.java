@@ -85,7 +85,15 @@ public final class AccuracyTestHelper {
         ResourceRole role = new ResourceRole(2);
         resource.setResourceRole(role);
 
-        data.setResources(new Resource[] {resource});
+        Resource resource1 = new Resource();
+        resource1.setId(2);
+        resource1.setProperty("External reference ID", new Long(1));
+        resource1.setProperty("Handle", "argolite");
+        resource1.setProperty("Email", "argolite@topcoder.com");
+        resource1.setProperty("Registration Date", new Date());
+        resource1.setResourceRole(new ResourceRole(1));
+
+        data.setResources(new Resource[] {resource, resource1});
 
         Project project = new Project(1, new ProjectCategory(1, "Design",
             new ProjectType(1, "Java")), new ProjectStatus(1, "submission"));
@@ -93,6 +101,7 @@ public final class AccuracyTestHelper {
         data.setProjectHeader(project);
 
         TeamHeader team = new TeamHeader();
+        team.setTeamId(1);
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);

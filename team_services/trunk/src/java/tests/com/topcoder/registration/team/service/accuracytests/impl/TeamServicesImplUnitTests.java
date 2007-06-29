@@ -249,7 +249,7 @@ public class TeamServicesImplUnitTests extends TestCase {
      *             to JUnit
      */
     public void testGetTeamPositionDetails_Accuracy() throws Exception {
-        ResourcePosition[] rp = services.getTeamPositionsDetails(1);
+        ResourcePosition[] rp = services.getTeamPositionsDetails(2);
         assertEquals("There should be two results.", 2, rp.length);
     }
 
