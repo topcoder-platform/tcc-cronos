@@ -17,6 +17,7 @@ import com.topcoder.registration.team.service.OperationResult;
 import com.topcoder.registration.validation.DataValidationRegistrationValidator;
 import com.topcoder.registration.validation.validators.conditional.ProjectTypeConditionalValidator;
 import com.topcoder.registration.validation.validators.simple.MemberMustBeRegisteredValidator;
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.datavalidator.BundleInfo;
 import com.topcoder.util.log.LogManager;
 import com.topcoder.util.log.basic.BasicLogFactory;
@@ -71,6 +72,7 @@ public class RegistrationValidationStressTest extends TestCase {
 		StressHelper.loadConfig(CONFIG_FILE1);
 		StressHelper.loadConfig(CONFIG_FILE2);
 		StressHelper.loadConfig(CONFIG_FILE3);
+        ConfigManager.getInstance().add("team_service.xml");
 		PrintStream ps = new PrintStream(new FileOutputStream("ComponentDemoLog.txt", true), true);
 		LogManager.setLogFactory(new BasicLogFactory(ps));
 	}

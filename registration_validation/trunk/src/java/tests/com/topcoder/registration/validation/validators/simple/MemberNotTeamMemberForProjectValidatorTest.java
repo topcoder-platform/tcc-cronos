@@ -9,6 +9,7 @@ import com.topcoder.registration.validation.TestHelper;
 import com.topcoder.registration.validation.RegistrationValidationHelper;
 
 import com.topcoder.registration.validation.ValidationInfo;
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.datavalidator.AbstractObjectValidator;
 import com.topcoder.util.datavalidator.BundleInfo;
 import com.cronos.onlinereview.external.RatingInfo;
@@ -65,6 +66,7 @@ public class MemberNotTeamMemberForProjectValidatorTest extends TestCase {
         TestHelper.loadXMLConfig("DataValidationRegistrationValidator.xml");
         TestHelper.loadXMLConfig("Document_Generator.xml");
         TestHelper.loadXMLConfig("MemberNotTeamMemberForProjectValidator.xml");
+        ConfigManager.getInstance().add("team_service.xml");
 
         bundleInfo = RegistrationValidationHelper.createBundleInfo(NAMESPACE);
 

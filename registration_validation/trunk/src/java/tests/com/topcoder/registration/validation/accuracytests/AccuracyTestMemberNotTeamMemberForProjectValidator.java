@@ -9,6 +9,7 @@ import com.topcoder.registration.service.RegistrationInfo;
 import com.topcoder.registration.service.impl.RegistrationInfoImpl;
 import com.topcoder.registration.validation.ValidationInfo;
 import com.topcoder.registration.validation.validators.simple.MemberNotTeamMemberForProjectValidator;
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.datavalidator.BundleInfo;
 
 /**
@@ -38,6 +39,7 @@ public class AccuracyTestMemberNotTeamMemberForProjectValidator extends TestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		AccuracyTestHelper.loadNamespaces();
+        ConfigManager.getInstance().add("team_service.xml");
 		validator = new MemberNotTeamMemberForProjectValidator(
 				"MemberMinimumReliabilityForRatingTypeValidator.ns");
 		bundleInfo = validator.getBundleInfo();

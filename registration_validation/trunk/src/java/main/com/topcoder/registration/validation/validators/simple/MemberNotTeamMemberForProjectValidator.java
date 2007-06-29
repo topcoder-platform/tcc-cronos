@@ -4,6 +4,9 @@
 package com.topcoder.registration.validation.validators.simple;
 
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.team.TeamHeader;
+import com.topcoder.registration.team.service.TeamServices;
+import com.topcoder.registration.team.service.impl.TeamServicesImpl;
 import com.topcoder.registration.validation.AbstractConfigurableValidator;
 import com.topcoder.registration.validation.RegistrationValidationHelper;
 import com.topcoder.registration.validation.ValidationInfo;
@@ -158,8 +161,24 @@ public class MemberNotTeamMemberForProjectValidator extends
             // Finds resource in validationInfo.project.resources whose
             // custom property &quot;External Reference ID&quot; is equal to
             // validationInfo.registrationInfo.userId
-            Resource resource = RegistrationValidationHelper.findResource(
-                    validationInfo, logger);
+            //FIX BUG TCRT-8497
+            Resource resource = null;
+            long userId = validationInfo.getRegistration().getUserId();
+            TeamHeader[] teamHeaders = validationInfo.getProject().getTeams();
+            TeamServices teamServices = new TeamServicesImpl();
+            for (int i = 0; i < teamHeaders.length; ++i) {
+                Resource[] resources = teamServices.getTeamMembers(teamHeaders[i].getTeamId());
+                for (int j = 0; j < resources.length; ++j) {
+                    Long externalReferenceID = (Long) resources[j].getProperty("External Reference ID");
+                    if ((new Long(userId)).compareTo(externalReferenceID) == 0) {
+                        resource = resources[j];
+                        break;
+                    }
+                }
+            }
+
+//            Resource resource = RegistrationValidationHelper.findResource(
+//                    validationInfo, logger);
 
             // Fills the message if the resource is found
             if (resource != null) {

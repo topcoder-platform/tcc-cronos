@@ -287,13 +287,13 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;136</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> validateNotNull(Object obj, String name) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;137</td>  <td class="nbHitsCovered">&nbsp;229628</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (obj == <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;137</td>  <td class="nbHitsCovered">&nbsp;228627</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (obj == <span class="keyword">null</span>) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;138</td>  <td class="nbHitsCovered">&nbsp;175</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"["</span> + name</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;139</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    + <span class="string">"] should not be null."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;140</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;229453</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;228452</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;142</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;143</td>  <td class="nbHits">&nbsp;</td>
@@ -364,14 +364,14 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;178</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> String validateStringNotNullOrEmpty(String arg, String name) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;179</td>  <td class="nbHitsCovered">&nbsp;65369</td>  <td class="src"><pre class="src">&nbsp;        validateNotNull(arg, name);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;180</td>  <td class="nbHitsCovered">&nbsp;65321</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (arg.trim().length() == 0) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;179</td>  <td class="nbHitsCovered">&nbsp;64368</td>  <td class="src"><pre class="src">&nbsp;        validateNotNull(arg, name);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;180</td>  <td class="nbHitsCovered">&nbsp;64320</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (arg.trim().length() == 0) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;181</td>  <td class="nbHitsCovered">&nbsp;70</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"["</span> + name</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;182</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    + <span class="string">"] should not be empty after trim."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;65251</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> arg;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;64250</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> arg;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;185</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
@@ -571,37 +571,37 @@
   <td class="src"><pre class="src">&nbsp;            Log logger) {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;291</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered">&nbsp;11125</td>  <td class="src"><pre class="src">&nbsp;        Resource[] resources = validationInfo.getProject().getResources();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;293</td>  <td class="nbHitsCovered">&nbsp;11125</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">long</span> userId = validationInfo.getRegistration().getUserId();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered">&nbsp;17</td>  <td class="src"><pre class="src">&nbsp;        Resource[] resources = validationInfo.getProject().getResources();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;293</td>  <td class="nbHitsCovered">&nbsp;17</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">long</span> userId = validationInfo.getRegistration().getUserId();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;294</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Log variable value</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;295</td>  <td class="nbHitsCovered">&nbsp;11125</td>  <td class="src"><pre class="src">&nbsp;        RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;295</td>  <td class="nbHitsCovered">&nbsp;17</td>  <td class="src"><pre class="src">&nbsp;        RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;296</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="string">"the value of validationInfo.registrationInfo.userId is ["</span> + userId + <span class="string">"]"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;297</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;298</td>  <td class="nbHitsCovered">&nbsp;11125</td>  <td class="src"><pre class="src">&nbsp;        Resource resource = <span class="keyword">null</span>;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;299</td>  <td class="nbHitsCovered">&nbsp;21237</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; resources.length; i++) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;300</td>  <td class="nbHitsCovered">&nbsp;11131</td>  <td class="src"><pre class="src">&nbsp;            Long externalReferenceID = (Long) resources[i]</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;298</td>  <td class="nbHitsCovered">&nbsp;17</td>  <td class="src"><pre class="src">&nbsp;        Resource resource = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;299</td>  <td class="nbHitsCovered">&nbsp;23</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; resources.length; i++) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;300</td>  <td class="nbHitsCovered">&nbsp;21</td>  <td class="src"><pre class="src">&nbsp;            Long externalReferenceID = (Long) resources[i]</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;301</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    .getProperty(<span class="string">"External Reference ID"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;302</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;303</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Log variable value</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsCovered">&nbsp;11131</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsCovered">&nbsp;21</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;305</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"the value ofvalidationInfo.project.resource["</span> + i</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;306</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                + <span class="string">"].externalReferenceID is ["</span> + externalReferenceID + <span class="string">"]"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;307</td>  <td class="nbHitsCovered">&nbsp;11131</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> ((<span class="keyword">new</span> Long(userId)).compareTo(externalReferenceID) == 0) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;308</td>  <td class="nbHitsCovered">&nbsp;1019</td>  <td class="src"><pre class="src">&nbsp;                resource = resources[i];</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;309</td>  <td class="nbHitsCovered">&nbsp;1019</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">break</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;307</td>  <td class="nbHitsCovered">&nbsp;21</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> ((<span class="keyword">new</span> Long(userId)).compareTo(externalReferenceID) == 0) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;308</td>  <td class="nbHitsCovered">&nbsp;15</td>  <td class="src"><pre class="src">&nbsp;                resource = resources[i];</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;309</td>  <td class="nbHitsCovered">&nbsp;15</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">break</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;310</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;311</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;312</td>  <td class="nbHitsCovered">&nbsp;11125</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> resource;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;312</td>  <td class="nbHitsCovered">&nbsp;17</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> resource;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;313</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;314</td>  <td class="nbHits">&nbsp;</td>
@@ -639,8 +639,8 @@
 <tr>  <td class="numLine">&nbsp;330</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> validateErrorMessages(<span class="keyword">boolean</span> successful, String[] errors) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;331</td>  <td class="nbHitsCovered">&nbsp;11185</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (errors != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;2409</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; errors.length; i++) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;1248</td>  <td class="src"><pre class="src">&nbsp;                validateStringNotNullOrEmpty(errors[i], <span class="string">"the ["</span> + i</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;407</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; errors.length; i++) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;247</td>  <td class="src"><pre class="src">&nbsp;                validateStringNotNullOrEmpty(errors[i], <span class="string">"the ["</span> + i</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;334</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                        + <span class="string">"] element of errors"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;335</td>  <td class="nbHits">&nbsp;</td>
@@ -650,7 +650,7 @@
 <tr>  <td class="numLine">&nbsp;337</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;338</td>  <td class="nbHitsCovered">&nbsp;11170</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (successful) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;339</td>  <td class="nbHitsCovered">&nbsp;10013</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> ((errors != <span class="keyword">null</span>) &amp;&amp; (errors.length &gt; 0)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;339</td>  <td class="nbHitsCovered">&nbsp;11014</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> ((errors != <span class="keyword">null</span>) &amp;&amp; (errors.length &gt; 0)) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;340</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;341</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                        <span class="string">" errors is a non-empty array but successful is true"</span>);</pre></td></tr>
@@ -1403,12 +1403,12 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;760</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> String appendData(String originalData, String innerData) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;761</td>  <td class="nbHitsCovered">&nbsp;2374</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer(originalData);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;761</td>  <td class="nbHitsCovered">&nbsp;372</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer(originalData);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;762</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;763</td>  <td class="nbHitsCovered">&nbsp;2374</td>  <td class="src"><pre class="src">&nbsp;        sb.insert(sb.lastIndexOf(<span class="string">"&lt;/"</span>), innerData);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;764</td>  <td class="nbHitsCovered">&nbsp;2374</td>  <td class="src"><pre class="src">&nbsp;        sb.insert(sb.lastIndexOf(<span class="string">"&lt;/"</span>), <span class="string">"\n"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;765</td>  <td class="nbHitsCovered">&nbsp;2374</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;763</td>  <td class="nbHitsCovered">&nbsp;372</td>  <td class="src"><pre class="src">&nbsp;        sb.insert(sb.lastIndexOf(<span class="string">"&lt;/"</span>), innerData);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;764</td>  <td class="nbHitsCovered">&nbsp;372</td>  <td class="src"><pre class="src">&nbsp;        sb.insert(sb.lastIndexOf(<span class="string">"&lt;/"</span>), <span class="string">"\n"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;765</td>  <td class="nbHitsCovered">&nbsp;372</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;766</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;767</td>  <td class="nbHits">&nbsp;</td>
@@ -1435,12 +1435,12 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;778</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> String buildStandInfo(ValidationInfo validationInfo) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;779</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        String standardInfo = <span class="string">"&lt;DATA&gt;\n&lt;/DATA&gt;"</span>;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;780</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        ExternalUser user = validationInfo.getUser();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;781</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        standardInfo = appendData(standardInfo, buildUserInfo(user));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;782</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData project = validationInfo.getProject();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;783</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        standardInfo = appendData(standardInfo, buildFullProjectInfo(project));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;784</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> standardInfo;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;779</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        String standardInfo = <span class="string">"&lt;DATA&gt;\n&lt;/DATA&gt;"</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;780</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        ExternalUser user = validationInfo.getUser();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;781</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        standardInfo = appendData(standardInfo, buildUserInfo(user));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;782</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        FullProjectData project = validationInfo.getProject();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;783</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        standardInfo = appendData(standardInfo, buildFullProjectInfo(project));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;784</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> standardInfo;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;785</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;786</td>  <td class="nbHits">&nbsp;</td>
@@ -1467,20 +1467,20 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;797</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> String buildUserInfo(ExternalUser user) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;798</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;799</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;USER&gt;\n&lt;HANDLE&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;800</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getHandle());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;801</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/HANDLE&gt;\n&lt;FIRST_NAME&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;802</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getFirstName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;803</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/FIRST_NAME&gt;\n&lt;LAST_NAME&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;804</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getLastName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;805</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/LAST_NAME&gt;\n&lt;EMAIL&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;806</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getEmail());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;807</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/EMAIL&gt;\n"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;798</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;799</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;USER&gt;\n&lt;HANDLE&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;800</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getHandle());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;801</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/HANDLE&gt;\n&lt;FIRST_NAME&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;802</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getFirstName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;803</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/FIRST_NAME&gt;\n&lt;LAST_NAME&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;804</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getLastName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;805</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/LAST_NAME&gt;\n&lt;EMAIL&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;806</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getEmail());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;807</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/EMAIL&gt;\n"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;808</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;809</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        String[] alternativeEmails = user.getAlternativeEmails();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;810</td>  <td class="nbHitsCovered">&nbsp;1325</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; alternativeEmails.length; i++) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;809</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        String[] alternativeEmails = user.getAlternativeEmails();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;810</td>  <td class="nbHitsCovered">&nbsp;324</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; alternativeEmails.length; i++) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;811</td>  <td class="nbHitsCovered">&nbsp;138</td>  <td class="src"><pre class="src">&nbsp;            sb.append(<span class="string">"&lt;ALTERNATE_EMAIL&gt;\n&lt;EMAIL_VALUE&gt;"</span>);</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;812</td>  <td class="nbHitsCovered">&nbsp;138</td>  <td class="src"><pre class="src">&nbsp;            sb.append(alternativeEmails[i]);</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;813</td>  <td class="nbHitsCovered">&nbsp;138</td>  <td class="src"><pre class="src">&nbsp;            sb.append(<span class="string">"&lt;/EMAIL_VALUE&gt;\n&lt;/ALTERNATE_EMAIL&gt;\n"</span>);</pre></td></tr>
@@ -1488,13 +1488,13 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;815</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;816</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(buildUserRatingInfo(user));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;817</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"\n&lt;/USER&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;816</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(buildUserRatingInfo(user));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;817</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"\n&lt;/USER&gt;"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;818</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;819</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;820</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;820</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;821</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;822</td>  <td class="nbHits">&nbsp;</td>
@@ -1521,27 +1521,27 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;833</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> String buildUserRatingInfo(ExternalUser user) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;834</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;835</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;DESIGN_RATING&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;836</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignRating());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;837</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_RATING&gt;\n&lt;DESIGN_RELIABILITY&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;838</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignReliability());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;839</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_RELIABILITY&gt;\n&lt;DESIGN_VOLATILITY&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;840</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevVolatility());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;841</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_VOLATILITY&gt;\n&lt;DESIGN_NUM_RATINGS&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;842</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignNumRatings());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;843</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_NUM_RATINGS&gt;&lt;DEV_RATING&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;844</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevRating());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;845</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_RATING&gt;\n&lt;DEV_RELIABILITY&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;846</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevReliability());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;847</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_RELIABILITY&gt;\n&lt;DEV_VOLATILITY&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;848</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevVolatility());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;849</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_VOLATILITY&gt;\n&lt;DEV_NUM_RATINGS&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;850</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignNumRatings());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;851</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_NUM_RATINGS&gt;\n&lt;DEV_NUM_RATINGS&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;852</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevVolatility());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;853</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_NUM_RATINGS&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;854</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;834</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;835</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;DESIGN_RATING&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;836</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignRating());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;837</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_RATING&gt;\n&lt;DESIGN_RELIABILITY&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;838</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignReliability());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;839</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_RELIABILITY&gt;\n&lt;DESIGN_VOLATILITY&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;840</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevVolatility());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;841</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_VOLATILITY&gt;\n&lt;DESIGN_NUM_RATINGS&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;842</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignNumRatings());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;843</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DESIGN_NUM_RATINGS&gt;&lt;DEV_RATING&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;844</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevRating());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;845</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_RATING&gt;\n&lt;DEV_RELIABILITY&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;846</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevReliability());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;847</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_RELIABILITY&gt;\n&lt;DEV_VOLATILITY&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;848</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevVolatility());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;849</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_VOLATILITY&gt;\n&lt;DEV_NUM_RATINGS&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;850</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDesignNumRatings());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;851</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_NUM_RATINGS&gt;\n&lt;DEV_NUM_RATINGS&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;852</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(user.getDevVolatility());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;853</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/DEV_NUM_RATINGS&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;854</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;855</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;856</td>  <td class="nbHits">&nbsp;</td>
@@ -1572,35 +1572,35 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;869</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> String buildFullProjectInfo(FullProjectData project) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;870</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;871</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;FULL_PROJECT_DATA&gt;\n"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;870</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;871</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;FULL_PROJECT_DATA&gt;\n"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;872</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;873</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        Resource[] resources = project.getResources();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;874</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (resources != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;875</td>  <td class="nbHitsCovered">&nbsp;2459</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; resources.length; i++) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;876</td>  <td class="nbHitsCovered">&nbsp;1272</td>  <td class="src"><pre class="src">&nbsp;                sb.append(<span class="string">"&lt;RESOURCE&gt;\n&lt;ROLE&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;877</td>  <td class="nbHitsCovered">&nbsp;1272</td>  <td class="src"><pre class="src">&nbsp;                sb.append(resources[i].getResourceRole().getName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;878</td>  <td class="nbHitsCovered">&nbsp;1272</td>  <td class="src"><pre class="src">&nbsp;                sb.append(<span class="string">"&lt;/ROLE&gt;\n&lt;/RESOURCE&gt;\n"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;873</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        Resource[] resources = project.getResources();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;874</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (resources != <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;875</td>  <td class="nbHitsCovered">&nbsp;457</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; resources.length; i++) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;876</td>  <td class="nbHitsCovered">&nbsp;271</td>  <td class="src"><pre class="src">&nbsp;                sb.append(<span class="string">"&lt;RESOURCE&gt;\n&lt;ROLE&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;877</td>  <td class="nbHitsCovered">&nbsp;271</td>  <td class="src"><pre class="src">&nbsp;                sb.append(resources[i].getResourceRole().getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;878</td>  <td class="nbHitsCovered">&nbsp;271</td>  <td class="src"><pre class="src">&nbsp;                sb.append(<span class="string">"&lt;/ROLE&gt;\n&lt;/RESOURCE&gt;\n"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;879</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;880</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;881</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;882</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        Project projectHeader = project.getProjectHeader();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;883</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;PROJECT_HEADER&gt;\n&lt;NAME&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;884</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(projectHeader.getProperty(<span class="string">"Project Name"</span>));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;885</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/NAME&gt;\n&lt;CATEGORY&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;886</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(projectHeader.getProjectCategory().getName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;887</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/CATEGORY&gt;\n&lt;STATUS&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;888</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(projectHeader.getProjectStatus().getName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;889</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/STATUS&gt;\n&lt;/PROJECT_HEADER&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;882</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        Project projectHeader = project.getProjectHeader();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;883</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;PROJECT_HEADER&gt;\n&lt;NAME&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;884</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(projectHeader.getProperty(<span class="string">"Project Name"</span>));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;885</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/NAME&gt;\n&lt;CATEGORY&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;886</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(projectHeader.getProjectCategory().getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;887</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/CATEGORY&gt;\n&lt;STATUS&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;888</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(projectHeader.getProjectStatus().getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;889</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/STATUS&gt;\n&lt;/PROJECT_HEADER&gt;"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;890</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;891</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        TeamHeader[] teams = project.getTeams();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;892</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (teams != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;893</td>  <td class="nbHitsCovered">&nbsp;1357</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; teams.length; i++) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;891</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        TeamHeader[] teams = project.getTeams();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;892</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (teams != <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;893</td>  <td class="nbHitsCovered">&nbsp;356</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; teams.length; i++) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;894</td>  <td class="nbHitsCovered">&nbsp;170</td>  <td class="src"><pre class="src">&nbsp;                sb.append(buildTeamHeaderInfo(teams[i]));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;895</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
@@ -1608,15 +1608,15 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;897</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;898</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        String[] technologies = project.getTechnologies();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;899</td>  <td class="nbHitsCovered">&nbsp;2459</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; technologies.length; i++) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;900</td>  <td class="nbHitsCovered">&nbsp;1272</td>  <td class="src"><pre class="src">&nbsp;            sb.append(<span class="string">"&lt;TECHNOLOGY&gt;\n&lt;NAME&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;901</td>  <td class="nbHitsCovered">&nbsp;1272</td>  <td class="src"><pre class="src">&nbsp;            sb.append(technologies[i]);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;902</td>  <td class="nbHitsCovered">&nbsp;1272</td>  <td class="src"><pre class="src">&nbsp;            sb.append(<span class="string">"&lt;/NAME&gt;\n&lt;/TECHNOLOGY&gt;\n"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;898</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        String[] technologies = project.getTechnologies();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;899</td>  <td class="nbHitsCovered">&nbsp;457</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; technologies.length; i++) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;900</td>  <td class="nbHitsCovered">&nbsp;271</td>  <td class="src"><pre class="src">&nbsp;            sb.append(<span class="string">"&lt;TECHNOLOGY&gt;\n&lt;NAME&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;901</td>  <td class="nbHitsCovered">&nbsp;271</td>  <td class="src"><pre class="src">&nbsp;            sb.append(technologies[i]);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;902</td>  <td class="nbHitsCovered">&nbsp;271</td>  <td class="src"><pre class="src">&nbsp;            sb.append(<span class="string">"&lt;/NAME&gt;\n&lt;/TECHNOLOGY&gt;\n"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;903</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;904</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/FULL_PROJECT_DATA&gt;"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;905</td>  <td class="nbHitsCovered">&nbsp;1187</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;904</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        sb.append(<span class="string">"&lt;/FULL_PROJECT_DATA&gt;"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;905</td>  <td class="nbHitsCovered">&nbsp;186</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> sb.toString();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;906</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;907</td>  <td class="nbHits">&nbsp;</td>
@@ -1718,24 +1718,24 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;962</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Gets the DocumentGenerator instance.</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;963</td>  <td class="nbHitsCovered">&nbsp;1192</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;963</td>  <td class="nbHitsCovered">&nbsp;191</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;964</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"Starts calling DocumentGenerator#getInstance()"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;965</td>  <td class="nbHitsCovered">&nbsp;1192</td>  <td class="src"><pre class="src">&nbsp;            DocumentGenerator documentGenerator = DocumentGenerator</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;965</td>  <td class="nbHitsCovered">&nbsp;191</td>  <td class="src"><pre class="src">&nbsp;            DocumentGenerator documentGenerator = DocumentGenerator</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;966</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    .getInstance();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;967</td>  <td class="nbHitsCovered">&nbsp;1192</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;967</td>  <td class="nbHitsCovered">&nbsp;191</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;968</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"Finishes calling DocumentGenerator#getInstance()"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;969</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;970</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Gets the template according to the template name</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;971</td>  <td class="nbHitsCovered">&nbsp;1192</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;971</td>  <td class="nbHitsCovered">&nbsp;191</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;972</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"Starts calling DocumentGenerator#getTemplate(String)"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;973</td>  <td class="nbHitsCovered">&nbsp;1192</td>  <td class="src"><pre class="src">&nbsp;            Template template = documentGenerator.getTemplate(templateName);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;974</td>  <td class="nbHitsCovered">&nbsp;1170</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;973</td>  <td class="nbHitsCovered">&nbsp;191</td>  <td class="src"><pre class="src">&nbsp;            Template template = documentGenerator.getTemplate(templateName);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;974</td>  <td class="nbHitsCovered">&nbsp;169</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;975</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"Finishes calling DocumentGenerator#getTemplate(String)"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;976</td>  <td class="nbHits">&nbsp;</td>
@@ -1744,16 +1744,16 @@
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Generates the text document by applying template to the given</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;978</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// template data.</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;979</td>  <td class="nbHitsCovered">&nbsp;1170</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;979</td>  <td class="nbHitsCovered">&nbsp;169</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;980</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"Starts calling DocumentGenerator#applyTemplate(Template, String)"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;981</td>  <td class="nbHitsCovered">&nbsp;1170</td>  <td class="src"><pre class="src">&nbsp;            String message = documentGenerator.applyTemplate(template, data);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;982</td>  <td class="nbHitsCovered">&nbsp;1169</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;981</td>  <td class="nbHitsCovered">&nbsp;169</td>  <td class="src"><pre class="src">&nbsp;            String message = documentGenerator.applyTemplate(template, data);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;982</td>  <td class="nbHitsCovered">&nbsp;168</td>  <td class="src"><pre class="src">&nbsp;            RegistrationValidationHelper.log(logger, Level.DEBUG,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;983</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="string">"Finishes calling DocumentGenerator#applyTemplate(Template, String)"</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;984</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;985</td>  <td class="nbHitsCovered">&nbsp;1169</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> message;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;985</td>  <td class="nbHitsCovered">&nbsp;168</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> message;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;986</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;987</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (TemplateFormatException e) {</pre></td></tr>
@@ -1830,15 +1830,15 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1032</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> log(Log logger, Level logLevel, String logInfo) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1033</td>  <td class="nbHitsCovered">&nbsp;343321</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (logger != <span class="keyword">null</span>) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1034</td>  <td class="nbHitsCovered">&nbsp;342970</td>  <td class="src"><pre class="src">&nbsp;            logger.log(logLevel, logInfo);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1033</td>  <td class="nbHitsCovered">&nbsp;314096</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (logger != <span class="keyword">null</span>) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1034</td>  <td class="nbHitsCovered">&nbsp;313745</td>  <td class="src"><pre class="src">&nbsp;            logger.log(logLevel, logInfo);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1035</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1036</td>  <td class="nbHitsCovered">&nbsp;343321</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1036</td>  <td class="nbHitsCovered">&nbsp;314096</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1037</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-6-7 ÏÂÎç7:46.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-6-29 ÏÂÎç8:25.</div>
 </body>
 </html>

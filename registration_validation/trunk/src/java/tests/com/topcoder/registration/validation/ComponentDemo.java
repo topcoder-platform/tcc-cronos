@@ -7,6 +7,7 @@ import com.topcoder.project.service.impl.MockProjectServicesImpl;
 import com.topcoder.management.ban.manager.MockBanManager;
 import com.topcoder.management.team.impl.MockTeamManagerImpl;
 
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.datavalidator.BundleInfo;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -68,6 +69,7 @@ public class ComponentDemo extends TestCase {
         TestHelper.loadXMLConfig("Document_Generator.xml");
         TestHelper
                 .loadXMLConfig("MemberMinimumRatingForRatingTypeValidator.xml");
+        ConfigManager.getInstance().add("team_service.xml");
 
         // create a print stream to the file with auto flushing
         PrintStream ps = new PrintStream(new FileOutputStream(
