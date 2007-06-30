@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Orpheus :: Prototype</title>
+		<link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />		
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="../i/nav/player_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="../i/nav/player_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="../i/nav/player_active_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="../i/nav/player_active_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="../i/nav/player_mygames_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="../i/nav/player_mygames_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="../i/nav/player_faq_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="../i/nav/player_faq_off.gif"
+		}		
+	</script>		
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header"><span class="links"><a href="../logout.html" title="Logout">Logout</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../help.html" title="Help">Help</a></span>
+			<a href="../index.html" title="Home"><img src="../i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Player -->
+		<div id="nav">
+			<ul>
+				<li><a href="../index.html" title="Home"><img src="../i/nav/player_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home"  /></a></li>
+				<li><a href="active.html" title="Open Auctions"><img src="../i/nav/player_active_off.gif" name="image2" border="0" onMouseOver="SwapImage2()" onMouseOut="SwapImage2Back()" alt="Active Games" /></a></li>
+				<li><a href="mygames.html" title="Bidding FAQ"><img src="../i/nav/player_mygames_off.gif" name="image3" border="0" onMouseOver="SwapImage3()" onMouseOut="SwapImage3Back()" alt="My Games"  /></a></li>
+				<li><a href="player-faq.html" title="Sponsor FAQ"><img src="../i/nav/player_faq_on.gif"  alt="Player FAQ"  /></a></li>
+				<li>
+				<img border="0" src="../i/nav/player_endbar.gif" width="349" height="30" /></li>
+			</ul>
+
+		</div>
+		<div id="wrap">
+			<h1><img src="../i/h/title_playerfaq.gif" alt="My ames" width="109" height="20" /></h1>
+				<ol>
+					<li><a href="#1">Why do I have to register for each game?</a></li>
+					<li><a href="#2">Can I join a game that's already in progress?</a></li>
+					<li><a href="#3">Can more than one person win a game?</a></li>
+					<li><a href="#4">If someone else wins, will the other players be notified?</a></li>
+					<li><a href="#5">Do I have to install a plug-in?</a></li>
+					<li><a href="#6">Can I install the plug-in in more than one place, or play from two different computers?</a></li>
+				</ol>
+				
+				<hr class="grayline" />
+				<ol>
+				<li><a name="1"></a><span class="faq">Why do I have to register for each game?</span><br />
+				Since rules can potentially differ from game to game, pre-registration ensures that players have agreed to the specific rules that apply to a particular game.
+				<br />&nbsp;</li>
+				
+				<li><a name="2">Can I join a game that's already in progress?</a><span class="faq"></span><br />
+				You can, and you can follow other players' progress on “the leader board” to figure out where the action is, and how you can catch up.
+				<br />&nbsp;</li>
+				
+				<li><a name="3"></a><span class="faq">Can more than one person win a game?</span><br />
+				Nope. Once a player has found The Ball, solved the final puzzle, and successfully used the game keys, that's it.
+				<br />&nbsp;</li>
+				
+				<li><a name="4"></a><span class="faq">If someone else wins, will the other players be notified?</span><br />
+				Yes, you will be alerted through The Ball plug-in if a game you're registered for has been won. (Please note: you will need to be logged in to The Ball to be notified.) If you're not logged in, or are using a different computer than the one you've installed The Ball on, you can check on the status of a game by going The Ball's Web site.
+				<br />&nbsp;</li>
+				
+				<li><a name="5"></a><span class="faq">Do I have to install a plug-in?</span><br />
+				You do. The plug-in detects the presence of The Ball, and keeps track of your progress in the game. You can't play without it. Sorry!
+				<br />&nbsp;</li>
+				
+				<li><a name="6"></a><span class="faq">Can I install the plug-in in more than one place, or play from two different computers?</span><br />
+				Sure. You can install the plug-in at home and the office, or on different computers around the house, and log-in from wherever you are and resume your game. You can only log-in from one computer at a time, however.
+				<br />&nbsp;</li>
+				
+				<br />&nbsp;</li>
+			</ol>
+		</div>
+	</div>
+<!-- Footer -->
+	<div id="footer">
+		<span class="links"><a href="../privacy-policy.html">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../contact-us.html">Contact Us</a></span>
+		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

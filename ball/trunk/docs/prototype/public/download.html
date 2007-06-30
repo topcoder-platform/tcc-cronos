@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Orpheus :: Prototype</title>
+		<link rel="stylesheet" type="text/css" media="all" href="css/styles.css" />		
+		<link rel="stylesheet" type="text/css" media="all" href="css/tabs.css" />		
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="i/nav/public_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="i/nav/public_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="i/nav/public_howtoplay_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="i/nav/public_howtoplay_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="i/nav/public_download_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="i/nav/public_download_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="i/nav/public_sponsor_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="i/nav/public_sponsor_off.gif"
+		}		
+		</script>
+		<script language="JavaScript" type="text/javascript">
+		<!--
+		function showPluginSelect(){
+			document.getElementById('pluginSelect').style.display = 'block'
+			document.getElementById('autodetectMessage').style.display = 'none'
+		}
+		-->
+		</script>
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header">
+		<span class="links"><a href="login.html" title="Login">Login</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="help.html" title="Help">Help</a></span>
+			<a href="index.html" title="Home">
+			<img src="i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Public -->
+		<div id="nav" style="width: 722px; height: 50px">
+			<ul>
+				<li><a href="index.html" title="Home"><img src="i/nav/public_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home" /></a></li>
+				<li><a href="howtoplay.html" title="How to Play"><img src="i/nav/public_howtoplay_off.gif" name="image2" border="0" onMouseOver="SwapImage2()" onMouseOut="SwapImage2Back()" alt="How to Play" /></a></li>
+				<li><a href="download.html" title="Download"><img src="i/nav/public_download_on.gif" name="image3" border="0" alt="Download" /></a></li>
+				<li><a href="sponsor.html" title="Sponsor a Game"><img src="i/nav/public_sponsor_off.gif" name="image4" border="0" onMouseOver="SwapImage4()" onMouseOut="SwapImage4Back()" alt="Sponsor a Game"  /></a></li>
+				<li><img src="i/nav/public_endbar.gif" alt="spacer"/></li>
+			</ul>
+			<ul class="subbar public">
+				<li><a href="download.html">Download</a> </li>
+				<li><a href="faq-download.html">Installation FAQ</a></li>		
+			</ul>
+		</div>
+		<div id="wrap">
+			<h1><img src="i/h/title_downloadplugin.gif" width="182" height="16" /></h1>
+				<div style="display:block" id="autodetectMessage">
+				<div id="table-details">
+					<table border="0" cellpadding="0" cellspacing="0" width="313">
+						<tr>
+							<th colspan="2">Auto-Detect:</th>
+						</tr>
+						<tr>
+							<td colspan="2"><p><span style="float:left; margin-right: 10px;"><img src="i/firefox-logo.jpg" /></span>The following plug-in version was automatically detected for your browser and system. <a href="javascript:showPluginSelect()">Click here</a> to manually select a different plug-in to download.</p></td>
+						</tr>
+						<tr>
+							<td class="bold">File Size:</td>
+							<td>430k</td>
+						</tr>
+						<tr>
+							<td class="bold">Date Posted:</td>
+							<td>10/15/2006</td>
+						</tr>
+						<tr>
+							<td class="bold">Version:</td>
+							<td>1.1.0.1</td>
+						</tr>
+						<tr>
+							<td class="bold">Language:</td>
+							<td>English</td>
+						</tr>
+						<tr>
+							<td class="bold">Browser:</td>
+							<td>Mozilla Firefox</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="buttons"><a href="#" title="Download Now"><img src="i/b/btn_downloadnow.gif" width="94" height="15" /></a></td>
+					</tr></table>
+				</div>
+				</div>
+				<div id="pluginSelect" style="display:none;"><div id="table-details">
+<table border="0" cellpadding="0" cellspacing="0" width="313" id="table1">
+						<tr>
+							<th>Manual Select:</th>
+						</tr>
+						<tr>
+							<td class="tdTop"><br />
+							Select a new plug-in from the pulldown menu.<br />
+							<br />
+						<select name="pluginSelect" onChange="window.location='download.html';" class="dropDown">
+						<option value="ie4">Internet Explorer 6.0+</option>
+						<option value="ie5">Internet Explorer 5.x</option>
+						<option value="ie4">Internet Explorer 4.7 and below</option>
+						<option value="firefox5">Firefox 5.0 +</option>
+						<option value="firefox4">Firefox 4.x</option>
+						</select> <br />
+&nbsp;</td>
+						</tr>
+						</table> 
+					</div></div>
+			<div id="tabcontentcontainer">
+			
+			<!-- INSTALLAION INSTRUCTIONS TAB -->
+			<ul id="tablist">
+				<li id="current"><a href="#tabs" onClick="return expandcontent('sc1', this)">Installation Instructions</a></li>
+			</ul><div style="clear:both;"></div>
+				<div id="table-tabs">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td>
+								<ol>
+									<li>Click the "Download Now" button to the left. If your browser prompts you to open the file or save to disk, select "save to disk" and save the file to your computer.</li>
+									<li>Once the zip file is downloaded. extract the contents and run the .exe file to install the plug-in.</li>
+									<li>Once you've successfully installed the plug-in, you will need to restart your browser for the toolbar to appear.</li>
+									<li>Once installed, you can log in to your account and register for an active game.</li>
+									<li>If you have problems, visit our <a href="faq-download.html">FAQ Section</a> for troubleshooting.</li>
+								</ol>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			</div>
+		</div>
+	
+			
+			
+
+<!-- Footer -->
+	<div id="footer">
+		<span class="links"><a href="../privacy-policy.html">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../contact-us.html">Contact Us</a></span>
+		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

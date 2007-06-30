@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />		
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="../i/nav/admin_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="../i/nav/admin_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="../i/nav/admin_sponsorapp_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="../i/nav/admin_sponsorapp_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="../i/nav/admin_winnerapp_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="../i/nav/admin_winnerapp_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="../i/nav/admin_game_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="../i/nav/admin_game_off.gif"
+		}		
+		</script>
+		
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header"><span class="links"><a href="../logout.html" title="Logout">Logout</a>
+</span>
+			<a href="../index.html" title="Home"><img src="../i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Admin -->
+		<div id="nav">
+			<ul>
+				<li><a href="index.html" title="Admin Home"><img src="../i/nav/admin_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home" /></a></li>
+				<li><a href="sponsor.html" title="Sponsor Approval"><img src="../i/nav/admin_sponsorapp_off.gif" name="image2" border="0" onMouseOver="SwapImage2()" onMouseOut="SwapImage2Back()" alt="Sponsor Approval" /></a></li>
+				<li><a href="winners.html" title="Winner Approval"><img src="../i/nav/admin_winnerapp_off.gif" name="image3" border="0" onMouseOver="SwapImage3()" onMouseOut="SwapImage3Back()" alt="Winner Approval" /></a></li>
+				<li><a href="games.html" title="Game Management"><img src="../i/nav/admin_game_on.gif" alt="Game Management" /></a></li>
+				<li>
+				<img border="0" src="../i/nav/admin_endbar.gif" width="208" height="30" /></li>
+			</ul>
+			<ul class="subbar admin">
+				<li><a href="games.html">View All Games</a></li>
+				<li><a href="games-new.html">Create New Game</a></li>
+			</ul>
+			<div id="wrap">
+			<div id="breadcrumb-admin">&raquo; Game Management &nbsp; &raquo; Create New Game &nbsp; &raquo; Add Blocks/Slots<span class="active"> &nbsp; &raquo; Game Created</span></div>
+					<p>The game <span class="bold">[gameID]</span> has been created and an auction to fill the blocks and timeslots has begun.</p>
+					<p><a href="../sponsor/auctions.html">View the auction for this game</a><br />
+					<a href="games-new.html">Create Another Game</a><br />
+					<a href="games.html">Back to Games</a></p>
+
+		</div>
+		</div>
+
+		
+	</div>
+<!-- Footer -->
+	<div id="footer">
+		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

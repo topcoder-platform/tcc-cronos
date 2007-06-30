@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Orpheus :: Prototype</title>
+		<link rel="stylesheet" type="text/css" media="all" href="css/styles.css" />		
+		<link rel="stylesheet" type="text/css" media="all" href="css/tabs.css" />	
+			<style type="text/css">
+	<!--
+	
+
+	-->
+	</style>	
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="i/nav/public_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="i/nav/public_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="i/nav/public_howtoplay_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="i/nav/public_howtoplay_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="i/nav/public_download_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="i/nav/public_download_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="i/nav/public_sponsor_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="i/nav/public_sponsor_off.gif"
+		}		
+	</script>	
+	<script language="JavaScript" type="text/javascript" >
+	<!--
+	function addAnotherImage(){
+		for (i=1; i<=5;i++){
+			if (document.getElementById("imageUpload"+i).style.display == "none"){
+				document.getElementById("imageUpload"+i).style.display = "block";	
+				if (i==5){
+					document.getElementById("addLink").style.display = "none";	
+				}
+				break;
+			}
+		} 
+	}
+	-->
+	</script>	
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header"><span class="links"><a href="login.html" title="Login">Login</a>
+&nbsp;&nbsp;|&nbsp;&nbsp;<a href="help.html" title="Help">Help</a></span>
+			<a href="index.html" title="Home">
+			<img src="i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Public -->
+		<div id="nav" style="width: 722px; height: 50px">
+			<ul>
+				<li><a href="index.html" title="Home"><img src="i/nav/public_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home" /></a></li>
+				<li><a href="howtoplay.html" title="How to Play"><img src="i/nav/public_howtoplay_off.gif" name="image2" border="0" onMouseOver="SwapImage2()" onMouseOut="SwapImage2Back()" alt="How to Play" /></a></li>
+				<li><a href="download.html" title="Download"><img src="i/nav/public_download_off.gif" name="image3" border="0" onMouseOver="SwapImage3()" onMouseOut="SwapImage3Back()" alt="Download" /></a></li>
+				<li><a href="sponsor.html" title="Sponsor a Game"><img src="i/nav/public_sponsor_on.gif" alt="Sponsor a Game"  /></a></li>
+				<li><img src="i/nav/public_endbar.gif" alt="spacer"/></li>
+			</ul>
+			<ul class="subbar public">
+				<li><a href="sponsor.html">Overview</a> </li>
+				<li><a href="sponsor-howitworks.html">How it Works</a></li>
+				<li><a href="faq-sponsor.html">FAQ</a></li>
+				<li><a href="sponsor-signup.html">Register to Become a Sponsor</a></li>				
+			</ul>
+		</div>
+		<div id="wrap">
+			<h1><img src="i/h/title_sponsorregistration.gif" alt="Sponsor Registration" /></h1>
+				<div id="breadcrumb">&raquo; 1. Review Terms of Service &nbsp; &raquo; 2. Enter Account Information &nbsp; <span class="active"> &raquo; 3. Submit Your Website &nbsp;</span><span class="next"> &raquo; 4. Confirm Registration</span></div>
+			
+			
+			<span class="fBold">Step 3: Enter in the URL of the website that you would like to host the ball.<br /></span>
+				For each website, you will need to upload at least one (1) image to be used as the puzzle for players that unlock the ball. 
+				Select a desired name and password that you will use for your account. Your Display to other players in the game exactly as you create it here.<br /><br />
+			
+			<table border="0" width="313" cellspacing="0" cellpadding="0" id="table1" align="center">
+				<tr>
+					<td><ul id="tablistBlue">
+								<li id="current"><a href="#">&nbsp;Host Website Information</a></li>
+							</ul>
+							<div style="clear:both;"></div></td>
+				</tr>
+				<tr>
+					<td>
+						<div id="table-form">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td class="tdTop"></td>
+							</tr>
+							<tr>
+								<td><span class="fBold">URL 1:</span> <input name="url" type="text" id="url" class="inputBox" style="width:250px;" /></td>
+							</tr>
+							<tr>
+								<td>
+									<div id="imageUpload1" style="display:block;">
+									<table class="imageUploadTable">
+										<tr>
+											<th rowspan="2" style="text-align:center;">Image<br />
+											<font size="5">1</font></th>
+											<td class="formlabel">File:</td>
+											<td><input name="Image1" type="file" id="Image1" class="inputBox" style="height:18px" size="15" /></td>
+										</tr>
+										<tr>
+											<td class="formlabel">Name:</td>
+											<td><input name="imagename1" type="text" id="imagename1" size="25" class="inputBox" /></td>
+										</tr>
+									</table>
+									</div>
+								
+									<div id="imageUpload2" style="display:none;">
+									<table class="imageUploadTable">
+										<tr>
+											<th rowspan="2" style="text-align:center;">Image<br /><font size="5">2</font></th>
+											<td class="formlabel">File:</td>
+											<td><input name="Image2" type="file" id="Image2" class="inputBox" style="height:18px;" size="15" /></td>
+										</tr>
+										<tr>
+											<td class="formlabel">Name:</td>
+											<td><input type="text" name="imagename2" id="imagename2" size="25" class="inputBox" /></td>
+										</tr>
+									</table>
+									</div>
+				
+									<div id="imageUpload3" style="display:none;">
+									<table class="imageUploadTable">
+										<tr>
+											<th rowspan="2" style="text-align:center;">Image<br /><font size="5">3</font></th>
+											<td class="formlabel">File:</td>
+											<td><input name="Image3" type="file" id="Image3" class="inputBox" style="height:18px;" size="15" /></td>
+										</tr>
+										<tr>
+											<td class="formlabel">Name:</td>
+											<td><input type="text" name="imagename3" id="imagename3" size="25" class="inputBox" /></td>
+										</tr>
+									</table>
+									</div>
+				
+									<div id="imageUpload4" style="display:none;">
+									<table class="imageUploadTable">
+										<tr>
+											<th rowspan="2" style="text-align:center;">Image<br /><font size="5">4</font></th>
+											<td class="formlabel">File:</td>
+											<td><input name="Image4" type="file" id="Image4" class="inputBox" style="height:18px;" size="15" /></td>
+										</tr>
+										<tr>
+											<td class="formlabel">Name:</td>
+											<td><input type="text" name="imagename4" id="imagename4" size="25" class="inputBox" /></td>
+										</tr>
+									</table>
+									</div>
+				
+									<div id="imageUpload5" style="display:none;">
+									<table class="imageUploadTable">
+										<tr>
+											<th rowspan="2" style="text-align:center;">Image<br /><font size="5">5</font></th>
+											<td class="formlabel">File:</td>
+											<td><input name="Image5" type="file" id="Image5" class="inputBox" style="height:18px;" size="15" /></td>
+										</tr>
+										<tr>
+											<td class="formlabel">Name:</td>
+											<td><input type="text" name="imagename5" id="imagename5" size="25" class="inputBox" /></td>
+										</tr>
+									</table>
+									</div>
+				
+									<div id="addLink" style="display:block;">
+										<center>
+											<a href="#" onClick="javascrcipt:addAnotherImage()">+ add another image</a>		
+											</center>
+										<br />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td align="center">
+									<img src="i/b/btn_saveandaddurl.gif" width="148" height="15" onclick="'" class="btn"/>
+									<img src="i/b/btn_saveandfinish.gif" width="94" height="15" onclick="window.location='sponsor-signup-step4.html'" class="btn" /></td>
+							</tr>
+						</table>
+						</div>
+					</td>
+				</tr>
+			</table>
+		<br />
+
+		</div>
+		</div>
+	
+<!-- Footer -->
+	<div id="footer">
+		<span class="links"><a href="privacy-policy.html">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="contact-us.html">Contact Us</a></span>		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>
