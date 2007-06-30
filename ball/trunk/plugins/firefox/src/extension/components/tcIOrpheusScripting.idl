@@ -1,0 +1,20 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(68d70007-88ec-4a69-9d4c-67eac7f2d2af)]
+interface tcIOrpheusScripting : nsISupports
+{
+    // these method are exposed for scripting
+    void LoggedIn();
+    
+    void LoggedOut();
+    
+    void SetWorkingGame(in long aGameId);
+    
+    long GetWorkingGame();
+    
+    void SetCurrentTarget(in string aHash, in long aSequence);
+    
+    void PollMessages();
+    
+    boolean IsPopup(in nsISupports aWindow);
+};

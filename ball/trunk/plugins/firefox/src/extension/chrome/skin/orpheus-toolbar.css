@@ -1,0 +1,12 @@
+.otb-background {
+background-image: URL('chrome://orpheus/skin/background_plugin.jpg');
+background-repeat: repeat-y;
+background-color: #e7e5e9;
+}
+
+
+.otb-button {
+font-family: arial, helvetica, sans-serif;
+font-size: 11px;
+
+}
