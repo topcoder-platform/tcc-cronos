@@ -1,0 +1,17 @@
+INSERT INTO log_parameter (id, name) VALUES (1, 'auctionId');
+INSERT INTO log_parameter (id, name) VALUES (2, 'ballKey');
+INSERT INTO log_parameter (id, name) VALUES (3, 'bidId');
+INSERT INTO log_parameter (id, name) VALUES (4, 'blockId');
+INSERT INTO log_parameter (id, name) VALUES (5, 'domain');
+INSERT INTO log_parameter (id, name) VALUES (6, 'domainId');
+INSERT INTO log_parameter (id, name) VALUES (7, 'email');
+INSERT INTO log_parameter (id, name) VALUES (8, 'gameId');
+INSERT INTO log_parameter (id, name) VALUES (9, 'hash');
+INSERT INTO log_parameter (id, name) VALUES (10, 'imageId');
+INSERT INTO log_parameter (id, name) VALUES (11, 'maxBid');
+INSERT INTO log_parameter (id, name) VALUES (12, 'slotId');
+INSERT INTO log_parameter (id, name) VALUES (13, 'target');
+INSERT INTO log_parameter (id, name) VALUES (14, 'text');
+INSERT INTO log_parameter (id, name) VALUES (15, 'timestamp');
+INSERT INTO log_parameter (id, name) VALUES (16, 'url');
+INSERT INTO log_parameter (id, name) VALUES (17, 'username');
