@@ -1,0 +1,214 @@
+<global>
+    <!-- mappings from action type name to full qualified action class names -->
+    <actions-def>
+        <!-- 'default' is the type name, and the text node contains full qualified action class name. -->
+        <action-def name="default">com.topcoder.web.frontcontroller.DefaultAction</action-def>
+    </actions-def>
+
+    <!-- mappings from handler type name to full qualified handler class names -->
+    <handlers-def>
+        <!-- 'authorization' is the type name, and the text node contains full qualified handler class name. -->
+        <!--
+                <handler-def name="authorization">com.topcoder.web.frontcontroller.handlers.AuthorizationHandler</handler-def>
+                <handler-def name="rest">com.topcoder.web.frontcontroller.rest.RESTHandler</handler-def>
+        -->
+        <handler-def name="form_validation">com.topcoder.web.frontcontroller.handlers.FormValidationHandler</handler-def>
+        <!--
+         *******************************************
+         Handlers from Game Handlers Logic component
+         *******************************************
+         -->
+        <!-- define the ActiveGamesHandler -->
+        <handler-def name="active_games">com.orpheus.game.ActiveGamesHandler</handler-def>
+        <!-- define the TestTargetObjectHandler. -->
+        <handler-def name="test_target_object">com.orpheus.game.TestTargetObjectHandler</handler-def>
+        <!-- define the UserGamesHandler -->
+        <handler-def name="user_games">com.orpheus.game.UserGamesHandler</handler-def>
+        <!-- default the TestDomainHandler -->
+        <handler-def name="test_domain">com.orpheus.game.TestDomainHandler</handler-def>
+        <!-- define the UpcomingDomainsHandler -->
+        <handler-def name="upcoming_domains">com.orpheus.game.UpcomingDomainsHandler</handler-def>
+        <!-- define the UnlockedDomainsHandler -->
+        <handler-def name="unlocked_domains">com.orpheus.game.UnlockedDomainsHandler</handler-def>
+        <!-- define the GameDetailHandler -->
+        <handler-def name="game_detail">com.orpheus.game.GameDetailHandler</handler-def>
+        <!-- define the LeaderBoardHandler -->
+        <handler-def name="leader_board">com.orpheus.game.LeaderBoardHandler</handler-def>
+        <!-- define the SlotValidationHandler -->
+        <handler-def name="slot_validation">com.orpheus.game.SlotValidationHandler</handler-def>
+
+        <!--
+         *******************************************
+         Handlers from Web Application User Logic component
+         *******************************************
+         -->
+        <!-- define the login handler -->
+        <handler-def name="login">com.topcoder.web.user.LoginHandler</handler-def>
+        <!-- define the authorization handler. -->
+        <handler-def name="authorization">com.topcoder.web.user.AuthorizationHandler</handler-def>
+        <!-- define the welcome page handler -->
+        <handler-def name="welcome_page">com.topcoder.web.user.WelcomePageHandler</handler-def>
+        <!-- default the forgot password handler -->
+        <handler-def name="forgot_password">com.topcoder.web.user.ForgotPasswordHandler</handler-def>
+        <!-- define the user messaging handler -->
+        <handler-def name="user_messaging">com.topcoder.web.user.UserMessagingHandler</handler-def>
+        <!-- define the logout handler -->
+        <handler-def name="logout">com.topcoder.web.user.LogoutHandler</handler-def>
+
+        <!--
+         *******************************************
+         Handlers from Game Operation Logic component
+         *******************************************
+         -->
+        <handler-def name="RegisterGameHandler">com.orpheus.game.RegisterGameHandler</handler-def>
+        <handler-def name="KeySubmissionHandler">com.orpheus.game.KeySubmissionHandler</handler-def>
+        <handler-def name="PuzzleSolutionHandler">com.orpheus.game.PuzzleSolutionHandler</handler-def>
+        <handler-def name="PuzzleRenderingHandler">com.orpheus.game.PuzzleRenderingHandler</handler-def>
+        <handler-def name="WinnerDataHandler">com.orpheus.game.WinnerDataHandler</handler-def>
+        <handler-def name="PluginDownloadHandler">com.orpheus.game.PluginDownloadHandler</handler-def>
+        <handler-def name="MessageHandler">com.orpheus.game.MessageHandler</handler-def>
+
+        <!--
+         *******************************************
+         Handlers from Auction Logic component
+         *******************************************
+         -->
+        <handler-def name="OpenAuctions">com.orpheus.auction.OpenAuctionsHandler</handler-def>
+        <handler-def name="PlaceBid">com.orpheus.auction.BidPlacementHandler</handler-def>
+        <handler-def name="UpdateBid">com.orpheus.auction.BidUpdateHandler</handler-def>
+        <handler-def name="LeadingBids">com.orpheus.auction.LeadingBidsHandler</handler-def>
+ 
+        <!--
+         *******************************************
+         Handlers from Administration Logic component
+         *******************************************
+         -->
+        <handler-def name="AdminSummary">com.orpheus.administration.handlers.AdminSummaryHandler</handler-def>
+        <handler-def name="PendingWinners">com.orpheus.administration.handlers.PendingWinnerHandler</handler-def>
+        <handler-def name="PendingSponsors">com.orpheus.administration.handlers.PendingSponsorHandler</handler-def>
+        <handler-def name="SponsorApproval">com.orpheus.administration.handlers.SponsorApprovalHandler</handler-def>
+        <handler-def name="SponsorRejection">com.orpheus.administration.handlers.SponsorRejectionHandler</handler-def>
+        <handler-def name="PendingDomain">com.orpheus.administration.handlers.PendingSponsorDomainHandler</handler-def>
+        <handler-def name="DomainApproval">com.orpheus.administration.handlers.DomainApprovalHandler</handler-def>
+        <handler-def name="ImageApproval">com.orpheus.administration.handlers.SponsorImageApprovalHandler</handler-def>
+        <handler-def name="DomainRejection">com.orpheus.administration.handlers.DomainRejectionHandler</handler-def>
+        <handler-def name="ImageRejection">com.orpheus.administration.handlers.SponsorImageRejectionHandler</handler-def>
+        <handler-def name="WinnerApproval">com.orpheus.administration.handlers.PendingWinnerApprovalHandler</handler-def>
+        <handler-def name="WinnerRejection">com.orpheus.administration.handlers.PendingWinnerRejectionHandler</handler-def>
+        <handler-def name="GameParameters">com.orpheus.administration.handlers.GameParameterHandler</handler-def>
+        <handler-def name="CreateGame">com.orpheus.administration.handlers.CreateGameHandler</handler-def>
+        <handler-def name="DeleteSlot">com.orpheus.administration.handlers.DeleteSlotHandler</handler-def>
+        <handler-def name="ReorderSlots">com.orpheus.administration.handlers.ReorderSlotsHandler</handler-def>
+        <handler-def name="RegenerateBrainteaserHandler">com.orpheus.administration.handlers.RegenerateBrainteaserHandler</handler-def>
+        <handler-def name="RegeneratePuzzleHandler">com.orpheus.administration.handlers.RegeneratePuzzleHandler</handler-def>
+
+        <!--
+         *******************************************
+         Handlers from User Logic Persistence component
+         *******************************************
+         -->
+        <handler-def name="UserMessageHandler">com.topcoder.web.user.UserMessagingHandler</handler-def>
+
+        <!--
+         *******************************************
+         Handlers specific to Orpheus Game Server application
+         *******************************************
+         -->
+        <handler-def name="SponsorRegistrationPreHandler">com.orpheus.game.server.handler.SponsorRegistrationPreHandler</handler-def>
+        <handler-def name="SponsorRegistrationHandler">com.orpheus.game.server.handler.SponsorRegistrationHandler</handler-def>
+        <handler-def name="FallThroughHandler">com.orpheus.game.server.handler.FallThroughHandler</handler-def>
+        <handler-def name="ShowBrainteaserHandler">com.orpheus.game.server.handler.ShowBrainteaserHandler</handler-def>
+        <handler-def name="SponsorAuctionsHandler">com.orpheus.game.server.handler.auction.SponsorAuctionsHandler</handler-def>
+        <handler-def name="SponsorLeadingBidsHandler">com.orpheus.game.server.handler.auction.SponsorLeadingBidsHandler</handler-def>
+        <handler-def name="SponsorPlaceBidPreHandler">com.orpheus.game.server.handler.auction.SponsorPlaceBidPreHandler</handler-def>
+        <handler-def name="SponsorConfirmBidPreHandler">com.orpheus.game.server.handler.auction.SponsorConfirmBidPreHandler</handler-def>
+        <handler-def name="SponsorUpdateBidPreHandler">com.orpheus.game.server.handler.auction.SponsorUpdateBidPreHandler</handler-def>
+        <handler-def name="SponsorEligibilityHandler">com.orpheus.game.server.handler.auction.SponsorEligibilityHandler</handler-def>
+        <handler-def name="AllGamesHandler">com.orpheus.game.server.handler.admin.AllGamesHandler</handler-def>
+        <handler-def name="AdminPendingWinnersHandler">com.orpheus.game.server.handler.admin.AdminPendingWinnersHandler</handler-def>
+        <handler-def name="AdminWinnerDetails">com.orpheus.game.server.handler.admin.AdminWinnerDetailsHandler</handler-def>
+        <handler-def name="BallColors">com.orpheus.game.server.handler.admin.BallColorListHandler</handler-def>
+        <handler-def name="UserMessagePreHandler">com.orpheus.game.server.handler.admin.UserMessagePreHandler</handler-def>
+        <handler-def name="AdminViewPuzzleHandler">com.orpheus.game.server.handler.admin.ViewPuzzleHandler</handler-def>
+        <handler-def name="PlayerGameSlotCompletionHandler">com.orpheus.game.server.handler.PlayerGameSlotCompletionHandler</handler-def>
+        <handler-def name="UnlockedDomainDetailsHandler">com.orpheus.game.server.handler.UnlockedDomainDetailsHandler</handler-def>
+        <handler-def name="AdminGameSlotSponsorsHandler">com.orpheus.game.server.handler.admin.AdminGameSlotSponsorsHandler</handler-def>
+        <handler-def name="AdminViewBrainteaserHandler">com.orpheus.game.server.handler.admin.ViewBrainteaserHandler</handler-def>
+        <handler-def name="PlayerTestTargetObjectPostHandler">com.orpheus.game.server.handler.PlayerTestTargetObjectPostHandler</handler-def>
+        <handler-def name="PlayerMoveBallHandler">com.orpheus.game.server.handler.PlayerMoveBallHandler</handler-def>
+        <handler-def name="ShowGameWinPuzzleHandler">com.orpheus.game.server.handler.ShowGameWinPuzzleHandler</handler-def>
+        <handler-def name="PlayerPuzzleSolutionPreHandler">com.orpheus.game.server.handler.PlayerPuzzleSolutionPreHandler</handler-def>
+        <handler-def name="PlayerPuzzleSolutionPostHandler">com.orpheus.game.server.handler.PlayerPuzzleSolutionPostHandler</handler-def>
+        <handler-def name="SponsorBidAmountValidationHandler">com.orpheus.game.server.handler.auction.SponsorBidAmountValidationHandler</handler-def>
+        <handler-def name="AdminWinnerApprovalPostHandler">com.orpheus.game.server.handler.admin.AdminWinnerApprovalPostHandler</handler-def>
+        <handler-def name="SessionValidationHandler">com.orpheus.game.server.handler.SessionValidationHandler</handler-def>
+        <handler-def name="PlayerGameAuthorizationHandler">com.orpheus.game.server.handler.PlayerGameAuthorizationHandler</handler-def>
+        <handler-def name="AdminMoveBallHandler">com.orpheus.game.server.handler.admin.AdminMoveBallHandler</handler-def>
+        <handler-def name="LoginPreHandler">com.orpheus.game.server.handler.LoginPreHandler</handler-def>
+        <handler-def name="AdminDeleteSlotPreHandler">com.orpheus.game.server.handler.admin.AdminDeleteSlotPreHandler</handler-def>
+        <handler-def name="AdminDeleteSlotPostHandler">com.orpheus.game.server.handler.admin.AdminDeleteSlotPostHandler</handler-def>
+        <handler-def name="SetParameterHandler">com.orpheus.game.server.handler.SetParameterHandler</handler-def>
+        <handler-def name="StartGamePlayHandler">com.orpheus.game.server.handler.StartGamePlayHandler</handler-def>
+        <handler-def name="ViewTargetsHandler">com.orpheus.game.server.handler.admin.ViewTargetsHandler</handler-def>
+        <handler-def name="LoggingHandler">com.orpheus.game.server.handler.LoggingHandler</handler-def>
+        <handler-def name="AdminDeleteTargetHandler">com.orpheus.game.server.handler.admin.AdminDeleteTargetHandler</handler-def>
+        <handler-def name="AdminRegenerateTargetHandler">com.orpheus.game.server.handler.admin.AdminRegenerateTargetHandler</handler-def>
+        <handler-def name="AdminRegenerateClueImageHandler">com.orpheus.game.server.handler.admin.AdminRegenerateClueImageHandler</handler-def>
+        <handler-def name="DuplicateRequestHandler">com.orpheus.game.server.handler.DuplicateRequestHandler</handler-def>
+        <handler-def name="PendingWinnerProfilesHandler">com.orpheus.game.server.handler.PendingWinnerProfilesHandler</handler-def>
+        <handler-def name="GetPuzzleTimeLeftServerHandler">com.orpheus.game.server.GetPuzzleTimeLeftServerHandler</handler-def>
+        <handler-def name="TemporaryShowGameWinPuzzleForTestHandler">com.orpheus.game.server.handler.TemporaryShowGameWinPuzzleForTestHandler</handler-def>
+        <handler-def name="TemporaryTestPuzzleSolutionHandler">com.orpheus.game.server.handler.TemporaryTestPuzzleSolutionHandler</handler-def>
+        <handler-def name="AdminReplaceTargetHandler">com.orpheus.game.server.handler.admin.AdminReplaceTargetHandler</handler-def>
+        <handler-def name="PlayerKeySubmissionPreHandler">com.orpheus.game.server.handler.PlayerKeySubmissionPreHandler</handler-def>
+        <handler-def name="OverallGameReportHandler">com.orpheus.game.server.handler.admin.report.OverallGameReportHandler</handler-def>
+        <handler-def name="OverallPlayerReportHandler">com.orpheus.game.server.handler.admin.report.OverallPlayerReportHandler</handler-def>
+        <handler-def name="ShowLogFormHandler">com.orpheus.game.server.handler.admin.report.ShowLogFormHandler</handler-def>
+        <handler-def name="CreatePracticePuzzleHandler">com.orpheus.game.server.handler.admin.util.CreatePracticePuzzleHandler</handler-def>
+        <handler-def name="ChangePasswordHandler">com.orpheus.game.server.handler.account.ChangePasswordHandler</handler-def>
+        <handler-def name="UpdateProfileHandler">com.orpheus.game.server.handler.account.UpdateProfileHandler</handler-def>
+        <handler-def name="SetEmailNotificationsHandler">com.orpheus.game.server.handler.account.SetEmailNotificationsHandler</handler-def>
+        <handler-def name="CreateBallColorHandler">com.orpheus.game.server.handler.admin.util.CreateBallColorHandler</handler-def>
+        <handler-def name="PersonalizedBallHandler">com.orpheus.game.server.handler.PersonalizedBallHandler</handler-def>
+    </handlers-def>
+
+    <!-- mappings from result type name to full qualified handler result names -->
+    <results-def>
+        <result-def name="forward">com.topcoder.web.frontcontroller.results.ForwardResult</result-def>
+        <result-def name="download">com.topcoder.web.frontcontroller.results.DownloadResult</result-def>
+        <result-def name="poll">com.orpheus.game.result.MessagePollResult</result-def>
+        <result-def name="image">com.orpheus.game.server.result.ImageResult</result-def>
+        <result-def name="puzzleImage">com.orpheus.game.server.result.PuzzleImageResult</result-def>
+        <result-def name="gameRegistrationResult">com.orpheus.game.server.result.PostGameRegistrationResult</result-def>
+        <result-def name="loggingForward">com.orpheus.game.server.result.LoggingForwardResult</result-def>
+        <result-def name="duplicateRequestForward">com.orpheus.game.server.result.DuplicateRequestForwardResult</result-def>
+        <result-def name="successiveRequestForward">com.orpheus.game.server.result.SuccessiveRequestForwardResult</result-def>
+        <result-def name="dbLoggingForward">com.orpheus.game.server.result.StatsCollectingResult</result-def>
+        <result-def name="viewLog">com.orpheus.game.server.result.ViewLogResult</result-def>
+        <result-def name="binaryContent">com.orpheus.game.server.result.InMemoryBinaryContentResult</result-def>
+    </results-def>
+
+    <!-- global handlers that will be run first before all handlers configured in action resource file. -->
+    <global-handlers>
+        <!--
+                <handler type="authorization">
+                    <auth-manager-namespace>com.topcoder.security.authorization.AuthorizationManager</auth-manager-namespace>
+                    <user-id-session-key>userId</user-id-session-key>
+                    <anonymous-user-id>1</anonymous-user-id>
+                    <principal-class>com.topcoder.security.authorization.persistence.GeneralPrincipal</principal-class>
+                </handler>
+        -->
+    </global-handlers>
+
+    <!-- global results that will be added into all configured actions. -->
+    <global-results>
+        <result name="gameCompleted-error" type="forward">
+            <forward-url>/WEB-INF/plugin/alert-gamecompleted.jsp</forward-url>
+        </result>
+        <result name="notHostingSlot-error" type="loggingForward">
+            <forward-url>/WEB-INF/plugin/alert-nothostingslot.jsp</forward-url>
+            <log-message>the site {0} is not currently in the hosting sequence for game {1}</log-message>
+            <parameters>domain,gameId</parameters>
+        </result>
+    </global-results>
+</global>

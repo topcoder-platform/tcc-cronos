@@ -1,0 +1,971 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <!-- Here is the configuration for the Web Registration component. The default namespace is used.-->
+    <Config name="com.topcoder.web.registration">
+        <!-- The property represents the namespace to be passed to the constructor of SimpleUserProfileManager -->
+        <!-- from User Profile Manager component. -->
+        <Property name="user_profile_manager_namespace">
+            <Value>com.topcoder.user.profile.manager</Value>
+        </Property>
+        <!-- The property represents the names of the ProfileTypes used to create an UserProfile. -->
+        <!-- The profile types are obtained from ProfileTypeFactory class from User Profile Manager component. -->
+        <!-- The instance is obtained using the namespace for the SimpleUserProfileManager. -->
+        <Property name="user_profile_type_names">
+            <Value>base</Value>
+            <Value>credentials</Value>
+            <Value>player</Value>
+        </Property>
+        <!-- The property represents the key of the email address property for the user profiles. -->
+        <!-- Optional. Defaults to "BaseProfileType.EMAIL_ADDRESS" -->
+        <Property name="user_profile_email_address_key">
+            <Value>email_address</Value>
+        </Property>
+        <!-- The properties needed to obtain an IDGenerator from the IDGeneratorFactory (ID Generator component).. -->
+        <!-- Required. -->
+        <Property name="user_profile_id_generator">
+            <!-- The name of the id generator. Required. -->
+            <Property name="name">
+                <Value>web_registration_generator</Value>
+            </Property>
+            <!-- The impl. class of the id generator. Optional. Defaults to "com.topcoder.util.idgenerator.IDGeneratorImpl". -->
+            <Property name="class">
+                <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+            </Property>
+        </Property>
+        <!-- The property represents the namespace to be passed to the constructor of EMailConfirmation -->
+        <!-- from EMail Confirmation component. -->
+        <!-- Optional. Defaults to "com.topcoder.validation.emailconfirmation" -->
+        <Property name="email_confirmation_namespace">
+            <Value>com.topcoder.validation.emailconfirmation</Value>
+        </Property>
+        <!-- The namespace to be passed to the constructor of FormInputParserManager. -->
+        <!-- Optional. Defaults to "com.topcoder.web.registration.parsers" -->
+        <Property name="form_input_manager_parser_namespace">
+            <Value>com.topcoder.web.registration.parsers</Value>
+        </Property>
+        <!-- The property with the start phase. -->
+        <Property name="start_phase">
+            <!-- The name of the phase. -->
+            <Property name="name">
+                <Value>start</Value>
+            </Property>
+            <!-- The error page for the phase. In case an error occurs while performing initial tasks. -->
+            <Property name="error_page">
+                <Value>/server/activeGames.do</Value>
+            </Property>
+        </Property>
+        <!-- The property with the question phases. The list is ordered. -->
+        <!-- Required. Must have at least one phase with required content. -->
+        <Property name="question_phases">
+            <!-- This property declares the names of the question phases. -->
+            <!-- At least one phase name should be present. These names will be the property names of the question phase properties below. -->
+            <Property name="question_phase_names">
+                <Value>step1</Value>
+                <Value>step2</Value>
+            </Property>
+            <Property name="step1">
+                <!-- The next page for the phase. It should be the page with the first det of questions for registration. -->
+                <Property name="page">
+                    <Value>/public/signup.jsp</Value>
+                </Property>
+                <!-- The error page for the phase. In case an error occurs while parsing form input. -->
+                <Property name="error_page">
+                    <Value>/public/signup.jsp</Value>
+                </Property>
+                <!-- The name of the validation set from Registration Data Validation used to validate form input. -->
+                <!--Required. -->
+                <Property name="validation_set_name">
+                    <Value>tos_acceptance_rules</Value>
+                </Property>
+                <!-- The name of the parsers set from FormInputParserManager used to parse form input. -->
+                <!--Required. -->
+                <Property name="parser_set_name">
+                    <Value>tos_parser_set</Value>
+                </Property>
+                <!-- Whether the content of the form is required, or can be ignored. -->
+                <!-- Optional. Defaults to true. -->
+                <Property name="content_required">
+                    <Value>true</Value>
+                </Property>
+            </Property>
+            <!-- Each phase is described in a property at this level. The name of the property is the name of the phase. -->
+            <!-- At least one phase with required content must be present. -->
+            <Property name="step2">
+                <!-- The next page for the phase. It should be the page with the first det of questions for registration. -->
+                <Property name="page">
+                    <Value>/public/signup-step2.jsp</Value>
+                </Property>
+                <!-- The error page for the phase. In case an error occurs while parsing form input. -->
+                <Property name="error_page">
+                    <Value>/public/signup-step2.jsp</Value>
+                </Property>
+                <!-- The name of the validation set from Registration Data Validation used to validate form input. -->
+                <!--Required. -->
+                <Property name="validation_set_name">
+                    <Value>player_info_validation_rules</Value>
+                </Property>
+                <!-- The name of the parsers set from FormInputParserManager used to parse form input. -->
+                <!--Required. -->
+                <Property name="parser_set_name">
+                    <Value>player_info_parser_set</Value>
+                </Property>
+                <!-- Whether the content of the form is required, or can be ignored. -->
+                <!-- Optional. Defaults to true. -->
+                <Property name="content_required">
+                    <Value>true</Value>
+                </Property>
+            </Property>
+        </Property>
+        <!-- The property with the email validation phase. -->
+        <Property name="email_validation_request_phase">
+            <!-- The name of the phase. -->
+            <Property name="name">
+                <Value>step3</Value>
+            </Property>
+            <!-- The next page for the phase. It should be a page that tells the user an email was sent to validate the registration. -->
+            <Property name="page">
+                <Value>/public/signup-step3.jsp</Value>
+            </Property>
+            <!-- The error page for the phase. In case an error occurs while persisting the user profile or sending the email. -->
+            <Property name="error_page">
+                <Value>/public/signup-step3.jsp</Value>
+            </Property>
+        </Property>
+        <!-- The property with the email confirmation phase. -->
+        <Property name="email_confirmation_request_phase">
+            <!-- The name of the phase. -->
+            <Property name="name">
+                <Value>step4</Value>
+            </Property>
+            <!-- The next page for the phase. It should be a page that tells the user that the registration is complete. -->
+            <Property name="page">
+                <Value>/public/login.jsp</Value>
+            </Property>
+            <!-- The error page for the phase. In case an error occurs while loading the user profile from persistence or processing the confirmation. -->
+            <!-- Required. -->
+            <Property name="error_page">
+                <Value>/public/error.jsp</Value>
+            </Property>
+        </Property>
+    </Config>
+    <!-- Here is the configuration for the FormInputParserManager class. -->
+    <Config name="com.topcoder.web.registration.parsers">
+        <Property name="tos_parser_set">
+            <Property name="tos_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.TOSParser</Value>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="player_info_parser_set">
+            <Property name="username_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.UsernameParser</Value>
+                </Property>
+            </Property>
+            <Property name="password_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.PasswordParser</Value>
+                </Property>
+            </Property>
+            <Property name="email_address_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.EmailAddressParser</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.TOSParser">
+        <Property name="form_input_keys">
+            <Value>agreeToTerms</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>agreeToTerms</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.UsernameParser">
+        <Property name="form_input_keys">
+            <Value>username</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>credentials-handle</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.PasswordParser">
+        <Property name="form_input_keys">
+            <Value>password0</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>credentials-password</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.EmailAddressParser">
+        <Property name="form_input_keys">
+            <Value>email0</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>email_address</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.util.datavalidator.registration">
+        <!-- The property contains the configuration for a ValidationSet named "player_info_validation_rules". -->
+        <Property name="player_info_validation_rules">
+            <Property name="username">
+                <Property name="error_key">
+                    <Value>username.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>User name must be from 5 to 25 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>5</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>25</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="password0">
+                <Property name="error_key">
+                    <Value>password0.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.PasswordValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Password must be from 6 to 25 characters in length.</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="password1">
+                <Property name="error_key">
+                    <Value>password1.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.orpheus.game.server.util.InputFieldConfirmationValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Password confirmation does not match the original password.</Value>
+                    </Property>
+                    <Property name="originalParamName">
+                        <Value>password0</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="email0">
+                <Property name="error_key">
+                    <Value>email0.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.EmailValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Email address is not valid.</Value>
+                    </Property>
+                    <Property name="validate_domain">
+                        <Value>false</Value>
+                    </Property>
+                    <Property name="validate_mailbox">
+                        <Value>false</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="email1">
+                <Property name="error_key">
+                    <Value>email1.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.orpheus.game.server.util.InputFieldConfirmationValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Email address confirmation does not match the original email address.</Value>
+                    </Property>
+                    <Property name="originalParamName">
+                        <Value>email0</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- The property contains the configuration for a ValidationSet named "player_change_password_validation_rules". -->
+        <Property name="player_change_password_validation_rules">
+            <Property name="newPwd">
+                <Property name="error_key">
+                    <Value>newPwd.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.PasswordValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Password must be from 6 to 25 characters in length.</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="newPwdConfirm">
+                <Property name="error_key">
+                    <Value>newPwdConfirm.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.orpheus.game.server.util.InputFieldConfirmationValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Password confirmation does not match the new password.</Value>
+                    </Property>
+                    <Property name="originalParamName">
+                        <Value>newPwd</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- The property contains the configuration for a ValidationSet named "player_update_profile_validation_rules". -->
+        <Property name="player_update_profile_validation_rules">
+            <Property name="email">
+                <Property name="error_key">
+                    <Value>email.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.EmailValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Email address is not valid.</Value>
+                    </Property>
+                    <Property name="validate_domain">
+                        <Value>false</Value>
+                    </Property>
+                    <Property name="validate_mailbox">
+                        <Value>false</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="firstName">
+                <Property name="error_key">
+                    <Value>firstName.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>First name must be from 1 to 30 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>30</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="lastName">
+                <Property name="error_key">
+                    <Value>lastName.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Last name must be from 1 to 50 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>50</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="addr1">
+                <Property name="error_key">
+                    <Value>addr1.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Address line 1 must be from 1 to 128 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>128</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="addr2">
+                <Property name="error_key">
+                    <Value>addr2.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Address line 2 must be from 1 to 128 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>128</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="city">
+                <Property name="error_key">
+                    <Value>city.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>City must be from 1 to 128 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>128</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="state">
+                <Property name="error_key">
+                    <Value>state.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+            </Property>
+            <Property name="country">
+                <Property name="error_key">
+                    <Value>country.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+            </Property>
+            <Property name="postalCode">
+                <Property name="error_key">
+                    <Value>postalCode.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Postal Code must be from 1 to 10 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>10</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="phone">
+                <Property name="error_key">
+                    <Value>phone.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.PhoneValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Telephone number is invalid</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>30</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- The property contains the configuration for a ValidationSet named "tos_acceptance_rules". -->
+        <Property name="tos_acceptance_rules">
+            <Property name="agreeToTerms">
+                <Property name="error_key">
+                    <Value>agreeToTerms.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+            </Property>
+        </Property>
+        <!-- The property contains the configuration for a ValidationSet named "sponsor_info_validation_rules". -->
+        <Property name="sponsor_info_validation_rules">
+            <Property name="username">
+                <Property name="error_key">
+                    <Value>username.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>User name must be from 5 to 25 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>5</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>25</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="password0">
+                <Property name="error_key">
+                    <Value>password0.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.PasswordValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Password must be from 6 to 24 characters in length.</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="password1">
+                <Property name="error_key">
+                    <Value>password1.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.orpheus.game.server.util.InputFieldConfirmationValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Password confirmation does not match the original password.</Value>
+                    </Property>
+                    <Property name="originalParamName">
+                        <Value>password0</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="email0">
+                <Property name="error_key">
+                    <Value>email0.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.EmailValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Email address is not valid.</Value>
+                    </Property>
+                    <Property name="validate_domain">
+                        <Value>false</Value>
+                    </Property>
+                    <Property name="validate_mailbox">
+                        <Value>false</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="email1">
+                <Property name="error_key">
+                    <Value>email1.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.orpheus.game.server.util.InputFieldConfirmationValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Email address confirmation does not match the original email address.</Value>
+                    </Property>
+                    <Property name="originalParamName">
+                        <Value>email0</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="firstName">
+                <Property name="error_key">
+                    <Value>firstName.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>First name must be from 1 to 30 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>30</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="lastName">
+                <Property name="error_key">
+                    <Value>lastName.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Last name must be from 1 to 50 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>50</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="address1">
+                <Property name="error_key">
+                    <Value>address1.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Address line 1 must be from 1 to 128 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>128</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="address2">
+                <Property name="error_key">
+                    <Value>address2.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Address line 2 must be from 1 to 128 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>128</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="city">
+                <Property name="error_key">
+                    <Value>city.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>City must be from 1 to 128 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>128</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="state">
+                <Property name="error_key">
+                    <Value>state.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+            </Property>
+            <Property name="country">
+                <Property name="error_key">
+                    <Value>country.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+            </Property>
+            <Property name="zipCode">
+                <Property name="error_key">
+                    <Value>zipCode.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Zip Code must be from 1 to 10 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>10</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="phone">
+                <Property name="error_key">
+                    <Value>phone.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.PhoneValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Telephone is invalid</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>30</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="fax">
+                <Property name="error_key">
+                    <Value>fax.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.PhoneValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>Fax is invalid</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>30</Value>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="paymentMethod">
+                <Property name="error_key">
+                    <Value>paymentMethod.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>optional</Value>
+                </Property>
+            </Property>
+        </Property>
+        <!-- The property contains the configuration for a ValidationSet named "sponsor_domains_vlaidation_rules". -->
+        <Property name="sponsor_domains_validation_rules">
+            <Property name="domain_1">
+                <Property name="error_key">
+                    <Value>domain_1.error</Value>
+                </Property>
+                <Property name="requirement">
+                    <Value>mandatory</Value>
+                </Property>
+                <Property name="validator">
+                    <Property name="class">
+                        <Value>com.topcoder.util.datavalidator.registration.validators.UserNameValidator</Value>
+                    </Property>
+                    <Property name="error_message">
+                        <Value>User name must be from 1 to 256 characters in length.</Value>
+                    </Property>
+                    <Property name="min_length">
+                        <Value>1</Value>
+                    </Property>
+                    <Property name="max_length">
+                        <Value>256</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.validation.emailconfirmation">
+        <Property name="dynamicContentDelimiter">
+            <Value>%%%</Value>
+        </Property>
+        <Property name="unlockCodeLength">
+            <Value>8</Value>
+        </Property>
+        <Property name="unlockCodeAlphabet">
+            <Value>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</Value>
+        </Property>
+        <Property name="addressValidationLevel">
+            <Value>syntax</Value>
+        </Property>
+        <Property name="expirationInterval">
+            <Value>0</Value>
+        </Property>
+        <Property name="fromAddress">
+            <Value>do-not-reply@theball.com</Value>
+        </Property>
+        <Property name="defaultMessageSubject">
+            <Value>The Ball Player Account Activation</Value>
+        </Property>
+        <Property name="defaultMessageBody">
+            <Value>
+Thank you for signing up to play The Ball.  
+
+Once your account is active, you can check out the list of active games. When you find a game you like,
+just register for it.
+
+Once you're in the game, you'll begin to pursue The Ball across the Internet, and you'll be presented with puzzles and
+challenges. Solve them correctly, and you'll get clues to help you find The Ball - and the keys you'll need to unlock
+it when you do. Once you've unlocked The Ball, you'll win the prize...
+
+But before you get started, we need you to activate your account. It's easy - just go here:
+
+http://63.118.154.235:8080/public/registration.jsp?a=%%%confirm_email%%%&amp;u=%%%confirm_unlock_code%%%
+
+            </Value>
+        </Property>
+        <Property name="callbackClass">
+            <Value>com.orpheus.game.server.util.OrpheusEmailConfirmationCallbackSupport</Value>
+        </Property>
+        <Property name="customizerClass">
+            <Value>com.orpheus.game.server.util.OrpheusEmailContentCustomizer</Value>
+        </Property>
+        <Property name="localStorageClass">
+            <Value>com.orpheus.user.persistence.RemoteOrpheusPendingConfirmationStorage</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.user.persistence.RemoteOrpheusPendingConfirmationStorage">
+        <Property name="jndiEjbReference">
+            <Value>orpheus/PendingConfirmation</Value>
+        </Property>
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="translatorKey">
+            <Value>OrpheusConfirmationMessageTranslator</Value>
+        </Property>
+        <Property name="cacheKey">
+            <Value>OrpheusCache</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusProfileTypeFactory</Value>
+        </Property>
+        <Property name="log">
+            <Value>UserProfileManager</Value>
+        </Property>
+    </Config>
+</CMConfig>

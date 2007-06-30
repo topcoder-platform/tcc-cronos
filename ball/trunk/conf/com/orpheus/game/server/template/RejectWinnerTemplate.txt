@@ -1,0 +1,14 @@
+Hello %credentials-handle%,
+
+We regret to inform you that in conformance with administrative policy and
+terms of service for The Ball, the administrator has declined to name you
+a game winner.  The following explanation was provided\:
+
+Reject reason\: %reject-reason%
+
+Reject message\: %reject-message%
+
+Regards,
+
+The Ball Administration Team
+
