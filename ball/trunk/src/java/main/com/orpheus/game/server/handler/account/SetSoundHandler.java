@@ -3,8 +3,6 @@
  */
 package com.orpheus.game.server.handler.account;
 
-import java.util.Enumeration;
-
 import com.orpheus.game.server.handler.AbstractGameServerHandler;
 import com.orpheus.user.persistence.UserConstants;
 import com.topcoder.user.profile.UserProfile;
@@ -38,7 +36,7 @@ public class SetSoundHandler extends AbstractGameServerHandler implements Handle
      * Here is what the xml element likes:
      * <pre>
      *     &lt;handler type=&quot;x&quot;&gt;
-     *       &lt;sound_param&gt;phone&lt;/sound_param&gt;
+     *       &lt;sound_param&gt;sound&lt;/sound_param&gt;
      *     &lt;/handler&gt;
      * </pre>
      * </p>

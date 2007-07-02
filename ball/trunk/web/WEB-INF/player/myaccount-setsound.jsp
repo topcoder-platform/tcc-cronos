@@ -9,7 +9,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<% 	UserProfile profile = (UserProfile)request.getAttribute("profile"); %>
+<% 	UserProfile profile = (UserProfile)request.getAttribute("profile"); 
+	Integer soundPref = (Integer)profile.getProperty(UserConstants.PREFS_SOUND); 
+	if (soundPref == null) { soundPref = new Integer(1); } %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,6 +27,7 @@
 <div id="wrap">
     <div id="accountData">
     	<form action="${ctx}/server/player/myAccount-setSound.do" name="SetSoundForm" id="SetSoundForm" method="POST">
+		    <input type="hidden" name="status" value="save" />
 		    <table width="0" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 			    <td colspan=2><img src="${ctx}/i/h/title_setsound.gif" alt="Set Sound Preferences" /></td>
@@ -40,35 +43,27 @@
 			    <td valign="top">
 			      <p>To listen to any of the sounds below, click on the name.&nbsp; When you are ready to select a sound that will be associated with finding a target when you are playing the Ball, click the radio button next to the sound.&nbsp; Note that you may only select one sound, or choose the "No Sound" option.<br /></p>
 			      <table width="0" border="0" cellspacing="0" cellpadding="0">
+			        <% for (int i=1; i<=6; i++) { %>
 			        <tr>
-			          <td width="13%" align="right"><input type="radio" name="sound" id="sound" value="1" /></td>
-			          <td width="87%">
-			            <a href="#">Sound 1</a>
+			          <td align="right">
+			          <% if (soundPref.intValue() == i) { %>
+			          	<input type="radio" name="sound" id="sound<%=i%>" value="<%=i%>" checked/>
+			          <% } else { %> 
+			            <input type="radio" name="sound" id="sound<%=i%>" value="<%=i%>" />
+			          <% } %>
 			          </td>
+			          <td><a href="#">Sound <%=i%></a></td>
 			        </tr>
+			        <% } %>
 			        <tr>
-			          <td align="right"><input type="radio" name="sound" id="sound2" value="2" /></td>
-			          <td><a href="#">Sound 2</a></td>
-			        </tr>
-			        <tr>
-			          <td align="right"><input type="radio" name="sound" id="sound3" value="3" /></td>
-			          <td><a href="#">Sound 3</a></td>
-			        </tr>
-			        <tr>
-			          <td align="right"><input type="radio" name="sound" id="sound4" value="4" /></td>
-			          <td><a href="#">Sound 4</a></td>
-			        </tr>
-			        <tr>
-			          <td align="right"><input type="radio" name="sound" id="sound5" value="5" /></td>
-			          <td><a href="#">Sound 5</a></td>
-			        </tr>
-			        <tr>
-			          <td align="right"><input type="radio" name="sound" id="sound6" value="6" /></td>
-			          <td><a href="#">Sound 6</a></td>
-			        </tr>
-			        <tr>
-			          <td align="right"><input type="radio" name="sound" id="sound7" value="-1" /></td>
-			          <td>No Sound</td>
+			          <td width="13%" align="right">
+			          <% if (soundPref.intValue() == -1) { %>
+			          	<input type="radio" name="sound" id="sound7" value="-1" checked/>
+			          <% } else { %> 
+			            <input type="radio" name="sound" id="sound7" value="-1" />
+			          <% } %>
+			          </td>
+			          <td width="87%">No Sound</td>
 			        </tr>
 			  		<tr>
 	          		  <td align="right">&nbsp;</td>

@@ -3,8 +3,6 @@
  */
 package com.orpheus.game.server.handler.account;
 
-import java.util.Enumeration;
-
 import com.orpheus.game.server.handler.AbstractGameServerHandler;
 import com.orpheus.user.persistence.UserConstants;
 import com.topcoder.user.profile.UserProfile;
@@ -38,7 +36,7 @@ public class SetEmailNotificationsHandler extends AbstractGameServerHandler impl
      * Here is what the xml element likes:
      * <pre>
      *     &lt;handler type=&quot;x&quot;&gt;
-     *       &lt;email_general_notifications_param&gt;phone&lt;/email_general_notifications_param&gt;
+     *       &lt;email_general_notifications_param&gt;general&lt;/email_general_notifications_param&gt;
      *     &lt;/handler&gt;
      * </pre>
      * </p>

@@ -9,7 +9,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<% 	UserProfile profile = (UserProfile)request.getAttribute("profile"); %>
+<% 	UserProfile profile = (UserProfile)request.getAttribute("profile"); 
+	Boolean genPref = (Boolean)profile.getProperty(UserConstants.PREFS_GENERAL_NOTIFICATION); %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -47,7 +48,7 @@
 			      <table width="0" border="0" cellspacing="0" cellpadding="0">
 			        <tr>
 			          <td width="13%" align="right">
-			          	<% 	if (((Boolean)profile.getProperty(UserConstants.PREFS_GENERAL_NOTIFICATION)).booleanValue()) { %>
+			          	<% 	if (Boolean.TRUE.equals(genPref)) { %>
 			          		<input name="general" id="general" type="checkbox" checked />
 			          	<% 	} else { %>
 			          		<input name="general" id="general" type="checkbox" />
