@@ -84,13 +84,13 @@ public class SetSoundHandler extends AbstractGameServerHandler implements Handle
                     ConfigProfileTypeFactory profileTypeFactory = new ConfigProfileTypeFactory("com.topcoder.user.profile.manager");
                     profile.addProfileType(profileTypeFactory.getProfileType(UserConstants.PREFERENCES_TYPE_NAME));
                     if (profile.getProperty(UserConstants.PREFS_GENERAL_NOTIFICATION) == null) {
-                        profile.setProperty(UserConstants.PREFS_GENERAL_NOTIFICATION, new Integer(1));  // should be set to global default email notification preference
+                        profile.setProperty(UserConstants.PREFS_GENERAL_NOTIFICATION, "true");  // should be set to global default email notification preference
                     }
                 }
                 
                 System.out.println("*** Setting sound preferences for user " + 
                         profile.getProperty(UserConstants.CREDENTIALS_HANDLE));
-                profile.setProperty(UserConstants.PREFS_SOUND, Boolean.valueOf("on".equals(sound)));
+                profile.setProperty(UserConstants.PREFS_SOUND, Integer.valueOf(sound)));
                 userProfileManager.updateUserProfile(profile);
             }
             return null;

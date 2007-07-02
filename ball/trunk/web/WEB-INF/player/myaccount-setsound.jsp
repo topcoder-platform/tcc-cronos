@@ -41,33 +41,33 @@
 			      <p>To listen to any of the sounds below, click on the name.&nbsp; When you are ready to select a sound that will be associated with finding a target when you are playing the Ball, click the radio button next to the sound.&nbsp; Note that you may only select one sound, or choose the "No Sound" option.<br /></p>
 			      <table width="0" border="0" cellspacing="0" cellpadding="0">
 			        <tr>
-			          <td width="13%" align="right"><input type="radio" name="radio" id="radio" value="1" /></td>
+			          <td width="13%" align="right"><input type="radio" name="sound" id="sound" value="1" /></td>
 			          <td width="87%">
 			            <a href="#">Sound 1</a>
 			          </td>
 			        </tr>
 			        <tr>
-			          <td align="right"><input type="radio" name="radio" id="radio2" value="2" /></td>
+			          <td align="right"><input type="radio" name="sound" id="sound2" value="2" /></td>
 			          <td><a href="#">Sound 2</a></td>
 			        </tr>
 			        <tr>
-			          <td align="right"><input type="radio" name="radio" id="radio3" value="3" /></td>
+			          <td align="right"><input type="radio" name="sound" id="sound3" value="3" /></td>
 			          <td><a href="#">Sound 3</a></td>
 			        </tr>
 			        <tr>
-			          <td align="right"><input type="radio" name="radio" id="radio4" value="4" /></td>
+			          <td align="right"><input type="radio" name="sound" id="sound4" value="4" /></td>
 			          <td><a href="#">Sound 4</a></td>
 			        </tr>
 			        <tr>
-			          <td align="right"><input type="radio" name="radio" id="radio5" value="5" /></td>
+			          <td align="right"><input type="radio" name="sound" id="sound5" value="5" /></td>
 			          <td><a href="#">Sound 5</a></td>
 			        </tr>
 			        <tr>
-			          <td align="right"><input type="radio" name="radio" id="radio6" value="6" /></td>
+			          <td align="right"><input type="radio" name="sound" id="sound6" value="6" /></td>
 			          <td><a href="#">Sound 6</a></td>
 			        </tr>
 			        <tr>
-			          <td align="right"><input type="radio" name="radio" id="radio7" value="-1" /></td>
+			          <td align="right"><input type="radio" name="sound" id="sound7" value="-1" /></td>
 			          <td>No Sound</td>
 			        </tr>
 			  		<tr>
