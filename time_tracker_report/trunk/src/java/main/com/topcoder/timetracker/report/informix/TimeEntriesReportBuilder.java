@@ -103,6 +103,7 @@ public class TimeEntriesReportBuilder extends InformixReportSearchBuilder {
             reports[i].setProject(Helper.createProject(resultSet));
             reports[i].setUser(Helper.createUser(resultSet));
             reports[i].setProjectWorker(Helper.createProjectWorker(resultSet));
+            reports[i].setProjectManager(Helper.createProjectManager(resultSet));
 
             TimeStatus status = Helper.createTimeStatus(resultSet);
             reports[i].setTimeStatus(status);

@@ -6,6 +6,7 @@ package com.topcoder.timetracker.report.informix;
 import com.topcoder.timetracker.entry.time.TaskType;
 import com.topcoder.timetracker.entry.time.TimeEntry;
 import com.topcoder.timetracker.entry.time.TimeStatus;
+import com.topcoder.timetracker.project.ProjectManager;
 import com.topcoder.timetracker.project.ProjectWorker;
 
 /**
@@ -53,11 +54,19 @@ public class TimeEntryReport extends ReportEntryBean {
 
     /**
      * <p>
-     * Represents the project worker associate to the entry. It's changeable and initialized to
+     * Represents the project worker associated to the entry. It's changeable and initialized to
      * null.
      * </p>
      */
     private ProjectWorker projectWorker;
+
+    /**
+     * <p>
+     * Represents the project manager associated to the entry. It's changeable and initialized to
+     * null.
+     * </p>
+     */
+    private ProjectManager projectManager;
 
     /**
      * <p>
@@ -154,5 +163,27 @@ public class TimeEntryReport extends ReportEntryBean {
      */
     public void setProjectWorker(ProjectWorker projectWorker) {
         this.projectWorker = projectWorker;
+    }
+
+    /**
+     * <p>
+     * Returns the project manager.
+     * </p>
+     *
+     * @return the project manager.
+     */
+    public ProjectManager getProjectManager() {
+        return this.projectManager;
+    }
+
+    /**
+     * <p>
+     * Sets the project manager.
+     * </p>
+     *
+     * @param projectManager the project manager to set
+     */
+    public void setProjectManager(ProjectManager projectManager) {
+        this.projectManager = projectManager;
     }
 }

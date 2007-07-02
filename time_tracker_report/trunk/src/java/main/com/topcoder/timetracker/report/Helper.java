@@ -15,6 +15,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 import com.topcoder.timetracker.client.Client;
 import com.topcoder.timetracker.project.Project;
+import com.topcoder.timetracker.project.ProjectManager;
 import com.topcoder.timetracker.user.User;
 import com.topcoder.timetracker.user.Status;
 
@@ -674,8 +675,13 @@ public final class Helper {
      */
     public static ProjectWorker createProjectWorker(CustomResultSet resultSet)
         throws ReportDataAccessException {
-        ProjectWorker worker = new ProjectWorker();
         try {
+            if (resultSet.getObject("project_worker_project_id") == null) {
+                return null;
+            }
+
+            ProjectWorker worker = new ProjectWorker();
+
             worker.setProjectId(resultSet.getLong("project_worker_project_id"));
             worker.setUserId(resultSet.getLong("project_worker_user_account_id"));
             worker.setStartDate(resultSet.getTimestamp("project_worker_start_date"));
@@ -685,10 +691,48 @@ public final class Helper {
             worker.setCreationUser(resultSet.getString("project_worker_creation_user"));
             worker.setModificationDate(resultSet.getTimestamp("project_worker_modification_date"));
             worker.setModificationUser(resultSet.getString("project_worker_modification_user"));
+
+            return worker;
         } catch (InvalidCursorStateException e) {
             throw new ReportDataAccessException("Exception when creating a ProjectWorker object.", e);
         }
+    }
 
-        return worker;
+    /**
+     * <p>
+     * Constructs a <code>ProjectManager</code> object from the current row of a
+     * <code>CustomResultSet</code>. It is assumed that the result set is valid, and its current
+     * row is valid as well.
+     * </p>
+     *
+     * @param resultSet an object of <code>CustomResultSet</code>. This is assumed to be valid.
+     *
+     * @return instance of <code>ProjectManager</code> which holds all provided information by the
+     *         current row of the result set.
+     *
+     * @throws ReportDataAccessException if some error occurs while accessing the data of the result
+     *         set.
+     */
+    public static ProjectManager createProjectManager(CustomResultSet resultSet)
+        throws ReportDataAccessException {
+        try {
+            if (resultSet.getObject("project_manager_project_id") == null) {
+                return null;
+            }
+
+            ProjectManager manager = new ProjectManager();
+
+            manager.setProjectId(resultSet.getLong("project_manager_project_id"));
+            manager.setUserId(resultSet.getLong("project_manager_user_account_id"));
+            manager.setPayRate(resultSet.getDouble("project_manager_pay_rate"));
+            manager.setCreationDate(resultSet.getTimestamp("project_manager_creation_date"));
+            manager.setCreationUser(resultSet.getString("project_manager_creation_user"));
+            manager.setModificationDate(resultSet.getTimestamp("project_manager_modification_date"));
+            manager.setModificationUser(resultSet.getString("project_manager_modification_user"));
+
+            return manager;
+        } catch (InvalidCursorStateException e) {
+            throw new ReportDataAccessException("Exception when creating a ProjectManager object.", e);
+        }
     }
 }
