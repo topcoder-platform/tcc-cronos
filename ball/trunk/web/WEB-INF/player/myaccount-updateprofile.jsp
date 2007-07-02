@@ -44,8 +44,8 @@
 			      <div id="table-form-full">
 			      <table width="0" border="0" cellspacing="0" cellpadding="0">
 			        <tr>
-			          <td width="34%" align="right"><font color="#FF0000">*</font>Email address:</td>
-			          <td width="66%">
+			          <td width="31%" align="right"><font color="#FF0000">*</font>Email address:</td>
+			          <td width="69%">
 			            <c:if test="${not empty requestScope['email.error']}">
             			  <span class="fBold cRed">${requestScope['email.error']}</span><br/>
         			    </c:if>

@@ -168,6 +168,7 @@
         <handler-def name="ChangePasswordHandler">com.orpheus.game.server.handler.account.ChangePasswordHandler</handler-def>
         <handler-def name="UpdateProfileHandler">com.orpheus.game.server.handler.account.UpdateProfileHandler</handler-def>
         <handler-def name="SetEmailNotificationsHandler">com.orpheus.game.server.handler.account.SetEmailNotificationsHandler</handler-def>
+        <handler-def name="SetSoundHandler">com.orpheus.game.server.handler.account.SetSoundHandler</handler-def>
         <handler-def name="CreateBallColorHandler">com.orpheus.game.server.handler.admin.util.CreateBallColorHandler</handler-def>
         <handler-def name="PersonalizedBallHandler">com.orpheus.game.server.handler.PersonalizedBallHandler</handler-def>
     </handlers-def>

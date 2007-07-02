@@ -2,6 +2,10 @@
     <handler type="SessionValidationHandler">
         <login_page_result>login</login_page_result>
     </handler>
+    <handler type="SetSoundHandler">
+    	<sound_param>sound</sound_param>
+    	<object_factory_ns>com.orpheus.game.server.ObjectFactory</object_factory_ns>
+    </handler>
     <handler type="authorization">
         <allowed_profile_types>
             <value>player</value>
