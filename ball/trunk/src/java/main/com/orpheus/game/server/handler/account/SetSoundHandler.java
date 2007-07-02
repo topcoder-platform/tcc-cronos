@@ -90,7 +90,7 @@ public class SetSoundHandler extends AbstractGameServerHandler implements Handle
                 
                 System.out.println("*** Setting sound preferences for user " + 
                         profile.getProperty(UserConstants.CREDENTIALS_HANDLE));
-                profile.setProperty(UserConstants.PREFS_SOUND, Integer.valueOf(sound)));
+                profile.setProperty(UserConstants.PREFS_SOUND, Integer.valueOf(sound));
                 userProfileManager.updateUserProfile(profile);
             }
             return null;
