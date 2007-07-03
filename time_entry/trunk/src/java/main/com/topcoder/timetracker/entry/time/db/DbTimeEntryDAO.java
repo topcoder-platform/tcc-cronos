@@ -83,7 +83,7 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
      * </p>
      */
     private static final String UPDATE_TIME_ENTRY = "update time_entry set company_id = ?, client_id = ?, project_id = ?, invoice_id = ?, "
-        + "time_status_id = ?, task_type_id = ?, description = ?, entry_date = ?, hours = ?, billable = ?, "
+        + "time_status_id = ?, task_type_id = ?, description = ?, entry_date = ?, hours = ?, billable = ?, creation_user = ?, "
         + "modification_date = ?, modification_user= ? where time_entry_id = ?";
 
     /**
@@ -636,6 +636,7 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         params.add(entry.getDate());
         params.add(new Double(entry.getHours()));
         params.add(new Long(entry.getBillable() ? 1 : 0));
+        params.add(entry.getCreationUser());
         params.add(entry.getModificationDate());
         params.add(entry.getModificationUser());
         params.add(new Long(entry.getId()));
