@@ -141,7 +141,7 @@ public class UpdateProfileHandler extends AbstractGameServerHandler implements H
                     profile.setProperty(UserConstants.ADDRESS_STATE, state);
                     profile.setProperty(UserConstants.ADDRESS_POSTAL_CODE, postalCode);
                     profile.setProperty(UserConstants.ADDRESS_COUNTRY, country);
-                    profile.setProperty(UserConstants.PLAYER_PAYMENT_PREF, paymentPref);    // not being saved
+                    profile.setProperty(UserConstants.PLAYER_PAYMENT_PREF, paymentPref);
                     profile.setProperty(UserConstants.ADDRESS_PHONE_NUMBER, phone);
                     userProfileManager.updateUserProfile(profile);
                 } else {
