@@ -105,7 +105,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
     /** Represents the prepared SQL statement to update an expense entry. */
     private static final String UPDATE_ENTRY_SQL =
         "UPDATE expense_entry SET company_id=?, client_id=?, project_id=?, invoice_id=?, expense_type_id=?, expense_status_id=?, "
-        + "description=?, entry_date=?, amount=?, billable=?, modification_date=?, modification_user=?, "
+        + "description=?, entry_date=?, amount=?, billable=?, creation_user=?, modification_date=?, modification_user=?, "
         + "mileage=? WHERE expense_entry_id=?";
 
     /** Represents the prepared SQL statement to delete an expense entry. */
@@ -1138,6 +1138,7 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             statement.setTimestamp(++index, ExpenseEntryHelper.date2Timestamp(entry.getDate()));
             statement.setBigDecimal(++index, entry.getAmount());
             statement.setShort(++index, (short) (entry.isBillable() ? 1 : 0));
+            statement.setString(++index, entry.getCreationUser());
             statement.setTimestamp(++index, now);
             statement.setString(++index, entry.getModificationUser());
             statement.setInt(++index, entry.getMileage());
