@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.InternetAddress;
+
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.message.email.AddressException;
 import com.topcoder.message.email.EmailEngine;
@@ -201,7 +203,18 @@ public class EmailNotificationSender implements NotificationSender {
         }
 
         for (int i = 0; i < contacts.length; ++i) {
-            emails.put(contacts[i].getEmailAddress(), contacts[i]);
+            final String email = contacts[i].getEmailAddress();
+
+            try {
+                new InternetAddress(email);
+            } catch (javax.mail.internet.AddressException ae) {
+                // E-mail address is incorrect. Ignore it
+                continue;
+            }
+
+            if (!emails.containsKey(email)) {
+                emails.put(email, contacts[i]);
+            }
         }
     }
 
