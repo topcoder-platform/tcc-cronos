@@ -12,7 +12,7 @@
 <% 	UserProfile profile = (UserProfile)request.getAttribute("profile"); 
 	Integer soundPref = (Integer)profile.getProperty(UserConstants.PREFS_SOUND); 
 	if (soundPref == null) { soundPref = new Integer(1); } 
-	String[] soundUrls = {"", "alert-days.mp3", "alert-klasik.mp3", "alert-march-thunder.mp3", "alert-s1.mp3", "alert-studio54.mp3"}; %>
+	String[] soundUrls = {"alert-default.mp3", "alert-days.mp3", "alert-klasik.mp3", "alert-march-thunder.mp3", "alert-s1.mp3", "alert-studio54.mp3"}; %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
