@@ -289,7 +289,7 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
         auditHeader.setTableName("fix_bill_entry");
         auditHeader.setApplicationArea(ApplicationArea.TT_FIXED_BILLING);
         auditHeader.setEntityId(entry.getId());
-        auditHeader.setCreationUser(entry.getCreationUser());
+        auditHeader.setCreationUser(entry.getModificationUser());
         auditHeader.setCreationDate(new Timestamp(System.currentTimeMillis()));
         auditHeader.setActionType(actionType);
         if (entry.getModificationUserId() > 0) {
