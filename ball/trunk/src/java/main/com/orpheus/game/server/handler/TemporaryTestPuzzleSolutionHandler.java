@@ -101,8 +101,8 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
                 throw new HandlerExecutionException("no SolutionTester is found for puzzle:" + puzzleId);
             }
             boolean isCorrectSolution = tester.testSolution(request.getParameterMap());
-            String msg = isCorrectSolution ? "Congratulations, your solution is correct!" : 
-                "Sorry, your solution is incorrect.";
+            String msg = isCorrectSolution ? "<b><font color=\"green\">Congratulations</font></b>, your solution is correct!" : 
+                "<b><font color=\"red\">Sorry</font></b>, your solution is incorrect.";
             
             // Get player's game play info collected so far and record the fact on resolution of hunt target
             GamePlayInfo gamePlayInfo = getGamePlayInfo(context);

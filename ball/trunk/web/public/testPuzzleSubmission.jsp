@@ -29,7 +29,7 @@
                         <tr>
                             <td width="645" class="link">
                                 <p>
-                                     <b>${message}</b>
+                                     ${message}
                                 </p>
                             </td>
                         </tr>
