@@ -46,11 +46,18 @@ public class GamePlayInfo implements Serializable {
     private final Map foundHuntTargets;
 
     /**
-     * <p>A <code>Map</code> collecting the details for puzzles which have been presented the player so far. Maps
-     * <code>String</code> combining ID of game and a slot to <code>Date</code> providing the time when playe had
+     * <p>A <code>Map</code> collecting the details for Game Win puzzles which have been presented the player so far.
+     * Maps <code>String</code> combining ID of game and a slot to <code>Date</code> providing the time when player had
      * started to solve the <code>Win Game</code> puzzle for the game.</p>
      */
     private final Map puzzlesStartTimes;
+
+    /**
+     * <p>A <code>Map</code> collecting the details for practice puzzles which have been presented the player so far.
+     * Maps <code>Long</code> providing puzzle ID to <code>Date</code> providing the time when playe had started to
+     * solve the practice puzzle.</p>
+     */
+    private final Map practicePuzzlesStartTimes;
 
     /**
      * <p>A <code>Set</code> holding the <code>Long</code> IDs of the games which the player is currently registered to.
@@ -71,6 +78,7 @@ public class GamePlayInfo implements Serializable {
         this.brainteaserTimes = new HashMap();
         this.foundHuntTargets = new HashMap();
         this.puzzlesStartTimes = new HashMap();
+        this.practicePuzzlesStartTimes = new HashMap();
         this.registeredGames = new HashSet();
         this.completedGames = new HashSet();
     }
@@ -267,6 +275,22 @@ public class GamePlayInfo implements Serializable {
     }
 
     /**
+     * <p>Records the specified time when the visitor had started to solve the specified practice puzzle.</p>
+     *
+     * @param puzzleId a <code>long</code> providing the ID of a puzzle.
+     * @param date a <code>Date</code> providing the time whne the player had started to solve the puzzle.
+     * @throws IllegalArgumentException if any of specified arguments is <code>null</code>.
+     */
+    public void recordPracticePuzzleStart(long puzzleId, Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The parameter [date] is NULL");
+        }
+        synchronized (this.practicePuzzlesStartTimes) {
+            this.practicePuzzlesStartTimes.put(new Long(puzzleId), date);
+        }
+    }
+
+    /**
      * <p>Gets the time when a player started to solve the puzzle for specified game.</p>
      *
      * @param gameId a <code>long</code> providing the ID of a game.
@@ -277,6 +301,19 @@ public class GamePlayInfo implements Serializable {
     public Date getWinGamePuzzleStartTime(long gameId, long slotId) {
         synchronized (this.puzzlesStartTimes) {
             return (Date) this.puzzlesStartTimes.get(gameId + "," + slotId);
+        }
+    }
+
+    /**
+     * <p>Gets the time when a player started to solve the puzzle for specified game.</p>
+     *
+     * @param puzzleId a <code>long</code> providing the ID of a practice puzzle.
+     * @return a <code>Date</code> providing the time when the player has started to solve the specified practice puzzle
+     *         or <code>null</code> if playe was not presented with a specified practice puzzle.
+     */
+    public Date getPracticePuzzleStartTime(long puzzleId) {
+        synchronized (this.practicePuzzlesStartTimes) {
+            return (Date) this.practicePuzzlesStartTimes.get(new Long(puzzleId));
         }
     }
 

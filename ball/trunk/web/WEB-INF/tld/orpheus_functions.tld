@@ -260,7 +260,7 @@
     <function>
         <name>fixTestPuzzleUrlForTest</name>
         <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
-        <function-signature>java.lang.String fixTestPuzzleUrlForTest(java.lang.String,long,long)</function-signature>
+        <function-signature>java.lang.String fixTestPracticePuzzleUrl(java.lang.String,long)</function-signature>
     </function>
 
     <function>

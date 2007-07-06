@@ -1,24 +1,11 @@
 <action name="TestJigsawPuzzle" type="default" url-pattern="/server/puzzle/jigsaw.do" priority="10">
-    <handler type="SetParameterHandler">
-        <parameter_name>gameId</parameter_name>
-        <parameter_value>50</parameter_value>
-    </handler>
-    <handler type="SetParameterHandler">
-        <parameter_name>slotId</parameter_name>
-        <parameter_value>445</parameter_value>
-    </handler>
     <handler type="TemporaryShowGameWinPuzzleForTestHandler">
         <puzzle_name>Jigsaw Puzzle</puzzle_name>
-        <game_id_param_key>gameId</game_id_param_key>
-        <slot_id_param_key>slotId</slot_id_param_key>
-        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
-        <jndi_context_name>default</jndi_context_name>
-        <use_remote_interface>true</use_remote_interface>
+        <puzzle_id_param_key>puzzleId</puzzle_id_param_key>
         <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>
         <media_type_request_attribute_key>mediaType</media_type_request_attribute_key>
         <media_type>DHTML</media_type>
         <game_play_key>gamePlayInfo</game_play_key>
-        <solutiontester_base_name>puzzleSolutionTester</solutiontester_base_name>
     </handler>
     <handler type="PuzzleRenderingHandler">
         <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>

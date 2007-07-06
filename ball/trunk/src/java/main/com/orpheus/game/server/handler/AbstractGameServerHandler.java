@@ -88,6 +88,12 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the puzzle ID from.</p>
+     */
+    protected static final String PUZZLE_ID_PARAM_NAME_CONFIG = "puzzle_id_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * name of request parameter to get the slot ID from.</p>
      */
     protected static final String SLOT_ID_PARAM_NAME_CONFIG = "slot_id_param_key";

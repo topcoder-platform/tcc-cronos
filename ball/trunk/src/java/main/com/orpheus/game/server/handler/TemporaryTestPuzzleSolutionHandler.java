@@ -21,8 +21,6 @@ import java.util.Date;
 /**
  * <p>A custom implementation of {@link Handler} interface which is intended </p>
  * 
- * <p>TODO : This handler is used for testing purposes only. Once testing is done it must be removed.</p>
- *
  * @author isv
  * @version 1.0
  */
@@ -50,8 +48,7 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
         if (element == null) {
             throw new IllegalArgumentException("The parameter [element] is NULL");
         }
-        readAsString(element, GAME_ID_PARAM_NAME_CONFIG, true);
-        readAsString(element, SLOT_ID_PARAM_NAME_CONFIG, true);
+        readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, SOLUTION_TESTER_BASE_NAME_VALUE_CONFIG, true);
     }
@@ -79,8 +76,7 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
             final Date currentTime = new Date();
 
             // Get game ID, domain and sequence number from request parameters
-            long gameId = getLong(GAME_ID_PARAM_NAME_CONFIG, request);
-            long slotId = getLong(SLOT_ID_PARAM_NAME_CONFIG, request);
+            long puzzleId = getLong(PUZZLE_ID_PARAM_NAME_CONFIG, request);
 
             GameData gameData = null;
             GameDataLocal gameDataLocal = null;
@@ -90,10 +86,8 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
             } else {
                 gameData = golu.getGameDataRemoteHome().create();
             }
-            Long puzzleId = golu.isUseLocalInterface() ?
-                    gameDataLocal.getSlot(slotId).getPuzzleId() : gameData.getSlot(slotId).getPuzzleId();
-            String puzzleName = golu.isUseLocalInterface() ?
-                    gameDataLocal.getPuzzle(puzzleId.longValue()).getName() : gameData.getPuzzle(puzzleId.longValue()).getName();
+            String puzzleName = golu.isUseLocalInterface()
+                                ? gameDataLocal.getPuzzle(puzzleId).getName() : gameData.getPuzzle(puzzleId).getName();
             if (puzzleName.equals("sliding-tile")) {
                 puzzleName = "Sliding Tile Puzzle";
             } else if (puzzleName.equals("jigsaw")) {
@@ -112,11 +106,7 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
             
             // Get player's game play info collected so far and record the fact on resolution of hunt target
             GamePlayInfo gamePlayInfo = getGamePlayInfo(context);
-            Date puzzleStartTime = gamePlayInfo.getWinGamePuzzleStartTime(gameId, slotId);
-            System.out.println("ISV : PPSPH [TESTING MODE] : currentTime = " + currentTime);
-            System.out.println("ISV : PPSPH [TESTING MODE] : puzzleStartTime = " + puzzleStartTime);
-            System.out.println("ISV : PPSPH [TESTING MODE] : OrpheusFunctions.getSolveWinGamePuzzlePeriod() = "
-                               + OrpheusFunctions.getSolveWinGamePuzzlePeriod() * 1000L);
+            Date puzzleStartTime = gamePlayInfo.getPracticePuzzleStartTime(puzzleId);
             if ((puzzleStartTime == null)
                 || (currentTime.getTime() - puzzleStartTime.getTime()
                     > OrpheusFunctions.getSolveWinGamePuzzlePeriod() * 1000L)) {
@@ -146,6 +136,4 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
                                                 + "error", e);
         }
     }
-
-
 }

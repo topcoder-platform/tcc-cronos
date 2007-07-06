@@ -88,7 +88,7 @@
                                 <p><span><a href="#">Solve puzzle</a></span></p>
 
                                 <p align="center">
-                                    ${orpheus:fixTestPuzzleUrlForTest(puzzle, gameId, slotId)}
+                                    ${orpheus:fixTestPuzzleUrlForTest(puzzle, puzzleId)}
                                 </p>
 
                                 <p>&nbsp;</p>

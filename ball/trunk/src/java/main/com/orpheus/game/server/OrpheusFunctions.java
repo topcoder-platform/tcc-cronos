@@ -926,21 +926,17 @@ public class OrpheusFunctions {
     }
 
     /**
-     * <p>Updates the generated puzzle HTML content to append IDs for the game and slot associated with puzzle to a
-     * query string.</p>
+     * <p>Updates the generated puzzle HTML content to append IDs for practice puzzle to a query string.</p>
      *
      * @param puzzleHTMLContent a <code>String</code> providing the generated puzzle HTML content.
-     * @param gameId a <code>long</code> providing the ID of a game.
-     * @param slotId a <code>long</code> providing the ID of a slot.
+     * @param puzzleId a <code>long</code> providing the ID of a practice puzzle.
      * @return a <code>String</code> providing the fixed puzzle HTML content.
      */
-    public static String fixTestPuzzleUrlForTest(String puzzleHTMLContent, long gameId, long slotId) {
+    public static String fixTestPracticePuzzleUrl(String puzzleHTMLContent, long puzzleId) {
         if (puzzleHTMLContent == null) {
             throw new IllegalArgumentException("The parameter [puzzleHTMLContent] is NULL");
         }
-        return StringUtil.replace(puzzleHTMLContent,
-                                  "testPuzzle.do",
-                                  "testPuzzleForTest.do?gameId=" + gameId + "&slotId=" + slotId);
+        return StringUtil.replace(puzzleHTMLContent, "testPuzzle.do", "testPuzzleForTest.do?puzzleId=" + puzzleId);
     }
 
     /**

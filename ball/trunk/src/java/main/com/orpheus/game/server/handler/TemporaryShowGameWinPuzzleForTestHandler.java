@@ -3,16 +3,13 @@
  */
 package com.orpheus.game.server.handler;
 
-import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.server.GamePlayInfo;
 import com.orpheus.game.server.OrpheusFunctions;
-import com.orpheus.game.server.util.GameDataEJBAdapter;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import org.w3c.dom.Element;
 
-import javax.naming.Context;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -22,18 +19,10 @@ import java.util.Date;
  * PuzzleRenderingHandler</code> to locate and render the desired puzzle as currently there is no such handler
  * provided by any of existing components.</p>
  *
- * <p>TODO : This handler is used for testing purposes only. Once testing is done it must be removed.</p>
- *
  * @author isv
  * @version 1.0
  */
 public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServerHandler implements Handler {
-
-    /**
-     * <p>A <code>Context</code> providing a <code>JNDI</code> context to be used for looking up the home interface for
-     * <code>Game Data EJB</code>.</p>
-     */
-    private final Context jndiContext;
 
     /**
      * <p>Constructs new <code>TemporaryShowGameWinPuzzleForTestHandler</code> instance initialized based on the
@@ -43,15 +32,9 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
      * Here is what the xml element likes:
      * <pre>
      *     &lt;handler type=&quot;x&quot;&gt;
-     *      &lt;game_data_jndi_name&gt;orpheus/GameData&lt;/game_data_jndi_name&gt;
-     *      &lt;jndi_context_name&gt;default&lt;/jndi_context_name&gt;
-     *      &lt;use_remote_interface&gt;true&lt;/use_remote_interface&gt;
-     *      &lt;solutiontester_base_name&gt;solutionTester&lt;/solutiontester_base_name&gt;
      *      &lt;puzzle_id_request_attribute_key&gt;puzzleId&lt;/puzzle_id_request_attribute_key&gt;
      *      &lt;media_type_request_attribute_key&gt;mediaType&lt;/media_type_request_attribute_key&gt;
      *      &lt;media_type&gt;DHTML&lt;/media_type&gt;
-     *      &lt;game_param_key&gt;gameId&lt;/game_param_key&gt;
-     *      &lt;domain_param_key&gt;domain&lt;/domain_param_key&gt;
      *     &lt;/handler&gt;
      * </pre>
      * </p>
@@ -67,14 +50,9 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
         readAsString(element, PUZZLE_ID_ATTR_NAME_CONFIG, true);
         readAsString(element, MEDIA_TYPE_ATTR_NAME_CONFIG, true);
         readAsString(element, MEDIA_TYPE_VALUE_CONFIG, true);
-        readAsString(element, SOLUTION_TESTER_BASE_NAME_VALUE_CONFIG, true);
-        readAsString(element, GAME_ID_PARAM_NAME_CONFIG, true);
-        readAsString(element, SLOT_ID_PARAM_NAME_CONFIG, true);
+        readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
-        readAsString(element, GAME_EJB_JNDI_NAME_CONFIG, true);
         readAsString(element, PUZZLE_NAME, true);
-        readAsBoolean(element, USER_REMOTE_INTERFACE_CONFIG, true);
-        this.jndiContext = getJNDIContext(element);
     }
 
     /**
@@ -96,28 +74,20 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             HttpServletRequest request = context.getRequest();
             request.getSession(true);
 
-            // Get game ID and domain from request parameters
-            long gameId = getLong(GAME_ID_PARAM_NAME_CONFIG, request);
-            long slotId = getLong(SLOT_ID_PARAM_NAME_CONFIG, request);
-
-            GameDataEJBAdapter gameDataEJBAdapter = getGameDataEJBAdapter(this.jndiContext);
-            HostingSlot hostingSlot = gameDataEJBAdapter.getSlot(slotId);
-
+            // Get puzzle ID from request parameter
             // Put the ID of a puzzle and media type to request to be used by subsequent PuzzleRenderingHandler
-            request.setAttribute(getString(PUZZLE_ID_ATTR_NAME_CONFIG), hostingSlot.getPuzzleId());
+            long puzzleId = getLong(PUZZLE_ID_PARAM_NAME_CONFIG, request);
+            request.setAttribute(getString(PUZZLE_ID_ATTR_NAME_CONFIG), new Long(puzzleId));
             request.setAttribute(getString(MEDIA_TYPE_ATTR_NAME_CONFIG), getString(MEDIA_TYPE_VALUE_CONFIG));
 
             // Get the current game play statistics for a player
-            GamePlayInfo gamePlayInfo = getGamePlayInfo(context);
-
             // Record the time when the player had started to solve the puzzle and put the time left to solve the
             // puzzle to request
-            gamePlayInfo.recordWinGamePuzzleStart(gameId, hostingSlot.getId().longValue(), new Date());
+            GamePlayInfo gamePlayInfo = getGamePlayInfo(context);
+            gamePlayInfo.recordPracticePuzzleStart(puzzleId, new Date());
             request.setAttribute("timeLeft", new Integer(OrpheusFunctions.getSolvePuzzlePeriod()));
 
-            // Put slot and game ID associated with puzzle to session so they can be retrieved later
-            request.setAttribute("gameId", new Long(gameId));
-            request.setAttribute("slotId", hostingSlot.getId());
+            // Put name of the puzzle to session so they can be retrieved later
             request.setAttribute("puzzleName", getString(PUZZLE_NAME));
             return null;
         } catch (Exception e) {
