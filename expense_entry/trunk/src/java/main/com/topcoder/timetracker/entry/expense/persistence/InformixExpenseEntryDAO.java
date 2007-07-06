@@ -520,14 +520,12 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
         for (int i = 0; i < oldColumns.length; i++) {
             if (auditType == AuditType.UPDATE) {
-                if (oldColumns[i] == null) {
-                    if (newColumns[i] == null) {
-                        continue;
-                    }
-                }
-                if (ENTRY_COLUMNS[i].equals(CREATION_USER_COLUMN)) {
+                if (oldColumns[i] == null && newColumns[i] == null) {
                     continue;
                 }
+/*                if (ENTRY_COLUMNS[i].equals(CREATION_USER_COLUMN)) {
+                    continue;
+                }*/
                 if (ENTRY_COLUMNS[i].equals(CREATION_DATE_COLUMN)) {
                     continue;
                 }
