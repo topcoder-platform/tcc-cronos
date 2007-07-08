@@ -255,6 +255,7 @@ public class EmailNotificationSender implements NotificationSender {
             try {
                 message.addToAddress(contactName + " <" + contact.getEmailAddress() + ">", TCSEmailMessage.TO);
                 message.setFromAddress(notificaion.getFromAddress());
+                message.setSubject(notificaion.getSubject());
                 message.setBody(messageBody);
 
                 EmailEngine.send(message);
