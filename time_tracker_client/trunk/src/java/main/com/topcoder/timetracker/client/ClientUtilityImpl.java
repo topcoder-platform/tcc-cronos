@@ -728,8 +728,7 @@ public class ClientUtilityImpl implements ClientUtility {
      * @throws ClientPersistenceException if it is thrown by getAllProjectsOfClient
      */
     private void setProjectsIdName(Client client) throws PropertyOperationException, ClientPersistenceException {
-        // get all the information first.
-        setProjects(client);
+        client.setProjects(dao.getProjectIDsNamesForClient(client.getId()));
     }
 
     /**

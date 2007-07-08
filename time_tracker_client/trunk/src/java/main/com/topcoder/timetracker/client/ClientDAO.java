@@ -212,4 +212,18 @@ public interface ClientDAO {
      */
     public long[] getAllProjectIDsOfClient(long clientId)
         throws ClientPersistenceException;
+
+    /**
+     * Gets all projects for the client specified by ID. Only the IDs/Names of the resulting
+     * projects will be retrieved.
+     * 
+     * @return the non null, possibly empty array containing all projects of the client.
+     * @param clientId
+     *            the ID of the client.
+     * @throws IllegalArgumentException
+     *             if client ID not positive.
+     * @throws ClientPersistenceException
+     *             if any exception occurs.
+     */
+    public Project[] getProjectIDsNamesForClient(long clientId) throws ClientPersistenceException;
 }

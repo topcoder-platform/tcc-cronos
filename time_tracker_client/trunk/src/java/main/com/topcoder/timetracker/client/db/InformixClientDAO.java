@@ -141,6 +141,14 @@ public class InformixClientDAO implements ClientDAO {
     private static final String SQL_SELECT_CLIENT_PROJECT = "select project_id from client_project"
         + " where client_id = ?";
 
+    private static final String SQL_SELECT_CLIENT_PROJECTS_ID_NAME =
+        "SELECT DISTINCT project.project_id AS project_id," +
+        "       name" +
+        "  FROM project," +
+        "       project_client" +
+        " WHERE project.project_id = project_client.project_id" +
+        "   AND project_client.client_id = ?";
+
     /**
      * <p>
      * Represents the SQL command to insert data to client_project table.
@@ -888,6 +896,55 @@ public class InformixClientDAO implements ClientDAO {
             }
 
             return projects;
+        } catch (SQLException sqle) {
+            throw new ClientPersistenceException("Error get project from client_project.", sqle);
+        } finally {
+            releaseStatement(stmt, result);
+            releaseConnection(conn);
+        }
+    }
+
+    /**
+     * Gets all projects for the client specified by ID. Only the IDs/Names of the resulting
+     * projects will be retrieved.
+     *
+     * @return the non null, possibly empty array containing all projects of the client.
+     * @param clientId
+     *            the ID of the client.
+     * @throws IllegalArgumentException
+     *             if client ID not positive.
+     * @throws ClientPersistenceException
+     *             if any exception occurs.
+     */
+    public Project[] getProjectIDsNamesForClient(long clientId) throws ClientPersistenceException {
+        Helper.checkPositive(clientId, "clientId");
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet result = null;
+
+        try {
+            // get the connection
+            conn = createConnection();
+
+            // prepare the statement
+            stmt = conn.prepareStatement(SQL_SELECT_CLIENT_PROJECTS_ID_NAME);
+            stmt.setLong(1, clientId);
+
+            result = stmt.executeQuery();
+
+            ArrayList list = new ArrayList();
+
+            while (result.next()) {
+                Project project = new Project();
+
+                project.setId(result.getLong("project_id"));
+                project.setName(result.getString("name"));
+                project.setChanged(false);
+                list.add(project);
+            }
+
+            return (Project[]) list.toArray(new Project[list.size()]);
         } catch (SQLException sqle) {
             throw new ClientPersistenceException("Error get project from client_project.", sqle);
         } finally {
