@@ -74,69 +74,69 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  * <p>
  * Here is the sample configuration for this class:
- *
+ * 
  * <pre>
- *    &lt;Config name=&quot;com.topcoder.registration.team.service.impl.TeamServicesImpl&quot;&gt;
- *      &lt;Property name=&quot;specNamespace&quot;&gt;
- *          &lt;Value&gt;com.topcoder.util.objectfactory&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;userRetrievalKey&quot;&gt;
- *          &lt;Value&gt;userRetrievalKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;resourceManagerKey&quot;&gt;
- *          &lt;Value&gt;resourceManagerKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;projectServicesKey&quot;&gt;
- *          &lt;Value&gt;projectServicesKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;phaseManagerKey&quot;&gt;
- *          &lt;Value&gt;phaseManagerKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;projectManagerKey&quot;&gt;
- *          &lt;Value&gt;projectManagerKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;teamManagerKey&quot;&gt;
- *          &lt;Value&gt;teamManagerKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;offerManagerKey&quot;&gt;
- *          &lt;Value&gt;offerManagerKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;contactMemberServiceKey&quot;&gt;
- *          &lt;Value&gt;contactMemberServiceKey&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;loggerName&quot;&gt;
- *          &lt;Value&gt;defaultLogger&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;registrationPhaseId&quot;&gt;
- *          &lt;Value&gt;1&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;freeAgentRoleId&quot;&gt;
- *          &lt;Value&gt;1&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;teamCaptainRoleId&quot;&gt;
- *          &lt;Value&gt;2&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;submitterRoleId&quot;&gt;
- *          &lt;Value&gt;3&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;removeTeamMessageTemplateName&quot;&gt;
- *          &lt;Value&gt;test_files/doc_gen_files/remove_team_template&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;sendOfferTemplateName&quot;&gt;
- *          &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;acceptOfferTemplateName&quot;&gt;
- *          &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;rejectOfferTemplateName&quot;&gt;
- *          &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
- *      &lt;/Property&gt;
- *      &lt;Property name=&quot;removeMemberMessageTemplateName&quot;&gt;
- *          &lt;Value&gt;test_files/doc_gen_files/remove_member_template&lt;/Value&gt;
- *      &lt;/Property&gt;
- *    &lt;/Config&gt;
+ *        &lt;Config name=&quot;com.topcoder.registration.team.service.impl.TeamServicesImpl&quot;&gt;
+ *          &lt;Property name=&quot;specNamespace&quot;&gt;
+ *              &lt;Value&gt;com.topcoder.util.objectfactory&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;userRetrievalKey&quot;&gt;
+ *              &lt;Value&gt;userRetrievalKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;resourceManagerKey&quot;&gt;
+ *              &lt;Value&gt;resourceManagerKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;projectServicesKey&quot;&gt;
+ *              &lt;Value&gt;projectServicesKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;phaseManagerKey&quot;&gt;
+ *              &lt;Value&gt;phaseManagerKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;projectManagerKey&quot;&gt;
+ *              &lt;Value&gt;projectManagerKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;teamManagerKey&quot;&gt;
+ *              &lt;Value&gt;teamManagerKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;offerManagerKey&quot;&gt;
+ *              &lt;Value&gt;offerManagerKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;contactMemberServiceKey&quot;&gt;
+ *              &lt;Value&gt;contactMemberServiceKey&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;loggerName&quot;&gt;
+ *              &lt;Value&gt;defaultLogger&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;registrationPhaseId&quot;&gt;
+ *              &lt;Value&gt;1&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;freeAgentRoleId&quot;&gt;
+ *              &lt;Value&gt;1&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;teamCaptainRoleId&quot;&gt;
+ *              &lt;Value&gt;2&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;submitterRoleId&quot;&gt;
+ *              &lt;Value&gt;3&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;removeTeamMessageTemplateName&quot;&gt;
+ *              &lt;Value&gt;test_files/doc_gen_files/remove_team_template&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;sendOfferTemplateName&quot;&gt;
+ *              &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;acceptOfferTemplateName&quot;&gt;
+ *              &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;rejectOfferTemplateName&quot;&gt;
+ *              &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;removeMemberMessageTemplateName&quot;&gt;
+ *              &lt;Value&gt;test_files/doc_gen_files/remove_member_template&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *        &lt;/Config&gt;
  * </pre>
- *
+ * 
  * </p>
  * <p>
  * Thread Safety: This class is immutable but operates on non thread safe objects, thus making it
@@ -1017,12 +1017,12 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *     &lt;DATA&gt;
-     *       &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
-     *       &lt;TEAM_DESCRIPTION&gt;description&lt;/TEAM_DESCRIPTION&gt;
-     *       &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
-     *       &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
-     *     &lt;/DATA&gt;
+     *         &lt;DATA&gt;
+     *           &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
+     *           &lt;TEAM_DESCRIPTION&gt;description&lt;/TEAM_DESCRIPTION&gt;
+     *           &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
+     *           &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
+     *         &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -1141,11 +1141,8 @@ public class TeamServicesImpl implements TeamServices {
             // generates message text
             String msgText = docGen.applyTemplate(template, templateData);
 
-            // gets the destination handles
-            String[] toHandles = new String[members.length];
-            System.arraycopy(handles, 1, toHandles, 0, members.length);
             // sets up the Message
-            setUpMessage(message, msgText, toHandles, handles[0], team.getTeamHeader()
+            setUpMessage(message, msgText, handles, operator.getHandle(), team.getTeamHeader()
                 .getProjectId(), projectName);
         } catch (Exception ex) {
             // error occurred, set operationResult to unsuccessful, and return
@@ -1210,6 +1207,12 @@ public class TeamServicesImpl implements TeamServices {
      */
     private void setUpMessage(Message message, String text, String[] toHandles, String fromHandle,
         long projectId, String projectName) {
+        // if toHandles has null, then sets it to NULL
+        for (int i = 0; i < toHandles.length; i++) {
+            if (toHandles[i] == null) {
+                toHandles[i] = "NULL";
+            }
+        }
         message.setFromHandle(fromHandle);
         message.setProjectId(projectId);
         message.setProjectName(projectName);
@@ -1262,9 +1265,12 @@ public class TeamServicesImpl implements TeamServices {
     private void expireOffers(long captainId, TeamHeader teamHeader) {
         // constructs a filter to retrieve all pending offers
         Filter filter = OfferFilterFactory.createSenderIdFilter(captainId);
+        Filter statusFilter = OfferFilterFactory
+            .createOfferStatusTypeFilter(OfferStatusType.OFFERED);
+        Filter theFilter = OfferFilterFactory.createAndFilter(filter, statusFilter);
         // find offers using above filter
         logDebug("Starts calling OfferManager#findOffers method.");
-        Offer[] offers = offerManager.findOffers(filter);
+        Offer[] offers = offerManager.findOffers(theFilter);
         logDebug("Finished calling OfferManager#findOffers method.");
 
         // gets all free agents in this project
@@ -1317,14 +1323,15 @@ public class TeamServicesImpl implements TeamServices {
         TeamPosition[] teamPos = team.getPositions();
 
         // represents the ResourcePosition array to be returned
-        //FIX BUG TCRT-8531
+        // FIX BUG TCRT-8531
         List resoucePositions = new ArrayList();
         for (int i = 0; i < teamPos.length; i++) {
             try {
                 if (teamPos[i].getFilled()) {
                     // gets the Resource associated with this position
                     logDebug("Starts calling ResourceManager#getResource method.");
-                    Resource resource = resourceManager.getResource(teamPos[i].getMemberResourceId());
+                    Resource resource = resourceManager.getResource(teamPos[i]
+                        .getMemberResourceId());
                     logDebug("Finished calling ResourceManager#getResource method.");
                     resoucePositions.add(new ResourcePositionImpl(resource, teamPos[i]));
                 }
@@ -1336,7 +1343,8 @@ public class TeamServicesImpl implements TeamServices {
             }
         }
 
-        ResourcePosition[] rp = (ResourcePosition[]) resoucePositions.toArray(new ResourcePosition[0]);
+        ResourcePosition[] rp = (ResourcePosition[]) resoucePositions
+            .toArray(new ResourcePosition[0]);
         log(Level.INFO, "Exits TeamServicesImpl#getTeamPositionsDetails method.");
         return rp;
     }
@@ -1386,7 +1394,8 @@ public class TeamServicesImpl implements TeamServices {
 
             // FIX BUG TCRT-8524
             // if no positions found, add this resource to Free Agents list
-            if (positions.length == 0 && resources[i].getResourceRole().getId() != teamCaptainRoleId) {
+            if (positions.length == 0
+                && resources[i].getResourceRole().getId() != teamCaptainRoleId) {
                 freeAgents.add(resources[i]);
             }
         }
@@ -1496,11 +1505,6 @@ public class TeamServicesImpl implements TeamServices {
                 }
                 // position is filled already, continue checking
                 if (position.getFilled()) {
-                    // position's resource should be a Free Agent
-                    if (!checkResourceFreeAgent(position, team, operationResult)) {
-                        log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
-                        return operationResult;
-                    }
                     // if position has a new memberResourceId, then this id should not been already
                     // registered for this project
                     if (hasNewId(position, team)) {
@@ -1527,14 +1531,14 @@ public class TeamServicesImpl implements TeamServices {
             return operationResult;
         } catch (TeamPersistenceException ex) {
             log(Level.ERROR,
-            "TeamPersistenceException occurred in TeamServicesImpl#createOrUpdatePosition method.");
+                "TeamPersistenceException occurred in TeamServicesImpl#createOrUpdatePosition method.");
             operationResult.setSuccessful(false);
             operationResult.setErrors(new String[] {ex.getMessage()});
             log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
             return operationResult;
         } catch (com.topcoder.management.team.UnknownEntityException ex) {
             log(Level.ERROR,
-            "UnknownEntityException occurred in TeamServicesImpl#createOrUpdatePosition method.");
+                "UnknownEntityException occurred in TeamServicesImpl#createOrUpdatePosition method.");
             operationResult.setSuccessful(false);
             operationResult.setErrors(new String[] {ex.getMessage()});
             log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
@@ -1769,6 +1773,20 @@ public class TeamServicesImpl implements TeamServices {
 
         OperationResultImpl operationResult = new OperationResultImpl();
         try {
+            // finds all offers associated with this position
+            Filter filter1 = OfferFilterFactory.createPositionIdFilter(positionId);
+            Filter filter2 = OfferFilterFactory
+                .createOfferStatusTypeFilter(OfferStatusType.OFFERED);
+            Offer[] offers = offerManager.findOffers(OfferFilterFactory.createAndFilter(filter1,
+                filter2));
+
+            // expires all offers
+            for (int i = 0; i < offers.length; i++) {
+                logDebug("Starts calling OfferManager#expireOffer method.");
+                offerManager.expireOffer(offers[i].getOfferId());
+                logDebug("Finished calling OfferManager#expireOffer method.");
+            }
+
             logDebug("Starts calling TeamManager#removePosition method.");
             teamManager.removePosition(positionId, userId);
             logDebug("Finished calling TeamManager#removePosition method.");
@@ -2129,17 +2147,17 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *    &lt;DATA&gt;
-     *       &lt;OFFER&gt;
-     *           &lt;FROM&gt;joe&lt;/FROM &gt;
-     *           &lt;TO&gt;jim&lt;/TO&gt;
-     *           &lt;POSITION&gt;futile&lt;/POSITION&gt;
-     *           &lt;STATUS&gt;offered&lt;/STATUS&gt;
-     *           &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
-     *           &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
-     *           &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
-     *       &lt;/OFFER&gt;
-     *    &lt;/DATA&gt;
+     *        &lt;DATA&gt;
+     *           &lt;OFFER&gt;
+     *               &lt;FROM&gt;joe&lt;/FROM &gt;
+     *               &lt;TO&gt;jim&lt;/TO&gt;
+     *               &lt;POSITION&gt;futile&lt;/POSITION&gt;
+     *               &lt;STATUS&gt;offered&lt;/STATUS&gt;
+     *               &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
+     *               &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
+     *               &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
+     *           &lt;/OFFER&gt;
+     *        &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2191,9 +2209,8 @@ public class TeamServicesImpl implements TeamServices {
         logDebug("Finished calling TeamManager#getPosition method.");
 
         // position.filled should be false, position.published should be true
-        //FIX BUG TCRT-8530
-        if (position.getFilled())
-        {
+        // FIX BUG TCRT-8530
+        if (position.getFilled()) {
             operationResult.setSuccessful(false);
             operationResult
                 .setErrors(new String[] {"The position associated with given offer should"
@@ -2203,14 +2220,14 @@ public class TeamServicesImpl implements TeamServices {
         }
 
         if (!position.getPublished()) {
-            
+
             Resource resource = null;
             try {
                 resource = this.resourceManager.getResource(position.getMemberResourceId());
             } catch (ResourcePersistenceException e) {
                 operationResult.setSuccessful(false);
-                operationResult.setErrors(new String[]{
-                "ResourcePersistenceException occurred in TeamServicesImpl#sendOffer method."});
+                operationResult
+                    .setErrors(new String[] {"ResourcePersistenceException occurred in TeamServicesImpl#sendOffer method."});
                 log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
                 return operationResult;
             }
@@ -2516,17 +2533,17 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *    &lt;DATA&gt;
-     *        &lt;OFFER&gt;
-     *            &lt;FROM&gt;joe&lt;/FROM &gt;
-     *            &lt;TO&gt;jim&lt;/TO&gt;
-     *            &lt;POSITION&gt;futile&lt;/POSITION&gt;
-     *            &lt;STATUS&gt;offered&lt;/STATUS&gt;
-     *            &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
-     *            &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
-     *            &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
-     *        &lt;/OFFER&gt;
-     *    &lt;/DATA&gt;
+     *        &lt;DATA&gt;
+     *            &lt;OFFER&gt;
+     *                &lt;FROM&gt;joe&lt;/FROM &gt;
+     *                &lt;TO&gt;jim&lt;/TO&gt;
+     *                &lt;POSITION&gt;futile&lt;/POSITION&gt;
+     *                &lt;STATUS&gt;offered&lt;/STATUS&gt;
+     *                &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
+     *                &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
+     *                &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
+     *            &lt;/OFFER&gt;
+     *        &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2773,17 +2790,17 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *    &lt;DATA&gt;
-     *        &lt;OFFER&gt;
-     *            &lt;FROM&gt;joe&lt;/FROM &gt;
-     *            &lt;TO&gt;jim&lt;/TO&gt;
-     *            &lt;POSITION&gt;futile&lt;/POSITION&gt;
-     *            &lt;STATUS&gt;offered&lt;/STATUS&gt;
-     *            &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
-     *            &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
-     *            &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
-     *        &lt;/OFFER&gt;
-     *    &lt;/DATA&gt;
+     *        &lt;DATA&gt;
+     *            &lt;OFFER&gt;
+     *                &lt;FROM&gt;joe&lt;/FROM &gt;
+     *                &lt;TO&gt;jim&lt;/TO&gt;
+     *                &lt;POSITION&gt;futile&lt;/POSITION&gt;
+     *                &lt;STATUS&gt;offered&lt;/STATUS&gt;
+     *                &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
+     *                &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
+     *                &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
+     *            &lt;/OFFER&gt;
+     *        &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2871,13 +2888,13 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *    &lt;DATA&gt;
-     *        &lt;HANDLE&gt;removed&lt;/HANDLE&gt;
-     *        &lt;POSITION_NAME&gt;position name&lt;/POSITION_NAME&gt;
-     *        &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
-     *        &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
-     *        &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
-     *    &lt;/DATA&gt;
+     *        &lt;DATA&gt;
+     *            &lt;HANDLE&gt;removed&lt;/HANDLE&gt;
+     *            &lt;POSITION_NAME&gt;position name&lt;/POSITION_NAME&gt;
+     *            &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
+     *            &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
+     *            &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
+     *        &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2992,6 +3009,7 @@ public class TeamServicesImpl implements TeamServices {
             message.setText(msgText);
             message.setToHandles(new String[] {captainHandle});
             message.setFromHandle(operatorHandle);
+            message.setProjectId(team.getTeamHeader().getProjectId());
             message.setProjectName(projectName);
             message.setTimeStamp(new Date());
         } catch (Exception ex) {

@@ -2,6 +2,7 @@
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.registration.team.service.failuretests;
+
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamPersistenceException;
 import com.topcoder.management.team.TeamPosition;
@@ -15,6 +16,7 @@ import com.topcoder.registration.team.service.UnknownEntityException;
 import com.topcoder.registration.team.service.impl.TeamServicesImpl;
 
 import junit.framework.TestCase;
+
 /**
  * Failure tests for TeamServicesImpl class.
  * @author slion
@@ -373,7 +375,8 @@ public class TeamServicesImplFailureTests extends TestCase {
 
     /**
      * Setup the test environment.
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void setUp() throws Exception {
         TestHelper.clearConfiguration();
@@ -386,7 +389,8 @@ public class TeamServicesImplFailureTests extends TestCase {
 
     /**
      * Setup the test environment.
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfiguration();
@@ -1601,15 +1605,15 @@ public class TeamServicesImplFailureTests extends TestCase {
     public void testCreateOrUpdateTeam_TeamPersistenceException() {
         try {
             header.setTeamId(1001);
-            services.createOrUpdateTeam(header, 1234);  
+            services.createOrUpdateTeam(header, 1234);
         } catch (Exception e) {
             fail("Unknown exception occurs in testCreateOrUpdateTeam_TeamPersistenceException.");
         }
     }
 
     /**
-     * Tests getTeams(long projectId) method with negative long projectId,
-     * IllegalArgumentException should be thrown.
+     * Tests getTeams(long projectId) method with negative long projectId, IllegalArgumentException
+     * should be thrown.
      */
     public void testGetTeams_NegativeProjectId() {
         try {
@@ -1623,8 +1627,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getTeams(long projectId) method with unknown long projectId,
-     * UnknownEntityException should be thrown.
+     * Tests getTeams(long projectId) method with unknown long projectId, UnknownEntityException
+     * should be thrown.
      */
     public void testGetTeams_UnknownProjectId() {
         try {
@@ -1638,8 +1642,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getTeams(long projectId) method with PSE thrown,
-     * ProjectServicesException should be thrown.
+     * Tests getTeams(long projectId) method with PSE thrown, ProjectServicesException should be
+     * thrown.
      */
     public void testGetTeams_ProjectServicesException() {
         try {
@@ -1653,8 +1657,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getTeams(long projectId) method with TPE thrown,
-     * TeamPersistenceException should be thrown.
+     * Tests getTeams(long projectId) method with TPE thrown, TeamPersistenceException should be
+     * thrown.
      */
     public void testGetTeams_TeamPersistenceException() {
         try {
@@ -1668,8 +1672,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getTeamMembers(long teamId) method with negative long teamId,
-     * IllegalArgumentException should be thrown.
+     * Tests getTeamMembers(long teamId) method with negative long teamId, IllegalArgumentException
+     * should be thrown.
      */
     public void testGetTeamMembers_NegativeTeamId() {
         try {
@@ -1683,8 +1687,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getTeamMembers(long teamId) method with unknown long teamId,
-     * UnknownEntityException should be thrown.
+     * Tests getTeamMembers(long teamId) method with unknown long teamId, UnknownEntityException
+     * should be thrown.
      */
     public void testGetTeamMembers_UnknownTeamId() {
         try {
@@ -1698,8 +1702,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getTeamMembers(long teamId) method with TSE thrown,
-     * TeamServicesException should be thrown.
+     * Tests getTeamMembers(long teamId) method with TSE thrown, TeamServicesException should be
+     * thrown.
      */
     public void testGetTeamMembers_TeamServicesException() {
         try {
@@ -1743,8 +1747,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests removeTeam(long teamId, long userId) method with unknown teamId,
-     * UnknownEntityException should be thrown.
+     * Tests removeTeam(long teamId, long userId) method with unknown teamId, UnknownEntityException
+     * should be thrown.
      */
     public void testRemoveTeam_UnknownTeamId() {
         try {
@@ -1754,21 +1758,6 @@ public class TeamServicesImplFailureTests extends TestCase {
             // pass
         } catch (Exception e) {
             fail("Unknown exception occurs in testRemoveTeam_UnknownTeamId.");
-        }
-    }
-
-    /**
-     * Tests removeTeam(long teamId, long userId) method with OME thrown,
-     * OfferManagerException should be thrown.
-     */
-    public void testRemoveTeam_OfferManagerException() {
-        try {
-            services.removeTeam(1005, 1);
-            fail("testRemoveTeam_OfferManagerException is failure.");
-        } catch (OfferManagerException ome) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknown exception occurs in testRemoveTeam_OfferManagerException.");
         }
     }
 
@@ -1788,8 +1777,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getTeamPositionsDetails(long teamId) method with unknown teamId,
-     * UnknownEntityException should be thrown.
+     * Tests getTeamPositionsDetails(long teamId) method with unknown teamId, UnknownEntityException
+     * should be thrown.
      */
     public void testGetTeamPositionsDetails_UnknownTeamId() {
         try {
@@ -1848,9 +1837,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests createOrUpdatePosition(TeamPosition position, long teamId, long userId) method
-     *  with null TeamPosition position,
-     * IllegalArgumentException should be thrown.
+     * Tests createOrUpdatePosition(TeamPosition position, long teamId, long userId) method with
+     * null TeamPosition position, IllegalArgumentException should be thrown.
      */
     public void testCreateOrUpdatePosition_NullPosition() {
         try {
@@ -1864,9 +1852,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests createOrUpdatePosition(TeamPosition position, long teamId, long userId) method
-     *  with negative long teamId,
-     * IllegalArgumentException should be thrown.
+     * Tests createOrUpdatePosition(TeamPosition position, long teamId, long userId) method with
+     * negative long teamId, IllegalArgumentException should be thrown.
      */
     public void testCreateOrUpdatePosition_NegativeTeamId() {
         try {
@@ -1880,9 +1867,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests createOrUpdatePosition(TeamPosition position, long teamId, long userId) method
-     *  with negative long userId,
-     * IllegalArgumentException should be thrown.
+     * Tests createOrUpdatePosition(TeamPosition position, long teamId, long userId) method with
+     * negative long userId, IllegalArgumentException should be thrown.
      */
     public void testCreateOrUpdatePosition_NegativeUserId() {
         try {
@@ -1926,8 +1912,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getPosition(long positionId) method with TPE thrown,
-     * TeamPersistenceException should be thrown.
+     * Tests getPosition(long positionId) method with TPE thrown, TeamPersistenceException should be
+     * thrown.
      */
     public void testGetPosition_TeamPersistenceException() {
         try {
@@ -2091,8 +2077,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests sendOffer(Offer offer) method with null Offer offer,
-     * IllegalArgumentException should be thrown.
+     * Tests sendOffer(Offer offer) method with null Offer offer, IllegalArgumentException should be
+     * thrown.
      */
     public void testSendOffer_NullOffer() {
         try {
@@ -2106,8 +2092,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests sendOffer(Offer offer) method when offer's id is less than 0,
-     * IllegalArgumentException should be thrown.
+     * Tests sendOffer(Offer offer) method when offer's id is less than 0, IllegalArgumentException
+     * should be thrown.
      */
     public void testSendOffer_OfferIdLessThanZero() {
         try {
@@ -2122,8 +2108,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests sendOffer(Offer offer) method when TPE thrown,
-     * TeamPersistenceException should be thrown.
+     * Tests sendOffer(Offer offer) method when TPE thrown, TeamPersistenceException should be
+     * thrown.
      */
     public void testSendOffer_TeamPersistenceException() {
         try {
@@ -2139,8 +2125,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests getOffers(long userId) method with negative long userId,
-     * IllegalArgumentException should be thrown.
+     * Tests getOffers(long userId) method with negative long userId, IllegalArgumentException
+     * should be thrown.
      */
     public void testGetOffers_NegativeUserId() {
         try {
@@ -2150,21 +2136,6 @@ public class TeamServicesImplFailureTests extends TestCase {
             // pass
         } catch (Exception e) {
             fail("Unknown exception occurs in testGetOffers_NegativeUserId.");
-        }
-    }
-
-    /**
-     * Tests getOffers(long userId) method with OfferManagerException thrown,
-     * OfferManagerException should be thrown.
-     */
-    public void testGetOffers_OfferManagerException() {
-        try {
-            services.getOffers(1005);
-            fail("testGetOffers_OfferManagerException is failure.");
-        } catch (OfferManagerException ome) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknown exception occurs in testGetOffers_OfferManagerException.");
         }
     }
 
@@ -2195,21 +2166,6 @@ public class TeamServicesImplFailureTests extends TestCase {
             // pass
         } catch (Exception e) {
             fail("Unknown exception occurs in testAcceptOffer_NegativeUserId.");
-        }
-    }
-
-    /**
-     * Tests acceptOffer(long offerId, long userId) method with OfferManagerException thrown?
-     * OfferManagerException should be thrown.
-     */
-    public void testAcceptOffer_OfferManagerException() {
-        try {
-            services.acceptOffer(1005, 1111);
-            fail("testAcceptOffer_OfferManagerException is failure.");
-        } catch (OfferManagerException ome) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknown exception occurs in testAcceptOffer_OfferManagerException.");
         }
     }
 
@@ -2259,8 +2215,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests rejectOffer(long offerId, String cause, long userId) method with TeamPersistenceException thrown?
-     * TeamPersistenceException should be thrown.
+     * Tests rejectOffer(long offerId, String cause, long userId) method with
+     * TeamPersistenceException thrown? TeamPersistenceException should be thrown.
      */
     public void testRejectOffer_TeamPersistenceException() {
         try {
@@ -2274,8 +2230,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests rejectOffer(long offerId, String cause, long userId) method with OfferManagerException thrown?
-     * OfferManagerException should be thrown.
+     * Tests rejectOffer(long offerId, String cause, long userId) method with OfferManagerException
+     * thrown? OfferManagerException should be thrown.
      */
     public void testRejectOffer_OfferManagerException() {
         try {
@@ -2362,7 +2318,7 @@ public class TeamServicesImplFailureTests extends TestCase {
             fail("Unknown exception occurs in testForceFinalization_NegativeUserId.");
         }
     }
-    
+
     /**
      * Tests forceFinalization(long projectId, long userId) method with unknown long projectId,
      * UnknownEntityException should be thrown.
@@ -2379,8 +2335,8 @@ public class TeamServicesImplFailureTests extends TestCase {
     }
 
     /**
-     * Tests forceFinalization(long projectId, long userId) method with ProjectServicesException thrown,
-     * ProjectServicesException should be thrown.
+     * Tests forceFinalization(long projectId, long userId) method with ProjectServicesException
+     * thrown, ProjectServicesException should be thrown.
      */
     public void testForceFinalization_ProjectServicesException() {
         try {
@@ -2393,18 +2349,4 @@ public class TeamServicesImplFailureTests extends TestCase {
         }
     }
 
-    /**
-     * Tests forceFinalization(long projectId, long userId) method with TeamPersistenceException thrown,
-     * TeamPersistenceException should be thrown.
-     */
-    public void testForceFinalization_TeamPersistenceException() {
-        try {
-            services.forceFinalization(1005, 1111);
-            fail("testForceFinalization_TeamPersistenceException is failure.");
-        } catch (TeamPersistenceException tpe) {
-            // pass
-        } catch (Exception e) {
-            fail("Unknown exception occurs in testForceFinalization_TeamPersistenceException.");
-        }
-    }
 }
