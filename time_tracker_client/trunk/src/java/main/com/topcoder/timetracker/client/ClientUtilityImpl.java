@@ -28,6 +28,7 @@ import com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate;
 import com.topcoder.timetracker.contact.ejb.ContactManagerLocalDelegate;
 import com.topcoder.timetracker.project.DataAccessException;
 import com.topcoder.timetracker.project.Project;
+import com.topcoder.timetracker.project.ProjectFilterFactory;
 import com.topcoder.timetracker.project.ProjectUtility;
 import com.topcoder.timetracker.project.UnrecognizedEntityException;
 import com.topcoder.util.idgenerator.IDGenerationException;
@@ -541,13 +542,14 @@ public class ClientUtilityImpl implements ClientUtility {
             }
 
             if (depth.useProjects()) {
-                setProjects(clients[i]);
+                if (depth.onlyProjectsIdName()) {
+                    // Only set project id and name
+                    setProjectsIdName(clients[i]);
+                } else {
+                    setProjects(clients[i]);
+                }
             }
 
-            if (depth.onlyProjectsIdName()) {
-                // only set project id and name.
-                setProjectsIdName(clients[i]);
-            }
             clients[i].setChanged(false);
         }
 
@@ -689,15 +691,16 @@ public class ClientUtilityImpl implements ClientUtility {
      * @throws ClientPersistenceException if it is thrown by getAllProjectsOfClient
      */
     private void setProjects(Client client) throws ClientPersistenceException, PropertyOperationException {
-        long[] ids = dao.getAllProjectIDsOfClient(client.getId());
+        try {
+            ProjectFilterFactory filterFactory = projectUtility.getProjectFilterFactory();
+            Filter clientFilter = filterFactory.createClientIdFilter(client.getId());
 
-        Project[] projects = new Project[ids.length];
-
-        for (int i = 0; i < ids.length; i++) {
-            projects[i] = getProjectWithId(ids[i]);
+            client.setProjects(projectUtility.searchProjects(clientFilter));
+        } catch (UnrecognizedEntityException uee) {
+            throw new PropertyOperationException("Error get the entity.", uee);
+        } catch (DataAccessException dae) {
+            throw new PropertyOperationException("Error access the database.", dae);
         }
-
-        client.setProjects(projects);
     }
 
     /**

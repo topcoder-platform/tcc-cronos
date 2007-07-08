@@ -9,7 +9,6 @@ import com.topcoder.timetracker.client.Depth;
 import com.topcoder.timetracker.client.Helper;
 import com.topcoder.timetracker.client.db.ClientColumnName;
 import com.topcoder.timetracker.common.PaymentTerm;
-import com.topcoder.timetracker.project.Project;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
@@ -85,12 +84,6 @@ public class ClientProjectDepth extends Depth {
             client.setSalesTax(result.getDouble("salestax"));
             client.setStartDate(result.getDate("start_date"));
             client.setEndDate(result.getDate("end_date"));
-
-            long projectId = result.getLong("project_id");
-            Project project = new Project();
-
-            project.setId(projectId);
-            client.setProjects(new Project[] {project});
 
             return client;
         } catch (InvalidCursorStateException icse) {
