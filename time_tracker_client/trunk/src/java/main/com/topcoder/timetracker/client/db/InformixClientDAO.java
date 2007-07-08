@@ -145,9 +145,9 @@ public class InformixClientDAO implements ClientDAO {
         "SELECT DISTINCT project.project_id AS project_id," +
         "       name" +
         "  FROM project," +
-        "       project_client" +
-        " WHERE project.project_id = project_client.project_id" +
-        "   AND project_client.client_id = ?";
+        "       client_project" +
+        " WHERE project.project_id = client_project.project_id" +
+        "   AND client_project.client_id = ?";
 
     /**
      * <p>
