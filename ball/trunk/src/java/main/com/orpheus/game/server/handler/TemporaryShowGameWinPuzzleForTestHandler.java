@@ -5,6 +5,7 @@ package com.orpheus.game.server.handler;
 
 import com.orpheus.game.server.GamePlayInfo;
 import com.orpheus.game.server.OrpheusFunctions;
+import com.orpheus.game.server.util.PracticePuzzleSupport;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
@@ -81,12 +82,6 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             request.setAttribute(getString(PUZZLE_ID_ATTR_NAME_CONFIG), new Long(puzzleId));
             request.setAttribute(getString(MEDIA_TYPE_ATTR_NAME_CONFIG), getString(MEDIA_TYPE_VALUE_CONFIG));
 
-            long[] puzzleIDs = {11450,11451,11452,11453};  
-            // 11450-53 (ST), 46-49 (J) - populate from PracticePuzzleSupport.java
-            // Once this is created, add DB field in prod. Ensure that selection
-            // between 4 puzzles is correct, then add all new images and DB entries,
-            // update links in FAQ.
-            request.setAttribute("puzzleIDs", puzzleIDs);
             request.setAttribute("selPuzzleID", String.valueOf(puzzleId));
             request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
             
@@ -99,6 +94,12 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
 
             // Put name of the puzzle to session so they can be retrieved later
             request.setAttribute("puzzleName", getString(PUZZLE_NAME));
+            
+            // Obtain IDs of practice puzzles of the selected type
+            // Ensure that selection between 4 puzzles is correct, then add all new images and DB entries,
+            // update links in FAQ (or give tile.do and jigsaw.do default puzzle IDs).
+            PracticePuzzleSupport practicePuzzleSupport = new PracticePuzzleSupport();
+            request.setAttribute("puzzleIDs", practicePuzzleSupport.selectPracticeIDs(getString(PUZZLE_NAME)));
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not prepare the brainteaser data for rendering", e);

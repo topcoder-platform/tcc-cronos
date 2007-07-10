@@ -1539,4 +1539,17 @@
             <Value>OrpheusLengthRule</Value>
         </Property>
     </Config>
+    
+    <!-- Configuration for Practice Puzzle Support -->
+    <Config name="com.orpheus.game.server.util.PracticePuzzleSupport">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="connectionName">
+            <Value>orpheus</Value>
+        </Property>
+    </Config>
 </CMConfig>

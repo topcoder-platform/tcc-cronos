@@ -68,17 +68,17 @@
     <div id="pluginTestTitle">
     	Practice: ${puzzleName}
     	<form name="SelectPuzzleForm" id="SelectPuzzleForm">
-	    	<select size="1" name="puzzleImage" id="puzzleImage">
+	    	<select size="1" name="puzzleId" id="puzzleId">
 	    	   	<c:forEach items="${puzzleIDs}" var="puzzleID">
 	    	 		<c:if test="${puzzleID ne selPuzzleID}">
-	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${puzzleID}">${puzzleID}</option>
+	    	 			<option value="${puzzleID}">${puzzleID}</option>
 	    	 		</c:if>
 	    	 		<c:if test="${puzzleID eq selPuzzleID}">
-	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${puzzleID}" selected>${puzzleID}</option>
+	    	 			<option value="${puzzleID}" selected>${puzzleID}</option>
 	    	 		</c:if>
 	    	 	</c:forEach>
 	    	</select>
-	    	<input onclick="gotoURL(document.getElementById('puzzleImage'))" type="image" src="${ctx}/i/b/btn_go.gif" alt="Go">
+	    	<input onclick="gotoURL(document.getElementById('puzzleId'))" type="image" src="${ctx}/i/b/btn_go.gif" alt="Go">
     	</form>
     </div>
 
