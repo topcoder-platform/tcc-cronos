@@ -53,6 +53,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
         readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, PUZZLE_NAME, true);
+        readAsString(element, URL_PATTERN_SUFFIX, true);
     }
 
     /**
@@ -62,7 +63,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
      *
      * @param context an <code>ActionContext</code> providing the context surrounding the incoming request.
      * @return <code>null</code> if request has been serviced successfully. Otherwise an exception will be raised.
-     * @throws HandlerExecutionException if un unrecoverable error prevents the successful request processing.
+     * @throws HandlerExecutionException if an unrecoverable error prevents the successful request processing.
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
         if (context == null) {
@@ -73,13 +74,22 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             // Ensure that session exists
             HttpServletRequest request = context.getRequest();
             request.getSession(true);
-
+            
             // Get puzzle ID from request parameter
             // Put the ID of a puzzle and media type to request to be used by subsequent PuzzleRenderingHandler
             long puzzleId = getLong(PUZZLE_ID_PARAM_NAME_CONFIG, request);
             request.setAttribute(getString(PUZZLE_ID_ATTR_NAME_CONFIG), new Long(puzzleId));
             request.setAttribute(getString(MEDIA_TYPE_ATTR_NAME_CONFIG), getString(MEDIA_TYPE_VALUE_CONFIG));
 
+            long[] puzzleIDs = {11450,11451,11452,11453};  
+            // 11450-53 (ST), 46-49 (J) - populate from PracticePuzzleSupport.java
+            // Once this is created, add DB field in prod. Ensure that selection
+            // between 4 puzzles is correct, then add all new images and DB entries,
+            // update links in FAQ.
+            request.setAttribute("puzzleIDs", puzzleIDs);
+            request.setAttribute("selPuzzleID", puzzleId);
+            request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
+            
             // Get the current game play statistics for a player
             // Record the time when the player had started to solve the puzzle and put the time left to solve the
             // puzzle to request

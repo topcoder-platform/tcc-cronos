@@ -51,7 +51,13 @@
                     unsetClockUpdatePeriod();
                 }
             }
-        }
+        } 
+   
+     	function gotoURL(mySelect) { 
+     	 	myIndex = mySelect.selectedIndex; 
+      		myValue = mySelect.options[myIndex].value; 
+      		window.location.href = myValue; 
+   		} 
     </script>
 </head>
 
@@ -61,10 +67,19 @@
 
     <div id="pluginTestTitle">
     	Practice: ${puzzleName}
-    	<!--<select size="1" name="puzzleImage">
-    		<option value="img1">Image 1</option>
-        	<option value="img2" selected>Image 2</option>  
-    	</select>-->
+    	<form name="SelectPuzzleForm" id="SelectPuzzleForm">
+	    	<select size="1" name="puzzleImage" id="puzzleImage">
+	    	   	<c:forEach items="${puzzleIDs}" var="puzzleID">
+	    	 		<c:if test="${puzzleID ne selPuzzleID}">
+	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${selPuzzleID}">${selPuzzleID}</option>
+	    	 		</c:if>
+	    	 		<c:if test="${puzzleID eq selPuzzleID}">
+	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${selPuzzleID}" selected>${selPuzzleID}</option>
+	    	 		</c:if>
+	    	 	</c:forEach>
+	    	 	<input onclick="gotoURL(document.getElementById('puzzleImage'))" value=">>" type="button">
+	    	</select>
+    	</form>
     </div>
 
     <div id="wrap">

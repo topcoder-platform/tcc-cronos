@@ -281,6 +281,12 @@ public class AbstractGameServerHandler {
     protected static final String PUZZLE_NAME = "puzzle_name";
     
     /**
+     * <p>A <code>String</code> providing the url-pattern suffix of a handler XML file. (Note: This can be removed if the 
+     * url-pattern can be obtained in another fashion.)</p>
+     */
+    protected static final String URL_PATTERN_SUFFIX = "url_pattern_suffix";
+    
+    /**
      * <p>A <code>Map</code> mapping the <code>String</code> name of a configuration parameter to respective <code>
      * Object</code> providing the value for configuration parameter.</p>
      */

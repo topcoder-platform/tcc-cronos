@@ -51,6 +51,7 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
         readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, SOLUTION_TESTER_BASE_NAME_VALUE_CONFIG, true);
+        readAsString(element, URL_PATTERN_SUFFIX, true);
     }
 
     /**
@@ -77,7 +78,7 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
 
             // Get game ID, domain and sequence number from request parameters
             long puzzleId = getLong(PUZZLE_ID_PARAM_NAME_CONFIG, request);
-
+            
             GameData gameData = null;
             GameDataLocal gameDataLocal = null;
             GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
@@ -94,6 +95,12 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
                 puzzleName = "Jigsaw Puzzle";
             }
             request.setAttribute("puzzleName", puzzleName);
+            long[] puzzleIDs = {11450,11451,11452,11453};  // 11450-53 (ST), 46-49 (J) - populate from PracticePuzzleSupport.java
+                                                           // Once this is created, add DB field in prod. Ensure that selection
+                                                           // between 4 puzzles is correct, then add all new images and DB entries,
+                                                           // update links in FAQ.
+            request.setAttribute("puzzleIDs", puzzleIDs);
+            request.setAttribute("selPuzzleID", puzzleId);
                     
             SolutionTester tester = (SolutionTester) request.getSession().getAttribute(
                     getString(SOLUTION_TESTER_BASE_NAME_VALUE_CONFIG) + puzzleId);
