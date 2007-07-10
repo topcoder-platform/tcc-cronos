@@ -83,7 +83,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             // Obtain practice puzzle IDs for puzzles of this type
             String puzzleDbName = getString(PUZZLE_DB_NAME);                               
             PracticePuzzleSupport practicePuzzleSupport = new PracticePuzzleSupport();
-            int[] practiceIDs = practicePuzzleSupport.selectPracticeIDs(puzzleDbName)
+            int[] practiceIDs = practicePuzzleSupport.selectPracticeIDs(puzzleDbName);
             request.setAttribute("puzzleIDs", practiceIDs);
             
             // Get puzzle ID from request parameter
