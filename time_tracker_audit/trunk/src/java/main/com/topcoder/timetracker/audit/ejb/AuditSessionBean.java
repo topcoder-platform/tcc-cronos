@@ -133,7 +133,7 @@ public class AuditSessionBean implements SessionBean, AuditManager {
         try {
             return dao.searchAudit(filter);
         } catch (AuditPersistenceException e) {
-            sessionContext.setRollbackOnly();
+//            sessionContext.setRollbackOnly();
             throw new AuditManagerException("Errors occur in the persistence layer.", e);
         }
     }
