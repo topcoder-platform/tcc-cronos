@@ -108,7 +108,8 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             }
             String puzzleType = golu.isUseLocalInterface()
                                 ? gameDataLocal.getPuzzle(puzzleId).getName() : gameData.getPuzzle(puzzleId).getName();
-            
+            System.out.println("******** PUZZLE TYPE: " + puzzleType);
+                                
             // Obtain IDs of practice puzzles of the selected type
             // Ensure that selection between 4 puzzles is correct, then add all new images and DB entries,
             // update links in FAQ (or give tile.do and jigsaw.do default puzzle IDs).
