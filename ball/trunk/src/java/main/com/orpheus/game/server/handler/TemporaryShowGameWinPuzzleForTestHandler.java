@@ -88,7 +88,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             // update links in FAQ.
             request.setAttribute("puzzleIDs", puzzleIDs);
             request.setAttribute("selPuzzleID", String.valueOf(puzzleId));
-            //request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
+            request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
             
             // Get the current game play statistics for a player
             // Record the time when the player had started to solve the puzzle and put the time left to solve the

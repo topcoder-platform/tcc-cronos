@@ -57,7 +57,7 @@
      	 	myIndex = mySelect.selectedIndex; 
       		myValue = mySelect.options[myIndex].value; 
       		window.location.href = myValue; 
-   		} 
+		} 
     </script>
 </head>
 
@@ -71,14 +71,14 @@
 	    	<select size="1" name="puzzleImage" id="puzzleImage">
 	    	   	<c:forEach items="${puzzleIDs}" var="puzzleID">
 	    	 		<c:if test="${puzzleID ne selPuzzleID}">
-	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${selPuzzleID}">${selPuzzleID}</option>
+	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${puzzleID}">${puzzleID}</option>
 	    	 		</c:if>
 	    	 		<c:if test="${puzzleID eq selPuzzleID}">
-	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${selPuzzleID}" selected>${selPuzzleID}</option>
+	    	 			<option value="${ctx}/server/puzzle/${urlPatternSuffix}?puzzleId=${puzzleID}" selected>${puzzleID}</option>
 	    	 		</c:if>
 	    	 	</c:forEach>
-	    	 	<input onclick="gotoURL(document.getElementById('puzzleImage'))" value=">>" type="button">
 	    	</select>
+	    	<input onclick="gotoURL(document.getElementById('puzzleImage'))" type="image" src="${ctx}/i/b/btn_go.gif" alt="Go">
     	</form>
     </div>
 
