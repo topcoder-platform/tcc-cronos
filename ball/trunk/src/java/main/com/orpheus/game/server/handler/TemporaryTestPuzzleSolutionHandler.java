@@ -94,11 +94,7 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
                 puzzleName = "Jigsaw Puzzle";
             }
             request.setAttribute("puzzleName", puzzleName);
-            long[] puzzleIDs = {11450,11451,11452,11453};  // 11450-53 (ST), 46-49 (J) - populate from PracticePuzzleSupport.java
-                                                           // Once this is created, add DB field in prod. Ensure that selection
-                                                           // between 4 puzzles is correct, then add all new images and DB entries,
-                                                           // update links in FAQ.
-            request.setAttribute("puzzleIDs", puzzleIDs);
+            long[] puzzleIDs = {11450,11451,11452,11453};   // replace
             request.setAttribute("selPuzzleID", String.valueOf(puzzleId));
                     
             SolutionTester tester = (SolutionTester) request.getSession().getAttribute(

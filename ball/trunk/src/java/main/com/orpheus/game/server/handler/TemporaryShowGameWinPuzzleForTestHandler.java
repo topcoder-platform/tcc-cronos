@@ -57,6 +57,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
         readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, PUZZLE_NAME, true);
+        readAsString(element, PUZZLE_DB_NAME, true);
         readAsString(element, URL_PATTERN_SUFFIX, true);
     }
 
@@ -79,9 +80,22 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             HttpServletRequest request = context.getRequest();
             request.getSession(true);
             
+            // Obtain practice puzzle IDs for puzzles of this type
+            String puzzleDbName = getString(PUZZLE_DB_NAME);                               
+            PracticePuzzleSupport practicePuzzleSupport = new PracticePuzzleSupport();
+            int[] practiceIDs = practicePuzzleSupport.selectPracticeIDs(puzzleDbName)
+            request.setAttribute("puzzleIDs", practiceIDs);
+            
             // Get puzzle ID from request parameter
             // Put the ID of a puzzle and media type to request to be used by subsequent PuzzleRenderingHandler
-            long puzzleId = getLong(PUZZLE_ID_PARAM_NAME_CONFIG, request);
+            long puzzleId = -1;
+            try {
+                puzzleId = getLong(PUZZLE_ID_PARAM_NAME_CONFIG, request);
+            } catch (HandlerExecutionException hee) {
+                if (practiceIDs.length > 0) {
+                    puzzleId = practiceIDs[0];
+                }
+            }
             request.setAttribute(getString(PUZZLE_ID_ATTR_NAME_CONFIG), new Long(puzzleId));
             request.setAttribute(getString(MEDIA_TYPE_ATTR_NAME_CONFIG), getString(MEDIA_TYPE_VALUE_CONFIG));
 
@@ -98,22 +112,6 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             // Put name of the puzzle to session so they can be retrieved later
             request.setAttribute("puzzleName", getString(PUZZLE_NAME));
             
-            GameData gameData = null;
-            GameDataLocal gameDataLocal = null;
-            GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
-            if (golu.isUseLocalInterface()) {
-                gameDataLocal = golu.getGameDataLocalHome().create();
-            } else {
-                gameData = golu.getGameDataRemoteHome().create();
-            }
-            String puzzleType = golu.isUseLocalInterface()
-                                ? gameDataLocal.getPuzzle(puzzleId).getName() : gameData.getPuzzle(puzzleId).getName();
-                                
-            // Obtain IDs of practice puzzles of the selected type
-            // Ensure that selection between 4 puzzles is correct, then add all new images and DB entries,
-            // update links in FAQ (or give tile.do and jigsaw.do default puzzle IDs).
-            PracticePuzzleSupport practicePuzzleSupport = new PracticePuzzleSupport();
-            request.setAttribute("puzzleIDs", practicePuzzleSupport.selectPracticeIDs(puzzleType));
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not prepare the brainteaser data for rendering", e);

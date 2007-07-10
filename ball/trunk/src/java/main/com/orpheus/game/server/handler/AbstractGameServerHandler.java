@@ -281,6 +281,11 @@ public class AbstractGameServerHandler {
     protected static final String PUZZLE_NAME = "puzzle_name";
     
     /**
+     * <p>A <code>String</code> providing the puzzle name as stored in the "puzzle" table of the database.)</p>
+     */
+    protected static final String PUZZLE_DB_NAME = "puzzle_db_name";
+    
+    /**
      * <p>A <code>String</code> providing the url-pattern suffix of a handler XML file. (Note: This can be removed if the 
      * url-pattern can be obtained in another fashion.)</p>
      */

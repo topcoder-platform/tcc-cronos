@@ -1,6 +1,7 @@
 <action name="TestSlidingTilePuzzle" type="default" url-pattern="/server/puzzle/tile.do" priority="10">
     <handler type="TemporaryShowGameWinPuzzleForTestHandler">
         <puzzle_name>Sliding Tile Puzzle</puzzle_name>
+        <puzzle_db_name>sliding-tile</puzzle_db_name>
         <puzzle_id_param_key>puzzleId</puzzle_id_param_key>
         <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>
         <media_type_request_attribute_key>mediaType</media_type_request_attribute_key>
