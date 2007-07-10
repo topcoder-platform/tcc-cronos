@@ -51,7 +51,6 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
         readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, SOLUTION_TESTER_BASE_NAME_VALUE_CONFIG, true);
-        //readAsString(element, URL_PATTERN_SUFFIX, true);
     }
 
     /**
@@ -101,7 +100,6 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
                                                            // update links in FAQ.
             request.setAttribute("puzzleIDs", puzzleIDs);
             request.setAttribute("selPuzzleID", String.valueOf(puzzleId));
-            //request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
                     
             SolutionTester tester = (SolutionTester) request.getSession().getAttribute(
                     getString(SOLUTION_TESTER_BASE_NAME_VALUE_CONFIG) + puzzleId);

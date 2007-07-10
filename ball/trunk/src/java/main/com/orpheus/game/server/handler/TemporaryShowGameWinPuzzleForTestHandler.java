@@ -53,7 +53,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
         readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, PUZZLE_NAME, true);
-        //readAsString(element, URL_PATTERN_SUFFIX, true);
+        readAsString(element, URL_PATTERN_SUFFIX, true);
     }
 
     /**
