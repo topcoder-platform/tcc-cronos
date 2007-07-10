@@ -3,6 +3,9 @@
  */
 package com.orpheus.game.server.handler;
 
+import com.orpheus.game.GameOperationLogicUtility;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 import com.orpheus.game.server.GamePlayInfo;
 import com.orpheus.game.server.OrpheusFunctions;
 import com.orpheus.game.server.util.PracticePuzzleSupport;
@@ -95,11 +98,22 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             // Put name of the puzzle to session so they can be retrieved later
             request.setAttribute("puzzleName", getString(PUZZLE_NAME));
             
+            GameData gameData = null;
+            GameDataLocal gameDataLocal = null;
+            GameOperationLogicUtility golu = GameOperationLogicUtility.getInstance();
+            if (golu.isUseLocalInterface()) {
+                gameDataLocal = golu.getGameDataLocalHome().create();
+            } else {
+                gameData = golu.getGameDataRemoteHome().create();
+            }
+            String puzzleType = golu.isUseLocalInterface()
+                                ? gameDataLocal.getPuzzle(puzzleId).getName() : gameData.getPuzzle(puzzleId).getName();
+            
             // Obtain IDs of practice puzzles of the selected type
             // Ensure that selection between 4 puzzles is correct, then add all new images and DB entries,
             // update links in FAQ (or give tile.do and jigsaw.do default puzzle IDs).
             PracticePuzzleSupport practicePuzzleSupport = new PracticePuzzleSupport();
-            request.setAttribute("puzzleIDs", practicePuzzleSupport.selectPracticeIDs(getString(PUZZLE_NAME)));
+            request.setAttribute("puzzleIDs", practicePuzzleSupport.selectPracticeIDs(puzzleType));
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not prepare the brainteaser data for rendering", e);
