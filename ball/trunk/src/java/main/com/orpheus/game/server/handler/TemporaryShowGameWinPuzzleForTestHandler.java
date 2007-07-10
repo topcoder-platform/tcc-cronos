@@ -53,7 +53,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
         readAsString(element, PUZZLE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, PUZZLE_NAME, true);
-        readAsString(element, URL_PATTERN_SUFFIX, true);
+        //readAsString(element, URL_PATTERN_SUFFIX, true);
     }
 
     /**
@@ -88,7 +88,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             // update links in FAQ.
             request.setAttribute("puzzleIDs", puzzleIDs);
             request.setAttribute("selPuzzleID", String.valueOf(puzzleId));
-            request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
+            //request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
             
             // Get the current game play statistics for a player
             // Record the time when the player had started to solve the puzzle and put the time left to solve the
