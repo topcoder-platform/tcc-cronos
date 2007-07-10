@@ -89,7 +89,7 @@ public class PracticePuzzleSupport {
 
             ArrayList idList = new ArrayList();
             while (rs.next()) {
-                idList.add(new Integer(rs.getInt(0)));
+                idList.add(new Integer(rs.getInt(1)));
             }
             int[] ids = new int[idList.size()];
             for (int i=0; i<ids.length; i++) {
@@ -97,17 +97,11 @@ public class PracticePuzzleSupport {
             }
             return ids;
         } catch (DBConnectionException e) {
-            //System.out.println("Could not successfully obtain puzzle IDs for type [" + puzzleType + "]. " +
-            //        "Could not connect to database successfully.");
-            //return new int[0];
             throw new InvalidAddressException("Could not successfully obtain puzzle IDs for type ["
                     + puzzleType + "]. Could not connect to database successfully.", e);
         } catch (SQLException e) {
             throw new InvalidAddressException("Could not successfully obtain puzzle IDs for type ["
                     + puzzleType + "]. Could not alter database successfully.", e);
-            //System.out.println("Could not successfully obtain puzzle IDs for type [" + puzzleType + "]. " +
-            //        "Could not alter database successfully.");
-            //return new int[0];
         } finally {
             if (stmt != null) {
                 try {
