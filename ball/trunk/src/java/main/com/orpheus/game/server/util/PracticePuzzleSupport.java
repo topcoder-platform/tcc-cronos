@@ -10,6 +10,7 @@ import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
+import com.topcoder.validation.emailconfirmation.InvalidAddressException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 
@@ -76,7 +77,6 @@ public class PracticePuzzleSupport {
      * a user account matching the specified email address.</p>
      *
      * @param puzzleType a <code>String</code> with the puzzle type to obtain IDs for ("jigsaw", "sliding-tile", etc.).
-     * @throws InvalidAddressException if the operation fails for unrecoverable reason.
      */
     public int[] selectPracticeIDs(String puzzleType) {
         Connection connection = null;
@@ -97,13 +97,17 @@ public class PracticePuzzleSupport {
             }
             return ids;
         } catch (DBConnectionException e) {
-            System.out.println("Could not successfully obtain puzzle IDs for type [" + puzzleType + "]. " +
-                    "Could not connect to database successfully.");
-            return new int[0];
+            //System.out.println("Could not successfully obtain puzzle IDs for type [" + puzzleType + "]. " +
+            //        "Could not connect to database successfully.");
+            //return new int[0];
+            throw new InvalidAddressException("Could not successfully obtain puzzle IDs for type ["
+                    + puzzleType + "]. Could not connect to database successfully.", e);
         } catch (SQLException e) {
-            System.out.println("Could not successfully obtain puzzle IDs for type [" + puzzleType + "]. " +
-                    "Could not alter database successfully.");
-            return new int[0];
+            throw new InvalidAddressException("Could not successfully obtain puzzle IDs for type ["
+                    + puzzleType + "]. Could not alter database successfully.", e);
+            //System.out.println("Could not successfully obtain puzzle IDs for type [" + puzzleType + "]. " +
+            //        "Could not alter database successfully.");
+            //return new int[0];
         } finally {
             if (stmt != null) {
                 try {
