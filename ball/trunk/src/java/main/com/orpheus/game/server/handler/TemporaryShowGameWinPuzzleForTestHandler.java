@@ -87,7 +87,7 @@ public class TemporaryShowGameWinPuzzleForTestHandler extends AbstractGameServer
             // between 4 puzzles is correct, then add all new images and DB entries,
             // update links in FAQ.
             request.setAttribute("puzzleIDs", puzzleIDs);
-            request.setAttribute("selPuzzleID", puzzleId);
+            request.setAttribute("selPuzzleID", String.valueOf(puzzleId));
             request.setAttribute("urlPatternSuffix", getString(URL_PATTERN_SUFFIX));
             
             // Get the current game play statistics for a player

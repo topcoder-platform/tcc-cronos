@@ -100,7 +100,7 @@ public class TemporaryTestPuzzleSolutionHandler extends AbstractGameServerHandle
                                                            // between 4 puzzles is correct, then add all new images and DB entries,
                                                            // update links in FAQ.
             request.setAttribute("puzzleIDs", puzzleIDs);
-            request.setAttribute("selPuzzleID", puzzleId);
+            request.setAttribute("selPuzzleID", String.valueOf(puzzleId));
                     
             SolutionTester tester = (SolutionTester) request.getSession().getAttribute(
                     getString(SOLUTION_TESTER_BASE_NAME_VALUE_CONFIG) + puzzleId);
