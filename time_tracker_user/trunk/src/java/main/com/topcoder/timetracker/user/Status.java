@@ -25,37 +25,28 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  */
 public class Status extends Enum {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 8748057160854572375L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 8748057160854572375L;
 
-	/**
-     * <p>
+    /**
      * This is an Enumeration value representing a status of <tt>ACTIVE</tt>.
-     * </p>
      */
-    public static final Status ACTIVE = new Status("active", 1);
+    public static final Status ACTIVE = new Status("Active", 1);
 
     /**
-     * <p>
      * This is an Enumeration value representing a status of <tt>INACTIVE</tt>.
-     * </p>
      */
-    public static final Status INACTIVE = new Status("inactive", 0);
+    public static final Status INACTIVE = new Status("Inactive", 0);
 
     /**
-     * <p>
      * This is an Enumeration value representing a status of <tt>LOCKED</tt>.
-     * </p>
      */
-    public static final Status LOCKED = new Status("locked", 2);
+    public static final Status LOCKED = new Status("Locked", 3);
 
     /**
-     * <p>
      * This is a name that briefly describes the user status.
-     * </p>
-     *
      * <p>
      * It is set in the constructor and never changed afterwards.
      * </p>
@@ -63,10 +54,7 @@ public class Status extends Enum {
     private final String name;
 
     /**
-     * <p>
      * This is an identifier that represents the unique id of the <code>Status</code>.
-     * </p>
-     *
      * <p>
      * It should also be used to identify the persistence record if applicable.
      * </p>
@@ -74,9 +62,7 @@ public class Status extends Enum {
     private final long id;
 
     /**
-     * <p>
      * This is the private constructor for a status, accepting name and identifier arguments.
-     * </p>
      *
      * @param name The name of the status.
      * @param id The id of the status.
@@ -87,9 +73,7 @@ public class Status extends Enum {
     }
 
     /**
-     * <p>
      * Retrieves the name of the user status.
-     * </p>
      *
      * @return the name of the user status.
      */
@@ -98,9 +82,7 @@ public class Status extends Enum {
     }
 
     /**
-     * <p>
      * Retrieves the <code>String</code> representation of the Status, which is equivalent to it's name.
-     * </p>
      *
      * @return the name of the user status.
      */
@@ -109,10 +91,7 @@ public class Status extends Enum {
     }
 
     /**
-     * <p>
      * Retrieves the identifier that represents the unique id of the Status.
-     * </p>
-     *
      * <p>
      * It should also be used to identify the persistence record if applicable.
      * </p>

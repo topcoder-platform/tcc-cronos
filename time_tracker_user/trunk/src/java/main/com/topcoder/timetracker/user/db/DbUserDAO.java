@@ -1288,8 +1288,8 @@ public class DbUserDAO implements UserDAO {
      * @throws UnrecognizedEntityException if the user id cannot be located in the database
      * @throws DataAccessException if a problem occurs while accessing the persistent store.
      */
-    private User getSimpleUser(Connection conn, long userId) throws SQLException, UnrecognizedEntityException,
-        DataAccessException {
+    private User getSimpleUser(Connection conn, long userId)
+            throws SQLException, UnrecognizedEntityException, DataAccessException {
         // select company_id, account_status_id, user_name, password,
         // creation_date, creation_user, modification_date, modification_user
         // from user_account where user_account_id = ?
